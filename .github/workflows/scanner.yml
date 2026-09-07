@@ -1,0 +1,38 @@
+name: Validated Current Scanner
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'reports/pattern_registry.json'
+      - 'src/odds_scanner/scanner.py'
+      - '.github/workflows/scanner.yml'
+  schedule:
+    - cron: '0 4 * * *'
+concurrency:
+  group: odds-scanner-output-writer
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python -m pip install -e '.[dev]'
+      - run: pytest -q
+      - name: Run validated production scanner
+        run: python -c "from pathlib import Path; import json; from odds_scanner.scanner import scan; print(json.dumps(scan(Path('.'))))"
+      - name: Commit scanner output
+        run: |
+          set -euo pipefail
+          git config user.name 'odds-scanner-actions'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- reports/today.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Update validated scanner output'
+          git pull --rebase origin main
+          git push
