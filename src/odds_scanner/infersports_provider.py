@@ -9,9 +9,10 @@ from pathlib import Path
 
 BASE = "https://api.infersports.dev"
 USER_AGENT = "football-odds-scanner/0.1 personal-research"
+DEFAULT_TIMEOUT = 8
 
 
-def _get_json(path: str, params: dict | None = None, timeout: int = 30) -> dict:
+def _get_json(path: str, params: dict | None = None, timeout: int = DEFAULT_TIMEOUT) -> dict:
     query = urllib.parse.urlencode(params or {})
     url = BASE + path + (("?" + query) if query else "")
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, "Accept": "application/json"})
@@ -56,7 +57,7 @@ def _two_sided(quote: dict) -> bool:
     return False
 
 
-def probe(limit_events: int = 12) -> dict:
+def probe(limit_events: int = 6) -> dict:
     events = list_scheduled_football(limit=max(limit_events, 1))
     market_counts = Counter()
     bookmaker_counts = Counter()
@@ -105,8 +106,9 @@ def probe(limit_events: int = 12) -> dict:
     ah_two = two_sided.get("asian_handicap", 0)
     totals_two = two_sided.get("totals", 0)
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "provider": "infersports_keyless",
+        "status": "OK",
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "scheduled_events_seen": len(events),
         "events_probed": min(len(events), limit_events),
@@ -123,8 +125,26 @@ def probe(limit_events: int = 12) -> dict:
     }
 
 
-def write_health(root: Path, limit_events: int = 12) -> dict:
-    payload = probe(limit_events=limit_events)
+def write_health(root: Path, limit_events: int = 6) -> dict:
+    try:
+        payload = probe(limit_events=limit_events)
+    except Exception as exc:
+        payload = {
+            "schema_version": "1.1",
+            "provider": "infersports_keyless",
+            "status": "UNAVAILABLE",
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "execution_candidate": False,
+            "scheduled_events_seen": 0,
+            "events_probed": 0,
+            "successful_events": 0,
+            "market_counts": {},
+            "two_sided_market_counts": {},
+            "quarter_line_counts": {},
+            "bookmaker_counts": {},
+            "errors": [f"{type(exc).__name__}: {exc}"],
+            "note": "Fail-closed health result. The provider was unreachable or invalid from the GitHub runner, so it is not eligible for execution-price use.",
+        }
     path = root / "reports/infersports_health.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
