@@ -6,13 +6,16 @@ on:
     paths:
       - 'src/odds_scanner/breadth_data.py'
       - 'src/odds_scanner/breadth_pipeline.py'
+      - 'src/odds_scanner/three_way_audit.py'
       - 'tests/test_breadth_data.py'
+      - 'tests/test_three_way_audit.py'
       - '.github/workflows/breadth.yml'
   push:
     branches: [main]
     paths:
       - 'src/odds_scanner/breadth_data.py'
       - 'src/odds_scanner/breadth_pipeline.py'
+      - 'src/odds_scanner/three_way_audit.py'
       - '.github/workflows/breadth.yml'
   schedule:
     - cron: '30 3 * * 6'
