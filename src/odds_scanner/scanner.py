@@ -5,8 +5,8 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Protocol
 
+from .market_contract import CurrentMarket, two_way_fair_probs
 from .settlement_ev import settlement_ev
-from .sgodds_provider import CurrentMarket, two_way_fair_probs
 
 DEFAULT_MIN_ODDS = 1.80
 DEFAULT_MAX_ODDS = 2.20
