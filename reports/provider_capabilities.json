@@ -1,0 +1,94 @@
+{
+  "schema_version": "1.0",
+  "providers": [
+    {
+      "provider_id": "football_data_big5",
+      "role": "historical_research",
+      "historical_depth": "2019/20-2024/25 in current normalized Big-5 pipeline",
+      "league_scope": "Big 5 European top divisions",
+      "ah_variable_lines": true,
+      "ou_variable_lines": false,
+      "ou_quarter_lines": false,
+      "opening_odds": true,
+      "closing_odds": false,
+      "movement_history": false,
+      "current_odds": false,
+      "api_key_required": false,
+      "zero_cost_confirmed": true,
+      "redistribution_status": "derived upstream data; do not assume redistribution rights",
+      "production_status": "ACTIVE_LIMITED",
+      "source_url": "https://www.football-data.co.uk/data.php",
+      "note": "Current breadth source supports variable AH but only O/U 2.5; unsuitable for research claims about 2.25/2.75 total lines."
+    },
+    {
+      "provider_id": "sgodds_singapore_pools_open",
+      "role": "current_and_forward_collection",
+      "historical_depth": "public downloads observed from roughly Oct 2025 onward",
+      "league_scope": "12 leagues in live provider health probe",
+      "ah_variable_lines": true,
+      "ou_variable_lines": true,
+      "ou_quarter_lines": false,
+      "opening_odds": true,
+      "closing_odds": false,
+      "movement_history": false,
+      "current_odds": true,
+      "api_key_required": false,
+      "zero_cost_confirmed": true,
+      "redistribution_status": "no explicit raw-data redistribution permission confirmed",
+      "production_status": "ACTIVE_LIMITED",
+      "source_url": "https://sgodds.com/football/data",
+      "note": "Live probe found AH quarter-lines but O/U lines only 1.5/2.5/3.5/4.5; raw third-party odds are not committed."
+    },
+    {
+      "provider_id": "isports_historical_all",
+      "role": "candidate_rich_historical",
+      "historical_depth": "plan-dependent historical endpoint",
+      "league_scope": "provider API coverage",
+      "ah_variable_lines": true,
+      "ou_variable_lines": true,
+      "ou_quarter_lines": true,
+      "opening_odds": true,
+      "closing_odds": true,
+      "movement_history": false,
+      "current_odds": true,
+      "api_key_required": true,
+      "zero_cost_confirmed": false,
+      "redistribution_status": "provider terms/plan apply",
+      "production_status": "KEY_REQUIRED_NOT_CONNECTED",
+      "source_url": "https://www.isportsapi.com/docs.html?id=62",
+      "note": "Historical Odds (All) documents initial/final prices across all handicap and goal lines in 0.25 increments."
+    },
+    {
+      "provider_id": "tipsme_pro",
+      "role": "candidate_rich_historical_and_movement",
+      "historical_depth": "provider plan/data coverage",
+      "league_scope": "provider API coverage",
+      "ah_variable_lines": true,
+      "ou_variable_lines": true,
+      "ou_quarter_lines": true,
+      "opening_odds": true,
+      "closing_odds": true,
+      "movement_history": true,
+      "current_odds": true,
+      "api_key_required": true,
+      "zero_cost_confirmed": false,
+      "redistribution_status": "provider terms/Pro plan apply",
+      "production_status": "KEY_REQUIRED_NOT_CONNECTED",
+      "source_url": "https://tipsme.hk/en/developers/docs/odds",
+      "note": "Pro documentation advertises Asian handicap, O/U, 1X2, opening/closing prices and complete movement history."
+    }
+  ],
+  "research_requirements": {
+    "rich_joint_pattern_engine": {
+      "ah_variable_lines": true,
+      "ou_quarter_lines": true,
+      "opening_odds": true,
+      "multi_season_history": true
+    },
+    "current_scanner": {
+      "exact_line_and_price": true,
+      "two_sided_prices_for_devig": true,
+      "freshness_required": true
+    }
+  }
+}
