@@ -85,6 +85,25 @@ PROVIDERS = (
         note="OpenAPI documents current two-sided Asian markets and opening lines on a keyless tier, but the 2026-09-07 GitHub-hosted runner timed out on /v1/events before any quote was returned. Do not promote until live runner health passes.",
     ),
     ProviderCapability(
+        provider_id="5dollarfootballapi_free",
+        role="candidate_current_execution_and_short_history",
+        historical_depth="Free plan documents last 3 months of results and odds; Community documents 12 months",
+        league_scope="Free: Big 5 European top divisions, Bet365 markets",
+        ah_variable_lines=True,
+        ou_variable_lines=True,
+        ou_quarter_lines=True,
+        opening_odds=True,
+        closing_odds=True,
+        movement_history=False,
+        current_odds=True,
+        api_key_required=True,
+        zero_cost_confirmed=True,
+        redistribution_status="API terms permit product use/cache but prohibit raw-feed redistribution; free public products require attribution",
+        production_status="FREE_KEY_REQUIRED_FRESHNESS_UNVERIFIED",
+        source_url="https://5dollarfootballapi.com/docs",
+        note="Free tier documents Bet365 1X2/AH/goal lines with opening and closing; for scheduled fixtures closing is latest pre-match. The documented summary payload does not expose per-quote recorded_at, so execution remains blocked until freshness can be verified from a live keyed response or permitted history endpoint.",
+    ),
+    ProviderCapability(
         provider_id="isports_historical_all",
         role="candidate_rich_historical",
         historical_depth="plan-dependent historical endpoint",
@@ -128,7 +147,7 @@ PROVIDERS = (
 def capability_matrix() -> dict:
     rows = [asdict(x) for x in PROVIDERS]
     return {
-        "schema_version": "1.2",
+        "schema_version": "1.3",
         "providers": rows,
         "research_requirements": {
             "rich_joint_pattern_engine": {

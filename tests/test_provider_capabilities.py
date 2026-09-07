@@ -33,9 +33,12 @@ def test_current_price_capability_is_distinct_from_execution_readiness():
     current = providers_supporting(current_odds=True)
     ids = {p["provider_id"] for p in current}
     assert "sgodds_singapore_pools_open" not in ids
-    assert ids == {"infersports_keyless", "isports_historical_all", "tipsme_pro"}
+    assert ids == {"infersports_keyless", "5dollarfootballapi_free", "isports_historical_all", "tipsme_pro"}
     infer = next(p for p in current if p["provider_id"] == "infersports_keyless")
     assert infer["production_status"] == "GITHUB_RUNNER_UNREACHABLE"
+    free_key = next(p for p in current if p["provider_id"] == "5dollarfootballapi_free")
+    assert free_key["zero_cost_confirmed"] is True
+    assert free_key["production_status"] == "FREE_KEY_REQUIRED_FRESHNESS_UNVERIFIED"
 
 
 def test_movement_history_capability_is_explicit_not_execution_claim():
