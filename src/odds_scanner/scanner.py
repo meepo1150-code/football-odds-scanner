@@ -5,6 +5,7 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Protocol
 
+from .execution_safety import execution_snapshot_status
 from .market_contract import CurrentMarket, two_way_fair_probs
 from .settlement_ev import settlement_ev
 
@@ -12,6 +13,7 @@ DEFAULT_MIN_ODDS = 1.80
 DEFAULT_MAX_ODDS = 2.20
 DEFAULT_MIN_EV = 0.01
 DEFAULT_FORWARD_DAYS = 7
+DEFAULT_MAX_QUOTE_AGE_MINUTES = 30
 
 
 class CurrentTradableProvider(Protocol):
@@ -159,6 +161,7 @@ def evaluate_candidate(
         "holdout_n": pattern.get("holdout_n"),
         "q_validation_bh": pattern.get("q_validation_bh"),
         "source": m.source,
+        "quote_as_of": getattr(m, "as_of", None),
     }, "ELIGIBLE"
 
 
@@ -171,12 +174,14 @@ def scan(
     max_odds: float = DEFAULT_MAX_ODDS,
     min_ev: float = DEFAULT_MIN_EV,
     forward_days: int = DEFAULT_FORWARD_DAYS,
+    max_quote_age_minutes: int = DEFAULT_MAX_QUOTE_AGE_MINUTES,
 ) -> dict:
-    generated_at = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(timezone.utc)
+    generated_at = now.isoformat()
     registry_path = root / "reports/pattern_registry.json"
     if not registry_path.exists():
         return _write_today(root, {
-            "schema_version": "3.1",
+            "schema_version": "3.2",
             "status": "REGISTRY_UNAVAILABLE",
             "generated_at": generated_at,
             "matches_scanned": 0,
@@ -189,7 +194,7 @@ def scan(
     patterns = registry.get("patterns", [])
     if not patterns:
         return _write_today(root, {
-            "schema_version": "3.1",
+            "schema_version": "3.2",
             "status": "NO_VALIDATED_PATTERNS",
             "generated_at": generated_at,
             "matches_scanned": 0,
@@ -212,7 +217,7 @@ def scan(
             provider_id = provider.provider_id
         except Exception as exc:
             return _write_today(root, {
-                "schema_version": "3.1",
+                "schema_version": "3.2",
                 "status": "PROVIDER_UNAVAILABLE",
                 "generated_at": generated_at,
                 "matches_scanned": 0,
@@ -223,7 +228,7 @@ def scan(
             })
     else:
         return _write_today(root, {
-            "schema_version": "3.1",
+            "schema_version": "3.2",
             "status": "CURRENT_TRADABLE_PROVIDER_REQUIRED",
             "generated_at": generated_at,
             "matches_scanned": 0,
@@ -234,8 +239,17 @@ def scan(
             "reason": "Validated patterns exist, but no true current tradable multi-market price provider is configured. Opening-only snapshots are not accepted as execution prices.",
         })
 
-    today = datetime.now(timezone.utc).date()
-    current = [m for m in source_markets if _within_window(m, today, forward_days)]
+    today = now.date()
+    in_window = [m for m in source_markets if _within_window(m, today, forward_days)]
+    current: list[CurrentMarket] = []
+    safety_rejection_counts: dict[str, int] = {}
+    for m in in_window:
+        safe, reason = execution_snapshot_status(m, now=now, max_age_minutes=max_quote_age_minutes)
+        if safe:
+            current.append(m)
+        else:
+            safety_rejection_counts[reason] = safety_rejection_counts.get(reason, 0) + 1
+
     candidates = []
     rejection_counts: dict[str, int] = {}
     for m in current:
@@ -254,16 +268,19 @@ def scan(
     )
     top = candidates[:5]
     return _write_today(root, {
-        "schema_version": "3.1",
+        "schema_version": "3.2",
         "status": "OK" if top else "NO_QUALIFYING_MATCHES",
         "generated_at": generated_at,
         "provider": provider_id,
+        "provider_rows_received": len(source_markets),
+        "rows_in_fixture_window": len(in_window),
         "matches_scanned": len(current),
         "patterns_available": len(patterns),
         "pattern_match_evaluations": len(current) * len(patterns),
         "qualifying": len(candidates),
         "displayed": len(top),
         "candidates": top,
+        "execution_safety_rejections": safety_rejection_counts,
         "rejection_counts": rejection_counts,
         "rule": {
             "exact_line_match": True,
@@ -271,6 +288,10 @@ def scan(
             "current_odds_max": max_odds,
             "minimum_ev_each_phase": min_ev,
             "forward_days": forward_days,
+            "max_quote_age_minutes": max_quote_age_minutes,
+            "requires_prematch_open_status": True,
+            "requires_stale_false": True,
+            "requires_tradable_true": True,
             "max_display": 5,
             "opening_snapshots_allowed_as_current": False,
         },
