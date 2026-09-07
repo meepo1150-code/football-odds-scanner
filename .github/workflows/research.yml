@@ -2,6 +2,13 @@ name: Odds Research Pipeline
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'data/normalized/history.csv'
+      - 'data/raw/fixtures.csv'
+      - 'reports/backtest.json'
+      - 'reports/today.json'
   workflow_dispatch:
   schedule:
     - cron: '0 3 * * 5'
