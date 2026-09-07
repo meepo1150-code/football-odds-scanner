@@ -19,20 +19,27 @@ def test_sgodds_is_opening_only_not_current_execution_price():
     assert sg["production_status"] == "OPENING_ONLY_NOT_EXECUTION_PRICE"
 
 
-def test_rich_quarter_total_sources_are_explicitly_key_gated():
-    rich = providers_supporting(ou_quarter_lines=True)
-    assert rich
+def test_rich_historical_quarter_total_sources_are_key_gated():
+    rich = [
+        p for p in providers_supporting(ou_quarter_lines=True)
+        if "rich_historical" in p["role"]
+    ]
+    assert {p["provider_id"] for p in rich} == {"isports_historical_all", "tipsme_pro"}
     assert all(p["api_key_required"] for p in rich)
     assert all(p["production_status"] == "KEY_REQUIRED_NOT_CONNECTED" for p in rich)
 
 
-def test_current_price_sources_exclude_opening_only_sgodds():
+def test_current_price_capability_is_distinct_from_execution_readiness():
     current = providers_supporting(current_odds=True)
     ids = {p["provider_id"] for p in current}
     assert "sgodds_singapore_pools_open" not in ids
-    assert ids == {"isports_historical_all", "tipsme_pro"}
+    assert ids == {"infersports_keyless", "isports_historical_all", "tipsme_pro"}
+    infer = next(p for p in current if p["provider_id"] == "infersports_keyless")
+    assert infer["production_status"] == "GITHUB_RUNNER_UNREACHABLE"
 
 
-def test_movement_history_is_not_silently_assumed():
+def test_movement_history_capability_is_explicit_not_execution_claim():
     movement = providers_supporting(movement_history=True)
-    assert [p["provider_id"] for p in movement] == ["tipsme_pro"]
+    assert {p["provider_id"] for p in movement} == {"infersports_keyless", "tipsme_pro"}
+    infer = next(p for p in movement if p["provider_id"] == "infersports_keyless")
+    assert infer["production_status"] == "GITHUB_RUNNER_UNREACHABLE"
