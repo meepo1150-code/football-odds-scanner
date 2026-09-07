@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "gate": "SOURCE_QUALIFICATION",
+  "providers": [
+    {
+      "provider_id": "football_data_big5",
+      "research_ready": false,
+      "execution_ready": false,
+      "research_missing": [
+        "ou_quarter_lines"
+      ],
+      "execution_missing": [
+        "current_odds",
+        "tradable_execution_price"
+      ],
+      "api_key_required": false,
+      "zero_cost_confirmed": true,
+      "production_status": "ACTIVE_LIMITED"
+    },
+    {
+      "provider_id": "sgodds_singapore_pools_open",
+      "research_ready": false,
+      "execution_ready": false,
+      "research_missing": [
+        "multi_season_history",
+        "ou_quarter_lines"
+      ],
+      "execution_missing": [
+        "current_odds",
+        "tradable_execution_price"
+      ],
+      "api_key_required": false,
+      "zero_cost_confirmed": true,
+      "production_status": "OPENING_ONLY_NOT_EXECUTION_PRICE"
+    },
+    {
+      "provider_id": "isports_historical_all",
+      "research_ready": true,
+      "execution_ready": true,
+      "research_missing": [],
+      "execution_missing": [],
+      "api_key_required": true,
+      "zero_cost_confirmed": false,
+      "production_status": "KEY_REQUIRED_NOT_CONNECTED"
+    },
+    {
+      "provider_id": "tipsme_pro",
+      "research_ready": false,
+      "execution_ready": true,
+      "research_missing": [
+        "multi_season_history"
+      ],
+      "execution_missing": [],
+      "api_key_required": true,
+      "zero_cost_confirmed": false,
+      "production_status": "KEY_REQUIRED_NOT_CONNECTED"
+    }
+  ],
+  "zero_cost_rich_historical": [],
+  "zero_cost_execution": [],
+  "rich_historical_gap_open": true,
+  "execution_provider_gap_open": true,
+  "policy": "Fail closed. A scraper implementation or a provider marketing claim is not treated as a qualified dataset until actual accessible fields, history depth and price semantics are verified."
+}
