@@ -1,0 +1,565 @@
+{
+  "schema_version": "1.1",
+  "engine": "PAIRED_HIERARCHICAL_PATTERN_AUDIT",
+  "source_rows": 1056,
+  "paired_tests": 23,
+  "robust_candidate_count": 0,
+  "watchlist_count": 8,
+  "fdr_method": "Benjamini-Hochberg",
+  "fdr_alpha": 0.1,
+  "note": "Normal-approximation screening is deliberately conservative and is not a final significance claim. Bootstrap/permutation and untouched holdout remain required.",
+  "patterns": [
+    {
+      "pattern": "AH_LINE|A|AH=-0.50",
+      "family": "AH_LINE",
+      "market": "AH",
+      "train_n": 84,
+      "test_n": 37,
+      "train_roi": 0.069167,
+      "test_roi": 0.426216,
+      "z_train": 0.633926,
+      "z_test": 2.592571,
+      "p_conservative": 0.526129,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 1.0,
+        "stable": true
+      },
+      "q_bh": 0.990701,
+      "status": "WATCHLIST"
+    },
+    {
+      "pattern": "AH_OU|A|AH=-0.50|O2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 75,
+      "test_n": 33,
+      "train_roi": 0.122133,
+      "test_roi": 0.420606,
+      "z_train": 1.057703,
+      "z_test": 2.416198,
+      "p_conservative": 0.290191,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.75,
+        "stable": true
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 1.0,
+        "stable": true
+      },
+      "q_bh": 0.990701,
+      "status": "WATCHLIST"
+    },
+    {
+      "pattern": "AH_OU|A|AH=-0.50|U2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 77,
+      "test_n": 32,
+      "train_roi": 0.142338,
+      "test_roi": 0.417812,
+      "z_train": 1.249011,
+      "z_test": 2.363502,
+      "p_conservative": 0.211661,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.75,
+        "stable": true
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 1.0,
+        "stable": true
+      },
+      "q_bh": 0.990701,
+      "status": "WATCHLIST"
+    },
+    {
+      "pattern": "AH_OU|A|AH=-0.00|U2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 84,
+      "test_n": 32,
+      "train_roi": 0.03369,
+      "test_roi": 0.18875,
+      "z_train": 0.308774,
+      "z_test": 1.067731,
+      "p_conservative": 0.757493,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 1.0,
+        "stable": true
+      },
+      "q_bh": 0.990701,
+      "status": "WATCHLIST"
+    },
+    {
+      "pattern": "AH_LINE|A|AH=-0.00",
+      "family": "AH_LINE",
+      "market": "AH",
+      "train_n": 106,
+      "test_n": 39,
+      "train_roi": 0.001132,
+      "test_roi": 0.094872,
+      "z_train": 0.011655,
+      "z_test": 0.592475,
+      "p_conservative": 0.990701,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.25,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "WATCHLIST"
+    },
+    {
+      "pattern": "AH_OU|H|AH=-1.00|O2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 114,
+      "test_n": 36,
+      "train_roi": 0.024123,
+      "test_roi": 0.076667,
+      "z_train": 0.257563,
+      "z_test": 0.460002,
+      "p_conservative": 0.796744,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "WATCHLIST"
+    },
+    {
+      "pattern": "AH_OU|H|AH=-1.00|U2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 113,
+      "test_n": 37,
+      "train_roi": 0.042035,
+      "test_roi": 0.074595,
+      "z_train": 0.446838,
+      "z_test": 0.453744,
+      "p_conservative": 0.654992,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "WATCHLIST"
+    },
+    {
+      "pattern": "AH_LINE|H|AH=-1.00",
+      "family": "AH_LINE",
+      "market": "AH",
+      "train_n": 117,
+      "test_n": 38,
+      "train_roi": 0.031111,
+      "test_roi": 0.046316,
+      "z_train": 0.336517,
+      "z_test": 0.285511,
+      "p_conservative": 0.775253,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "WATCHLIST"
+    },
+    {
+      "pattern": "AH_OU|A|AH=-0.50|O2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 75,
+      "test_n": 33,
+      "train_roi": -0.074133,
+      "test_roi": 0.278182,
+      "z_train": -0.642011,
+      "z_test": 1.598034,
+      "p_conservative": 0.520866,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.25,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 1.0,
+        "stable": true
+      },
+      "q_bh": 0.990701,
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=-0.50|O2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 153,
+      "test_n": 70,
+      "train_roi": -0.054641,
+      "test_roi": 0.005429,
+      "z_train": -0.675872,
+      "z_test": 0.045422,
+      "p_conservative": 0.963771,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.25,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|A|AH=-0.00|U2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 84,
+      "test_n": 32,
+      "train_roi": 0.082024,
+      "test_roi": -0.027187,
+      "z_train": 0.751762,
+      "z_test": -0.153793,
+      "p_conservative": 0.877773,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.75,
+        "stable": true
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.0,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_LINE|H|AH=+0.00",
+      "family": "AH_LINE",
+      "market": "AH",
+      "train_n": 105,
+      "test_n": 46,
+      "train_roi": 0.060762,
+      "test_roi": -0.03,
+      "z_train": 0.622625,
+      "z_test": -0.20347,
+      "p_conservative": 0.838768,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.25,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=+0.00|U2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 80,
+      "test_n": 38,
+      "train_roi": 0.0375,
+      "test_roi": -0.036053,
+      "z_train": 0.33541,
+      "z_test": -0.222246,
+      "p_conservative": 0.824123,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.75,
+        "stable": true
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=-1.00|O2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 114,
+      "test_n": 36,
+      "train_roi": -0.144035,
+      "test_roi": -0.038611,
+      "z_train": -1.537873,
+      "z_test": -0.231666,
+      "p_conservative": 0.816797,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.25,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=-0.50|U2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 163,
+      "test_n": 82,
+      "train_roi": -0.052454,
+      "test_roi": -0.045854,
+      "z_train": -0.669688,
+      "z_test": -0.415226,
+      "p_conservative": 0.677977,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.25,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.0,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_LINE|H|AH=-0.50",
+      "family": "AH_LINE",
+      "market": "AH",
+      "train_n": 190,
+      "test_n": 105,
+      "train_roi": -0.051684,
+      "test_roi": -0.063905,
+      "z_train": -0.712415,
+      "z_test": -0.654831,
+      "p_conservative": 0.512576,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.25,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.0,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=-0.50|U2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 163,
+      "test_n": 82,
+      "train_roi": -0.107239,
+      "test_roi": -0.079268,
+      "z_train": -1.369136,
+      "z_test": -0.717802,
+      "p_conservative": 0.472879,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.25,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=-0.50|O2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 153,
+      "test_n": 70,
+      "train_roi": 0.01549,
+      "test_roi": -0.084429,
+      "z_train": 0.191601,
+      "z_test": -0.706384,
+      "p_conservative": 0.848055,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=+0.00|O2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 71,
+      "test_n": 34,
+      "train_roi": -0.211408,
+      "test_roi": -0.087941,
+      "z_train": -1.781355,
+      "z_test": -0.51278,
+      "p_conservative": 0.608105,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.0,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=-1.00|U2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 113,
+      "test_n": 37,
+      "train_roi": 0.054336,
+      "test_roi": -0.090541,
+      "z_train": 0.5776,
+      "z_test": -0.550739,
+      "p_conservative": 0.581812,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.75,
+        "stable": true
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=+0.00|U2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 80,
+      "test_n": 38,
+      "train_roi": 0.012,
+      "test_roi": -0.145526,
+      "z_train": 0.107331,
+      "z_test": -0.897083,
+      "p_conservative": 0.914526,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.25,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.0,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=+0.00|O2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 71,
+      "test_n": 34,
+      "train_roi": 0.00493,
+      "test_roi": -0.185294,
+      "z_train": 0.041541,
+      "z_test": -1.08044,
+      "p_conservative": 0.966865,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.0,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|A|AH=-0.50|U2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 77,
+      "test_n": 32,
+      "train_roi": -0.045325,
+      "test_roi": -0.3425,
+      "z_train": -0.397725,
+      "z_test": -1.937473,
+      "p_conservative": 0.690833,
+      "train_season_stability": {
+        "eligible_seasons": 4,
+        "positive_share": 0.5,
+        "stable": false
+      },
+      "test_season_stability": {
+        "eligible_seasons": 2,
+        "positive_share": 0.0,
+        "stable": false
+      },
+      "q_bh": 0.990701,
+      "status": "REJECT"
+    }
+  ]
+}

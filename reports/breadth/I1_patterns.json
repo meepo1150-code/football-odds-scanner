@@ -1,0 +1,1517 @@
+{
+  "schema_version": "1.1",
+  "engine": "HIERARCHICAL_MULTI_MARKET_BACKTEST",
+  "source_rows": 1064,
+  "test_seasons": [
+    "2324",
+    "2425"
+  ],
+  "min_n": 20,
+  "family_counts": {
+    "AH_OU": 27,
+    "AH_LINE": 15
+  },
+  "buckets": [
+    {
+      "split": "test",
+      "family": "AH_LINE",
+      "pattern": "AH_LINE|H|AH=-0.50",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "H",
+        "ah_line": -0.5,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 77,
+      "ah_roi": 0.090909,
+      "ou_roi": null,
+      "seasons": {
+        "2324": {
+          "n": 32,
+          "ah_roi": 0.233437,
+          "ou_roi": null
+        },
+        "2425": {
+          "n": 45,
+          "ah_roi": -0.010444,
+          "ou_roi": null
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_LINE",
+      "pattern": "AH_LINE|A|AH=-0.50",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "A",
+        "ah_line": -0.5,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 61,
+      "ah_roi": 0.181475,
+      "ou_roi": null,
+      "seasons": {
+        "2324": {
+          "n": 30,
+          "ah_roi": 0.235667,
+          "ou_roi": null
+        },
+        "2425": {
+          "n": 31,
+          "ah_roi": 0.129032,
+          "ou_roi": null
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_LINE",
+      "pattern": "AH_LINE|H|AH=-1.00",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "H",
+        "ah_line": -1.0,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 48,
+      "ah_roi": -0.037083,
+      "ou_roi": null,
+      "seasons": {
+        "2324": {
+          "n": 26,
+          "ah_roi": -0.020769,
+          "ou_roi": null
+        },
+        "2425": {
+          "n": 22,
+          "ah_roi": -0.056364,
+          "ou_roi": null
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_LINE",
+      "pattern": "AH_LINE|A|AH=-0.00",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "A",
+        "ah_line": -0.0,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 45,
+      "ah_roi": 0.013111,
+      "ou_roi": null,
+      "seasons": {
+        "2324": {
+          "n": 28,
+          "ah_roi": 0.081786,
+          "ou_roi": null
+        },
+        "2425": {
+          "n": 17,
+          "ah_roi": -0.1,
+          "ou_roi": null
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_LINE",
+      "pattern": "AH_LINE|H|AH=+0.00",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "H",
+        "ah_line": 0.0,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 37,
+      "ah_roi": -0.097027,
+      "ou_roi": null,
+      "seasons": {
+        "2324": {
+          "n": 15,
+          "ah_roi": 0.023333,
+          "ou_roi": null
+        },
+        "2425": {
+          "n": 22,
+          "ah_roi": -0.179091,
+          "ou_roi": null
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_LINE",
+      "pattern": "AH_LINE|H|AH=-1.50",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "H",
+        "ah_line": -1.5,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 32,
+      "ah_roi": -0.201875,
+      "ou_roi": null,
+      "seasons": {
+        "2324": {
+          "n": 12,
+          "ah_roi": -0.188333,
+          "ou_roi": null
+        },
+        "2425": {
+          "n": 20,
+          "ah_roi": -0.21,
+          "ou_roi": null
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_LINE",
+      "pattern": "AH_LINE|H|AH=-0.50",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "H",
+        "ah_line": -0.5,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 157,
+      "ah_roi": -0.115096,
+      "ou_roi": null,
+      "seasons": {
+        "1920": {
+          "n": 29,
+          "ah_roi": -0.183793,
+          "ou_roi": null
+        },
+        "2021": {
+          "n": 45,
+          "ah_roi": 0.182444,
+          "ou_roi": null
+        },
+        "2122": {
+          "n": 34,
+          "ah_roi": -0.440294,
+          "ou_roi": null
+        },
+        "2223": {
+          "n": 49,
+          "ah_roi": -0.122041,
+          "ou_roi": null
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_LINE",
+      "pattern": "AH_LINE|H|AH=-1.00",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "H",
+        "ah_line": -1.0,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 95,
+      "ah_roi": -0.109368,
+      "ou_roi": null,
+      "seasons": {
+        "1920": {
+          "n": 19,
+          "ah_roi": -0.422632,
+          "ou_roi": null
+        },
+        "2021": {
+          "n": 29,
+          "ah_roi": 0.004483,
+          "ou_roi": null
+        },
+        "2122": {
+          "n": 26,
+          "ah_roi": -0.112308,
+          "ou_roi": null
+        },
+        "2223": {
+          "n": 21,
+          "ah_roi": 0.020476,
+          "ou_roi": null
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_LINE",
+      "pattern": "AH_LINE|A|AH=-0.50",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "A",
+        "ah_line": -0.5,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 90,
+      "ah_roi": 0.093333,
+      "ou_roi": null,
+      "seasons": {
+        "1920": {
+          "n": 14,
+          "ah_roi": 0.253571,
+          "ou_roi": null
+        },
+        "2021": {
+          "n": 25,
+          "ah_roi": 0.1168,
+          "ou_roi": null
+        },
+        "2122": {
+          "n": 25,
+          "ah_roi": 0.258,
+          "ou_roi": null
+        },
+        "2223": {
+          "n": 26,
+          "ah_roi": -0.173846,
+          "ou_roi": null
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_LINE",
+      "pattern": "AH_LINE|H|AH=+0.00",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "H",
+        "ah_line": 0.0,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 84,
+      "ah_roi": 0.0075,
+      "ou_roi": null,
+      "seasons": {
+        "1920": {
+          "n": 16,
+          "ah_roi": -0.038125,
+          "ou_roi": null
+        },
+        "2021": {
+          "n": 32,
+          "ah_roi": 0.038125,
+          "ou_roi": null
+        },
+        "2122": {
+          "n": 15,
+          "ah_roi": -0.168,
+          "ou_roi": null
+        },
+        "2223": {
+          "n": 21,
+          "ah_roi": 0.120952,
+          "ou_roi": null
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_LINE",
+      "pattern": "AH_LINE|A|AH=-0.00",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "A",
+        "ah_line": -0.0,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 83,
+      "ah_roi": -0.156506,
+      "ou_roi": null,
+      "seasons": {
+        "1920": {
+          "n": 22,
+          "ah_roi": -0.076818,
+          "ou_roi": null
+        },
+        "2021": {
+          "n": 23,
+          "ah_roi": -0.088261,
+          "ou_roi": null
+        },
+        "2122": {
+          "n": 21,
+          "ah_roi": -0.215238,
+          "ou_roi": null
+        },
+        "2223": {
+          "n": 17,
+          "ah_roi": -0.279412,
+          "ou_roi": null
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_LINE",
+      "pattern": "AH_LINE|H|AH=-1.50",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "H",
+        "ah_line": -1.5,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 80,
+      "ah_roi": 0.066625,
+      "ou_roi": null,
+      "seasons": {
+        "1920": {
+          "n": 20,
+          "ah_roi": -0.1285,
+          "ou_roi": null
+        },
+        "2021": {
+          "n": 28,
+          "ah_roi": 0.234643,
+          "ou_roi": null
+        },
+        "2122": {
+          "n": 20,
+          "ah_roi": -0.1975,
+          "ou_roi": null
+        },
+        "2223": {
+          "n": 12,
+          "ah_roi": 0.44,
+          "ou_roi": null
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_LINE",
+      "pattern": "AH_LINE|A|AH=-1.00",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "A",
+        "ah_line": -1.0,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 80,
+      "ah_roi": 0.006875,
+      "ou_roi": null,
+      "seasons": {
+        "1920": {
+          "n": 11,
+          "ah_roi": 0.003636,
+          "ou_roi": null
+        },
+        "2021": {
+          "n": 37,
+          "ah_roi": -0.025405,
+          "ou_roi": null
+        },
+        "2122": {
+          "n": 19,
+          "ah_roi": 0.027895,
+          "ou_roi": null
+        },
+        "2223": {
+          "n": 13,
+          "ah_roi": 0.070769,
+          "ou_roi": null
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_LINE",
+      "pattern": "AH_LINE|A|AH=-1.50",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "A",
+        "ah_line": -1.5,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 27,
+      "ah_roi": 0.12037,
+      "ou_roi": null,
+      "seasons": {
+        "1920": {
+          "n": 5,
+          "ah_roi": -0.188,
+          "ou_roi": null
+        },
+        "2021": {
+          "n": 12,
+          "ah_roi": 0.524167,
+          "ou_roi": null
+        },
+        "2122": {
+          "n": 7,
+          "ah_roi": -0.437143,
+          "ou_roi": null
+        },
+        "2223": {
+          "n": 3,
+          "ah_roi": 0.32,
+          "ou_roi": null
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_LINE",
+      "pattern": "AH_LINE|H|AH=-2.00",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "H",
+        "ah_line": -2.0,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 26,
+      "ah_roi": -0.090769,
+      "ou_roi": null,
+      "seasons": {
+        "1920": {
+          "n": 7,
+          "ah_roi": -0.571429,
+          "ou_roi": null
+        },
+        "2021": {
+          "n": 11,
+          "ah_roi": 0.07,
+          "ou_roi": null
+        },
+        "2122": {
+          "n": 5,
+          "ah_roi": -0.222,
+          "ou_roi": null
+        },
+        "2223": {
+          "n": 3,
+          "ah_roi": 0.66,
+          "ou_roi": null
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_OU",
+      "pattern": "AH_OU|H|AH=-0.50|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -0.5,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 73,
+      "ah_roi": 0.093562,
+      "ou_roi": 0.08411,
+      "seasons": {
+        "2324": {
+          "n": 30,
+          "ah_roi": 0.246,
+          "ou_roi": 0.087
+        },
+        "2425": {
+          "n": 43,
+          "ah_roi": -0.012791,
+          "ou_roi": 0.082093
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_OU",
+      "pattern": "AH_OU|H|AH=-0.50|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -0.5,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 73,
+      "ah_roi": 0.093562,
+      "ou_roi": -0.225342,
+      "seasons": {
+        "2324": {
+          "n": 30,
+          "ah_roi": 0.246,
+          "ou_roi": -0.256333
+        },
+        "2425": {
+          "n": 43,
+          "ah_roi": -0.012791,
+          "ou_roi": -0.203721
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_OU",
+      "pattern": "AH_OU|A|AH=-0.50|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -0.5,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 60,
+      "ah_roi": 0.201167,
+      "ou_roi": -0.027333,
+      "seasons": {
+        "2324": {
+          "n": 29,
+          "ah_roi": 0.278276,
+          "ou_roi": -0.104483
+        },
+        "2425": {
+          "n": 31,
+          "ah_roi": 0.129032,
+          "ou_roi": 0.044839
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_OU",
+      "pattern": "AH_OU|A|AH=-0.50|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -0.5,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 59,
+      "ah_roi": 0.221525,
+      "ou_roi": -0.070508,
+      "seasons": {
+        "2324": {
+          "n": 29,
+          "ah_roi": 0.278276,
+          "ou_roi": 0.025172
+        },
+        "2425": {
+          "n": 30,
+          "ah_roi": 0.166667,
+          "ou_roi": -0.163
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_OU",
+      "pattern": "AH_OU|H|AH=-1.00|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -1.0,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 48,
+      "ah_roi": -0.037083,
+      "ou_roi": 0.0575,
+      "seasons": {
+        "2324": {
+          "n": 26,
+          "ah_roi": -0.020769,
+          "ou_roi": -0.201923
+        },
+        "2425": {
+          "n": 22,
+          "ah_roi": -0.056364,
+          "ou_roi": 0.364091
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_OU",
+      "pattern": "AH_OU|H|AH=-1.00|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -1.0,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 48,
+      "ah_roi": -0.037083,
+      "ou_roi": -0.175625,
+      "seasons": {
+        "2324": {
+          "n": 26,
+          "ah_roi": -0.020769,
+          "ou_roi": 0.085
+        },
+        "2425": {
+          "n": 22,
+          "ah_roi": -0.056364,
+          "ou_roi": -0.483636
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_OU",
+      "pattern": "AH_OU|A|AH=-0.00|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -0.0,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 42,
+      "ah_roi": 0.014048,
+      "ou_roi": -0.126667,
+      "seasons": {
+        "2324": {
+          "n": 26,
+          "ah_roi": 0.088077,
+          "ou_roi": 0.026923
+        },
+        "2425": {
+          "n": 16,
+          "ah_roi": -0.10625,
+          "ou_roi": -0.37625
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_OU",
+      "pattern": "AH_OU|A|AH=-0.00|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -0.0,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 41,
+      "ah_roi": -0.008049,
+      "ou_roi": 0.066829,
+      "seasons": {
+        "2324": {
+          "n": 25,
+          "ah_roi": 0.0548,
+          "ou_roi": -0.1
+        },
+        "2425": {
+          "n": 16,
+          "ah_roi": -0.10625,
+          "ou_roi": 0.3275
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_OU",
+      "pattern": "AH_OU|H|AH=+0.00|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": 0.0,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 35,
+      "ah_roi": -0.074,
+      "ou_roi": -0.000286,
+      "seasons": {
+        "2324": {
+          "n": 15,
+          "ah_roi": 0.023333,
+          "ou_roi": 0.036667
+        },
+        "2425": {
+          "n": 20,
+          "ah_roi": -0.147,
+          "ou_roi": -0.028
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_OU",
+      "pattern": "AH_OU|H|AH=+0.00|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": 0.0,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 31,
+      "ah_roi": 0.013226,
+      "ou_roi": -0.218387,
+      "seasons": {
+        "2324": {
+          "n": 12,
+          "ah_roi": 0.195833,
+          "ou_roi": -0.356667
+        },
+        "2425": {
+          "n": 19,
+          "ah_roi": -0.102105,
+          "ou_roi": -0.131053
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_OU",
+      "pattern": "AH_OU|H|AH=-1.50|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -1.5,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 28,
+      "ah_roi": -0.2275,
+      "ou_roi": 0.0375,
+      "seasons": {
+        "2324": {
+          "n": 9,
+          "ah_roi": -0.352222,
+          "ou_roi": 0.08
+        },
+        "2425": {
+          "n": 19,
+          "ah_roi": -0.168421,
+          "ou_roi": 0.017368
+        }
+      }
+    },
+    {
+      "split": "test",
+      "family": "AH_OU",
+      "pattern": "AH_OU|H|AH=-1.50|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -1.5,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 25,
+      "ah_roi": -0.2128,
+      "ou_roi": -0.1228,
+      "seasons": {
+        "2324": {
+          "n": 7,
+          "ah_roi": -0.167143,
+          "ou_roi": -0.384286
+        },
+        "2425": {
+          "n": 18,
+          "ah_roi": -0.230556,
+          "ou_roi": -0.021111
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_OU",
+      "pattern": "AH_OU|H|AH=-0.50|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -0.5,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 154,
+      "ah_roi": -0.110455,
+      "ou_roi": -0.072273,
+      "seasons": {
+        "1920": {
+          "n": 29,
+          "ah_roi": -0.183793,
+          "ou_roi": 0.027931
+        },
+        "2021": {
+          "n": 43,
+          "ah_roi": 0.192326,
+          "ou_roi": 0.002791
+        },
+        "2122": {
+          "n": 34,
+          "ah_roi": -0.440294,
+          "ou_roi": -0.05
+        },
+        "2223": {
+          "n": 48,
+          "ah_roi": -0.10375,
+          "ou_roi": -0.215833
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_OU",
+      "pattern": "AH_OU|H|AH=-0.50|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -0.5,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 153,
+      "ah_roi": -0.117124,
+      "ou_roi": -0.004706,
+      "seasons": {
+        "1920": {
+          "n": 28,
+          "ah_roi": -0.154643,
+          "ou_roi": -0.1025
+        },
+        "2021": {
+          "n": 42,
+          "ah_roi": 0.175238,
+          "ou_roi": -0.059286
+        },
+        "2122": {
+          "n": 34,
+          "ah_roi": -0.440294,
+          "ou_roi": -0.038529
+        },
+        "2223": {
+          "n": 49,
+          "ah_roi": -0.122041,
+          "ou_roi": 0.121429
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_OU",
+      "pattern": "AH_OU|A|AH=-0.50|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -0.5,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 88,
+      "ah_roi": 0.095,
+      "ou_roi": -0.130455,
+      "seasons": {
+        "1920": {
+          "n": 14,
+          "ah_roi": 0.253571,
+          "ou_roi": -0.001429
+        },
+        "2021": {
+          "n": 23,
+          "ah_roi": 0.125217,
+          "ou_roi": 0.043043
+        },
+        "2122": {
+          "n": 25,
+          "ah_roi": 0.258,
+          "ou_roi": 0.046
+        },
+        "2223": {
+          "n": 26,
+          "ah_roi": -0.173846,
+          "ou_roi": -0.523077
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_OU",
+      "pattern": "AH_OU|A|AH=-0.50|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -0.5,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 87,
+      "ah_roi": 0.084138,
+      "ou_roi": -0.009195,
+      "seasons": {
+        "1920": {
+          "n": 14,
+          "ah_roi": 0.253571,
+          "ou_roi": -0.090714
+        },
+        "2021": {
+          "n": 22,
+          "ah_roi": 0.083636,
+          "ou_roi": -0.134091
+        },
+        "2122": {
+          "n": 25,
+          "ah_roi": 0.258,
+          "ou_roi": -0.2364
+        },
+        "2223": {
+          "n": 26,
+          "ah_roi": -0.173846,
+          "ou_roi": 0.358846
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_OU",
+      "pattern": "AH_OU|H|AH=-1.00|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -1.0,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 85,
+      "ah_roi": -0.103529,
+      "ou_roi": -0.039059,
+      "seasons": {
+        "1920": {
+          "n": 19,
+          "ah_roi": -0.422632,
+          "ou_roi": -0.358421
+        },
+        "2021": {
+          "n": 20,
+          "ah_roi": 0.086,
+          "ou_roi": 0.15
+        },
+        "2122": {
+          "n": 25,
+          "ah_roi": -0.1168,
+          "ou_roi": -0.004
+        },
+        "2223": {
+          "n": 21,
+          "ah_roi": 0.020476,
+          "ou_roi": 0.028095
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_OU",
+      "pattern": "AH_OU|A|AH=-0.00|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -0.0,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 81,
+      "ah_roi": -0.158642,
+      "ou_roi": 0.128642,
+      "seasons": {
+        "1920": {
+          "n": 22,
+          "ah_roi": -0.076818,
+          "ou_roi": 0.100909
+        },
+        "2021": {
+          "n": 23,
+          "ah_roi": -0.088261,
+          "ou_roi": 0.278696
+        },
+        "2122": {
+          "n": 21,
+          "ah_roi": -0.215238,
+          "ou_roi": -0.06
+        },
+        "2223": {
+          "n": 15,
+          "ah_roi": -0.307333,
+          "ou_roi": 0.203333
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_OU",
+      "pattern": "AH_OU|A|AH=-0.00|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -0.0,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 81,
+      "ah_roi": -0.182716,
+      "ou_roi": -0.206543,
+      "seasons": {
+        "1920": {
+          "n": 22,
+          "ah_roi": -0.076818,
+          "ou_roi": -0.219091
+        },
+        "2021": {
+          "n": 22,
+          "ah_roi": -0.135455,
+          "ou_roi": -0.369545
+        },
+        "2122": {
+          "n": 21,
+          "ah_roi": -0.215238,
+          "ou_roi": -0.062857
+        },
+        "2223": {
+          "n": 16,
+          "ah_roi": -0.350625,
+          "ou_roi": -0.15375
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_OU",
+      "pattern": "AH_OU|H|AH=-1.00|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -1.0,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 78,
+      "ah_roi": -0.072949,
+      "ou_roi": -0.000128,
+      "seasons": {
+        "1920": {
+          "n": 19,
+          "ah_roi": -0.422632,
+          "ou_roi": 0.325789
+        },
+        "2021": {
+          "n": 17,
+          "ah_roi": 0.107647,
+          "ou_roi": -0.233529
+        },
+        "2122": {
+          "n": 21,
+          "ah_roi": 0.00381,
+          "ou_roi": 0.042381
+        },
+        "2223": {
+          "n": 21,
+          "ah_roi": 0.020476,
+          "ou_roi": -0.148571
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_OU",
+      "pattern": "AH_OU|H|AH=+0.00|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": 0.0,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 78,
+      "ah_roi": 0.035769,
+      "ou_roi": -0.117949,
+      "seasons": {
+        "1920": {
+          "n": 16,
+          "ah_roi": -0.038125,
+          "ou_roi": -0.208125
+        },
+        "2021": {
+          "n": 30,
+          "ah_roi": 0.043333,
+          "ou_roi": -0.145
+        },
+        "2122": {
+          "n": 13,
+          "ah_roi": -0.04,
+          "ou_roi": -0.236923
+        },
+        "2223": {
+          "n": 19,
+          "ah_roi": 0.137895,
+          "ou_roi": 0.082105
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_OU",
+      "pattern": "AH_OU|H|AH=+0.00|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": 0.0,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 77,
+      "ah_roi": 0.024675,
+      "ou_roi": -0.039091,
+      "seasons": {
+        "1920": {
+          "n": 16,
+          "ah_roi": -0.038125,
+          "ou_roi": 0.060625
+        },
+        "2021": {
+          "n": 30,
+          "ah_roi": 0.043333,
+          "ou_roi": 0.032667
+        },
+        "2122": {
+          "n": 13,
+          "ah_roi": -0.04,
+          "ou_roi": 0.107692
+        },
+        "2223": {
+          "n": 18,
+          "ah_roi": 0.096111,
+          "ou_roi": -0.353333
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_OU",
+      "pattern": "AH_OU|A|AH=-1.00|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -1.0,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 75,
+      "ah_roi": 0.012667,
+      "ou_roi": 0.0796,
+      "seasons": {
+        "1920": {
+          "n": 11,
+          "ah_roi": 0.003636,
+          "ou_roi": 0.440909
+        },
+        "2021": {
+          "n": 34,
+          "ah_roi": 0.031176,
+          "ou_roi": -0.14
+        },
+        "2122": {
+          "n": 17,
+          "ah_roi": -0.062941,
+          "ou_roi": 0.379412
+        },
+        "2223": {
+          "n": 13,
+          "ah_roi": 0.070769,
+          "ou_roi": -0.043846
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_OU",
+      "pattern": "AH_OU|A|AH=-1.00|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -1.0,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 69,
+      "ah_roi": 0.0,
+      "ou_roi": -0.149565,
+      "seasons": {
+        "1920": {
+          "n": 11,
+          "ah_roi": 0.003636,
+          "ou_roi": -0.635455
+        },
+        "2021": {
+          "n": 30,
+          "ah_roi": 0.037,
+          "ou_roi": 0.178667
+        },
+        "2122": {
+          "n": 15,
+          "ah_roi": -0.138,
+          "ou_roi": -0.584
+        },
+        "2223": {
+          "n": 13,
+          "ah_roi": 0.070769,
+          "ou_roi": 0.005385
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_OU",
+      "pattern": "AH_OU|H|AH=-1.50|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -1.5,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 58,
+      "ah_roi": 0.044138,
+      "ou_roi": -0.101379,
+      "seasons": {
+        "1920": {
+          "n": 14,
+          "ah_roi": -0.300714,
+          "ou_roi": 0.249286
+        },
+        "2021": {
+          "n": 16,
+          "ah_roi": 0.32375,
+          "ou_roi": 0.085
+        },
+        "2122": {
+          "n": 17,
+          "ah_roi": -0.171765,
+          "ou_roi": -0.349412
+        },
+        "2223": {
+          "n": 11,
+          "ah_roi": 0.41,
+          "ou_roi": -0.435455
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_OU",
+      "pattern": "AH_OU|H|AH=-1.50|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -1.5,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 49,
+      "ah_roi": -0.002857,
+      "ou_roi": 0.114082,
+      "seasons": {
+        "1920": {
+          "n": 12,
+          "ah_roi": -0.345,
+          "ou_roi": -0.415
+        },
+        "2021": {
+          "n": 13,
+          "ah_roi": 0.476154,
+          "ou_roi": -0.273077
+        },
+        "2122": {
+          "n": 15,
+          "ah_roi": -0.325333,
+          "ou_roi": 0.503333
+        },
+        "2223": {
+          "n": 9,
+          "ah_roi": 0.298889,
+          "ou_roi": 0.73
+        }
+      }
+    },
+    {
+      "split": "train",
+      "family": "AH_OU",
+      "pattern": "AH_OU|A|AH=-1.50|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -1.5,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
+      "n": 21,
+      "ah_roi": 0.152857,
+      "ou_roi": -0.090952,
+      "seasons": {
+        "1920": {
+          "n": 4,
+          "ah_roi": -0.485,
+          "ou_roi": -0.61
+        },
+        "2021": {
+          "n": 7,
+          "ah_roi": 1.035714,
+          "ou_roi": 0.35
+        },
+        "2122": {
+          "n": 7,
+          "ah_roi": -0.437143,
+          "ou_roi": -0.312857
+        },
+        "2223": {
+          "n": 3,
+          "ah_roi": 0.32,
+          "ou_roi": 0.09
+        }
+      }
+    }
+  ],
+  "warning": "Exploratory hierarchy only; promotion requires paired audit and robustness gates."
+}
