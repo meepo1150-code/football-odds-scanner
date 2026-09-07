@@ -18,3 +18,12 @@ def test_sgodds_is_research_only_not_execution():
     row = rows["sgodds_singapore_pools_open"]
     assert row["execution_ready"] is False
     assert "tradable_execution_price" in row["execution_missing"]
+
+
+def test_documented_keyless_current_feed_stays_blocked_when_unreachable():
+    rows = {x["provider_id"]: x for x in qualification_report()["providers"]}
+    row = rows["infersports_keyless"]
+    assert row["zero_cost_confirmed"] is True
+    assert row["execution_ready"] is False
+    assert "operational_execution_availability" in row["execution_missing"]
+    assert row["production_status"] == "GITHUB_RUNNER_UNREACHABLE"
