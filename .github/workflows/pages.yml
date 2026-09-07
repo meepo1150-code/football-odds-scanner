@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
     paths: ['apps/dashboard/**','reports/**','.github/workflows/pages.yml']
+  workflow_run:
+    workflows: ['Live Odds Scan']
+    types: [completed]
 permissions:
   contents: read
   pages: write
@@ -11,18 +14,21 @@ permissions:
 concurrency: {group: pages, cancel-in-progress: true}
 jobs:
   deploy:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          ref: main
       - name: Build static site
         run: |
           set -euo pipefail
           mkdir -p site/reports/breadth
           cp apps/dashboard/index.html site/index.html
-          for f in today.json pattern_registry.json current_provider_health.json provider_capabilities.json; do
+          for f in today.json pattern_registry.json current_provider_health.json provider_capabilities.json five_dollar_health.json source_qualification.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
           test -f reports/breadth/summary.json && cp reports/breadth/summary.json site/reports/breadth/summary.json || true
