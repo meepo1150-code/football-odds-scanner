@@ -7,6 +7,7 @@ on:
     paths-ignore:
       - 'data/normalized/history.csv'
       - 'reports/backtest.json'
+      - 'reports/audit.json'
       - 'reports/today.json'
       - 'reports/data_provenance.json'
   workflow_dispatch:
@@ -27,6 +28,9 @@ jobs:
       - name: Historical integration run
         if: github.event_name != 'pull_request'
         run: python -m odds_scanner.pipeline
+      - name: Audit train-test consistency
+        if: github.event_name != 'pull_request'
+        run: python -m odds_scanner.audit
       - name: Attempt current fixture scan
         if: github.event_name != 'pull_request'
         run: python -c "from pathlib import Path; from odds_scanner.scanner import scan; print(scan(Path('.'))['qualifying'])" || true
@@ -36,7 +40,7 @@ jobs:
           set -euo pipefail
           git config user.name 'odds-scanner-actions'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- data/normalized/history.csv reports/backtest.json reports/data_provenance.json
+          git add -- data/normalized/history.csv reports/backtest.json reports/audit.json reports/data_provenance.json
           if test -f reports/today.json; then git add -- reports/today.json; fi
           git diff --cached --quiet && exit 0
           git commit -m 'Update odds research outputs'
