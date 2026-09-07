@@ -7,6 +7,7 @@ from .breadth_data import BIG5_DIVISIONS, download_and_normalize_big5
 from .hierarchical_backtest import build_hierarchical_report
 from .joint_audit import build_joint_audit
 from .normalize import write_csv
+from .pattern_registry import build_pattern_registry, write_pattern_registry
 from .three_way_audit import build_three_way_audit, write_three_way_audit
 
 
@@ -27,6 +28,8 @@ def run(root: Path) -> dict:
 
     three_way = build_three_way_audit(rows)
     write_three_way_audit(three_way, report_dir / "three_way_audit.json")
+    registry = build_pattern_registry(three_way)
+    write_pattern_registry(registry, root / "reports/pattern_registry.json")
 
     league_summary = {}
     for div in sorted(BIG5_DIVISIONS):
@@ -43,7 +46,7 @@ def run(root: Path) -> dict:
         }
 
     summary = {
-        "schema_version": "1.1",
+        "schema_version": "1.2",
         "engine": "BIG5_DATA_BREADTH_AUDIT",
         "rows": len(rows),
         "divisions": sorted(BIG5_DIVISIONS),
@@ -61,6 +64,7 @@ def run(root: Path) -> dict:
             "watchlist": three_way["watchlist_count"],
             "split": three_way["split"],
         },
+        "production_registry": {"pattern_count": registry["pattern_count"]},
         "leagues": league_summary,
         "source": "pjc-codes/football-data (derived from Football-Data.co.uk)",
         "capability_note": "Big-5 breadth source has variable Asian Handicap line and O/U 2.5 only; alternate goal lines remain a separate provider requirement.",
