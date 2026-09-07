@@ -3,14 +3,23 @@ from __future__ import annotations
 import json
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
+from typing import Protocol
 
-from .settlement_ev import minimum_phase_ev, settlement_ev
-from .sgodds_provider import CurrentMarket, fetch_current_markets, two_way_fair_probs
+from .settlement_ev import settlement_ev
+from .sgodds_provider import CurrentMarket, two_way_fair_probs
 
 DEFAULT_MIN_ODDS = 1.80
 DEFAULT_MAX_ODDS = 2.20
 DEFAULT_MIN_EV = 0.01
 DEFAULT_FORWARD_DAYS = 7
+
+
+class CurrentTradableProvider(Protocol):
+    """Execution-price provider contract. Opening snapshots must not implement this by default."""
+
+    provider_id: str
+
+    def fetch(self) -> list[CurrentMarket]: ...
 
 
 def _write_today(root: Path, payload: dict) -> dict:
@@ -45,7 +54,6 @@ def _fair_favorite_probability(m: CurrentMarket, side: str) -> float | None:
 
 
 def _market_values(m: CurrentMarket, pattern: dict) -> tuple[float | None, float | None, float | None]:
-    """Return target odds, opposite odds, and exact target line."""
     key = pattern.get("pattern_key", {})
     fav_side = key.get("favorite_side")
     market = pattern.get("market")
@@ -64,7 +72,7 @@ def _market_values(m: CurrentMarket, pattern: dict) -> tuple[float | None, float
 
 def _pattern_matches_structure(m: CurrentMarket, pattern: dict) -> tuple[bool, str]:
     key = pattern.get("pattern_key") or {}
-    fav_side, fav_1x2_odds = _favorite(m)
+    fav_side, _ = _favorite(m)
     required_side = key.get("favorite_side")
     if fav_side is None or required_side not in {"H", "A"} or fav_side != required_side:
         return False, "FAVORITE_SIDE_MISMATCH"
@@ -75,7 +83,6 @@ def _pattern_matches_structure(m: CurrentMarket, pattern: dict) -> tuple[bool, s
         return False, "AH_LINE_MISMATCH"
     if current_ah_price is None:
         return False, "AH_PRICE_MISSING"
-
     if key.get("ah_price_band") and not _in_band(current_ah_price, key["ah_price_band"]):
         return False, "AH_PRICE_STRUCTURE_MISMATCH"
 
@@ -159,6 +166,7 @@ def scan(
     root: Path,
     *,
     markets: list[CurrentMarket] | None = None,
+    provider: CurrentTradableProvider | None = None,
     min_odds: float = DEFAULT_MIN_ODDS,
     max_odds: float = DEFAULT_MAX_ODDS,
     min_ev: float = DEFAULT_MIN_EV,
@@ -168,7 +176,7 @@ def scan(
     registry_path = root / "reports/pattern_registry.json"
     if not registry_path.exists():
         return _write_today(root, {
-            "schema_version": "3.0",
+            "schema_version": "3.1",
             "status": "REGISTRY_UNAVAILABLE",
             "generated_at": generated_at,
             "matches_scanned": 0,
@@ -181,7 +189,7 @@ def scan(
     patterns = registry.get("patterns", [])
     if not patterns:
         return _write_today(root, {
-            "schema_version": "3.0",
+            "schema_version": "3.1",
             "status": "NO_VALIDATED_PATTERNS",
             "generated_at": generated_at,
             "matches_scanned": 0,
@@ -192,18 +200,38 @@ def scan(
             "reason": "No historical pattern passed the frozen train-validation-holdout and cross-league gates.",
         })
 
-    try:
-        source_markets = markets if markets is not None else fetch_current_markets()
-    except Exception as exc:
+    if markets is not None and provider is not None:
+        raise ValueError("Provide either injected markets or a current tradable provider, not both")
+
+    if markets is not None:
+        source_markets = markets
+        provider_id = "injected_tradable_market_rows"
+    elif provider is not None:
+        try:
+            source_markets = provider.fetch()
+            provider_id = provider.provider_id
+        except Exception as exc:
+            return _write_today(root, {
+                "schema_version": "3.1",
+                "status": "PROVIDER_UNAVAILABLE",
+                "generated_at": generated_at,
+                "matches_scanned": 0,
+                "patterns_available": len(patterns),
+                "qualifying": 0,
+                "candidates": [],
+                "reason": f"Current tradable provider failed: {type(exc).__name__}: {exc}",
+            })
+    else:
         return _write_today(root, {
-            "schema_version": "3.0",
-            "status": "PROVIDER_UNAVAILABLE",
+            "schema_version": "3.1",
+            "status": "CURRENT_TRADABLE_PROVIDER_REQUIRED",
             "generated_at": generated_at,
             "matches_scanned": 0,
             "patterns_available": len(patterns),
             "qualifying": 0,
             "candidates": [],
-            "reason": f"Current multi-market provider failed: {type(exc).__name__}: {exc}",
+            "message": "NO QUALIFYING BETS",
+            "reason": "Validated patterns exist, but no true current tradable multi-market price provider is configured. Opening-only snapshots are not accepted as execution prices.",
         })
 
     today = datetime.now(timezone.utc).date()
@@ -226,10 +254,10 @@ def scan(
     )
     top = candidates[:5]
     return _write_today(root, {
-        "schema_version": "3.0",
+        "schema_version": "3.1",
         "status": "OK" if top else "NO_QUALIFYING_MATCHES",
         "generated_at": generated_at,
-        "provider": "sgodds_singapore_pools_open",
+        "provider": provider_id,
         "matches_scanned": len(current),
         "patterns_available": len(patterns),
         "pattern_match_evaluations": len(current) * len(patterns),
@@ -244,6 +272,7 @@ def scan(
             "minimum_ev_each_phase": min_ev,
             "forward_days": forward_days,
             "max_display": 5,
+            "opening_snapshots_allowed_as_current": False,
         },
         "message": "NO QUALIFYING BETS" if not top else None,
     })
