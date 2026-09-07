@@ -1,10 +1,52 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Football Odds Scanner</title>
-<style>body{font-family:system-ui;margin:0;background:#0b1020;color:#edf2f7}.wrap{max-width:1150px;margin:auto;padding:24px}.card{background:#151c30;border:1px solid #27314d;border-radius:14px;padding:18px;margin:14px 0}.muted{color:#9aa7bd}table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:9px;border-bottom:1px solid #27314d;text-align:right}th:first-child,td:first-child{text-align:left}.good{color:#77e3a1}.warn{color:#ffd166}select{background:#151c30;color:#fff;padding:8px;border:1px solid #35415f;border-radius:8px}</style></head><body><div class="wrap"><h1>Football Odds Scanner</h1><p class="muted">Personal research dashboard · deterministic market backtest</p>
-<div class="card"><h2>Backtest Gate</h2><div id="summary">Loading…</div></div>
-<div class="card"><h2>1X2 Odds Lab</h2><label>Split <select id="split"><option>test</option><option>train</option></select></label> <label>Side <select id="side"><option>H</option><option>D</option><option>A</option></select></label><table><thead><tr><th>Odds</th><th>N</th><th>Win%</th><th>Market%</th><th>Gap pp</th><th>ROI</th><th>CLV</th></tr></thead><tbody id="rows"></tbody></table></div>
-<div class="card"><h2>Today</h2><div id="today">No scanner output yet.</div></div></div>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Football Odds Research Control Panel</title>
+<style>
+:root{color-scheme:dark;--bg:#09101d;--panel:#121b2c;--panel2:#0e1727;--line:#26344d;--text:#edf3fb;--muted:#91a1b8;--good:#74df9d;--warn:#ffd166;--bad:#ff7d86;--accent:#8db8ff}
+*{box-sizing:border-box}body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;margin:0;background:var(--bg);color:var(--text)}
+.wrap{max-width:1240px;margin:auto;padding:28px 20px 64px}.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}h1{font-size:32px;margin:6px 0 4px}h2{font-size:18px;margin:0 0 14px}.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}.metric,.card{background:var(--panel);border:1px solid var(--line);border-radius:14px}.metric{padding:15px}.metric .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}.metric .v{font-size:24px;font-weight:750;margin-top:4px}.card{padding:18px;margin:14px 0}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.status{font-weight:800;font-size:20px}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}.pill{display:inline-block;padding:4px 8px;border:1px solid var(--line);border-radius:999px;font-size:12px;margin:2px 4px 2px 0;background:var(--panel2)}
+table{width:100%;border-collapse:collapse;font-size:13px;overflow:hidden}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em}td.num,th.num{text-align:right}.scroll{overflow:auto}.empty{padding:20px;border:1px dashed #35445f;border-radius:10px;background:var(--panel2)}.small{font-size:12px}.bar{height:8px;background:#22304a;border-radius:99px;overflow:hidden;margin-top:7px}.bar>i{display:block;height:100%;background:var(--accent)}
+@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}@media(max-width:540px){.grid{grid-template-columns:1fr}h1{font-size:26px}}
+</style>
+</head>
+<body><div class="wrap">
+<div class="eyebrow">Bookmaker market research</div><h1>Football Odds Scanner</h1><div class="muted">Frozen validation gate · exact line + current price · no forced selections</div>
+<div class="grid">
+  <div class="metric"><div class="k">Historical rows</div><div class="v" id="histRows">—</div></div>
+  <div class="metric"><div class="k">Validated patterns</div><div class="v" id="patternCount">—</div></div>
+  <div class="metric"><div class="k">Current matches scanned</div><div class="v" id="matchCount">—</div></div>
+  <div class="metric"><div class="k">Qualifying bets</div><div class="v" id="qualCount">—</div></div>
+</div>
+<div class="card"><h2>Production Gate</h2><div id="production">Loading…</div></div>
+<div class="two">
+  <div class="card"><h2>Frozen Research Validation</h2><div id="research">Loading…</div></div>
+  <div class="card"><h2>Current Provider Health</h2><div id="provider">Loading…</div></div>
+</div>
+<div class="card"><h2>Provider Capability Matrix</h2><div class="scroll"><table><thead><tr><th>Provider</th><th>Role</th><th>AH variable</th><th>O/U variable</th><th>O/U quarter</th><th>Open/Close</th><th>Movement</th><th>Access</th><th>Status</th></tr></thead><tbody id="providerRows"><tr><td colspan="9">Loading…</td></tr></tbody></table></div></div>
+<div class="card"><h2>Top Validated Current Candidates</h2><div id="candidates">Loading…</div></div>
+<div class="card"><h2>Current Rejection Diagnostics</h2><div id="rejects">No evaluation data yet.</div></div>
+<div class="card"><h2>Method Guardrails</h2><div class="small muted">A current selection can appear only after a historical pattern passes frozen Train → Validation → Holdout and cross-league gates. Current market structure must match the validated pattern exactly. Current decimal odds must remain inside the configured tradability band, and the same historical settlement distribution is repriced at the current odds. The scanner displays at most five survivors and never fills a quota.</div></div>
+</div>
 <script>
-let data; const pct=x=>x==null?'—':(x*100).toFixed(2)+'%';
-async function load(){data=await (await fetch('../../reports/backtest.json')).json(); document.getElementById('summary').innerHTML=`Rows: <b>${data.rows}</b> · Test seasons: <b>${data.test_seasons.join(', ')}</b><br><span class="warn">Positive historical ROI is not treated as validated edge.</span>`; render(); try{let t=await (await fetch('../../reports/today.json')).json();document.getElementById('today').textContent=t.qualifying?`${t.qualifying} candidates passed current research filters.`:'NO QUALIFYING MATCHES';}catch(e){}}
-function render(){let sp=split.value,sd=side.value;let r=data.buckets.filter(x=>x.split===sp&&x.side===sd).sort((a,b)=>a.odds_low-b.odds_low);rows.innerHTML=r.map(x=>`<tr><td>${x.odds_low.toFixed(2)}–${x.odds_high.toFixed(2)}</td><td>${x.n}</td><td>${pct(x.win_rate)}</td><td>${pct(x.market_expected)}</td><td class="${x.calibration_gap_pp>0?'good':''}">${x.calibration_gap_pp.toFixed(2)}</td><td>${pct(x.flat_stake_roi)}</td><td>${pct(x.avg_clv)}</td></tr>`).join('')}
-split.onchange=side.onchange=render;load();</script></body></html>
+const $=id=>document.getElementById(id); const pct=x=>x==null?'—':(x*100).toFixed(2)+'%';
+async function get(path){try{const r=await fetch(path,{cache:'no-store'});if(!r.ok)throw new Error(r.status);return await r.json()}catch(e){return null}}
+function cls(status){if(['OK'].includes(status))return'good';if(['NO_VALIDATED_PATTERNS','NO_QUALIFYING_MATCHES'].includes(status))return'warn';return'bad'}
+function candidateTable(rows){if(!rows||!rows.length)return '<div class="empty"><b>NO QUALIFYING BETS</b><div class="muted small" style="margin-top:6px">The system will not manufacture a selection to fill the list.</div></div>';
+return `<div class="scroll"><table><thead><tr><th>#</th><th>Match</th><th>Market</th><th>Line</th><th class="num">Odds</th><th class="num">Min EV</th><th class="num">Holdout N</th><th class="num">q</th></tr></thead><tbody>${rows.map((x,i)=>`<tr><td>${i+1}</td><td>${x.home} vs ${x.away}<div class="muted small">${x.league} · ${x.date} ${x.time||''}</div></td><td>${x.market}<div class="muted small">${x.pattern||''}</div></td><td>${Number(x.line).toFixed(2)}</td><td class="num">${Number(x.current_odds).toFixed(2)}</td><td class="num good">${pct(x.min_phase_ev)}</td><td class="num">${x.holdout_n??'—'}</td><td class="num">${x.q_validation_bh==null?'—':Number(x.q_validation_bh).toFixed(3)}</td></tr>`).join('')}</tbody></table></div>`}
+async function load(){
+ const [today,registry,breadth,health,caps]=await Promise.all([
+  get('reports/today.json'),get('reports/pattern_registry.json'),get('reports/breadth/summary.json'),get('reports/current_provider_health.json'),get('reports/provider_capabilities.json')]);
+ $('histRows').textContent=(registry?.source_rows??breadth?.rows??'—').toLocaleString?.()??'—'; $('patternCount').textContent=registry?.pattern_count??'—'; $('matchCount').textContent=today?.matches_scanned??'—'; $('qualCount').textContent=today?.qualifying??'—';
+ if(today){$('production').innerHTML=`<div class="status ${cls(today.status)}">${today.status}</div><div style="margin-top:8px">${today.message||today.reason||''}</div><div class="muted small" style="margin-top:8px">Generated: ${today.generated_at||'—'} · schema ${today.schema_version||'—'}</div>`}else{$('production').innerHTML='<span class="bad">Scanner report unavailable</span>'}
+ if(breadth){const t=breadth.three_way||{};$('research').innerHTML=`Rows: <b>${Number(breadth.rows).toLocaleString()}</b><br>Leagues: <b>${(breadth.divisions||[]).join(', ')}</b><br>Three-way patterns tested: <b>${t.tested_patterns??'—'}</b><br>Global robust: <b class="${t.global_robust?'good':'warn'}">${t.global_robust??'—'}</b><br>Holdout: <b>${(t.split?.holdout||[]).join(', ')}</b>`}else if(registry){$('research').innerHTML=`Source rows: <b>${Number(registry.source_rows||0).toLocaleString()}</b><br>Validated patterns: <b>${registry.pattern_count}</b><br>Holdout: <b>${(registry.split?.holdout||[]).join(', ')}</b>`}else{$('research').innerHTML='<span class="bad">Research summary unavailable</span>'}
+ if(health){const lines=Object.keys(health.ou_lines||{});$('provider').innerHTML=`Provider: <b>${health.provider}</b><br>Rows observed: <b>${Number(health.rows).toLocaleString()}</b><br>Leagues: <b>${health.leagues?.length??0}</b><br>Tradable AH rows: <b>${Number(health.tradable_ah_rows||0).toLocaleString()}</b><br>O/U lines observed: <b>${lines.join(', ')||'—'}</b><br>Quarter O/U rows: <b class="${health.quarter_ou_rows?'good':'warn'}">${health.quarter_ou_rows??0}</b>`}else{$('provider').innerHTML='<span class="bad">Provider health unavailable</span>'}
+ if(caps?.providers){$('providerRows').innerHTML=caps.providers.map(p=>`<tr><td><b>${p.provider_id}</b><div class="muted small">${p.historical_depth}</div></td><td>${p.role}</td><td>${p.ah_variable_lines?'✓':'—'}</td><td>${p.ou_variable_lines?'✓':'—'}</td><td class="${p.ou_quarter_lines?'good':'warn'}">${p.ou_quarter_lines?'✓':'—'}</td><td>${p.opening_odds?'Open ':''}${p.closing_odds?'/ Close':''}</td><td>${p.movement_history?'✓':'—'}</td><td>${p.api_key_required?'Key required':(p.zero_cost_confirmed?'Zero-cost':'Unknown')}</td><td>${p.production_status}</td></tr>`).join('')}
+ $('candidates').innerHTML=candidateTable(today?.candidates||[]);
+ const rej=today?.rejection_counts; if(rej&&Object.keys(rej).length){const total=Object.values(rej).reduce((a,b)=>a+b,0);$('rejects').innerHTML=Object.entries(rej).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div style="margin:9px 0"><div><b>${k}</b> <span class="muted">${v}</span></div><div class="bar"><i style="width:${(v/total*100).toFixed(1)}%"></i></div></div>`).join('')}else{$('rejects').innerHTML='<div class="muted">No rejection distribution because no validated pattern was available for current-market evaluation.</div>'}
+}
+load();
+</script></body></html>
