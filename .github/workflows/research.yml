@@ -1,5 +1,7 @@
 name: Odds Research Pipeline
 on:
+  pull_request:
+    branches: [main]
   workflow_dispatch:
   schedule:
     - cron: '0 3 * * 5'
@@ -15,10 +17,14 @@ jobs:
         with: {python-version: '3.11'}
       - run: python -m pip install -e '.[dev]'
       - run: pytest -q
-      - run: python -m odds_scanner.pipeline
+      - name: Historical integration run
+        if: github.event_name != 'pull_request'
+        run: python -m odds_scanner.pipeline
       - name: Attempt current fixture scan
+        if: github.event_name != 'pull_request'
         run: python -c "from pathlib import Path; from odds_scanner.scanner import scan; print(scan(Path('.'))['qualifying'])" || true
       - name: Commit generated research outputs
+        if: github.event_name != 'pull_request'
         run: |
           git config user.name 'odds-scanner-actions'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
