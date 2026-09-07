@@ -14,6 +14,7 @@ def build_pattern_registry(three_way_audit: dict) -> dict:
         patterns.append({
             "pattern_id": f"{row['market']}::{row['pattern']}",
             "pattern": row["pattern"],
+            "pattern_key": row.get("pattern_key", {}),
             "family": row["family"],
             "market": row["market"],
             "train_n": row["train_n"],
@@ -27,7 +28,7 @@ def build_pattern_registry(three_way_audit: dict) -> dict:
             "cross_league_holdout": row["cross_league_holdout"],
         })
     return {
-        "schema_version": "1.1",
+        "schema_version": "1.2",
         "registry_type": "FROZEN_VALIDATED_PATTERNS",
         "promotion_rule": PROMOTABLE_STATUS,
         "source_engine": three_way_audit.get("engine"),
