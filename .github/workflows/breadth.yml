@@ -8,6 +8,12 @@ on:
       - 'src/odds_scanner/breadth_pipeline.py'
       - 'tests/test_breadth_data.py'
       - '.github/workflows/breadth.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/breadth_data.py'
+      - 'src/odds_scanner/breadth_pipeline.py'
+      - '.github/workflows/breadth.yml'
   schedule:
     - cron: '30 3 * * 6'
 permissions:
