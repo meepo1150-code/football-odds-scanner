@@ -1,0 +1,43 @@
+name: Big-5 Data Breadth Research
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/breadth_data.py'
+      - 'src/odds_scanner/breadth_pipeline.py'
+      - 'tests/test_breadth_data.py'
+      - '.github/workflows/breadth.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/breadth_data.py'
+      - 'src/odds_scanner/breadth_pipeline.py'
+      - '.github/workflows/breadth.yml'
+  schedule:
+    - cron: '30 3 * * 6'
+permissions:
+  contents: write
+jobs:
+  breadth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python -m pip install -e '.[dev]'
+      - run: pytest -q
+      - name: Run Big-5 breadth integration
+        if: github.event_name != 'pull_request'
+        run: python -m odds_scanner.breadth_pipeline
+      - name: Commit breadth reports
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+          git config user.name 'odds-scanner-actions'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -- data/normalized/big5_multimarket_history.csv reports/breadth/
+          git diff --cached --quiet && exit 0
+          git commit -m 'Update Big-5 breadth research outputs'
+          git push
