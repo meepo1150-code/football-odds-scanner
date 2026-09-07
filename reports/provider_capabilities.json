@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "providers": [
     {
       "provider_id": "football_data_big5",
@@ -22,8 +22,8 @@
     },
     {
       "provider_id": "sgodds_singapore_pools_open",
-      "role": "current_and_forward_collection",
-      "historical_depth": "public downloads observed from roughly Oct 2025 onward",
+      "role": "opening_snapshot_and_forward_research",
+      "historical_depth": "public opening-odds downloads observed from roughly Oct 2025 onward",
       "league_scope": "12 leagues in live provider health probe",
       "ah_variable_lines": true,
       "ou_variable_lines": true,
@@ -31,13 +31,13 @@
       "opening_odds": true,
       "closing_odds": false,
       "movement_history": false,
-      "current_odds": true,
+      "current_odds": false,
       "api_key_required": false,
       "zero_cost_confirmed": true,
       "redistribution_status": "no explicit raw-data redistribution permission confirmed",
-      "production_status": "ACTIVE_LIMITED",
+      "production_status": "OPENING_ONLY_NOT_EXECUTION_PRICE",
       "source_url": "https://sgodds.com/football/data",
-      "note": "Live probe found AH quarter-lines but O/U lines only 1.5/2.5/3.5/4.5; raw third-party odds are not committed."
+      "note": "Provider page labels these files Opening Odds Data by League. Live probe found AH quarter-lines but O/U only 1.5/2.5/3.5/4.5. Never use this source as a current tradable execution-price feed."
     },
     {
       "provider_id": "isports_historical_all",
@@ -88,7 +88,8 @@
     "current_scanner": {
       "exact_line_and_price": true,
       "two_sided_prices_for_devig": true,
-      "freshness_required": true
+      "freshness_required": true,
+      "opening_snapshot_is_not_current": true
     }
   }
 }
