@@ -4,6 +4,7 @@ from dataclasses import asdict, dataclass
 
 from .asian_settlement import settle_asian_handicap, settle_asian_total
 from .pattern_policy import DEFAULT_POLICY
+from .settlement_ev import settlement_distribution
 
 
 def _band(value: float, width: float) -> tuple[float, float]:
@@ -62,8 +63,6 @@ def build_hierarchical_report(rows: list[dict], *, test_seasons: set[str] | None
         )
         split = "test" if row["season"] in tests else "train"
 
-        # AH_LINE is a one-dimensional family and must contribute exactly once
-        # per match. It must not be duplicated by the Over/Under loop below.
         ah_key = HierarchicalPatternKey(
             "AH_LINE", row["favorite_side"], float(row["favorite_ah_line"])
         )
@@ -71,6 +70,8 @@ def build_hierarchical_report(rows: list[dict], *, test_seasons: set[str] | None
             "season": row["season"],
             "ah_profit": ah.profit_units,
             "ou_profit": 0.0,
+            "ah_settlement": ah.settlement.value,
+            "ou_settlement": None,
         })
 
         for ou_side, ou_price in (("O", float(row["over_price"])), ("U", float(row["under_price"]))):
@@ -85,6 +86,8 @@ def build_hierarchical_report(rows: list[dict], *, test_seasons: set[str] | None
                     "season": row["season"],
                     "ah_profit": ah.profit_units,
                     "ou_profit": total.profit_units,
+                    "ah_settlement": ah.settlement.value,
+                    "ou_settlement": total.settlement.value,
                 })
 
     buckets = []
@@ -99,6 +102,8 @@ def build_hierarchical_report(rows: list[dict], *, test_seasons: set[str] | None
                 "n": len(vals),
                 "ah_roi": round(sum(x["ah_profit"] for x in vals) / len(vals), 6),
                 "ou_roi": None if key.family == "AH_LINE" else round(sum(x["ou_profit"] for x in vals) / len(vals), 6),
+                "ah_settlements": settlement_distribution(x["ah_settlement"] for x in vals),
+                "ou_settlements": None if key.family == "AH_LINE" else settlement_distribution(x["ou_settlement"] for x in vals),
             }
         buckets.append({
             "split": split,
@@ -108,6 +113,8 @@ def build_hierarchical_report(rows: list[dict], *, test_seasons: set[str] | None
             "n": n,
             "ah_roi": round(sum(x["ah_profit"] for x in obs) / n, 6),
             "ou_roi": None if key.family == "AH_LINE" else round(sum(x["ou_profit"] for x in obs) / n, 6),
+            "ah_settlements": settlement_distribution(x["ah_settlement"] for x in obs),
+            "ou_settlements": None if key.family == "AH_LINE" else settlement_distribution(x["ou_settlement"] for x in obs),
             "seasons": by_season,
         })
 
@@ -116,7 +123,7 @@ def build_hierarchical_report(rows: list[dict], *, test_seasons: set[str] | None
     for family in {b["family"] for b in buckets}:
         family_counts[family] = sum(1 for b in buckets if b["family"] == family)
     return {
-        "schema_version": "1.1",
+        "schema_version": "1.2",
         "engine": "HIERARCHICAL_MULTI_MARKET_BACKTEST",
         "source_rows": len(rows),
         "test_seasons": sorted(tests),
