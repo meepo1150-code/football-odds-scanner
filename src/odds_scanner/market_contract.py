@@ -23,6 +23,10 @@ class CurrentMarket:
     one_x_two_home: float | None
     one_x_two_draw: float | None
     one_x_two_away: float | None
+    status: str | None = None
+    as_of: str | None = None
+    stale: bool | None = None
+    tradable: bool | None = None
 
 
 def two_way_fair_probs(a_odds: float, b_odds: float) -> tuple[float, float, float]:
