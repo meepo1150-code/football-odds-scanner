@@ -1,5 +1,5 @@
 from __future__ import annotations
-import argparse, json
+import argparse, json, shutil
 from pathlib import Path
 from .football_data import download_history, decode_csv, SEASONS
 from .normalize import normalize_rows, write_csv
@@ -7,6 +7,7 @@ from .backtest import build_report, write_report
 
 def run(root: Path, download: bool=True):
     raw=root/"data/raw"; norm=root/"data/normalized/history.csv"; report=root/"reports/backtest.json"
+    provenance_report=root/"reports/data_provenance.json"
     paths=download_history(raw) if download else sorted(raw.glob("E0_*.csv"))
     all_rows=[]
     for p in paths:
@@ -16,6 +17,10 @@ def run(root: Path, download: bool=True):
     test=set(SEASONS[-3:])
     rep=build_report(all_rows,test_seasons=test,min_n=20)
     write_report(rep,report)
+    source_provenance=raw/"provenance.json"
+    if source_provenance.exists():
+        provenance_report.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source_provenance, provenance_report)
     return rep
 
 def main():
