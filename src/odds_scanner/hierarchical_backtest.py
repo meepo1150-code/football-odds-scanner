@@ -35,19 +35,17 @@ class HierarchicalPatternKey:
         return "|".join(parts)
 
 
-def _keys_for(row: dict, ou_side: str, ou_price: float) -> list[HierarchicalPatternKey]:
+def _ou_keys_for(row: dict, ou_side: str, ou_price: float) -> list[HierarchicalPatternKey]:
     fav = row["favorite_side"]
     ah = float(row["favorite_ah_line"])
     ou = float(row["ou_line"])
     ah_price = float(row["favorite_ah_price"])
     fav_p = float(row["favorite_fair_probability"])
-    keys = [
-        HierarchicalPatternKey("AH_LINE", fav, ah),
+    return [
         HierarchicalPatternKey("AH_OU", fav, ah, ou, ou_side),
         HierarchicalPatternKey("AH_OU_PRICE", fav, ah, ou, ou_side, _band(ah_price, 0.10), _band(ou_price, 0.10)),
         HierarchicalPatternKey("AH_OU_PRICE_1X2", fav, ah, ou, ou_side, _band(ah_price, 0.10), _band(ou_price, 0.10), _band(fav_p, 0.05)),
     ]
-    return keys
 
 
 def build_hierarchical_report(rows: list[dict], *, test_seasons: set[str] | None = None, min_n: int = 20) -> dict:
@@ -58,14 +56,36 @@ def build_hierarchical_report(rows: list[dict], *, test_seasons: set[str] | None
         ah_price = float(row["favorite_ah_price"])
         if not DEFAULT_POLICY.research_price_is_supported(ah_price):
             continue
-        ah = settle_asian_handicap(int(row["home_goals"]), int(row["away_goals"]), float(row["favorite_ah_line"]), ah_price, row["favorite_side"])
+        ah = settle_asian_handicap(
+            int(row["home_goals"]), int(row["away_goals"]),
+            float(row["favorite_ah_line"]), ah_price, row["favorite_side"],
+        )
         split = "test" if row["season"] in tests else "train"
+
+        # AH_LINE is a one-dimensional family and must contribute exactly once
+        # per match. It must not be duplicated by the Over/Under loop below.
+        ah_key = HierarchicalPatternKey(
+            "AH_LINE", row["favorite_side"], float(row["favorite_ah_line"])
+        )
+        groups[(split, ah_key)].append({
+            "season": row["season"],
+            "ah_profit": ah.profit_units,
+            "ou_profit": 0.0,
+        })
+
         for ou_side, ou_price in (("O", float(row["over_price"])), ("U", float(row["under_price"]))):
             if not DEFAULT_POLICY.research_price_is_supported(ou_price):
                 continue
-            total = settle_asian_total(int(row["home_goals"]), int(row["away_goals"]), float(row["ou_line"]), ou_price, ou_side)
-            for key in _keys_for(row, ou_side, ou_price):
-                groups[(split, key)].append({"season": row["season"], "ah_profit": ah.profit_units, "ou_profit": total.profit_units})
+            total = settle_asian_total(
+                int(row["home_goals"]), int(row["away_goals"]),
+                float(row["ou_line"]), ou_price, ou_side,
+            )
+            for key in _ou_keys_for(row, ou_side, ou_price):
+                groups[(split, key)].append({
+                    "season": row["season"],
+                    "ah_profit": ah.profit_units,
+                    "ou_profit": total.profit_units,
+                })
 
     buckets = []
     for (split, key), obs in groups.items():
@@ -78,7 +98,7 @@ def build_hierarchical_report(rows: list[dict], *, test_seasons: set[str] | None
             by_season[season] = {
                 "n": len(vals),
                 "ah_roi": round(sum(x["ah_profit"] for x in vals) / len(vals), 6),
-                "ou_roi": round(sum(x["ou_profit"] for x in vals) / len(vals), 6),
+                "ou_roi": None if key.family == "AH_LINE" else round(sum(x["ou_profit"] for x in vals) / len(vals), 6),
             }
         buckets.append({
             "split": split,
@@ -87,16 +107,16 @@ def build_hierarchical_report(rows: list[dict], *, test_seasons: set[str] | None
             "pattern_key": asdict(key),
             "n": n,
             "ah_roi": round(sum(x["ah_profit"] for x in obs) / n, 6),
-            "ou_roi": round(sum(x["ou_profit"] for x in obs) / n, 6),
+            "ou_roi": None if key.family == "AH_LINE" else round(sum(x["ou_profit"] for x in obs) / n, 6),
             "seasons": by_season,
         })
 
-    buckets.sort(key=lambda x: (x["family"], x["split"], -x["n"], -x["ou_roi"]))
+    buckets.sort(key=lambda x: (x["family"], x["split"], -x["n"], -(x["ou_roi"] or -999.0)))
     family_counts = {}
     for family in {b["family"] for b in buckets}:
         family_counts[family] = sum(1 for b in buckets if b["family"] == family)
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "engine": "HIERARCHICAL_MULTI_MARKET_BACKTEST",
         "source_rows": len(rows),
         "test_seasons": sorted(tests),
