@@ -7,6 +7,7 @@ from .breadth_data import BIG5_DIVISIONS, download_and_normalize_big5
 from .hierarchical_backtest import build_hierarchical_report
 from .joint_audit import build_joint_audit
 from .normalize import write_csv
+from .three_way_audit import build_three_way_audit, write_three_way_audit
 
 
 def run(root: Path) -> dict:
@@ -24,6 +25,9 @@ def run(root: Path) -> dict:
     (report_dir / "global_patterns.json").write_text(json.dumps(global_report, indent=2), encoding="utf-8")
     (report_dir / "global_audit.json").write_text(json.dumps(global_audit, indent=2), encoding="utf-8")
 
+    three_way = build_three_way_audit(rows)
+    write_three_way_audit(three_way, report_dir / "three_way_audit.json")
+
     league_summary = {}
     for div in sorted(BIG5_DIVISIONS):
         league_rows = [r for r in rows if r["division"] == div]
@@ -39,7 +43,7 @@ def run(root: Path) -> dict:
         }
 
     summary = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "engine": "BIG5_DATA_BREADTH_AUDIT",
         "rows": len(rows),
         "divisions": sorted(BIG5_DIVISIONS),
@@ -49,6 +53,13 @@ def run(root: Path) -> dict:
             "paired_tests": global_audit["paired_tests"],
             "robust": global_audit["robust_candidate_count"],
             "watchlist": global_audit["watchlist_count"],
+        },
+        "three_way": {
+            "tested_patterns": three_way["tested_patterns"],
+            "global_robust": three_way["global_robust_count"],
+            "league_specific_or_unstable": three_way["league_specific_or_unstable_count"],
+            "watchlist": three_way["watchlist_count"],
+            "split": three_way["split"],
         },
         "leagues": league_summary,
         "source": "pjc-codes/football-data (derived from Football-Data.co.uk)",
