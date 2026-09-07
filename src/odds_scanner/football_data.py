@@ -1,5 +1,5 @@
 from __future__ import annotations
-import csv, io, json, time, urllib.error, urllib.request
+import csv, io, json, re, time, urllib.error, urllib.request
 from pathlib import Path
 
 BASE = "https://www.football-data.co.uk"
@@ -52,6 +52,21 @@ def decode_csv(raw: bytes) -> list[dict[str,str]]:
         raise ValueError("CSV contains no data rows")
     return rows
 
+def _canonical_season_code(row: dict[str, str]) -> str:
+    raw = (row.get("season_code") or "").strip()
+    if raw:
+        if re.fullmatch(r"\d{1,4}(?:\.0+)?", raw):
+            return str(int(float(raw))).zfill(4)
+        digits = re.sub(r"\D", "", raw)
+        if len(digits) == 4:
+            return digits
+    label = (row.get("season") or "").strip()
+    m = re.fullmatch(r"(\d{4})-(\d{2}|\d{4})", label)
+    if m:
+        start = int(m.group(1))
+        return f"{start % 100:02d}{(start + 1) % 100:02d}"
+    return ""
+
 def _write_raw_like(rows: list[dict[str, str]], path: Path) -> None:
     fields = ["Div","Date","HomeTeam","AwayTeam","FTR","AvgH","AvgD","AvgA","B365H","B365D","B365A","AvgCH","AvgCD","AvgCA","B365CH","B365CD","B365CA"]
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -67,7 +82,7 @@ def _download_history_mirror(out_dir: Path, seasons: list[str], division: str) -
     source_rows = decode_csv(payload)
     by_season: dict[str, list[dict[str, str]]] = {s: [] for s in seasons}
     for r in source_rows:
-        code = (r.get("season_code") or "").strip()
+        code = _canonical_season_code(r)
         if code not in by_season:
             continue
         mapped = {
