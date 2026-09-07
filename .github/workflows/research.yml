@@ -9,6 +9,8 @@ on:
       - 'data/normalized/multimarket_history.csv'
       - 'reports/backtest.json'
       - 'reports/joint_patterns.json'
+      - 'reports/hierarchical_patterns.json'
+      - 'reports/joint_audit.json'
       - 'reports/audit.json'
       - 'reports/today.json'
       - 'reports/data_provenance.json'
@@ -42,7 +44,7 @@ jobs:
           set -euo pipefail
           git config user.name 'odds-scanner-actions'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- data/normalized/history.csv data/normalized/multimarket_history.csv reports/backtest.json reports/joint_patterns.json reports/audit.json reports/data_provenance.json
+          git add -- data/normalized/history.csv data/normalized/multimarket_history.csv reports/backtest.json reports/joint_patterns.json reports/hierarchical_patterns.json reports/joint_audit.json reports/audit.json reports/data_provenance.json
           if test -f reports/today.json; then git add -- reports/today.json; fi
           git diff --cached --quiet && exit 0
           git commit -m 'Update odds research outputs'
