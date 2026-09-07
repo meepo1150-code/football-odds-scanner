@@ -48,8 +48,8 @@ PROVIDERS = (
     ),
     ProviderCapability(
         provider_id="sgodds_singapore_pools_open",
-        role="current_and_forward_collection",
-        historical_depth="public downloads observed from roughly Oct 2025 onward",
+        role="opening_snapshot_and_forward_research",
+        historical_depth="public opening-odds downloads observed from roughly Oct 2025 onward",
         league_scope="12 leagues in live provider health probe",
         ah_variable_lines=True,
         ou_variable_lines=True,
@@ -57,13 +57,13 @@ PROVIDERS = (
         opening_odds=True,
         closing_odds=False,
         movement_history=False,
-        current_odds=True,
+        current_odds=False,
         api_key_required=False,
         zero_cost_confirmed=True,
         redistribution_status="no explicit raw-data redistribution permission confirmed",
-        production_status="ACTIVE_LIMITED",
+        production_status="OPENING_ONLY_NOT_EXECUTION_PRICE",
         source_url="https://sgodds.com/football/data",
-        note="Live probe found AH quarter-lines but O/U lines only 1.5/2.5/3.5/4.5; raw third-party odds are not committed.",
+        note="Provider page labels these files Opening Odds Data by League. Live probe found AH quarter-lines but O/U only 1.5/2.5/3.5/4.5. Never use this source as a current tradable execution-price feed.",
     ),
     ProviderCapability(
         provider_id="isports_historical_all",
@@ -109,7 +109,7 @@ PROVIDERS = (
 def capability_matrix() -> dict:
     rows = [asdict(x) for x in PROVIDERS]
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "providers": rows,
         "research_requirements": {
             "rich_joint_pattern_engine": {
@@ -122,17 +122,20 @@ def capability_matrix() -> dict:
                 "exact_line_and_price": True,
                 "two_sided_prices_for_devig": True,
                 "freshness_required": True,
+                "opening_snapshot_is_not_current": True,
             },
         },
     }
 
 
-def providers_supporting(*, ou_quarter_lines: bool = False, movement_history: bool = False) -> list[dict]:
+def providers_supporting(*, ou_quarter_lines: bool = False, movement_history: bool = False, current_odds: bool = False) -> list[dict]:
     rows = capability_matrix()["providers"]
     if ou_quarter_lines:
         rows = [r for r in rows if r["ou_quarter_lines"]]
     if movement_history:
         rows = [r for r in rows if r["movement_history"]]
+    if current_odds:
+        rows = [r for r in rows if r["current_odds"]]
     return rows
 
 
