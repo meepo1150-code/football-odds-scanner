@@ -94,6 +94,7 @@ def build_three_way_audit(
         z_val = _roi_z(va["roi"], va["n"])
         tests.append({
             "pattern": pattern,
+            "pattern_key": tr["pattern_key"],
             "family": tr["family"],
             "market": market,
             "train_n": tr["n"],
@@ -134,7 +135,7 @@ def build_three_way_audit(
     }
     tests.sort(key=lambda r: (priority[r["status"]], r["holdout_roi"], r["holdout_n"]), reverse=True)
     return {
-        "schema_version": "1.1",
+        "schema_version": "1.2",
         "engine": "THREE_WAY_CROSS_LEAGUE_AUDIT",
         "source_rows": len(rows),
         "split": {
