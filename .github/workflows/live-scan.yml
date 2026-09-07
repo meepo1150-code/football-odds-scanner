@@ -1,6 +1,15 @@
 name: Live Odds Scan
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/five_dollar_provider.py'
+      - 'src/odds_scanner/run_live_scan.py'
+      - 'src/odds_scanner/scanner.py'
+      - 'src/odds_scanner/execution_safety.py'
+      - 'reports/pattern_registry.json'
+      - '.github/workflows/live-scan.yml'
   schedule:
     - cron: '0 5 * * *'
     - cron: '0 10 * * *'
