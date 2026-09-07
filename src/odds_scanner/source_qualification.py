@@ -21,8 +21,11 @@ EXECUTION_ACTIVE_STATUSES = {"ACTIVE_EXECUTION"}
 
 def _has_multi_season_history(provider: dict) -> bool:
     depth = str(provider.get("historical_depth", "")).lower()
-    # Conservative: only explicitly observed/declared multi-season ranges qualify.
-    return any(token in depth for token in ("2019/20-2024/25", "multi-season", "2004", "historical endpoint"))
+    # Fail closed on explicit negative/unknown wording; never infer readiness merely
+    # because the description happens to contain the words "multi-season".
+    if any(token in depth for token in ("no qualified", "not qualified", "unknown", "plan-dependent", "provider plan")):
+        return False
+    return any(token in depth for token in ("2019/20-2024/25", "2004+", "multi-season verified"))
 
 
 def qualify_provider(provider: dict) -> dict:
