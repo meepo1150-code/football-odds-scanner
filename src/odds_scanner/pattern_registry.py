@@ -22,11 +22,12 @@ def build_pattern_registry(three_way_audit: dict) -> dict:
             "train_roi": row["train_roi"],
             "validation_roi": row["validation_roi"],
             "holdout_roi": row["holdout_roi"],
+            "settlement_distributions": row.get("settlement_distributions", {}),
             "q_validation_bh": row["q_validation_bh"],
             "cross_league_holdout": row["cross_league_holdout"],
         })
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "registry_type": "FROZEN_VALIDATED_PATTERNS",
         "promotion_rule": PROMOTABLE_STATUS,
         "source_engine": three_way_audit.get("engine"),
