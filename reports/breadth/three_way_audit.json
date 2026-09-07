@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.2",
   "engine": "THREE_WAY_CROSS_LEAGUE_AUDIT",
   "source_rows": 5053,
   "split": {
@@ -32,6 +32,16 @@
   "patterns": [
     {
       "pattern": "AH_OU|A|AH=-0.50|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -0.5,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "AH",
       "train_n": 271,
@@ -40,6 +50,29 @@
       "validation_roi": -0.042794,
       "holdout_n": 92,
       "holdout_roi": 0.208804,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 141,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 130
+        },
+        "validation": {
+          "FULL_WIN": 100,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 104
+        },
+        "holdout": {
+          "FULL_WIN": 57,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 35
+        }
+      },
       "z_validation": -0.611221,
       "p_validation": 0.541054,
       "q_validation_bh": 0.920911,
@@ -63,6 +96,16 @@
     },
     {
       "pattern": "AH_LINE|A|AH=-0.50",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "A",
+        "ah_line": -0.5,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_LINE",
       "market": "AH",
       "train_n": 292,
@@ -71,6 +114,29 @@
       "validation_roi": -0.033739,
       "holdout_n": 104,
       "holdout_roi": 0.200769,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 150,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 142
+        },
+        "validation": {
+          "FULL_WIN": 110,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 112
+        },
+        "holdout": {
+          "FULL_WIN": 64,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 40
+        }
+      },
       "z_validation": -0.5027,
       "p_validation": 0.615175,
       "q_validation_bh": 0.920911,
@@ -94,6 +160,16 @@
     },
     {
       "pattern": "AH_OU|A|AH=-0.50|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -0.5,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "AH",
       "train_n": 271,
@@ -102,6 +178,29 @@
       "validation_roi": -0.017387,
       "holdout_n": 87,
       "holdout_roi": 0.169195,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 142,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 129
+        },
+        "validation": {
+          "FULL_WIN": 100,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 99
+        },
+        "holdout": {
+          "FULL_WIN": 52,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 35
+        }
+      },
       "z_validation": -0.245274,
       "p_validation": 0.806244,
       "q_validation_bh": 0.920911,
@@ -121,6 +220,16 @@
     },
     {
       "pattern": "AH_OU|H|AH=-1.00|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -1.0,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "OU",
       "train_n": 328,
@@ -129,6 +238,29 @@
       "validation_roi": -0.072805,
       "holdout_n": 102,
       "holdout_roi": 0.143137,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 174,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 154
+        },
+        "validation": {
+          "FULL_WIN": 116,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 105
+        },
+        "holdout": {
+          "FULL_WIN": 66,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 36
+        }
+      },
       "z_validation": -1.082324,
       "p_validation": 0.279109,
       "q_validation_bh": 0.920911,
@@ -156,6 +288,16 @@
     },
     {
       "pattern": "AH_OU|A|AH=-0.00|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -0.0,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "OU",
       "train_n": 290,
@@ -164,6 +306,29 @@
       "validation_roi": -0.045479,
       "holdout_n": 75,
       "holdout_roi": 0.0824,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 146,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 144
+        },
+        "validation": {
+          "FULL_WIN": 93,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 95
+        },
+        "holdout": {
+          "FULL_WIN": 41,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 34
+        }
+      },
       "z_validation": -0.623577,
       "p_validation": 0.532906,
       "q_validation_bh": 0.920911,
@@ -178,6 +343,16 @@
     },
     {
       "pattern": "AH_OU|A|AH=-0.00|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -0.0,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "AH",
       "train_n": 290,
@@ -186,6 +361,29 @@
       "validation_roi": 0.085904,
       "holdout_n": 75,
       "holdout_roi": 0.0532,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 100,
+          "HALF_WIN": 0,
+          "PUSH": 92,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 98
+        },
+        "validation": {
+          "FULL_WIN": 80,
+          "HALF_WIN": 0,
+          "PUSH": 55,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 53
+        },
+        "holdout": {
+          "FULL_WIN": 31,
+          "HALF_WIN": 0,
+          "PUSH": 21,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 23
+        }
+      },
       "z_validation": 1.177856,
       "p_validation": 0.238854,
       "q_validation_bh": 0.920911,
@@ -200,6 +398,16 @@
     },
     {
       "pattern": "AH_OU|A|AH=-0.00|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -0.0,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "AH",
       "train_n": 294,
@@ -208,6 +416,29 @@
       "validation_roi": 0.084579,
       "holdout_n": 77,
       "holdout_roi": 0.050519,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 104,
+          "HALF_WIN": 0,
+          "PUSH": 90,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 100
+        },
+        "validation": {
+          "FULL_WIN": 81,
+          "HALF_WIN": 0,
+          "PUSH": 55,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 54
+        },
+        "holdout": {
+          "FULL_WIN": 32,
+          "HALF_WIN": 0,
+          "PUSH": 21,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 24
+        }
+      },
       "z_validation": 1.165841,
       "p_validation": 0.243679,
       "q_validation_bh": 0.920911,
@@ -222,6 +453,16 @@
     },
     {
       "pattern": "AH_OU|H|AH=+0.00|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": 0.0,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "OU",
       "train_n": 306,
@@ -230,6 +471,29 @@
       "validation_roi": -0.068548,
       "holdout_n": 83,
       "holdout_roi": 0.032892,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 160,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 146
+        },
+        "validation": {
+          "FULL_WIN": 95,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 91
+        },
+        "holdout": {
+          "FULL_WIN": 46,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 37
+        }
+      },
       "z_validation": -0.93487,
       "p_validation": 0.349855,
       "q_validation_bh": 0.920911,
@@ -253,6 +517,16 @@
     },
     {
       "pattern": "AH_LINE|A|AH=-0.00",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "A",
+        "ah_line": -0.0,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_LINE",
       "market": "AH",
       "train_n": 325,
@@ -261,6 +535,29 @@
       "validation_roi": 0.06,
       "holdout_n": 88,
       "holdout_roi": 0.017841,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 116,
+          "HALF_WIN": 0,
+          "PUSH": 101,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 108
+        },
+        "validation": {
+          "FULL_WIN": 86,
+          "HALF_WIN": 0,
+          "PUSH": 59,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 62
+        },
+        "holdout": {
+          "FULL_WIN": 34,
+          "HALF_WIN": 0,
+          "PUSH": 26,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 28
+        }
+      },
       "z_validation": 0.86325,
       "p_validation": 0.388,
       "q_validation_bh": 0.920911,
@@ -280,6 +577,16 @@
     },
     {
       "pattern": "AH_OU|A|AH=-0.50|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -0.5,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "OU",
       "train_n": 271,
@@ -288,6 +595,29 @@
       "validation_roi": -0.027059,
       "holdout_n": 92,
       "holdout_roi": 0.013696,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 144,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 127
+        },
+        "validation": {
+          "FULL_WIN": 106,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 98
+        },
+        "holdout": {
+          "FULL_WIN": 51,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 41
+        }
+      },
       "z_validation": -0.38648,
       "p_validation": 0.699141,
       "q_validation_bh": 0.920911,
@@ -311,6 +641,16 @@
     },
     {
       "pattern": "AH_OU|H|AH=-0.50|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -0.5,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "OU",
       "train_n": 555,
@@ -319,6 +659,29 @@
       "validation_roi": -0.069437,
       "holdout_n": 165,
       "holdout_roi": -0.012909,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 289,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 266
+        },
+        "validation": {
+          "FULL_WIN": 187,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 186
+        },
+        "holdout": {
+          "FULL_WIN": 87,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 78
+        }
+      },
       "z_validation": -1.341051,
       "p_validation": 0.179904,
       "q_validation_bh": 0.920911,
@@ -354,6 +717,16 @@
     },
     {
       "pattern": "AH_OU|A|AH=-0.50|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -0.5,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "OU",
       "train_n": 271,
@@ -362,6 +735,29 @@
       "validation_roi": -0.065528,
       "holdout_n": 87,
       "holdout_roi": -0.068161,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 127,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 144
+        },
+        "validation": {
+          "FULL_WIN": 97,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 102
+        },
+        "holdout": {
+          "FULL_WIN": 41,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 46
+        }
+      },
       "z_validation": -0.924386,
       "p_validation": 0.355285,
       "q_validation_bh": 0.920911,
@@ -381,6 +777,16 @@
     },
     {
       "pattern": "AH_LINE|H|AH=+0.00",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "H",
+        "ah_line": 0.0,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_LINE",
       "market": "AH",
       "train_n": 343,
@@ -389,6 +795,29 @@
       "validation_roi": 0.081154,
       "holdout_n": 95,
       "holdout_roi": -0.075579,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 114,
+          "HALF_WIN": 0,
+          "PUSH": 115,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 114
+        },
+        "validation": {
+          "FULL_WIN": 93,
+          "HALF_WIN": 0,
+          "PUSH": 52,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 63
+        },
+        "holdout": {
+          "FULL_WIN": 31,
+          "HALF_WIN": 0,
+          "PUSH": 30,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 34
+        }
+      },
       "z_validation": 1.17042,
       "p_validation": 0.241832,
       "q_validation_bh": 0.920911,
@@ -412,6 +841,16 @@
     },
     {
       "pattern": "AH_LINE|H|AH=-1.50",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "H",
+        "ah_line": -1.5,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_LINE",
       "market": "AH",
       "train_n": 217,
@@ -420,6 +859,29 @@
       "validation_roi": -0.01305,
       "holdout_n": 87,
       "holdout_roi": -0.098046,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 94,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 123
+        },
+        "validation": {
+          "FULL_WIN": 71,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 70
+        },
+        "holdout": {
+          "FULL_WIN": 40,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 47
+        }
+      },
       "z_validation": -0.15496,
       "p_validation": 0.876853,
       "q_validation_bh": 0.920911,
@@ -443,6 +905,16 @@
     },
     {
       "pattern": "AH_OU|H|AH=-1.00|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -1.0,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "AH",
       "train_n": 309,
@@ -451,6 +923,29 @@
       "validation_roi": 0.026967,
       "holdout_n": 96,
       "holdout_roi": -0.110729,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 116,
+          "HALF_WIN": 0,
+          "PUSH": 82,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 111
+        },
+        "validation": {
+          "FULL_WIN": 85,
+          "HALF_WIN": 0,
+          "PUSH": 51,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 75
+        },
+        "holdout": {
+          "FULL_WIN": 32,
+          "HALF_WIN": 0,
+          "PUSH": 23,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 41
+        }
+      },
       "z_validation": 0.391718,
       "p_validation": 0.695266,
       "q_validation_bh": 0.920911,
@@ -478,6 +973,16 @@
     },
     {
       "pattern": "AH_OU|H|AH=-0.50|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -0.5,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "OU",
       "train_n": 554,
@@ -486,6 +991,29 @@
       "validation_roi": -0.031689,
       "holdout_n": 164,
       "holdout_roi": -0.112561,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 269,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 285
+        },
+        "validation": {
+          "FULL_WIN": 187,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 180
+        },
+        "holdout": {
+          "FULL_WIN": 79,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 85
+        }
+      },
       "z_validation": -0.607074,
       "p_validation": 0.543802,
       "q_validation_bh": 0.920911,
@@ -521,6 +1049,16 @@
     },
     {
       "pattern": "AH_OU|H|AH=-1.00|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -1.0,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "AH",
       "train_n": 328,
@@ -529,6 +1067,29 @@
       "validation_roi": 0.043982,
       "holdout_n": 102,
       "holdout_roi": -0.124706,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 121,
+          "HALF_WIN": 0,
+          "PUSH": 85,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 122
+        },
+        "validation": {
+          "FULL_WIN": 91,
+          "HALF_WIN": 0,
+          "PUSH": 53,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 77
+        },
+        "holdout": {
+          "FULL_WIN": 33,
+          "HALF_WIN": 0,
+          "PUSH": 25,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 44
+        }
+      },
       "z_validation": 0.653839,
       "p_validation": 0.513215,
       "q_validation_bh": 0.920911,
@@ -556,6 +1117,16 @@
     },
     {
       "pattern": "AH_OU|H|AH=+0.00|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": 0.0,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "AH",
       "train_n": 296,
@@ -564,6 +1135,29 @@
       "validation_roi": 0.045196,
       "holdout_n": 83,
       "holdout_roi": -0.126145,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 98,
+          "HALF_WIN": 0,
+          "PUSH": 99,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 99
+        },
+        "validation": {
+          "FULL_WIN": 76,
+          "HALF_WIN": 0,
+          "PUSH": 46,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 57
+        },
+        "holdout": {
+          "FULL_WIN": 24,
+          "HALF_WIN": 0,
+          "PUSH": 28,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 31
+        }
+      },
       "z_validation": 0.604681,
       "p_validation": 0.545391,
       "q_validation_bh": 0.920911,
@@ -583,6 +1177,16 @@
     },
     {
       "pattern": "AH_OU|A|AH=-0.00|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -0.0,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "OU",
       "train_n": 294,
@@ -591,6 +1195,29 @@
       "validation_roi": -0.046737,
       "holdout_n": 77,
       "holdout_roi": -0.135065,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 147,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 147
+        },
+        "validation": {
+          "FULL_WIN": 98,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 92
+        },
+        "holdout": {
+          "FULL_WIN": 35,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 42
+        }
+      },
       "z_validation": -0.644225,
       "p_validation": 0.519429,
       "q_validation_bh": 0.920911,
@@ -605,6 +1232,16 @@
     },
     {
       "pattern": "AH_OU|H|AH=+0.00|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": 0.0,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "AH",
       "train_n": 306,
@@ -613,6 +1250,29 @@
       "validation_roi": 0.027419,
       "holdout_n": 83,
       "holdout_roi": -0.136747,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 101,
+          "HALF_WIN": 0,
+          "PUSH": 103,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 102
+        },
+        "validation": {
+          "FULL_WIN": 77,
+          "HALF_WIN": 0,
+          "PUSH": 48,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 61
+        },
+        "holdout": {
+          "FULL_WIN": 23,
+          "HALF_WIN": 0,
+          "PUSH": 29,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 31
+        }
+      },
       "z_validation": 0.373945,
       "p_validation": 0.708445,
       "q_validation_bh": 0.920911,
@@ -636,6 +1296,16 @@
     },
     {
       "pattern": "AH_LINE|H|AH=-0.50",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "H",
+        "ah_line": -0.5,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_LINE",
       "market": "AH",
       "train_n": 603,
@@ -644,6 +1314,29 @@
       "validation_roi": -0.005362,
       "holdout_n": 194,
       "holdout_roi": -0.144381,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 280,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 323
+        },
+        "validation": {
+          "FULL_WIN": 204,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 197
+        },
+        "holdout": {
+          "FULL_WIN": 85,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 109
+        }
+      },
       "z_validation": -0.107374,
       "p_validation": 0.914492,
       "q_validation_bh": 0.920911,
@@ -679,6 +1372,16 @@
     },
     {
       "pattern": "AH_OU|H|AH=-0.50|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -0.5,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "AH",
       "train_n": 555,
@@ -687,6 +1390,29 @@
       "validation_roi": -0.010831,
       "holdout_n": 165,
       "holdout_roi": -0.150606,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 259,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 296
+        },
+        "validation": {
+          "FULL_WIN": 189,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 184
+        },
+        "holdout": {
+          "FULL_WIN": 72,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 93
+        }
+      },
       "z_validation": -0.209181,
       "p_validation": 0.834307,
       "q_validation_bh": 0.920911,
@@ -722,6 +1448,16 @@
     },
     {
       "pattern": "AH_OU|A|AH=-1.00|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -1.0,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "OU",
       "train_n": 158,
@@ -730,6 +1466,29 @@
       "validation_roi": 0.010833,
       "holdout_n": 48,
       "holdout_roi": -0.153125,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 93,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 65
+        },
+        "validation": {
+          "FULL_WIN": 50,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 34
+        },
+        "holdout": {
+          "FULL_WIN": 24,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 24
+        }
+      },
       "z_validation": 0.099286,
       "p_validation": 0.920911,
       "q_validation_bh": 0.920911,
@@ -744,6 +1503,16 @@
     },
     {
       "pattern": "AH_OU|H|AH=+0.00|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": 0.0,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "OU",
       "train_n": 296,
@@ -752,6 +1521,29 @@
       "validation_roi": -0.048659,
       "holdout_n": 83,
       "holdout_roi": -0.155542,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 142,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 154
+        },
+        "validation": {
+          "FULL_WIN": 89,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 90
+        },
+        "holdout": {
+          "FULL_WIN": 36,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 47
+        }
+      },
       "z_validation": -0.651013,
       "p_validation": 0.515038,
       "q_validation_bh": 0.920911,
@@ -771,6 +1563,16 @@
     },
     {
       "pattern": "AH_OU|A|AH=-1.00|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "A",
+        "ah_line": -1.0,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "AH",
       "train_n": 158,
@@ -779,6 +1581,29 @@
       "validation_roi": 0.022738,
       "holdout_n": 48,
       "holdout_roi": -0.155833,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 59,
+          "HALF_WIN": 0,
+          "PUSH": 45,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 54
+        },
+        "validation": {
+          "FULL_WIN": 31,
+          "HALF_WIN": 0,
+          "PUSH": 25,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 28
+        },
+        "holdout": {
+          "FULL_WIN": 16,
+          "HALF_WIN": 0,
+          "PUSH": 9,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 23
+        }
+      },
       "z_validation": 0.208397,
       "p_validation": 0.834919,
       "q_validation_bh": 0.920911,
@@ -793,6 +1618,16 @@
     },
     {
       "pattern": "AH_OU|H|AH=-0.50|O2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -0.5,
+        "ou_line": 2.5,
+        "ou_side": "O",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "AH",
       "train_n": 554,
@@ -801,6 +1636,29 @@
       "validation_roi": -0.005368,
       "holdout_n": 164,
       "holdout_roi": -0.156951,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 257,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 297
+        },
+        "validation": {
+          "FULL_WIN": 187,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 180
+        },
+        "holdout": {
+          "FULL_WIN": 71,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 93
+        }
+      },
       "z_validation": -0.102836,
       "p_validation": 0.918093,
       "q_validation_bh": 0.920911,
@@ -836,6 +1694,16 @@
     },
     {
       "pattern": "AH_LINE|H|AH=-1.00",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "H",
+        "ah_line": -1.0,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_LINE",
       "market": "AH",
       "train_n": 360,
@@ -844,6 +1712,29 @@
       "validation_roi": 0.024492,
       "holdout_n": 114,
       "holdout_roi": -0.167368,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 132,
+          "HALF_WIN": 0,
+          "PUSH": 89,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 139
+        },
+        "validation": {
+          "FULL_WIN": 95,
+          "HALF_WIN": 0,
+          "PUSH": 56,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 85
+        },
+        "holdout": {
+          "FULL_WIN": 35,
+          "HALF_WIN": 0,
+          "PUSH": 27,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 52
+        }
+      },
       "z_validation": 0.376253,
       "p_validation": 0.706729,
       "q_validation_bh": 0.920911,
@@ -871,6 +1762,16 @@
     },
     {
       "pattern": "AH_LINE|A|AH=-1.00",
+      "pattern_key": {
+        "family": "AH_LINE",
+        "favorite_side": "A",
+        "ah_line": -1.0,
+        "ou_line": null,
+        "ou_side": null,
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_LINE",
       "market": "AH",
       "train_n": 184,
@@ -879,6 +1780,29 @@
       "validation_roi": 0.016238,
       "holdout_n": 59,
       "holdout_roi": -0.23322,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 67,
+          "HALF_WIN": 0,
+          "PUSH": 51,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 66
+        },
+        "validation": {
+          "FULL_WIN": 37,
+          "HALF_WIN": 0,
+          "PUSH": 30,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 34
+        },
+        "holdout": {
+          "FULL_WIN": 18,
+          "HALF_WIN": 0,
+          "PUSH": 10,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 31
+        }
+      },
       "z_validation": 0.16319,
       "p_validation": 0.870369,
       "q_validation_bh": 0.920911,
@@ -893,6 +1817,16 @@
     },
     {
       "pattern": "AH_OU|H|AH=-1.00|U2.50",
+      "pattern_key": {
+        "family": "AH_OU",
+        "favorite_side": "H",
+        "ah_line": -1.0,
+        "ou_line": 2.5,
+        "ou_side": "U",
+        "ah_price_band": null,
+        "ou_price_band": null,
+        "favorite_probability_band": null
+      },
       "family": "AH_OU",
       "market": "OU",
       "train_n": 309,
@@ -901,6 +1835,29 @@
       "validation_roi": -0.046114,
       "holdout_n": 96,
       "holdout_roi": -0.271563,
+      "settlement_distributions": {
+        "train": {
+          "FULL_WIN": 150,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 159
+        },
+        "validation": {
+          "FULL_WIN": 101,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 110
+        },
+        "holdout": {
+          "FULL_WIN": 34,
+          "HALF_WIN": 0,
+          "PUSH": 0,
+          "HALF_LOSS": 0,
+          "FULL_LOSS": 62
+        }
+      },
       "z_validation": -0.669845,
       "p_validation": 0.502957,
       "q_validation_bh": 0.920911,

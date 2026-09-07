@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "engine": "HIERARCHICAL_MULTI_MARKET_BACKTEST",
   "source_rows": 1064,
   "test_seasons": [
@@ -8,8 +8,8 @@
   ],
   "min_n": 20,
   "family_counts": {
-    "AH_LINE": 15,
-    "AH_OU": 27
+    "AH_OU": 27,
+    "AH_LINE": 15
   },
   "buckets": [
     {
@@ -29,16 +29,40 @@
       "n": 77,
       "ah_roi": 0.090909,
       "ou_roi": null,
+      "ah_settlements": {
+        "FULL_WIN": 43,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 34
+      },
+      "ou_settlements": null,
       "seasons": {
         "2324": {
           "n": 32,
           "ah_roi": 0.233437,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 20,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 12
+          },
+          "ou_settlements": null
         },
         "2425": {
           "n": 45,
           "ah_roi": -0.010444,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 23,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 22
+          },
+          "ou_settlements": null
         }
       }
     },
@@ -59,16 +83,40 @@
       "n": 61,
       "ah_roi": 0.181475,
       "ou_roi": null,
+      "ah_settlements": {
+        "FULL_WIN": 37,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 24
+      },
+      "ou_settlements": null,
       "seasons": {
         "2324": {
           "n": 30,
           "ah_roi": 0.235667,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 19,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 11
+          },
+          "ou_settlements": null
         },
         "2425": {
           "n": 31,
           "ah_roi": 0.129032,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 18,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 13
+          },
+          "ou_settlements": null
         }
       }
     },
@@ -89,16 +137,40 @@
       "n": 48,
       "ah_roi": -0.037083,
       "ou_roi": null,
+      "ah_settlements": {
+        "FULL_WIN": 17,
+        "HALF_WIN": 0,
+        "PUSH": 13,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 18
+      },
+      "ou_settlements": null,
       "seasons": {
         "2324": {
           "n": 26,
           "ah_roi": -0.020769,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 10,
+            "HALF_WIN": 0,
+            "PUSH": 6,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": null
         },
         "2425": {
           "n": 22,
           "ah_roi": -0.056364,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 8
+          },
+          "ou_settlements": null
         }
       }
     },
@@ -119,16 +191,40 @@
       "n": 45,
       "ah_roi": 0.013111,
       "ou_roi": null,
+      "ah_settlements": {
+        "FULL_WIN": 15,
+        "HALF_WIN": 0,
+        "PUSH": 18,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 12
+      },
+      "ou_settlements": null,
       "seasons": {
         "2324": {
           "n": 28,
           "ah_roi": 0.081786,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 11,
+            "HALF_WIN": 0,
+            "PUSH": 10,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 7
+          },
+          "ou_settlements": null
         },
         "2425": {
           "n": 17,
           "ah_roi": -0.1,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 4,
+            "HALF_WIN": 0,
+            "PUSH": 8,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          },
+          "ou_settlements": null
         }
       }
     },
@@ -149,16 +245,40 @@
       "n": 37,
       "ah_roi": -0.097027,
       "ou_roi": null,
+      "ah_settlements": {
+        "FULL_WIN": 11,
+        "HALF_WIN": 0,
+        "PUSH": 13,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 13
+      },
+      "ou_settlements": null,
       "seasons": {
         "2324": {
           "n": 15,
           "ah_roi": 0.023333,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 6,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 4
+          },
+          "ou_settlements": null
         },
         "2425": {
           "n": 22,
           "ah_roi": -0.179091,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          },
+          "ou_settlements": null
         }
       }
     },
@@ -179,16 +299,40 @@
       "n": 32,
       "ah_roi": -0.201875,
       "ou_roi": null,
+      "ah_settlements": {
+        "FULL_WIN": 13,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 19
+      },
+      "ou_settlements": null,
       "seasons": {
         "2324": {
           "n": 12,
           "ah_roi": -0.188333,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 7
+          },
+          "ou_settlements": null
         },
         "2425": {
           "n": 20,
           "ah_roi": -0.21,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 8,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 12
+          },
+          "ou_settlements": null
         }
       }
     },
@@ -209,26 +353,66 @@
       "n": 157,
       "ah_roi": -0.115096,
       "ou_roi": null,
+      "ah_settlements": {
+        "FULL_WIN": 71,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 86
+      },
+      "ou_settlements": null,
       "seasons": {
         "1920": {
           "n": 29,
           "ah_roi": -0.183793,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 12,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 17
+          },
+          "ou_settlements": null
         },
         "2021": {
           "n": 45,
           "ah_roi": 0.182444,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 27,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 18
+          },
+          "ou_settlements": null
         },
         "2122": {
           "n": 34,
           "ah_roi": -0.440294,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 10,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 24
+          },
+          "ou_settlements": null
         },
         "2223": {
           "n": 49,
           "ah_roi": -0.122041,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 22,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 27
+          },
+          "ou_settlements": null
         }
       }
     },
@@ -249,26 +433,66 @@
       "n": 95,
       "ah_roi": -0.109368,
       "ou_roi": null,
+      "ah_settlements": {
+        "FULL_WIN": 30,
+        "HALF_WIN": 0,
+        "PUSH": 26,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 39
+      },
+      "ou_settlements": null,
       "seasons": {
         "1920": {
           "n": 19,
           "ah_roi": -0.422632,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 2,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": null
         },
         "2021": {
           "n": 29,
           "ah_roi": 0.004483,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 11,
+            "HALF_WIN": 0,
+            "PUSH": 8,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": null
         },
         "2122": {
           "n": 26,
           "ah_roi": -0.112308,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 8,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 11
+          },
+          "ou_settlements": null
         },
         "2223": {
           "n": 21,
           "ah_roi": 0.020476,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 4,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 8
+          },
+          "ou_settlements": null
         }
       }
     },
@@ -289,26 +513,66 @@
       "n": 90,
       "ah_roi": 0.093333,
       "ou_roi": null,
+      "ah_settlements": {
+        "FULL_WIN": 50,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 40
+      },
+      "ou_settlements": null,
       "seasons": {
         "1920": {
           "n": 14,
           "ah_roi": 0.253571,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          },
+          "ou_settlements": null
         },
         "2021": {
           "n": 25,
           "ah_roi": 0.1168,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 14,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 11
+          },
+          "ou_settlements": null
         },
         "2122": {
           "n": 25,
           "ah_roi": 0.258,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 16,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          },
+          "ou_settlements": null
         },
         "2223": {
           "n": 26,
           "ah_roi": -0.173846,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 11,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 15
+          },
+          "ou_settlements": null
         }
       }
     },
@@ -329,26 +593,66 @@
       "n": 84,
       "ah_roi": 0.0075,
       "ou_roi": null,
+      "ah_settlements": {
+        "FULL_WIN": 34,
+        "HALF_WIN": 0,
+        "PUSH": 21,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 29
+      },
+      "ou_settlements": null,
       "seasons": {
         "1920": {
           "n": 16,
           "ah_roi": -0.038125,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 4,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 6
+          },
+          "ou_settlements": null
         },
         "2021": {
           "n": 32,
           "ah_roi": 0.038125,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 13,
+            "HALF_WIN": 0,
+            "PUSH": 9,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": null
         },
         "2122": {
           "n": 15,
           "ah_roi": -0.168,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 3,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 7
+          },
+          "ou_settlements": null
         },
         "2223": {
           "n": 21,
           "ah_roi": 0.120952,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 10,
+            "HALF_WIN": 0,
+            "PUSH": 5,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 6
+          },
+          "ou_settlements": null
         }
       }
     },
@@ -369,26 +673,66 @@
       "n": 83,
       "ah_roi": -0.156506,
       "ou_roi": null,
+      "ah_settlements": {
+        "FULL_WIN": 26,
+        "HALF_WIN": 0,
+        "PUSH": 21,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 36
+      },
+      "ou_settlements": null,
       "seasons": {
         "1920": {
           "n": 22,
           "ah_roi": -0.076818,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 8
+          },
+          "ou_settlements": null
         },
         "2021": {
           "n": 23,
           "ah_roi": -0.088261,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 8,
+            "HALF_WIN": 0,
+            "PUSH": 6,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          },
+          "ou_settlements": null
         },
         "2122": {
           "n": 21,
           "ah_roi": -0.215238,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          },
+          "ou_settlements": null
         },
         "2223": {
           "n": 17,
           "ah_roi": -0.279412,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 1,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": null
         }
       }
     },
@@ -409,26 +753,66 @@
       "n": 80,
       "ah_roi": 0.066625,
       "ou_roi": null,
+      "ah_settlements": {
+        "FULL_WIN": 44,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 36
+      },
+      "ou_settlements": null,
       "seasons": {
         "1920": {
           "n": 20,
           "ah_roi": -0.1285,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 11
+          },
+          "ou_settlements": null
         },
         "2021": {
           "n": 28,
           "ah_roi": 0.234643,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 18,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": null
         },
         "2122": {
           "n": 20,
           "ah_roi": -0.1975,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 8,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 12
+          },
+          "ou_settlements": null
         },
         "2223": {
           "n": 12,
           "ah_roi": 0.44,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 3
+          },
+          "ou_settlements": null
         }
       }
     },
@@ -449,26 +833,66 @@
       "n": 80,
       "ah_roi": 0.006875,
       "ou_roi": null,
+      "ah_settlements": {
+        "FULL_WIN": 30,
+        "HALF_WIN": 0,
+        "PUSH": 22,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 28
+      },
+      "ou_settlements": null,
       "seasons": {
         "1920": {
           "n": 11,
           "ah_roi": 0.003636,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 2,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 2
+          },
+          "ou_settlements": null
         },
         "2021": {
           "n": 37,
           "ah_roi": -0.025405,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 16,
+            "HALF_WIN": 0,
+            "PUSH": 5,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 16
+          },
+          "ou_settlements": null
         },
         "2122": {
           "n": 19,
           "ah_roi": 0.027895,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 6,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 6
+          },
+          "ou_settlements": null
         },
         "2223": {
           "n": 13,
           "ah_roi": 0.070769,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 4,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 4
+          },
+          "ou_settlements": null
         }
       }
     },
@@ -489,26 +913,66 @@
       "n": 27,
       "ah_roi": 0.12037,
       "ou_roi": null,
+      "ah_settlements": {
+        "FULL_WIN": 15,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 12
+      },
+      "ou_settlements": null,
       "seasons": {
         "1920": {
           "n": 5,
           "ah_roi": -0.188,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 2,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 3
+          },
+          "ou_settlements": null
         },
         "2021": {
           "n": 12,
           "ah_roi": 0.524167,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 3
+          },
+          "ou_settlements": null
         },
         "2122": {
           "n": 7,
           "ah_roi": -0.437143,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 2,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          },
+          "ou_settlements": null
         },
         "2223": {
           "n": 3,
           "ah_roi": 0.32,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 2,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 1
+          },
+          "ou_settlements": null
         }
       }
     },
@@ -529,26 +993,66 @@
       "n": 26,
       "ah_roi": -0.090769,
       "ou_roi": null,
+      "ah_settlements": {
+        "FULL_WIN": 8,
+        "HALF_WIN": 0,
+        "PUSH": 8,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 10
+      },
+      "ou_settlements": null,
       "seasons": {
         "1920": {
           "n": 7,
           "ah_roi": -0.571429,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 0,
+            "HALF_WIN": 0,
+            "PUSH": 3,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 4
+          },
+          "ou_settlements": null
         },
         "2021": {
           "n": 11,
           "ah_roi": 0.07,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 2,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 4
+          },
+          "ou_settlements": null
         },
         "2122": {
           "n": 5,
           "ah_roi": -0.222,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 1,
+            "HALF_WIN": 0,
+            "PUSH": 2,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 2
+          },
+          "ou_settlements": null
         },
         "2223": {
           "n": 3,
           "ah_roi": 0.66,
-          "ou_roi": null
+          "ou_roi": null,
+          "ah_settlements": {
+            "FULL_WIN": 2,
+            "HALF_WIN": 0,
+            "PUSH": 1,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 0
+          },
+          "ou_settlements": null
         }
       }
     },
@@ -569,16 +1073,58 @@
       "n": 73,
       "ah_roi": 0.093562,
       "ou_roi": 0.08411,
+      "ah_settlements": {
+        "FULL_WIN": 41,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 32
+      },
+      "ou_settlements": {
+        "FULL_WIN": 45,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 28
+      },
       "seasons": {
         "2324": {
           "n": 30,
           "ah_roi": 0.246,
-          "ou_roi": 0.087
+          "ou_roi": 0.087,
+          "ah_settlements": {
+            "FULL_WIN": 19,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 11
+          },
+          "ou_settlements": {
+            "FULL_WIN": 19,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 11
+          }
         },
         "2425": {
           "n": 43,
           "ah_roi": -0.012791,
-          "ou_roi": 0.082093
+          "ou_roi": 0.082093,
+          "ah_settlements": {
+            "FULL_WIN": 22,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 21
+          },
+          "ou_settlements": {
+            "FULL_WIN": 26,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 17
+          }
         }
       }
     },
@@ -599,16 +1145,58 @@
       "n": 73,
       "ah_roi": 0.093562,
       "ou_roi": -0.225342,
+      "ah_settlements": {
+        "FULL_WIN": 41,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 32
+      },
+      "ou_settlements": {
+        "FULL_WIN": 28,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 45
+      },
       "seasons": {
         "2324": {
           "n": 30,
           "ah_roi": 0.246,
-          "ou_roi": -0.256333
+          "ou_roi": -0.256333,
+          "ah_settlements": {
+            "FULL_WIN": 19,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 11
+          },
+          "ou_settlements": {
+            "FULL_WIN": 11,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 19
+          }
         },
         "2425": {
           "n": 43,
           "ah_roi": -0.012791,
-          "ou_roi": -0.203721
+          "ou_roi": -0.203721,
+          "ah_settlements": {
+            "FULL_WIN": 22,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 21
+          },
+          "ou_settlements": {
+            "FULL_WIN": 17,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 26
+          }
         }
       }
     },
@@ -629,16 +1217,58 @@
       "n": 60,
       "ah_roi": 0.201167,
       "ou_roi": -0.027333,
+      "ah_settlements": {
+        "FULL_WIN": 37,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 23
+      },
+      "ou_settlements": {
+        "FULL_WIN": 32,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 28
+      },
       "seasons": {
         "2324": {
           "n": 29,
           "ah_roi": 0.278276,
-          "ou_roi": -0.104483
+          "ou_roi": -0.104483,
+          "ah_settlements": {
+            "FULL_WIN": 19,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": {
+            "FULL_WIN": 14,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 15
+          }
         },
         "2425": {
           "n": 31,
           "ah_roi": 0.129032,
-          "ou_roi": 0.044839
+          "ou_roi": 0.044839,
+          "ah_settlements": {
+            "FULL_WIN": 18,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 13
+          },
+          "ou_settlements": {
+            "FULL_WIN": 18,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 13
+          }
         }
       }
     },
@@ -659,16 +1289,58 @@
       "n": 59,
       "ah_roi": 0.221525,
       "ou_roi": -0.070508,
+      "ah_settlements": {
+        "FULL_WIN": 37,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 22
+      },
+      "ou_settlements": {
+        "FULL_WIN": 28,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 31
+      },
       "seasons": {
         "2324": {
           "n": 29,
           "ah_roi": 0.278276,
-          "ou_roi": 0.025172
+          "ou_roi": 0.025172,
+          "ah_settlements": {
+            "FULL_WIN": 19,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": {
+            "FULL_WIN": 15,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 14
+          }
         },
         "2425": {
           "n": 30,
           "ah_roi": 0.166667,
-          "ou_roi": -0.163
+          "ou_roi": -0.163,
+          "ah_settlements": {
+            "FULL_WIN": 18,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 12
+          },
+          "ou_settlements": {
+            "FULL_WIN": 13,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 17
+          }
         }
       }
     },
@@ -689,16 +1361,58 @@
       "n": 48,
       "ah_roi": -0.037083,
       "ou_roi": 0.0575,
+      "ah_settlements": {
+        "FULL_WIN": 17,
+        "HALF_WIN": 0,
+        "PUSH": 13,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 18
+      },
+      "ou_settlements": {
+        "FULL_WIN": 27,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 21
+      },
       "seasons": {
         "2324": {
           "n": 26,
           "ah_roi": -0.020769,
-          "ou_roi": -0.201923
+          "ou_roi": -0.201923,
+          "ah_settlements": {
+            "FULL_WIN": 10,
+            "HALF_WIN": 0,
+            "PUSH": 6,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": {
+            "FULL_WIN": 11,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 15
+          }
         },
         "2425": {
           "n": 22,
           "ah_roi": -0.056364,
-          "ou_roi": 0.364091
+          "ou_roi": 0.364091,
+          "ah_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 8
+          },
+          "ou_settlements": {
+            "FULL_WIN": 16,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 6
+          }
         }
       }
     },
@@ -719,16 +1433,58 @@
       "n": 48,
       "ah_roi": -0.037083,
       "ou_roi": -0.175625,
+      "ah_settlements": {
+        "FULL_WIN": 17,
+        "HALF_WIN": 0,
+        "PUSH": 13,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 18
+      },
+      "ou_settlements": {
+        "FULL_WIN": 21,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 27
+      },
       "seasons": {
         "2324": {
           "n": 26,
           "ah_roi": -0.020769,
-          "ou_roi": 0.085
+          "ou_roi": 0.085,
+          "ah_settlements": {
+            "FULL_WIN": 10,
+            "HALF_WIN": 0,
+            "PUSH": 6,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": {
+            "FULL_WIN": 15,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 11
+          }
         },
         "2425": {
           "n": 22,
           "ah_roi": -0.056364,
-          "ou_roi": -0.483636
+          "ou_roi": -0.483636,
+          "ah_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 8
+          },
+          "ou_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 16
+          }
         }
       }
     },
@@ -749,16 +1505,58 @@
       "n": 42,
       "ah_roi": 0.014048,
       "ou_roi": -0.126667,
+      "ah_settlements": {
+        "FULL_WIN": 15,
+        "HALF_WIN": 0,
+        "PUSH": 15,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 12
+      },
+      "ou_settlements": {
+        "FULL_WIN": 21,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 21
+      },
       "seasons": {
         "2324": {
           "n": 26,
           "ah_roi": 0.088077,
-          "ou_roi": 0.026923
+          "ou_roi": 0.026923,
+          "ah_settlements": {
+            "FULL_WIN": 11,
+            "HALF_WIN": 0,
+            "PUSH": 8,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 7
+          },
+          "ou_settlements": {
+            "FULL_WIN": 15,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 11
+          }
         },
         "2425": {
           "n": 16,
           "ah_roi": -0.10625,
-          "ou_roi": -0.37625
+          "ou_roi": -0.37625,
+          "ah_settlements": {
+            "FULL_WIN": 4,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          },
+          "ou_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          }
         }
       }
     },
@@ -779,16 +1577,58 @@
       "n": 41,
       "ah_roi": -0.008049,
       "ou_roi": 0.066829,
+      "ah_settlements": {
+        "FULL_WIN": 14,
+        "HALF_WIN": 0,
+        "PUSH": 15,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 12
+      },
+      "ou_settlements": {
+        "FULL_WIN": 21,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 20
+      },
       "seasons": {
         "2324": {
           "n": 25,
           "ah_roi": 0.0548,
-          "ou_roi": -0.1
+          "ou_roi": -0.1,
+          "ah_settlements": {
+            "FULL_WIN": 10,
+            "HALF_WIN": 0,
+            "PUSH": 8,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 7
+          },
+          "ou_settlements": {
+            "FULL_WIN": 11,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 14
+          }
         },
         "2425": {
           "n": 16,
           "ah_roi": -0.10625,
-          "ou_roi": 0.3275
+          "ou_roi": 0.3275,
+          "ah_settlements": {
+            "FULL_WIN": 4,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          },
+          "ou_settlements": {
+            "FULL_WIN": 10,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 6
+          }
         }
       }
     },
@@ -809,16 +1649,58 @@
       "n": 35,
       "ah_roi": -0.074,
       "ou_roi": -0.000286,
+      "ah_settlements": {
+        "FULL_WIN": 11,
+        "HALF_WIN": 0,
+        "PUSH": 12,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 12
+      },
+      "ou_settlements": {
+        "FULL_WIN": 20,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 15
+      },
       "seasons": {
         "2324": {
           "n": 15,
           "ah_roi": 0.023333,
-          "ou_roi": 0.036667
+          "ou_roi": 0.036667,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 6,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 4
+          },
+          "ou_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 6
+          }
         },
         "2425": {
           "n": 20,
           "ah_roi": -0.147,
-          "ou_roi": -0.028
+          "ou_roi": -0.028,
+          "ah_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 6,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 8
+          },
+          "ou_settlements": {
+            "FULL_WIN": 11,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          }
         }
       }
     },
@@ -839,16 +1721,58 @@
       "n": 31,
       "ah_roi": 0.013226,
       "ou_roi": -0.218387,
+      "ah_settlements": {
+        "FULL_WIN": 11,
+        "HALF_WIN": 0,
+        "PUSH": 11,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 9
+      },
+      "ou_settlements": {
+        "FULL_WIN": 12,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 19
+      },
       "seasons": {
         "2324": {
           "n": 12,
           "ah_roi": 0.195833,
-          "ou_roi": -0.356667
+          "ou_roi": -0.356667,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 5,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 2
+          },
+          "ou_settlements": {
+            "FULL_WIN": 4,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 8
+          }
         },
         "2425": {
           "n": 19,
           "ah_roi": -0.102105,
-          "ou_roi": -0.131053
+          "ou_roi": -0.131053,
+          "ah_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 6,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 7
+          },
+          "ou_settlements": {
+            "FULL_WIN": 8,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 11
+          }
         }
       }
     },
@@ -869,16 +1793,58 @@
       "n": 28,
       "ah_roi": -0.2275,
       "ou_roi": 0.0375,
+      "ah_settlements": {
+        "FULL_WIN": 11,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 17
+      },
+      "ou_settlements": {
+        "FULL_WIN": 17,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 11
+      },
       "seasons": {
         "2324": {
           "n": 9,
           "ah_roi": -0.352222,
-          "ou_roi": 0.08
+          "ou_roi": 0.08,
+          "ah_settlements": {
+            "FULL_WIN": 3,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 6
+          },
+          "ou_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 3
+          }
         },
         "2425": {
           "n": 19,
           "ah_roi": -0.168421,
-          "ou_roi": 0.017368
+          "ou_roi": 0.017368,
+          "ah_settlements": {
+            "FULL_WIN": 8,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 11
+          },
+          "ou_settlements": {
+            "FULL_WIN": 11,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 8
+          }
         }
       }
     },
@@ -899,16 +1865,58 @@
       "n": 25,
       "ah_roi": -0.2128,
       "ou_roi": -0.1228,
+      "ah_settlements": {
+        "FULL_WIN": 10,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 15
+      },
+      "ou_settlements": {
+        "FULL_WIN": 10,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 15
+      },
       "seasons": {
         "2324": {
           "n": 7,
           "ah_roi": -0.167143,
-          "ou_roi": -0.384286
+          "ou_roi": -0.384286,
+          "ah_settlements": {
+            "FULL_WIN": 3,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 4
+          },
+          "ou_settlements": {
+            "FULL_WIN": 2,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          }
         },
         "2425": {
           "n": 18,
           "ah_roi": -0.230556,
-          "ou_roi": -0.021111
+          "ou_roi": -0.021111,
+          "ah_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 11
+          },
+          "ou_settlements": {
+            "FULL_WIN": 8,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          }
         }
       }
     },
@@ -929,26 +1937,96 @@
       "n": 154,
       "ah_roi": -0.110455,
       "ou_roi": -0.072273,
+      "ah_settlements": {
+        "FULL_WIN": 70,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 84
+      },
+      "ou_settlements": {
+        "FULL_WIN": 77,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 77
+      },
       "seasons": {
         "1920": {
           "n": 29,
           "ah_roi": -0.183793,
-          "ou_roi": 0.027931
+          "ou_roi": 0.027931,
+          "ah_settlements": {
+            "FULL_WIN": 12,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 17
+          },
+          "ou_settlements": {
+            "FULL_WIN": 16,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 13
+          }
         },
         "2021": {
           "n": 43,
           "ah_roi": 0.192326,
-          "ou_roi": 0.002791
+          "ou_roi": 0.002791,
+          "ah_settlements": {
+            "FULL_WIN": 26,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 17
+          },
+          "ou_settlements": {
+            "FULL_WIN": 24,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 19
+          }
         },
         "2122": {
           "n": 34,
           "ah_roi": -0.440294,
-          "ou_roi": -0.05
+          "ou_roi": -0.05,
+          "ah_settlements": {
+            "FULL_WIN": 10,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 24
+          },
+          "ou_settlements": {
+            "FULL_WIN": 18,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 16
+          }
         },
         "2223": {
           "n": 48,
           "ah_roi": -0.10375,
-          "ou_roi": -0.215833
+          "ou_roi": -0.215833,
+          "ah_settlements": {
+            "FULL_WIN": 22,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 26
+          },
+          "ou_settlements": {
+            "FULL_WIN": 19,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 29
+          }
         }
       }
     },
@@ -969,26 +2047,96 @@
       "n": 153,
       "ah_roi": -0.117124,
       "ou_roi": -0.004706,
+      "ah_settlements": {
+        "FULL_WIN": 69,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 84
+      },
+      "ou_settlements": {
+        "FULL_WIN": 78,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 75
+      },
       "seasons": {
         "1920": {
           "n": 28,
           "ah_roi": -0.154643,
-          "ou_roi": -0.1025
+          "ou_roi": -0.1025,
+          "ah_settlements": {
+            "FULL_WIN": 12,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 16
+          },
+          "ou_settlements": {
+            "FULL_WIN": 13,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 15
+          }
         },
         "2021": {
           "n": 42,
           "ah_roi": 0.175238,
-          "ou_roi": -0.059286
+          "ou_roi": -0.059286,
+          "ah_settlements": {
+            "FULL_WIN": 25,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 17
+          },
+          "ou_settlements": {
+            "FULL_WIN": 19,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 23
+          }
         },
         "2122": {
           "n": 34,
           "ah_roi": -0.440294,
-          "ou_roi": -0.038529
+          "ou_roi": -0.038529,
+          "ah_settlements": {
+            "FULL_WIN": 10,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 24
+          },
+          "ou_settlements": {
+            "FULL_WIN": 16,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 18
+          }
         },
         "2223": {
           "n": 49,
           "ah_roi": -0.122041,
-          "ou_roi": 0.121429
+          "ou_roi": 0.121429,
+          "ah_settlements": {
+            "FULL_WIN": 22,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 27
+          },
+          "ou_settlements": {
+            "FULL_WIN": 30,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 19
+          }
         }
       }
     },
@@ -1009,26 +2157,96 @@
       "n": 88,
       "ah_roi": 0.095,
       "ou_roi": -0.130455,
+      "ah_settlements": {
+        "FULL_WIN": 49,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 39
+      },
+      "ou_settlements": {
+        "FULL_WIN": 44,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 44
+      },
       "seasons": {
         "1920": {
           "n": 14,
           "ah_roi": 0.253571,
-          "ou_roi": -0.001429
+          "ou_roi": -0.001429,
+          "ah_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          },
+          "ou_settlements": {
+            "FULL_WIN": 8,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 6
+          }
         },
         "2021": {
           "n": 23,
           "ah_roi": 0.125217,
-          "ou_roi": 0.043043
+          "ou_roi": 0.043043,
+          "ah_settlements": {
+            "FULL_WIN": 13,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": {
+            "FULL_WIN": 14,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          }
         },
         "2122": {
           "n": 25,
           "ah_roi": 0.258,
-          "ou_roi": 0.046
+          "ou_roi": 0.046,
+          "ah_settlements": {
+            "FULL_WIN": 16,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          },
+          "ou_settlements": {
+            "FULL_WIN": 15,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          }
         },
         "2223": {
           "n": 26,
           "ah_roi": -0.173846,
-          "ou_roi": -0.523077
+          "ou_roi": -0.523077,
+          "ah_settlements": {
+            "FULL_WIN": 11,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 15
+          },
+          "ou_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 19
+          }
         }
       }
     },
@@ -1049,26 +2267,96 @@
       "n": 87,
       "ah_roi": 0.084138,
       "ou_roi": -0.009195,
+      "ah_settlements": {
+        "FULL_WIN": 48,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 39
+      },
+      "ou_settlements": {
+        "FULL_WIN": 44,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 43
+      },
       "seasons": {
         "1920": {
           "n": 14,
           "ah_roi": 0.253571,
-          "ou_roi": -0.090714
+          "ou_roi": -0.090714,
+          "ah_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          },
+          "ou_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 8
+          }
         },
         "2021": {
           "n": 22,
           "ah_roi": 0.083636,
-          "ou_roi": -0.134091
+          "ou_roi": -0.134091,
+          "ah_settlements": {
+            "FULL_WIN": 12,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 13
+          }
         },
         "2122": {
           "n": 25,
           "ah_roi": 0.258,
-          "ou_roi": -0.2364
+          "ou_roi": -0.2364,
+          "ah_settlements": {
+            "FULL_WIN": 16,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          },
+          "ou_settlements": {
+            "FULL_WIN": 10,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 15
+          }
         },
         "2223": {
           "n": 26,
           "ah_roi": -0.173846,
-          "ou_roi": 0.358846
+          "ou_roi": 0.358846,
+          "ah_settlements": {
+            "FULL_WIN": 11,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 15
+          },
+          "ou_settlements": {
+            "FULL_WIN": 19,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 7
+          }
         }
       }
     },
@@ -1089,26 +2377,96 @@
       "n": 85,
       "ah_roi": -0.103529,
       "ou_roi": -0.039059,
+      "ah_settlements": {
+        "FULL_WIN": 26,
+        "HALF_WIN": 0,
+        "PUSH": 25,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 34
+      },
+      "ou_settlements": {
+        "FULL_WIN": 48,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 37
+      },
       "seasons": {
         "1920": {
           "n": 19,
           "ah_roi": -0.422632,
-          "ou_roi": -0.358421
+          "ou_roi": -0.358421,
+          "ah_settlements": {
+            "FULL_WIN": 2,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 12
+          }
         },
         "2021": {
           "n": 20,
           "ah_roi": 0.086,
-          "ou_roi": 0.15
+          "ou_roi": 0.15,
+          "ah_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 8,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          },
+          "ou_settlements": {
+            "FULL_WIN": 14,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 6
+          }
         },
         "2122": {
           "n": 25,
           "ah_roi": -0.1168,
-          "ou_roi": -0.004
+          "ou_roi": -0.004,
+          "ah_settlements": {
+            "FULL_WIN": 8,
+            "HALF_WIN": 0,
+            "PUSH": 6,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 11
+          },
+          "ou_settlements": {
+            "FULL_WIN": 15,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          }
         },
         "2223": {
           "n": 21,
           "ah_roi": 0.020476,
-          "ou_roi": 0.028095
+          "ou_roi": 0.028095,
+          "ah_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 4,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 8
+          },
+          "ou_settlements": {
+            "FULL_WIN": 12,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          }
         }
       }
     },
@@ -1129,26 +2487,96 @@
       "n": 81,
       "ah_roi": -0.158642,
       "ou_roi": 0.128642,
+      "ah_settlements": {
+        "FULL_WIN": 25,
+        "HALF_WIN": 0,
+        "PUSH": 21,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 35
+      },
+      "ou_settlements": {
+        "FULL_WIN": 49,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 32
+      },
       "seasons": {
         "1920": {
           "n": 22,
           "ah_roi": -0.076818,
-          "ou_roi": 0.100909
+          "ou_roi": 0.100909,
+          "ah_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 8
+          },
+          "ou_settlements": {
+            "FULL_WIN": 13,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          }
         },
         "2021": {
           "n": 23,
           "ah_roi": -0.088261,
-          "ou_roi": 0.278696
+          "ou_roi": 0.278696,
+          "ah_settlements": {
+            "FULL_WIN": 8,
+            "HALF_WIN": 0,
+            "PUSH": 6,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          },
+          "ou_settlements": {
+            "FULL_WIN": 16,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 7
+          }
         },
         "2122": {
           "n": 21,
           "ah_roi": -0.215238,
-          "ou_roi": -0.06
+          "ou_roi": -0.06,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          },
+          "ou_settlements": {
+            "FULL_WIN": 11,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          }
         },
         "2223": {
           "n": 15,
           "ah_roi": -0.307333,
-          "ou_roi": 0.203333
+          "ou_roi": 0.203333,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 1,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          },
+          "ou_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 6
+          }
         }
       }
     },
@@ -1169,26 +2597,96 @@
       "n": 81,
       "ah_roi": -0.182716,
       "ou_roi": -0.206543,
+      "ah_settlements": {
+        "FULL_WIN": 24,
+        "HALF_WIN": 0,
+        "PUSH": 21,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 36
+      },
+      "ou_settlements": {
+        "FULL_WIN": 33,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 48
+      },
       "seasons": {
         "1920": {
           "n": 22,
           "ah_roi": -0.076818,
-          "ou_roi": -0.219091
+          "ou_roi": -0.219091,
+          "ah_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 8
+          },
+          "ou_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 13
+          }
         },
         "2021": {
           "n": 22,
           "ah_roi": -0.135455,
-          "ou_roi": -0.369545
+          "ou_roi": -0.369545,
+          "ah_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 6,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          },
+          "ou_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 15
+          }
         },
         "2122": {
           "n": 21,
           "ah_roi": -0.215238,
-          "ou_roi": -0.062857
+          "ou_roi": -0.062857,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          },
+          "ou_settlements": {
+            "FULL_WIN": 10,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 11
+          }
         },
         "2223": {
           "n": 16,
           "ah_roi": -0.350625,
-          "ou_roi": -0.15375
+          "ou_roi": -0.15375,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 1,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          }
         }
       }
     },
@@ -1209,26 +2707,96 @@
       "n": 78,
       "ah_roi": -0.072949,
       "ou_roi": -0.000128,
+      "ah_settlements": {
+        "FULL_WIN": 25,
+        "HALF_WIN": 0,
+        "PUSH": 23,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 30
+      },
+      "ou_settlements": {
+        "FULL_WIN": 37,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 41
+      },
       "seasons": {
         "1920": {
           "n": 19,
           "ah_roi": -0.422632,
-          "ou_roi": 0.325789
+          "ou_roi": 0.325789,
+          "ah_settlements": {
+            "FULL_WIN": 2,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": {
+            "FULL_WIN": 12,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 7
+          }
         },
         "2021": {
           "n": 17,
           "ah_roi": 0.107647,
-          "ou_roi": -0.233529
+          "ou_roi": -0.233529,
+          "ah_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 4
+          },
+          "ou_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 11
+          }
         },
         "2122": {
           "n": 21,
           "ah_roi": 0.00381,
-          "ou_roi": 0.042381
+          "ou_roi": 0.042381,
+          "ah_settlements": {
+            "FULL_WIN": 8,
+            "HALF_WIN": 0,
+            "PUSH": 5,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 8
+          },
+          "ou_settlements": {
+            "FULL_WIN": 10,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 11
+          }
         },
         "2223": {
           "n": 21,
           "ah_roi": 0.020476,
-          "ou_roi": -0.148571
+          "ou_roi": -0.148571,
+          "ah_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 4,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 8
+          },
+          "ou_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 12
+          }
         }
       }
     },
@@ -1249,26 +2817,96 @@
       "n": 78,
       "ah_roi": 0.035769,
       "ou_roi": -0.117949,
+      "ah_settlements": {
+        "FULL_WIN": 32,
+        "HALF_WIN": 0,
+        "PUSH": 21,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 25
+      },
+      "ou_settlements": {
+        "FULL_WIN": 37,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 41
+      },
       "seasons": {
         "1920": {
           "n": 16,
           "ah_roi": -0.038125,
-          "ou_roi": -0.208125
+          "ou_roi": -0.208125,
+          "ah_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 4,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 6
+          },
+          "ou_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          }
         },
         "2021": {
           "n": 30,
           "ah_roi": 0.043333,
-          "ou_roi": -0.145
+          "ou_roi": -0.145,
+          "ah_settlements": {
+            "FULL_WIN": 12,
+            "HALF_WIN": 0,
+            "PUSH": 9,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          },
+          "ou_settlements": {
+            "FULL_WIN": 13,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 17
+          }
         },
         "2122": {
           "n": 13,
           "ah_roi": -0.04,
-          "ou_roi": -0.236923
+          "ou_roi": -0.236923,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 3,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          },
+          "ou_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 8
+          }
         },
         "2223": {
           "n": 19,
           "ah_roi": 0.137895,
-          "ou_roi": 0.082105
+          "ou_roi": 0.082105,
+          "ah_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 5,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          },
+          "ou_settlements": {
+            "FULL_WIN": 12,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 7
+          }
         }
       }
     },
@@ -1289,26 +2927,96 @@
       "n": 77,
       "ah_roi": 0.024675,
       "ou_roi": -0.039091,
+      "ah_settlements": {
+        "FULL_WIN": 31,
+        "HALF_WIN": 0,
+        "PUSH": 21,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 25
+      },
+      "ou_settlements": {
+        "FULL_WIN": 40,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 37
+      },
       "seasons": {
         "1920": {
           "n": 16,
           "ah_roi": -0.038125,
-          "ou_roi": 0.060625
+          "ou_roi": 0.060625,
+          "ah_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 4,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 6
+          },
+          "ou_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 7
+          }
         },
         "2021": {
           "n": 30,
           "ah_roi": 0.043333,
-          "ou_roi": 0.032667
+          "ou_roi": 0.032667,
+          "ah_settlements": {
+            "FULL_WIN": 12,
+            "HALF_WIN": 0,
+            "PUSH": 9,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          },
+          "ou_settlements": {
+            "FULL_WIN": 17,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 13
+          }
         },
         "2122": {
           "n": 13,
           "ah_roi": -0.04,
-          "ou_roi": 0.107692
+          "ou_roi": 0.107692,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 3,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          },
+          "ou_settlements": {
+            "FULL_WIN": 8,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          }
         },
         "2223": {
           "n": 18,
           "ah_roi": 0.096111,
-          "ou_roi": -0.353333
+          "ou_roi": -0.353333,
+          "ah_settlements": {
+            "FULL_WIN": 8,
+            "HALF_WIN": 0,
+            "PUSH": 5,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          },
+          "ou_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 12
+          }
         }
       }
     },
@@ -1329,26 +3037,96 @@
       "n": 75,
       "ah_roi": 0.012667,
       "ou_roi": 0.0796,
+      "ah_settlements": {
+        "FULL_WIN": 28,
+        "HALF_WIN": 0,
+        "PUSH": 21,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 26
+      },
+      "ou_settlements": {
+        "FULL_WIN": 48,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 27
+      },
       "seasons": {
         "1920": {
           "n": 11,
           "ah_roi": 0.003636,
-          "ou_roi": 0.440909
+          "ou_roi": 0.440909,
+          "ah_settlements": {
+            "FULL_WIN": 2,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 2
+          },
+          "ou_settlements": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 2
+          }
         },
         "2021": {
           "n": 34,
           "ah_roi": 0.031176,
-          "ou_roi": -0.14
+          "ou_roi": -0.14,
+          "ah_settlements": {
+            "FULL_WIN": 16,
+            "HALF_WIN": 0,
+            "PUSH": 4,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 14
+          },
+          "ou_settlements": {
+            "FULL_WIN": 18,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 16
+          }
         },
         "2122": {
           "n": 17,
           "ah_roi": -0.062941,
-          "ou_roi": 0.379412
+          "ou_roi": 0.379412,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 6,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 6
+          },
+          "ou_settlements": {
+            "FULL_WIN": 14,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 3
+          }
         },
         "2223": {
           "n": 13,
           "ah_roi": 0.070769,
-          "ou_roi": -0.043846
+          "ou_roi": -0.043846,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 4,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 4
+          },
+          "ou_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 6
+          }
         }
       }
     },
@@ -1369,26 +3147,96 @@
       "n": 69,
       "ah_roi": 0.0,
       "ou_roi": -0.149565,
+      "ah_settlements": {
+        "FULL_WIN": 25,
+        "HALF_WIN": 0,
+        "PUSH": 20,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 24
+      },
+      "ou_settlements": {
+        "FULL_WIN": 27,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 42
+      },
       "seasons": {
         "1920": {
           "n": 11,
           "ah_roi": 0.003636,
-          "ou_roi": -0.635455
+          "ou_roi": -0.635455,
+          "ah_settlements": {
+            "FULL_WIN": 2,
+            "HALF_WIN": 0,
+            "PUSH": 7,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 2
+          },
+          "ou_settlements": {
+            "FULL_WIN": 2,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          }
         },
         "2021": {
           "n": 30,
           "ah_roi": 0.037,
-          "ou_roi": 0.178667
+          "ou_roi": 0.178667,
+          "ah_settlements": {
+            "FULL_WIN": 14,
+            "HALF_WIN": 0,
+            "PUSH": 4,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 12
+          },
+          "ou_settlements": {
+            "FULL_WIN": 16,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 14
+          }
         },
         "2122": {
           "n": 15,
           "ah_roi": -0.138,
-          "ou_roi": -0.584
+          "ou_roi": -0.584,
+          "ah_settlements": {
+            "FULL_WIN": 4,
+            "HALF_WIN": 0,
+            "PUSH": 5,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 6
+          },
+          "ou_settlements": {
+            "FULL_WIN": 3,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 12
+          }
         },
         "2223": {
           "n": 13,
           "ah_roi": 0.070769,
-          "ou_roi": 0.005385
+          "ou_roi": 0.005385,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 4,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 4
+          },
+          "ou_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 7
+          }
         }
       }
     },
@@ -1409,26 +3257,96 @@
       "n": 58,
       "ah_roi": 0.044138,
       "ou_roi": -0.101379,
+      "ah_settlements": {
+        "FULL_WIN": 31,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 27
+      },
+      "ou_settlements": {
+        "FULL_WIN": 33,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 25
+      },
       "seasons": {
         "1920": {
           "n": 14,
           "ah_roi": -0.300714,
-          "ou_roi": 0.249286
+          "ou_roi": 0.249286,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          },
+          "ou_settlements": {
+            "FULL_WIN": 11,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 3
+          }
         },
         "2021": {
           "n": 16,
           "ah_roi": 0.32375,
-          "ou_roi": 0.085
+          "ou_roi": 0.085,
+          "ah_settlements": {
+            "FULL_WIN": 11,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          },
+          "ou_settlements": {
+            "FULL_WIN": 11,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          }
         },
         "2122": {
           "n": 17,
           "ah_roi": -0.171765,
-          "ou_roi": -0.349412
+          "ou_roi": -0.349412,
+          "ah_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          }
         },
         "2223": {
           "n": 11,
           "ah_roi": 0.41,
-          "ou_roi": -0.435455
+          "ou_roi": -0.435455,
+          "ah_settlements": {
+            "FULL_WIN": 8,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 3
+          },
+          "ou_settlements": {
+            "FULL_WIN": 4,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 7
+          }
         }
       }
     },
@@ -1449,26 +3367,96 @@
       "n": 49,
       "ah_roi": -0.002857,
       "ou_roi": 0.114082,
+      "ah_settlements": {
+        "FULL_WIN": 25,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 24
+      },
+      "ou_settlements": {
+        "FULL_WIN": 24,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 25
+      },
       "seasons": {
         "1920": {
           "n": 12,
           "ah_roi": -0.345,
-          "ou_roi": -0.415
+          "ou_roi": -0.415,
+          "ah_settlements": {
+            "FULL_WIN": 4,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 8
+          },
+          "ou_settlements": {
+            "FULL_WIN": 3,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          }
         },
         "2021": {
           "n": 13,
           "ah_roi": 0.476154,
-          "ou_roi": -0.273077
+          "ou_roi": -0.273077,
+          "ah_settlements": {
+            "FULL_WIN": 10,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 3
+          },
+          "ou_settlements": {
+            "FULL_WIN": 4,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 9
+          }
         },
         "2122": {
           "n": 15,
           "ah_roi": -0.325333,
-          "ou_roi": 0.503333
+          "ou_roi": 0.503333,
+          "ah_settlements": {
+            "FULL_WIN": 5,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 10
+          },
+          "ou_settlements": {
+            "FULL_WIN": 10,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          }
         },
         "2223": {
           "n": 9,
           "ah_roi": 0.298889,
-          "ou_roi": 0.73
+          "ou_roi": 0.73,
+          "ah_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 3
+          },
+          "ou_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 2
+          }
         }
       }
     },
@@ -1489,26 +3477,96 @@
       "n": 21,
       "ah_roi": 0.152857,
       "ou_roi": -0.090952,
+      "ah_settlements": {
+        "FULL_WIN": 12,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 9
+      },
+      "ou_settlements": {
+        "FULL_WIN": 12,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 9
+      },
       "seasons": {
         "1920": {
           "n": 4,
           "ah_roi": -0.485,
-          "ou_roi": -0.61
+          "ou_roi": -0.61,
+          "ah_settlements": {
+            "FULL_WIN": 1,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 3
+          },
+          "ou_settlements": {
+            "FULL_WIN": 1,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 3
+          }
         },
         "2021": {
           "n": 7,
           "ah_roi": 1.035714,
-          "ou_roi": 0.35
+          "ou_roi": 0.35,
+          "ah_settlements": {
+            "FULL_WIN": 7,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 0
+          },
+          "ou_settlements": {
+            "FULL_WIN": 6,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 1
+          }
         },
         "2122": {
           "n": 7,
           "ah_roi": -0.437143,
-          "ou_roi": -0.312857
+          "ou_roi": -0.312857,
+          "ah_settlements": {
+            "FULL_WIN": 2,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 5
+          },
+          "ou_settlements": {
+            "FULL_WIN": 3,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 4
+          }
         },
         "2223": {
           "n": 3,
           "ah_roi": 0.32,
-          "ou_roi": 0.09
+          "ou_roi": 0.09,
+          "ah_settlements": {
+            "FULL_WIN": 2,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 1
+          },
+          "ou_settlements": {
+            "FULL_WIN": 2,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 1
+          }
         }
       }
     }
