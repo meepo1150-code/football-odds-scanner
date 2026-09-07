@@ -32,6 +32,10 @@ def _f(v: str) -> float:
     return x
 
 
+def _valid_asian_grid(line: float) -> bool:
+    return abs(line * 4 - round(line * 4)) < 1e-8
+
+
 def _devig_three(h: float, d: float, a: float) -> tuple[float, float, float]:
     raw = [1 / h, 1 / d, 1 / a]
     s = sum(raw)
@@ -71,6 +75,11 @@ def normalize_big5_csv(
             home_line = float(r["HandiSize"])
             ah_home, ah_away = _f(r["HandiHome"]), _f(r["HandiAway"])
         except (TypeError, ValueError, KeyError):
+            continue
+        # Some aggregate rows contain synthetic/averaged handicap values such as
+        # -2.30. These are not settleable Asian lines. Reject them rather than
+        # rounding to a nearby quarter-line, which would manufacture a market.
+        if not _valid_asian_grid(home_line):
             continue
 
         fair_h, _, fair_a = _devig_three(h, d, a)
