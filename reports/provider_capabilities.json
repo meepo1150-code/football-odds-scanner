@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "providers": [
     {
       "provider_id": "football_data_big5",
@@ -38,6 +38,25 @@
       "production_status": "OPENING_ONLY_NOT_EXECUTION_PRICE",
       "source_url": "https://sgodds.com/football/data",
       "note": "Provider page labels these files Opening Odds Data by League. Live probe found AH quarter-lines but O/U only 1.5/2.5/3.5/4.5. Never use this source as a current tradable execution-price feed."
+    },
+    {
+      "provider_id": "infersports_keyless",
+      "role": "candidate_current_execution",
+      "historical_depth": "opening endpoint and recent results documented; no qualified multi-season archive",
+      "league_scope": "provider-documented football coverage",
+      "ah_variable_lines": true,
+      "ou_variable_lines": true,
+      "ou_quarter_lines": true,
+      "opening_odds": true,
+      "closing_odds": false,
+      "movement_history": true,
+      "current_odds": true,
+      "api_key_required": false,
+      "zero_cost_confirmed": true,
+      "redistribution_status": "API terms apply; health probe stores metadata only",
+      "production_status": "GITHUB_RUNNER_UNREACHABLE",
+      "source_url": "https://api.infersports.dev",
+      "note": "OpenAPI documents current two-sided Asian markets and opening lines on a keyless tier, but the 2026-09-07 GitHub-hosted runner timed out on /v1/events before any quote was returned. Do not promote until live runner health passes."
     },
     {
       "provider_id": "isports_historical_all",
@@ -89,7 +108,8 @@
       "exact_line_and_price": true,
       "two_sided_prices_for_devig": true,
       "freshness_required": true,
-      "opening_snapshot_is_not_current": true
+      "opening_snapshot_is_not_current": true,
+      "operational_from_github_runner": true
     }
   }
 }

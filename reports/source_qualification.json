@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "gate": "SOURCE_QUALIFICATION",
   "providers": [
     {
@@ -11,6 +11,7 @@
       ],
       "execution_missing": [
         "current_odds",
+        "operational_execution_availability",
         "tradable_execution_price"
       ],
       "api_key_required": false,
@@ -27,6 +28,7 @@
       ],
       "execution_missing": [
         "current_odds",
+        "operational_execution_availability",
         "tradable_execution_price"
       ],
       "api_key_required": false,
@@ -34,11 +36,29 @@
       "production_status": "OPENING_ONLY_NOT_EXECUTION_PRICE"
     },
     {
+      "provider_id": "infersports_keyless",
+      "research_ready": false,
+      "execution_ready": false,
+      "research_missing": [
+        "multi_season_history"
+      ],
+      "execution_missing": [
+        "operational_execution_availability"
+      ],
+      "api_key_required": false,
+      "zero_cost_confirmed": true,
+      "production_status": "GITHUB_RUNNER_UNREACHABLE"
+    },
+    {
       "provider_id": "isports_historical_all",
-      "research_ready": true,
-      "execution_ready": true,
-      "research_missing": [],
-      "execution_missing": [],
+      "research_ready": false,
+      "execution_ready": false,
+      "research_missing": [
+        "multi_season_history"
+      ],
+      "execution_missing": [
+        "operational_execution_availability"
+      ],
       "api_key_required": true,
       "zero_cost_confirmed": false,
       "production_status": "KEY_REQUIRED_NOT_CONNECTED"
@@ -46,11 +66,13 @@
     {
       "provider_id": "tipsme_pro",
       "research_ready": false,
-      "execution_ready": true,
+      "execution_ready": false,
       "research_missing": [
         "multi_season_history"
       ],
-      "execution_missing": [],
+      "execution_missing": [
+        "operational_execution_availability"
+      ],
       "api_key_required": true,
       "zero_cost_confirmed": false,
       "production_status": "KEY_REQUIRED_NOT_CONNECTED"
@@ -60,5 +82,5 @@
   "zero_cost_execution": [],
   "rich_historical_gap_open": true,
   "execution_provider_gap_open": true,
-  "policy": "Fail closed. A scraper implementation or a provider marketing claim is not treated as a qualified dataset until actual accessible fields, history depth and price semantics are verified."
+  "policy": "Fail closed. Documented fields are insufficient for production execution: the provider must also be operationally reachable from the runtime and explicitly promoted to ACTIVE_EXECUTION."
 }
