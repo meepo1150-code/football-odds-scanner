@@ -1,0 +1,930 @@
+{
+  "schema_version": "1.0",
+  "engine": "THREE_WAY_CROSS_LEAGUE_AUDIT",
+  "source_rows": 5053,
+  "split": {
+    "train": [
+      "1920",
+      "2021",
+      "2122"
+    ],
+    "validation": [
+      "2223",
+      "2324"
+    ],
+    "holdout": [
+      "2425"
+    ]
+  },
+  "gates": {
+    "min_train_n": 150,
+    "min_validation_n": 80,
+    "min_holdout_n": 40,
+    "validation_fdr_alpha": 0.1,
+    "cross_league_min_eligible": 3,
+    "cross_league_positive_share": 0.6
+  },
+  "tested_patterns": 29,
+  "global_robust_count": 0,
+  "league_specific_or_unstable_count": 0,
+  "watchlist_count": 0,
+  "note": "Holdout 2024/25 is evaluated once under frozen gates. Do not retune thresholds from holdout outcomes and then reuse the same season as untouched evidence.",
+  "patterns": [
+    {
+      "pattern": "AH_OU|A|AH=-0.50|O2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 271,
+      "train_roi": 0.01941,
+      "validation_n": 204,
+      "validation_roi": -0.042794,
+      "holdout_n": 92,
+      "holdout_roi": 0.208804,
+      "z_validation": -0.611221,
+      "p_validation": 0.541054,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 2,
+        "positive_leagues": 2,
+        "positive_share": 1.0,
+        "stable": false,
+        "details": {
+          "E0": {
+            "n": 21,
+            "roi": 0.11381
+          },
+          "I1": {
+            "n": 30,
+            "roi": 0.166667
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_LINE|A|AH=-0.50",
+      "family": "AH_LINE",
+      "market": "AH",
+      "train_n": 292,
+      "train_roi": 0.005685,
+      "validation_n": 222,
+      "validation_roi": -0.033739,
+      "holdout_n": 104,
+      "holdout_roi": 0.200769,
+      "z_validation": -0.5027,
+      "p_validation": 0.615175,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 2,
+        "positive_leagues": 2,
+        "positive_share": 1.0,
+        "stable": false,
+        "details": {
+          "E0": {
+            "n": 25,
+            "roi": 0.256
+          },
+          "I1": {
+            "n": 31,
+            "roi": 0.129032
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|A|AH=-0.50|U2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 271,
+      "train_roi": 0.025904,
+      "validation_n": 199,
+      "validation_roi": -0.017387,
+      "holdout_n": 87,
+      "holdout_roi": 0.169195,
+      "z_validation": -0.245274,
+      "p_validation": 0.806244,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 1,
+        "positive_leagues": 1,
+        "positive_share": 1.0,
+        "stable": false,
+        "details": {
+          "I1": {
+            "n": 31,
+            "roi": 0.129032
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=-1.00|O2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 328,
+      "train_roi": -0.061799,
+      "validation_n": 221,
+      "validation_roi": -0.072805,
+      "holdout_n": 102,
+      "holdout_roi": 0.143137,
+      "z_validation": -1.082324,
+      "p_validation": 0.279109,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 3,
+        "positive_leagues": 3,
+        "positive_share": 1.0,
+        "stable": true,
+        "details": {
+          "E0": {
+            "n": 24,
+            "roi": 0.074167
+          },
+          "F1": {
+            "n": 25,
+            "roi": 0.096
+          },
+          "I1": {
+            "n": 22,
+            "roi": 0.364091
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|A|AH=-0.00|O2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 290,
+      "train_roi": -0.018759,
+      "validation_n": 188,
+      "validation_roi": -0.045479,
+      "holdout_n": 75,
+      "holdout_roi": 0.0824,
+      "z_validation": -0.623577,
+      "p_validation": 0.532906,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 0,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {}
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|A|AH=-0.00|O2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 290,
+      "train_roi": -0.036207,
+      "validation_n": 188,
+      "validation_roi": 0.085904,
+      "holdout_n": 75,
+      "holdout_roi": 0.0532,
+      "z_validation": 1.177856,
+      "p_validation": 0.238854,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 0,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {}
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|A|AH=-0.00|U2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 294,
+      "train_roi": -0.033571,
+      "validation_n": 190,
+      "validation_roi": 0.084579,
+      "holdout_n": 77,
+      "holdout_roi": 0.050519,
+      "z_validation": 1.165841,
+      "p_validation": 0.243679,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 0,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {}
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=+0.00|U2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 306,
+      "train_roi": -0.06415,
+      "validation_n": 186,
+      "validation_roi": -0.068548,
+      "holdout_n": 83,
+      "holdout_roi": 0.032892,
+      "z_validation": -0.93487,
+      "p_validation": 0.349855,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 2,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {
+          "E0": {
+            "n": 23,
+            "roi": -0.055217
+          },
+          "I1": {
+            "n": 20,
+            "roi": -0.028
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_LINE|A|AH=-0.00",
+      "family": "AH_LINE",
+      "market": "AH",
+      "train_n": 325,
+      "train_roi": -0.021631,
+      "validation_n": 207,
+      "validation_roi": 0.06,
+      "holdout_n": 88,
+      "holdout_roi": 0.017841,
+      "z_validation": 0.86325,
+      "p_validation": 0.388,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 1,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {
+          "SP1": {
+            "n": 23,
+            "roi": -0.046522
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|A|AH=-0.50|O2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 271,
+      "train_roi": -0.027749,
+      "validation_n": 204,
+      "validation_roi": -0.027059,
+      "holdout_n": 92,
+      "holdout_roi": 0.013696,
+      "z_validation": -0.38648,
+      "p_validation": 0.699141,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 2,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {
+          "E0": {
+            "n": 21,
+            "roi": -0.19619
+          },
+          "I1": {
+            "n": 30,
+            "roi": -0.163
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=-0.50|U2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 555,
+      "train_roi": -0.021766,
+      "validation_n": 373,
+      "validation_roi": -0.069437,
+      "holdout_n": 165,
+      "holdout_roi": -0.012909,
+      "z_validation": -1.341051,
+      "p_validation": 0.179904,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 5,
+        "positive_leagues": 3,
+        "positive_share": 0.6,
+        "stable": true,
+        "details": {
+          "D1": {
+            "n": 27,
+            "roi": -0.392963
+          },
+          "E0": {
+            "n": 27,
+            "roi": -0.144815
+          },
+          "F1": {
+            "n": 32,
+            "roi": 0.266562
+          },
+          "I1": {
+            "n": 43,
+            "roi": 0.082093
+          },
+          "SP1": {
+            "n": 36,
+            "roi": 0.009167
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|A|AH=-0.50|U2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 271,
+      "train_roi": -0.097417,
+      "validation_n": 199,
+      "validation_roi": -0.065528,
+      "holdout_n": 87,
+      "holdout_roi": -0.068161,
+      "z_validation": -0.924386,
+      "p_validation": 0.355285,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 1,
+        "positive_leagues": 1,
+        "positive_share": 1.0,
+        "stable": false,
+        "details": {
+          "I1": {
+            "n": 31,
+            "roi": 0.044839
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_LINE|H|AH=+0.00",
+      "family": "AH_LINE",
+      "market": "AH",
+      "train_n": 343,
+      "train_roi": -0.041749,
+      "validation_n": 208,
+      "validation_roi": 0.081154,
+      "holdout_n": 95,
+      "holdout_roi": -0.075579,
+      "z_validation": 1.17042,
+      "p_validation": 0.241832,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 2,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {
+          "E0": {
+            "n": 25,
+            "roi": -0.0424
+          },
+          "I1": {
+            "n": 22,
+            "roi": -0.179091
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_LINE|H|AH=-1.50",
+      "family": "AH_LINE",
+      "market": "AH",
+      "train_n": 217,
+      "train_roi": -0.151613,
+      "validation_n": 141,
+      "validation_roi": -0.01305,
+      "holdout_n": 87,
+      "holdout_roi": -0.098046,
+      "z_validation": -0.15496,
+      "p_validation": 0.876853,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 2,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {
+          "E0": {
+            "n": 27,
+            "roi": -0.281852
+          },
+          "I1": {
+            "n": 20,
+            "roi": -0.21
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=-1.00|U2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 309,
+      "train_roi": -0.006408,
+      "validation_n": 211,
+      "validation_roi": 0.026967,
+      "holdout_n": 96,
+      "holdout_roi": -0.110729,
+      "z_validation": 0.391718,
+      "p_validation": 0.695266,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 3,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {
+          "E0": {
+            "n": 21,
+            "roi": -0.299048
+          },
+          "F1": {
+            "n": 24,
+            "roi": -0.03625
+          },
+          "I1": {
+            "n": 22,
+            "roi": -0.056364
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=-0.50|O2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 554,
+      "train_roi": -0.061282,
+      "validation_n": 367,
+      "validation_roi": -0.031689,
+      "holdout_n": 164,
+      "holdout_roi": -0.112561,
+      "z_validation": -0.607074,
+      "p_validation": 0.543802,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 5,
+        "positive_leagues": 2,
+        "positive_share": 0.4,
+        "stable": false,
+        "details": {
+          "D1": {
+            "n": 29,
+            "roi": 0.281034
+          },
+          "E0": {
+            "n": 29,
+            "roi": 0.013448
+          },
+          "F1": {
+            "n": 33,
+            "roi": -0.365152
+          },
+          "I1": {
+            "n": 43,
+            "roi": -0.203721
+          },
+          "SP1": {
+            "n": 30,
+            "roi": -0.206333
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=-1.00|O2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 328,
+      "train_roi": -0.025274,
+      "validation_n": 221,
+      "validation_roi": 0.043982,
+      "holdout_n": 102,
+      "holdout_roi": -0.124706,
+      "z_validation": 0.653839,
+      "p_validation": 0.513215,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 3,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {
+          "E0": {
+            "n": 24,
+            "roi": -0.265417
+          },
+          "F1": {
+            "n": 25,
+            "roi": -0.0748
+          },
+          "I1": {
+            "n": 22,
+            "roi": -0.056364
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=+0.00|O2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 296,
+      "train_roi": -0.043851,
+      "validation_n": 179,
+      "validation_roi": 0.045196,
+      "holdout_n": 83,
+      "holdout_roi": -0.126145,
+      "z_validation": 0.604681,
+      "p_validation": 0.545391,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 1,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {
+          "E0": {
+            "n": 23,
+            "roi": -0.124783
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|A|AH=-0.00|U2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 294,
+      "train_roi": -0.083537,
+      "validation_n": 190,
+      "validation_roi": -0.046737,
+      "holdout_n": 77,
+      "holdout_roi": -0.135065,
+      "z_validation": -0.644225,
+      "p_validation": 0.519429,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 0,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {}
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=+0.00|U2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 306,
+      "train_roi": -0.044281,
+      "validation_n": 186,
+      "validation_roi": 0.027419,
+      "holdout_n": 83,
+      "holdout_roi": -0.136747,
+      "z_validation": 0.373945,
+      "p_validation": 0.708445,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 2,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {
+          "E0": {
+            "n": 23,
+            "roi": -0.124783
+          },
+          "I1": {
+            "n": 20,
+            "roi": -0.147
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_LINE|H|AH=-0.50",
+      "family": "AH_LINE",
+      "market": "AH",
+      "train_n": 603,
+      "train_roi": -0.086915,
+      "validation_n": 401,
+      "validation_roi": -0.005362,
+      "holdout_n": 194,
+      "holdout_roi": -0.144381,
+      "z_validation": -0.107374,
+      "p_validation": 0.914492,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 5,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {
+          "D1": {
+            "n": 32,
+            "roi": -0.324062
+          },
+          "E0": {
+            "n": 32,
+            "roi": -0.194063
+          },
+          "F1": {
+            "n": 34,
+            "roi": -0.148235
+          },
+          "I1": {
+            "n": 45,
+            "roi": -0.010444
+          },
+          "SP1": {
+            "n": 51,
+            "roi": -0.116078
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=-0.50|U2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 555,
+      "train_roi": -0.081423,
+      "validation_n": 373,
+      "validation_roi": -0.010831,
+      "holdout_n": 165,
+      "holdout_roi": -0.150606,
+      "z_validation": -0.209181,
+      "p_validation": 0.834307,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 5,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {
+          "D1": {
+            "n": 27,
+            "roi": -0.272963
+          },
+          "E0": {
+            "n": 27,
+            "roi": -0.335556
+          },
+          "F1": {
+            "n": 32,
+            "roi": -0.153125
+          },
+          "I1": {
+            "n": 43,
+            "roi": -0.012791
+          },
+          "SP1": {
+            "n": 36,
+            "roi": -0.0825
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|A|AH=-1.00|O2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 158,
+      "train_roi": 0.017025,
+      "validation_n": 84,
+      "validation_roi": 0.010833,
+      "holdout_n": 48,
+      "holdout_roi": -0.153125,
+      "z_validation": 0.099286,
+      "p_validation": 0.920911,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 0,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {}
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=+0.00|O2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 296,
+      "train_roi": -0.068311,
+      "validation_n": 179,
+      "validation_roi": -0.048659,
+      "holdout_n": 83,
+      "holdout_roi": -0.155542,
+      "z_validation": -0.651013,
+      "p_validation": 0.515038,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 1,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {
+          "E0": {
+            "n": 23,
+            "roi": -0.065217
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|A|AH=-1.00|O2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 158,
+      "train_roi": 0.015759,
+      "validation_n": 84,
+      "validation_roi": 0.022738,
+      "holdout_n": 48,
+      "holdout_roi": -0.155833,
+      "z_validation": 0.208397,
+      "p_validation": 0.834919,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 0,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {}
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=-0.50|O2.50",
+      "family": "AH_OU",
+      "market": "AH",
+      "train_n": 554,
+      "train_roi": -0.087509,
+      "validation_n": 367,
+      "validation_roi": -0.005368,
+      "holdout_n": 164,
+      "holdout_roi": -0.156951,
+      "z_validation": -0.102836,
+      "p_validation": 0.918093,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 5,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {
+          "D1": {
+            "n": 29,
+            "roi": -0.323103
+          },
+          "E0": {
+            "n": 29,
+            "roi": -0.317586
+          },
+          "F1": {
+            "n": 33,
+            "roi": -0.178788
+          },
+          "I1": {
+            "n": 43,
+            "roi": -0.012791
+          },
+          "SP1": {
+            "n": 30,
+            "roi": -0.023667
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_LINE|H|AH=-1.00",
+      "family": "AH_LINE",
+      "market": "AH",
+      "train_n": 360,
+      "train_roi": -0.042889,
+      "validation_n": 236,
+      "validation_roi": 0.024492,
+      "holdout_n": 114,
+      "holdout_roi": -0.167368,
+      "z_validation": 0.376253,
+      "p_validation": 0.706729,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 3,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {
+          "E0": {
+            "n": 31,
+            "roi": -0.249355
+          },
+          "F1": {
+            "n": 27,
+            "roi": -0.143333
+          },
+          "I1": {
+            "n": 22,
+            "roi": -0.056364
+          }
+        }
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_LINE|A|AH=-1.00",
+      "family": "AH_LINE",
+      "market": "AH",
+      "train_n": 184,
+      "train_roi": -0.009348,
+      "validation_n": 101,
+      "validation_roi": 0.016238,
+      "holdout_n": 59,
+      "holdout_roi": -0.23322,
+      "z_validation": 0.16319,
+      "p_validation": 0.870369,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 0,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {}
+      },
+      "status": "REJECT"
+    },
+    {
+      "pattern": "AH_OU|H|AH=-1.00|U2.50",
+      "family": "AH_OU",
+      "market": "OU",
+      "train_n": 309,
+      "train_roi": -0.01068,
+      "validation_n": 211,
+      "validation_roi": -0.046114,
+      "holdout_n": 96,
+      "holdout_roi": -0.271563,
+      "z_validation": -0.669845,
+      "p_validation": 0.502957,
+      "q_validation_bh": 0.920911,
+      "cross_league_holdout": {
+        "eligible_leagues": 3,
+        "positive_leagues": 0,
+        "positive_share": 0.0,
+        "stable": false,
+        "details": {
+          "E0": {
+            "n": 21,
+            "roi": -0.264762
+          },
+          "F1": {
+            "n": 24,
+            "roi": -0.2025
+          },
+          "I1": {
+            "n": 22,
+            "roi": -0.483636
+          }
+        }
+      },
+      "status": "REJECT"
+    }
+  ]
+}

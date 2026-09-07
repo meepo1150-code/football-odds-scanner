@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "engine": "BIG5_DATA_BREADTH_AUDIT",
   "rows": 5053,
   "divisions": [
@@ -25,6 +25,26 @@
     "paired_tests": 35,
     "robust": 0,
     "watchlist": 1
+  },
+  "three_way": {
+    "tested_patterns": 29,
+    "global_robust": 0,
+    "league_specific_or_unstable": 0,
+    "watchlist": 0,
+    "split": {
+      "train": [
+        "1920",
+        "2021",
+        "2122"
+      ],
+      "validation": [
+        "2223",
+        "2324"
+      ],
+      "holdout": [
+        "2425"
+      ]
+    }
   },
   "leagues": {
     "D1": {
