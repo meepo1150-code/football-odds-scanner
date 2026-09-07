@@ -66,6 +66,25 @@ PROVIDERS = (
         note="Provider page labels these files Opening Odds Data by League. Live probe found AH quarter-lines but O/U only 1.5/2.5/3.5/4.5. Never use this source as a current tradable execution-price feed.",
     ),
     ProviderCapability(
+        provider_id="infersports_keyless",
+        role="candidate_current_execution",
+        historical_depth="opening endpoint and recent results documented; no qualified multi-season archive",
+        league_scope="provider-documented football coverage",
+        ah_variable_lines=True,
+        ou_variable_lines=True,
+        ou_quarter_lines=True,
+        opening_odds=True,
+        closing_odds=False,
+        movement_history=True,
+        current_odds=True,
+        api_key_required=False,
+        zero_cost_confirmed=True,
+        redistribution_status="API terms apply; health probe stores metadata only",
+        production_status="GITHUB_RUNNER_UNREACHABLE",
+        source_url="https://api.infersports.dev",
+        note="OpenAPI documents current two-sided Asian markets and opening lines on a keyless tier, but the 2026-09-07 GitHub-hosted runner timed out on /v1/events before any quote was returned. Do not promote until live runner health passes.",
+    ),
+    ProviderCapability(
         provider_id="isports_historical_all",
         role="candidate_rich_historical",
         historical_depth="plan-dependent historical endpoint",
@@ -109,7 +128,7 @@ PROVIDERS = (
 def capability_matrix() -> dict:
     rows = [asdict(x) for x in PROVIDERS]
     return {
-        "schema_version": "1.1",
+        "schema_version": "1.2",
         "providers": rows,
         "research_requirements": {
             "rich_joint_pattern_engine": {
@@ -123,6 +142,7 @@ def capability_matrix() -> dict:
                 "two_sided_prices_for_devig": True,
                 "freshness_required": True,
                 "opening_snapshot_is_not_current": True,
+                "operational_from_github_runner": True,
             },
         },
     }
