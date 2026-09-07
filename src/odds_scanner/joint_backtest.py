@@ -28,29 +28,20 @@ def build_joint_report(
     min_n: int = 20,
     league_scope: str = "GLOBAL",
 ) -> dict:
-    """Backtest joint market structures without forcing candidate selection.
-
-    Each match contributes two pattern observations: one for Over and one for
-    Under at the available total line. Both observations share the favourite AH
-    structure but are evaluated independently on the total side.
-    """
     tests = set(test_seasons or {"2324", "2425", "2526"})
     groups: dict[tuple[str, MarketPatternKey], list[dict]] = defaultdict(list)
     skipped_price = 0
 
     for row in rows:
         ah_price = float(row["favorite_ah_price"])
-        if not DEFAULT_POLICY.in_research_price_range(ah_price):
+        if not DEFAULT_POLICY.research_price_is_supported(ah_price):
             skipped_price += 1
             continue
-        ah_other = None
-        # Normalized rows currently retain only favourite AH price. AH fair-share
-        # is therefore deliberately omitted until both sides are persisted.
         for ou_side, ou_price, other_price in (
             ("O", float(row["over_price"]), float(row["under_price"])),
             ("U", float(row["under_price"]), float(row["over_price"])),
         ):
-            if not DEFAULT_POLICY.in_research_price_range(ou_price):
+            if not DEFAULT_POLICY.research_price_is_supported(ou_price):
                 continue
             key = MarketPatternKey.from_values(
                 league_scope=league_scope,
