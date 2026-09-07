@@ -4,7 +4,8 @@ from pathlib import Path
 
 BASE = "https://www.football-data.co.uk"
 FIXTURES_URL = f"{BASE}/matches/resources/fixtures.csv"
-MIRROR_URL = "https://raw.githubusercontent.com/AnishKhetani/premier-league-data/main/data/processed/results_with_odds.csv"
+MIRROR_ODDS_URL = "https://raw.githubusercontent.com/AnishKhetani/premier-league-data/main/data/processed/results_with_odds.csv"
+MIRROR_RESULTS_URL = "https://raw.githubusercontent.com/AnishKhetani/premier-league-data/main/data/processed/results.csv"
 SEASONS = ["1617","1718","1819","1920","2021","2122","2223","2324","2425","2526"]
 
 def season_url(code: str, division: str = "E0") -> str:
@@ -65,7 +66,9 @@ def _canonical_season_code(row: dict[str, str]) -> str:
     if m:
         start = int(m.group(1))
         return f"{start % 100:02d}{(start + 1) % 100:02d}"
-    return ""
+    match_id = (row.get("match_id") or "").strip()
+    m = re.match(r"^(\d{4})-", match_id)
+    return m.group(1) if m else ""
 
 def _write_raw_like(rows: list[dict[str, str]], path: Path) -> None:
     fields = ["Div","Date","HomeTeam","AwayTeam","FTR","AvgH","AvgD","AvgA","B365H","B365D","B365A","AvgCH","AvgCD","AvgCA","B365CH","B365CD","B365CA"]
@@ -78,19 +81,25 @@ def _write_raw_like(rows: list[dict[str, str]], path: Path) -> None:
 def _download_history_mirror(out_dir: Path, seasons: list[str], division: str) -> list[Path]:
     if division != "E0":
         raise ValueError("GitHub mirror fallback currently supports E0 only")
-    payload = fetch_bytes(MIRROR_URL, attempts=3)
-    source_rows = decode_csv(payload)
+    odds_rows = decode_csv(fetch_bytes(MIRROR_ODDS_URL, attempts=3))
+    result_rows = decode_csv(fetch_bytes(MIRROR_RESULTS_URL, attempts=3))
+    results_by_id = {r.get("match_id", ""): r for r in result_rows if r.get("match_id")}
     by_season: dict[str, list[dict[str, str]]] = {s: [] for s in seasons}
-    for r in source_rows:
+    unmatched = 0
+    for r in odds_rows:
         code = _canonical_season_code(r)
         if code not in by_season:
             continue
+        result = results_by_id.get(r.get("match_id", ""))
+        if not result:
+            unmatched += 1
+            continue
         mapped = {
             "Div": "E0",
-            "Date": r.get("date", ""),
-            "HomeTeam": r.get("home_team", ""),
-            "AwayTeam": r.get("away_team", ""),
-            "FTR": r.get("ftr", ""),
+            "Date": r.get("date", "") or result.get("date", ""),
+            "HomeTeam": r.get("home_team", "") or result.get("home_team", ""),
+            "AwayTeam": r.get("away_team", "") or result.get("away_team", ""),
+            "FTR": result.get("ftr", ""),
             "AvgH": r.get("market_avg_1x2_home", ""),
             "AvgD": r.get("market_avg_1x2_draw", ""),
             "AvgA": r.get("market_avg_1x2_away", ""),
@@ -107,18 +116,23 @@ def _download_history_mirror(out_dir: Path, seasons: list[str], division: str) -
         if mapped["HomeTeam"] and mapped["AwayTeam"] and mapped["FTR"] in {"H","D","A"}:
             by_season[code].append(mapped)
     paths: list[Path] = []
+    season_counts: dict[str, int] = {}
     for s in seasons:
         rows = by_season[s]
+        season_counts[s] = len(rows)
         if len(rows) < 300:
-            raise ValueError(f"Mirror season {s} is incomplete: {len(rows)} rows")
+            raise ValueError(f"Mirror season {s} is incomplete after join: {len(rows)} rows")
         p = out_dir / f"{division}_{s}.csv"
         _write_raw_like(rows, p)
         paths.append(p)
     (out_dir / "provenance.json").write_text(json.dumps({
-        "historical_source": "github_mirror",
-        "mirror_url": MIRROR_URL,
+        "historical_source": "github_mirror_join",
+        "mirror_odds_url": MIRROR_ODDS_URL,
+        "mirror_results_url": MIRROR_RESULTS_URL,
         "upstream_source": BASE,
         "seasons": seasons,
+        "season_counts": season_counts,
+        "unmatched_odds_rows": unmatched,
     }, indent=2), encoding="utf-8")
     return paths
 
