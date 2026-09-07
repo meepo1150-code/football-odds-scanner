@@ -1,5 +1,6 @@
+from datetime import datetime, timezone
 from odds_scanner.five_dollar_provider import parse_fixture_odds
-from odds_scanner.market_contract import execution_safety_reason
+from odds_scanner.execution_safety import execution_snapshot_status
 
 
 def test_latest_pre_match_observation_can_pass_execution_safety():
@@ -9,4 +10,6 @@ def test_latest_pre_match_observation_can_pass_execution_safety():
     assert row.ou_line == 2.75
     assert row.ah_home_line == -0.75
     assert row.source.endswith('latest_pre_match')
-    assert execution_safety_reason(row, now='2026-09-07T12:10:00+00:00') == 'EXECUTION_SAFE'
+    ok, reason=execution_snapshot_status(row, now=datetime(2026,9,7,12,10,tzinfo=timezone.utc))
+    assert ok is True
+    assert reason == 'EXECUTION_SAFE'
