@@ -1,0 +1,31 @@
+name: Deploy Dashboard
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['apps/dashboard/**','reports/**']
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency: {group: pages, cancel-in-progress: true}
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build static site
+        run: |
+          mkdir -p site/reports
+          cp apps/dashboard/index.html site/index.html
+          cp reports/*.json site/reports/ 2>/dev/null || true
+          sed -i "s#../../reports/#reports/#g" site/index.html
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with: {path: site}
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
