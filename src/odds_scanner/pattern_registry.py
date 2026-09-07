@@ -14,6 +14,7 @@ def build_pattern_registry(three_way_audit: dict) -> dict:
         patterns.append({
             "pattern_id": f"{row['market']}::{row['pattern']}",
             "pattern": row["pattern"],
+            "pattern_key": row.get("pattern_key", {}),
             "family": row["family"],
             "market": row["market"],
             "train_n": row["train_n"],
@@ -22,11 +23,12 @@ def build_pattern_registry(three_way_audit: dict) -> dict:
             "train_roi": row["train_roi"],
             "validation_roi": row["validation_roi"],
             "holdout_roi": row["holdout_roi"],
+            "settlement_distributions": row.get("settlement_distributions", {}),
             "q_validation_bh": row["q_validation_bh"],
             "cross_league_holdout": row["cross_league_holdout"],
         })
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.2",
         "registry_type": "FROZEN_VALIDATED_PATTERNS",
         "promotion_rule": PROMOTABLE_STATUS,
         "source_engine": three_way_audit.get("engine"),

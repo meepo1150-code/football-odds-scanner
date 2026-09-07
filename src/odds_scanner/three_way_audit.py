@@ -38,12 +38,12 @@ def _phase_buckets(rows: list[dict], seasons: set[str], min_n: int) -> dict[tupl
     for b in report["buckets"]:
         if b["split"] != "test":
             continue
-        markets = [("AH", b["ah_roi"])]
+        markets = [("AH", b["ah_roi"], b["ah_settlements"])]
         if b["family"] != "AH_LINE":
-            markets.append(("OU", b["ou_roi"]))
-        for market, roi in markets:
+            markets.append(("OU", b["ou_roi"], b["ou_settlements"]))
+        for market, roi, settlements in markets:
             if roi is not None:
-                out[(b["pattern"], market)] = {**b, "roi": float(roi)}
+                out[(b["pattern"], market)] = {**b, "roi": float(roi), "settlements": settlements}
     return out
 
 
@@ -94,6 +94,7 @@ def build_three_way_audit(
         z_val = _roi_z(va["roi"], va["n"])
         tests.append({
             "pattern": pattern,
+            "pattern_key": tr["pattern_key"],
             "family": tr["family"],
             "market": market,
             "train_n": tr["n"],
@@ -102,6 +103,11 @@ def build_three_way_audit(
             "validation_roi": round(va["roi"], 6),
             "holdout_n": ho["n"],
             "holdout_roi": round(ho["roi"], 6),
+            "settlement_distributions": {
+                "train": tr["settlements"],
+                "validation": va["settlements"],
+                "holdout": ho["settlements"],
+            },
             "z_validation": round(z_val, 6),
             "p_validation": round(_normal_two_sided_p(z_val), 6),
         })
@@ -129,7 +135,7 @@ def build_three_way_audit(
     }
     tests.sort(key=lambda r: (priority[r["status"]], r["holdout_roi"], r["holdout_n"]), reverse=True)
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.2",
         "engine": "THREE_WAY_CROSS_LEAGUE_AUDIT",
         "source_rows": len(rows),
         "split": {
