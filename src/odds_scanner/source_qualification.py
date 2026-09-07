@@ -16,6 +16,8 @@ EXECUTION_REQUIRED = {
     "current_odds": True,
 }
 
+EXECUTION_ACTIVE_STATUSES = {"ACTIVE_EXECUTION"}
+
 
 def _has_multi_season_history(provider: dict) -> bool:
     depth = str(provider.get("historical_depth", "")).lower()
@@ -27,9 +29,13 @@ def qualify_provider(provider: dict) -> dict:
     research_missing = [k for k, expected in RESEARCH_REQUIRED.items() if provider.get(k) is not expected]
     if not _has_multi_season_history(provider):
         research_missing.append("multi_season_history")
+
     execution_missing = [k for k, expected in EXECUTION_REQUIRED.items() if provider.get(k) is not expected]
     if provider.get("role") in {"opening_snapshot_and_forward_research", "historical_research"}:
         execution_missing.append("tradable_execution_price")
+    if provider.get("production_status") not in EXECUTION_ACTIVE_STATUSES:
+        execution_missing.append("operational_execution_availability")
+
     return {
         "provider_id": provider["provider_id"],
         "research_ready": not research_missing,
@@ -48,14 +54,14 @@ def qualification_report() -> dict:
     zero_cost_rich = [r["provider_id"] for r in rows if r["research_ready"] and r["zero_cost_confirmed"]]
     zero_cost_execution = [r["provider_id"] for r in rows if r["execution_ready"] and r["zero_cost_confirmed"]]
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "gate": "SOURCE_QUALIFICATION",
         "providers": rows,
         "zero_cost_rich_historical": zero_cost_rich,
         "zero_cost_execution": zero_cost_execution,
         "rich_historical_gap_open": not bool(zero_cost_rich),
         "execution_provider_gap_open": not bool(zero_cost_execution),
-        "policy": "Fail closed. A scraper implementation or a provider marketing claim is not treated as a qualified dataset until actual accessible fields, history depth and price semantics are verified.",
+        "policy": "Fail closed. Documented fields are insufficient for production execution: the provider must also be operationally reachable from the runtime and explicitly promoted to ACTIVE_EXECUTION.",
     }
 
 
