@@ -7,8 +7,11 @@ on:
       - 'src/odds_scanner/breadth_data.py'
       - 'src/odds_scanner/breadth_pipeline.py'
       - 'src/odds_scanner/three_way_audit.py'
+      - 'src/odds_scanner/pattern_registry.py'
+      - 'src/odds_scanner/scanner.py'
       - 'tests/test_breadth_data.py'
       - 'tests/test_three_way_audit.py'
+      - 'tests/test_pattern_registry.py'
       - '.github/workflows/breadth.yml'
   push:
     branches: [main]
@@ -16,6 +19,8 @@ on:
       - 'src/odds_scanner/breadth_data.py'
       - 'src/odds_scanner/breadth_pipeline.py'
       - 'src/odds_scanner/three_way_audit.py'
+      - 'src/odds_scanner/pattern_registry.py'
+      - 'src/odds_scanner/scanner.py'
       - '.github/workflows/breadth.yml'
   schedule:
     - cron: '30 3 * * 6'
@@ -40,7 +45,7 @@ jobs:
           set -euo pipefail
           git config user.name 'odds-scanner-actions'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- data/normalized/big5_multimarket_history.csv reports/breadth/
+          git add -- data/normalized/big5_multimarket_history.csv reports/breadth/ reports/pattern_registry.json
           git diff --cached --quiet && exit 0
           git commit -m 'Update Big-5 breadth research outputs'
           git push
