@@ -71,7 +71,15 @@ def _canonical_season_code(row: dict[str, str]) -> str:
     return m.group(1) if m else ""
 
 def _write_raw_like(rows: list[dict[str, str]], path: Path) -> None:
-    fields = ["Div","Date","HomeTeam","AwayTeam","FTR","AvgH","AvgD","AvgA","B365H","B365D","B365A","AvgCH","AvgCD","AvgCA","B365CH","B365CD","B365CA"]
+    fields = [
+        "Div","Date","HomeTeam","AwayTeam","FTHG","FTAG","FTR",
+        "AvgH","AvgD","AvgA","B365H","B365D","B365A",
+        "AvgCH","AvgCD","AvgCA","B365CH","B365CD","B365CA",
+        "AHh","AvgAHH","AvgAHA","B365AHH","B365AHA",
+        "AHCh","AvgCAHH","AvgCAHA","B365CAHH","B365CAHA",
+        "OU_LINE","AvgO","AvgU","B365O","B365U",
+        "OU_LINE_CLOSE","AvgCO","AvgCU","B365CO","B365CU",
+    ]
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=fields)
@@ -99,6 +107,8 @@ def _download_history_mirror(out_dir: Path, seasons: list[str], division: str) -
             "Date": r.get("date", "") or result.get("date", ""),
             "HomeTeam": r.get("home_team", "") or result.get("home_team", ""),
             "AwayTeam": r.get("away_team", "") or result.get("away_team", ""),
+            "FTHG": result.get("fthg", ""),
+            "FTAG": result.get("ftag", ""),
             "FTR": result.get("ftr", ""),
             "AvgH": r.get("market_avg_1x2_home", ""),
             "AvgD": r.get("market_avg_1x2_draw", ""),
@@ -112,6 +122,26 @@ def _download_history_mirror(out_dir: Path, seasons: list[str], division: str) -
             "B365CH": r.get("bet365_1x2_home_close", ""),
             "B365CD": r.get("bet365_1x2_draw_close", ""),
             "B365CA": r.get("bet365_1x2_away_close", ""),
+            "AHh": r.get("ah_line", ""),
+            "AvgAHH": r.get("market_avg_ah_home", ""),
+            "AvgAHA": r.get("market_avg_ah_away", ""),
+            "B365AHH": r.get("bet365_ah_home", ""),
+            "B365AHA": r.get("bet365_ah_away", ""),
+            "AHCh": r.get("ah_line_close", ""),
+            "AvgCAHH": r.get("market_avg_ah_home_close", ""),
+            "AvgCAHA": r.get("market_avg_ah_away_close", ""),
+            "B365CAHH": r.get("bet365_ah_home_close", ""),
+            "B365CAHA": r.get("bet365_ah_away_close", ""),
+            "OU_LINE": "2.5",
+            "AvgO": r.get("market_avg_over25", ""),
+            "AvgU": r.get("market_avg_under25", ""),
+            "B365O": r.get("bet365_over25", ""),
+            "B365U": r.get("bet365_under25", ""),
+            "OU_LINE_CLOSE": "2.5",
+            "AvgCO": r.get("market_avg_over25_close", ""),
+            "AvgCU": r.get("market_avg_under25_close", ""),
+            "B365CO": r.get("bet365_over25_close", ""),
+            "B365CU": r.get("bet365_under25_close", ""),
         }
         if mapped["HomeTeam"] and mapped["AwayTeam"] and mapped["FTR"] in {"H","D","A"}:
             by_season[code].append(mapped)
@@ -133,6 +163,11 @@ def _download_history_mirror(out_dir: Path, seasons: list[str], division: str) -
         "seasons": seasons,
         "season_counts": season_counts,
         "unmatched_odds_rows": unmatched,
+        "market_capabilities": {
+            "1x2": "opening_and_closing_when_available",
+            "asian_handicap": "variable_line_opening_and_closing_when_available",
+            "totals": "2.5_only_in_github_mirror",
+        },
     }, indent=2), encoding="utf-8")
     return paths
 
