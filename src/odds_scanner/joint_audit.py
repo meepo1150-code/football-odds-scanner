@@ -6,7 +6,6 @@ from .pattern_policy import DEFAULT_POLICY
 
 
 def _normal_two_sided_p(z: float) -> float:
-    # Two-sided normal approximation; sufficient for screening, not final inference.
     return math.erfc(abs(z) / math.sqrt(2.0))
 
 
@@ -29,10 +28,10 @@ def _bh_adjust(rows: list[dict], p_field: str, q_field: str) -> None:
 
 def _season_stability(bucket: dict, field: str) -> dict:
     seasons = bucket.get("seasons", {})
-    eligible = [v for v in seasons.values() if v.get("n", 0) >= 10]
+    eligible = [v for v in seasons.values() if v.get("n", 0) >= 10 and v.get(field) is not None]
     if not eligible:
         return {"eligible_seasons": 0, "positive_share": 0.0, "stable": False}
-    positive = sum(1 for v in eligible if float(v.get(field, 0.0)) > 0)
+    positive = sum(1 for v in eligible if float(v[field]) > 0)
     share = positive / len(eligible)
     return {
         "eligible_seasons": len(eligible),
@@ -49,11 +48,15 @@ def build_joint_audit(report: dict, *, min_train_n: int = 60, min_test_n: int = 
         tr, te = train[pattern], test[pattern]
         if tr["n"] < min_train_n or te["n"] < min_test_n:
             continue
-        for market, field in (("AH", "ah_roi"), ("OU", "ou_roi")):
+        market_fields = [("AH", "ah_roi")]
+        if tr["family"] != "AH_LINE":
+            market_fields.append(("OU", "ou_roi"))
+        for market, field in market_fields:
+            if tr.get(field) is None or te.get(field) is None:
+                continue
             tr_roi, te_roi = float(tr[field]), float(te[field])
             z_train = _roi_z(tr_roi, tr["n"])
             z_test = _roi_z(te_roi, te["n"])
-            # Conservative combined evidence uses the weaker split.
             p = max(_normal_two_sided_p(z_train), _normal_two_sided_p(z_test))
             st_train = _season_stability(tr, field)
             st_test = _season_stability(te, field)
@@ -85,9 +88,15 @@ def build_joint_audit(report: dict, *, min_train_n: int = 60, min_test_n: int = 
             status = "REJECT"
         row["status"] = status
 
-    paired.sort(key=lambda r: (r["status"] == "ROBUST_RESEARCH_CANDIDATE", r["status"] == "WATCHLIST", -r.get("q_bh", 1.0), r["test_roi"], r["test_n"]), reverse=True)
+    paired.sort(key=lambda r: (
+        r["status"] == "ROBUST_RESEARCH_CANDIDATE",
+        r["status"] == "WATCHLIST",
+        -r.get("q_bh", 1.0),
+        r["test_roi"],
+        r["test_n"],
+    ), reverse=True)
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "engine": "PAIRED_HIERARCHICAL_PATTERN_AUDIT",
         "source_rows": report.get("source_rows", 0),
         "paired_tests": len(paired),
