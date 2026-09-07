@@ -6,6 +6,11 @@ on:
     paths:
       - 'reports/pattern_registry.json'
       - 'src/odds_scanner/scanner.py'
+      - 'src/odds_scanner/settlement_ev.py'
+      - 'src/odds_scanner/sgodds_provider.py'
+      - 'src/odds_scanner/pattern_policy.py'
+      - 'tests/test_current_ev_scanner.py'
+      - 'tests/test_sgodds_provider.py'
       - '.github/workflows/scanner.yml'
   schedule:
     - cron: '0 4 * * *'
@@ -19,8 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
         with: {python-version: '3.11'}
       - run: python -m pip install -e '.[dev]'
       - run: pytest -q
