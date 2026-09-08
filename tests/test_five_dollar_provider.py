@@ -1,5 +1,8 @@
+from datetime import datetime, timezone
+
 from odds_scanner.execution_safety import execution_snapshot_status
-from odds_scanner.five_dollar_provider import parse_fixture_odds
+from odds_scanner import five_dollar_provider as provider_mod
+from odds_scanner.five_dollar_provider import FiveDollarCurrentProvider, parse_fixture_odds
 
 
 def _fixture():
@@ -43,12 +46,38 @@ def test_parser_preserves_quarter_lines_and_two_sided_prices():
 
 
 def test_summary_row_does_not_fake_quote_freshness():
-    row = parse_fixture_odds(_fixture(), _odds())
+    row = parse_fixture_odds(_fixture(), _odds(), observed_at="2026-09-08T06:00:00+00:00")
     assert row.as_of is None
     assert row.stale is None
     safe, reason = execution_snapshot_status(row)
     assert safe is False
     assert reason == "STALE_OR_UNVERIFIED_QUOTE"
+
+
+def test_current_provider_requests_explicit_next_24h_window(monkeypatch):
+    calls = []
+
+    def fake_get(path, key, params=None, timeout=15):
+        calls.append((path, params))
+        if path == "/fixtures":
+            return {"success": 1, "data": [_fixture()]}
+        return _odds()
+
+    monkeypatch.setattr(provider_mod, "_get", fake_get)
+    fixed = datetime(2026, 9, 8, 6, 0, tzinfo=timezone.utc)
+    rows = FiveDollarCurrentProvider(
+        "key",
+        limit=3,
+        pace_seconds=0,
+        now_fn=lambda: fixed,
+    ).fetch()
+    assert len(rows) == 1
+    params = calls[0][1]
+    assert params["status"] == "scheduled"
+    assert params["start_time"] == int(fixed.timestamp())
+    assert params["end_time"] - params["start_time"] == 24 * 60 * 60
+    assert rows[0].as_of is None
+    assert rows[0].stale is None
 
 
 def test_missing_bookmaker_fails_closed():
