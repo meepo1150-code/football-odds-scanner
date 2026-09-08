@@ -21,12 +21,6 @@ DEFAULT_REQUEST_SPACING_SECONDS = 1.1
 
 
 def fixture_query(now: datetime, *, hours: int = 24) -> dict:
-    """Build a narrow pre-match Bet365 discovery query.
-
-    OddsPapi documents statusId=0 as Pre-Game and supports hasOdds/bookmakers
-    filters on GET /fixtures. Use an exact rolling UTC window rather than a
-    calendar-date approximation so discovery spends quota only on relevant rows.
-    """
     current = now.astimezone(timezone.utc)
     end = current + timedelta(hours=hours)
     return {
@@ -51,6 +45,78 @@ def _rows(payload) -> list[dict]:
     return []
 
 
+def summarize_fixture_odds(fixture: dict, odds_payload: dict, catalog: list[dict], *, sample_limit: int = 16) -> dict:
+    """Return schema diagnostics without persisting raw prices or provider payloads."""
+    catalog_by_id = {str(m.get("marketId")): m for m in catalog if isinstance(m, dict)}
+    books = odds_payload.get("bookmakerOdds") or {} if isinstance(odds_payload, dict) else {}
+    book = books.get("bet365") if isinstance(books, dict) else None
+    summary = {
+        "fixture_id": fixture.get("fixtureId"),
+        "tournament": fixture.get("tournamentName") or fixture.get("tournamentSlug"),
+        "start_time": fixture.get("startTime"),
+        "bookmaker_present": isinstance(book, dict),
+        "bookmaker_active": None,
+        "suspended": None,
+        "market_count": 0,
+        "active_market_count": 0,
+        "catalog_match_count": 0,
+        "market_samples": [],
+    }
+    if not isinstance(book, dict):
+        return summary
+    summary["bookmaker_active"] = book.get("bookmakerIsActive")
+    summary["suspended"] = book.get("suspended")
+    markets = book.get("markets") or {}
+    if not isinstance(markets, dict):
+        return summary
+    summary["market_count"] = len(markets)
+
+    for market_id, market_data in markets.items():
+        if not isinstance(market_data, dict):
+            continue
+        if market_data.get("marketActive") is not False:
+            summary["active_market_count"] += 1
+        meta = catalog_by_id.get(str(market_id))
+        if meta:
+            summary["catalog_match_count"] += 1
+        if len(summary["market_samples"]) >= sample_limit:
+            continue
+
+        outcome_labels = []
+        if isinstance(meta, dict):
+            outcome_labels = [str(o.get("outcomeName") or "") for o in meta.get("outcomes") or [] if isinstance(o, dict)]
+        players_seen = 0
+        changed_at_present = 0
+        bookmaker_changed_at_present = 0
+        main_line_true = 0
+        for outcome in (market_data.get("outcomes") or {}).values():
+            if not isinstance(outcome, dict):
+                continue
+            for player in (outcome.get("players") or {}).values():
+                if not isinstance(player, dict):
+                    continue
+                players_seen += 1
+                changed_at_present += int(bool(player.get("changedAt")))
+                bookmaker_changed_at_present += int(bool(player.get("bookmakerChangedAt")))
+                main_line_true += int(player.get("mainLine") is True)
+
+        summary["market_samples"].append({
+            "market_id": str(market_id),
+            "market_active": market_data.get("marketActive"),
+            "catalog_match": meta is not None,
+            "market_name": meta.get("marketName") if isinstance(meta, dict) else None,
+            "market_type": meta.get("marketType") if isinstance(meta, dict) else None,
+            "period": meta.get("period") if isinstance(meta, dict) else None,
+            "handicap": meta.get("handicap") if isinstance(meta, dict) else None,
+            "outcome_labels": outcome_labels,
+            "players_seen": players_seen,
+            "changed_at_present": changed_at_present,
+            "bookmaker_changed_at_present": bookmaker_changed_at_present,
+            "main_line_true": main_line_true,
+        })
+    return summary
+
+
 def probe_from_env(
     *,
     limit: int = 5,
@@ -62,7 +128,7 @@ def probe_from_env(
     key = os.getenv(ENV_KEY)
     if not key:
         return {
-            "schema_version": "1.2",
+            "schema_version": "1.3",
             "provider": "oddspapi_free",
             "status": "API_KEY_NOT_CONFIGURED",
             "generated_at": generated_at,
@@ -72,7 +138,6 @@ def probe_from_env(
             "odds_requests": 0,
             "note": f"Optional GitHub secret {ENV_KEY} is not configured.",
         }
-
     if request_spacing_seconds < 0:
         raise ValueError("request_spacing_seconds must be non-negative")
 
@@ -81,6 +146,7 @@ def probe_from_env(
     total_requests = 0
     fixture_rows: list[dict] = []
     normalized = []
+    diagnostics: list[dict] = []
     first_request = True
 
     def paced_get(path: str, params: dict | None = None):
@@ -97,13 +163,9 @@ def probe_from_env(
         catalog = _rows(catalog_payload)
         fixtures_payload = paced_get("/fixtures", fixture_query(now, hours=hours))
         fixture_rows = _rows(fixtures_payload)
-
-        # API-side filters are primary, but keep local fail-closed checks too.
         candidates = [
             f for f in fixture_rows
-            if f.get("hasOdds") is True
-            and int(f.get("statusId", -1)) == 0
-            and f.get("fixtureId")
+            if f.get("hasOdds") is True and int(f.get("statusId", -1)) == 0 and f.get("fixtureId")
         ]
         candidates.sort(key=lambda f: str(f.get("startTime") or ""))
 
@@ -111,17 +173,13 @@ def probe_from_env(
             odds_requests += 1
             odds = paced_get(
                 "/odds",
-                {
-                    "fixtureId": fixture["fixtureId"],
-                    "bookmakers": "bet365",
-                    "language": "en",
-                    "verbosity": 3,
-                },
+                {"fixtureId": fixture["fixtureId"], "bookmakers": "bet365", "language": "en", "verbosity": 3},
             )
+            diagnostics.append(summarize_fixture_odds(fixture, odds, catalog))
             normalized.extend(parse_fixture_markets(fixture, odds, catalog, now=now))
     except Exception as exc:
         return {
-            "schema_version": "1.2",
+            "schema_version": "1.3",
             "provider": "oddspapi_free",
             "status": "UNAVAILABLE",
             "generated_at": generated_at,
@@ -131,6 +189,7 @@ def probe_from_env(
             "odds_requests": odds_requests,
             "requests_attempted": total_requests,
             "request_spacing_seconds": request_spacing_seconds,
+            "market_diagnostics": diagnostics,
             "errors": [f"{type(exc).__name__}: {exc}"],
         }
 
@@ -143,12 +202,10 @@ def probe_from_env(
 
     candidates_count = sum(
         1 for f in fixture_rows
-        if f.get("hasOdds") is True
-        and int(f.get("statusId", -1)) == 0
-        and f.get("fixtureId")
+        if f.get("hasOdds") is True and int(f.get("statusId", -1)) == 0 and f.get("fixtureId")
     )
     return {
-        "schema_version": "1.2",
+        "schema_version": "1.3",
         "provider": "oddspapi_free",
         "status": "EXECUTION_SAFE_ROWS_AVAILABLE" if safe else ("ROWS_BUT_NOT_EXECUTION_SAFE" if normalized else "NO_ROWS"),
         "generated_at": generated_at,
@@ -171,6 +228,7 @@ def probe_from_env(
             "api_side_filtering": True,
             "detailed_odds_probe_cap": limit,
         },
+        "market_diagnostics": diagnostics,
         "freshness_basis": "oldest bookmakerChangedAt/changedAt across required 1X2+AH+OU selections",
         "samples": [asdict(r) for r in normalized[:2]],
     }
