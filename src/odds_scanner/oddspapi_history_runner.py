@@ -9,10 +9,13 @@ from .oddspapi_provider import SPORT_ID, _get
 def discover_finished_big5_window(key: str, start, end) -> list[dict]:
     """Discover finished Big-5 fixtures using the documented /v4/fixtures contract.
 
-    OddsPapi's historical/backtest examples request fixtures with only sportId,
-    from, to, and limit, then filter status/league/odds client-side. Keeping the
-    request minimal avoids provider-side 404s seen with combined finished/odds/
-    bookmaker filters on historical windows.
+    Historical discovery intentionally does not require the fixture-level
+    `hasOdds` flag. That flag describes current fixture-list odds availability and
+    can be false/absent for already-finished matches even when the dedicated
+    historical-odds endpoint retains Bet365 price history. We therefore request a
+    minimal fixture list, filter only finished status and validated Big-5 league
+    identity locally, then let `/historical-odds` be the authority on whether
+    usable archived prices exist.
     """
     payload = _get(
         "/fixtures",
@@ -28,8 +31,6 @@ def discover_finished_big5_window(key: str, start, end) -> list[dict]:
     found: list[dict] = []
     for fixture in archive._rows(payload):
         if fixture.get("statusId") != 2:
-            continue
-        if fixture.get("hasOdds") is not True:
             continue
         tid = fixture.get("tournamentId")
         try:

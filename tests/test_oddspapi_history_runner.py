@@ -11,7 +11,7 @@ def test_discover_finished_big5_uses_minimal_fixture_contract(monkeypatch):
         return [
             {"fixtureId": "ok", "statusId": 2, "hasOdds": True, "tournamentId": 17, "startTime": "2026-01-03T15:00:00Z", "participant1Name": "A", "participant2Name": "B"},
             {"fixtureId": "live", "statusId": 1, "hasOdds": True, "tournamentId": 17},
-            {"fixtureId": "noodds", "statusId": 2, "hasOdds": False, "tournamentId": 17},
+            {"fixtureId": "noodds", "statusId": 2, "hasOdds": False, "tournamentId": 17, "startTime": "2026-01-04T15:00:00Z", "participant1Name": "C", "participant2Name": "D"},
             {"fixtureId": "other", "statusId": 2, "hasOdds": True, "tournamentId": 999},
         ]
 
@@ -22,7 +22,9 @@ def test_discover_finished_big5_uses_minimal_fixture_contract(monkeypatch):
         datetime(2026, 1, 10, tzinfo=timezone.utc),
     )
 
-    assert [r["fixtureId"] for r in rows] == ["ok"]
+    # Finished Big-5 fixtures are retained regardless of the current fixture-list
+    # hasOdds flag; the historical endpoint decides whether archived prices exist.
+    assert [r["fixtureId"] for r in rows] == ["ok", "noodds"]
     path, params = calls[0]
     assert path == "/fixtures"
     assert params["sportId"] == 10
