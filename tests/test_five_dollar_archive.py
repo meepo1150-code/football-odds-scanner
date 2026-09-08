@@ -50,11 +50,12 @@ def test_archive_collects_derived_rows_without_raw_payload(monkeypatch, tmp_path
         return _odds()
 
     monkeypatch.setattr(archive, "_get", fake_get)
-    state = archive.collect_batch(tmp_path, key="secret", today=date(2026, 9, 8), max_days=1)
+    state = archive.collect_batch(tmp_path, key="secret", today=date(2026, 9, 8), max_days=1, pace_seconds=0)
     assert state["processed_dates"] == ["2026-06-11"]
     assert state["rows_total"] == 1
     assert state["requests_used"] == 2
     assert state["raw_payloads_stored"] is False
+    assert state["pace_seconds"] == 0
 
     rows = (tmp_path / archive.ARCHIVE_PATH).read_text(encoding="utf-8").splitlines()
     row = json.loads(rows[0])
@@ -72,12 +73,12 @@ def test_archive_deduplicates_fixture_ids(monkeypatch, tmp_path: Path):
         return _odds()
 
     monkeypatch.setattr(archive, "_get", fake_get)
-    archive.collect_batch(tmp_path, key="secret", today=date(2026, 9, 8), max_days=1)
+    archive.collect_batch(tmp_path, key="secret", today=date(2026, 9, 8), max_days=1, pace_seconds=0)
     state_path = tmp_path / archive.STATE_PATH
     state = json.loads(state_path.read_text(encoding="utf-8"))
     state["next_date"] = state["processed_dates"][0]
     state_path.write_text(json.dumps(state), encoding="utf-8")
-    archive.collect_batch(tmp_path, key="secret", today=date(2026, 9, 8), max_days=1)
+    archive.collect_batch(tmp_path, key="secret", today=date(2026, 9, 8), max_days=1, pace_seconds=0)
     assert len((tmp_path / archive.ARCHIVE_PATH).read_text(encoding="utf-8").splitlines()) == 1
 
 
@@ -90,7 +91,7 @@ def test_archive_defers_whole_day_when_budget_cannot_fit(monkeypatch, tmp_path: 
         raise AssertionError("odds endpoint should not be called when whole day cannot fit")
 
     monkeypatch.setattr(archive, "_get", fake_get)
-    state = archive.collect_batch(tmp_path, key="secret", today=date(2026, 9, 8), request_budget=4, max_days=1)
+    state = archive.collect_batch(tmp_path, key="secret", today=date(2026, 9, 8), request_budget=4, max_days=1, pace_seconds=0)
     assert state["days_completed_this_run"] == 0
     assert state["next_date"] == "2026-06-11"
     assert state["rows_total"] == 0
