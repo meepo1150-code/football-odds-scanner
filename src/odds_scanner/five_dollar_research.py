@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import json
-from collections import Counter
+from collections import Counter, defaultdict
 from pathlib import Path
 
+from .asian_settlement import settle_asian_handicap, settle_asian_total
 from .five_dollar_archive import ARCHIVE_PATH, ATTRIBUTION
 from .hierarchical_backtest import build_hierarchical_report
 
@@ -31,6 +32,65 @@ def _is_quarter(line) -> bool:
         return False
     x = float(line)
     return abs(x * 4 - round(x * 4)) < 1e-8 and abs(x * 2 - round(x * 2)) > 1e-8
+
+
+def _move_bucket(value, *, market: str) -> str:
+    if value is None or abs(float(value)) < 1e-9:
+        return "FLAT"
+    x = float(value)
+    if market == "AH":
+        # Favorite-side handicap is normalized to the favorite perspective.
+        # More negative means the favorite strengthened (e.g. -0.75 -> -1.00).
+        return "FAVORITE_STRENGTHENED" if x < 0 else "FAVORITE_WEAKENED"
+    return "TOTAL_UP" if x > 0 else "TOTAL_DOWN"
+
+
+def _summary(profits: list[float], settlements: list[str]) -> dict:
+    n = len(profits)
+    return {
+        "n": n,
+        "roi": round(sum(profits) / n, 6) if n else None,
+        "settlements": dict(sorted(Counter(settlements).items())),
+    }
+
+
+def _coarse_diagnostics(rows: list[dict]) -> dict:
+    ah: dict[str, dict[str, list]] = defaultdict(lambda: {"profits": [], "settlements": []})
+    over: dict[str, dict[str, list]] = defaultdict(lambda: {"profits": [], "settlements": []})
+    under: dict[str, dict[str, list]] = defaultdict(lambda: {"profits": [], "settlements": []})
+
+    for r in sorted(rows, key=lambda x: (x.get("date", ""), x.get("fixture_id", ""))):
+        try:
+            hg, ag = int(r["home_goals"]), int(r["away_goals"])
+            ah_set = settle_asian_handicap(
+                hg, ag, float(r["favorite_ah_line"]), float(r["favorite_ah_price"]), str(r["favorite_side"])
+            )
+            ah_key = _move_bucket(r.get("ah_line_move"), market="AH")
+            ah[ah_key]["profits"].append(ah_set.profit_units)
+            ah[ah_key]["settlements"].append(ah_set.settlement.value)
+
+            ou_key = _move_bucket(r.get("ou_line_move"), market="OU")
+            over_set = settle_asian_total(hg, ag, float(r["ou_line"]), float(r["over_price"]), "O")
+            under_set = settle_asian_total(hg, ag, float(r["ou_line"]), float(r["under_price"]), "U")
+            over[ou_key]["profits"].append(over_set.profit_units)
+            over[ou_key]["settlements"].append(over_set.settlement.value)
+            under[ou_key]["profits"].append(under_set.profit_units)
+            under[ou_key]["settlements"].append(under_set.settlement.value)
+        except (KeyError, TypeError, ValueError):
+            continue
+
+    def finish(groups):
+        return {k: _summary(v["profits"], v["settlements"]) for k, v in sorted(groups.items())}
+
+    return {
+        "classification": "DESCRIPTIVE_EXPLORATORY_ONLY",
+        "promotion_allowed": False,
+        "minimum_n_for_inference": None,
+        "favorite_ah_opening_settlement_by_line_move": finish(ah),
+        "over_opening_settlement_by_total_line_move": finish(over),
+        "under_opening_settlement_by_total_line_move": finish(under),
+        "warning": "These coarse groups are descriptive summaries of the short rolling archive. ROI is not a validated edge and cannot enter the production registry.",
+    }
 
 
 def build_report(rows: list[dict]) -> dict:
@@ -76,7 +136,7 @@ def build_report(rows: list[dict]) -> dict:
     }
 
     report = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "status": "INSUFFICIENT_SAMPLE" if len(rows) < MIN_BACKTEST_ROWS else "EXPLORATORY_BACKTEST_READY",
         "research_classification": "EXPLORATORY_SNAPSHOT_ONLY",
         "source": "5dollarfootballapi_free",
@@ -85,13 +145,11 @@ def build_report(rows: list[dict]) -> dict:
         "promotion_block_reason": "Free history is a short rolling snapshot archive and cannot satisfy the frozen multi-season train-validation-holdout production gate.",
         "minimum_rows_for_exploratory_backtest": MIN_BACKTEST_ROWS,
         "coverage": coverage,
+        "coarse_diagnostics": _coarse_diagnostics(rows),
         "hierarchical": None,
         "warning": "This report is for data-coverage and exploratory pattern research only. It must never overwrite or promote reports/pattern_registry.json.",
     }
     if len(rows) >= MIN_BACKTEST_ROWS:
-        # Use the whole short archive as one diagnostic pool. Passing an explicit
-        # impossible season avoids the engine's default test-season split; this data
-        # is too short to claim independent validation in either direction.
         report["hierarchical"] = build_hierarchical_report(rows, test_seasons={"__NONE__"}, min_n=MIN_BACKTEST_ROWS)
     return report
 
