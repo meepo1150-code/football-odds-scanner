@@ -63,7 +63,8 @@ def test_missing_timestamp_fails_closed():
 
 
 def test_verified_current_endpoint_uses_observation_not_old_price_change_time():
-    now, row = _row(
+    now, _ = _row()
+    _, row = _row(
         as_of=(now - timedelta(hours=8)).isoformat(),
         observed_at=(now - timedelta(minutes=2)).isoformat(),
         price_changed_at=(now - timedelta(hours=8)).isoformat(),
@@ -74,7 +75,8 @@ def test_verified_current_endpoint_uses_observation_not_old_price_change_time():
 
 
 def test_unverified_provider_cannot_bypass_old_as_of_with_fetch_observation():
-    now, row = _row(
+    now, _ = _row()
+    _, row = _row(
         as_of=(now - timedelta(hours=8)).isoformat(),
         observed_at=now.isoformat(),
         freshness_basis="FETCH_TIME_ONLY",
@@ -91,7 +93,8 @@ def test_verified_current_feed_requires_observation_and_basis():
 
 
 def test_verified_observation_itself_still_expires():
-    now, row = _row(
+    now, _ = _row()
+    _, row = _row(
         observed_at=(now - timedelta(minutes=31)).isoformat(),
         freshness_basis="CURRENT_FEED",
         current_feed_verified=True,
