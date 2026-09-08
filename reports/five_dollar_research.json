@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "status": "EXPLORATORY_BACKTEST_READY",
   "research_classification": "EXPLORATORY_SNAPSHOT_ONLY",
   "source": "5dollarfootballapi_free",
@@ -63,6 +63,106 @@
     "nonzero_ou_line_movement_rows": 19,
     "opening_and_closing_ou_complete_rows": 27,
     "opening_and_closing_ah_complete_rows": 27
+  },
+  "coarse_diagnostics": {
+    "classification": "DESCRIPTIVE_EXPLORATORY_ONLY",
+    "promotion_allowed": false,
+    "minimum_n_for_inference": null,
+    "favorite_ah_opening_settlement_by_line_move": {
+      "FAVORITE_STRENGTHENED": {
+        "n": 6,
+        "roi": 0.341667,
+        "settlements": {
+          "FULL_LOSS": 1,
+          "FULL_WIN": 3,
+          "HALF_WIN": 1,
+          "PUSH": 1
+        }
+      },
+      "FAVORITE_WEAKENED": {
+        "n": 6,
+        "roi": 0.316667,
+        "settlements": {
+          "FULL_LOSS": 2,
+          "FULL_WIN": 4
+        }
+      },
+      "FLAT": {
+        "n": 15,
+        "roi": -0.025,
+        "settlements": {
+          "FULL_LOSS": 4,
+          "FULL_WIN": 6,
+          "HALF_LOSS": 4,
+          "PUSH": 1
+        }
+      }
+    },
+    "over_opening_settlement_by_total_line_move": {
+      "FLAT": {
+        "n": 8,
+        "roi": -0.275,
+        "settlements": {
+          "FULL_LOSS": 3,
+          "FULL_WIN": 2,
+          "HALF_LOSS": 2,
+          "PUSH": 1
+        }
+      },
+      "TOTAL_DOWN": {
+        "n": 14,
+        "roi": 0.101786,
+        "settlements": {
+          "FULL_LOSS": 5,
+          "FULL_WIN": 7,
+          "HALF_LOSS": 1,
+          "PUSH": 1
+        }
+      },
+      "TOTAL_UP": {
+        "n": 5,
+        "roi": -0.1175,
+        "settlements": {
+          "FULL_LOSS": 2,
+          "FULL_WIN": 1,
+          "HALF_WIN": 1,
+          "PUSH": 1
+        }
+      }
+    },
+    "under_opening_settlement_by_total_line_move": {
+      "FLAT": {
+        "n": 8,
+        "roi": 0.2125,
+        "settlements": {
+          "FULL_LOSS": 2,
+          "FULL_WIN": 3,
+          "HALF_WIN": 2,
+          "PUSH": 1
+        }
+      },
+      "TOTAL_DOWN": {
+        "n": 14,
+        "roi": -0.166071,
+        "settlements": {
+          "FULL_LOSS": 7,
+          "FULL_WIN": 5,
+          "HALF_WIN": 1,
+          "PUSH": 1
+        }
+      },
+      "TOTAL_UP": {
+        "n": 5,
+        "roi": 0.085,
+        "settlements": {
+          "FULL_LOSS": 1,
+          "FULL_WIN": 2,
+          "HALF_LOSS": 1,
+          "PUSH": 1
+        }
+      }
+    },
+    "warning": "These coarse groups are descriptive summaries of the short rolling archive. ROI is not a validated edge and cannot enter the production registry."
   },
   "hierarchical": {
     "schema_version": "1.4",
