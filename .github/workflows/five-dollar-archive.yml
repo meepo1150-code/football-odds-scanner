@@ -2,7 +2,9 @@ name: Five Dollar Historical Snapshot Archive
 on:
   workflow_dispatch:
   schedule:
-    - cron: '12 * * * *'
+    # Reserve the rolling-hour budget around provider health (02:15 UTC)
+    # and production live scans (05:00 / 10:00 UTC).
+    - cron: '12 0-1,3,6-8,11-23 * * *'
   push:
     branches: [main]
     paths:
