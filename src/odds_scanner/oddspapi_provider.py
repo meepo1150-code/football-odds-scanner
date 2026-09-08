@@ -5,7 +5,7 @@ import os
 import urllib.parse
 import urllib.request
 from dataclasses import asdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from .execution_safety import execution_snapshot_status
@@ -114,7 +114,7 @@ def parse_fixture_markets(
     now: datetime | None = None,
     max_age_minutes: int = 30,
 ) -> list[CurrentMarket]:
-    """Normalize all exact full-time Bet365 1X2 × AH-line × O/U-line combinations.
+    """Normalize exact full-time Bet365 1X2 x AH-line x O/U-line combinations.
 
     The market catalog is authoritative for market type, handicap and outcome labels.
     No line is rounded or guessed. Each emitted row uses the oldest timestamp among
@@ -153,11 +153,7 @@ def parse_fixture_markets(
                 selections[label] = p
 
         if mtype == "1x2" and {"1", "x", "2"}.issubset(selections):
-            one_x_two = {
-                "home": selections["1"],
-                "draw": selections["x"],
-                "away": selections["2"],
-            }
+            one_x_two = {"home": selections["1"], "draw": selections["x"], "away": selections["2"]}
             continue
 
         line = _quarter(meta.get("handicap"))
@@ -194,7 +190,7 @@ def parse_fixture_markets(
                     stale = age > max_age_minutes * 60 or age < -300
                 except ValueError:
                     stale = None
-            row = CurrentMarket(
+            rows.append(CurrentMarket(
                 source=f"oddspapi:{bookmaker}:timestamped",
                 league=league,
                 date=date_value,
@@ -215,8 +211,7 @@ def parse_fixture_markets(
                 as_of=as_of,
                 stale=stale,
                 tradable=(status == "pre_match" and stale is False),
-            )
-            rows.append(row)
+            ))
     return rows
 
 
@@ -238,7 +233,7 @@ def probe_from_env(limit: int = 5) -> dict:
         catalog = _get("/markets", key, {"sportId": SPORT_ID, "language": "en"})
         now = datetime.now(timezone.utc)
         today = now.date().isoformat()
-        tomorrow = (now.date()).isoformat()
+        tomorrow = (now.date() + timedelta(days=1)).isoformat()
         fixtures = _get("/fixtures", key, {"sportId": SPORT_ID, "from": today, "to": tomorrow})
         fixture_rows = fixtures if isinstance(fixtures, list) else fixtures.get("data") or []
         normalized: list[CurrentMarket] = []
