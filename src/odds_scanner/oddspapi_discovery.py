@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import time
 from dataclasses import asdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -14,6 +15,9 @@ from .oddspapi_provider import (
     _safe_account_summary,
     parse_fixture_markets,
 )
+
+
+DEFAULT_REQUEST_SPACING_SECONDS = 1.1
 
 
 def fixture_query(now: datetime, *, hours: int = 24) -> dict:
@@ -47,12 +51,18 @@ def _rows(payload) -> list[dict]:
     return []
 
 
-def probe_from_env(*, limit: int = 5, hours: int = 24) -> dict:
+def probe_from_env(
+    *,
+    limit: int = 5,
+    hours: int = 24,
+    request_spacing_seconds: float = DEFAULT_REQUEST_SPACING_SECONDS,
+    sleep_fn=time.sleep,
+) -> dict:
     generated_at = datetime.now(timezone.utc).isoformat()
     key = os.getenv(ENV_KEY)
     if not key:
         return {
-            "schema_version": "1.1",
+            "schema_version": "1.2",
             "provider": "oddspapi_free",
             "status": "API_KEY_NOT_CONFIGURED",
             "generated_at": generated_at,
@@ -63,15 +73,29 @@ def probe_from_env(*, limit: int = 5, hours: int = 24) -> dict:
             "note": f"Optional GitHub secret {ENV_KEY} is not configured.",
         }
 
+    if request_spacing_seconds < 0:
+        raise ValueError("request_spacing_seconds must be non-negative")
+
     now = datetime.now(timezone.utc)
     odds_requests = 0
+    total_requests = 0
     fixture_rows: list[dict] = []
     normalized = []
+    first_request = True
+
+    def paced_get(path: str, params: dict | None = None):
+        nonlocal first_request, total_requests
+        if not first_request and request_spacing_seconds:
+            sleep_fn(request_spacing_seconds)
+        first_request = False
+        total_requests += 1
+        return _get(path, key, params)
+
     try:
-        account = _get("/account", key)
-        catalog_payload = _get("/markets", key, {"language": "en"})
+        account = paced_get("/account")
+        catalog_payload = paced_get("/markets", {"language": "en"})
         catalog = _rows(catalog_payload)
-        fixtures_payload = _get("/fixtures", key, fixture_query(now, hours=hours))
+        fixtures_payload = paced_get("/fixtures", fixture_query(now, hours=hours))
         fixture_rows = _rows(fixtures_payload)
 
         # API-side filters are primary, but keep local fail-closed checks too.
@@ -85,9 +109,8 @@ def probe_from_env(*, limit: int = 5, hours: int = 24) -> dict:
 
         for fixture in candidates[: max(1, limit)]:
             odds_requests += 1
-            odds = _get(
+            odds = paced_get(
                 "/odds",
-                key,
                 {
                     "fixtureId": fixture["fixtureId"],
                     "bookmakers": "bet365",
@@ -98,7 +121,7 @@ def probe_from_env(*, limit: int = 5, hours: int = 24) -> dict:
             normalized.extend(parse_fixture_markets(fixture, odds, catalog, now=now))
     except Exception as exc:
         return {
-            "schema_version": "1.1",
+            "schema_version": "1.2",
             "provider": "oddspapi_free",
             "status": "UNAVAILABLE",
             "generated_at": generated_at,
@@ -106,6 +129,8 @@ def probe_from_env(*, limit: int = 5, hours: int = 24) -> dict:
             "rows": 0,
             "fixtures_discovered": len(fixture_rows),
             "odds_requests": odds_requests,
+            "requests_attempted": total_requests,
+            "request_spacing_seconds": request_spacing_seconds,
             "errors": [f"{type(exc).__name__}: {exc}"],
         }
 
@@ -116,15 +141,24 @@ def probe_from_env(*, limit: int = 5, hours: int = 24) -> dict:
         safe += int(ok)
         reasons[reason] = reasons.get(reason, 0) + 1
 
+    candidates_count = sum(
+        1 for f in fixture_rows
+        if f.get("hasOdds") is True
+        and int(f.get("statusId", -1)) == 0
+        and f.get("fixtureId")
+    )
     return {
-        "schema_version": "1.1",
+        "schema_version": "1.2",
         "provider": "oddspapi_free",
         "status": "EXECUTION_SAFE_ROWS_AVAILABLE" if safe else ("ROWS_BUT_NOT_EXECUTION_SAFE" if normalized else "NO_ROWS"),
         "generated_at": generated_at,
         "execution_candidate": safe > 0,
         "fixtures_discovered": len(fixture_rows),
-        "fixtures_probed": min(len(fixture_rows), max(1, limit)),
+        "fixtures_eligible_after_local_check": candidates_count,
+        "fixtures_probed": min(candidates_count, max(1, limit)),
         "odds_requests": odds_requests,
+        "requests_attempted": total_requests,
+        "request_spacing_seconds": request_spacing_seconds,
         "rows": len(normalized),
         "execution_safe_rows": safe,
         "reasons": reasons,
@@ -135,6 +169,7 @@ def probe_from_env(*, limit: int = 5, hours: int = 24) -> dict:
             "has_odds": True,
             "bookmaker": "bet365",
             "api_side_filtering": True,
+            "detailed_odds_probe_cap": limit,
         },
         "freshness_basis": "oldest bookmakerChangedAt/changedAt across required 1X2+AH+OU selections",
         "samples": [asdict(r) for r in normalized[:2]],
