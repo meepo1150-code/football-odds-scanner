@@ -60,3 +60,43 @@ def test_old_quote_is_rejected():
 def test_missing_timestamp_fails_closed():
     now, row = _row(as_of=None)
     assert execution_snapshot_status(row, now=now)[1] == "QUOTE_TIMESTAMP_MISSING"
+
+
+def test_verified_current_endpoint_uses_observation_not_old_price_change_time():
+    now, _ = _row()
+    _, row = _row(
+        as_of=(now - timedelta(hours=8)).isoformat(),
+        observed_at=(now - timedelta(minutes=2)).isoformat(),
+        price_changed_at=(now - timedelta(hours=8)).isoformat(),
+        freshness_basis="CURRENT_PROVIDER_ENDPOINT_ACTIVE_MARKETS_OBSERVED",
+        current_feed_verified=True,
+    )
+    assert execution_snapshot_status(row, now=now) == (True, "EXECUTION_SAFE")
+
+
+def test_unverified_provider_cannot_bypass_old_as_of_with_fetch_observation():
+    now, _ = _row()
+    _, row = _row(
+        as_of=(now - timedelta(hours=8)).isoformat(),
+        observed_at=now.isoformat(),
+        freshness_basis="FETCH_TIME_ONLY",
+        current_feed_verified=False,
+    )
+    assert execution_snapshot_status(row, now=now)[1] == "QUOTE_TOO_OLD"
+
+
+def test_verified_current_feed_requires_observation_and_basis():
+    now, row = _row(current_feed_verified=True, observed_at=None, freshness_basis="CURRENT_FEED")
+    assert execution_snapshot_status(row, now=now)[1] == "OBSERVATION_TIMESTAMP_MISSING"
+    now, row = _row(current_feed_verified=True, observed_at=now.isoformat(), freshness_basis=None)
+    assert execution_snapshot_status(row, now=now)[1] == "CURRENT_FEED_FRESHNESS_BASIS_MISSING"
+
+
+def test_verified_observation_itself_still_expires():
+    now, _ = _row()
+    _, row = _row(
+        observed_at=(now - timedelta(minutes=31)).isoformat(),
+        freshness_basis="CURRENT_FEED",
+        current_feed_verified=True,
+    )
+    assert execution_snapshot_status(row, now=now, max_age_minutes=30)[1] == "QUOTE_TOO_OLD"

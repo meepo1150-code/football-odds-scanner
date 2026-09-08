@@ -5,7 +5,13 @@ from dataclasses import dataclass
 
 @dataclass(frozen=True)
 class CurrentMarket:
-    """Provider-neutral pre-match market snapshot used by the production scanner."""
+    """Provider-neutral pre-match market snapshot used by the production scanner.
+
+    `as_of` is retained for backward compatibility with providers that expose a
+    true quote timestamp directly. Providers backed by an explicitly current
+    endpoint may instead set `observed_at` + `current_feed_verified=True` while
+    keeping the bookmaker/source price-change timestamp in `price_changed_at`.
+    """
 
     source: str
     league: str
@@ -27,6 +33,10 @@ class CurrentMarket:
     as_of: str | None = None
     stale: bool | None = None
     tradable: bool | None = None
+    observed_at: str | None = None
+    price_changed_at: str | None = None
+    freshness_basis: str | None = None
+    current_feed_verified: bool = False
 
 
 def two_way_fair_probs(a_odds: float, b_odds: float) -> tuple[float, float, float]:

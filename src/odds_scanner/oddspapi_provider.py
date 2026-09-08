@@ -15,6 +15,7 @@ BASE = "https://api.oddspapi.io/v4"
 ENV_KEY = "ODDSPAPI_KEY"
 USER_AGENT = "football-odds-scanner/0.1 personal-research"
 SPORT_ID = 10
+ODDSPAPI_CURRENT_FRESHNESS_BASIS = "CURRENT_ODDSPAPI_ENDPOINT_ACTIVE_MARKETS_OBSERVED"
 
 
 def _num(value):
@@ -101,21 +102,31 @@ def _fixture_fields(fixture: dict) -> tuple[str, str, str, str, str, str]:
     home = str(fixture.get("participant1Name") or fixture.get("home") or "")
     away = str(fixture.get("participant2Name") or fixture.get("away") or "")
     status_name = str(fixture.get("statusName") or "").lower().replace("-", "_").replace(" ", "_")
-    status = "pre_match" if status_name in {"pre_game", "pregame", "scheduled", "pre_match"} else status_name
+    if status_name in {"pre_game", "pregame", "scheduled", "pre_match"} or fixture.get("statusId") == 0:
+        status = "pre_match"
+    else:
+        status = status_name
     return league, date_value, time_value, home, away, status
 
 
 def parse_fixture_markets(fixture: dict, odds_payload: dict, markets_catalog: list[dict], *, bookmaker: str = "bet365", now: datetime | None = None, max_age_minutes: int = 30) -> list[CurrentMarket]:
     """Normalize exact full-time Bet365 1X2 x AH-line x O/U-line combinations.
 
-    Market metadata is authoritative. No line is rounded or guessed. Each emitted
-    row uses the oldest timestamp among all required selections so mixed-age market
-    structures fail conservatively at the execution-safety gate.
+    `/v4/odds` and `/v4/odds-by-tournaments` are current-odds endpoints. Their
+    `changedAt`/`bookmakerChangedAt` fields describe when a price last moved, not
+    when the current snapshot was observed. Therefore each canonical row records:
+    - `price_changed_at`: oldest required price-change timestamp, for movement/CLV
+    - `observed_at`: when this active current-endpoint response was observed
+
+    The adapter opts into observation freshness only after proving bookmaker,
+    market, and every required selection are explicitly active. No line is rounded
+    or guessed.
     """
+    del max_age_minutes  # freshness is evaluated later by execution_safety
     catalog = _catalog(markets_catalog)
     books = odds_payload.get("bookmakerOdds") or {}
     book = books.get(bookmaker)
-    if not isinstance(book, dict) or book.get("bookmakerIsActive") is False or book.get("suspended") is True:
+    if not isinstance(book, dict) or book.get("bookmakerIsActive") is not True or book.get("suspended") is not False:
         return []
 
     one_x_two = None
@@ -123,7 +134,7 @@ def parse_fixture_markets(fixture: dict, odds_payload: dict, markets_catalog: li
     ou_rows: list[dict] = []
     for market_id, market_data in (book.get("markets") or {}).items():
         meta = catalog.get(str(market_id))
-        if not isinstance(meta, dict) or not isinstance(market_data, dict) or market_data.get("marketActive") is False:
+        if not isinstance(meta, dict) or not isinstance(market_data, dict) or market_data.get("marketActive") is not True:
             continue
         outcomes = market_data.get("outcomes") or {}
         names = _outcome_lookup(meta)
@@ -132,7 +143,7 @@ def parse_fixture_markets(fixture: dict, odds_payload: dict, markets_catalog: li
         selections: dict[str, dict] = {}
         for outcome_id, outcome in outcomes.items():
             p = _player(outcome) if isinstance(outcome, dict) else None
-            if not p or p.get("active") is False:
+            if not p or p.get("active") is not True:
                 continue
             label = names.get(str(outcome_id), "").strip().lower()
             if label:
@@ -159,28 +170,44 @@ def parse_fixture_markets(fixture: dict, odds_payload: dict, markets_catalog: li
         return []
 
     league, date_value, kickoff, home, away, status = _fixture_fields(fixture)
-    current = now or datetime.now(timezone.utc)
+    if status != "pre_match":
+        return []
+    observed = now or datetime.now(timezone.utc)
+    if observed.tzinfo is None:
+        observed = observed.replace(tzinfo=timezone.utc)
+    observed = observed.astimezone(timezone.utc)
+    observed_at = observed.isoformat()
+
     rows: list[CurrentMarket] = []
     for ah in ah_rows:
         for ou in ou_rows:
             required = [one_x_two["home"], one_x_two["draw"], one_x_two["away"], ah["home"], ah["away"], ou["over"], ou["under"]]
-            as_of = _oldest_timestamp(required)
-            stale = None
-            if as_of:
-                try:
-                    stamp = datetime.fromisoformat(as_of.replace("Z", "+00:00")).astimezone(timezone.utc)
-                    age = (current.astimezone(timezone.utc) - stamp).total_seconds()
-                    stale = age > max_age_minutes * 60 or age < -300
-                except ValueError:
-                    stale = None
+            price_changed_at = _oldest_timestamp(required)
             rows.append(CurrentMarket(
-                source=f"oddspapi:{bookmaker}:timestamped", league=league, date=date_value, kickoff=kickoff,
-                home=home, away=away, ah_home_line=ah["line"], ah_home_odds=float(ah["home"]["price"]),
-                ah_away_line=-ah["line"], ah_away_odds=float(ah["away"]["price"]), ou_line=ou["line"],
-                over_odds=float(ou["over"]["price"]), under_odds=float(ou["under"]["price"]),
-                one_x_two_home=float(one_x_two["home"]["price"]), one_x_two_draw=float(one_x_two["draw"]["price"]),
-                one_x_two_away=float(one_x_two["away"]["price"]), status=status, as_of=as_of, stale=stale,
-                tradable=(status == "pre_match" and stale is False),
+                source=f"oddspapi:{bookmaker}:current-observed",
+                league=league,
+                date=date_value,
+                kickoff=kickoff,
+                home=home,
+                away=away,
+                ah_home_line=ah["line"],
+                ah_home_odds=float(ah["home"]["price"]),
+                ah_away_line=-ah["line"],
+                ah_away_odds=float(ah["away"]["price"]),
+                ou_line=ou["line"],
+                over_odds=float(ou["over"]["price"]),
+                under_odds=float(ou["under"]["price"]),
+                one_x_two_home=float(one_x_two["home"]["price"]),
+                one_x_two_draw=float(one_x_two["draw"]["price"]),
+                one_x_two_away=float(one_x_two["away"]["price"]),
+                status=status,
+                as_of=observed_at,
+                stale=False,
+                tradable=True,
+                observed_at=observed_at,
+                price_changed_at=price_changed_at,
+                freshness_basis=ODDSPAPI_CURRENT_FRESHNESS_BASIS,
+                current_feed_verified=True,
             ))
     return rows
 
@@ -222,14 +249,15 @@ def probe_from_env(limit: int = 5) -> dict:
             if not fid or not fixture.get("hasOdds"):
                 continue
             odds = _get("/odds", key, {"fixtureId": fid, "bookmakers": "bet365", "verbosity": 3})
-            normalized.extend(parse_fixture_markets(fixture, odds, catalog if isinstance(catalog, list) else catalog.get("data") or [], now=now))
+            normalized.extend(parse_fixture_markets(fixture, odds, catalog if isinstance(catalog, list) else catalog.get("data") or [], now=datetime.now(timezone.utc)))
     except Exception as exc:
         return {"schema_version": "1.0", "provider": "oddspapi_free", "status": "UNAVAILABLE", "generated_at": generated_at, "execution_candidate": False, "rows": 0, "errors": [f"{type(exc).__name__}: {exc}"]}
 
     safe = 0
     reasons: dict[str, int] = {}
+    safety_now = datetime.now(timezone.utc)
     for row in normalized:
-        ok, reason = execution_snapshot_status(row, now=now)
+        ok, reason = execution_snapshot_status(row, now=safety_now)
         safe += int(ok)
         reasons[reason] = reasons.get(reason, 0) + 1
     return {
@@ -237,7 +265,7 @@ def probe_from_env(limit: int = 5) -> dict:
         "status": "EXECUTION_SAFE_ROWS_AVAILABLE" if safe else ("ROWS_BUT_NOT_EXECUTION_SAFE" if normalized else "NO_ROWS"),
         "generated_at": generated_at, "execution_candidate": safe > 0, "rows": len(normalized), "execution_safe_rows": safe,
         "reasons": reasons, "account": _safe_account_summary(account),
-        "freshness_basis": "oldest bookmakerChangedAt/changedAt across required 1X2+AH+OU selections",
+        "freshness_basis": ODDSPAPI_CURRENT_FRESHNESS_BASIS,
         "samples": [asdict(r) for r in normalized[:2]],
     }
 
