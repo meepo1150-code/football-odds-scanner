@@ -50,9 +50,15 @@ jobs:
             git reset --hard origin/main
             mkdir -p reports data/normalized
             cp /tmp/oddspapi-history/state.json reports/oddspapi_history_state.json
-            [ ! -f /tmp/oddspapi-history/history.jsonl ] || cp /tmp/oddspapi-history/history.jsonl data/normalized/oddspapi_history_ticks.jsonl
-            [ ! -f /tmp/oddspapi-history/catalog.json ] || cp /tmp/oddspapi-history/catalog.json data/normalized/oddspapi_market_catalog.json
-            git add -- reports/oddspapi_history_state.json data/normalized/oddspapi_history_ticks.jsonl data/normalized/oddspapi_market_catalog.json 2>/dev/null || true
+            git add -f -- reports/oddspapi_history_state.json
+            if [ -f /tmp/oddspapi-history/history.jsonl ]; then
+              cp /tmp/oddspapi-history/history.jsonl data/normalized/oddspapi_history_ticks.jsonl
+              git add -f -- data/normalized/oddspapi_history_ticks.jsonl
+            fi
+            if [ -f /tmp/oddspapi-history/catalog.json ]; then
+              cp /tmp/oddspapi-history/catalog.json data/normalized/oddspapi_market_catalog.json
+              git add -f -- data/normalized/oddspapi_market_catalog.json
+            fi
             git diff --cached --quiet && exit 0
             git commit -m 'Update OddsPapi historical tick archive [skip ci]'
             if git push origin HEAD:main; then exit 0; fi
@@ -63,3 +69,5 @@ jobs:
 # Historical-odds calls are unmetered by OddsPapi but paced at 5.2s. Finished
 # fixture discovery is cached as a 9-day cursor. Provider filtering is kept
 # minimal on /fixtures and finished/Big-5/hasOdds checks happen locally.
+# State/catalog are committed independently so an empty discovery window cannot
+# lose cursor progress merely because the history JSONL does not exist yet.
