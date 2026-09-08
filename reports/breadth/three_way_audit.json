@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.2",
+  "schema_version": "1.3",
   "engine": "THREE_WAY_CROSS_LEAGUE_AUDIT",
   "source_rows": 5053,
   "split": {
@@ -22,13 +22,15 @@
     "min_holdout_n": 40,
     "validation_fdr_alpha": 0.1,
     "cross_league_min_eligible": 3,
-    "cross_league_positive_share": 0.6
+    "cross_league_positive_share": 0.6,
+    "frozen_bh_input": "legacy_normal_screening_p_validation",
+    "empirical_diagnostics_are_additional_only": true
   },
   "tested_patterns": 29,
   "global_robust_count": 0,
   "league_specific_or_unstable_count": 0,
   "watchlist_count": 0,
-  "note": "Holdout 2024/25 is evaluated once under frozen gates. Do not retune thresholds from holdout outcomes and then reuse the same season as untouched evidence.",
+  "note": "Holdout 2024/25 is already opened. Empirical bootstrap/sign-flip/drawdown evidence is now reported, but frozen promotion status is intentionally still computed with the pre-registered legacy screening/FDR gate. Do not retune from holdout outcomes.",
   "patterns": [
     {
       "pattern": "AH_OU|A|AH=-0.50|O2.50",
@@ -75,8 +77,71 @@
           "FULL_LOSS": 35
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 271,
+          "mean_roi": 0.01941,
+          "sample_sd": 0.98216,
+          "bootstrap_ci95": [
+            -0.090637,
+            0.144037
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.731269,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 16.07,
+          "longest_losing_streak": 10,
+          "worst_season_roi": -0.045189,
+          "season_abs_concentration": 0.608491,
+          "season_rois": {
+            "1920": 0.158421,
+            "2021": 0.009444,
+            "2122": -0.045189
+          }
+        },
+        "validation": {
+          "n": 204,
+          "mean_roi": -0.042794,
+          "sample_sd": 0.979998,
+          "bootstrap_ci95": [
+            -0.166918,
+            0.090643
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.567433,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 26.38,
+          "longest_losing_streak": 8,
+          "worst_season_roi": -0.143761,
+          "season_abs_concentration": 0.693056,
+          "season_rois": {
+            "2223": -0.143761,
+            "2324": 0.073053
+          }
+        },
+        "holdout": {
+          "n": 92,
+          "mean_roi": 0.208804,
+          "sample_sd": 0.95476,
+          "bootstrap_ci95": [
+            0.02494,
+            0.409106
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.030969,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 4.12,
+          "longest_losing_streak": 3,
+          "worst_season_roi": 0.208804,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": 0.208804
+          }
+        }
+      },
       "z_validation": -0.611221,
       "p_validation": 0.541054,
+      "p_validation_empirical_sign_flip": 0.567433,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 2,
@@ -86,11 +151,21 @@
         "details": {
           "E0": {
             "n": 21,
-            "roi": 0.11381
+            "roi": 0.11381,
+            "bootstrap_ci95": [
+              -0.34225,
+              0.505714
+            ],
+            "max_drawdown_units": 3.97
           },
           "I1": {
             "n": 30,
-            "roi": 0.166667
+            "roi": 0.166667,
+            "bootstrap_ci95": [
+              -0.163842,
+              0.5191
+            ],
+            "max_drawdown_units": 3.0
           }
         }
       },
@@ -141,8 +216,71 @@
           "FULL_LOSS": 40
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 292,
+          "mean_roi": 0.005685,
+          "sample_sd": 0.981669,
+          "bootstrap_ci95": [
+            -0.11414,
+            0.113319
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.925075,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 18.19,
+          "longest_losing_streak": 10,
+          "worst_season_roi": -0.053211,
+          "season_abs_concentration": 0.554036,
+          "season_rois": {
+            "1920": 0.123333,
+            "2021": -0.009211,
+            "2122": -0.053211
+          }
+        },
+        "validation": {
+          "n": 222,
+          "mean_roi": -0.033739,
+          "sample_sd": 0.978827,
+          "bootstrap_ci95": [
+            -0.158796,
+            0.109518
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.624376,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 27.73,
+          "longest_losing_streak": 8,
+          "worst_season_roi": -0.150179,
+          "season_abs_concentration": 0.643212,
+          "season_rois": {
+            "2223": -0.150179,
+            "2324": 0.084818
+          }
+        },
+        "holdout": {
+          "n": 104,
+          "mean_roi": 0.200769,
+          "sample_sd": 0.956214,
+          "bootstrap_ci95": [
+            0.006421,
+            0.37345
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.038961,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 5.05,
+          "longest_losing_streak": 4,
+          "worst_season_roi": 0.200769,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": 0.200769
+          }
+        }
+      },
       "z_validation": -0.5027,
       "p_validation": 0.615175,
+      "p_validation_empirical_sign_flip": 0.624376,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 2,
@@ -152,11 +290,21 @@
         "details": {
           "E0": {
             "n": 25,
-            "roi": 0.256
+            "roi": 0.256,
+            "bootstrap_ci95": [
+              -0.13741,
+              0.57061
+            ],
+            "max_drawdown_units": 3.0
           },
           "I1": {
             "n": 31,
-            "roi": 0.129032
+            "roi": 0.129032,
+            "bootstrap_ci95": [
+              -0.239081,
+              0.455524
+            ],
+            "max_drawdown_units": 3.22
           }
         }
       },
@@ -207,8 +355,71 @@
           "FULL_LOSS": 35
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 271,
+          "mean_roi": 0.025904,
+          "sample_sd": 0.981163,
+          "bootstrap_ci95": [
+            -0.089652,
+            0.140171
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.633367,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 15.07,
+          "longest_losing_streak": 9,
+          "worst_season_roi": -0.036095,
+          "season_abs_concentration": 0.739754,
+          "season_rois": {
+            "1920": 0.183559,
+            "2021": -0.000187,
+            "2122": -0.036095
+          }
+        },
+        "validation": {
+          "n": 199,
+          "mean_roi": -0.017387,
+          "sample_sd": 0.98165,
+          "bootstrap_ci95": [
+            -0.15158,
+            0.115856
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.801199,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 21.27,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.127757,
+          "season_abs_concentration": 0.572446,
+          "season_rois": {
+            "2223": -0.127757,
+            "2324": 0.110978
+          }
+        },
+        "holdout": {
+          "n": 87,
+          "mean_roi": 0.169195,
+          "sample_sd": 0.96697,
+          "bootstrap_ci95": [
+            -0.016744,
+            0.377417
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.106893,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 5.07,
+          "longest_losing_streak": 4,
+          "worst_season_roi": 0.169195,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": 0.169195
+          }
+        }
+      },
       "z_validation": -0.245274,
       "p_validation": 0.806244,
+      "p_validation_empirical_sign_flip": 0.801199,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 1,
@@ -218,7 +429,12 @@
         "details": {
           "I1": {
             "n": 31,
-            "roi": 0.129032
+            "roi": 0.129032,
+            "bootstrap_ci95": [
+              -0.226774,
+              0.475331
+            ],
+            "max_drawdown_units": 3.22
           }
         }
       },
@@ -269,8 +485,71 @@
           "FULL_LOSS": 36
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 328,
+          "mean_roi": -0.061799,
+          "sample_sd": 0.895651,
+          "bootstrap_ci95": [
+            -0.148772,
+            0.033646
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.211788,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 24.4,
+          "longest_losing_streak": 6,
+          "worst_season_roi": -0.135806,
+          "season_abs_concentration": 0.774965,
+          "season_rois": {
+            "1920": 0.00869,
+            "2021": -0.034667,
+            "2122": -0.135806
+          }
+        },
+        "validation": {
+          "n": 221,
+          "mean_roi": -0.072805,
+          "sample_sd": 0.893974,
+          "bootstrap_ci95": [
+            -0.20525,
+            0.054144
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.187812,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 21.47,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.1743,
+          "season_abs_concentration": 0.928609,
+          "season_rois": {
+            "2223": 0.011074,
+            "2324": -0.1743
+          }
+        },
+        "holdout": {
+          "n": 102,
+          "mean_roi": 0.143137,
+          "sample_sd": 0.865712,
+          "bootstrap_ci95": [
+            -0.030939,
+            0.310603
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.091908,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 9.27,
+          "longest_losing_streak": 5,
+          "worst_season_roi": 0.143137,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": 0.143137
+          }
+        }
+      },
       "z_validation": -1.082324,
       "p_validation": 0.279109,
+      "p_validation_empirical_sign_flip": 0.187812,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 3,
@@ -280,15 +559,30 @@
         "details": {
           "E0": {
             "n": 24,
-            "roi": 0.074167
+            "roi": 0.074167,
+            "bootstrap_ci95": [
+              -0.284365,
+              0.391396
+            ],
+            "max_drawdown_units": 3.71
           },
           "F1": {
             "n": 25,
-            "roi": 0.096
+            "roi": 0.096,
+            "bootstrap_ci95": [
+              -0.26163,
+              0.40581
+            ],
+            "max_drawdown_units": 4.05
           },
           "I1": {
             "n": 22,
-            "roi": 0.364091
+            "roi": 0.364091,
+            "bootstrap_ci95": [
+              -0.015443,
+              0.662102
+            ],
+            "max_drawdown_units": 2.0
           }
         }
       },
@@ -339,8 +633,71 @@
           "FULL_LOSS": 34
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 290,
+          "mean_roi": -0.018759,
+          "sample_sd": 0.989073,
+          "bootstrap_ci95": [
+            -0.130602,
+            0.095165
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.74026,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 19.58,
+          "longest_losing_streak": 10,
+          "worst_season_roi": -0.030648,
+          "season_abs_concentration": 0.481105,
+          "season_rois": {
+            "1920": 0.00878,
+            "2021": -0.030648,
+            "2122": -0.0285
+          }
+        },
+        "validation": {
+          "n": 188,
+          "mean_roi": -0.045479,
+          "sample_sd": 0.981637,
+          "bootstrap_ci95": [
+            -0.185532,
+            0.104693
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.525475,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 13.51,
+          "longest_losing_streak": 4,
+          "worst_season_roi": -0.079592,
+          "season_abs_concentration": 0.912281,
+          "season_rois": {
+            "2223": -0.079592,
+            "2324": -0.008333
+          }
+        },
+        "holdout": {
+          "n": 75,
+          "mean_roi": 0.0824,
+          "sample_sd": 1.00825,
+          "bootstrap_ci95": [
+            -0.123523,
+            0.322463
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.452547,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 6.0,
+          "longest_losing_streak": 6,
+          "worst_season_roi": 0.0824,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": 0.0824
+          }
+        }
+      },
       "z_validation": -0.623577,
       "p_validation": 0.532906,
+      "p_validation_empirical_sign_flip": 0.525475,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 0,
@@ -396,8 +753,71 @@
           "FULL_LOSS": 23
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 290,
+          "mean_roi": -0.036207,
+          "sample_sd": 0.776925,
+          "bootstrap_ci95": [
+            -0.126282,
+            0.063209
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.422577,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 11.22,
+          "longest_losing_streak": 4,
+          "worst_season_roi": -0.0909,
+          "season_abs_concentration": 0.415068,
+          "season_rois": {
+            "1920": -0.086707,
+            "2021": 0.052778,
+            "2122": -0.0909
+          }
+        },
+        "validation": {
+          "n": 188,
+          "mean_roi": 0.085904,
+          "sample_sd": 0.77258,
+          "bootstrap_ci95": [
+            -0.02207,
+            0.198084
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.15984,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 4.7,
+          "longest_losing_streak": 3,
+          "worst_season_roi": 0.078776,
+          "season_abs_concentration": 0.521981,
+          "season_rois": {
+            "2223": 0.078776,
+            "2324": 0.093667
+          }
+        },
+        "holdout": {
+          "n": 75,
+          "mean_roi": 0.0532,
+          "sample_sd": 0.791642,
+          "bootstrap_ci95": [
+            -0.128603,
+            0.221277
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.56044,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 6.64,
+          "longest_losing_streak": 3,
+          "worst_season_roi": 0.0532,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": 0.0532
+          }
+        }
+      },
       "z_validation": 1.177856,
       "p_validation": 0.238854,
+      "p_validation_empirical_sign_flip": 0.15984,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 0,
@@ -453,8 +873,71 @@
           "FULL_LOSS": 24
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 294,
+          "mean_roi": -0.033571,
+          "sample_sd": 0.779607,
+          "bootstrap_ci95": [
+            -0.122433,
+            0.05723
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.455544,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 11.89,
+          "longest_losing_streak": 4,
+          "worst_season_roi": -0.088795,
+          "season_abs_concentration": 0.380344,
+          "season_rois": {
+            "1920": -0.088795,
+            "2021": 0.048073,
+            "2122": -0.075882
+          }
+        },
+        "validation": {
+          "n": 190,
+          "mean_roi": 0.084579,
+          "sample_sd": 0.774908,
+          "bootstrap_ci95": [
+            -0.026443,
+            0.186182
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.142857,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 4.7,
+          "longest_losing_streak": 3,
+          "worst_season_roi": 0.067879,
+          "season_abs_concentration": 0.581829,
+          "season_rois": {
+            "2223": 0.067879,
+            "2324": 0.102747
+          }
+        },
+        "holdout": {
+          "n": 77,
+          "mean_roi": 0.050519,
+          "sample_sd": 0.796385,
+          "bootstrap_ci95": [
+            -0.130912,
+            0.214429
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.569431,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 6.88,
+          "longest_losing_streak": 3,
+          "worst_season_roi": 0.050519,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": 0.050519
+          }
+        }
+      },
       "z_validation": 1.165841,
       "p_validation": 0.243679,
+      "p_validation_empirical_sign_flip": 0.142857,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 0,
@@ -510,8 +993,71 @@
           "FULL_LOSS": 37
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 306,
+          "mean_roi": -0.06415,
+          "sample_sd": 0.907334,
+          "bootstrap_ci95": [
+            -0.166244,
+            0.04394
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.244755,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 33.35,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.110263,
+          "season_abs_concentration": 0.495858,
+          "season_rois": {
+            "1920": -0.101224,
+            "2021": -0.110263,
+            "2122": 0.030426
+          }
+        },
+        "validation": {
+          "n": 186,
+          "mean_roi": -0.068548,
+          "sample_sd": 0.929577,
+          "bootstrap_ci95": [
+            -0.190206,
+            0.077937
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.327672,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 16.22,
+          "longest_losing_streak": 6,
+          "worst_season_roi": -0.074078,
+          "season_abs_concentration": 0.598431,
+          "season_rois": {
+            "2223": -0.074078,
+            "2324": -0.061687
+          }
+        },
+        "holdout": {
+          "n": 83,
+          "mean_roi": 0.032892,
+          "sample_sd": 0.948544,
+          "bootstrap_ci95": [
+            -0.169398,
+            0.242837
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.752248,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 8.24,
+          "longest_losing_streak": 7,
+          "worst_season_roi": 0.032892,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": 0.032892
+          }
+        }
+      },
       "z_validation": -0.93487,
       "p_validation": 0.349855,
+      "p_validation_empirical_sign_flip": 0.327672,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 2,
@@ -521,11 +1067,21 @@
         "details": {
           "E0": {
             "n": 23,
-            "roi": -0.055217
+            "roi": -0.055217,
+            "bootstrap_ci95": [
+              -0.420804,
+              0.313109
+            ],
+            "max_drawdown_units": 5.0
           },
           "I1": {
             "n": 20,
-            "roi": -0.028
+            "roi": -0.028,
+            "bootstrap_ci95": [
+              -0.390437,
+              0.36455
+            ],
+            "max_drawdown_units": 3.69
           }
         }
       },
@@ -576,8 +1132,71 @@
           "FULL_LOSS": 28
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 325,
+          "mean_roi": -0.021631,
+          "sample_sd": 0.777951,
+          "bootstrap_ci95": [
+            -0.102055,
+            0.077705
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.601399,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 11.07,
+          "longest_losing_streak": 5,
+          "worst_season_roi": -0.074112,
+          "season_abs_concentration": 0.386641,
+          "season_rois": {
+            "1920": -0.062128,
+            "2021": 0.054355,
+            "2122": -0.074112
+          }
+        },
+        "validation": {
+          "n": 207,
+          "mean_roi": 0.06,
+          "sample_sd": 0.781817,
+          "bootstrap_ci95": [
+            -0.040329,
+            0.163262
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.275724,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 4.53,
+          "longest_losing_streak": 3,
+          "worst_season_roi": 0.050196,
+          "season_abs_concentration": 0.587762,
+          "season_rois": {
+            "2223": 0.069524,
+            "2324": 0.050196
+          }
+        },
+        "holdout": {
+          "n": 88,
+          "mean_roi": 0.017841,
+          "sample_sd": 0.78624,
+          "bootstrap_ci95": [
+            -0.140614,
+            0.179361
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.838162,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 6.44,
+          "longest_losing_streak": 2,
+          "worst_season_roi": 0.017841,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": 0.017841
+          }
+        }
+      },
       "z_validation": 0.86325,
       "p_validation": 0.388,
+      "p_validation_empirical_sign_flip": 0.275724,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 1,
@@ -587,7 +1206,12 @@
         "details": {
           "SP1": {
             "n": 23,
-            "roi": -0.046522
+            "roi": -0.046522,
+            "bootstrap_ci95": [
+              -0.327022,
+              0.269924
+            ],
+            "max_drawdown_units": 2.71
           }
         }
       },
@@ -638,8 +1262,71 @@
           "FULL_LOSS": 41
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 271,
+          "mean_roi": -0.027749,
+          "sample_sd": 0.927125,
+          "bootstrap_ci95": [
+            -0.135711,
+            0.081023
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.624376,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 14.58,
+          "longest_losing_streak": 6,
+          "worst_season_roi": -0.041698,
+          "season_abs_concentration": 0.587766,
+          "season_rois": {
+            "1920": -0.017368,
+            "2021": -0.019537,
+            "2122": -0.041698
+          }
+        },
+        "validation": {
+          "n": 204,
+          "mean_roi": -0.027059,
+          "sample_sd": 0.950559,
+          "bootstrap_ci95": [
+            -0.15835,
+            0.111532
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.682318,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 13.69,
+          "longest_losing_streak": 8,
+          "worst_season_roi": -0.119725,
+          "season_abs_concentration": 0.634111,
+          "season_rois": {
+            "2223": -0.119725,
+            "2324": 0.079263
+          }
+        },
+        "holdout": {
+          "n": 92,
+          "mean_roi": 0.013696,
+          "sample_sd": 0.927511,
+          "bootstrap_ci95": [
+            -0.157712,
+            0.203592
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.89011,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 10.5,
+          "longest_losing_streak": 6,
+          "worst_season_roi": 0.013696,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": 0.013696
+          }
+        }
+      },
       "z_validation": -0.38648,
       "p_validation": 0.699141,
+      "p_validation_empirical_sign_flip": 0.682318,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 2,
@@ -649,11 +1336,21 @@
         "details": {
           "E0": {
             "n": 21,
-            "roi": -0.19619
+            "roi": -0.19619,
+            "bootstrap_ci95": [
+              -0.532702,
+              0.168881
+            ],
+            "max_drawdown_units": 6.62
           },
           "I1": {
             "n": 30,
-            "roi": -0.163
+            "roi": -0.163,
+            "bootstrap_ci95": [
+              -0.495608,
+              0.160958
+            ],
+            "max_drawdown_units": 7.94
           }
         }
       },
@@ -704,8 +1401,71 @@
           "FULL_LOSS": 78
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 555,
+          "mean_roi": -0.021766,
+          "sample_sd": 0.953817,
+          "bootstrap_ci95": [
+            -0.105219,
+            0.045667
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.574426,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 29.56,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.065149,
+          "season_abs_concentration": 0.461431,
+          "season_rois": {
+            "1920": 0.04807,
+            "2021": -0.065149,
+            "2122": -0.039231
+          }
+        },
+        "validation": {
+          "n": 373,
+          "mean_roi": -0.069437,
+          "sample_sd": 0.941928,
+          "bootstrap_ci95": [
+            -0.164157,
+            0.021178
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.156843,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 33.82,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.11956,
+          "season_abs_concentration": 0.733977,
+          "season_rois": {
+            "2223": -0.032196,
+            "2324": -0.11956
+          }
+        },
+        "holdout": {
+          "n": 165,
+          "mean_roi": -0.012909,
+          "sample_sd": 0.953365,
+          "bootstrap_ci95": [
+            -0.144023,
+            0.12685
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.839161,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 16.27,
+          "longest_losing_streak": 5,
+          "worst_season_roi": -0.012909,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.012909
+          }
+        }
+      },
       "z_validation": -1.341051,
       "p_validation": 0.179904,
+      "p_validation_empirical_sign_flip": 0.156843,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 5,
@@ -715,23 +1475,48 @@
         "details": {
           "D1": {
             "n": 27,
-            "roi": -0.392963
+            "roi": -0.392963,
+            "bootstrap_ci95": [
+              -0.706176,
+              0.001148
+            ],
+            "max_drawdown_units": 12.15
           },
           "E0": {
             "n": 27,
-            "roi": -0.144815
+            "roi": -0.144815,
+            "bootstrap_ci95": [
+              -0.574731,
+              0.257028
+            ],
+            "max_drawdown_units": 7.88
           },
           "F1": {
             "n": 32,
-            "roi": 0.266562
+            "roi": 0.266562,
+            "bootstrap_ci95": [
+              -0.04243,
+              0.582352
+            ],
+            "max_drawdown_units": 3.2
           },
           "I1": {
             "n": 43,
-            "roi": 0.082093
+            "roi": 0.082093,
+            "bootstrap_ci95": [
+              -0.181552,
+              0.328145
+            ],
+            "max_drawdown_units": 4.97
           },
           "SP1": {
             "n": 36,
-            "roi": 0.009167
+            "roi": 0.009167,
+            "bootstrap_ci95": [
+              -0.286535,
+              0.303208
+            ],
+            "max_drawdown_units": 3.96
           }
         }
       },
@@ -782,8 +1567,71 @@
           "FULL_LOSS": 46
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 271,
+          "mean_roi": -0.097417,
+          "sample_sd": 0.977352,
+          "bootstrap_ci95": [
+            -0.20327,
+            0.010311
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.11988,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 39.55,
+          "longest_losing_streak": 8,
+          "worst_season_roi": -0.139153,
+          "season_abs_concentration": 0.381818,
+          "season_rois": {
+            "1920": -0.139153,
+            "2021": -0.094206,
+            "2122": -0.077238
+          }
+        },
+        "validation": {
+          "n": 199,
+          "mean_roi": -0.065528,
+          "sample_sd": 0.973564,
+          "bootstrap_ci95": [
+            -0.200791,
+            0.073094
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.320679,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 20.34,
+          "longest_losing_streak": 9,
+          "worst_season_roi": -0.154891,
+          "season_abs_concentration": 0.921734,
+          "season_rois": {
+            "2223": 0.011308,
+            "2324": -0.154891
+          }
+        },
+        "holdout": {
+          "n": 87,
+          "mean_roi": -0.068161,
+          "sample_sd": 1.007137,
+          "bootstrap_ci95": [
+            -0.267764,
+            0.131991
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.512488,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 8.81,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.068161,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.068161
+          }
+        }
+      },
       "z_validation": -0.924386,
       "p_validation": 0.355285,
+      "p_validation_empirical_sign_flip": 0.320679,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 1,
@@ -793,7 +1641,12 @@
         "details": {
           "I1": {
             "n": 31,
-            "roi": 0.044839
+            "roi": 0.044839,
+            "bootstrap_ci95": [
+              -0.277242,
+              0.37204
+            ],
+            "max_drawdown_units": 5.0
           }
         }
       },
@@ -844,8 +1697,71 @@
           "FULL_LOSS": 34
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 343,
+          "mean_roi": -0.041749,
+          "sample_sd": 0.766471,
+          "bootstrap_ci95": [
+            -0.126217,
+            0.0413
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.296703,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 16.18,
+          "longest_losing_streak": 8,
+          "worst_season_roi": -0.060381,
+          "season_abs_concentration": 0.442737,
+          "season_rois": {
+            "1920": -0.017411,
+            "2021": -0.047857,
+            "2122": -0.060381
+          }
+        },
+        "validation": {
+          "n": 208,
+          "mean_roi": 0.081154,
+          "sample_sd": 0.794278,
+          "bootstrap_ci95": [
+            -0.027941,
+            0.186072
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.135864,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 6.07,
+          "longest_losing_streak": 4,
+          "worst_season_roi": -0.009255,
+          "season_abs_concentration": 0.953276,
+          "season_rois": {
+            "2223": 0.155702,
+            "2324": -0.009255
+          }
+        },
+        "holdout": {
+          "n": 95,
+          "mean_roi": -0.075579,
+          "sample_sd": 0.777059,
+          "bootstrap_ci95": [
+            -0.227782,
+            0.082205
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.338661,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 7.96,
+          "longest_losing_streak": 3,
+          "worst_season_roi": -0.075579,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.075579
+          }
+        }
+      },
       "z_validation": 1.17042,
       "p_validation": 0.241832,
+      "p_validation_empirical_sign_flip": 0.135864,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 2,
@@ -855,11 +1771,21 @@
         "details": {
           "E0": {
             "n": 25,
-            "roi": -0.0424
+            "roi": -0.0424,
+            "bootstrap_ci95": [
+              -0.38149,
+              0.26208
+            ],
+            "max_drawdown_units": 4.09
           },
           "I1": {
             "n": 22,
-            "roi": -0.179091
+            "roi": -0.179091,
+            "bootstrap_ci95": [
+              -0.516648,
+              0.152591
+            ],
+            "max_drawdown_units": 4.72
           }
         }
       },
@@ -910,8 +1836,71 @@
           "FULL_LOSS": 47
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 217,
+          "mean_roi": -0.151613,
+          "sample_sd": 0.974106,
+          "bootstrap_ci95": [
+            -0.286833,
+            -0.020576
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.015984,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 34.91,
+          "longest_losing_streak": 6,
+          "worst_season_roi": -0.31125,
+          "season_abs_concentration": 0.681155,
+          "season_rois": {
+            "1920": -0.140882,
+            "2021": -0.011818,
+            "2122": -0.31125
+          }
+        },
+        "validation": {
+          "n": 141,
+          "mean_roi": -0.01305,
+          "sample_sd": 0.984921,
+          "bootstrap_ci95": [
+            -0.185931,
+            0.146073
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.866134,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 8.59,
+          "longest_losing_streak": 3,
+          "worst_season_roi": -0.054366,
+          "season_abs_concentration": 0.656463,
+          "season_rois": {
+            "2223": 0.028857,
+            "2324": -0.054366
+          }
+        },
+        "holdout": {
+          "n": 87,
+          "mean_roi": -0.098046,
+          "sample_sd": 0.985002,
+          "bootstrap_ci95": [
+            -0.281178,
+            0.104471
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.354645,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 11.73,
+          "longest_losing_streak": 6,
+          "worst_season_roi": -0.098046,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.098046
+          }
+        }
+      },
       "z_validation": -0.15496,
       "p_validation": 0.876853,
+      "p_validation_empirical_sign_flip": 0.866134,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 2,
@@ -921,11 +1910,21 @@
         "details": {
           "E0": {
             "n": 27,
-            "roi": -0.281852
+            "roi": -0.281852,
+            "bootstrap_ci95": [
+              -0.584306,
+              0.07138
+            ],
+            "max_drawdown_units": 7.61
           },
           "I1": {
             "n": 20,
-            "roi": -0.21
+            "roi": -0.21,
+            "bootstrap_ci95": [
+              -0.601025,
+              0.267125
+            ],
+            "max_drawdown_units": 8.08
           }
         }
       },
@@ -976,8 +1975,71 @@
           "FULL_LOSS": 41
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 309,
+          "mean_roi": -0.006408,
+          "sample_sd": 0.83471,
+          "bootstrap_ci95": [
+            -0.10159,
+            0.090933
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.887113,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 22.49,
+          "longest_losing_streak": 6,
+          "worst_season_roi": -0.205325,
+          "season_abs_concentration": 0.533401,
+          "season_rois": {
+            "1920": -0.205325,
+            "2021": 0.092435,
+            "2122": 0.02735
+          }
+        },
+        "validation": {
+          "n": 211,
+          "mean_roi": 0.026967,
+          "sample_sd": 0.85124,
+          "bootstrap_ci95": [
+            -0.085216,
+            0.147797
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.604396,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 7.73,
+          "longest_losing_streak": 4,
+          "worst_season_roi": 0.024316,
+          "season_abs_concentration": 0.594025,
+          "season_rois": {
+            "2223": 0.029138,
+            "2324": 0.024316
+          }
+        },
+        "holdout": {
+          "n": 96,
+          "mean_roi": -0.110729,
+          "sample_sd": 0.851399,
+          "bootstrap_ci95": [
+            -0.272289,
+            0.055031
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.198801,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 11.58,
+          "longest_losing_streak": 3,
+          "worst_season_roi": -0.110729,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.110729
+          }
+        }
+      },
       "z_validation": 0.391718,
       "p_validation": 0.695266,
+      "p_validation_empirical_sign_flip": 0.604396,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 3,
@@ -987,15 +2049,30 @@
         "details": {
           "E0": {
             "n": 21,
-            "roi": -0.299048
+            "roi": -0.299048,
+            "bootstrap_ci95": [
+              -0.627667,
+              0.028119
+            ],
+            "max_drawdown_units": 6.28
           },
           "F1": {
             "n": 24,
-            "roi": -0.03625
+            "roi": -0.03625,
+            "bootstrap_ci95": [
+              -0.352958,
+              0.302979
+            ],
+            "max_drawdown_units": 4.48
           },
           "I1": {
             "n": 22,
-            "roi": -0.056364
+            "roi": -0.056364,
+            "bootstrap_ci95": [
+              -0.36983,
+              0.269182
+            ],
+            "max_drawdown_units": 5.04
           }
         }
       },
@@ -1046,8 +2123,71 @@
           "FULL_LOSS": 85
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 554,
+          "mean_roi": -0.061282,
+          "sample_sd": 0.982653,
+          "bootstrap_ci95": [
+            -0.143318,
+            0.021185
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.144855,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 39.65,
+          "longest_losing_streak": 8,
+          "worst_season_roi": -0.120292,
+          "season_abs_concentration": 0.605891,
+          "season_rois": {
+            "1920": -0.120292,
+            "2021": -0.007861,
+            "2122": -0.064835
+          }
+        },
+        "validation": {
+          "n": 367,
+          "mean_roi": -0.031689,
+          "sample_sd": 0.963532,
+          "bootstrap_ci95": [
+            -0.137546,
+            0.060421
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.559441,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 20.85,
+          "longest_losing_streak": 10,
+          "worst_season_roi": -0.057075,
+          "season_abs_concentration": 0.962609,
+          "season_rois": {
+            "2223": -0.057075,
+            "2324": 0.003032
+          }
+        },
+        "holdout": {
+          "n": 164,
+          "mean_roi": -0.112561,
+          "sample_sd": 0.937156,
+          "bootstrap_ci95": [
+            -0.249011,
+            0.036866
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.126873,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 21.54,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.112561,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.112561
+          }
+        }
+      },
       "z_validation": -0.607074,
       "p_validation": 0.543802,
+      "p_validation_empirical_sign_flip": 0.559441,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 5,
@@ -1057,23 +2197,48 @@
         "details": {
           "D1": {
             "n": 29,
-            "roi": 0.281034
+            "roi": 0.281034,
+            "bootstrap_ci95": [
+              -0.025422,
+              0.548
+            ],
+            "max_drawdown_units": 2.1
           },
           "E0": {
             "n": 29,
-            "roi": 0.013448
+            "roi": 0.013448,
+            "bootstrap_ci95": [
+              -0.294483,
+              0.315043
+            ],
+            "max_drawdown_units": 3.33
           },
           "F1": {
             "n": 33,
-            "roi": -0.365152
+            "roi": -0.365152,
+            "bootstrap_ci95": [
+              -0.636841,
+              -0.077803
+            ],
+            "max_drawdown_units": 12.55
           },
           "I1": {
             "n": 43,
-            "roi": -0.203721
+            "roi": -0.203721,
+            "bootstrap_ci95": [
+              -0.493988,
+              0.096465
+            ],
+            "max_drawdown_units": 11.15
           },
           "SP1": {
             "n": 30,
-            "roi": -0.206333
+            "roi": -0.206333,
+            "bootstrap_ci95": [
+              -0.548683,
+              0.166392
+            ],
+            "max_drawdown_units": 8.34
           }
         }
       },
@@ -1124,8 +2289,71 @@
           "FULL_LOSS": 44
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 328,
+          "mean_roi": -0.025274,
+          "sample_sd": 0.838337,
+          "bootstrap_ci95": [
+            -0.119411,
+            0.066709
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.606394,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 24.6,
+          "longest_losing_streak": 6,
+          "worst_season_roi": -0.200833,
+          "season_abs_concentration": 0.579526,
+          "season_rois": {
+            "1920": -0.200833,
+            "2021": 0.08675,
+            "2122": -0.014758
+          }
+        },
+        "validation": {
+          "n": 221,
+          "mean_roi": 0.043982,
+          "sample_sd": 0.85279,
+          "bootstrap_ci95": [
+            -0.054394,
+            0.153363
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.460539,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 7.7,
+          "longest_losing_streak": 4,
+          "worst_season_roi": 0.0433,
+          "season_abs_concentration": 0.554527,
+          "season_rois": {
+            "2223": 0.044545,
+            "2324": 0.0433
+          }
+        },
+        "holdout": {
+          "n": 102,
+          "mean_roi": -0.124706,
+          "sample_sd": 0.845972,
+          "bootstrap_ci95": [
+            -0.283162,
+            0.032529
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.150849,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 12.72,
+          "longest_losing_streak": 4,
+          "worst_season_roi": -0.124706,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.124706
+          }
+        }
+      },
       "z_validation": 0.653839,
       "p_validation": 0.513215,
+      "p_validation_empirical_sign_flip": 0.460539,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 3,
@@ -1135,15 +2363,30 @@
         "details": {
           "E0": {
             "n": 24,
-            "roi": -0.265417
+            "roi": -0.265417,
+            "bootstrap_ci95": [
+              -0.5925,
+              0.08026
+            ],
+            "max_drawdown_units": 7.28
           },
           "F1": {
             "n": 25,
-            "roi": -0.0748
+            "roi": -0.0748,
+            "bootstrap_ci95": [
+              -0.37444,
+              0.23071
+            ],
+            "max_drawdown_units": 4.48
           },
           "I1": {
             "n": 22,
-            "roi": -0.056364
+            "roi": -0.056364,
+            "bootstrap_ci95": [
+              -0.379352,
+              0.264102
+            ],
+            "max_drawdown_units": 5.04
           }
         }
       },
@@ -1194,8 +2437,71 @@
           "FULL_LOSS": 31
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 296,
+          "mean_roi": -0.043851,
+          "sample_sd": 0.768546,
+          "bootstrap_ci95": [
+            -0.130412,
+            0.04896
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.337662,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 16.95,
+          "longest_losing_streak": 8,
+          "worst_season_roi": -0.072473,
+          "season_abs_concentration": 0.48297,
+          "season_rois": {
+            "1920": 0.00914,
+            "2021": -0.064455,
+            "2122": -0.072473
+          }
+        },
+        "validation": {
+          "n": 179,
+          "mean_roi": 0.045196,
+          "sample_sd": 0.795601,
+          "bootstrap_ci95": [
+            -0.069493,
+            0.165992
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.448551,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 6.5,
+          "longest_losing_streak": 4,
+          "worst_season_roi": -0.026,
+          "season_abs_concentration": 0.830204,
+          "season_rois": {
+            "2223": 0.102727,
+            "2324": -0.026
+          }
+        },
+        "holdout": {
+          "n": 83,
+          "mean_roi": -0.126145,
+          "sample_sd": 0.759676,
+          "bootstrap_ci95": [
+            -0.285187,
+            0.015946
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.147852,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 11.25,
+          "longest_losing_streak": 4,
+          "worst_season_roi": -0.126145,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.126145
+          }
+        }
+      },
       "z_validation": 0.604681,
       "p_validation": 0.545391,
+      "p_validation_empirical_sign_flip": 0.448551,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 1,
@@ -1205,7 +2511,12 @@
         "details": {
           "E0": {
             "n": 23,
-            "roi": -0.124783
+            "roi": -0.124783,
+            "bootstrap_ci95": [
+              -0.442652,
+              0.175
+            ],
+            "max_drawdown_units": 4.09
           }
         }
       },
@@ -1256,8 +2567,71 @@
           "FULL_LOSS": 42
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 294,
+          "mean_roi": -0.083537,
+          "sample_sd": 0.93159,
+          "bootstrap_ci95": [
+            -0.186279,
+            0.027082
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.132867,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 29.35,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.110686,
+          "season_abs_concentration": 0.459691,
+          "season_rois": {
+            "1920": -0.091928,
+            "2021": -0.051743,
+            "2122": -0.110686
+          }
+        },
+        "validation": {
+          "n": 190,
+          "mean_roi": -0.046737,
+          "sample_sd": 0.939868,
+          "bootstrap_ci95": [
+            -0.178571,
+            0.075642
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.472527,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 17.38,
+          "longest_losing_streak": 6,
+          "worst_season_roi": -0.072857,
+          "season_abs_concentration": 0.746622,
+          "season_rois": {
+            "2223": -0.022727,
+            "2324": -0.072857
+          }
+        },
+        "holdout": {
+          "n": 77,
+          "mean_roi": -0.135065,
+          "sample_sd": 0.970696,
+          "bootstrap_ci95": [
+            -0.357383,
+            0.075065
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.238761,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 13.54,
+          "longest_losing_streak": 6,
+          "worst_season_roi": -0.135065,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.135065
+          }
+        }
+      },
       "z_validation": -0.644225,
       "p_validation": 0.519429,
+      "p_validation_empirical_sign_flip": 0.472527,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 0,
@@ -1313,8 +2687,71 @@
           "FULL_LOSS": 31
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 306,
+          "mean_roi": -0.044281,
+          "sample_sd": 0.766494,
+          "bootstrap_ci95": [
+            -0.129384,
+            0.044567
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.325674,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 16.45,
+          "longest_losing_streak": 8,
+          "worst_season_roi": -0.064123,
+          "season_abs_concentration": 0.539483,
+          "season_rois": {
+            "1920": -0.01449,
+            "2021": -0.064123,
+            "2122": -0.051277
+          }
+        },
+        "validation": {
+          "n": 186,
+          "mean_roi": 0.027419,
+          "sample_sd": 0.798277,
+          "bootstrap_ci95": [
+            -0.095974,
+            0.133765
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.623377,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 8.51,
+          "longest_losing_streak": 4,
+          "worst_season_roi": -0.070723,
+          "season_abs_concentration": 0.651425,
+          "season_rois": {
+            "2223": 0.106505,
+            "2324": -0.070723
+          }
+        },
+        "holdout": {
+          "n": 83,
+          "mean_roi": -0.136747,
+          "sample_sd": 0.751491,
+          "bootstrap_ci95": [
+            -0.289217,
+            0.019145
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.087912,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 12.13,
+          "longest_losing_streak": 3,
+          "worst_season_roi": -0.136747,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.136747
+          }
+        }
+      },
       "z_validation": 0.373945,
       "p_validation": 0.708445,
+      "p_validation_empirical_sign_flip": 0.623377,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 2,
@@ -1324,11 +2761,21 @@
         "details": {
           "E0": {
             "n": 23,
-            "roi": -0.124783
+            "roi": -0.124783,
+            "bootstrap_ci95": [
+              -0.450935,
+              0.205217
+            ],
+            "max_drawdown_units": 4.09
           },
           "I1": {
             "n": 20,
-            "roi": -0.147
+            "roi": -0.147,
+            "bootstrap_ci95": [
+              -0.486262,
+              0.203288
+            ],
+            "max_drawdown_units": 3.72
           }
         }
       },
@@ -1379,8 +2826,71 @@
           "FULL_LOSS": 109
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 603,
+          "mean_roi": -0.086915,
+          "sample_sd": 0.982931,
+          "bootstrap_ci95": [
+            -0.162427,
+            -0.012132
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.024975,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 64.11,
+          "longest_losing_streak": 9,
+          "worst_season_roi": -0.182656,
+          "season_abs_concentration": 0.669147,
+          "season_rois": {
+            "1920": -0.08555,
+            "2021": -0.004545,
+            "2122": -0.182656
+          }
+        },
+        "validation": {
+          "n": 401,
+          "mean_roi": -0.005362,
+          "sample_sd": 0.980567,
+          "bootstrap_ci95": [
+            -0.096921,
+            0.088817
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.916084,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 18.32,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.02518,
+          "season_abs_concentration": 0.619048,
+          "season_rois": {
+            "2223": -0.02518,
+            "2324": 0.019218
+          }
+        },
+        "holdout": {
+          "n": 194,
+          "mean_roi": -0.144381,
+          "sample_sd": 0.972871,
+          "bootstrap_ci95": [
+            -0.289751,
+            -0.003037
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.042957,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 32.43,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.144381,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.144381
+          }
+        }
+      },
       "z_validation": -0.107374,
       "p_validation": 0.914492,
+      "p_validation_empirical_sign_flip": 0.916084,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 5,
@@ -1390,23 +2900,48 @@
         "details": {
           "D1": {
             "n": 32,
-            "roi": -0.324062
+            "roi": -0.324062,
+            "bootstrap_ci95": [
+              -0.636414,
+              0.03818
+            ],
+            "max_drawdown_units": 10.37
           },
           "E0": {
             "n": 32,
-            "roi": -0.194063
+            "roi": -0.194063,
+            "bootstrap_ci95": [
+              -0.512789,
+              0.147281
+            ],
+            "max_drawdown_units": 8.12
           },
           "F1": {
             "n": 34,
-            "roi": -0.148235
+            "roi": -0.148235,
+            "bootstrap_ci95": [
+              -0.43839,
+              0.142691
+            ],
+            "max_drawdown_units": 6.01
           },
           "I1": {
             "n": 45,
-            "roi": -0.010444
+            "roi": -0.010444,
+            "bootstrap_ci95": [
+              -0.310667,
+              0.245528
+            ],
+            "max_drawdown_units": 11.03
           },
           "SP1": {
             "n": 51,
-            "roi": -0.116078
+            "roi": -0.116078,
+            "bootstrap_ci95": [
+              -0.350897,
+              0.17627
+            ],
+            "max_drawdown_units": 13.46
           }
         }
       },
@@ -1457,8 +2992,71 @@
           "FULL_LOSS": 93
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 555,
+          "mean_roi": -0.081423,
+          "sample_sd": 0.98431,
+          "bootstrap_ci95": [
+            -0.161749,
+            -0.003924
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.073926,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 54.69,
+          "longest_losing_streak": 9,
+          "worst_season_roi": -0.171209,
+          "season_abs_concentration": 0.654759,
+          "season_rois": {
+            "1920": -0.089064,
+            "2021": 0.005941,
+            "2122": -0.171209
+          }
+        },
+        "validation": {
+          "n": 373,
+          "mean_roi": -0.010831,
+          "sample_sd": 0.979248,
+          "bootstrap_ci95": [
+            -0.111905,
+            0.091054
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.837163,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 20.35,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.036168,
+          "season_abs_concentration": 0.676573,
+          "season_rois": {
+            "2223": -0.036168,
+            "2324": 0.02327
+          }
+        },
+        "holdout": {
+          "n": 165,
+          "mean_roi": -0.150606,
+          "sample_sd": 0.96972,
+          "bootstrap_ci95": [
+            -0.285324,
+            0.002617
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.037962,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 29.64,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.150606,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.150606
+          }
+        }
+      },
       "z_validation": -0.209181,
       "p_validation": 0.834307,
+      "p_validation_empirical_sign_flip": 0.837163,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 5,
@@ -1468,23 +3066,48 @@
         "details": {
           "D1": {
             "n": 27,
-            "roi": -0.272963
+            "roi": -0.272963,
+            "bootstrap_ci95": [
+              -0.628889,
+              0.109444
+            ],
+            "max_drawdown_units": 7.37
           },
           "E0": {
             "n": 27,
-            "roi": -0.335556
+            "roi": -0.335556,
+            "bootstrap_ci95": [
+              -0.704444,
+              0.034444
+            ],
+            "max_drawdown_units": 11.02
           },
           "F1": {
             "n": 32,
-            "roi": -0.153125
+            "roi": -0.153125,
+            "bootstrap_ci95": [
+              -0.467367,
+              0.194898
+            ],
+            "max_drawdown_units": 6.01
           },
           "I1": {
             "n": 43,
-            "roi": -0.012791
+            "roi": -0.012791,
+            "bootstrap_ci95": [
+              -0.309605,
+              0.303547
+            ],
+            "max_drawdown_units": 10.03
           },
           "SP1": {
             "n": 36,
-            "roi": -0.0825
+            "roi": -0.0825,
+            "bootstrap_ci95": [
+              -0.415569,
+              0.205181
+            ],
+            "max_drawdown_units": 9.48
           }
         }
       },
@@ -1535,8 +3158,71 @@
           "FULL_LOSS": 24
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 158,
+          "mean_roi": 0.017025,
+          "sample_sd": 0.863774,
+          "bootstrap_ci95": [
+            -0.137228,
+            0.141236
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.833167,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 11.96,
+          "longest_losing_streak": 6,
+          "worst_season_roi": -0.026322,
+          "season_abs_concentration": 0.602476,
+          "season_rois": {
+            "1920": 0.1752,
+            "2021": -0.026322,
+            "2122": 0.013043
+          }
+        },
+        "validation": {
+          "n": 84,
+          "mean_roi": 0.010833,
+          "sample_sd": 0.845497,
+          "bootstrap_ci95": [
+            -0.169417,
+            0.176583
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.915085,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 11.34,
+          "longest_losing_streak": 5,
+          "worst_season_roi": -0.1668,
+          "season_abs_concentration": 0.525867,
+          "season_rois": {
+            "2223": -0.1668,
+            "2324": 0.272059
+          }
+        },
+        "holdout": {
+          "n": 48,
+          "mean_roi": -0.153125,
+          "sample_sd": 0.860819,
+          "bootstrap_ci95": [
+            -0.405547,
+            0.082089
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.21978,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 9.78,
+          "longest_losing_streak": 4,
+          "worst_season_roi": -0.153125,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.153125
+          }
+        }
+      },
       "z_validation": 0.099286,
       "p_validation": 0.920911,
+      "p_validation_empirical_sign_flip": 0.915085,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 0,
@@ -1592,8 +3278,71 @@
           "FULL_LOSS": 47
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 296,
+          "mean_roi": -0.068311,
+          "sample_sd": 0.987416,
+          "bootstrap_ci95": [
+            -0.182448,
+            0.041995
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.261738,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 31.21,
+          "longest_losing_streak": 9,
+          "worst_season_roi": -0.131505,
+          "season_abs_concentration": 0.604847,
+          "season_rois": {
+            "1920": -0.07914,
+            "2021": -0.005727,
+            "2122": -0.131505
+          }
+        },
+        "validation": {
+          "n": 179,
+          "mean_roi": -0.048659,
+          "sample_sd": 0.972774,
+          "bootstrap_ci95": [
+            -0.207265,
+            0.091066
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.477522,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 24.34,
+          "longest_losing_streak": 8,
+          "worst_season_roi": -0.06325,
+          "season_abs_concentration": 0.580941,
+          "season_rois": {
+            "2223": -0.036869,
+            "2324": -0.06325
+          }
+        },
+        "holdout": {
+          "n": 83,
+          "mean_roi": -0.155542,
+          "sample_sd": 0.984144,
+          "bootstrap_ci95": [
+            -0.362608,
+            0.068235
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.134865,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 15.28,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.155542,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.155542
+          }
+        }
+      },
       "z_validation": -0.651013,
       "p_validation": 0.515038,
+      "p_validation_empirical_sign_flip": 0.477522,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 1,
@@ -1603,7 +3352,12 @@
         "details": {
           "E0": {
             "n": 23,
-            "roi": -0.065217
+            "roi": -0.065217,
+            "bootstrap_ci95": [
+              -0.447207,
+              0.299989
+            ],
+            "max_drawdown_units": 3.74
           }
         }
       },
@@ -1654,8 +3408,71 @@
           "FULL_LOSS": 23
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 158,
+          "mean_roi": 0.015759,
+          "sample_sd": 0.831287,
+          "bootstrap_ci95": [
+            -0.102527,
+            0.153989
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.825175,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 9.88,
+          "longest_losing_streak": 4,
+          "worst_season_roi": -0.121739,
+          "season_abs_concentration": 0.563879,
+          "season_rois": {
+            "1920": -0.116,
+            "2021": 0.126322,
+            "2122": -0.121739
+          }
+        },
+        "validation": {
+          "n": 84,
+          "mean_roi": 0.022738,
+          "sample_sd": 0.829234,
+          "bootstrap_ci95": [
+            -0.136402,
+            0.197595
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.787213,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 11.49,
+          "longest_losing_streak": 4,
+          "worst_season_roi": -0.1898,
+          "season_abs_concentration": 0.545716,
+          "season_rois": {
+            "2223": -0.1898,
+            "2324": 0.335294
+          }
+        },
+        "holdout": {
+          "n": 48,
+          "mean_roi": -0.155833,
+          "sample_sd": 0.886619,
+          "bootstrap_ci95": [
+            -0.401094,
+            0.095995
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.208791,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 11.36,
+          "longest_losing_streak": 5,
+          "worst_season_roi": -0.155833,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.155833
+          }
+        }
+      },
       "z_validation": 0.208397,
       "p_validation": 0.834919,
+      "p_validation_empirical_sign_flip": 0.787213,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 0,
@@ -1711,8 +3528,71 @@
           "FULL_LOSS": 93
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 554,
+          "mean_roi": -0.087509,
+          "sample_sd": 0.983243,
+          "bootstrap_ci95": [
+            -0.169777,
+            -0.007751
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.036963,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 55.53,
+          "longest_losing_streak": 9,
+          "worst_season_roi": -0.182527,
+          "season_abs_concentration": 0.634939,
+          "season_rois": {
+            "1920": -0.100468,
+            "2021": 0.009552,
+            "2122": -0.182527
+          }
+        },
+        "validation": {
+          "n": 367,
+          "mean_roi": -0.005368,
+          "sample_sd": 0.979106,
+          "bootstrap_ci95": [
+            -0.113743,
+            0.091819
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.912088,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 19.35,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.026179,
+          "season_abs_concentration": 0.607886,
+          "season_rois": {
+            "2223": -0.026179,
+            "2324": 0.023097
+          }
+        },
+        "holdout": {
+          "n": 164,
+          "mean_roi": -0.156951,
+          "sample_sd": 0.969245,
+          "bootstrap_ci95": [
+            -0.29697,
+            -0.010262
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.03996,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 29.79,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.156951,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.156951
+          }
+        }
+      },
       "z_validation": -0.102836,
       "p_validation": 0.918093,
+      "p_validation_empirical_sign_flip": 0.912088,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 5,
@@ -1722,23 +3602,48 @@
         "details": {
           "D1": {
             "n": 29,
-            "roi": -0.323103
+            "roi": -0.323103,
+            "bootstrap_ci95": [
+              -0.662414,
+              0.00881
+            ],
+            "max_drawdown_units": 9.37
           },
           "E0": {
             "n": 29,
-            "roi": -0.317586
+            "roi": -0.317586,
+            "bootstrap_ci95": [
+              -0.654155,
+              0.027241
+            ],
+            "max_drawdown_units": 10.22
           },
           "F1": {
             "n": 33,
-            "roi": -0.178788
+            "roi": -0.178788,
+            "bootstrap_ci95": [
+              -0.476235,
+              0.128235
+            ],
+            "max_drawdown_units": 6.01
           },
           "I1": {
             "n": 43,
-            "roi": -0.012791
+            "roi": -0.012791,
+            "bootstrap_ci95": [
+              -0.324366,
+              0.27043
+            ],
+            "max_drawdown_units": 10.03
           },
           "SP1": {
             "n": 30,
-            "roi": -0.023667
+            "roi": -0.023667,
+            "bootstrap_ci95": [
+              -0.354192,
+              0.312192
+            ],
+            "max_drawdown_units": 6.32
           }
         }
       },
@@ -1789,8 +3694,71 @@
           "FULL_LOSS": 52
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 360,
+          "mean_roi": -0.042889,
+          "sample_sd": 0.843212,
+          "bootstrap_ci95": [
+            -0.126372,
+            0.040401
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.327672,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 28.88,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.214255,
+          "season_abs_concentration": 0.704689,
+          "season_rois": {
+            "1920": -0.214255,
+            "2021": 0.047956,
+            "2122": -0.014496
+          }
+        },
+        "validation": {
+          "n": 236,
+          "mean_roi": 0.024492,
+          "sample_sd": 0.856552,
+          "bootstrap_ci95": [
+            -0.080691,
+            0.12568
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.635365,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 7.79,
+          "longest_losing_streak": 4,
+          "worst_season_roi": 0.012909,
+          "season_abs_concentration": 0.754325,
+          "season_rois": {
+            "2223": 0.034603,
+            "2324": 0.012909
+          }
+        },
+        "holdout": {
+          "n": 114,
+          "mean_roi": -0.167368,
+          "sample_sd": 0.841564,
+          "bootstrap_ci95": [
+            -0.304875,
+            -0.014577
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.032967,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 19.08,
+          "longest_losing_streak": 5,
+          "worst_season_roi": -0.167368,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.167368
+          }
+        }
+      },
       "z_validation": 0.376253,
       "p_validation": 0.706729,
+      "p_validation_empirical_sign_flip": 0.635365,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 3,
@@ -1800,15 +3768,30 @@
         "details": {
           "E0": {
             "n": 31,
-            "roi": -0.249355
+            "roi": -0.249355,
+            "bootstrap_ci95": [
+              -0.523306,
+              0.031798
+            ],
+            "max_drawdown_units": 9.18
           },
           "F1": {
             "n": 27,
-            "roi": -0.143333
+            "roi": -0.143333,
+            "bootstrap_ci95": [
+              -0.437222,
+              0.16112
+            ],
+            "max_drawdown_units": 5.48
           },
           "I1": {
             "n": 22,
-            "roi": -0.056364
+            "roi": -0.056364,
+            "bootstrap_ci95": [
+              -0.411818,
+              0.221364
+            ],
+            "max_drawdown_units": 5.04
           }
         }
       },
@@ -1859,8 +3842,71 @@
           "FULL_LOSS": 31
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 184,
+          "mean_roi": -0.009348,
+          "sample_sd": 0.83705,
+          "bootstrap_ci95": [
+            -0.121458,
+            0.103266
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.894106,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 11.86,
+          "longest_losing_streak": 5,
+          "worst_season_roi": -0.148333,
+          "season_abs_concentration": 0.510191,
+          "season_rois": {
+            "1920": -0.021212,
+            "2021": 0.072062,
+            "2122": -0.148333
+          }
+        },
+        "validation": {
+          "n": 101,
+          "mean_roi": 0.016238,
+          "sample_sd": 0.828075,
+          "bootstrap_ci95": [
+            -0.142708,
+            0.16497
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.837163,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 11.58,
+          "longest_losing_streak": 4,
+          "worst_season_roi": -0.174182,
+          "season_abs_concentration": 0.539423,
+          "season_rois": {
+            "2223": -0.174182,
+            "2324": 0.243913
+          }
+        },
+        "holdout": {
+          "n": 59,
+          "mean_roi": -0.23322,
+          "sample_sd": 0.87477,
+          "bootstrap_ci95": [
+            -0.460568,
+            -0.007581
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.051948,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 16.64,
+          "longest_losing_streak": 6,
+          "worst_season_roi": -0.23322,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.23322
+          }
+        }
+      },
       "z_validation": 0.16319,
       "p_validation": 0.870369,
+      "p_validation_empirical_sign_flip": 0.837163,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 0,
@@ -1916,8 +3962,71 @@
           "FULL_LOSS": 62
         }
       },
+      "empirical_diagnostics": {
+        "train": {
+          "n": 309,
+          "mean_roi": -0.01068,
+          "sample_sd": 1.033046,
+          "bootstrap_ci95": [
+            -0.123192,
+            0.111131
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.854146,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 15.94,
+          "longest_losing_streak": 5,
+          "worst_season_roi": -0.06974,
+          "season_abs_concentration": 0.400121,
+          "season_rois": {
+            "1920": -0.06974,
+            "2021": -0.039478,
+            "2122": 0.056496
+          }
+        },
+        "validation": {
+          "n": 211,
+          "mean_roi": -0.046114,
+          "sample_sd": 1.009536,
+          "bootstrap_ci95": [
+            -0.194723,
+            0.091579
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.497502,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 21.41,
+          "longest_losing_streak": 7,
+          "worst_season_roi": -0.13569,
+          "season_abs_concentration": 0.723678,
+          "season_rois": {
+            "2223": -0.13569,
+            "2324": 0.063263
+          }
+        },
+        "holdout": {
+          "n": 96,
+          "mean_roi": -0.271563,
+          "sample_sd": 0.998181,
+          "bootstrap_ci95": [
+            -0.449625,
+            -0.061099
+          ],
+          "bootstrap_draws": 500,
+          "sign_flip_p": 0.00999,
+          "sign_flip_draws": 1000,
+          "max_drawdown_units": 29.88,
+          "longest_losing_streak": 13,
+          "worst_season_roi": -0.271563,
+          "season_abs_concentration": 1.0,
+          "season_rois": {
+            "2425": -0.271563
+          }
+        }
+      },
       "z_validation": -0.669845,
       "p_validation": 0.502957,
+      "p_validation_empirical_sign_flip": 0.497502,
       "q_validation_bh": 0.920911,
       "cross_league_holdout": {
         "eligible_leagues": 3,
@@ -1927,15 +4036,30 @@
         "details": {
           "E0": {
             "n": 21,
-            "roi": -0.264762
+            "roi": -0.264762,
+            "bootstrap_ci95": [
+              -0.667929,
+              0.161476
+            ],
+            "max_drawdown_units": 7.55
           },
           "F1": {
             "n": 24,
-            "roi": -0.2025
+            "roi": -0.2025,
+            "bootstrap_ci95": [
+              -0.587802,
+              0.237792
+            ],
+            "max_drawdown_units": 6.28
           },
           "I1": {
             "n": 22,
-            "roi": -0.483636
+            "roi": -0.483636,
+            "bootstrap_ci95": [
+              -0.816784,
+              -0.153898
+            ],
+            "max_drawdown_units": 11.65
           }
         }
       },
