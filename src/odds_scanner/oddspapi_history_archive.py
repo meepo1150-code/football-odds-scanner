@@ -7,7 +7,6 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Callable
 
-from .oddspapi_big5 import BIG5_TARGETS
 from .oddspapi_provider import ENV_KEY, SPORT_ID, _catalog, _get, _outcome_lookup, _quarter
 
 HISTORY_START = datetime(2026, 1, 1, tzinfo=timezone.utc)
@@ -77,8 +76,9 @@ def _load_archived_ids(path: Path) -> set[str]:
 
 
 def discovery_due(state: dict, now: datetime) -> bool:
+    """Billable finished-fixture discovery is limited to once every 7 days."""
     last = _utc(state.get("last_discovery_at"))
-    return last is None or now - last >= timedelta(days=DISCOVERY_REFRESH_DAYS) or not state.get("fixture_queue")
+    return last is None or now - last >= timedelta(days=DISCOVERY_REFRESH_DAYS)
 
 
 def _catalog_payload(markets: list[dict]) -> list[dict]:
@@ -186,6 +186,19 @@ def normalize_historical_fixture(fixture: dict, payload: dict, markets_catalog: 
     }
 
 
+def _compact_fixture(fixture: dict, country: str) -> dict:
+    return {
+        "fixtureId": fixture.get("fixtureId"),
+        "tournamentId": fixture.get("tournamentId"),
+        "tournamentName": fixture.get("tournamentName"),
+        "tournamentSlug": fixture.get("tournamentSlug"),
+        "startTime": fixture.get("startTime"),
+        "participant1Name": fixture.get("participant1Name"),
+        "participant2Name": fixture.get("participant2Name"),
+        "archive_country": country,
+    }
+
+
 def _discover_finished(key: str, now: datetime, *, sleep_fn: Callable[[float], None], request_spacing_seconds: float = 2.1) -> tuple[list[dict], int]:
     found: list[dict] = []
     requests = 0
@@ -205,11 +218,8 @@ def _discover_finished(key: str, now: datetime, *, sleep_fn: Callable[[float], N
         })
         requests += 1
         for fixture in _rows(payload):
-            if fixture.get("fixtureId") is None:
-                continue
-            fixture = dict(fixture)
-            fixture["archive_country"] = country
-            found.append(fixture)
+            if fixture.get("fixtureId") is not None:
+                found.append(_compact_fixture(fixture, country))
     dedup = {str(f["fixtureId"]): f for f in found}
     rows = list(dedup.values())
     rows.sort(key=lambda f: str(f.get("startTime") or ""))
