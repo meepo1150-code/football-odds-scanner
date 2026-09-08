@@ -34,7 +34,7 @@ def test_profit_diagnostics_are_reproducible_and_chronological():
     assert a == b
     assert a["longest_losing_streak"] == 2
     assert a["max_drawdown_units"] == 2.5
-    assert a["worst_season_roi"] == -1 / 3
+    assert a["worst_season_roi"] == round(-1 / 3, 6)
     assert 0 <= a["sign_flip_p"] <= 1
     assert len(a["bootstrap_ci95"]) == 2
 
