@@ -3,17 +3,10 @@ on:
   workflow_dispatch:
   schedule:
     # Reserve the rolling-hour budget around provider health (02:15 UTC)
-    # and production live scans (05:00 / 10:00 UTC).
+    # and production live scans (05:00 / 10:00 UTC). Archive code changes are
+    # validated in normal CI; collection itself is schedule/manual only so a
+    # merge cannot unexpectedly consume the Free API quota.
     - cron: '12 0-1,3,6-8,11-23 * * *'
-  push:
-    branches: [main]
-    paths:
-      - 'src/odds_scanner/five_dollar_archive.py'
-      - 'src/odds_scanner/five_dollar_history.py'
-      - 'src/odds_scanner/five_dollar_research.py'
-      - 'tests/test_five_dollar_archive.py'
-      - 'tests/test_five_dollar_research.py'
-      - '.github/workflows/five-dollar-archive.yml'
 permissions:
   contents: write
 concurrency:
