@@ -1,117 +1,14 @@
 {
   "schema_version": "1.1",
-  "status": "PARTIAL_WITH_ERRORS",
-  "generated_at": "2026-09-08T10:11:50.453111+00:00",
+  "status": "OK",
+  "generated_at": "2026-09-08T10:17:19.840896+00:00",
   "coverage_start": "2026-01-01T00:00:00+00:00",
   "last_discovery_at": "2026-09-08T10:11:50.453111+00:00",
   "discovery_cursor": "2026-01-10T00:00:00+00:00",
   "backfill_complete": false,
-  "last_discovery_mode": "BACKFILL",
-  "last_discovery_window": {
-    "from": "2026-01-01T00:00:00Z",
-    "to": "2026-01-10T00:00:00Z"
-  },
+  "last_discovery_mode": null,
+  "last_discovery_window": null,
   "fixture_queue": [
-    {
-      "fixtureId": "id1000002361061273",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-01-03T14:00:00.000Z",
-      "participant1Name": "Sassuolo Calcio",
-      "participant2Name": "Parma Calcio",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000002361061281",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-01-03T14:00:00.000Z",
-      "participant1Name": "Genoa CFC",
-      "participant2Name": "Pisa SC",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000001761300901",
-      "tournamentId": 17,
-      "tournamentName": "Premier League",
-      "tournamentSlug": "premier-league",
-      "startTime": "2026-01-03T15:00:00.000Z",
-      "participant1Name": "Brighton & Hove Albion",
-      "participant2Name": "Burnley FC",
-      "archive_country": "England"
-    },
-    {
-      "fixtureId": "id1000001761300915",
-      "tournamentId": 17,
-      "tournamentName": "Premier League",
-      "tournamentSlug": "premier-league",
-      "startTime": "2026-01-03T15:00:00.000Z",
-      "participant1Name": "Wolverhampton Wanderers",
-      "participant2Name": "West Ham United",
-      "archive_country": "England"
-    },
-    {
-      "fixtureId": "id1000000861624284",
-      "tournamentId": 8,
-      "tournamentName": "LaLiga",
-      "tournamentSlug": "laliga",
-      "startTime": "2026-01-03T15:15:00.000Z",
-      "participant1Name": "CA Osasuna",
-      "participant2Name": "Athletic Bilbao",
-      "archive_country": "Spain"
-    },
-    {
-      "fixtureId": "id1000003461526274",
-      "tournamentId": 34,
-      "tournamentName": "Ligue 1",
-      "tournamentSlug": "ligue-1",
-      "startTime": "2026-01-03T16:00:00.000Z",
-      "participant1Name": "AS Monaco",
-      "participant2Name": "Olympique Lyon",
-      "archive_country": "France"
-    },
-    {
-      "fixtureId": "id1000002361061277",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-01-03T17:00:00.000Z",
-      "participant1Name": "Juventus Turin",
-      "participant2Name": "US Lecce",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000000861624282",
-      "tournamentId": 8,
-      "tournamentName": "LaLiga",
-      "tournamentSlug": "laliga",
-      "startTime": "2026-01-03T17:30:00.000Z",
-      "participant1Name": "Elche CF",
-      "participant2Name": "Villarreal CF",
-      "archive_country": "Spain"
-    },
-    {
-      "fixtureId": "id1000001761300897",
-      "tournamentId": 17,
-      "tournamentName": "Premier League",
-      "tournamentSlug": "premier-league",
-      "startTime": "2026-01-03T17:30:00.000Z",
-      "participant1Name": "AFC Bournemouth",
-      "participant2Name": "Arsenal FC",
-      "archive_country": "England"
-    },
-    {
-      "fixtureId": "id1000003461526270",
-      "tournamentId": 34,
-      "tournamentName": "Ligue 1",
-      "tournamentSlug": "ligue-1",
-      "startTime": "2026-01-03T18:00:00.000Z",
-      "participant1Name": "OGC Nice",
-      "participant2Name": "Strasbourg Alsace",
-      "archive_country": "France"
-    },
     {
       "fixtureId": "id1000002361061269",
       "tournamentId": 23,
@@ -663,12 +560,23 @@
       "archive_country": "Spain"
     }
   ],
-  "skipped_fixture_ids": [],
-  "queued_remaining": 65,
+  "skipped_fixture_ids": [
+    "id1000000861624282",
+    "id1000000861624284",
+    "id1000001761300897",
+    "id1000001761300901",
+    "id1000001761300915",
+    "id1000002361061273",
+    "id1000002361061277",
+    "id1000002361061281",
+    "id1000003461526270",
+    "id1000003461526274"
+  ],
+  "queued_remaining": 55,
   "processed_this_run": 10,
   "rows_added_this_run": 0,
   "archive_rows": 0,
-  "billable_requests_this_run": 1,
+  "billable_requests_this_run": 0,
   "free_history_requests_this_run": 10,
   "history_request_spacing_seconds": 5.2,
   "result_join_status": "NOT_JOINED",
@@ -677,16 +585,5 @@
     "MATCH_RESULTS_NOT_JOINED",
     "ODDSPAPI_HISTORY_STARTS_2026_AND_IS_NOT_YET_MULTI_SEASON"
   ],
-  "errors": [
-    "id1000001761300885:HTTPError:HTTP Error 404: Not Found",
-    "id1000001761300887:HTTPError:HTTP Error 404: Not Found",
-    "id1000001761300879:HTTPError:HTTP Error 404: Not Found",
-    "id1000001761300893:HTTPError:HTTP Error 404: Not Found",
-    "id1000002361061287:HTTPError:HTTP Error 404: Not Found",
-    "id1000003461526284:HTTPError:HTTP Error 404: Not Found",
-    "id1000000861624292:HTTPError:HTTP Error 404: Not Found",
-    "id1000002361061285:HTTPError:HTTP Error 404: Not Found",
-    "id1000001761300899:HTTPError:HTTP Error 404: Not Found",
-    "id1000000861624280:HTTPError:HTTP Error 404: Not Found"
-  ]
+  "errors": []
 }
