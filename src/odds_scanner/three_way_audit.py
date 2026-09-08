@@ -38,12 +38,17 @@ def _phase_buckets(rows: list[dict], seasons: set[str], min_n: int) -> dict[tupl
     for b in report["buckets"]:
         if b["split"] != "test":
             continue
-        markets = [("AH", b["ah_roi"], b["ah_settlements"])]
-        if b["family"] != "AH_LINE":
-            markets.append(("OU", b["ou_roi"], b["ou_settlements"]))
-        for market, roi, settlements in markets:
+        markets = [("AH", b["ah_roi"], b["ah_settlements"], b.get("ah_diagnostics"))]
+        if b["family"] not in {"AH_LINE", "AH_MOVE"}:
+            markets.append(("OU", b["ou_roi"], b["ou_settlements"], b.get("ou_diagnostics")))
+        for market, roi, settlements, diagnostics in markets:
             if roi is not None:
-                out[(b["pattern"], market)] = {**b, "roi": float(roi), "settlements": settlements}
+                out[(b["pattern"], market)] = {
+                    **b,
+                    "roi": float(roi),
+                    "settlements": settlements,
+                    "diagnostics": diagnostics,
+                }
     return out
 
 
@@ -61,7 +66,12 @@ def _league_consistency(rows: list[dict], pattern: str, market: str, min_n: int 
         roi = bucket["roi"]
         if roi > 0:
             positive += 1
-        details[league] = {"n": bucket["n"], "roi": round(roi, 6)}
+        details[league] = {
+            "n": bucket["n"],
+            "roi": round(roi, 6),
+            "bootstrap_ci95": (bucket.get("diagnostics") or {}).get("bootstrap_ci95"),
+            "max_drawdown_units": (bucket.get("diagnostics") or {}).get("max_drawdown_units"),
+        }
     share = positive / eligible if eligible else 0.0
     return {
         "eligible_leagues": eligible,
@@ -108,8 +118,16 @@ def build_three_way_audit(
                 "validation": va["settlements"],
                 "holdout": ho["settlements"],
             },
+            "empirical_diagnostics": {
+                "train": tr.get("diagnostics"),
+                "validation": va.get("diagnostics"),
+                "holdout": ho.get("diagnostics"),
+            },
             "z_validation": round(z_val, 6),
+            # Frozen legacy screening value remains the BH input. Empirical sign-flip
+            # evidence is published alongside it but is not used to retune this opened holdout.
             "p_validation": round(_normal_two_sided_p(z_val), 6),
+            "p_validation_empirical_sign_flip": (va.get("diagnostics") or {}).get("sign_flip_p"),
         })
 
     _bh(tests)
@@ -135,7 +153,7 @@ def build_three_way_audit(
     }
     tests.sort(key=lambda r: (priority[r["status"]], r["holdout_roi"], r["holdout_n"]), reverse=True)
     return {
-        "schema_version": "1.2",
+        "schema_version": "1.3",
         "engine": "THREE_WAY_CROSS_LEAGUE_AUDIT",
         "source_rows": len(rows),
         "split": {
@@ -150,12 +168,14 @@ def build_three_way_audit(
             "validation_fdr_alpha": fdr_alpha,
             "cross_league_min_eligible": 3,
             "cross_league_positive_share": DEFAULT_POLICY.min_positive_season_share,
+            "frozen_bh_input": "legacy_normal_screening_p_validation",
+            "empirical_diagnostics_are_additional_only": True,
         },
         "tested_patterns": len(tests),
         "global_robust_count": sum(r["status"] == "GLOBAL_ROBUST_RESEARCH_CANDIDATE" for r in tests),
         "league_specific_or_unstable_count": sum(r["status"] == "LEAGUE_SPECIFIC_OR_UNSTABLE" for r in tests),
         "watchlist_count": sum(r["status"] == "WATCHLIST" for r in tests),
-        "note": "Holdout 2024/25 is evaluated once under frozen gates. Do not retune thresholds from holdout outcomes and then reuse the same season as untouched evidence.",
+        "note": "Holdout 2024/25 is already opened. Empirical bootstrap/sign-flip/drawdown evidence is now reported, but frozen promotion status is intentionally still computed with the pre-registered legacy screening/FDR gate. Do not retune from holdout outcomes.",
         "patterns": tests,
     }
 
