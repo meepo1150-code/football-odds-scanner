@@ -105,44 +105,30 @@ def _fixture_fields(fixture: dict) -> tuple[str, str, str, str, str, str]:
     return league, date_value, time_value, home, away, status
 
 
-def parse_fixture_markets(
-    fixture: dict,
-    odds_payload: dict,
-    markets_catalog: list[dict],
-    *,
-    bookmaker: str = "bet365",
-    now: datetime | None = None,
-    max_age_minutes: int = 30,
-) -> list[CurrentMarket]:
+def parse_fixture_markets(fixture: dict, odds_payload: dict, markets_catalog: list[dict], *, bookmaker: str = "bet365", now: datetime | None = None, max_age_minutes: int = 30) -> list[CurrentMarket]:
     """Normalize exact full-time Bet365 1X2 x AH-line x O/U-line combinations.
 
-    The market catalog is authoritative for market type, handicap and outcome labels.
-    No line is rounded or guessed. Each emitted row uses the oldest timestamp among
-    all required selections so mixed-age structures fail conservatively.
+    Market metadata is authoritative. No line is rounded or guessed. Each emitted
+    row uses the oldest timestamp among all required selections so mixed-age market
+    structures fail conservatively at the execution-safety gate.
     """
     catalog = _catalog(markets_catalog)
     books = odds_payload.get("bookmakerOdds") or {}
     book = books.get(bookmaker)
-    if not isinstance(book, dict):
-        return []
-    if book.get("bookmakerIsActive") is False or book.get("suspended") is True:
+    if not isinstance(book, dict) or book.get("bookmakerIsActive") is False or book.get("suspended") is True:
         return []
 
     one_x_two = None
     ah_rows: list[dict] = []
     ou_rows: list[dict] = []
-
     for market_id, market_data in (book.get("markets") or {}).items():
         meta = catalog.get(str(market_id))
-        if not isinstance(meta, dict) or not isinstance(market_data, dict):
-            continue
-        if market_data.get("marketActive") is False:
+        if not isinstance(meta, dict) or not isinstance(market_data, dict) or market_data.get("marketActive") is False:
             continue
         outcomes = market_data.get("outcomes") or {}
         names = _outcome_lookup(meta)
         mname = str(meta.get("marketName") or "").lower()
         mtype = str(meta.get("marketType") or "").lower()
-
         selections: dict[str, dict] = {}
         for outcome_id, outcome in outcomes.items():
             p = _player(outcome) if isinstance(outcome, dict) else None
@@ -155,18 +141,15 @@ def parse_fixture_markets(
         if mtype == "1x2" and {"1", "x", "2"}.issubset(selections):
             one_x_two = {"home": selections["1"], "draw": selections["x"], "away": selections["2"]}
             continue
-
         line = _quarter(meta.get("handicap"))
         if line is None:
             continue
-
         if "asian handicap" in mname:
             home_p = selections.get("home") or selections.get("1")
             away_p = selections.get("away") or selections.get("2")
             if home_p and away_p:
                 ah_rows.append({"line": line, "home": home_p, "away": away_p})
             continue
-
         if "over under" in mname or (mtype == "totals" and {"over", "under"}.issubset(selections)):
             over_p, under_p = selections.get("over"), selections.get("under")
             if over_p and under_p:
@@ -191,43 +174,40 @@ def parse_fixture_markets(
                 except ValueError:
                     stale = None
             rows.append(CurrentMarket(
-                source=f"oddspapi:{bookmaker}:timestamped",
-                league=league,
-                date=date_value,
-                kickoff=kickoff,
-                home=home,
-                away=away,
-                ah_home_line=ah["line"],
-                ah_home_odds=float(ah["home"]["price"]),
-                ah_away_line=-ah["line"],
-                ah_away_odds=float(ah["away"]["price"]),
-                ou_line=ou["line"],
-                over_odds=float(ou["over"]["price"]),
-                under_odds=float(ou["under"]["price"]),
-                one_x_two_home=float(one_x_two["home"]["price"]),
-                one_x_two_draw=float(one_x_two["draw"]["price"]),
-                one_x_two_away=float(one_x_two["away"]["price"]),
-                status=status,
-                as_of=as_of,
-                stale=stale,
+                source=f"oddspapi:{bookmaker}:timestamped", league=league, date=date_value, kickoff=kickoff,
+                home=home, away=away, ah_home_line=ah["line"], ah_home_odds=float(ah["home"]["price"]),
+                ah_away_line=-ah["line"], ah_away_odds=float(ah["away"]["price"]), ou_line=ou["line"],
+                over_odds=float(ou["over"]["price"]), under_odds=float(ou["under"]["price"]),
+                one_x_two_home=float(one_x_two["home"]["price"]), one_x_two_draw=float(one_x_two["draw"]["price"]),
+                one_x_two_away=float(one_x_two["away"]["price"]), status=status, as_of=as_of, stale=stale,
                 tradable=(status == "pre_match" and stale is False),
             ))
     return rows
+
+
+def _safe_account_summary(account: dict) -> dict:
+    """Never persist API keys or subscription identifiers from /account."""
+    subscriptions = account.get("subscriptions") or [] if isinstance(account, dict) else []
+    active = next((s for s in subscriptions if isinstance(s, dict) and s.get("is_active") is True), None)
+    if not active:
+        return {"active_subscription": False}
+    return {
+        "active_subscription": True,
+        "price": active.get("price"),
+        "currency": active.get("currency"),
+        "request_limit": active.get("request_limit"),
+        "request_count": active.get("request_count"),
+        "rate_limit": active.get("rate_limit"),
+        "sport_ids": active.get("sport_ids"),
+        "bookmakers": sorted((active.get("bookmakers") or {}).keys()),
+    }
 
 
 def probe_from_env(limit: int = 5) -> dict:
     generated_at = datetime.now(timezone.utc).isoformat()
     key = os.getenv(ENV_KEY)
     if not key:
-        return {
-            "schema_version": "1.0",
-            "provider": "oddspapi_free",
-            "status": "API_KEY_NOT_CONFIGURED",
-            "generated_at": generated_at,
-            "execution_candidate": False,
-            "rows": 0,
-            "note": f"Optional GitHub secret {ENV_KEY} is not configured.",
-        }
+        return {"schema_version": "1.0", "provider": "oddspapi_free", "status": "API_KEY_NOT_CONFIGURED", "generated_at": generated_at, "execution_candidate": False, "rows": 0, "note": f"Optional GitHub secret {ENV_KEY} is not configured."}
     try:
         account = _get("/account", key)
         catalog = _get("/markets", key, {"sportId": SPORT_ID, "language": "en"})
@@ -244,15 +224,8 @@ def probe_from_env(limit: int = 5) -> dict:
             odds = _get("/odds", key, {"fixtureId": fid, "bookmakers": "bet365", "verbosity": 3})
             normalized.extend(parse_fixture_markets(fixture, odds, catalog if isinstance(catalog, list) else catalog.get("data") or [], now=now))
     except Exception as exc:
-        return {
-            "schema_version": "1.0",
-            "provider": "oddspapi_free",
-            "status": "UNAVAILABLE",
-            "generated_at": generated_at,
-            "execution_candidate": False,
-            "rows": 0,
-            "errors": [f"{type(exc).__name__}: {exc}"],
-        }
+        return {"schema_version": "1.0", "provider": "oddspapi_free", "status": "UNAVAILABLE", "generated_at": generated_at, "execution_candidate": False, "rows": 0, "errors": [f"{type(exc).__name__}: {exc}"]}
+
     safe = 0
     reasons: dict[str, int] = {}
     for row in normalized:
@@ -260,15 +233,10 @@ def probe_from_env(limit: int = 5) -> dict:
         safe += int(ok)
         reasons[reason] = reasons.get(reason, 0) + 1
     return {
-        "schema_version": "1.0",
-        "provider": "oddspapi_free",
+        "schema_version": "1.0", "provider": "oddspapi_free",
         "status": "EXECUTION_SAFE_ROWS_AVAILABLE" if safe else ("ROWS_BUT_NOT_EXECUTION_SAFE" if normalized else "NO_ROWS"),
-        "generated_at": generated_at,
-        "execution_candidate": safe > 0,
-        "rows": len(normalized),
-        "execution_safe_rows": safe,
-        "reasons": reasons,
-        "account": account,
+        "generated_at": generated_at, "execution_candidate": safe > 0, "rows": len(normalized), "execution_safe_rows": safe,
+        "reasons": reasons, "account": _safe_account_summary(account),
         "freshness_basis": "oldest bookmakerChangedAt/changedAt across required 1X2+AH+OU selections",
         "samples": [asdict(r) for r in normalized[:2]],
     }
