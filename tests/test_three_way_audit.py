@@ -35,12 +35,18 @@ def test_three_way_audit_uses_frozen_split_and_cross_league_gate():
     )
     assert audit["split"]["holdout"] == ["2425"]
     assert audit["tested_patterns"] > 0
+    assert audit["gates"]["frozen_bh_input"] == "legacy_normal_screening_p_validation"
+    assert audit["gates"]["empirical_diagnostics_are_additional_only"] is True
     ah = next(p for p in audit["patterns"] if p["family"] == "AH_LINE" and p["market"] == "AH")
     assert ah["train_roi"] > 0
     assert ah["validation_roi"] > 0
     assert ah["holdout_roi"] > 0
     assert ah["cross_league_holdout"]["eligible_leagues"] == 3
     assert ah["cross_league_holdout"]["stable"] is True
+    assert ah["empirical_diagnostics"]["validation"]["bootstrap_ci95"]
+    assert ah["p_validation_empirical_sign_flip"] is not None
+    # Frozen status still depends on the pre-registered p_validation/q gate, not the new diagnostic p.
+    assert "q_validation_bh" in ah
 
 
 def test_three_way_audit_rejects_pattern_that_flips_on_holdout():
