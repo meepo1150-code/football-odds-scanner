@@ -89,9 +89,10 @@ def build_report(rows: list[dict]) -> dict:
         "warning": "This report is for data-coverage and exploratory pattern research only. It must never overwrite or promote reports/pattern_registry.json.",
     }
     if len(rows) >= MIN_BACKTEST_ROWS:
-        # This is deliberately exploratory only. The hierarchical engine still applies
-        # Asian settlement correctly, but no production promotion can occur from here.
-        report["hierarchical"] = build_hierarchical_report(rows, test_seasons=set(), min_n=MIN_BACKTEST_ROWS)
+        # Use the whole short archive as one diagnostic pool. Passing an explicit
+        # impossible season avoids the engine's default test-season split; this data
+        # is too short to claim independent validation in either direction.
+        report["hierarchical"] = build_hierarchical_report(rows, test_seasons={"__NONE__"}, min_n=MIN_BACKTEST_ROWS)
     return report
 
 
