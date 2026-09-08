@@ -1,0 +1,1 @@
+Validation target for PR #57: GitHub Actions must discover only pre-game soccer fixtures that have Bet365 odds within the next rolling 24 hours, cap detailed odds probes at five fixtures, and preserve the existing fail-closed execution timestamp gate. A successful health run may report zero execution-safe rows; that remains a valid result.

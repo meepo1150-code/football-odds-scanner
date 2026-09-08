@@ -7,7 +7,9 @@ on:
     branches: [main]
     paths:
       - 'src/odds_scanner/oddspapi_provider.py'
+      - 'src/odds_scanner/oddspapi_discovery.py'
       - 'tests/test_oddspapi_provider.py'
+      - 'tests/test_oddspapi_discovery.py'
       - 'src/odds_scanner/provider_capabilities.py'
       - 'tests/test_provider_capabilities.py'
       - '.github/workflows/oddspapi-health.yml'
@@ -30,8 +32,8 @@ jobs:
         with: {python-version: '3.11'}
       - run: python -m pip install -e '.[dev]'
       - run: pytest -q
-      - name: Probe timestamped Bet365 candidate fail-closed
-        run: python -c "from pathlib import Path; from odds_scanner.oddspapi_provider import write_health; print(write_health(Path('.')))"
+      - name: Discover pre-match Bet365 fixtures and probe timestamped markets
+        run: python -c "from pathlib import Path; from odds_scanner.oddspapi_discovery import write_health; print(write_health(Path('.')))"
       - name: Commit owned health report safely
         run: |
           set -euo pipefail
@@ -50,5 +52,3 @@ jobs:
             echo "Push race on attempt $attempt; retrying"
           done
           exit 1
-
-# Activation probe marker: rerun after configuring ODDSPAPI_KEY.
