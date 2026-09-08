@@ -8,8 +8,10 @@ on:
     paths:
       - 'src/odds_scanner/oddspapi_provider.py'
       - 'src/odds_scanner/oddspapi_discovery.py'
+      - 'src/odds_scanner/oddspapi_big5.py'
       - 'tests/test_oddspapi_provider.py'
       - 'tests/test_oddspapi_discovery.py'
+      - 'tests/test_oddspapi_big5.py'
       - 'src/odds_scanner/provider_capabilities.py'
       - 'tests/test_provider_capabilities.py'
       - '.github/workflows/oddspapi-health.yml'
@@ -32,8 +34,8 @@ jobs:
         with: {python-version: '3.11'}
       - run: python -m pip install -e '.[dev]'
       - run: pytest -q
-      - name: Discover pre-match Bet365 fixtures and probe timestamped markets
-        run: python -c "from pathlib import Path; from odds_scanner.oddspapi_discovery import write_health; print(write_health(Path('.')))"
+      - name: Probe timestamped Bet365 markets across Big-5 leagues in one batch
+        run: python -c "from pathlib import Path; from odds_scanner.oddspapi_big5 import write_health; print(write_health(Path('.')))"
       - name: Commit owned health report safely
         run: |
           set -euo pipefail
