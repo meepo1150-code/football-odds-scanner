@@ -1,0 +1,54 @@
+name: Five Dollar Historical Snapshot Archive
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '12 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/five_dollar_archive.py'
+      - 'src/odds_scanner/five_dollar_history.py'
+      - 'tests/test_five_dollar_archive.py'
+      - '.github/workflows/five-dollar-archive.yml'
+permissions:
+  contents: write
+concurrency:
+  group: five-dollar-historical-archive
+  cancel-in-progress: false
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      FIVE_DOLLAR_FOOTBALL_API_KEY: ${{ secrets.FIVE_DOLLAR_FOOTBALL_API_KEY }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.11'}
+      - run: python -m pip install -e '.[dev]'
+      - run: pytest -q
+      - name: Collect one UTC day of derived snapshot research rows
+        run: python -m odds_scanner.five_dollar_archive
+      - name: Commit archive without rebasing generated files
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/five-dollar-archive/data/normalized /tmp/five-dollar-archive/reports
+          cp data/normalized/five_dollar_snapshots.jsonl /tmp/five-dollar-archive/data/normalized/
+          cp reports/five_dollar_archive_state.json /tmp/five-dollar-archive/reports/
+          git config user.name 'odds-scanner-actions'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p data/normalized reports
+            cp /tmp/five-dollar-archive/data/normalized/five_dollar_snapshots.jsonl data/normalized/
+            cp /tmp/five-dollar-archive/reports/five_dollar_archive_state.json reports/
+            git add -- data/normalized/five_dollar_snapshots.jsonl reports/five_dollar_archive_state.json
+            git diff --cached --quiet && exit 0
+            git commit -m 'Update derived 5Dollar snapshot archive'
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Push race on attempt $attempt; retrying from latest main"
+          done
+          exit 1
