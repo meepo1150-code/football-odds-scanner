@@ -52,14 +52,30 @@ def test_non_quarter_line_is_not_rounded_into_archive():
     assert row["over_under"][0]["line"] == 2.75
 
 
-def test_discovery_refresh_is_strictly_weekly_even_when_queue_is_empty():
+def test_backfill_discovery_advances_in_nine_day_windows_only_when_queue_empty():
+    now = datetime(2026, 2, 1, tzinfo=timezone.utc)
+    start, end, mode = archive.next_discovery_window({}, now)
+    assert start == archive.HISTORY_START
+    assert end == archive.HISTORY_START + timedelta(days=9)
+    assert mode == "BACKFILL"
+    state = {"discovery_cursor": end.isoformat(), "fixture_queue": [{"fixtureId": "f1"}]}
+    assert archive.next_discovery_window(state, now) is None
+    state["fixture_queue"] = []
+    start2, end2, mode2 = archive.next_discovery_window(state, now)
+    assert start2 == end
+    assert end2 == end + timedelta(days=9)
+    assert mode2 == "BACKFILL"
+
+
+def test_completed_backfill_refreshes_latest_window_weekly_only():
     now = datetime(2026, 9, 8, tzinfo=timezone.utc)
-    state = {"last_discovery_at": (now - timedelta(days=2)).isoformat(), "fixture_queue": [{"fixtureId": "f1"}]}
-    assert archive.discovery_due(state, now) is False
-    state["last_discovery_at"] = (now - timedelta(days=8)).isoformat()
-    assert archive.discovery_due(state, now) is True
-    state = {"last_discovery_at": now.isoformat(), "fixture_queue": []}
-    assert archive.discovery_due(state, now) is False
+    recent = {"backfill_complete": True, "last_discovery_at": (now - timedelta(days=2)).isoformat(), "fixture_queue": []}
+    assert archive.next_discovery_window(recent, now) is None
+    stale = {"backfill_complete": True, "last_discovery_at": (now - timedelta(days=8)).isoformat(), "fixture_queue": []}
+    start, end, mode = archive.next_discovery_window(stale, now)
+    assert start == now - timedelta(days=9)
+    assert end == now
+    assert mode == "REFRESH"
 
 
 def test_missing_key_writes_fail_closed_state(monkeypatch, tmp_path):
@@ -78,7 +94,7 @@ def test_cached_queue_uses_free_history_without_billable_discovery(monkeypatch, 
     state_path = tmp_path / archive.STATE_PATH
     state_path.parent.mkdir(parents=True)
     state_path.write_text(json.dumps({
-        "last_discovery_at": now.isoformat(),
+        "discovery_cursor": "2026-01-10T00:00:00+00:00",
         "fixture_queue": [_fixture("f1")],
     }), encoding="utf-8")
     catalog_path = tmp_path / archive.CATALOG_PATH
@@ -100,3 +116,22 @@ def test_cached_queue_uses_free_history_without_billable_discovery(monkeypatch, 
     assert result["rows_added_this_run"] == 1
     assert result["archive_rows"] == 1
     assert result["promotion_eligible"] is False
+
+
+def test_window_discovery_is_one_billable_soccer_request_and_filters_big5(monkeypatch):
+    calls = []
+    def fake_get(path, key, params=None):
+        calls.append((path, params))
+        return [
+            _fixture("big5"),
+            {**_fixture("other"), "tournamentId": 999, "tournamentName": "Other League"},
+        ]
+    monkeypatch.setattr(archive, "_get", fake_get)
+    start = datetime(2026, 1, 1, tzinfo=timezone.utc)
+    rows = archive._discover_window("test", start, start + timedelta(days=9))
+    assert len(calls) == 1
+    assert calls[0][0] == "/fixtures"
+    assert calls[0][1]["sportId"] == 10
+    assert calls[0][1]["statusId"] == 2
+    assert len(rows) == 1
+    assert rows[0]["fixtureId"] == "big5"
