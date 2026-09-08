@@ -1,0 +1,50 @@
+name: Five Dollar Snapshot Research Rebuild
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'data/normalized/five_dollar_snapshots.jsonl'
+      - 'src/odds_scanner/five_dollar_research.py'
+      - 'src/odds_scanner/asian_settlement.py'
+      - 'src/odds_scanner/hierarchical_backtest.py'
+      - 'src/odds_scanner/robust_stats.py'
+      - 'tests/test_five_dollar_research.py'
+      - '.github/workflows/five-dollar-research.yml'
+permissions:
+  contents: write
+concurrency:
+  group: five-dollar-research-writer
+  cancel-in-progress: true
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.11'}
+      - run: python -m pip install -e '.[dev]'
+      - run: pytest -q
+      - name: Rebuild snapshot research without API calls
+        run: python -m odds_scanner.five_dollar_research
+      - name: Commit owned research report safely
+        run: |
+          set -euo pipefail
+          cp reports/five_dollar_research.json /tmp/five_dollar_research.json
+          git config user.name 'odds-scanner-actions'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p reports
+            cp /tmp/five_dollar_research.json reports/five_dollar_research.json
+            git add -- reports/five_dollar_research.json
+            git diff --cached --quiet && exit 0
+            git commit -m 'Rebuild 5Dollar snapshot research report'
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Push race on attempt $attempt; retrying from latest main"
+          done
+          exit 1
