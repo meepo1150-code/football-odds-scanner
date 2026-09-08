@@ -1,8 +1,8 @@
 {
-  "schema_version": "1.2",
+  "schema_version": "1.3",
   "provider": "5dollarfootballapi_free",
   "status": "NO_ROWS",
-  "generated_at": "2026-09-08T02:40:54.360916+00:00",
+  "generated_at": "2026-09-08T06:21:04.315755+00:00",
   "execution_candidate": false,
   "account_plan": "free",
   "account_limits": {
@@ -11,13 +11,15 @@
     "burst_per_minute": 20
   },
   "account_usage": {
-    "today": 22
+    "today": 52
   },
   "rows": 0,
   "two_sided_ah": 0,
   "two_sided_ou": 0,
   "quarter_ah": 0,
   "quarter_ou": 0,
-  "freshness_basis": "fetch-observed provider-documented latest-pre-match snapshot",
+  "fixture_window": "next_24_hours_from_probe_time_utc",
+  "freshness_basis": "summary endpoint has no bookmaker quote timestamp; request time is not substituted",
+  "production_blocker": "QUOTE_TIMESTAMP_UNVERIFIED",
   "samples": []
 }
