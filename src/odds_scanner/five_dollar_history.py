@@ -22,6 +22,12 @@ def _devig_three(home: float, draw: float, away: float) -> tuple[float, float, f
     return raw[0] / total, raw[1] / total, raw[2] / total
 
 
+def _two_way_share(price: float, other_price: float) -> float:
+    raw = 1.0 / price
+    other = 1.0 / other_price
+    return raw / (raw + other)
+
+
 def _season_code(kickoff_utc: str) -> str:
     dt = datetime.fromisoformat(kickoff_utc.replace("Z", "+00:00"))
     start = dt.year if dt.month >= 7 else dt.year - 1
@@ -68,12 +74,16 @@ def normalize_finished_snapshot(fixture: dict, odds_payload: dict, *, bookmaker:
         favorite_open_ah_line = open_home_line
         favorite_close_ah_line = close_home_line
         favorite_open_ah_price = open_home_ah
+        favorite_open_ah_other_price = open_away_ah
         favorite_close_ah_price = close_home_ah
+        favorite_close_ah_other_price = close_away_ah
     else:
         favorite_open_ah_line = -open_home_line
         favorite_close_ah_line = -close_home_line
         favorite_open_ah_price = open_away_ah
+        favorite_open_ah_other_price = open_home_ah
         favorite_close_ah_price = close_away_ah
+        favorite_close_ah_other_price = close_home_ah
 
     league = fixture.get("league") or {}
     teams = fixture.get("teams") or {}
@@ -99,15 +109,23 @@ def normalize_finished_snapshot(fixture: dict, odds_payload: dict, *, bookmaker:
         "closing_1x2_away": ca,
         "favorite_ah_line": favorite_open_ah_line,
         "favorite_ah_price": favorite_open_ah_price,
+        "favorite_ah_other_price": favorite_open_ah_other_price,
+        "favorite_ah_normalized_price_share": _two_way_share(favorite_open_ah_price, favorite_open_ah_other_price),
         "closing_favorite_ah_line": favorite_close_ah_line,
         "closing_favorite_ah_price": favorite_close_ah_price,
+        "closing_favorite_ah_other_price": favorite_close_ah_other_price,
+        "closing_favorite_ah_normalized_price_share": _two_way_share(favorite_close_ah_price, favorite_close_ah_other_price),
         "ah_line_move": favorite_close_ah_line - favorite_open_ah_line,
         "ou_line": open_ou_line,
         "over_price": open_over,
         "under_price": open_under,
+        "over_normalized_price_share": _two_way_share(open_over, open_under),
+        "under_normalized_price_share": _two_way_share(open_under, open_over),
         "closing_ou_line": close_ou_line,
         "closing_over_price": close_over,
         "closing_under_price": close_under,
+        "closing_over_normalized_price_share": _two_way_share(close_over, close_under),
+        "closing_under_normalized_price_share": _two_way_share(close_under, close_over),
         "ou_line_move": close_ou_line - open_ou_line,
         "one_x_two_source": bookmaker,
         "ah_source": bookmaker,
