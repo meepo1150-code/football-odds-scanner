@@ -43,11 +43,19 @@ def test_snapshot_normalizer_preserves_open_close_quarter_movement():
     row = normalize_finished_snapshot(_fixture(), _odds())
     assert row["favorite_side"] == "H"
     assert row["favorite_ah_line"] == -0.75
+    assert row["favorite_ah_price"] == 1.92
+    assert row["favorite_ah_other_price"] == 1.96
     assert row["closing_favorite_ah_line"] == -1.0
+    assert row["closing_favorite_ah_price"] == 2.02
+    assert row["closing_favorite_ah_other_price"] == 1.86
     assert row["ah_line_move"] == pytest.approx(-0.25)
+    assert 0 < row["favorite_ah_normalized_price_share"] < 1
+    assert 0 < row["closing_favorite_ah_normalized_price_share"] < 1
     assert row["ou_line"] == 2.5
     assert row["closing_ou_line"] == 2.75
     assert row["ou_line_move"] == pytest.approx(0.25)
+    assert row["over_normalized_price_share"] + row["under_normalized_price_share"] == pytest.approx(1.0)
+    assert row["closing_over_normalized_price_share"] + row["closing_under_normalized_price_share"] == pytest.approx(1.0)
     assert row["snapshot_semantics"].endswith("NO_TICKS")
 
 
