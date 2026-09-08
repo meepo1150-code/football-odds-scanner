@@ -33,14 +33,30 @@ jobs:
       - name: Audit train-test consistency
         if: github.event_name != 'pull_request'
         run: python -m odds_scanner.audit
-      - name: Commit generated research outputs
+      - name: Commit owned research outputs without generated-file rebase conflicts
         if: github.event_name != 'pull_request'
         run: |
           set -euo pipefail
+          rm -rf /tmp/research-owned
+          mkdir -p /tmp/research-owned/data/normalized /tmp/research-owned/reports
+          cp data/normalized/history.csv /tmp/research-owned/data/normalized/
+          cp data/normalized/multimarket_history.csv /tmp/research-owned/data/normalized/
+          for f in backtest.json joint_patterns.json hierarchical_patterns.json joint_audit.json audit.json data_provenance.json; do
+            cp "reports/$f" "/tmp/research-owned/reports/$f"
+          done
           git config user.name 'odds-scanner-actions'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- data/normalized/history.csv data/normalized/multimarket_history.csv reports/backtest.json reports/joint_patterns.json reports/hierarchical_patterns.json reports/joint_audit.json reports/audit.json reports/data_provenance.json
-          git diff --cached --quiet && exit 0
-          git commit -m 'Update odds research outputs'
-          git pull --rebase origin main
-          git push
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p data/normalized reports
+            cp /tmp/research-owned/data/normalized/history.csv data/normalized/
+            cp /tmp/research-owned/data/normalized/multimarket_history.csv data/normalized/
+            cp /tmp/research-owned/reports/*.json reports/
+            git add -- data/normalized/history.csv data/normalized/multimarket_history.csv reports/backtest.json reports/joint_patterns.json reports/hierarchical_patterns.json reports/joint_audit.json reports/audit.json reports/data_provenance.json
+            git diff --cached --quiet && exit 0
+            git commit -m 'Update odds research outputs'
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Push race on attempt $attempt; retrying from latest main"
+          done
+          exit 1
