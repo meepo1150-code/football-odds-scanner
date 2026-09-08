@@ -6,7 +6,7 @@ import time
 import urllib.parse
 import urllib.request
 from dataclasses import asdict
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from .market_contract import CurrentMarket
@@ -62,10 +62,11 @@ def parse_fixture_odds(fixture: dict, odds_payload: dict, *, bookmaker: str = "b
         one_x_two_draw=_number(x12.get("draw")),
         one_x_two_away=_number(x12.get("away")),
         status=status,
-        # For a scheduled fixture the API documents `closing` as the latest pre-match
-        # snapshot so far. `observed_at` is our fetch observation time, not a bookmaker tick.
-        as_of=observed_at,
-        stale=False if observed_at and status == "scheduled" else None,
+        # The summary endpoint documents `closing` as latest pre-match so far, but it does
+        # not expose the bookmaker quote timestamp. A request-observation timestamp is not
+        # a quote timestamp, so freshness must remain unverified and execution must fail closed.
+        as_of=None,
+        stale=None,
         tradable=True if status == "scheduled" else False,
     )
 
@@ -95,17 +96,30 @@ class FiveDollarCurrentProvider:
         bookmaker: str = "bet365",
         pace_seconds: float = DEFAULT_PACE_SECONDS,
         sleep_fn=time.sleep,
+        now_fn=lambda: datetime.now(timezone.utc),
     ):
         self.key = key or os.getenv(ENV_KEY)
         self.limit = max(1, min(limit, 50))
         self.bookmaker = bookmaker
         self.pace_seconds = max(0.0, pace_seconds)
         self.sleep_fn = sleep_fn
+        self.now_fn = now_fn
 
     def fetch(self) -> list[CurrentMarket]:
         if not self.key:
             raise RuntimeError(f"{ENV_KEY} is not configured")
-        payload = _get("/fixtures", self.key, {"status": "scheduled", "per_page": self.limit})
+        now = self.now_fn().astimezone(timezone.utc)
+        end = now + timedelta(hours=24)
+        payload = _get(
+            "/fixtures",
+            self.key,
+            {
+                "status": "scheduled",
+                "start_time": int(now.timestamp()),
+                "end_time": int(end.timestamp()),
+                "per_page": self.limit,
+            },
+        )
         fixtures = payload.get("data") or []
         rows = []
         for fixture in fixtures[: self.limit]:
@@ -113,8 +127,7 @@ class FiveDollarCurrentProvider:
                 if self.pace_seconds:
                     self.sleep_fn(self.pace_seconds)
                 odds = _get(f"/fixtures/{fixture['id']}/odds", self.key)
-                observed = datetime.now(timezone.utc).isoformat()
-                row = parse_fixture_odds(fixture, odds, bookmaker=self.bookmaker, observed_at=observed)
+                row = parse_fixture_odds(fixture, odds, bookmaker=self.bookmaker)
                 if row.status == "scheduled":
                     rows.append(row)
             except Exception:
@@ -129,7 +142,7 @@ def probe_from_env(limit: int = 3) -> dict:
     generated_at = datetime.now(timezone.utc).isoformat()
     if not key:
         return {
-            "schema_version": "1.2",
+            "schema_version": "1.3",
             "provider": "5dollarfootballapi_free",
             "status": "API_KEY_NOT_CONFIGURED",
             "generated_at": generated_at,
@@ -142,7 +155,7 @@ def probe_from_env(limit: int = 3) -> dict:
         rows = FiveDollarCurrentProvider(key, limit=limit).fetch()
     except Exception as exc:
         return {
-            "schema_version": "1.2",
+            "schema_version": "1.3",
             "provider": "5dollarfootballapi_free",
             "status": "UNAVAILABLE",
             "generated_at": generated_at,
@@ -155,11 +168,11 @@ def probe_from_env(limit: int = 3) -> dict:
     two_ah = sum(1 for r in rows if r.ah_home_odds and r.ah_away_odds)
     two_ou = sum(1 for r in rows if r.over_odds and r.under_odds)
     return {
-        "schema_version": "1.2",
+        "schema_version": "1.3",
         "provider": "5dollarfootballapi_free",
-        "status": "EXECUTION_SCHEMA_OK" if rows else "NO_ROWS",
+        "status": "SCHEMA_OK_FRESHNESS_UNVERIFIED" if rows else "NO_ROWS",
         "generated_at": generated_at,
-        "execution_candidate": bool(rows),
+        "execution_candidate": False,
         "account_plan": account.get("plan"),
         "account_limits": account.get("limits"),
         "account_usage": account.get("usage"),
@@ -168,7 +181,9 @@ def probe_from_env(limit: int = 3) -> dict:
         "two_sided_ou": two_ou,
         "quarter_ah": quarter_ah,
         "quarter_ou": quarter_ou,
-        "freshness_basis": "fetch-observed provider-documented latest-pre-match snapshot",
+        "fixture_window": "next_24_hours_from_probe_time_utc",
+        "freshness_basis": "summary endpoint has no bookmaker quote timestamp; request time is not substituted",
+        "production_blocker": "QUOTE_TIMESTAMP_UNVERIFIED",
         "samples": [asdict(r) for r in rows[:2]],
     }
 
