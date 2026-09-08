@@ -9,7 +9,14 @@ from pathlib import Path
 
 from .execution_safety import execution_snapshot_status
 from .oddspapi_discovery import DEFAULT_REQUEST_SPACING_SECONDS, _rows, summarize_fixture_odds
-from .oddspapi_provider import ENV_KEY, SPORT_ID, _get, _safe_account_summary, parse_fixture_markets
+from .oddspapi_provider import (
+    ENV_KEY,
+    ODDSPAPI_CURRENT_FRESHNESS_BASIS,
+    SPORT_ID,
+    _get,
+    _safe_account_summary,
+    parse_fixture_markets,
+)
 
 
 BIG5_TARGETS = {
@@ -69,7 +76,7 @@ def probe_from_env(
     key = os.getenv(ENV_KEY)
     if not key:
         return {
-            "schema_version": "2.0",
+            "schema_version": "2.1",
             "provider": "oddspapi_free",
             "mode": "BIG5_BATCH",
             "status": "API_KEY_NOT_CONFIGURED",
@@ -80,8 +87,8 @@ def probe_from_env(
     if request_spacing_seconds < 0:
         raise ValueError("request_spacing_seconds must be non-negative")
 
-    now = datetime.now(timezone.utc)
-    end = now + timedelta(days=horizon_days)
+    window_start = datetime.now(timezone.utc)
+    end = window_start + timedelta(days=horizon_days)
     request_count = 0
     first = True
 
@@ -101,7 +108,7 @@ def probe_from_env(
         selected = select_big5_tournaments(tournaments)
         if not selected:
             return {
-                "schema_version": "2.0",
+                "schema_version": "2.1",
                 "provider": "oddspapi_free",
                 "mode": "BIG5_BATCH",
                 "status": "BIG5_TOURNAMENTS_NOT_FOUND",
@@ -116,9 +123,12 @@ def probe_from_env(
             "/odds-by-tournaments",
             {"tournamentIds": ids, "bookmakers": "bet365", "language": "en", "verbosity": 3},
         ))
+        # This timestamp means "the current endpoint response was observed now".
+        # It is deliberately distinct from every selection's changedAt timestamp.
+        observed_at = datetime.now(timezone.utc)
     except Exception as exc:
         return {
-            "schema_version": "2.0",
+            "schema_version": "2.1",
             "provider": "oddspapi_free",
             "mode": "BIG5_BATCH",
             "status": "UNAVAILABLE",
@@ -132,7 +142,7 @@ def probe_from_env(
     eligible: list[dict] = []
     for fixture in batch:
         start = _parse_dt(fixture.get("startTime"))
-        if start is None or start < now or start > end:
+        if start is None or start < window_start or start > end:
             continue
         if int(fixture.get("statusId", -1)) != 0 or fixture.get("hasOdds") is not True:
             continue
@@ -141,15 +151,16 @@ def probe_from_env(
 
     normalized = []
     for fixture in eligible:
-        rows = parse_fixture_markets(fixture, fixture, catalog, now=now)
+        rows = parse_fixture_markets(fixture, fixture, catalog, now=observed_at)
         normalized.extend(rows)
         if len(diagnostics) < diagnostic_limit:
             diagnostics.append(summarize_fixture_odds(fixture, fixture, catalog))
 
+    safety_now = datetime.now(timezone.utc)
     safe = 0
     reasons: dict[str, int] = {}
     for row in normalized:
-        ok, reason = execution_snapshot_status(row, now=now)
+        ok, reason = execution_snapshot_status(row, now=safety_now)
         safe += int(ok)
         reasons[reason] = reasons.get(reason, 0) + 1
 
@@ -163,7 +174,7 @@ def probe_from_env(
         for r in selected
     ]
     return {
-        "schema_version": "2.0",
+        "schema_version": "2.1",
         "provider": "oddspapi_free",
         "mode": "BIG5_BATCH",
         "status": "EXECUTION_SAFE_ROWS_AVAILABLE" if safe else ("ROWS_BUT_NOT_EXECUTION_SAFE" if normalized else "NO_ROWS"),
@@ -181,7 +192,9 @@ def probe_from_env(
         "reasons": reasons,
         "account": _safe_account_summary(account),
         "market_diagnostics": diagnostics,
-        "freshness_basis": "oldest bookmakerChangedAt/changedAt across required 1X2+AH+OU selections",
+        "freshness_basis": ODDSPAPI_CURRENT_FRESHNESS_BASIS,
+        "price_change_timestamp_semantics": "changedAt/bookmakerChangedAt records when the price last changed; it is retained separately and does not age an otherwise active current quote.",
+        "observed_at": observed_at.isoformat(),
         "samples": [asdict(r) for r in normalized[:2]],
     }
 
