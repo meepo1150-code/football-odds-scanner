@@ -1,6 +1,12 @@
 name: OddsPapi Historical Tick Archive
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/oddspapi_history_archive.py'
+      - 'tests/test_oddspapi_history_archive.py'
+      - '.github/workflows/oddspapi-history-archive.yml'
   schedule:
     - cron: '25 * * * *'
 permissions:
