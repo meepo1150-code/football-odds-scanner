@@ -52,14 +52,14 @@ def test_non_quarter_line_is_not_rounded_into_archive():
     assert row["over_under"][0]["line"] == 2.75
 
 
-def test_discovery_refresh_is_weekly_or_queue_empty():
+def test_discovery_refresh_is_strictly_weekly_even_when_queue_is_empty():
     now = datetime(2026, 9, 8, tzinfo=timezone.utc)
     state = {"last_discovery_at": (now - timedelta(days=2)).isoformat(), "fixture_queue": [{"fixtureId": "f1"}]}
     assert archive.discovery_due(state, now) is False
     state["last_discovery_at"] = (now - timedelta(days=8)).isoformat()
     assert archive.discovery_due(state, now) is True
     state = {"last_discovery_at": now.isoformat(), "fixture_queue": []}
-    assert archive.discovery_due(state, now) is True
+    assert archive.discovery_due(state, now) is False
 
 
 def test_missing_key_writes_fail_closed_state(monkeypatch, tmp_path):
