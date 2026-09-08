@@ -1,12 +1,13 @@
 from pathlib import Path
-from .five_dollar_provider import FiveDollarCurrentProvider
+
+from .oddspapi_current_provider import OddsPapiCurrentProvider
 from .scanner import scan
 
 
 def main():
-    result=scan(Path('.'), provider=FiveDollarCurrentProvider())
+    result = scan(Path("."), provider=OddsPapiCurrentProvider())
     print(result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
