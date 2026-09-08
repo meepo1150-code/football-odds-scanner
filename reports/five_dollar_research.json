@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "status": "INSUFFICIENT_SAMPLE",
+  "status": "EXPLORATORY_BACKTEST_READY",
   "research_classification": "EXPLORATORY_SNAPSHOT_ONLY",
   "source": "5dollarfootballapi_free",
   "attribution": "Football data by 5DollarFootballAPI — https://5dollarfootballapi.com/",
@@ -8,23 +8,82 @@
   "promotion_block_reason": "Free history is a short rolling snapshot archive and cannot satisfy the frozen multi-season train-validation-holdout production gate.",
   "minimum_rows_for_exploratory_backtest": 20,
   "coverage": {
-    "rows": 0,
-    "leagues": [],
-    "date_min": null,
-    "date_max": null,
-    "opening_ou_lines": {},
-    "closing_ou_lines": {},
-    "opening_ah_lines": {},
-    "closing_ah_lines": {},
-    "quarter_ou_open_rows": 0,
-    "quarter_ou_close_rows": 0,
-    "quarter_ah_open_rows": 0,
-    "quarter_ah_close_rows": 0,
-    "nonzero_ah_line_movement_rows": 0,
-    "nonzero_ou_line_movement_rows": 0,
-    "opening_and_closing_ou_complete_rows": 0,
-    "opening_and_closing_ah_complete_rows": 0
+    "rows": 27,
+    "leagues": [
+      "England Premier League",
+      "France Ligue 1",
+      "Italy Serie A",
+      "Spain La Liga"
+    ],
+    "date_min": "2026-08-15",
+    "date_max": "2026-08-22",
+    "opening_ou_lines": {
+      "2.00": 2,
+      "2.25": 8,
+      "2.50": 3,
+      "2.75": 8,
+      "3.00": 5,
+      "3.25": 1
+    },
+    "closing_ou_lines": {
+      "1.75": 1,
+      "2.00": 3,
+      "2.25": 9,
+      "2.50": 3,
+      "2.75": 4,
+      "3.00": 7
+    },
+    "opening_ah_lines": {
+      "-0.00": 3,
+      "-0.25": 8,
+      "-0.50": 4,
+      "-0.75": 5,
+      "-1.00": 1,
+      "-1.25": 1,
+      "-1.50": 1,
+      "-2.00": 2,
+      "0.00": 2
+    },
+    "closing_ah_lines": {
+      "-0.00": 2,
+      "-0.25": 10,
+      "-0.50": 4,
+      "-0.75": 2,
+      "-1.25": 2,
+      "-1.50": 2,
+      "-2.00": 2,
+      "0.00": 2,
+      "0.25": 1
+    },
+    "quarter_ou_open_rows": 17,
+    "quarter_ou_close_rows": 14,
+    "quarter_ah_open_rows": 14,
+    "quarter_ah_close_rows": 15,
+    "nonzero_ah_line_movement_rows": 12,
+    "nonzero_ou_line_movement_rows": 19,
+    "opening_and_closing_ou_complete_rows": 27,
+    "opening_and_closing_ah_complete_rows": 27
   },
-  "hierarchical": null,
+  "hierarchical": {
+    "schema_version": "1.4",
+    "engine": "HIERARCHICAL_MULTI_MARKET_BACKTEST",
+    "source_rows": 27,
+    "test_seasons": [
+      "__NONE__"
+    ],
+    "min_n": 20,
+    "family_counts": {},
+    "buckets": [],
+    "empirical_diagnostics": {
+      "bootstrap_ci95": true,
+      "deterministic_sign_flip_null": true,
+      "chronological_max_drawdown": true,
+      "longest_losing_streak": true,
+      "worst_season_roi": true,
+      "season_abs_concentration": true,
+      "promotion_gate_changed": false
+    },
+    "warning": "Exploratory hierarchy only; promotion requires paired audit and frozen robustness gates. Empirical diagnostics enrich evidence but do not retroactively alter the registered holdout gate."
+  },
   "warning": "This report is for data-coverage and exploratory pattern research only. It must never overwrite or promote reports/pattern_registry.json."
 }
