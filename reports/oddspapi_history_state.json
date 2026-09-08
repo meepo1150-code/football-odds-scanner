@@ -1,23 +1,20 @@
 {
   "schema_version": "1.1",
-  "status": "OK",
-  "generated_at": "2026-09-08T10:08:47.992111+00:00",
+  "status": "RESET_FOR_DISCOVERY_CONTRACT_FIX",
+  "generated_at": "2026-09-08T10:10:00+00:00",
   "coverage_start": "2026-01-01T00:00:00+00:00",
-  "last_discovery_at": "2026-09-08T10:08:47.992111+00:00",
-  "discovery_cursor": "2026-01-19T00:00:00+00:00",
+  "last_discovery_at": null,
+  "discovery_cursor": "2026-01-01T00:00:00+00:00",
   "backfill_complete": false,
-  "last_discovery_mode": "BACKFILL",
-  "last_discovery_window": {
-    "from": "2026-01-10T00:00:00Z",
-    "to": "2026-01-19T00:00:00Z"
-  },
+  "last_discovery_mode": null,
+  "last_discovery_window": null,
   "fixture_queue": [],
   "skipped_fixture_ids": [],
   "queued_remaining": 0,
   "processed_this_run": 0,
   "rows_added_this_run": 0,
   "archive_rows": 0,
-  "billable_requests_this_run": 1,
+  "billable_requests_this_run": 0,
   "free_history_requests_this_run": 0,
   "history_request_spacing_seconds": 5.2,
   "result_join_status": "NOT_JOINED",
@@ -26,5 +23,6 @@
     "MATCH_RESULTS_NOT_JOINED",
     "ODDSPAPI_HISTORY_STARTS_2026_AND_IS_NOT_YET_MULTI_SEASON"
   ],
-  "errors": []
+  "errors": [],
+  "reset_reason": "Previous Jan 1-19 discovery incorrectly required fixture-level hasOdds=true; historical discovery now delegates odds availability to /historical-odds."
 }
