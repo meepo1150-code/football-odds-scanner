@@ -10,6 +10,7 @@ from typing import Callable
 from .oddspapi_provider import ENV_KEY, SPORT_ID, _catalog, _get, _outcome_lookup, _quarter
 
 HISTORY_START = datetime(2026, 1, 1, tzinfo=timezone.utc)
+DISCOVERY_WINDOW_DAYS = 9
 DISCOVERY_REFRESH_DAYS = 7
 HISTORY_REQUEST_SPACING_SECONDS = 5.2
 DEFAULT_FIXTURES_PER_RUN = 10
@@ -18,11 +19,11 @@ ARCHIVE_PATH = Path("data/normalized/oddspapi_history_ticks.jsonl")
 CATALOG_PATH = Path("data/normalized/oddspapi_market_catalog.json")
 
 BIG5_TOURNAMENTS = {
-    "England": {"tournament_id": 17, "name": "Premier League"},
-    "France": {"tournament_id": 34, "name": "Ligue 1"},
-    "Germany": {"tournament_id": 35, "name": "Bundesliga"},
-    "Italy": {"tournament_id": 23, "name": "Serie A"},
-    "Spain": {"tournament_id": 8, "name": "LaLiga"},
+    17: {"country": "England", "name": "Premier League"},
+    34: {"country": "France", "name": "Ligue 1"},
+    35: {"country": "Germany", "name": "Bundesliga"},
+    23: {"country": "Italy", "name": "Serie A"},
+    8: {"country": "Spain", "name": "LaLiga"},
 }
 
 
@@ -36,6 +37,10 @@ def _utc(value: str | None) -> datetime | None:
     if dt.tzinfo is None:
         return None
     return dt.astimezone(timezone.utc)
+
+
+def _iso(dt: datetime) -> str:
+    return dt.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
 def _rows(payload) -> list[dict]:
@@ -75,10 +80,29 @@ def _load_archived_ids(path: Path) -> set[str]:
     return ids
 
 
-def discovery_due(state: dict, now: datetime) -> bool:
-    """Billable finished-fixture discovery is limited to once every 7 days."""
+def next_discovery_window(state: dict, now: datetime) -> tuple[datetime, datetime, str] | None:
+    """Return one billable discovery window or None.
+
+    During initial backfill, advance one <10-day soccer window only when the
+    cached fixture queue is empty. Once caught up, refresh the latest 9 days no
+    more than once per week. This bounds historical discovery quota.
+    """
+    queue = state.get("fixture_queue")
+    if isinstance(queue, list) and queue:
+        return None
+
+    if state.get("backfill_complete") is not True:
+        cursor = _utc(state.get("discovery_cursor")) or HISTORY_START
+        if cursor >= now:
+            return None
+        end = min(cursor + timedelta(days=DISCOVERY_WINDOW_DAYS), now)
+        return cursor, end, "BACKFILL"
+
     last = _utc(state.get("last_discovery_at"))
-    return last is None or now - last >= timedelta(days=DISCOVERY_REFRESH_DAYS)
+    if last is not None and now - last < timedelta(days=DISCOVERY_REFRESH_DAYS):
+        return None
+    start = max(HISTORY_START, now - timedelta(days=DISCOVERY_WINDOW_DAYS))
+    return start, now, "REFRESH"
 
 
 def _catalog_payload(markets: list[dict]) -> list[dict]:
@@ -186,44 +210,46 @@ def normalize_historical_fixture(fixture: dict, payload: dict, markets_catalog: 
     }
 
 
-def _compact_fixture(fixture: dict, country: str) -> dict:
+def _compact_fixture(fixture: dict) -> dict:
+    tid = fixture.get("tournamentId")
+    info = BIG5_TOURNAMENTS.get(int(tid)) if isinstance(tid, (int, float)) or str(tid).isdigit() else None
     return {
         "fixtureId": fixture.get("fixtureId"),
-        "tournamentId": fixture.get("tournamentId"),
-        "tournamentName": fixture.get("tournamentName"),
+        "tournamentId": tid,
+        "tournamentName": fixture.get("tournamentName") or (info or {}).get("name"),
         "tournamentSlug": fixture.get("tournamentSlug"),
         "startTime": fixture.get("startTime"),
         "participant1Name": fixture.get("participant1Name"),
         "participant2Name": fixture.get("participant2Name"),
-        "archive_country": country,
+        "archive_country": (info or {}).get("country"),
     }
 
 
-def _discover_finished(key: str, now: datetime, *, sleep_fn: Callable[[float], None], request_spacing_seconds: float = 2.1) -> tuple[list[dict], int]:
-    found: list[dict] = []
-    requests = 0
-    first = True
-    for country, info in BIG5_TOURNAMENTS.items():
-        if not first and request_spacing_seconds:
-            sleep_fn(request_spacing_seconds)
-        first = False
-        payload = _get("/fixtures", key, {
-            "tournamentId": info["tournament_id"],
-            "from": HISTORY_START.isoformat().replace("+00:00", "Z"),
-            "to": now.isoformat().replace("+00:00", "Z"),
-            "statusId": 2,
-            "hasOdds": "true",
-            "bookmakers": "bet365",
-            "language": "en",
-        })
-        requests += 1
-        for fixture in _rows(payload):
-            if fixture.get("fixtureId") is not None:
-                found.append(_compact_fixture(fixture, country))
+def _discover_window(key: str, start: datetime, end: datetime) -> list[dict]:
+    """One billable soccer fixture request; filter the validated Big-5 IDs locally."""
+    payload = _get("/fixtures", key, {
+        "sportId": SPORT_ID,
+        "from": _iso(start),
+        "to": _iso(end),
+        "statusId": 2,
+        "hasOdds": "true",
+        "bookmakers": "bet365",
+        "language": "en",
+    })
+    found = []
+    for fixture in _rows(payload):
+        tid = fixture.get("tournamentId")
+        try:
+            tid_int = int(tid)
+        except (TypeError, ValueError):
+            continue
+        if tid_int not in BIG5_TOURNAMENTS or fixture.get("fixtureId") is None:
+            continue
+        found.append(_compact_fixture(fixture))
     dedup = {str(f["fixtureId"]): f for f in found}
     rows = list(dedup.values())
     rows.sort(key=lambda f: str(f.get("startTime") or ""))
-    return rows, requests
+    return rows
 
 
 def run_archive(
@@ -244,7 +270,7 @@ def run_archive(
     key = os.getenv(ENV_KEY)
     if not key:
         payload = {
-            "schema_version": "1.0",
+            "schema_version": "1.1",
             "status": "API_KEY_NOT_CONFIGURED",
             "generated_at": now.isoformat(),
             "promotion_eligible": False,
@@ -256,12 +282,23 @@ def run_archive(
 
     billable_requests = 0
     fixture_queue = state.get("fixture_queue") if isinstance(state.get("fixture_queue"), list) else []
-    if discovery_due(state, now):
-        discovered, reqs = _discover_finished(key, now, sleep_fn=sleep_fn)
-        billable_requests += reqs
+    discovery_mode = None
+    discovery_start = None
+    discovery_end = None
+    window = next_discovery_window(state, now)
+    if window is not None:
+        start, end, discovery_mode = window
+        discovered = _discover_window(key, start, end)
+        billable_requests += 1
         archived = _load_archived_ids(archive_path)
-        fixture_queue = [f for f in discovered if str(f.get("fixtureId")) not in archived]
+        skipped = {str(x) for x in (state.get("skipped_fixture_ids") or [])}
+        fixture_queue = [f for f in discovered if str(f.get("fixtureId")) not in archived | skipped]
+        discovery_start, discovery_end = _iso(start), _iso(end)
         state["last_discovery_at"] = now.isoformat()
+        if discovery_mode == "BACKFILL":
+            state["discovery_cursor"] = end.isoformat()
+            if end >= now:
+                state["backfill_complete"] = True
 
     if catalog_path.exists():
         markets_catalog = _read_json(catalog_path, [])
@@ -276,32 +313,41 @@ def run_archive(
     added = 0
     history_requests = 0
     errors: list[str] = []
+    skipped_ids = {str(x) for x in (state.get("skipped_fixture_ids") or [])}
     remaining = list(fixture_queue)
     while remaining and processed < max(1, max_fixtures):
         fixture = remaining.pop(0)
         if history_requests:
             sleep_fn(HISTORY_REQUEST_SPACING_SECONDS)
         fid = str(fixture.get("fixtureId"))
+        history_requests += 1
         try:
             history = _get("/historical-odds", key, {"fixtureId": fid, "bookmakers": "bet365", "language": "en"})
-            history_requests += 1
             row = normalize_historical_fixture(fixture, history, markets_catalog)
             if row:
                 with archive_path.open("a", encoding="utf-8") as fh:
                     fh.write(json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\n")
                 added += 1
+            else:
+                skipped_ids.add(fid)
         except Exception as exc:
             errors.append(f"{fid}:{type(exc).__name__}:{exc}")
+            remaining.append(fixture)
         processed += 1
 
     archive_rows = len(_load_archived_ids(archive_path))
     payload = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "status": "OK" if not errors else "PARTIAL_WITH_ERRORS",
         "generated_at": now.isoformat(),
         "coverage_start": HISTORY_START.isoformat(),
         "last_discovery_at": state.get("last_discovery_at"),
+        "discovery_cursor": state.get("discovery_cursor", HISTORY_START.isoformat()),
+        "backfill_complete": state.get("backfill_complete") is True,
+        "last_discovery_mode": discovery_mode,
+        "last_discovery_window": {"from": discovery_start, "to": discovery_end} if discovery_start else None,
         "fixture_queue": remaining,
+        "skipped_fixture_ids": sorted(skipped_ids),
         "queued_remaining": len(remaining),
         "processed_this_run": processed,
         "rows_added_this_run": added,
