@@ -47,3 +47,30 @@ def test_probe_spaces_successive_requests(monkeypatch):
     assert payload["status"] == "NO_ROWS"
     assert payload["requests_attempted"] == 3
     assert payload["request_spacing_seconds"] == 1.1
+
+
+def test_market_diagnostics_keep_schema_metadata_but_not_prices():
+    fixture = {"fixtureId": "fx1", "tournamentName": "Premier League", "startTime": "2026-09-08T18:00:00Z"}
+    catalog = [{
+        "marketId": 101,
+        "marketName": "Full Time Result",
+        "marketType": "1x2",
+        "period": "fulltime",
+        "handicap": 0,
+        "outcomes": [{"outcomeId": 1, "outcomeName": "1"}, {"outcomeId": 2, "outcomeName": "X"}, {"outcomeId": 3, "outcomeName": "2"}],
+    }]
+    player = {"price": 1.91, "changedAt": "2026-09-08T10:00:00Z", "bookmakerChangedAt": None, "mainLine": True}
+    odds = {"bookmakerOdds": {"bet365": {"bookmakerIsActive": True, "suspended": False, "markets": {
+        "101": {"marketActive": True, "outcomes": {"1": {"players": {"0": player}}}}
+    }}}}
+
+    summary = discovery.summarize_fixture_odds(fixture, odds, catalog)
+    assert summary["bookmaker_present"] is True
+    assert summary["market_count"] == 1
+    assert summary["catalog_match_count"] == 1
+    sample = summary["market_samples"][0]
+    assert sample["market_name"] == "Full Time Result"
+    assert sample["outcome_labels"] == ["1", "X", "2"]
+    assert sample["changed_at_present"] == 1
+    assert sample["main_line_true"] == 1
+    assert "price" not in sample
