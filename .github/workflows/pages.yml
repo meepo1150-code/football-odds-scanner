@@ -9,6 +9,7 @@ on:
       - 'Live Odds Scan'
       - 'Current Multi-Market Provider Health'
       - 'Five Dollar Historical Snapshot Archive'
+      - 'OddsPapi Current Provider Health'
     types: [completed]
 permissions:
   contents: read
@@ -31,7 +32,7 @@ jobs:
           set -euo pipefail
           mkdir -p site/reports/breadth
           cp apps/dashboard/index.html site/index.html
-          for f in today.json pattern_registry.json current_provider_health.json provider_capabilities.json five_dollar_health.json five_dollar_archive_state.json five_dollar_research.json source_qualification.json; do
+          for f in today.json pattern_registry.json current_provider_health.json provider_capabilities.json five_dollar_health.json oddspapi_health.json five_dollar_archive_state.json five_dollar_research.json source_qualification.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
           test -f reports/breadth/summary.json && cp reports/breadth/summary.json site/reports/breadth/summary.json || true
