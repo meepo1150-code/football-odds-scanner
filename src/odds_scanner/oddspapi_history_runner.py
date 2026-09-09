@@ -4,6 +4,7 @@ from pathlib import Path
 from urllib.error import HTTPError
 
 from . import oddspapi_history_archive as archive
+from .oddspapi_fixture_refs import REFS_PATH, merge_fixture_refs
 from .oddspapi_provider import SPORT_ID, _get as provider_get
 from .oddspapi_result_cache import RESULTS_PATH, merge_results
 
@@ -21,7 +22,7 @@ def _history_aware_get(path: str, key: str, params=None):
 
 
 def discover_finished_big5_window(key: str, start, end) -> list[dict]:
-    """Discover finished Big-5 fixtures and cache explicit FT results from the same payload."""
+    """Discover finished Big-5 fixtures and retain exact provider references."""
     payload = provider_get(
         "/fixtures", key,
         {"sportId": SPORT_ID, "from": archive._iso(start), "to": archive._iso(end), "limit": 300, "language": "en"},
@@ -31,15 +32,20 @@ def discover_finished_big5_window(key: str, start, end) -> list[dict]:
     for fixture in archive._rows(payload):
         if fixture.get("statusId") != 2:
             continue
-        try: tid_int = int(fixture.get("tournamentId"))
-        except (TypeError, ValueError): continue
+        try:
+            tid_int = int(fixture.get("tournamentId"))
+        except (TypeError, ValueError):
+            continue
         if tid_int not in archive.BIG5_TOURNAMENTS or fixture.get("fixtureId") is None:
             continue
         raw_finished.append(fixture)
         found.append(archive._compact_fixture(fixture))
 
-    # No extra provider request: result cache is harvested from discovery itself.
+    # No extra OddsPapi request: preserve any explicit scores and exact external IDs
+    # from the already-billable fixture discovery response.
     merge_results(_ROOT / RESULTS_PATH, raw_finished)
+    merge_fixture_refs(_ROOT / REFS_PATH, raw_finished)
+
     dedup = {str(f["fixtureId"]): f for f in found}
     rows = list(dedup.values())
     rows.sort(key=lambda f: str(f.get("startTime") or ""))
