@@ -1,0 +1,59 @@
+name: Flashscore Exact Result Backfill
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/flashscore_result_provider.py'
+      - 'src/odds_scanner/oddspapi_result_join.py'
+      - 'data/normalized/oddspapi_fixture_refs.jsonl'
+      - '.github/workflows/flashscore-result-backfill.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: flashscore-result-backfill
+  cancel-in-progress: false
+
+jobs:
+  backfill:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -e '.[dev]'
+      - run: pytest -q
+      - name: Backfill exact Flashscore results
+        run: python -m odds_scanner.flashscore_result_provider
+      - name: Rebuild strict prematch join and settlement
+        run: |
+          python - <<'PY'
+          from odds_scanner.oddspapi_result_join import write_join
+          from odds_scanner.settled_history import write_settled
+          print(write_join())
+          print(write_settled())
+          PY
+      - name: Commit result artifacts
+        run: |
+          set -euo pipefail
+          git config user.name 'odds-scanner-actions'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for p in \
+            data/normalized/oddspapi_finished_results.jsonl \
+            data/normalized/oddspapi_prematch_joined.jsonl \
+            data/normalized/oddspapi_settled_history.jsonl \
+            reports/flashscore_result_backfill.json \
+            reports/oddspapi_result_join.json \
+            reports/oddspapi_settled_history.json; do
+            [ -e "$p" ] && git add -f "$p"
+          done
+          git diff --cached --quiet && exit 0
+          git commit -m 'Update exact result backfill [skip ci]'
+          git pull --rebase origin main
+          git push origin HEAD:main
