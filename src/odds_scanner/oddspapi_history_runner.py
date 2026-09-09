@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 from urllib.error import HTTPError
 
-from . import oddspapi_history_archive as archive
+from . import oddspapi_history_archive_sharded as archive
 from .oddspapi_fixture_refs import REFS_PATH, merge_fixture_refs
 from .oddspapi_provider import SPORT_ID, _get as provider_get
 from .oddspapi_result_cache import RESULTS_PATH, merge_results
