@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Football Odds Scanner — Research Status</title>
+<style>
+:root{color-scheme:dark;--bg:#08101d;--panel:#111b2b;--line:#26354d;--text:#edf3fb;--muted:#91a2b9;--good:#74df9d;--warn:#ffd166;--bad:#ff7d86;--accent:#8db8ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px Inter,ui-sans-serif,system-ui,-apple-system,sans-serif}.wrap{max-width:1180px;margin:auto;padding:28px 20px 60px}h1{font-size:30px;margin:4px 0}h2{font-size:17px;margin:0 0 12px}.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:800}.muted{color:var(--muted)}.small{font-size:12px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card,.metric{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px}.card{margin:12px 0}.metric .k{font-size:10px;color:var(--muted);text-transform:uppercase}.metric .v{font-size:22px;font-weight:800;margin-top:5px}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 8px;margin:2px 3px 2px 0;font-size:11px}.bar{height:8px;background:#24314a;border-radius:99px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:var(--accent)}a{color:var(--accent)}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:8px;border-bottom:1px solid var(--line);text-align:left}th{color:var(--muted);font-size:10px;text-transform:uppercase}.empty{border:1px dashed #35455f;background:#0c1524;border-radius:10px;padding:15px}@media(max-width:850px){.grid,.three{grid-template-columns:1fr 1fr}}@media(max-width:560px){.grid,.three{grid-template-columns:1fr}}
+</style>
+</head>
+<body><div class="wrap">
+<div class="eyebrow">Research only — not betting recommendations</div>
+<h1>Football Odds Scanner — Research Status</h1>
+<div class="muted">ติดตามหลักฐานย้อนหลังและ prospective 2026/27 โดยแยกจาก Production Registry อย่างเด็ดขาด</div>
+<div style="margin-top:10px"><a href="./">← Production dashboard</a></div>
+<div class="grid">
+ <div class="metric"><div class="k">Production patterns</div><div class="v" id="prodPatterns">—</div></div>
+ <div class="metric"><div class="k">OddsPapi archive rows</div><div class="v" id="archiveRows">—</div></div>
+ <div class="metric"><div class="k">Settled fixtures</div><div class="v" id="settledFixtures">—</div></div>
+ <div class="metric"><div class="k">Settled observations</div><div class="v" id="settledObs">—</div></div>
+</div>
+<div class="card"><h2>Prospective 2026/27</h2><div id="prospective">Loading…</div></div>
+<div class="three">
+ <div class="card"><h2>Big-5 AH Frozen Holdout</h2><div id="big5">Loading…</div></div>
+ <div class="card"><h2>Independent AH Frozen Holdout</h2><div id="independent">Loading…</div></div>
+ <div class="card"><h2>Third-Universe O/U 2.5</h2><div id="ou">Loading…</div></div>
+</div>
+<div class="card"><h2>Interpretation</h2><div class="empty"><b class="warn">NO VALIDATED EDGE YET</b><div class="muted small" style="margin-top:7px">สาม retrospective frozen evaluations ถูกเปิดดูแล้วและไม่มี pattern ใดผ่านทุก gate จึงห้าม retune แล้วเรียกผลเดิมว่า confirmatory อีก ระบบย้ายไปเก็บหลักฐาน prospective 2026/27 ที่ล็อกกติกาก่อนผลฤดูกาลโตเต็มที่ Production scanner จะยังหยุดก่อนเรียก provider ตราบใดที่ registry = 0.</div></div></div>
+<div class="card"><h2>Frozen Prospective Gates</h2><div id="gates">Loading…</div></div>
+</div>
+<script>
+const $=id=>document.getElementById(id),n=x=>x==null?'—':Number(x).toLocaleString();
+async function get(p){try{const r=await fetch(p,{cache:'no-store'});if(!r.ok)throw 0;return await r.json()}catch{return null}}
+function trial(x,rowsKey='normalized_rows'){
+ if(!x)return '<span class="bad">Report unavailable</span>';
+ const rows=x[rowsKey]??x.normalized_observations;
+ const tested=x.train_positive_patterns_entering_validation??0;
+ const promoted=x.promoted_patterns??0;
+ return `Rows/obs <b>${n(rows)}</b><br>Train-positive tested <b>${n(tested)}</b><br>Promoted <b class="${promoted?'good':'warn'}">${n(promoted)}</b><br><span class="pill ${promoted?'good':'warn'}">${promoted?'candidate exists':'0 passed all gates'}</span>`;
+}
+async function load(){
+ const [p,reg,b5,ind,ou]=await Promise.all([
+  get('reports/prospective_2026_27_status.json'),get('reports/pattern_registry.json'),get('reports/football_data_multiseason_validation.json'),get('reports/independent_league_validation.json'),get('reports/third_universe_ou_validation.json')]);
+ $('prodPatterns').textContent=n(reg?.pattern_count);
+ $('archiveRows').textContent=n(p?.archive?.archive_rows);
+ $('settledFixtures').textContent=n(p?.results?.settled_fixtures);
+ $('settledObs').textContent=n(p?.results?.settled_observations);
+ if(p){
+   const blockers=(p.blockers||[]).map(x=>`<span class="pill warn">${x}</span>`).join('');
+   $('prospective').innerHTML=`<b class="good">PREREGISTRATION LOCKED</b> · Season ${p.season}<br><br>Archive ${n(p.archive?.archive_rows)} rows · Queue ${n(p.archive?.queued_remaining)} · Backfill ${p.archive?.backfill_complete?'complete':'incomplete'}<br>Joined fixtures ${n(p.results?.joined_fixtures)} · Join rate ${p.results?.join_rate==null?'—':(100*p.results.join_rate).toFixed(1)+'%'}<br>Settled fixtures ${n(p.results?.settled_fixtures)} · observations ${n(p.results?.settled_observations)}<br><br>${blockers}<br><span class="muted small">Next: ${p.next_action||'—'} · ${p.paper_shadow_status||''}</span>`;
+ } else $('prospective').innerHTML='<span class="bad">Prospective status unavailable</span>';
+ $('big5').innerHTML=trial(b5);
+ $('independent').innerHTML=trial(ind);
+ $('ou').innerHTML=trial(ou,'normalized_observations');
+ $('gates').innerHTML=p?`Frozen gate count <b>${n(p.frozen_gates_count)}</b><br>Production promotion <b class="warn">BLOCKED</b><br>Paper shadow <b class="good">RESEARCH ONLY</b><br><span class="muted small">No production pattern can be created by the collection-status workflow.</span>`:'—';
+}
+load();
+</script>
+</body></html>
