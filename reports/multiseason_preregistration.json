@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "created_at": "2026-09-09T09:48:00Z",
+  "locked_before_holdout_pattern_evaluation": true,
+  "source": {
+    "upstream": "football-data.co.uk",
+    "delivery": "public GitHub mirror huhao930422-debug/football-odds-mirror",
+    "mirror_commit": "c9b05a30eef50fe34abbf4134e6333fc5376d136",
+    "semantics": "FOOTBALL_DATA_FIRST_COLLECTED_AFTER_MARKET_OPENING_NOT_TRUE_OPEN"
+  },
+  "scope": {
+    "leagues": ["Premier League", "Bundesliga", "Serie A", "LaLiga", "Ligue 1"],
+    "market_family": "Asian Handicap favorite-side structures",
+    "pattern_dimensions": ["favorite_side", "exact_ah_line", "ah_price_band", "favorite_fair_1x2_probability_band"]
+  },
+  "split": {
+    "train": ["1920", "2021", "2122", "2223"],
+    "validation": ["2324", "2425"],
+    "holdout": ["2526"]
+  },
+  "frozen_rules": {
+    "min_n": {"train": 150, "validation": 80, "holdout": 40},
+    "fdr_q": 0.10,
+    "cross_league_min": 3,
+    "positive_league_share_min": 0.60,
+    "price_bucket_width": 0.20,
+    "favorite_probability_bucket_width": 0.10,
+    "require_positive_roi": ["train", "validation", "holdout"],
+    "require_both_validation_seasons_positive": true,
+    "require_holdout_season_positive": true,
+    "validation_p_value": "deterministic sign-flip Monte Carlo",
+    "multiple_testing": "Benjamini-Hochberg FDR",
+    "phase_uncertainty": "deterministic bootstrap ROI CI95",
+    "settlement": "actual Asian quarter-line FULL_WIN/HALF_WIN/PUSH/HALF_LOSS/FULL_LOSS"
+  },
+  "promotion_rule": "Only patterns passing every frozen gate may be labeled GLOBAL_ROBUST_RESEARCH_CANDIDATE. Do not loosen thresholds, bucket widths, split definitions, or pattern dimensions after viewing the 2025/26 holdout.",
+  "production_rule": "This preregistration does not itself authorize production picks. A passed candidate must also survive scanner compatibility and current tradable-price execution gates."
+}

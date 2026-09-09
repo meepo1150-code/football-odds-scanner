@@ -1,0 +1,89 @@
+name: Preregistered Multi-Season Market Validation
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/multiseason_market_research.py'
+      - 'tests/test_multiseason_market_research.py'
+      - 'reports/multiseason_preregistration.json'
+      - '.github/workflows/multiseason-market-validation.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: multiseason-market-validation
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout scanner
+        uses: actions/checkout@v6
+        with:
+          ref: main
+      - name: Checkout frozen Football-Data mirror snapshot
+        uses: actions/checkout@v6
+        with:
+          repository: huhao930422-debug/football-odds-mirror
+          ref: c9b05a30eef50fe34abbf4134e6333fc5376d136
+          path: external/football-odds-mirror
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -e '.[dev]'
+      - run: pytest -q
+      - name: Verify preregistration and frozen mirror before holdout evaluation
+        run: |
+          set -euo pipefail
+          test "$(git -C external/football-odds-mirror rev-parse HEAD)" = "c9b05a30eef50fe34abbf4134e6333fc5376d136"
+          python - <<'PY'
+          import json
+          p=json.load(open('reports/multiseason_preregistration.json', encoding='utf-8'))
+          assert p['locked_before_holdout_pattern_evaluation'] is True
+          assert p['source']['mirror_commit']=='c9b05a30eef50fe34abbf4134e6333fc5376d136'
+          assert p['split']['holdout']==['2526']
+          print('PREREGISTRATION_LOCKED')
+          PY
+          cp reports/multiseason_preregistration.json /tmp/multiseason_preregistration.json
+          cp reports/pattern_registry.json /tmp/production_pattern_registry.json
+      - name: Run first frozen holdout evaluation
+        run: python -m odds_scanner.multiseason_market_research --mirror-root external/football-odds-mirror
+      - name: Quarantine candidate registry from production
+        run: |
+          set -euo pipefail
+          mv reports/pattern_registry.json reports/football_data_pattern_registry_candidate.json
+          cp /tmp/production_pattern_registry.json reports/pattern_registry.json
+          cp /tmp/multiseason_preregistration.json reports/multiseason_preregistration.json
+          python - <<'PY'
+          import json
+          candidate=json.load(open('reports/football_data_pattern_registry_candidate.json', encoding='utf-8'))
+          production=json.load(open('reports/pattern_registry.json', encoding='utf-8'))
+          print({'candidate_patterns': candidate.get('pattern_count'), 'production_patterns_unchanged': production.get('pattern_count')})
+          PY
+      - name: Persist validation evidence without changing production registry
+        run: |
+          set -euo pipefail
+          artifacts=(
+            reports/multiseason_preregistration.json
+            reports/football_data_multiseason_validation.json
+            reports/football_data_pattern_registry_candidate.json
+          )
+          tar -cf /tmp/multiseason-evidence.tar "${artifacts[@]}"
+          git config user.name 'odds-scanner-actions'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            tar -xf /tmp/multiseason-evidence.tar
+            git add -f "${artifacts[@]}"
+            git diff --cached --quiet && exit 0
+            git commit -m 'Persist preregistered multi-season validation [skip ci]'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
