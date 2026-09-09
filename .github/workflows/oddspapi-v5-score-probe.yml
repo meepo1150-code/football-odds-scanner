@@ -1,0 +1,38 @@
+name: OddsPapi v5 Score Schema Probe
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/oddspapi_v5_score_probe.py'
+      - 'tests/test_oddspapi_v5_score_probe.py'
+      - '.github/workflows/oddspapi-v5-score-probe.yml'
+permissions: {contents: write}
+concurrency: {group: oddspapi-v5-score-probe, cancel-in-progress: false}
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env: {ODDSPAPI_KEY: '${{ secrets.ODDSPAPI_KEY }}'}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: main}
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.11'}
+      - run: python -m pip install -e '.[dev]'
+      - run: pytest -q tests/test_oddspapi_v5_score_probe.py tests/test_oddspapi_result_join.py
+      - name: Probe one historical v5 fixture window
+        run: python -m odds_scanner.oddspapi_v5_score_probe
+      - name: Commit schema probe report
+        run: |
+          set -euo pipefail
+          git config user.name 'odds-scanner-actions'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/oddspapi_v5_score_probe.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Update OddsPapi v5 score schema probe [skip ci]'
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+# Research-only schema probe. Exactly one OddsPapi v5 /fixtures request per run.
+# No result is promoted to production from this workflow.
