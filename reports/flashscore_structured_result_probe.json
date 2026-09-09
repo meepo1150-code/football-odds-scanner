@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "classification": "EXACT_ID_STRUCTURED_RESULT_EVIDENCE_PROBE",
+  "provider": "flashscore",
+  "generated_at": "2026-09-09T08:15:52.883073+00:00",
+  "promotion_allowed": false,
+  "mapping_policy": "ODDSPAPI_EXACT_EXTERNAL_PROVIDER_ID_ONLY",
+  "fixture_ref": {
+    "fixture_id": "id1000000861624378",
+    "flashscore_id": "CIrbR4BN",
+    "home": "Deportivo Alaves",
+    "away": "Getafe CF",
+    "kickoff": "2026-02-08T13:00:00.000Z"
+  },
+  "requests_attempted": 1,
+  "fetch": {
+    "status": 200,
+    "final_url": "https://www.flashscore.com/match/football/alaves-hxt57t2q/getafe-dboeiWOt/?mid=CIrbR4BN",
+    "content_type": "text/html; charset=UTF-8"
+  },
+  "evidence": {
+    "title": "Alaves v Getafe 08/02/2026 | Football - Flashscore",
+    "meta": [
+      {
+        "name": "description",
+        "content": "Follow Alaves v Getafe 08/02/2026 H2H stats, latest news and results and more information on Flashscore."
+      },
+      {
+        "name": "og:title",
+        "content": "Alaves - Getafe 0-2"
+      },
+      {
+        "name": "og:description",
+        "content": "SPAIN: LaLiga - Round 23"
+      }
+    ],
+    "script_type_counts": {
+      "": 23,
+      "application/javascript": 1,
+      "module": 5,
+      "text/javascript": 55
+    },
+    "script_ids": [],
+    "structured_jsonld": [],
+    "signals": {
+      "contains_jsonld": false,
+      "contains_eventstatus_token": true,
+      "contains_homescore_token": false,
+      "contains_awayscore_token": false,
+      "contains_score_token": true,
+      "contains_match_id_token": true
+    },
+    "html_bytes_inspected": 896087
+  },
+  "status": "NO_STRUCTURED_RESULT_EVIDENCE"
+}
