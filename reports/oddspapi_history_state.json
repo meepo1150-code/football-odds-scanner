@@ -1,7 +1,7 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "status": "OK",
-  "generated_at": "2026-09-09T07:57:59.781575+00:00",
+  "generated_at": "2026-09-09T08:05:25.481948+00:00",
   "coverage_start": "2026-01-01T00:00:00+00:00",
   "last_discovery_at": "2026-09-09T07:56:24.819031+00:00",
   "discovery_cursor": "2026-02-15T00:00:00+00:00",
@@ -9,106 +9,6 @@
   "last_discovery_mode": null,
   "last_discovery_window": null,
   "fixture_queue": [
-    {
-      "fixtureId": "id1000003561513974",
-      "tournamentId": 35,
-      "tournamentName": "Bundesliga",
-      "tournamentSlug": "bundesliga",
-      "startTime": "2026-02-07T17:30:00.000Z",
-      "participant1Name": "Borussia Monchengladbach",
-      "participant2Name": "Bayer Leverkusen",
-      "archive_country": "Germany"
-    },
-    {
-      "fixtureId": "id1000003461526350",
-      "tournamentId": 34,
-      "tournamentName": "Ligue 1",
-      "tournamentSlug": "ligue-1",
-      "startTime": "2026-02-07T18:00:00.000Z",
-      "participant1Name": "Stade Brest 29",
-      "participant2Name": "FC Lorient",
-      "archive_country": "France"
-    },
-    {
-      "fixtureId": "id1000002361061409",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-02-07T19:45:00.000Z",
-      "participant1Name": "ACF Fiorentina",
-      "participant2Name": "Torino FC",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000000861624388",
-      "tournamentId": 8,
-      "tournamentName": "LaLiga",
-      "tournamentSlug": "laliga",
-      "startTime": "2026-02-07T20:00:00.000Z",
-      "participant1Name": "Real Sociedad San Sebastian",
-      "participant2Name": "Elche CF",
-      "archive_country": "Spain"
-    },
-    {
-      "fixtureId": "id1000003461526356",
-      "tournamentId": 34,
-      "tournamentName": "Ligue 1",
-      "tournamentSlug": "ligue-1",
-      "startTime": "2026-02-07T20:05:00.000Z",
-      "participant1Name": "FC Nantes",
-      "participant2Name": "Olympique Lyon",
-      "archive_country": "France"
-    },
-    {
-      "fixtureId": "id1000002361061407",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-02-08T11:30:00.000Z",
-      "participant1Name": "Bologna FC",
-      "participant2Name": "Parma Calcio",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000000861624378",
-      "tournamentId": 8,
-      "tournamentName": "LaLiga",
-      "tournamentSlug": "laliga",
-      "startTime": "2026-02-08T13:00:00.000Z",
-      "participant1Name": "Deportivo Alaves",
-      "participant2Name": "Getafe CF",
-      "archive_country": "Spain"
-    },
-    {
-      "fixtureId": "id1000001761301003",
-      "tournamentId": 17,
-      "tournamentName": "Premier League",
-      "tournamentSlug": "premier-league",
-      "startTime": "2026-02-08T14:00:00.000Z",
-      "participant1Name": "Brighton & Hove Albion",
-      "participant2Name": "Crystal Palace",
-      "archive_country": "England"
-    },
-    {
-      "fixtureId": "id1000002361061415",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-02-08T14:00:00.000Z",
-      "participant1Name": "US Lecce",
-      "participant2Name": "Udinese Calcio",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000003461526348",
-      "tournamentId": 34,
-      "tournamentName": "Ligue 1",
-      "tournamentSlug": "ligue-1",
-      "startTime": "2026-02-08T14:00:00.000Z",
-      "participant1Name": "OGC Nice",
-      "participant2Name": "AS Monaco",
-      "archive_country": "France"
-    },
     {
       "fixtureId": "id1000003561513984",
       "tournamentId": 35,
@@ -670,10 +570,15 @@
     "id1000003561513890",
     "id1000003561513894"
   ],
-  "queued_remaining": 57,
+  "queued_remaining": 47,
   "processed_this_run": 10,
   "rows_added_this_run": 10,
-  "archive_rows": 178,
+  "archive_rows": 188,
+  "history_storage": "LEGACY_PLUS_DAILY_SHARDS",
+  "touched_shards": [
+    "data/normalized/oddspapi_history_ticks/2026-02-07.jsonl",
+    "data/normalized/oddspapi_history_ticks/2026-02-08.jsonl"
+  ],
   "billable_requests_this_run": 0,
   "free_history_requests_this_run": 10,
   "history_request_spacing_seconds": 5.2,
