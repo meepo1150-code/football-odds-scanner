@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "created_at": "2026-09-09T10:12:00Z",
+  "classification": "PROSPECTIVE_ODDSPAPI_2026_27_PREREGISTRATION",
+  "locked_before_2026_27_outcomes_mature": true,
+  "purpose": "Prospective validation of richer timestamped bookmaker-market structures after three retrospective frozen universes produced zero promotable patterns.",
+  "data_source": {
+    "provider": "OddsPapi",
+    "sport": "soccer",
+    "bookmaker_priority": ["Bet365"],
+    "history_semantics": "STRICT_PREMATCH_CREATED_AT_LT_KICKOFF",
+    "opening_definition": "earliest retained quote with created_at strictly before kickoff",
+    "closing_definition": "latest retained quote with created_at strictly before kickoff",
+    "result_join": "exact OddsPapi fixture_id through exact external provider mapping only; no fuzzy team/date matching",
+    "settlement": "actual Asian quarter-line settlement; non-quarter lines rejected rather than rounded"
+  },
+  "universe": {
+    "leagues": ["Premier League", "Bundesliga", "Serie A", "LaLiga", "Ligue 1"],
+    "season": "2026/27",
+    "collection_policy": "collect prospectively as fixtures occur; do not backfill synthetic observation times"
+  },
+  "pattern_hierarchy": [
+    "market_structure",
+    "price_structure",
+    "opening_to_closing_movement",
+    "context"
+  ],
+  "markets": ["AH", "OU"],
+  "dimensions": [
+    "league",
+    "market",
+    "selection",
+    "exact_line",
+    "opening_price_band",
+    "closing_price_band",
+    "line_move_bucket",
+    "price_move_bucket",
+    "favorite_side",
+    "favorite_fair_1x2_probability_band"
+  ],
+  "frozen_buckets": {
+    "decimal_price_width": 0.20,
+    "favorite_fair_probability_width": 0.10,
+    "line_move_grid": 0.25,
+    "price_move_width": 0.10
+  },
+  "prospective_phases": {
+    "discovery": "first 40% of chronologically complete 2026/27 fixtures",
+    "validation": "next 30% of chronologically complete 2026/27 fixtures",
+    "holdout": "final 30% of chronologically complete 2026/27 fixtures",
+    "split_rule": "split only after the season dataset is complete enough to determine chronological fixture counts; phase boundaries are percentages, not chosen by performance"
+  },
+  "minimum_sample_sizes": {
+    "discovery": 120,
+    "validation": 80,
+    "holdout": 60
+  },
+  "frozen_promotion_gates": {
+    "positive_roi_all_phases": true,
+    "validation_and_holdout_bootstrap_ci_lower_bound": 0.0,
+    "validation_fdr_q_max": 0.10,
+    "cross_league_min": 3,
+    "positive_league_share_min": 0.60,
+    "minimum_current_repriced_ev": 0.01,
+    "execution_odds_default_range": [1.80, 2.20],
+    "require_positive_forward_clv": true,
+    "require_bucket_sensitivity_stability": true,
+    "require_no_single_season_or_league_concentration": true,
+    "require_empirical_risk_report": true
+  },
+  "risk_metrics": [
+    "flat_stake_roi",
+    "profit_units",
+    "bootstrap_roi_ci95",
+    "sign_flip_p_value",
+    "BH_FDR_q",
+    "max_drawdown_units",
+    "longest_losing_streak",
+    "league_roi_distribution",
+    "phase_roi_distribution",
+    "opening_to_closing_CLV"
+  ],
+  "execution_policy": {
+    "production_registry_must_remain_untouched_during_collection": true,
+    "paper_shadow_observations_allowed": true,
+    "paper_shadow_must_be_labelled": "PAPER_RESEARCH_ONLY",
+    "paper_shadow_may_not_be_presented_as_betting_recommendation": true,
+    "current_provider_calls_for_production_when_registry_empty": false
+  },
+  "anti_p_hacking_rule": "Do not alter dimensions, buckets, phase split, sample sizes, FDR, CI, CLV, stability, risk, or current-EV gates after inspecting prospective 2026/27 performance. Any change becomes a new hypothesis requiring a later untouched holdout.",
+  "production_rule": "Only candidates passing every frozen prospective gate and a separate audit may enter reports/pattern_registry.json."
+}
