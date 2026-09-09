@@ -2,6 +2,11 @@ name: Third Universe OU Confirmation
 on:
   pull_request:
     branches: [main]
+    paths:
+      - 'src/odds_scanner/third_universe_ou_confirmation.py'
+      - 'tests/test_third_universe_ou_confirmation.py'
+      - 'reports/third_universe_ou_preregistration.json'
+      - '.github/workflows/third-universe-ou-confirmation.yml'
   push:
     branches: [main]
     paths:
@@ -11,7 +16,7 @@ on:
       - '.github/workflows/third-universe-ou-confirmation.yml'
   workflow_dispatch:
 concurrency:
-  group: odds-scanner-output-writer
+  group: third-universe-ou-confirmation
   cancel-in-progress: false
 permissions:
   contents: write
