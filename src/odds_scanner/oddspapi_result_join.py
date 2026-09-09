@@ -2,7 +2,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-TICKS=Path("data/normalized/oddspapi_history_ticks.jsonl"); RESULTS=Path("data/normalized/oddspapi_finished_results.jsonl"); OUTPUT=Path("data/normalized/oddspapi_prematch_joined.jsonl"); REPORT=Path("reports/oddspapi_result_join.json")
+from .oddspapi_history_store import iter_rows as iter_tick_rows
+
+RESULTS=Path("data/normalized/oddspapi_finished_results.jsonl"); OUTPUT=Path("data/normalized/oddspapi_prematch_joined.jsonl"); REPORT=Path("reports/oddspapi_result_join.json")
 
 def _rows(path:Path)->list[dict]:
     if not path.exists():return []
@@ -37,4 +39,5 @@ def join_rows(ticks:list[dict],results:list[dict])->tuple[list[dict],dict]:
     report={"schema_version":"1.1","classification":"RESULT_JOIN_QA_ONLY","tick_fixtures":len(ticks),"result_fixtures":len(index),"joined_fixtures":len(joined),"missing_result_fixtures":len(missing),"join_rate":round(len(joined)/len(ticks),6) if ticks else 0.0,"promotion_allowed":False,"promotion_blockers":["ODDSPAPI_HISTORY_NOT_MULTI_SEASON","VALIDATION_NOT_RUN"]};return joined,report
 
 def write_join(root:Path=Path("."))->dict:
-    joined,report=join_rows(_rows(root/TICKS),_rows(root/RESULTS));out=root/OUTPUT;out.parent.mkdir(parents=True,exist_ok=True);out.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in joined),encoding="utf-8");rp=root/REPORT;rp.parent.mkdir(parents=True,exist_ok=True);rp.write_text(json.dumps(report,indent=2),encoding="utf-8");return report
+    ticks=list(iter_tick_rows(root))
+    joined,report=join_rows(ticks,_rows(root/RESULTS));out=root/OUTPUT;out.parent.mkdir(parents=True,exist_ok=True);out.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in joined),encoding="utf-8");rp=root/REPORT;rp.parent.mkdir(parents=True,exist_ok=True);rp.write_text(json.dumps(report,indent=2),encoding="utf-8");return report
