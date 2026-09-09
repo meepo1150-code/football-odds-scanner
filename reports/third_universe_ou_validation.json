@@ -1,0 +1,790 @@
+{
+  "schema_version": "1.0",
+  "classification": "THIRD_UNIVERSE_OU25_CONFIRMATION",
+  "preregistered_split": {
+    "train": [
+      "1920",
+      "2021",
+      "2122",
+      "2223"
+    ],
+    "validation": [
+      "2324",
+      "2425"
+    ],
+    "holdout": [
+      "2526"
+    ]
+  },
+  "holdout_policy": "2025/26 O/U performance preregistered before evaluation; do not retune after viewing holdout",
+  "thresholds": {
+    "min_n": {
+      "train": 150,
+      "validation": 80,
+      "holdout": 40
+    },
+    "fdr_q": 0.1,
+    "cross_league_min": 3,
+    "positive_league_share_min": 0.6,
+    "price_bucket_width": 0.2,
+    "favorite_probability_bucket_width": 0.1
+  },
+  "normalized_observations": 20574,
+  "train_positive_patterns_entering_validation": 4,
+  "promoted_patterns": 0,
+  "candidates": [
+    {
+      "pattern_id": "FD_OU25_32E0C4AAB49F",
+      "status": "REJECT",
+      "market": "OU",
+      "pattern_key": {
+        "favorite_side": "A",
+        "ah_line": -0.25,
+        "ou_side": "O",
+        "ou_line": 2.5,
+        "ou_price_band": [
+          1.6,
+          1.8
+        ],
+        "favorite_probability_band": [
+          0.4,
+          0.5
+        ]
+      },
+      "train_n": 167,
+      "validation_n": 83,
+      "holdout_n": 40,
+      "p_validation_sign_flip": 1.0,
+      "q_validation_bh": 1.0,
+      "phase_stats": {
+        "train": {
+          "n": 167,
+          "roi": 0.026946,
+          "profit_units": 4.5,
+          "bootstrap_roi_ci95": [
+            -0.102275,
+            0.151437
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 101,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 66
+          }
+        },
+        "validation": {
+          "n": 83,
+          "roi": -0.05988,
+          "profit_units": -4.97,
+          "bootstrap_roi_ci95": [
+            -0.243735,
+            0.120843
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 46,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 37
+          }
+        },
+        "holdout": {
+          "n": 40,
+          "roi": -0.10975,
+          "profit_units": -4.39,
+          "bootstrap_roi_ci95": [
+            -0.3705,
+            0.14925
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 21,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 19
+          }
+        }
+      },
+      "league_stats_validation_plus_holdout": {
+        "Eredivisie": {
+          "n": 34,
+          "roi": -0.016765
+        },
+        "Primeira Liga": {
+          "n": 5,
+          "roi": -0.314
+        },
+        "Jupiler Pro League": {
+          "n": 48,
+          "roi": -0.044375
+        },
+        "Super Lig": {
+          "n": 25,
+          "roi": -0.2476
+        },
+        "Scottish Premiership": {
+          "n": 11,
+          "roi": 0.1
+        }
+      },
+      "positive_league_share": 0.2,
+      "season_rois": {
+        "2324": -0.080833,
+        "2425": -0.031143,
+        "2526": -0.10975
+      },
+      "gates": {
+        "train_n": true,
+        "validation_n": true,
+        "holdout_n": true,
+        "train_roi_positive": true,
+        "validation_roi_positive": false,
+        "holdout_roi_positive": false,
+        "validation_fdr": false,
+        "cross_league_count": true,
+        "positive_league_share": false,
+        "validation_seasons_positive": false,
+        "holdout_season_positive": false
+      }
+    },
+    {
+      "pattern_id": "FD_OU25_F6B9D74622E5",
+      "status": "REJECT",
+      "market": "OU",
+      "pattern_key": {
+        "favorite_side": "H",
+        "ah_line": -0.25,
+        "ou_side": "U",
+        "ou_line": 2.5,
+        "ou_price_band": [
+          1.6,
+          1.8
+        ],
+        "favorite_probability_band": [
+          0.4,
+          0.5
+        ]
+      },
+      "train_n": 253,
+      "validation_n": 123,
+      "holdout_n": 47,
+      "p_validation_sign_flip": 0.35832833,
+      "q_validation_bh": 0.61561021,
+      "phase_stats": {
+        "train": {
+          "n": 253,
+          "roi": 0.012569,
+          "profit_units": 3.18,
+          "bootstrap_roi_ci95": [
+            -0.087273,
+            0.113597
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 152,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 101
+          }
+        },
+        "validation": {
+          "n": 123,
+          "roi": 0.027561,
+          "profit_units": 3.39,
+          "bootstrap_roi_ci95": [
+            -0.126098,
+            0.174065
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 74,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 49
+          }
+        },
+        "holdout": {
+          "n": 47,
+          "roi": -0.097447,
+          "profit_units": -4.58,
+          "bootstrap_roi_ci95": [
+            -0.346809,
+            0.131064
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 25,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 22
+          }
+        }
+      },
+      "league_stats_validation_plus_holdout": {
+        "Eredivisie": {
+          "n": 10,
+          "roi": 0.557
+        },
+        "Primeira Liga": {
+          "n": 70,
+          "roi": -0.061571
+        },
+        "Jupiler Pro League": {
+          "n": 20,
+          "roi": 0.0345
+        },
+        "Super Lig": {
+          "n": 38,
+          "roi": -0.002632
+        },
+        "Scottish Premiership": {
+          "n": 32,
+          "roi": -0.095
+        }
+      },
+      "positive_league_share": 0.4,
+      "season_rois": {
+        "2324": 0.044576,
+        "2425": 0.011875,
+        "2526": -0.097447
+      },
+      "gates": {
+        "train_n": true,
+        "validation_n": true,
+        "holdout_n": true,
+        "train_roi_positive": true,
+        "validation_roi_positive": true,
+        "holdout_roi_positive": false,
+        "validation_fdr": false,
+        "cross_league_count": true,
+        "positive_league_share": false,
+        "validation_seasons_positive": true,
+        "holdout_season_positive": false
+      }
+    },
+    {
+      "pattern_id": "FD_OU25_D0A17AE7DB9C",
+      "status": "REJECT",
+      "market": "OU",
+      "pattern_key": {
+        "favorite_side": "H",
+        "ah_line": -0.25,
+        "ou_side": "U",
+        "ou_line": 2.5,
+        "ou_price_band": [
+          1.8,
+          2.0
+        ],
+        "favorite_probability_band": [
+          0.4,
+          0.5
+        ]
+      },
+      "train_n": 235,
+      "validation_n": 173,
+      "holdout_n": 62,
+      "p_validation_sign_flip": 0.38992202,
+      "q_validation_bh": 0.61561021,
+      "phase_stats": {
+        "train": {
+          "n": 235,
+          "roi": 0.006,
+          "profit_units": 1.41,
+          "bootstrap_roi_ci95": [
+            -0.114809,
+            0.129574
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 125,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 110
+          }
+        },
+        "validation": {
+          "n": 173,
+          "roi": 0.019942,
+          "profit_units": 3.45,
+          "bootstrap_roi_ci95": [
+            -0.121156,
+            0.157572
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 93,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 80
+          }
+        },
+        "holdout": {
+          "n": 62,
+          "roi": 0.069677,
+          "profit_units": 4.32,
+          "bootstrap_roi_ci95": [
+            -0.154032,
+            0.308548
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 35,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 27
+          }
+        }
+      },
+      "league_stats_validation_plus_holdout": {
+        "Eredivisie": {
+          "n": 21,
+          "roi": -0.459524
+        },
+        "Primeira Liga": {
+          "n": 28,
+          "roi": -0.065357
+        },
+        "Jupiler Pro League": {
+          "n": 53,
+          "roi": 0.224906
+        },
+        "Super Lig": {
+          "n": 88,
+          "roi": 0.08125
+        },
+        "Scottish Premiership": {
+          "n": 45,
+          "roi": 0.004
+        }
+      },
+      "positive_league_share": 0.6,
+      "season_rois": {
+        "2324": 0.07,
+        "2425": -0.059254,
+        "2526": 0.069677
+      },
+      "gates": {
+        "train_n": true,
+        "validation_n": true,
+        "holdout_n": true,
+        "train_roi_positive": true,
+        "validation_roi_positive": true,
+        "holdout_roi_positive": true,
+        "validation_fdr": false,
+        "cross_league_count": true,
+        "positive_league_share": true,
+        "validation_seasons_positive": false,
+        "holdout_season_positive": true
+      }
+    },
+    {
+      "pattern_id": "FD_OU25_783BFF86F05B",
+      "status": "REJECT",
+      "market": "OU",
+      "pattern_key": {
+        "favorite_side": "H",
+        "ah_line": -0.25,
+        "ou_side": "U",
+        "ou_line": 2.5,
+        "ou_price_band": [
+          2.0,
+          2.2
+        ],
+        "favorite_probability_band": [
+          0.4,
+          0.5
+        ]
+      },
+      "train_n": 173,
+      "validation_n": 93,
+      "holdout_n": 37,
+      "p_validation_sign_flip": 0.46170766,
+      "q_validation_bh": 0.61561021,
+      "phase_stats": {
+        "train": {
+          "n": 173,
+          "roi": 0.020867,
+          "profit_units": 3.61,
+          "bootstrap_roi_ci95": [
+            -0.136185,
+            0.181618
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 85,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 88
+          }
+        },
+        "validation": {
+          "n": 93,
+          "roi": 0.007527,
+          "profit_units": 0.7,
+          "bootstrap_roi_ci95": [
+            -0.210968,
+            0.211828
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 45,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 48
+          }
+        },
+        "holdout": {
+          "n": 37,
+          "roi": -0.211081,
+          "profit_units": -7.81,
+          "bootstrap_roi_ci95": [
+            -0.548649,
+            0.131081
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 14,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 23
+          }
+        }
+      },
+      "league_stats_validation_plus_holdout": {
+        "Eredivisie": {
+          "n": 39,
+          "roi": -0.034103
+        },
+        "Primeira Liga": {
+          "n": 4,
+          "roi": 0.0475
+        },
+        "Jupiler Pro League": {
+          "n": 28,
+          "roi": 0.125714
+        },
+        "Super Lig": {
+          "n": 45,
+          "roi": -0.079111
+        },
+        "Scottish Premiership": {
+          "n": 14,
+          "roi": -0.423571
+        }
+      },
+      "positive_league_share": 0.4,
+      "season_rois": {
+        "2324": -0.045593,
+        "2425": 0.099706,
+        "2526": -0.211081
+      },
+      "gates": {
+        "train_n": true,
+        "validation_n": true,
+        "holdout_n": false,
+        "train_roi_positive": true,
+        "validation_roi_positive": true,
+        "holdout_roi_positive": false,
+        "validation_fdr": false,
+        "cross_league_count": true,
+        "positive_league_share": false,
+        "validation_seasons_positive": false,
+        "holdout_season_positive": false
+      }
+    }
+  ],
+  "production_promotion_allowed_by_this_run": false,
+  "league_universe": {
+    "Eredivisie": "eredivisie",
+    "Primeira Liga": "primeira-liga",
+    "Jupiler Pro League": "jupiler-league",
+    "Super Lig": "super-lig",
+    "Scottish Premiership": "scottish-premiership"
+  },
+  "provenance": {
+    "mirror_commit": "c9b05a30eef50fe34abbf4134e6333fc5376d136",
+    "files": [
+      {
+        "season": "1920",
+        "league": "Eredivisie",
+        "status": "OK",
+        "rows": 232,
+        "normalized_observations": 464,
+        "sha256": "84998d67f390ee86d2f2552fed19a0d5ebaba32000ff7c759b3bd00dfdd9f988"
+      },
+      {
+        "season": "1920",
+        "league": "Primeira Liga",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "b65f3fa55dd1362af093ad5f823f6b0ec1925e796048688bcbdebc19fab8b240"
+      },
+      {
+        "season": "1920",
+        "league": "Jupiler Pro League",
+        "status": "OK",
+        "rows": 232,
+        "normalized_observations": 464,
+        "sha256": "f64077e0fcd43a2d961ac7462ca3902d9aa67e86a12bb8c2b6e1c11984c9d5b8"
+      },
+      {
+        "season": "1920",
+        "league": "Super Lig",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "2ae46dbc0c80a9a10c2ea6737c7bcbcf5849c394ba3912615c39466e5db7bf7a"
+      },
+      {
+        "season": "1920",
+        "league": "Scottish Premiership",
+        "status": "OK",
+        "rows": 179,
+        "normalized_observations": 358,
+        "sha256": "9fa1ffda5b5b292580dae625323864ead985e27b83427600cfd5f686b12a6491"
+      },
+      {
+        "season": "2021",
+        "league": "Eredivisie",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "65d532e1ea878954043454422ba2c770d05909691b219f39fcc6e9c4c4037657"
+      },
+      {
+        "season": "2021",
+        "league": "Primeira Liga",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "c6bb505a2a2a3f5a71f5d37cbe9f717fb683d706b66170b6b3bef7947a5252cb"
+      },
+      {
+        "season": "2021",
+        "league": "Jupiler Pro League",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "6e74a3f376c67b18bc40175aaf4d87b553ed8d10335ec48e6c0d805fd0117687"
+      },
+      {
+        "season": "2021",
+        "league": "Super Lig",
+        "status": "OK",
+        "rows": 420,
+        "normalized_observations": 840,
+        "sha256": "f50a1ca815964b11f818a3ca35035f57969e5b3b04e267ad508e8b9282920cfd"
+      },
+      {
+        "season": "2021",
+        "league": "Scottish Premiership",
+        "status": "OK",
+        "rows": 228,
+        "normalized_observations": 456,
+        "sha256": "0456d91665fccef8a7b4cce781b9a56a0df451d43dc1f67f0d623ac90aa26817"
+      },
+      {
+        "season": "2122",
+        "league": "Eredivisie",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "1798f02c9e2d55d399503bce4adf82d9cb31969caab01de8a4ac0632947b692a"
+      },
+      {
+        "season": "2122",
+        "league": "Primeira Liga",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "c4477c4f40da93fbba978fa52b76dc962df3a998a464f9c5ae5462d1b36e3a63"
+      },
+      {
+        "season": "2122",
+        "league": "Jupiler Pro League",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "1fbc0221c0c017c34ff480268b153959576b0c707dffbeaf3141819a7d8d4363"
+      },
+      {
+        "season": "2122",
+        "league": "Super Lig",
+        "status": "OK",
+        "rows": 380,
+        "normalized_observations": 760,
+        "sha256": "d945315d283f2c3b48e8ff67d9ac460ccc2c817ad719e0448000db995b5ab9ce"
+      },
+      {
+        "season": "2122",
+        "league": "Scottish Premiership",
+        "status": "OK",
+        "rows": 228,
+        "normalized_observations": 456,
+        "sha256": "5814849157392d05df1bd8220a468649434d1e816e9385d65eca2dede98c5dd1"
+      },
+      {
+        "season": "2223",
+        "league": "Eredivisie",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "a52a916c302ab414705fdcbba2077c301f9f0baefd3d519ea5434a2a5f5c4e8f"
+      },
+      {
+        "season": "2223",
+        "league": "Primeira Liga",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "acb35c152f1198de9d02cdea622bc815e1438bae00d1822e0fe48a787405a84a"
+      },
+      {
+        "season": "2223",
+        "league": "Jupiler Pro League",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "46737ea78b45a1fa6827b733a884c78f2610f37961781336ea7aa6dbfd64dcb4"
+      },
+      {
+        "season": "2223",
+        "league": "Super Lig",
+        "status": "OK",
+        "rows": 342,
+        "normalized_observations": 626,
+        "sha256": "129aacfe9576679cd287a63c401823b7df4ecd8bddb7eeb1ed0fcd22c867e0e3"
+      },
+      {
+        "season": "2223",
+        "league": "Scottish Premiership",
+        "status": "OK",
+        "rows": 228,
+        "normalized_observations": 456,
+        "sha256": "d716ef774542bb04701e1ac03eedf677cfa02422a0974b030824b3002c011730"
+      },
+      {
+        "season": "2324",
+        "league": "Eredivisie",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "bbef260d01917668069697c60e5179571600ddca6f3cc353b81d46143697dad4"
+      },
+      {
+        "season": "2324",
+        "league": "Primeira Liga",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "681e132bee3948b432436e907a935ea8fc4a8ccace86dad67d61be0159035758"
+      },
+      {
+        "season": "2324",
+        "league": "Jupiler Pro League",
+        "status": "OK",
+        "rows": 312,
+        "normalized_observations": 624,
+        "sha256": "379d10bd92cecba6349f043f0661e3548e16d8053b234a7cace7493acfb72144"
+      },
+      {
+        "season": "2324",
+        "league": "Super Lig",
+        "status": "OK",
+        "rows": 380,
+        "normalized_observations": 760,
+        "sha256": "17097f7d31bad40f830dc6f0f85090e9f76876e6812ec14997bc80423a05924b"
+      },
+      {
+        "season": "2324",
+        "league": "Scottish Premiership",
+        "status": "OK",
+        "rows": 228,
+        "normalized_observations": 456,
+        "sha256": "ed2dcf1bb0bdb12e911f0b8435038a85448be27d4fa368202c85be5e8036c341"
+      },
+      {
+        "season": "2425",
+        "league": "Eredivisie",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "7f97f0a7fd1f9b2cff6ac09588cdc14fd07f19950cb75e821fa58ab41e541d0a"
+      },
+      {
+        "season": "2425",
+        "league": "Primeira Liga",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "e3cceff81e471c59e72c1f60f81b2e62df21d1a58af167062d4915484da00255"
+      },
+      {
+        "season": "2425",
+        "league": "Jupiler Pro League",
+        "status": "OK",
+        "rows": 312,
+        "normalized_observations": 624,
+        "sha256": "fcc3ec3a7bdd57ec42df76bb03aa1858ee18be88886a379f42b4c7b2e7f5d0eb"
+      },
+      {
+        "season": "2425",
+        "league": "Super Lig",
+        "status": "OK",
+        "rows": 342,
+        "normalized_observations": 684,
+        "sha256": "fd91680cc815f356c94fdd733078431ca771707305994ec49c5f1270cf9c9f5c"
+      },
+      {
+        "season": "2425",
+        "league": "Scottish Premiership",
+        "status": "OK",
+        "rows": 228,
+        "normalized_observations": 456,
+        "sha256": "a7e7c7512a04784c8c8d9a82a3bb24a3c67c9a6afa533a661d8fbbbbec293118"
+      },
+      {
+        "season": "2526",
+        "league": "Eredivisie",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 610,
+        "sha256": "dfb092a866e0df4b4c8fde7778d47f41a4307f5c5ac5a6f55d2276e45c80e604"
+      },
+      {
+        "season": "2526",
+        "league": "Primeira Liga",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "f1353dc7404bfa0d27daa3ca6c164bb450ec20558ee02fffb7160fae182213dc"
+      },
+      {
+        "season": "2526",
+        "league": "Jupiler Pro League",
+        "status": "OK",
+        "rows": 311,
+        "normalized_observations": 620,
+        "sha256": "7ba1d75b2f23ab6bf36952fa61b62e80905e2d38fa059ad389106772aebaf481"
+      },
+      {
+        "season": "2526",
+        "league": "Super Lig",
+        "status": "OK",
+        "rows": 306,
+        "normalized_observations": 612,
+        "sha256": "d35e97d42b53ca870b13683da3998aa2758eeb43280fbe71d5d935bae47cdd23"
+      },
+      {
+        "season": "2526",
+        "league": "Scottish Premiership",
+        "status": "OK",
+        "rows": 228,
+        "normalized_observations": 456,
+        "sha256": "be3c45e08f09a327e3fd5289dd0b362b200f430ed5845cb18df1aca7e3ced2ee"
+      }
+    ]
+  }
+}
