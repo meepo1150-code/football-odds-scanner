@@ -1,0 +1,784 @@
+{
+  "schema_version": "2.1",
+  "classification": "INDEPENDENT_LEAGUE_MULTI_SEASON_AH_CONFIRMATION",
+  "generated_at": "2026-09-09T10:05:40.115216+00:00",
+  "preregistered_split": {
+    "train": [
+      "1920",
+      "2021",
+      "2122",
+      "2223"
+    ],
+    "validation": [
+      "2324",
+      "2425"
+    ],
+    "holdout": [
+      "2526"
+    ]
+  },
+  "holdout_policy": "2025/26 preregistered before pattern-performance inspection; do not tune after viewing holdout",
+  "thresholds": {
+    "min_n": {
+      "train": 150,
+      "validation": 80,
+      "holdout": 40
+    },
+    "fdr_q": 0.1,
+    "cross_league_min": 3,
+    "positive_league_share_min": 0.6,
+    "price_bucket_width": 0.2,
+    "favorite_probability_bucket_width": 0.1
+  },
+  "normalized_rows": 14295,
+  "train_positive_patterns_entering_validation": 4,
+  "promoted_patterns": 0,
+  "candidates": [
+    {
+      "pattern_id": "FD_AH_371065922123",
+      "status": "REJECT",
+      "pattern_key": {
+        "favorite_side": "A",
+        "ah_line": -0.25,
+        "ah_price_band": [
+          2.0,
+          2.2
+        ],
+        "favorite_probability_band": [
+          0.3,
+          0.4
+        ]
+      },
+      "market": "AH",
+      "train_n": 294,
+      "validation_n": 103,
+      "holdout_n": 20,
+      "p_validation_sign_flip": 1.0,
+      "q_validation_bh": 1.0,
+      "phase_stats": {
+        "train": {
+          "n": 294,
+          "roi": 0.036122,
+          "profit_units": 10.62,
+          "bootstrap_roi_ci95": [
+            -0.070476,
+            0.139252
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 127,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 86,
+            "FULL_LOSS": 81
+          }
+        },
+        "validation": {
+          "n": 103,
+          "roi": -0.03466,
+          "profit_units": -3.57,
+          "bootstrap_roi_ci95": [
+            -0.203592,
+            0.13767
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 41,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 31,
+            "FULL_LOSS": 31
+          }
+        },
+        "holdout": {
+          "n": 20,
+          "roi": 0.011,
+          "profit_units": 0.22,
+          "bootstrap_roi_ci95": [
+            -0.3955,
+            0.418
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 9,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 4,
+            "FULL_LOSS": 7
+          }
+        }
+      },
+      "league_stats_validation_plus_holdout": {
+        "EFL Championship": {
+          "n": 30,
+          "roi": -0.036
+        },
+        "2. Bundesliga": {
+          "n": 4,
+          "roi": 0.285
+        },
+        "LaLiga 2": {
+          "n": 37,
+          "roi": 0.033514
+        },
+        "Ligue 2": {
+          "n": 26,
+          "roi": -0.095
+        },
+        "Serie B": {
+          "n": 26,
+          "roi": -0.083846
+        }
+      },
+      "positive_league_share": 0.4,
+      "season_rois": {
+        "2324": -0.035,
+        "2425": -0.034286,
+        "2526": 0.011
+      },
+      "gates": {
+        "train_n": true,
+        "validation_n": true,
+        "holdout_n": false,
+        "train_roi_positive": true,
+        "validation_roi_positive": false,
+        "holdout_roi_positive": true,
+        "validation_fdr": false,
+        "cross_league_count": true,
+        "positive_league_share": false,
+        "validation_seasons_positive": false,
+        "holdout_season_positive": true
+      }
+    },
+    {
+      "pattern_id": "FD_AH_70ABBCBEDECC",
+      "status": "REJECT",
+      "pattern_key": {
+        "favorite_side": "A",
+        "ah_line": -0.5,
+        "ah_price_band": [
+          1.8,
+          2.0
+        ],
+        "favorite_probability_band": [
+          0.4,
+          0.5
+        ]
+      },
+      "market": "AH",
+      "train_n": 152,
+      "validation_n": 78,
+      "holdout_n": 65,
+      "p_validation_sign_flip": 1.0,
+      "q_validation_bh": 1.0,
+      "phase_stats": {
+        "train": {
+          "n": 152,
+          "roi": 0.047697,
+          "profit_units": 7.25,
+          "bootstrap_roi_ci95": [
+            -0.117039,
+            0.200526
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 82,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 70
+          }
+        },
+        "validation": {
+          "n": 78,
+          "roi": -0.131154,
+          "profit_units": -10.23,
+          "bootstrap_roi_ci95": [
+            -0.353718,
+            0.069872
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 35,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 43
+          }
+        },
+        "holdout": {
+          "n": 65,
+          "roi": -0.149231,
+          "profit_units": -9.7,
+          "bootstrap_roi_ci95": [
+            -0.381385,
+            0.082923
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 29,
+            "HALF_WIN": 0,
+            "PUSH": 0,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 36
+          }
+        }
+      },
+      "league_stats_validation_plus_holdout": {
+        "EFL Championship": {
+          "n": 45,
+          "roi": -0.223111
+        },
+        "2. Bundesliga": {
+          "n": 24,
+          "roi": 0.042917
+        },
+        "LaLiga 2": {
+          "n": 16,
+          "roi": -0.154375
+        },
+        "Ligue 2": {
+          "n": 34,
+          "roi": -0.046176
+        },
+        "Serie B": {
+          "n": 24,
+          "roi": -0.286667
+        }
+      },
+      "positive_league_share": 0.2,
+      "season_rois": {
+        "2324": -0.22575,
+        "2425": -0.031579,
+        "2526": -0.149231
+      },
+      "gates": {
+        "train_n": true,
+        "validation_n": false,
+        "holdout_n": true,
+        "train_roi_positive": true,
+        "validation_roi_positive": false,
+        "holdout_roi_positive": false,
+        "validation_fdr": false,
+        "cross_league_count": true,
+        "positive_league_share": false,
+        "validation_seasons_positive": false,
+        "holdout_season_positive": false
+      }
+    },
+    {
+      "pattern_id": "FD_AH_2CED3799E02A",
+      "status": "REJECT",
+      "pattern_key": {
+        "favorite_side": "H",
+        "ah_line": -1.0,
+        "ah_price_band": [
+          1.8,
+          2.0
+        ],
+        "favorite_probability_band": [
+          0.6,
+          0.7
+        ]
+      },
+      "market": "AH",
+      "train_n": 190,
+      "validation_n": 85,
+      "holdout_n": 45,
+      "p_validation_sign_flip": 1.0,
+      "q_validation_bh": 1.0,
+      "phase_stats": {
+        "train": {
+          "n": 190,
+          "roi": 0.072421,
+          "profit_units": 13.76,
+          "bootstrap_roi_ci95": [
+            -0.043316,
+            0.187211
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 81,
+            "HALF_WIN": 0,
+            "PUSH": 50,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 59
+          }
+        },
+        "validation": {
+          "n": 85,
+          "roi": -0.016824,
+          "profit_units": -1.43,
+          "bootstrap_roi_ci95": [
+            -0.193882,
+            0.155059
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 33,
+            "HALF_WIN": 0,
+            "PUSH": 21,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 31
+          }
+        },
+        "holdout": {
+          "n": 45,
+          "roi": -0.11,
+          "profit_units": -4.95,
+          "bootstrap_roi_ci95": [
+            -0.356222,
+            0.121778
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 15,
+            "HALF_WIN": 0,
+            "PUSH": 12,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 18
+          }
+        }
+      },
+      "league_stats_validation_plus_holdout": {
+        "EFL Championship": {
+          "n": 51,
+          "roi": -0.132941
+        },
+        "2. Bundesliga": {
+          "n": 16,
+          "roi": -0.054375
+        },
+        "LaLiga 2": {
+          "n": 25,
+          "roi": 0.0856
+        },
+        "Ligue 2": {
+          "n": 23,
+          "roi": -0.087391
+        },
+        "Serie B": {
+          "n": 15,
+          "roi": 0.076
+        }
+      },
+      "positive_league_share": 0.4,
+      "season_rois": {
+        "2324": -0.036047,
+        "2425": 0.002857,
+        "2526": -0.11
+      },
+      "gates": {
+        "train_n": true,
+        "validation_n": true,
+        "holdout_n": true,
+        "train_roi_positive": true,
+        "validation_roi_positive": false,
+        "holdout_roi_positive": false,
+        "validation_fdr": false,
+        "cross_league_count": true,
+        "positive_league_share": false,
+        "validation_seasons_positive": false,
+        "holdout_season_positive": false
+      }
+    },
+    {
+      "pattern_id": "FD_AH_A5D29D701F7D",
+      "status": "REJECT",
+      "pattern_key": {
+        "favorite_side": "H",
+        "ah_line": 0.0,
+        "ah_price_band": [
+          1.6,
+          1.8
+        ],
+        "favorite_probability_band": [
+          0.3,
+          0.4
+        ]
+      },
+      "market": "AH",
+      "train_n": 316,
+      "validation_n": 118,
+      "holdout_n": 100,
+      "p_validation_sign_flip": 1.0,
+      "q_validation_bh": 1.0,
+      "phase_stats": {
+        "train": {
+          "n": 316,
+          "roi": 0.000886,
+          "profit_units": 0.28,
+          "bootstrap_roi_ci95": [
+            -0.079557,
+            0.080475
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 121,
+            "HALF_WIN": 0,
+            "PUSH": 103,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 92
+          }
+        },
+        "validation": {
+          "n": 118,
+          "roi": -0.03822,
+          "profit_units": -4.51,
+          "bootstrap_roi_ci95": [
+            -0.162627,
+            0.090508
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 41,
+            "HALF_WIN": 0,
+            "PUSH": 41,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 36
+          }
+        },
+        "holdout": {
+          "n": 100,
+          "roi": -0.0712,
+          "profit_units": -7.12,
+          "bootstrap_roi_ci95": [
+            -0.2139,
+            0.0797
+          ],
+          "settlement_distribution": {
+            "FULL_WIN": 37,
+            "HALF_WIN": 0,
+            "PUSH": 28,
+            "HALF_LOSS": 0,
+            "FULL_LOSS": 35
+          }
+        }
+      },
+      "league_stats_validation_plus_holdout": {
+        "EFL Championship": {
+          "n": 45,
+          "roi": -0.124222
+        },
+        "2. Bundesliga": {
+          "n": 26,
+          "roi": 0.052692
+        },
+        "LaLiga 2": {
+          "n": 60,
+          "roi": -0.005167
+        },
+        "Ligue 2": {
+          "n": 38,
+          "roi": -0.185789
+        },
+        "Serie B": {
+          "n": 49,
+          "roi": -0.000816
+        }
+      },
+      "positive_league_share": 0.2,
+      "season_rois": {
+        "2324": -0.032881,
+        "2425": -0.043559,
+        "2526": -0.0712
+      },
+      "gates": {
+        "train_n": true,
+        "validation_n": true,
+        "holdout_n": true,
+        "train_roi_positive": true,
+        "validation_roi_positive": false,
+        "holdout_roi_positive": false,
+        "validation_fdr": false,
+        "cross_league_count": true,
+        "positive_league_share": false,
+        "validation_seasons_positive": false,
+        "holdout_season_positive": false
+      }
+    }
+  ],
+  "independent_league_universe": {
+    "EFL Championship": "championship",
+    "2. Bundesliga": "bundesliga-2",
+    "LaLiga 2": "la-liga-2",
+    "Ligue 2": "ligue-2",
+    "Serie B": "serie-b"
+  },
+  "independence_statement": "These leagues were excluded from the completed Big-5 holdout evaluation; their 2025/26 pattern performance was preregistered before this run.",
+  "provenance": {
+    "mirror_commit": "c9b05a30eef50fe34abbf4134e6333fc5376d136",
+    "files": [
+      {
+        "season": "1920",
+        "league": "EFL Championship",
+        "status": "OK",
+        "rows": 552,
+        "normalized_rows": 552,
+        "sha256": "f31450c623c0b74b89692584a85924cc652d33ec89757acf4b2dda5e26261d57"
+      },
+      {
+        "season": "1920",
+        "league": "2. Bundesliga",
+        "status": "OK",
+        "rows": 306,
+        "normalized_rows": 306,
+        "sha256": "da603d509ba86c367a497e5fbd639e55a77b27876e5c42705b430e00a8ff9372"
+      },
+      {
+        "season": "1920",
+        "league": "LaLiga 2",
+        "status": "OK",
+        "rows": 462,
+        "normalized_rows": 462,
+        "sha256": "7ec2137c792b81257647b9a03c0664d5dd1a75cee029281ce654cd43bfb50af1"
+      },
+      {
+        "season": "1920",
+        "league": "Ligue 2",
+        "status": "OK",
+        "rows": 280,
+        "normalized_rows": 280,
+        "sha256": "4bd1d80273c3d488281c390cf82ac7fc9a315a6e9b67e970d6bd5003ac9d60c1"
+      },
+      {
+        "season": "1920",
+        "league": "Serie B",
+        "status": "OK",
+        "rows": 380,
+        "normalized_rows": 373,
+        "sha256": "6c953bdefef757bb702c80683d859aa8dc0a2926424f8052a5acd519294983a2"
+      },
+      {
+        "season": "2021",
+        "league": "EFL Championship",
+        "status": "OK",
+        "rows": 552,
+        "normalized_rows": 552,
+        "sha256": "cf93295e310c60e5b97ae7466d772f8ec6a908ad401e38fceb7e8617369d5073"
+      },
+      {
+        "season": "2021",
+        "league": "2. Bundesliga",
+        "status": "OK",
+        "rows": 306,
+        "normalized_rows": 305,
+        "sha256": "86d041bd91c19d693b10f1ff8d0577eab878e631e63766b6de5585e4ef222ea1"
+      },
+      {
+        "season": "2021",
+        "league": "LaLiga 2",
+        "status": "OK",
+        "rows": 462,
+        "normalized_rows": 462,
+        "sha256": "f700d763d539e61ec9c23638907354cd9cd6f9156a5846d4ff82ef3fc1d14427"
+      },
+      {
+        "season": "2021",
+        "league": "Ligue 2",
+        "status": "OK",
+        "rows": 380,
+        "normalized_rows": 380,
+        "sha256": "41de477b2939c204d24c7475365dcbddb6602321584a801916f3b09807994f00"
+      },
+      {
+        "season": "2021",
+        "league": "Serie B",
+        "status": "OK",
+        "rows": 380,
+        "normalized_rows": 378,
+        "sha256": "818657ec29ace24bdb83e86714d329cb330527f0ca8694086967b1c8e957aa20"
+      },
+      {
+        "season": "2122",
+        "league": "EFL Championship",
+        "status": "OK",
+        "rows": 552,
+        "normalized_rows": 552,
+        "sha256": "a181451be4801b9f838daf5f6aaf21e9f09d36042be9e6c15388e71001e772ea"
+      },
+      {
+        "season": "2122",
+        "league": "2. Bundesliga",
+        "status": "OK",
+        "rows": 306,
+        "normalized_rows": 306,
+        "sha256": "104c12866adbba0558ec4bfc727a85d3b04daba5ce01e093fa28bcf1335b5a56"
+      },
+      {
+        "season": "2122",
+        "league": "LaLiga 2",
+        "status": "OK",
+        "rows": 462,
+        "normalized_rows": 462,
+        "sha256": "6f586b7d80dee6785ca248597cf2962145fdd72113588b807159b03baa5df831"
+      },
+      {
+        "season": "2122",
+        "league": "Ligue 2",
+        "status": "OK",
+        "rows": 380,
+        "normalized_rows": 380,
+        "sha256": "bc8bdef7a2c73f97e78726bd7a550c851a02b9848f4825230bbec803ab77b41b"
+      },
+      {
+        "season": "2122",
+        "league": "Serie B",
+        "status": "OK",
+        "rows": 380,
+        "normalized_rows": 380,
+        "sha256": "ec660d62521407d28954db8a136d59a2fd54a036e082b0d82341df6bbb7189ac"
+      },
+      {
+        "season": "2223",
+        "league": "EFL Championship",
+        "status": "OK",
+        "rows": 552,
+        "normalized_rows": 552,
+        "sha256": "cd38ab0586ea8cb4d573c363ff70749117f116da5b2741e5b0ea37da05860b1b"
+      },
+      {
+        "season": "2223",
+        "league": "2. Bundesliga",
+        "status": "OK",
+        "rows": 306,
+        "normalized_rows": 306,
+        "sha256": "9384d3f661faddaeeb34ae990f34e5f79dcbe4b8b3325aa69fee8cc14bc36c01"
+      },
+      {
+        "season": "2223",
+        "league": "LaLiga 2",
+        "status": "OK",
+        "rows": 462,
+        "normalized_rows": 462,
+        "sha256": "1b233ea48be17ae413b05fd132f8a26ac7f1bc69a4bc9ee2a3470b9909b410a8"
+      },
+      {
+        "season": "2223",
+        "league": "Ligue 2",
+        "status": "OK",
+        "rows": 380,
+        "normalized_rows": 380,
+        "sha256": "14915d41e6e31375f4ea082eb1be888d209b91166e277a157acf15d5d1b29d19"
+      },
+      {
+        "season": "2223",
+        "league": "Serie B",
+        "status": "OK",
+        "rows": 380,
+        "normalized_rows": 380,
+        "sha256": "00a504d72d16705e8e22e0647138ff185119d1cf0ca12be20ee6e1220857ef70"
+      },
+      {
+        "season": "2324",
+        "league": "EFL Championship",
+        "status": "OK",
+        "rows": 552,
+        "normalized_rows": 552,
+        "sha256": "5737f6cc95c95092b28317f41d3123e2fb09345434efc1c84bbdf15830849ab3"
+      },
+      {
+        "season": "2324",
+        "league": "2. Bundesliga",
+        "status": "OK",
+        "rows": 306,
+        "normalized_rows": 306,
+        "sha256": "411b732f28d0d4101ee8d6da8d0cd61eff1081e83d80ceb844c9cb5c66ffc779"
+      },
+      {
+        "season": "2324",
+        "league": "LaLiga 2",
+        "status": "OK",
+        "rows": 462,
+        "normalized_rows": 461,
+        "sha256": "e09c2d18bd41c1f735aba730d31d0db778c0b7086973ae979a52dd814f1d345a"
+      },
+      {
+        "season": "2324",
+        "league": "Ligue 2",
+        "status": "OK",
+        "rows": 379,
+        "normalized_rows": 379,
+        "sha256": "1a8f4ac24e6c345b67b6837bc8ca3c853fe2d18c0aad933175286b6e219bb0a4"
+      },
+      {
+        "season": "2324",
+        "league": "Serie B",
+        "status": "OK",
+        "rows": 380,
+        "normalized_rows": 378,
+        "sha256": "b51d65f34c5a7949af3ec030f2fa587f8145ced9bffa1e64291a228f1bdad80b"
+      },
+      {
+        "season": "2425",
+        "league": "EFL Championship",
+        "status": "OK",
+        "rows": 552,
+        "normalized_rows": 552,
+        "sha256": "f34c340446c916374be66bdc2fb25b87ee7f2662712ca009653d03ac705535f9"
+      },
+      {
+        "season": "2425",
+        "league": "2. Bundesliga",
+        "status": "OK",
+        "rows": 306,
+        "normalized_rows": 306,
+        "sha256": "781b239e26992c92dcace32d59ce2aeb91dfa24fb308b088cb4d6bc404e56ea1"
+      },
+      {
+        "season": "2425",
+        "league": "LaLiga 2",
+        "status": "OK",
+        "rows": 462,
+        "normalized_rows": 462,
+        "sha256": "60a8a03e5a477a10bcea5e31379df089d1927b6e388e333e115274dba78b79a3"
+      },
+      {
+        "season": "2425",
+        "league": "Ligue 2",
+        "status": "OK",
+        "rows": 306,
+        "normalized_rows": 306,
+        "sha256": "0cb8c06cb611e63cd3f393c2a61e4e224efc8bac3d7f6f5532e498e0cb5a3f37"
+      },
+      {
+        "season": "2425",
+        "league": "Serie B",
+        "status": "OK",
+        "rows": 380,
+        "normalized_rows": 380,
+        "sha256": "ec5aa4ff25da520a1c03a4f6cf7bc87d318acd25b22270fa9e0080d95ac81b7d"
+      },
+      {
+        "season": "2526",
+        "league": "EFL Championship",
+        "status": "OK",
+        "rows": 552,
+        "normalized_rows": 552,
+        "sha256": "98954c319950f19158624b17a154ef1c56eb7b8d169ef317f28f06d11d0b9a74"
+      },
+      {
+        "season": "2526",
+        "league": "2. Bundesliga",
+        "status": "OK",
+        "rows": 306,
+        "normalized_rows": 306,
+        "sha256": "8bfb275286d7d620c20c7fdb164e4447e114be3de94b8372b7ac3773d71581ef"
+      },
+      {
+        "season": "2526",
+        "league": "LaLiga 2",
+        "status": "OK",
+        "rows": 462,
+        "normalized_rows": 460,
+        "sha256": "4986060e5c1d55626aef24c4bbeaaea2278b27a0b7696927405705aaa57405de"
+      },
+      {
+        "season": "2526",
+        "league": "Ligue 2",
+        "status": "OK",
+        "rows": 306,
+        "normalized_rows": 305,
+        "sha256": "dcedf4dd66f3e0ac8efb8ccd2e5489882068e5630c041702b15c1d0fe70c6017"
+      },
+      {
+        "season": "2526",
+        "league": "Serie B",
+        "status": "OK",
+        "rows": 380,
+        "normalized_rows": 380,
+        "sha256": "ed4bcece92bb8b09aa94768bc77d3529fa29339ec70fa7867a9fbc3ca0954731"
+      }
+    ]
+  },
+  "production_promotion_allowed_by_this_run": false
+}
