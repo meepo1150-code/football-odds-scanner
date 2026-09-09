@@ -72,8 +72,21 @@ jobs:
               [settled.jsonl]=data/normalized/oddspapi_settled_history.jsonl
               [join-report.json]=reports/oddspapi_result_join.json
               [settled-report.json]=reports/oddspapi_settled_history.json)
-            for src in "${!MAP[@]}"; do [ -f "/tmp/oddspapi-history/$src" ] && cp "/tmp/oddspapi-history/$src" "${MAP[$src]}"; done
-            git add -f -- reports/oddspapi_history_state.json data/normalized/oddspapi_history_ticks.jsonl data/normalized/oddspapi_market_catalog.json data/normalized/oddspapi_fixture_refs.jsonl data/normalized/oddspapi_finished_results.jsonl data/normalized/oddspapi_prematch_joined.jsonl data/normalized/oddspapi_settled_history.jsonl reports/oddspapi_result_join.json reports/oddspapi_settled_history.json 2>/dev/null || true
+            for src in "${!MAP[@]}"; do
+              [ -f "/tmp/oddspapi-history/$src" ] && cp "/tmp/oddspapi-history/$src" "${MAP[$src]}"
+            done
+            for path in \
+              reports/oddspapi_history_state.json \
+              data/normalized/oddspapi_history_ticks.jsonl \
+              data/normalized/oddspapi_market_catalog.json \
+              data/normalized/oddspapi_fixture_refs.jsonl \
+              data/normalized/oddspapi_finished_results.jsonl \
+              data/normalized/oddspapi_prematch_joined.jsonl \
+              data/normalized/oddspapi_settled_history.jsonl \
+              reports/oddspapi_result_join.json \
+              reports/oddspapi_settled_history.json; do
+              [ -f "$path" ] && git add -f -- "$path"
+            done
             git diff --cached --quiet && exit 0
             git commit -m 'Update OddsPapi historical research artifacts [skip ci]'
             if git push origin HEAD:main; then exit 0; fi
