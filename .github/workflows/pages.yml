@@ -32,7 +32,8 @@ jobs:
           set -euo pipefail
           mkdir -p site/reports/breadth
           cp apps/dashboard/index.html site/index.html
-          for f in today.json pattern_registry.json current_provider_health.json provider_capabilities.json five_dollar_health.json oddspapi_health.json five_dollar_archive_state.json five_dollar_research.json source_qualification.json; do
+          test -f apps/dashboard/research.html && cp apps/dashboard/research.html site/research.html || true
+          for f in today.json pattern_registry.json current_provider_health.json provider_capabilities.json five_dollar_health.json oddspapi_health.json five_dollar_archive_state.json five_dollar_research.json source_qualification.json prospective_2026_27_status.json football_data_multiseason_validation.json independent_league_validation.json third_universe_ou_validation.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
           test -f reports/breadth/summary.json && cp reports/breadth/summary.json site/reports/breadth/summary.json || true
@@ -40,10 +41,12 @@ jobs:
           from pathlib import Path
           p=Path('site/index.html')
           text=p.read_text(encoding='utf-8')
-          footer='<div style="max-width:1240px;margin:0 auto;padding:0 20px 28px;color:#91a1b8;font:12px system-ui">Football data by <a href="https://5dollarfootballapi.com" style="color:#8db8ff">5DollarFootballAPI</a>.</div>'
+          footer='<div style="max-width:1240px;margin:0 auto;padding:0 20px 28px;color:#91a1b8;font:12px system-ui">Football data by <a href="https://5dollarfootballapi.com" style="color:#8db8ff">5DollarFootballAPI</a>. · <a href="research.html" style="color:#8db8ff">Research status</a></div>'
           if 'Football data by <a href="https://5dollarfootballapi.com"' not in text:
               text=text.replace('</body>', footer+'</body>')
-              p.write_text(text,encoding='utf-8')
+          elif 'research.html' not in text:
+              text=text.replace('</body>', '<div style="max-width:1240px;margin:0 auto;padding:0 20px 28px;color:#91a1b8;font:12px system-ui"><a href="research.html" style="color:#8db8ff">Research status</a></div></body>')
+          p.write_text(text,encoding='utf-8')
           PY
       - uses: actions/configure-pages@v6
         with:
