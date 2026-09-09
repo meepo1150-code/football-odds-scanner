@@ -6,12 +6,14 @@ on:
     paths:
       - 'src/odds_scanner/oddspapi_history_archive.py'
       - 'src/odds_scanner/oddspapi_history_runner.py'
+      - 'src/odds_scanner/oddspapi_fixture_refs.py'
       - 'src/odds_scanner/oddspapi_result_cache.py'
       - 'src/odds_scanner/oddspapi_result_join.py'
       - 'src/odds_scanner/settled_history.py'
       - 'src/odds_scanner/asian_settlement.py'
       - 'tests/test_oddspapi_history_archive.py'
       - 'tests/test_oddspapi_history_runner.py'
+      - 'tests/test_oddspapi_fixture_refs.py'
       - 'tests/test_oddspapi_result_cache.py'
       - 'tests/test_oddspapi_result_join.py'
       - 'tests/test_settled_history.py'
@@ -47,6 +49,7 @@ jobs:
           for spec in \
             'data/normalized/oddspapi_history_ticks.jsonl history.jsonl' \
             'data/normalized/oddspapi_market_catalog.json catalog.json' \
+            'data/normalized/oddspapi_fixture_refs.jsonl refs.jsonl' \
             'data/normalized/oddspapi_finished_results.jsonl results.jsonl' \
             'data/normalized/oddspapi_prematch_joined.jsonl joined.jsonl' \
             'data/normalized/oddspapi_settled_history.jsonl settled.jsonl' \
@@ -63,18 +66,20 @@ jobs:
             declare -A MAP=(
               [history.jsonl]=data/normalized/oddspapi_history_ticks.jsonl
               [catalog.json]=data/normalized/oddspapi_market_catalog.json
+              [refs.jsonl]=data/normalized/oddspapi_fixture_refs.jsonl
               [results.jsonl]=data/normalized/oddspapi_finished_results.jsonl
               [joined.jsonl]=data/normalized/oddspapi_prematch_joined.jsonl
               [settled.jsonl]=data/normalized/oddspapi_settled_history.jsonl
               [join-report.json]=reports/oddspapi_result_join.json
               [settled-report.json]=reports/oddspapi_settled_history.json)
             for src in "${!MAP[@]}"; do [ -f "/tmp/oddspapi-history/$src" ] && cp "/tmp/oddspapi-history/$src" "${MAP[$src]}"; done
-            git add -f -- reports/oddspapi_history_state.json data/normalized/oddspapi_history_ticks.jsonl data/normalized/oddspapi_market_catalog.json data/normalized/oddspapi_finished_results.jsonl data/normalized/oddspapi_prematch_joined.jsonl data/normalized/oddspapi_settled_history.jsonl reports/oddspapi_result_join.json reports/oddspapi_settled_history.json 2>/dev/null || true
+            git add -f -- reports/oddspapi_history_state.json data/normalized/oddspapi_history_ticks.jsonl data/normalized/oddspapi_market_catalog.json data/normalized/oddspapi_fixture_refs.jsonl data/normalized/oddspapi_finished_results.jsonl data/normalized/oddspapi_prematch_joined.jsonl data/normalized/oddspapi_settled_history.jsonl reports/oddspapi_result_join.json reports/oddspapi_settled_history.json 2>/dev/null || true
             git diff --cached --quiet && exit 0
             git commit -m 'Update OddsPapi historical research artifacts [skip ci]'
             if git push origin HEAD:main; then exit 0; fi
           done
           exit 1
 
-# Result harvesting adds no provider request. Settlement outputs are exploratory only;
-# promotion stays disabled until a preregistered multi-season chronological validation passes.
+# OddsPapi discovery stores exact external event IDs without extra provider calls.
+# Settlement outputs are exploratory only; promotion stays disabled until a
+# preregistered multi-season chronological validation passes.
