@@ -37,7 +37,7 @@ jobs:
       - name: Build prospective collection status
         if: github.event_name != 'pull_request'
         run: python -m odds_scanner.prospective_2026_27
-      - name: Assert fail-closed production policy
+      - name: Assert coherent fail-closed research snapshot
         if: github.event_name != 'pull_request'
         run: |
           python - <<'PY'
@@ -45,10 +45,16 @@ jobs:
           p=json.load(open('reports/prospective_2026_27_preregistration.json', encoding='utf-8'))
           s=json.load(open('reports/prospective_2026_27_status.json', encoding='utf-8'))
           r=json.load(open('reports/pattern_registry.json', encoding='utf-8'))
+          j=json.load(open('reports/oddspapi_result_join.json', encoding='utf-8'))
+          h=json.load(open('reports/oddspapi_settled_history.json', encoding='utf-8'))
           assert p['locked_before_2026_27_outcomes_mature'] is True
           assert s['production_promotion_allowed'] is False
           assert s['paper_shadow_status']=='PAPER_RESEARCH_ONLY_ALLOWED'
-          print({'prospective_locked': True, 'production_patterns': r.get('pattern_count'), 'blockers': s['blockers']})
+          assert j['joined_fixtures']==h['settled_fixtures'], (j['joined_fixtures'], h['settled_fixtures'])
+          assert h['joined_rows']==h['settled_fixtures'], (h['joined_rows'], h['settled_fixtures'])
+          assert j['prematch_semantics']=='STRICT_PREMATCH_CREATED_AT_LT_KICKOFF'
+          assert h['source_semantics']=='STRICT_PREMATCH_CREATED_AT_LT_KICKOFF'
+          print({'prospective_locked': True, 'production_patterns': r.get('pattern_count'), 'joined_fixtures': j['joined_fixtures'], 'settled_fixtures': h['settled_fixtures'], 'blockers': s['blockers']})
           PY
       - name: Persist prospective status safely
         if: github.event_name != 'pull_request'
