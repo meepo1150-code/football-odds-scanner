@@ -1,0 +1,66 @@
+name: Exact Result Backfill
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/oddspapi_fixture_refs.py'
+      - 'src/odds_scanner/sofascore_result_provider.py'
+      - 'src/odds_scanner/oddspapi_result_cache.py'
+      - 'tests/test_oddspapi_fixture_refs.py'
+      - 'tests/test_sofascore_result_provider.py'
+      - '.github/workflows/sofascore-result-backfill.yml'
+  schedule:
+    - cron: '40 6 * * *'
+permissions: {contents: write}
+concurrency: {group: exact-result-backfill, cancel-in-progress: false}
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: main}
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.11'}
+      - run: python -m pip install -e '.[dev]'
+      - run: pytest -q
+      - name: Fetch up to 10 exact-ID finished results
+        run: python -c "from odds_scanner.sofascore_result_provider import backfill_results; print(backfill_results(max_results=10))"
+      - name: Rebuild exact join and settlement research rows
+        run: |
+          python -c "from odds_scanner.oddspapi_result_join import write_join; print(write_join())"
+          python -c "from odds_scanner.settled_history import write_settled; print(write_settled())"
+      - name: Commit result research artifacts
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/result-backfill
+          for spec in \
+            'data/normalized/oddspapi_finished_results.jsonl results.jsonl' \
+            'data/normalized/oddspapi_prematch_joined.jsonl joined.jsonl' \
+            'data/normalized/oddspapi_settled_history.jsonl settled.jsonl' \
+            'reports/oddspapi_result_join.json join-report.json' \
+            'reports/oddspapi_settled_history.json settled-report.json'; do
+            set -- $spec; [ -f "$1" ] && cp "$1" "/tmp/result-backfill/$2"
+          done
+          git config user.name 'odds-scanner-actions'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main; git reset --hard origin/main
+            mkdir -p reports data/normalized
+            declare -A MAP=(
+              [results.jsonl]=data/normalized/oddspapi_finished_results.jsonl
+              [joined.jsonl]=data/normalized/oddspapi_prematch_joined.jsonl
+              [settled.jsonl]=data/normalized/oddspapi_settled_history.jsonl
+              [join-report.json]=reports/oddspapi_result_join.json
+              [settled-report.json]=reports/oddspapi_settled_history.json)
+            for src in "${!MAP[@]}"; do [ -f "/tmp/result-backfill/$src" ] && cp "/tmp/result-backfill/$src" "${MAP[$src]}"; done
+            git add -f -- data/normalized/oddspapi_finished_results.jsonl data/normalized/oddspapi_prematch_joined.jsonl data/normalized/oddspapi_settled_history.jsonl reports/oddspapi_result_join.json reports/oddspapi_settled_history.json 2>/dev/null || true
+            git diff --cached --quiet && exit 0
+            git commit -m 'Update exact-ID result research artifacts [skip ci]'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
+
+# Uses OddsPapi-provided exact SofaScore event IDs; no fuzzy team-name matching.
+# Research-only. Promotion remains disabled.
