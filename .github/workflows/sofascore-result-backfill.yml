@@ -1,17 +1,6 @@
 name: Exact Result Backfill
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'src/odds_scanner/oddspapi_fixture_refs.py'
-      - 'src/odds_scanner/sofascore_result_provider.py'
-      - 'src/odds_scanner/oddspapi_result_cache.py'
-      - 'tests/test_oddspapi_fixture_refs.py'
-      - 'tests/test_sofascore_result_provider.py'
-      - '.github/workflows/sofascore-result-backfill.yml'
-  schedule:
-    - cron: '40 6 * * *'
 permissions: {contents: write}
 concurrency: {group: exact-result-backfill, cancel-in-progress: false}
 jobs:
@@ -55,12 +44,21 @@ jobs:
               [join-report.json]=reports/oddspapi_result_join.json
               [settled-report.json]=reports/oddspapi_settled_history.json)
             for src in "${!MAP[@]}"; do [ -f "/tmp/result-backfill/$src" ] && cp "/tmp/result-backfill/$src" "${MAP[$src]}"; done
-            git add -f -- data/normalized/oddspapi_finished_results.jsonl data/normalized/oddspapi_prematch_joined.jsonl data/normalized/oddspapi_settled_history.jsonl reports/oddspapi_result_join.json reports/oddspapi_settled_history.json 2>/dev/null || true
+            for path in \
+              data/normalized/oddspapi_finished_results.jsonl \
+              data/normalized/oddspapi_prematch_joined.jsonl \
+              data/normalized/oddspapi_settled_history.jsonl \
+              reports/oddspapi_result_join.json \
+              reports/oddspapi_settled_history.json; do
+              [ -f "$path" ] && git add -f -- "$path"
+            done
             git diff --cached --quiet && exit 0
             git commit -m 'Update exact-ID result research artifacts [skip ci]'
             if git push origin HEAD:main; then exit 0; fi
           done
           exit 1
 
-# Uses OddsPapi-provided exact SofaScore event IDs; no fuzzy team-name matching.
+# Manual research probe only. GitHub-hosted runners currently receive HTTP 403
+# from the isolated SofaScore endpoint, so automatic schedules/push triggers are
+# intentionally disabled. Exact-ID only; no fuzzy team-name matching.
 # Research-only. Promotion remains disabled.
