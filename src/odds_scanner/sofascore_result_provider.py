@@ -8,7 +8,7 @@ from urllib.request import Request, urlopen
 from .oddspapi_fixture_refs import REFS_PATH
 from .oddspapi_result_cache import RESULTS_PATH, merge_normalized_results
 
-BASE_URL = "https://www.sofascore.com/api/v1/event/{event_id}"
+BASE_URL = "https://api.sofascore.com/api/v1/event/{event_id}"
 DEFAULT_RESULTS_PER_RUN = 20
 REQUEST_SPACING_SECONDS = 1.2
 
@@ -64,7 +64,10 @@ def fetch_sofascore_result(fixture_ref: dict, *, opener=urlopen) -> dict | None:
         return None
     req = Request(
         BASE_URL.format(event_id=sofascore_id),
-        headers={"User-Agent": "football-odds-scanner/1.0"},
+        headers={
+            "User-Agent": "Mozilla/5.0 (compatible; football-odds-scanner/1.0)",
+            "Accept": "application/json",
+        },
     )
     with opener(req, timeout=15) as response:
         payload = json.loads(response.read().decode("utf-8"))
