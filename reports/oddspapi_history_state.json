@@ -1,95 +1,14 @@
 {
   "schema_version": "1.2",
   "status": "OK",
-  "generated_at": "2026-09-09T14:40:36.131283+00:00",
+  "generated_at": "2026-09-09T14:41:59.534870+00:00",
   "coverage_start": "2026-01-01T00:00:00+00:00",
   "last_discovery_at": "2026-09-09T14:22:19.776513+00:00",
   "discovery_cursor": "2026-02-24T00:00:00+00:00",
   "backfill_complete": false,
   "last_discovery_mode": null,
   "last_discovery_window": null,
-  "fixture_queue": [
-    {
-      "fixtureId": "id1000003561514018",
-      "tournamentId": 35,
-      "tournamentName": "Bundesliga",
-      "tournamentSlug": "bundesliga",
-      "startTime": "2026-02-22T18:30:00.000Z",
-      "participant1Name": "1. FC Heidenheim",
-      "participant2Name": "VfB Stuttgart",
-      "archive_country": "Germany"
-    },
-    {
-      "fixtureId": "id1000002361061461",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-02-22T19:45:00.000Z",
-      "participant1Name": "AS Roma",
-      "participant2Name": "US Cremonese",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000003461526382",
-      "tournamentId": 34,
-      "tournamentName": "Ligue 1",
-      "tournamentSlug": "ligue-1",
-      "startTime": "2026-02-22T19:45:00.000Z",
-      "participant1Name": "Strasbourg Alsace",
-      "participant2Name": "Olympique Lyon",
-      "archive_country": "France"
-    },
-    {
-      "fixtureId": "id1000000861624434",
-      "tournamentId": 8,
-      "tournamentName": "LaLiga",
-      "tournamentSlug": "laliga",
-      "startTime": "2026-02-22T20:00:00.000Z",
-      "participant1Name": "Villarreal CF",
-      "participant2Name": "Valencia CF",
-      "archive_country": "Spain"
-    },
-    {
-      "fixtureId": "id1000002361061451",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-02-23T17:30:00.000Z",
-      "participant1Name": "ACF Fiorentina",
-      "participant2Name": "Pisa SC",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000002361061447",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-02-23T19:45:00.000Z",
-      "participant1Name": "Bologna FC",
-      "participant2Name": "Udinese Calcio",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000000861624418",
-      "tournamentId": 8,
-      "tournamentName": "LaLiga",
-      "tournamentSlug": "laliga",
-      "startTime": "2026-02-23T20:00:00.000Z",
-      "participant1Name": "Deportivo Alaves",
-      "participant2Name": "Girona FC",
-      "archive_country": "Spain"
-    },
-    {
-      "fixtureId": "id1000001766905890",
-      "tournamentId": 17,
-      "tournamentName": "Premier League",
-      "tournamentSlug": "premier-league",
-      "startTime": "2026-02-23T20:00:00.000Z",
-      "participant1Name": "Everton FC",
-      "participant2Name": "Manchester United",
-      "archive_country": "England"
-    }
-  ],
+  "fixture_queue": [],
   "skipped_fixture_ids": [
     "id1000000861624278",
     "id1000000861624280",
@@ -109,6 +28,7 @@
     "id1000000861624312",
     "id1000000861624314",
     "id1000000861624316",
+    "id1000000861624418",
     "id1000001761300879",
     "id1000001761300885",
     "id1000001761300887",
@@ -181,16 +101,17 @@
     "id1000003561513890",
     "id1000003561513894"
   ],
-  "queued_remaining": 8,
-  "processed_this_run": 10,
-  "rows_added_this_run": 10,
-  "archive_rows": 294,
+  "queued_remaining": 0,
+  "processed_this_run": 8,
+  "rows_added_this_run": 7,
+  "archive_rows": 301,
   "history_storage": "LEGACY_PLUS_DAILY_SHARDS",
   "touched_shards": [
-    "data/normalized/oddspapi_history_ticks/2026-02-22.jsonl"
+    "data/normalized/oddspapi_history_ticks/2026-02-22.jsonl",
+    "data/normalized/oddspapi_history_ticks/2026-02-23.jsonl"
   ],
   "billable_requests_this_run": 0,
-  "free_history_requests_this_run": 10,
+  "free_history_requests_this_run": 8,
   "history_request_spacing_seconds": 5.2,
   "result_join_status": "NOT_JOINED",
   "promotion_eligible": false,
