@@ -1,14 +1,398 @@
 {
   "schema_version": "1.1",
   "status": "OK",
-  "generated_at": "2026-09-09T07:11:25.296648+00:00",
+  "generated_at": "2026-09-09T07:12:35.749588+00:00",
   "coverage_start": "2026-01-01T00:00:00+00:00",
-  "last_discovery_at": "2026-09-09T05:43:33.189514+00:00",
-  "discovery_cursor": "2026-01-28T00:00:00+00:00",
+  "last_discovery_at": "2026-09-09T07:12:35.749588+00:00",
+  "discovery_cursor": "2026-02-06T00:00:00+00:00",
   "backfill_complete": false,
-  "last_discovery_mode": null,
-  "last_discovery_window": null,
-  "fixture_queue": [],
+  "last_discovery_mode": "BACKFILL",
+  "last_discovery_window": {
+    "from": "2026-01-28T00:00:00Z",
+    "to": "2026-02-06T00:00:00Z"
+  },
+  "fixture_queue": [
+    {
+      "fixtureId": "id1000003561513962",
+      "tournamentId": 35,
+      "tournamentName": "Bundesliga",
+      "tournamentSlug": "bundesliga",
+      "startTime": "2026-01-31T14:30:00.000Z",
+      "participant1Name": "TSG Hoffenheim",
+      "participant2Name": "Union Berlin",
+      "archive_country": "Germany"
+    },
+    {
+      "fixtureId": "id1000001761300979",
+      "tournamentId": 17,
+      "tournamentName": "Premier League",
+      "tournamentSlug": "premier-league",
+      "startTime": "2026-01-31T15:00:00.000Z",
+      "participant1Name": "Brighton & Hove Albion",
+      "participant2Name": "Everton FC",
+      "archive_country": "England"
+    },
+    {
+      "fixtureId": "id1000001761300983",
+      "tournamentId": 17,
+      "tournamentName": "Premier League",
+      "tournamentSlug": "premier-league",
+      "startTime": "2026-01-31T15:00:00.000Z",
+      "participant1Name": "Leeds United",
+      "participant2Name": "Arsenal FC",
+      "archive_country": "England"
+    },
+    {
+      "fixtureId": "id1000001761300995",
+      "tournamentId": 17,
+      "tournamentName": "Premier League",
+      "tournamentSlug": "premier-league",
+      "startTime": "2026-01-31T15:00:00.000Z",
+      "participant1Name": "Wolverhampton Wanderers",
+      "participant2Name": "AFC Bournemouth",
+      "archive_country": "England"
+    },
+    {
+      "fixtureId": "id1000000861624364",
+      "tournamentId": 8,
+      "tournamentName": "LaLiga",
+      "tournamentSlug": "laliga",
+      "startTime": "2026-01-31T15:15:00.000Z",
+      "participant1Name": "CA Osasuna",
+      "participant2Name": "Villarreal CF",
+      "archive_country": "Spain"
+    },
+    {
+      "fixtureId": "id1000003461526328",
+      "tournamentId": 34,
+      "tournamentName": "Ligue 1",
+      "tournamentSlug": "ligue-1",
+      "startTime": "2026-01-31T16:00:00.000Z",
+      "participant1Name": "Paris FC",
+      "participant2Name": "Olympique Marseille",
+      "archive_country": "France"
+    },
+    {
+      "fixtureId": "id1000002361061395",
+      "tournamentId": 23,
+      "tournamentName": "Serie A",
+      "tournamentSlug": "serie-a",
+      "startTime": "2026-01-31T17:00:00.000Z",
+      "participant1Name": "SSC Napoli",
+      "participant2Name": "ACF Fiorentina",
+      "archive_country": "Italy"
+    },
+    {
+      "fixtureId": "id1000000861624368",
+      "tournamentId": 8,
+      "tournamentName": "LaLiga",
+      "tournamentSlug": "laliga",
+      "startTime": "2026-01-31T17:30:00.000Z",
+      "participant1Name": "Levante UD",
+      "participant2Name": "Atletico Madrid",
+      "archive_country": "Spain"
+    },
+    {
+      "fixtureId": "id1000001761300981",
+      "tournamentId": 17,
+      "tournamentName": "Premier League",
+      "tournamentSlug": "premier-league",
+      "startTime": "2026-01-31T17:30:00.000Z",
+      "participant1Name": "Chelsea FC",
+      "participant2Name": "West Ham United",
+      "archive_country": "England"
+    },
+    {
+      "fixtureId": "id1000003561513966",
+      "tournamentId": 35,
+      "tournamentName": "Bundesliga",
+      "tournamentSlug": "bundesliga",
+      "startTime": "2026-01-31T17:30:00.000Z",
+      "participant1Name": "Hamburger SV",
+      "participant2Name": "Bayern Munich",
+      "archive_country": "Germany"
+    },
+    {
+      "fixtureId": "id1000003461526336",
+      "tournamentId": 34,
+      "tournamentName": "Ligue 1",
+      "tournamentSlug": "ligue-1",
+      "startTime": "2026-01-31T18:00:00.000Z",
+      "participant1Name": "FC Lorient",
+      "participant2Name": "FC Nantes",
+      "archive_country": "France"
+    },
+    {
+      "fixtureId": "id1000002361061387",
+      "tournamentId": 23,
+      "tournamentName": "Serie A",
+      "tournamentSlug": "serie-a",
+      "startTime": "2026-01-31T19:45:00.000Z",
+      "participant1Name": "Cagliari Calcio",
+      "participant2Name": "Hellas Verona",
+      "archive_country": "Italy"
+    },
+    {
+      "fixtureId": "id1000000861624370",
+      "tournamentId": 8,
+      "tournamentName": "LaLiga",
+      "tournamentSlug": "laliga",
+      "startTime": "2026-01-31T20:00:00.000Z",
+      "participant1Name": "Elche CF",
+      "participant2Name": "FC Barcelona",
+      "archive_country": "Spain"
+    },
+    {
+      "fixtureId": "id1000001761300985",
+      "tournamentId": 17,
+      "tournamentName": "Premier League",
+      "tournamentSlug": "premier-league",
+      "startTime": "2026-01-31T20:00:00.000Z",
+      "participant1Name": "Liverpool FC",
+      "participant2Name": "Newcastle United",
+      "archive_country": "England"
+    },
+    {
+      "fixtureId": "id1000003461526338",
+      "tournamentId": 34,
+      "tournamentName": "Ligue 1",
+      "tournamentSlug": "ligue-1",
+      "startTime": "2026-01-31T20:05:00.000Z",
+      "participant1Name": "AS Monaco",
+      "participant2Name": "Stade Rennais FC",
+      "archive_country": "France"
+    },
+    {
+      "fixtureId": "id1000002361061401",
+      "tournamentId": 23,
+      "tournamentName": "Serie A",
+      "tournamentSlug": "serie-a",
+      "startTime": "2026-02-01T11:30:00.000Z",
+      "participant1Name": "Torino FC",
+      "participant2Name": "US Lecce",
+      "archive_country": "Italy"
+    },
+    {
+      "fixtureId": "id1000000861624376",
+      "tournamentId": 8,
+      "tournamentName": "LaLiga",
+      "tournamentSlug": "laliga",
+      "startTime": "2026-02-01T13:00:00.000Z",
+      "participant1Name": "Real Madrid",
+      "participant2Name": "Rayo Vallecano",
+      "archive_country": "Spain"
+    },
+    {
+      "fixtureId": "id1000001761300977",
+      "tournamentId": 17,
+      "tournamentName": "Premier League",
+      "tournamentSlug": "premier-league",
+      "startTime": "2026-02-01T14:00:00.000Z",
+      "participant1Name": "Aston Villa",
+      "participant2Name": "Brentford FC",
+      "archive_country": "England"
+    },
+    {
+      "fixtureId": "id1000001761300987",
+      "tournamentId": 17,
+      "tournamentName": "Premier League",
+      "tournamentSlug": "premier-league",
+      "startTime": "2026-02-01T14:00:00.000Z",
+      "participant1Name": "Manchester United",
+      "participant2Name": "Fulham FC",
+      "archive_country": "England"
+    },
+    {
+      "fixtureId": "id1000001761300989",
+      "tournamentId": 17,
+      "tournamentName": "Premier League",
+      "tournamentSlug": "premier-league",
+      "startTime": "2026-02-01T14:00:00.000Z",
+      "participant1Name": "Nottingham Forest",
+      "participant2Name": "Crystal Palace",
+      "archive_country": "England"
+    },
+    {
+      "fixtureId": "id1000002361061389",
+      "tournamentId": 23,
+      "tournamentName": "Serie A",
+      "tournamentSlug": "serie-a",
+      "startTime": "2026-02-01T14:00:00.000Z",
+      "participant1Name": "Como 1907",
+      "participant2Name": "Atalanta BC",
+      "archive_country": "Italy"
+    },
+    {
+      "fixtureId": "id1000003461526330",
+      "tournamentId": 34,
+      "tournamentName": "Ligue 1",
+      "tournamentSlug": "ligue-1",
+      "startTime": "2026-02-01T14:00:00.000Z",
+      "participant1Name": "Olympique Lyon",
+      "participant2Name": "Lille OSC",
+      "archive_country": "France"
+    },
+    {
+      "fixtureId": "id1000003561513958",
+      "tournamentId": 35,
+      "tournamentName": "Bundesliga",
+      "tournamentSlug": "bundesliga",
+      "startTime": "2026-02-01T14:30:00.000Z",
+      "participant1Name": "VfB Stuttgart",
+      "participant2Name": "SC Freiburg",
+      "archive_country": "Germany"
+    },
+    {
+      "fixtureId": "id1000000861624360",
+      "tournamentId": 8,
+      "tournamentName": "LaLiga",
+      "tournamentSlug": "laliga",
+      "startTime": "2026-02-01T15:15:00.000Z",
+      "participant1Name": "Real Betis Seville",
+      "participant2Name": "Valencia CF",
+      "archive_country": "Spain"
+    },
+    {
+      "fixtureId": "id1000003461526334",
+      "tournamentId": 34,
+      "tournamentName": "Ligue 1",
+      "tournamentSlug": "ligue-1",
+      "startTime": "2026-02-01T16:15:00.000Z",
+      "participant1Name": "Toulouse FC",
+      "participant2Name": "AJ Auxerre",
+      "archive_country": "France"
+    },
+    {
+      "fixtureId": "id1000003461526342",
+      "tournamentId": 34,
+      "tournamentName": "Ligue 1",
+      "tournamentSlug": "ligue-1",
+      "startTime": "2026-02-01T16:15:00.000Z",
+      "participant1Name": "OGC Nice",
+      "participant2Name": "Stade Brest 29",
+      "archive_country": "France"
+    },
+    {
+      "fixtureId": "id1000003461526344",
+      "tournamentId": 34,
+      "tournamentName": "Ligue 1",
+      "tournamentSlug": "ligue-1",
+      "startTime": "2026-02-01T16:15:00.000Z",
+      "participant1Name": "Angers SCO",
+      "participant2Name": "FC Metz",
+      "archive_country": "France"
+    },
+    {
+      "fixtureId": "id1000001761300993",
+      "tournamentId": 17,
+      "tournamentName": "Premier League",
+      "tournamentSlug": "premier-league",
+      "startTime": "2026-02-01T16:30:00.000Z",
+      "participant1Name": "Tottenham Hotspur",
+      "participant2Name": "Manchester City",
+      "archive_country": "England"
+    },
+    {
+      "fixtureId": "id1000003561513952",
+      "tournamentId": 35,
+      "tournamentName": "Bundesliga",
+      "tournamentSlug": "bundesliga",
+      "startTime": "2026-02-01T16:30:00.000Z",
+      "participant1Name": "Borussia Dortmund",
+      "participant2Name": "1. FC Heidenheim",
+      "archive_country": "Germany"
+    },
+    {
+      "fixtureId": "id1000002361061391",
+      "tournamentId": 23,
+      "tournamentName": "Serie A",
+      "tournamentSlug": "serie-a",
+      "startTime": "2026-02-01T17:00:00.000Z",
+      "participant1Name": "US Cremonese",
+      "participant2Name": "Inter Milano",
+      "archive_country": "Italy"
+    },
+    {
+      "fixtureId": "id1000000861624372",
+      "tournamentId": 8,
+      "tournamentName": "LaLiga",
+      "tournamentSlug": "laliga",
+      "startTime": "2026-02-01T17:30:00.000Z",
+      "participant1Name": "Getafe CF",
+      "participant2Name": "RC Celta de Vigo",
+      "archive_country": "Spain"
+    },
+    {
+      "fixtureId": "id1000002361061397",
+      "tournamentId": 23,
+      "tournamentName": "Serie A",
+      "tournamentSlug": "serie-a",
+      "startTime": "2026-02-01T19:45:00.000Z",
+      "participant1Name": "Parma Calcio",
+      "participant2Name": "Juventus Turin",
+      "archive_country": "Italy"
+    },
+    {
+      "fixtureId": "id1000003461526332",
+      "tournamentId": 34,
+      "tournamentName": "Ligue 1",
+      "tournamentSlug": "ligue-1",
+      "startTime": "2026-02-01T19:45:00.000Z",
+      "participant1Name": "Strasbourg Alsace",
+      "participant2Name": "Paris Saint-Germain",
+      "archive_country": "France"
+    },
+    {
+      "fixtureId": "id1000000861624358",
+      "tournamentId": 8,
+      "tournamentName": "LaLiga",
+      "tournamentSlug": "laliga",
+      "startTime": "2026-02-01T20:00:00.000Z",
+      "participant1Name": "Athletic Bilbao",
+      "participant2Name": "Real Sociedad San Sebastian",
+      "archive_country": "Spain"
+    },
+    {
+      "fixtureId": "id1000002361061403",
+      "tournamentId": 23,
+      "tournamentName": "Serie A",
+      "tournamentSlug": "serie-a",
+      "startTime": "2026-02-02T19:45:00.000Z",
+      "participant1Name": "Udinese Calcio",
+      "participant2Name": "AS Roma",
+      "archive_country": "Italy"
+    },
+    {
+      "fixtureId": "id1000000861624362",
+      "tournamentId": 8,
+      "tournamentName": "LaLiga",
+      "tournamentSlug": "laliga",
+      "startTime": "2026-02-02T20:00:00.000Z",
+      "participant1Name": "RCD Mallorca",
+      "participant2Name": "Sevilla FC",
+      "archive_country": "Spain"
+    },
+    {
+      "fixtureId": "id1000001765905652",
+      "tournamentId": 17,
+      "tournamentName": "Premier League",
+      "tournamentSlug": "premier-league",
+      "startTime": "2026-02-02T20:00:00.000Z",
+      "participant1Name": "Sunderland AFC",
+      "participant2Name": "Burnley FC",
+      "archive_country": "England"
+    },
+    {
+      "fixtureId": "id1000002367806626",
+      "tournamentId": 23,
+      "tournamentName": "Serie A",
+      "tournamentSlug": "serie-a",
+      "startTime": "2026-02-03T19:45:00.000Z",
+      "participant1Name": "Bologna FC",
+      "participant2Name": "AC Milan",
+      "archive_country": "Italy"
+    }
+  ],
   "skipped_fixture_ids": [
     "id1000000861624278",
     "id1000000861624280",
@@ -99,12 +483,12 @@
     "id1000003561513890",
     "id1000003561513894"
   ],
-  "queued_remaining": 0,
-  "processed_this_run": 4,
-  "rows_added_this_run": 4,
-  "archive_rows": 110,
-  "billable_requests_this_run": 0,
-  "free_history_requests_this_run": 4,
+  "queued_remaining": 38,
+  "processed_this_run": 10,
+  "rows_added_this_run": 10,
+  "archive_rows": 120,
+  "billable_requests_this_run": 1,
+  "free_history_requests_this_run": 10,
   "history_request_spacing_seconds": 5.2,
   "result_join_status": "NOT_JOINED",
   "promotion_eligible": false,
