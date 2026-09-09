@@ -1,0 +1,69 @@
+name: Prospective 2026-27 Research Status
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/prospective_2026_27.py'
+      - 'tests/test_prospective_2026_27.py'
+      - 'reports/prospective_2026_27_preregistration.json'
+      - '.github/workflows/prospective-2026-27.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/prospective_2026_27.py'
+      - 'reports/prospective_2026_27_preregistration.json'
+      - 'reports/oddspapi_history_state.json'
+      - 'reports/oddspapi_result_join.json'
+      - 'reports/oddspapi_settled_history.json'
+      - '.github/workflows/prospective-2026-27.yml'
+  workflow_dispatch:
+concurrency:
+  group: prospective-2026-27-status
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || 'main' }}
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.11'}
+      - run: python -m pip install -e '.[dev]'
+      - run: pytest -q
+      - name: Build prospective collection status
+        if: github.event_name != 'pull_request'
+        run: python -m odds_scanner.prospective_2026_27
+      - name: Assert fail-closed production policy
+        if: github.event_name != 'pull_request'
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('reports/prospective_2026_27_preregistration.json', encoding='utf-8'))
+          s=json.load(open('reports/prospective_2026_27_status.json', encoding='utf-8'))
+          r=json.load(open('reports/pattern_registry.json', encoding='utf-8'))
+          assert p['locked_before_2026_27_outcomes_mature'] is True
+          assert s['production_promotion_allowed'] is False
+          assert s['paper_shadow_status']=='PAPER_RESEARCH_ONLY_ALLOWED'
+          print({'prospective_locked': True, 'production_patterns': r.get('pattern_count'), 'blockers': s['blockers']})
+          PY
+      - name: Persist prospective status safely
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+          cp reports/prospective_2026_27_status.json /tmp/prospective_2026_27_status.json
+          git config user.name 'odds-scanner-actions'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/prospective_2026_27_status.json reports/prospective_2026_27_status.json
+            git add -f reports/prospective_2026_27_status.json
+            git diff --cached --quiet && exit 0
+            git commit -m 'Update prospective 2026-27 status [skip ci]'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
