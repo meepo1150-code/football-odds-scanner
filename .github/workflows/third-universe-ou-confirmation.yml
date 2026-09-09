@@ -1,0 +1,92 @@
+name: Third Universe OU Confirmation
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/third_universe_ou_confirmation.py'
+      - 'tests/test_third_universe_ou_confirmation.py'
+      - 'reports/third_universe_ou_preregistration.json'
+      - '.github/workflows/third-universe-ou-confirmation.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/third_universe_ou_confirmation.py'
+      - 'tests/test_third_universe_ou_confirmation.py'
+      - 'reports/third_universe_ou_preregistration.json'
+      - '.github/workflows/third-universe-ou-confirmation.yml'
+  workflow_dispatch:
+concurrency:
+  group: third-universe-ou-confirmation
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  confirm-ou:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout scanner
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || 'main' }}
+      - name: Checkout frozen mirror
+        if: github.event_name != 'pull_request'
+        uses: actions/checkout@v6
+        with:
+          repository: huhao930422-debug/football-odds-mirror
+          ref: c9b05a30eef50fe34abbf4134e6333fc5376d136
+          path: external/football-odds-mirror
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.11'}
+      - run: python -m pip install -e '.[dev]'
+      - run: pytest -q
+      - name: Verify frozen O/U preregistration
+        if: github.event_name != 'pull_request'
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('reports/third_universe_ou_preregistration.json', encoding='utf-8'))
+          assert p['locked_before_ou_holdout_evaluation'] is True
+          assert p['source']['mirror_commit']=='c9b05a30eef50fe34abbf4134e6333fc5376d136'
+          assert p['split']['holdout']==['2526']
+          assert len(p['league_universe'])==5
+          assert p['frozen_rules']['settlement']=='actual Asian total settlement at exact 2.5 line'
+          print('THIRD_UNIVERSE_OU_PREREGISTRATION_LOCKED')
+          PY
+          cp reports/pattern_registry.json /tmp/production_pattern_registry.json
+      - name: Run frozen O/U holdout confirmation
+        if: github.event_name != 'pull_request'
+        run: python -m odds_scanner.third_universe_ou_confirmation --mirror-root external/football-odds-mirror
+      - name: Prove production registry unchanged
+        if: github.event_name != 'pull_request'
+        run: |
+          cmp -s reports/pattern_registry.json /tmp/production_pattern_registry.json
+          python - <<'PY'
+          import json
+          c=json.load(open('reports/third_universe_ou_pattern_registry_candidate.json', encoding='utf-8'))
+          p=json.load(open('reports/pattern_registry.json', encoding='utf-8'))
+          print({'candidate_patterns': c.get('pattern_count'), 'production_patterns': p.get('pattern_count')})
+          PY
+      - name: Persist O/U evidence safely
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+          artifacts=(
+            reports/third_universe_ou_preregistration.json
+            reports/third_universe_ou_validation.json
+            reports/third_universe_ou_pattern_registry_candidate.json
+          )
+          tar -cf /tmp/ou-evidence.tar "${artifacts[@]}"
+          git config user.name 'odds-scanner-actions'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            tar -xf /tmp/ou-evidence.tar
+            git add -f "${artifacts[@]}"
+            git diff --cached --quiet && exit 0
+            git commit -m 'Persist third-universe O/U confirmation [skip ci]'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
