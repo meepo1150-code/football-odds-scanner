@@ -31,7 +31,8 @@ def test_normalize_home_favorite_uses_selected_side_line_and_actual_quarter_sett
     assert out is not None
     assert out["favorite_side"] == "H"
     assert out["ah_line"] == -0.75
-    assert out["settlement"] == Settlement.FULL_WIN.value
+    # Win by exactly one at -0.75 = half win: -0.5 leg wins, -1.0 leg pushes.
+    assert out["settlement"] == Settlement.HALF_WIN.value
     assert out["source_semantics"] == "FOOTBALL_DATA_FIRST_COLLECTED_AFTER_MARKET_OPENING_NOT_TRUE_OPEN"
     assert out["promotion_eligible"] is False
 
@@ -49,7 +50,7 @@ def test_normalize_away_favorite_flips_home_perspective_ah_line():
     assert out["favorite_side"] == "A"
     assert out["ah_line"] == -0.75
     assert out["closing_ah_line"] == -1.0
-    assert out["settlement"] == Settlement.FULL_WIN.value
+    assert out["settlement"] == Settlement.HALF_WIN.value
 
 
 def test_normalize_rejects_non_quarter_lines_instead_of_rounding():
