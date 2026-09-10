@@ -15,7 +15,6 @@ TARGETS_PATH = Path("reports/v2_target_tournaments.json")
 SNAPSHOTS_PATH = Path("data/normalized/v2_mainline_snapshots.jsonl")
 REPORT_PATH = Path("reports/v2_mainline_observer.json")
 
-# Exact aliases only. Tournament discovery is metadata lookup, not fuzzy matching.
 TARGETS = {
     "BIG5_AH": {
         "England": {"premier league", "premier-league"},
@@ -26,12 +25,14 @@ TARGETS = {
     },
     "THIRD_UNIVERSE_OU": {
         "Netherlands": {"eredivisie"},
-        "Portugal": {"primeira liga", "primeira-liga"},
-        "Belgium": {"jupiler pro league", "jupiler-pro-league", "jupiler league", "jupiler-league"},
+        "Portugal": {"liga portugal", "liga-portugal", "primeira liga", "primeira-liga"},
+        "Belgium": {"pro league", "pro-league", "jupiler pro league", "jupiler-pro-league"},
         "Turkey": {"super lig", "super-lig", "süper lig", "süper-lig"},
-        "Scotland": {"scottish premiership", "scottish-premiership"},
+        "Scotland": {"premiership", "scottish premiership", "scottish-premiership"},
     },
 }
+
+BATCH_ORDER = ("BIG5_AH", "THIRD_UNIVERSE_OU")
 
 
 def _norm(value) -> str:
@@ -63,13 +64,18 @@ def select_target_tournaments(rows: list[dict]) -> list[dict]:
         for country, aliases in countries.items():
             matches = []
             for row in rows:
-                if not isinstance(row, dict) or str(row.get("categoryName") or "") != country:
+                if not isinstance(row, dict):
+                    continue
+                provider_country = str(row.get("categoryName") or "")
+                accepted_countries = {country}
+                if country == "Turkey":
+                    accepted_countries.add("Turkiye")
+                if provider_country not in accepted_countries:
                     continue
                 name = _norm(row.get("tournamentName"))
                 slug = _norm(row.get("tournamentSlug"))
                 if name in aliases or slug in aliases:
                     matches.append(row)
-            # Ambiguity is unsafe; accept exactly one exact metadata match.
             if len(matches) != 1 or matches[0].get("tournamentId") is None:
                 continue
             row = matches[0]
@@ -80,6 +86,7 @@ def select_target_tournaments(rows: list[dict]) -> list[dict]:
             selected.append({
                 "universe": universe,
                 "country": country,
+                "provider_category": row.get("categoryName"),
                 "tournament_id": int(row["tournamentId"]),
                 "tournament_name": row.get("tournamentName"),
                 "tournament_slug": row.get("tournamentSlug"),
@@ -92,6 +99,17 @@ def targets_complete(selected: list[dict]) -> bool:
     expected = {(u, c) for u, countries in TARGETS.items() for c in countries}
     actual = {(str(x.get("universe")), str(x.get("country"))) for x in selected}
     return actual == expected
+
+
+def split_target_batches(selected: list[dict]) -> list[tuple[str, list[dict]]]:
+    batches: list[tuple[str, list[dict]]] = []
+    for universe in BATCH_ORDER:
+        rows = [x for x in selected if x.get("universe") == universe]
+        rows.sort(key=lambda x: str(x.get("country") or ""))
+        if len(rows) != 5:
+            raise ValueError(f"{universe} requires exactly 5 locked tournaments; found {len(rows)}")
+        batches.append((universe, rows))
+    return batches
 
 
 def _active_player(outcome: dict | None) -> dict | None:
@@ -126,11 +144,6 @@ def extract_mainline_snapshot(
     tournament_meta: dict | None = None,
     bookmaker: str = "bet365",
 ) -> tuple[dict | None, str]:
-    """Extract one unambiguous current Bet365 1X2 + main AH + main O/U snapshot.
-
-    `mainLine` is accepted only from the verified current OddsPapi endpoint. Historical
-    snapshots do not carry this semantic and must never be reconstructed as main lines.
-    """
     if int(fixture.get("statusId", -1)) != 0 or fixture.get("hasOdds") is not True:
         return None, "NOT_PREMATCH_WITH_ODDS"
     kickoff = _utc(fixture.get("startTime"))
@@ -272,12 +285,12 @@ def observe_from_env(root: Path = Path("."), *, horizon_days: int = 7) -> dict:
     generated_at = datetime.now(timezone.utc)
     key = os.getenv(ENV_KEY)
     if not key:
-        return {"schema_version": "1.0", "status": "API_KEY_NOT_CONFIGURED", "generated_at": generated_at.isoformat(), "promotion_allowed": False}
+        return {"schema_version": "1.1", "status": "API_KEY_NOT_CONFIGURED", "generated_at": generated_at.isoformat(), "promotion_allowed": False}
 
     catalog = _load_json(root / CATALOG_PATH)
     candidates_payload = _load_json(root / CANDIDATE_PATH)
     if not isinstance(catalog, list) or not isinstance(candidates_payload, dict):
-        return {"schema_version": "1.0", "status": "LOCAL_INPUT_UNAVAILABLE", "generated_at": generated_at.isoformat(), "promotion_allowed": False}
+        return {"schema_version": "1.1", "status": "LOCAL_INPUT_UNAVAILABLE", "generated_at": generated_at.isoformat(), "promotion_allowed": False}
     candidates = candidates_payload.get("candidates") or []
 
     requests_attempted = 0
@@ -289,21 +302,41 @@ def observe_from_env(root: Path = Path("."), *, horizon_days: int = 7) -> dict:
             tournaments = _rows(_get("/tournaments", key, {"sportId": SPORT_ID, "language": "en"}))
             selected = select_target_tournaments(tournaments)
         except Exception as exc:
-            return {"schema_version": "1.0", "status": "TOURNAMENT_DISCOVERY_UNAVAILABLE", "generated_at": generated_at.isoformat(), "requests_attempted": requests_attempted, "errors": [f"{type(exc).__name__}: {exc}"], "promotion_allowed": False}
-        target_report = {"schema_version": "1.0", "generated_at": generated_at.isoformat(), "complete": targets_complete(selected), "tournaments": selected}
+            return {"schema_version": "1.1", "status": "TOURNAMENT_DISCOVERY_UNAVAILABLE", "generated_at": generated_at.isoformat(), "requests_attempted": requests_attempted, "errors": [f"{type(exc).__name__}: {exc}"], "promotion_allowed": False}
+        target_report = {"schema_version": "1.1", "generated_at": generated_at.isoformat(), "complete": targets_complete(selected), "tournaments": selected}
         target_path = root / TARGETS_PATH
         target_path.parent.mkdir(parents=True, exist_ok=True)
         target_path.write_text(json.dumps(target_report, ensure_ascii=False, indent=2), encoding="utf-8")
     if not targets_complete(selected):
-        return {"schema_version": "1.0", "status": "TARGET_TOURNAMENTS_INCOMPLETE", "generated_at": generated_at.isoformat(), "requests_attempted": requests_attempted, "targets_found": len(selected), "targets_expected": sum(len(v) for v in TARGETS.values()), "promotion_allowed": False}
+        return {"schema_version": "1.1", "status": "TARGET_TOURNAMENTS_INCOMPLETE", "generated_at": generated_at.isoformat(), "requests_attempted": requests_attempted, "targets_found": len(selected), "targets_expected": sum(len(v) for v in TARGETS.values()), "promotion_allowed": False}
 
-    ids = ",".join(str(x["tournament_id"]) for x in selected)
     try:
-        requests_attempted += 1
-        fixtures = _rows(_get("/odds-by-tournaments", key, {"tournamentIds": ids, "bookmakers": "bet365", "language": "en", "verbosity": 3}))
-        observed_at = datetime.now(timezone.utc)
-    except Exception as exc:
-        return {"schema_version": "1.0", "status": "CURRENT_BATCH_UNAVAILABLE", "generated_at": generated_at.isoformat(), "requests_attempted": requests_attempted, "errors": [f"{type(exc).__name__}: {exc}"], "promotion_allowed": False}
+        batches = split_target_batches(selected)
+    except ValueError as exc:
+        return {"schema_version": "1.1", "status": "TARGET_BATCH_LAYOUT_INVALID", "generated_at": generated_at.isoformat(), "requests_attempted": requests_attempted, "errors": [str(exc)], "promotion_allowed": False}
+
+    fixtures: list[dict] = []
+    batch_reports: list[dict] = []
+    observed_at = datetime.now(timezone.utc)
+    for universe, batch_rows in batches:
+        ids = ",".join(str(x["tournament_id"]) for x in batch_rows)
+        try:
+            requests_attempted += 1
+            batch = _rows(_get("/odds-by-tournaments", key, {"tournamentIds": ids, "bookmakers": "bet365", "language": "en", "verbosity": 3}))
+        except Exception as exc:
+            return {
+                "schema_version": "1.1",
+                "status": "CURRENT_BATCH_UNAVAILABLE",
+                "generated_at": generated_at.isoformat(),
+                "requests_attempted": requests_attempted,
+                "failed_universe": universe,
+                "batch_reports": batch_reports,
+                "errors": [f"{type(exc).__name__}: {exc}"],
+                "promotion_allowed": False,
+            }
+        fixtures.extend(batch)
+        batch_reports.append({"universe": universe, "tournament_count": len(batch_rows), "fixture_rows": len(batch)})
+    observed_at = datetime.now(timezone.utc)
 
     by_tid = {int(x["tournament_id"]): x for x in selected}
     cutoff = observed_at + timedelta(days=horizon_days)
@@ -333,7 +366,7 @@ def observe_from_env(root: Path = Path("."), *, horizon_days: int = 7) -> dict:
 
     total_stored = _merge_snapshots(root / SNAPSHOTS_PATH, snapshots)
     report = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "classification": "V2_PROSPECTIVE_MAINLINE_OBSERVER",
         "status": "MAINLINE_SNAPSHOTS_OBSERVED" if snapshots else "NO_UNAMBIGUOUS_MAINLINE_SNAPSHOTS",
         "generated_at": generated_at.isoformat(),
@@ -341,6 +374,9 @@ def observe_from_env(root: Path = Path("."), *, horizon_days: int = 7) -> dict:
         "source_semantics": "CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED",
         "historical_mainline_reconstruction_allowed": False,
         "requests_attempted": requests_attempted,
+        "scheduled_cadence_hours": 12,
+        "batch_count": len(batch_reports),
+        "batch_reports": batch_reports,
         "tournament_count": len(selected),
         "batch_fixture_rows": len(fixtures),
         "snapshots_this_run": len(snapshots),
