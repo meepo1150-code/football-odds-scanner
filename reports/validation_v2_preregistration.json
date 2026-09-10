@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "created_at": "2026-09-10T08:45:00+07:00",
+  "classification": "VALIDATION_V2_PREREGISTRATION",
+  "locked_before_future_v2_prospective_evaluation": true,
+  "purpose": "Reduce false negatives caused by over-fragmented patterns and all-or-nothing early gates while preserving strict production standards.",
+  "non_retuning_rule": "Frozen v1 results remain unchanged. V2 may replay viewed historical reports for diagnostics only; those replays cannot promote a pattern to production.",
+  "hierarchy": [
+    "market_and_line_structure",
+    "price_structure",
+    "movement",
+    "league_and_context"
+  ],
+  "fragmentation_policy": {
+    "base_pattern_dimensions": ["market", "selection", "exact_line", "price_band"],
+    "context_dimensions_are_secondary": true,
+    "do_not_require_league_probability_and_movement_buckets_simultaneously_at_discovery": true,
+    "minimum_effective_sample_before_context_split": 250
+  },
+  "levels": {
+    "RESEARCH_CANDIDATE": {
+      "minimum_train_n": 120,
+      "minimum_oos_n": 100,
+      "require_train_roi_positive": true,
+      "require_pooled_oos_roi_positive": true,
+      "maximum_single_holdout_loss_roi": -0.03,
+      "minimum_positive_league_share": 0.50,
+      "require_shrunk_oos_roi_positive": true,
+      "ci_and_fdr_are_diagnostics_not_hard_gates": true
+    },
+    "PAPER_CANDIDATE": {
+      "minimum_forward_bets": 150,
+      "minimum_forward_shrunk_roi": 0.0,
+      "minimum_forward_clv": 0.0,
+      "maximum_forward_drawdown_units": 20.0,
+      "minimum_positive_league_share": 0.60,
+      "require_current_market_repricing": true,
+      "label": "PAPER_RESEARCH_ONLY"
+    },
+    "PRODUCTION_CANDIDATE": {
+      "minimum_forward_bets": 300,
+      "minimum_current_repriced_ev": 0.01,
+      "execution_odds_range": [1.80, 2.20],
+      "require_positive_forward_clv": true,
+      "require_bootstrap_ci_lower_bound_above_zero": true,
+      "require_fdr_q_at_or_below": 0.10,
+      "require_cross_league_count": 3,
+      "minimum_positive_league_share": 0.60,
+      "require_bucket_sensitivity_stability": true,
+      "require_empirical_risk_report": true,
+      "separate_audit_required": true
+    }
+  },
+  "shrinkage": {
+    "method": "zero-mean empirical shrinkage by virtual sample size",
+    "prior_mean_roi": 0.0,
+    "prior_strength_bets": 200,
+    "formula": "shrunk_roi = total_profit_units / (n + prior_strength_bets)"
+  },
+  "power_diagnostics": {
+    "report_minimum_detectable_roi": true,
+    "two_sided_z": 1.96,
+    "mde_is_not_a_research_hard_gate": true,
+    "reason": "Small true betting edges need large samples; lack of CI significance at small N should be reported as low power rather than treated as proof of no edge."
+  },
+  "oos_pooling": {
+    "historical_diagnostic_definition": "validation plus holdout pooled by bet count and profit units",
+    "future_prospective_definition": "chronological validation plus untouched holdout",
+    "degradation_is_reported_separately": true
+  },
+  "promotion_policy": {
+    "historical_v1_replay_can_promote": false,
+    "paper_candidate_can_promote_directly": false,
+    "only_future_locked_forward_evidence_can_reach_production": true,
+    "production_registry_remains_fail_closed": true
+  }
+}
