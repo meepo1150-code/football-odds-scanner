@@ -7,6 +7,7 @@ on:
     branches: [main]
     paths:
       - 'src/odds_scanner/v2_mainline_observer.py'
+      - 'src/odds_scanner/v2_tournament_diagnostics.py'
       - 'tests/test_v2_mainline_observer.py'
       - 'reports/v2_research_candidates.json'
       - 'data/normalized/oddspapi_market_catalog.json'
@@ -33,6 +34,8 @@ jobs:
         run: pytest -q tests/test_v2_mainline_observer.py tests/test_v2_research_shadow.py
       - name: Observe current Bet365 main lines across both v2 universes
         run: python -m odds_scanner.v2_mainline_observer | tee /tmp/v2-mainline-observer-output.json
+      - name: Capture exact metadata for unresolved target countries
+        run: python -m odds_scanner.v2_tournament_diagnostics
       - name: Persist observer-owned evidence safely
         run: |
           set -euo pipefail
@@ -43,6 +46,7 @@ jobs:
             cp /tmp/v2-mainline-observer-output.json /tmp/v2-mainline/observer.json
           fi
           if [ -f reports/v2_target_tournaments.json ]; then cp reports/v2_target_tournaments.json /tmp/v2-mainline/targets.json; fi
+          if [ -f reports/v2_tournament_diagnostics.json ]; then cp reports/v2_tournament_diagnostics.json /tmp/v2-mainline/diagnostics.json; fi
           if [ -f data/normalized/v2_mainline_snapshots.jsonl ]; then cp data/normalized/v2_mainline_snapshots.jsonl /tmp/v2-mainline/snapshots.jsonl; fi
           git config user.name 'odds-scanner-actions'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -52,9 +56,11 @@ jobs:
             mkdir -p reports data/normalized
             cp /tmp/v2-mainline/observer.json reports/v2_mainline_observer.json
             if [ -f /tmp/v2-mainline/targets.json ]; then cp /tmp/v2-mainline/targets.json reports/v2_target_tournaments.json; fi
+            if [ -f /tmp/v2-mainline/diagnostics.json ]; then cp /tmp/v2-mainline/diagnostics.json reports/v2_tournament_diagnostics.json; fi
             if [ -f /tmp/v2-mainline/snapshots.jsonl ]; then cp /tmp/v2-mainline/snapshots.jsonl data/normalized/v2_mainline_snapshots.jsonl; fi
             if [ -f reports/v2_mainline_observer.json ]; then git add -- reports/v2_mainline_observer.json; fi
             if [ -f reports/v2_target_tournaments.json ]; then git add -- reports/v2_target_tournaments.json; fi
+            if [ -f reports/v2_tournament_diagnostics.json ]; then git add -- reports/v2_tournament_diagnostics.json; fi
             if [ -f data/normalized/v2_mainline_snapshots.jsonl ]; then git add -- data/normalized/v2_mainline_snapshots.jsonl; fi
             git diff --cached --quiet && exit 0
             git commit -m '[skip ci] Update validation v2 main-line observations'
@@ -63,9 +69,10 @@ jobs:
           done
           exit 1
 
-# Quota policy: after one-time target discovery, each scheduled run uses one
-# /odds-by-tournaments batch request for all 10 target leagues. Four runs/day
-# are ~120-124 current-odds requests/month, leaving material headroom under the
-# observed 250 request/month free-plan cap for weekly health and discovery.
+# Quota policy: once target mapping is complete, each scheduled run uses one
+# /odds-by-tournaments batch request for all 10 target leagues. While mapping is
+# incomplete, diagnostics may use one extra /tournaments request to capture exact
+# provider metadata; this diagnostic request stops automatically after all targets
+# resolve. Four normal runs/day are ~120-124 current-odds requests/month.
 # Historical snapshots are never relabeled as mainLine; only current endpoint
 # observations with explicit mainLine=true enter this evidence stream.
