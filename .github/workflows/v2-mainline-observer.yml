@@ -32,10 +32,12 @@ jobs:
       - run: python -m pip install -e '.[dev]'
       - name: Verify main-line observer contracts
         run: pytest -q tests/test_v2_mainline_observer.py tests/test_v2_research_shadow.py
-      - name: Observe current Bet365 main lines across both v2 universes
-        run: python -m odds_scanner.v2_mainline_observer | tee /tmp/v2-mainline-observer-output.json
-      - name: Capture exact metadata for unresolved target countries
+      - name: Capture provider metadata before another discovery call
         run: python -m odds_scanner.v2_tournament_diagnostics
+      - name: Observe current Bet365 main lines across both v2 universes
+        run: |
+          rm -f reports/v2_mainline_observer.json
+          python -m odds_scanner.v2_mainline_observer | tee /tmp/v2-mainline-observer-output.json
       - name: Persist observer-owned evidence safely
         run: |
           set -euo pipefail
@@ -69,10 +71,10 @@ jobs:
           done
           exit 1
 
-# Quota policy: once target mapping is complete, each scheduled run uses one
-# /odds-by-tournaments batch request for all 10 target leagues. While mapping is
-# incomplete, diagnostics may use one extra /tournaments request to capture exact
-# provider metadata; this diagnostic request stops automatically after all targets
-# resolve. Four normal runs/day are ~120-124 current-odds requests/month.
+# Quota policy: once target mapping is complete, diagnostics exits without an API
+# call and each scheduled run uses one /odds-by-tournaments batch request for all
+# 10 target leagues. While mapping is incomplete, diagnostics runs first so its
+# exact provider metadata survives even if a second immediate discovery call is
+# rate-limited. Four normal runs/day are ~120-124 current-odds requests/month.
 # Historical snapshots are never relabeled as mainLine; only current endpoint
 # observations with explicit mainLine=true enter this evidence stream.
