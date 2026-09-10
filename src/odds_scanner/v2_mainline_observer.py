@@ -136,6 +136,42 @@ def _fair_1x2(home: float, draw: float, away: float) -> tuple[float, float, floa
     return tuple(x / total for x in inv)  # type: ignore[return-value]
 
 
+def mainline_shape(fixture: dict, markets_catalog: list[dict], *, bookmaker: str = "bet365") -> dict:
+    """Describe current full-time AH/O/U mainLine cardinality without choosing a line."""
+    book = (fixture.get("bookmakerOdds") or {}).get(bookmaker)
+    if not isinstance(book, dict):
+        return {"ah_main_count": 0, "ou_main_count": 0, "ah_lines": [], "ou_lines": []}
+    catalog = _catalog(markets_catalog)
+    ah_lines: list[float] = []
+    ou_lines: list[float] = []
+    for market_id, market_data in (book.get("markets") or {}).items():
+        meta = catalog.get(str(market_id))
+        if not isinstance(meta, dict) or not isinstance(market_data, dict) or market_data.get("marketActive") is not True:
+            continue
+        selections = _market_selections(meta, market_data)
+        mname = str(meta.get("marketName") or "").lower()
+        mtype = str(meta.get("marketType") or "").lower()
+        line = _quarter(meta.get("handicap"))
+        if line is None:
+            continue
+        if "asian handicap" in mname:
+            hp = selections.get("home") or selections.get("1")
+            ap = selections.get("away") or selections.get("2")
+            if hp and ap and hp.get("mainLine") is True and ap.get("mainLine") is True:
+                ah_lines.append(float(line))
+            continue
+        if mname == "over under full time" or (mtype == "totals" and str(meta.get("period") or "").lower() == "fulltime" and "team" not in mname and "corner" not in mname):
+            op, up = selections.get("over"), selections.get("under")
+            if op and up and op.get("mainLine") is True and up.get("mainLine") is True:
+                ou_lines.append(float(line))
+    return {
+        "ah_main_count": len(ah_lines),
+        "ou_main_count": len(ou_lines),
+        "ah_lines": sorted(ah_lines),
+        "ou_lines": sorted(ou_lines),
+    }
+
+
 def extract_mainline_snapshot(
     fixture: dict,
     markets_catalog: list[dict],
@@ -177,7 +213,7 @@ def extract_mainline_snapshot(
             if hp and ap and hp.get("mainLine") is True and ap.get("mainLine") is True:
                 ah_main.append({"line": line, "home": hp, "away": ap})
             continue
-        if "over under" in mname or (mtype == "totals" and {"over", "under"}.issubset(selections)):
+        if mname == "over under full time" or (mtype == "totals" and str(meta.get("period") or "").lower() == "fulltime" and "team" not in mname and "corner" not in mname):
             op, up = selections.get("over"), selections.get("under")
             if op and up and op.get("mainLine") is True and up.get("mainLine") is True:
                 ou_main.append({"line": line, "over": op, "under": up})
@@ -285,12 +321,12 @@ def observe_from_env(root: Path = Path("."), *, horizon_days: int = 7) -> dict:
     generated_at = datetime.now(timezone.utc)
     key = os.getenv(ENV_KEY)
     if not key:
-        return {"schema_version": "1.1", "status": "API_KEY_NOT_CONFIGURED", "generated_at": generated_at.isoformat(), "promotion_allowed": False}
+        return {"schema_version": "1.2", "status": "API_KEY_NOT_CONFIGURED", "generated_at": generated_at.isoformat(), "promotion_allowed": False}
 
     catalog = _load_json(root / CATALOG_PATH)
     candidates_payload = _load_json(root / CANDIDATE_PATH)
     if not isinstance(catalog, list) or not isinstance(candidates_payload, dict):
-        return {"schema_version": "1.1", "status": "LOCAL_INPUT_UNAVAILABLE", "generated_at": generated_at.isoformat(), "promotion_allowed": False}
+        return {"schema_version": "1.2", "status": "LOCAL_INPUT_UNAVAILABLE", "generated_at": generated_at.isoformat(), "promotion_allowed": False}
     candidates = candidates_payload.get("candidates") or []
 
     requests_attempted = 0
@@ -302,22 +338,21 @@ def observe_from_env(root: Path = Path("."), *, horizon_days: int = 7) -> dict:
             tournaments = _rows(_get("/tournaments", key, {"sportId": SPORT_ID, "language": "en"}))
             selected = select_target_tournaments(tournaments)
         except Exception as exc:
-            return {"schema_version": "1.1", "status": "TOURNAMENT_DISCOVERY_UNAVAILABLE", "generated_at": generated_at.isoformat(), "requests_attempted": requests_attempted, "errors": [f"{type(exc).__name__}: {exc}"], "promotion_allowed": False}
+            return {"schema_version": "1.2", "status": "TOURNAMENT_DISCOVERY_UNAVAILABLE", "generated_at": generated_at.isoformat(), "requests_attempted": requests_attempted, "errors": [f"{type(exc).__name__}: {exc}"], "promotion_allowed": False}
         target_report = {"schema_version": "1.1", "generated_at": generated_at.isoformat(), "complete": targets_complete(selected), "tournaments": selected}
         target_path = root / TARGETS_PATH
         target_path.parent.mkdir(parents=True, exist_ok=True)
         target_path.write_text(json.dumps(target_report, ensure_ascii=False, indent=2), encoding="utf-8")
     if not targets_complete(selected):
-        return {"schema_version": "1.1", "status": "TARGET_TOURNAMENTS_INCOMPLETE", "generated_at": generated_at.isoformat(), "requests_attempted": requests_attempted, "targets_found": len(selected), "targets_expected": sum(len(v) for v in TARGETS.values()), "promotion_allowed": False}
+        return {"schema_version": "1.2", "status": "TARGET_TOURNAMENTS_INCOMPLETE", "generated_at": generated_at.isoformat(), "requests_attempted": requests_attempted, "targets_found": len(selected), "targets_expected": sum(len(v) for v in TARGETS.values()), "promotion_allowed": False}
 
     try:
         batches = split_target_batches(selected)
     except ValueError as exc:
-        return {"schema_version": "1.1", "status": "TARGET_BATCH_LAYOUT_INVALID", "generated_at": generated_at.isoformat(), "requests_attempted": requests_attempted, "errors": [str(exc)], "promotion_allowed": False}
+        return {"schema_version": "1.2", "status": "TARGET_BATCH_LAYOUT_INVALID", "generated_at": generated_at.isoformat(), "requests_attempted": requests_attempted, "errors": [str(exc)], "promotion_allowed": False}
 
     fixtures: list[dict] = []
     batch_reports: list[dict] = []
-    observed_at = datetime.now(timezone.utc)
     for universe, batch_rows in batches:
         ids = ",".join(str(x["tournament_id"]) for x in batch_rows)
         try:
@@ -325,7 +360,7 @@ def observe_from_env(root: Path = Path("."), *, horizon_days: int = 7) -> dict:
             batch = _rows(_get("/odds-by-tournaments", key, {"tournamentIds": ids, "bookmakers": "bet365", "language": "en", "verbosity": 3}))
         except Exception as exc:
             return {
-                "schema_version": "1.1",
+                "schema_version": "1.2",
                 "status": "CURRENT_BATCH_UNAVAILABLE",
                 "generated_at": generated_at.isoformat(),
                 "requests_attempted": requests_attempted,
@@ -343,6 +378,8 @@ def observe_from_env(root: Path = Path("."), *, horizon_days: int = 7) -> dict:
     snapshots: list[dict] = []
     reasons: Counter[str] = Counter()
     match_counts: Counter[str] = Counter()
+    shape_counts: Counter[str] = Counter()
+    shape_samples: list[dict] = []
     for fixture in fixtures:
         try:
             tid = int(fixture.get("tournamentId"))
@@ -354,6 +391,19 @@ def observe_from_env(root: Path = Path("."), *, horizon_days: int = 7) -> dict:
         ko = _utc(fixture.get("startTime"))
         if ko is None or ko > cutoff:
             continue
+        shape = mainline_shape(fixture, catalog)
+        shape_key = f"AH{shape['ah_main_count']}_OU{shape['ou_main_count']}"
+        shape_counts[shape_key] += 1
+        if len(shape_samples) < 12:
+            shape_samples.append({
+                "fixture_id": fixture.get("fixtureId"),
+                "universe": tmeta.get("universe"),
+                "league": tmeta.get("tournament_name"),
+                "ah_main_count": shape["ah_main_count"],
+                "ou_main_count": shape["ou_main_count"],
+                "ah_lines": shape["ah_lines"],
+                "ou_lines": shape["ou_lines"],
+            })
         snap, reason = extract_mainline_snapshot(fixture, catalog, observed_at=observed_at, tournament_meta=tmeta)
         reasons[reason] += 1
         if snap is None:
@@ -366,7 +416,7 @@ def observe_from_env(root: Path = Path("."), *, horizon_days: int = 7) -> dict:
 
     total_stored = _merge_snapshots(root / SNAPSHOTS_PATH, snapshots)
     report = {
-        "schema_version": "1.1",
+        "schema_version": "1.2",
         "classification": "V2_PROSPECTIVE_MAINLINE_OBSERVER",
         "status": "MAINLINE_SNAPSHOTS_OBSERVED" if snapshots else "NO_UNAMBIGUOUS_MAINLINE_SNAPSHOTS",
         "generated_at": generated_at.isoformat(),
@@ -383,6 +433,9 @@ def observe_from_env(root: Path = Path("."), *, horizon_days: int = 7) -> dict:
         "snapshots_stored": total_stored,
         "candidate_matches_this_run": dict(sorted(match_counts.items())),
         "parse_reasons": dict(sorted(reasons.items())),
+        "mainline_shape_counts": dict(sorted(shape_counts.items())),
+        "mainline_shape_samples": shape_samples,
+        "diagnostic_policy": "Cardinality diagnostics only; no alternative line is selected and admissibility remains exactly one main AH plus one main full-time O/U.",
         "promotion_allowed": False,
         "paper_research_only": True,
     }

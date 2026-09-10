@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 
 import pytest
 
-from odds_scanner.v2_mainline_observer import extract_mainline_snapshot, match_candidates, split_target_batches
+from odds_scanner.v2_mainline_observer import extract_mainline_snapshot, mainline_shape, match_candidates, split_target_batches
 
 
 def _player(price, *, main=True):
@@ -64,6 +64,11 @@ def test_extract_requires_explicit_mainline_true():
     assert reason == "AMBIGUOUS_OR_MISSING_MAIN_AH"
 
 
+def test_mainline_shape_reports_one_match_ah_and_one_match_total():
+    shape = mainline_shape(_fixture(), _catalog())
+    assert shape == {"ah_main_count": 1, "ou_main_count": 1, "ah_lines": [-0.5], "ou_lines": [2.5]}
+
+
 def test_big5_home_minus_half_candidate_matches_exact_current_mainline():
     observed = datetime(2026, 9, 10, 9, tzinfo=timezone.utc)
     meta = {"universe": "BIG5_AH", "country": "England", "tournament_name": "Premier League"}
@@ -91,7 +96,7 @@ def test_third_universe_under_candidate_uses_main_ah_context_and_main_total():
     assert match_candidates(snap, candidates) == ["FD_OU25_D0A17AE7DB9C"]
 
 
-def test_alternative_line_is_not_accepted_as_mainline():
+def test_duplicate_main_ah_is_reported_and_rejected():
     observed = datetime(2026, 9, 10, 9, tzinfo=timezone.utc)
     fixture = _fixture()
     fixture["bookmakerOdds"]["bet365"]["markets"]["202"] = _market({201: _player(1.88), 202: _player(2.00)})
@@ -100,9 +105,29 @@ def test_alternative_line_is_not_accepted_as_mainline():
         "marketName": "Asian Handicap", "marketType": "spreads", "handicap": -0.75,
         "outcomes": [{"outcomeId": 201, "outcomeName": "1"}, {"outcomeId": 202, "outcomeName": "2"}],
     }]
+    shape = mainline_shape(fixture, catalog)
+    assert shape["ah_main_count"] == 2
+    assert shape["ah_lines"] == [-0.75, -0.5]
     snap, reason = extract_mainline_snapshot(fixture, catalog, observed_at=observed, tournament_meta={"universe": "BIG5_AH"})
     assert snap is None
     assert reason == "AMBIGUOUS_OR_MISSING_MAIN_AH"
+
+
+def test_team_total_mainline_does_not_ambiguate_match_total():
+    observed = datetime(2026, 9, 10, 9, tzinfo=timezone.utc)
+    fixture = _fixture()
+    fixture["bookmakerOdds"]["bet365"]["markets"]["401"] = _market({401: _player(1.91), 402: _player(1.91)})
+    catalog = _catalog() + [{
+        "marketId": 401, "sportId": 10, "period": "fulltime", "playerProp": False,
+        "marketName": "Over Under Team 1", "marketType": "teamtotals-team1", "handicap": 1.5,
+        "outcomes": [{"outcomeId": 401, "outcomeName": "Over"}, {"outcomeId": 402, "outcomeName": "Under"}],
+    }]
+    shape = mainline_shape(fixture, catalog)
+    assert shape["ou_main_count"] == 1
+    assert shape["ou_lines"] == [2.5]
+    snap, reason = extract_mainline_snapshot(fixture, catalog, observed_at=observed, tournament_meta={"universe": "BIG5_AH"})
+    assert reason == "OK"
+    assert snap is not None
 
 
 def test_split_target_batches_is_exactly_two_groups_of_five():
