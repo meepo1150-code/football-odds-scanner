@@ -1,0 +1,90 @@
+{
+  "schema_version": "1.0",
+  "created_at": "2026-09-10T10:03:00Z",
+  "classification": "VALIDATION_V2_FORWARD_PAPER_PREREGISTRATION",
+  "paper_label": "PAPER_RESEARCH_ONLY",
+  "locked_before_forward_outcomes_inspected": true,
+  "purpose": "Prospectively test the three frozen Validation v2 research candidates using current OddsPapi Bet365 main-line observations without retrospective line selection or threshold tuning.",
+  "candidate_catalog": "reports/v2_research_candidates.json",
+  "target_tournament_map": "reports/v2_target_tournaments.json",
+  "candidate_ids": [
+    "FD_AH_4E30F9F2EC34",
+    "FD_AH_1D65F429F6A5",
+    "FD_OU25_D0A17AE7DB9C"
+  ],
+  "candidate_count": 3,
+  "data_source": {
+    "provider": "OddsPapi",
+    "bookmaker": "Bet365",
+    "sport": "soccer",
+    "observation_semantics": "CURRENT_PREMATCH_ODDSPAPI_MAINLINE_TRUE_ONLY",
+    "mainline_requirement": "AH and OU observations are admissible only when the current provider payload identifies one unambiguous main line with explicit mainLine=true on both sides.",
+    "historical_mainline_reconstruction_allowed": false,
+    "alternative_line_substitution_allowed": false,
+    "fixture_join": "exact OddsPapi fixture_id only; fuzzy team/date joining is prohibited"
+  },
+  "entry_policy": {
+    "unit": "candidate_id x fixture_id",
+    "entry_definition": "the first scheduled observer snapshot after this preregistration is locked that satisfies every frozen condition for that candidate",
+    "one_entry_per_candidate_fixture": true,
+    "later_better_price_reselection_allowed": false,
+    "retroactive_entry_creation_allowed": false,
+    "missed_observation_backfill_allowed": false,
+    "stake_units": 1.0,
+    "staking": "flat"
+  },
+  "closing_and_clv_policy": {
+    "closing_definition": "the latest admissible prospectively observed main-line snapshot strictly before kickoff for the same fixture",
+    "cadence_limited": true,
+    "perfect_market_close_claim_allowed": false,
+    "label": "LATEST_OBSERVED_PREMATCH_MAINLINE",
+    "same_market_required": true,
+    "clv_price_definition": "entry decimal price divided by latest-observed same-selection decimal price minus 1",
+    "line_move_reported_separately": true,
+    "mainline_change_does_not_rewrite_entry": true,
+    "if_same_selection_comparison_is_not_well_defined": "CLV_NOT_COMPARABLE"
+  },
+  "settlement_policy": {
+    "result_source": "exact provider fixture result",
+    "prematch_only": true,
+    "abandoned_void_rule": "unsettled, abandoned, cancelled, or result-unavailable fixtures are excluded from settled-bet performance and reported separately",
+    "asian_handicap": "settle exact quarter line including half-win and half-loss outcomes; never round the line",
+    "over_under": "settle exact total line; candidate FD_OU25_D0A17AE7DB9C is Under 2.5",
+    "profit_units": "net return on one flat stake unit"
+  },
+  "forward_evaluation": {
+    "minimum_settled_entries_per_candidate": 150,
+    "minimum_distinct_leagues_per_candidate": 3,
+    "minimum_positive_league_share": 0.60,
+    "require_positive_flat_stake_roi": true,
+    "require_positive_mean_comparable_clv": true,
+    "require_positive_median_comparable_clv": true,
+    "require_bootstrap_roi_ci95_lower_bound_above_zero": true,
+    "require_no_single_league_profit_concentration": true,
+    "maximum_single_league_share_of_absolute_profit": 0.60,
+    "require_empirical_drawdown_report": true,
+    "require_longest_losing_streak_report": true,
+    "require_entry_to_close_line_move_report": true,
+    "minimum_comparable_clv_share": 0.70
+  },
+  "status_rules": {
+    "before_minimum_sample": "COLLECTING_FORWARD_EVIDENCE",
+    "minimum_sample_met_but_gate_failed": "FORWARD_NOT_CONFIRMED",
+    "all_forward_gates_passed": "FORWARD_PAPER_CONFIRMED",
+    "forward_paper_confirmed_is_production_edge": false,
+    "production_promotion_allowed": false
+  },
+  "production_guardrails": {
+    "pattern_registry_must_remain_unchanged": true,
+    "automatic_promotion_prohibited": true,
+    "separate_post_forward_audit_required": true,
+    "separate_untouched_confirmation_required_before_any_production_consideration": true,
+    "paper_output_may_not_be_presented_as_betting_recommendation": true
+  },
+  "anti_p_hacking_rule": "Do not change candidate thresholds, price/probability bands, line definitions, entry timing, one-entry rule, sample minimums, CLV definition, settlement rules, or forward gates after inspecting forward candidate outcomes. Any material change creates a new hypothesis and requires a new untouched forward sample.",
+  "notes": [
+    "The three candidates were selected retrospectively and therefore cannot become production patterns solely by passing this paper stage.",
+    "Six-hour collection cadence is a quota-aware observation schedule, so latest observed pre-match odds must not be described as the exact bookmaker closing tick.",
+    "Forward evidence begins only after this preregistration; earlier diagnostic or engineering observations cannot be promoted into candidate entries retroactively."
+  ]
+}
