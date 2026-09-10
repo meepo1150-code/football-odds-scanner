@@ -1,1 +1,36 @@
-{"schema_version": "1.0", "status": "CURRENT_BATCH_UNAVAILABLE", "generated_at": "2026-09-10T10:07:36.739466+00:00", "requests_attempted": 1, "errors": ["HTTPError: HTTP Error 400: Bad Request"], "promotion_allowed": false}
+{
+  "schema_version": "1.1",
+  "classification": "V2_PROSPECTIVE_MAINLINE_OBSERVER",
+  "status": "NO_UNAMBIGUOUS_MAINLINE_SNAPSHOTS",
+  "generated_at": "2026-09-10T13:30:52.337005+00:00",
+  "observed_at": "2026-09-10T13:31:01.060731+00:00",
+  "source_semantics": "CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED",
+  "historical_mainline_reconstruction_allowed": false,
+  "requests_attempted": 2,
+  "scheduled_cadence_hours": 12,
+  "batch_count": 2,
+  "batch_reports": [
+    {
+      "universe": "BIG5_AH",
+      "tournament_count": 5,
+      "fixture_rows": 94
+    },
+    {
+      "universe": "THIRD_UNIVERSE_OU",
+      "tournament_count": 5,
+      "fixture_rows": 55
+    }
+  ],
+  "tournament_count": 10,
+  "batch_fixture_rows": 149,
+  "snapshots_this_run": 0,
+  "snapshots_stored": 0,
+  "candidate_matches_this_run": {},
+  "parse_reasons": {
+    "AMBIGUOUS_OR_MISSING_MAIN_AH": 88,
+    "AMBIGUOUS_OR_MISSING_MAIN_OU": 6,
+    "BOOKMAKER_NOT_ACTIVE": 1
+  },
+  "promotion_allowed": false,
+  "paper_research_only": true
+}
