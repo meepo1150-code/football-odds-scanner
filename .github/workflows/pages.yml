@@ -13,6 +13,7 @@ on:
       - 'OddsPapi Historical Tick Archive'
       - 'Flashscore Exact Result Backfill'
       - 'Prospective 2026-27 Research Status'
+      - 'Validation V2 Diagnostic'
     types: [completed]
 permissions:
   contents: read
@@ -36,7 +37,7 @@ jobs:
           mkdir -p site/reports/breadth
           cp apps/dashboard/index.html site/index.html
           test -f apps/dashboard/research.html && cp apps/dashboard/research.html site/research.html || true
-          for f in today.json pattern_registry.json current_provider_health.json provider_capabilities.json five_dollar_health.json oddspapi_health.json five_dollar_archive_state.json five_dollar_research.json source_qualification.json prospective_2026_27_status.json football_data_multiseason_validation.json independent_league_validation.json third_universe_ou_validation.json; do
+          for f in today.json pattern_registry.json current_provider_health.json provider_capabilities.json five_dollar_health.json oddspapi_health.json five_dollar_archive_state.json five_dollar_research.json source_qualification.json prospective_2026_27_status.json validation_v2_status.json validation_v2_preregistration.json football_data_multiseason_validation.json independent_league_validation.json third_universe_ou_validation.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
           test -f reports/breadth/summary.json && cp reports/breadth/summary.json site/reports/breadth/summary.json || true
