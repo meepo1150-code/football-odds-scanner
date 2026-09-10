@@ -53,7 +53,9 @@ jobs:
             cp /tmp/v2-mainline/observer.json reports/v2_mainline_observer.json
             if [ -f /tmp/v2-mainline/targets.json ]; then cp /tmp/v2-mainline/targets.json reports/v2_target_tournaments.json; fi
             if [ -f /tmp/v2-mainline/snapshots.jsonl ]; then cp /tmp/v2-mainline/snapshots.jsonl data/normalized/v2_mainline_snapshots.jsonl; fi
-            git add -- reports/v2_mainline_observer.json reports/v2_target_tournaments.json data/normalized/v2_mainline_snapshots.jsonl 2>/dev/null || true
+            if [ -f reports/v2_mainline_observer.json ]; then git add -- reports/v2_mainline_observer.json; fi
+            if [ -f reports/v2_target_tournaments.json ]; then git add -- reports/v2_target_tournaments.json; fi
+            if [ -f data/normalized/v2_mainline_snapshots.jsonl ]; then git add -- data/normalized/v2_mainline_snapshots.jsonl; fi
             git diff --cached --quiet && exit 0
             git commit -m '[skip ci] Update validation v2 main-line observations'
             if git push origin HEAD:main; then exit 0; fi
