@@ -2,7 +2,7 @@ name: Validation v2 Main-Line Observer
 on:
   workflow_dispatch:
   schedule:
-    - cron: '17 0,6,12,18 * * *'
+    - cron: '17 0,12 * * *'
   push:
     branches: [main]
     paths:
@@ -73,10 +73,11 @@ jobs:
           done
           exit 1
 
-# Quota policy: once target mapping is complete, diagnostics exits without an API
-# call and each scheduled run uses one /odds-by-tournaments batch request for all
-# 10 target leagues. While mapping is incomplete, diagnostics runs first so its
-# exact provider metadata survives even if a second immediate discovery call is
-# rate-limited. Four normal runs/day are ~120-124 current-odds requests/month.
-# Historical snapshots are never relabeled as mainLine; only current endpoint
-# observations with explicit mainLine=true enter this evidence stream.
+# Quota policy: the locked target map avoids tournament discovery in normal runs.
+# Each scheduled run makes two /odds-by-tournaments calls: one exact Big5 batch
+# of five leagues and one exact Third-Universe batch of five leagues. Two normal
+# runs/day therefore use about 120-124 current-odds requests/month, preserving
+# similar quota use to the earlier four-runs/day single-batch plan. The split was
+# frozen before forward outcomes were evaluated after a 10-ID request returned
+# HTTP 400. Historical snapshots are never relabeled as mainLine; only current
+# endpoint observations with explicit mainLine=true enter this evidence stream.

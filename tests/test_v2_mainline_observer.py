@@ -1,6 +1,8 @@
 from datetime import datetime, timezone
 
-from odds_scanner.v2_mainline_observer import extract_mainline_snapshot, match_candidates
+import pytest
+
+from odds_scanner.v2_mainline_observer import extract_mainline_snapshot, match_candidates, split_target_batches
 
 
 def _player(price, *, main=True):
@@ -101,3 +103,20 @@ def test_alternative_line_is_not_accepted_as_mainline():
     snap, reason = extract_mainline_snapshot(fixture, catalog, observed_at=observed, tournament_meta={"universe": "BIG5_AH"})
     assert snap is None
     assert reason == "AMBIGUOUS_OR_MISSING_MAIN_AH"
+
+
+def test_split_target_batches_is_exactly_two_groups_of_five():
+    selected = [
+        *[{"universe": "BIG5_AH", "country": c, "tournament_id": i} for i, c in enumerate(["England", "France", "Germany", "Italy", "Spain"], 1)],
+        *[{"universe": "THIRD_UNIVERSE_OU", "country": c, "tournament_id": i} for i, c in enumerate(["Belgium", "Netherlands", "Portugal", "Scotland", "Turkey"], 11)],
+    ]
+    batches = split_target_batches(selected)
+    assert [name for name, _ in batches] == ["BIG5_AH", "THIRD_UNIVERSE_OU"]
+    assert [len(rows) for _, rows in batches] == [5, 5]
+    assert [row["country"] for row in batches[0][1]] == ["England", "France", "Germany", "Italy", "Spain"]
+
+
+def test_split_target_batches_fails_closed_if_universe_is_incomplete():
+    selected = [{"universe": "BIG5_AH", "country": "England", "tournament_id": 17}]
+    with pytest.raises(ValueError):
+        split_target_batches(selected)
