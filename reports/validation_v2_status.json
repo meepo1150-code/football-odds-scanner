@@ -1,0 +1,620 @@
+{
+  "schema_version": "1.0",
+  "classification": "VALIDATION_V2_STATUS",
+  "generated_at": "2026-09-10T09:02:18.438322+00:00",
+  "preregistration_locked": true,
+  "historical_replay_is_diagnostic_only": true,
+  "production_promotion_allowed": false,
+  "production_registry_must_remain_unchanged": true,
+  "total_historical_candidates_replayed": 15,
+  "research_candidates_under_v2_diagnostic": 3,
+  "paper_candidates": 0,
+  "paper_note": "Paper status requires new forward observations under the locked v2 rules; viewed historical data cannot qualify.",
+  "universes": [
+    {
+      "universe": "BIG5_AH",
+      "report": "reports/football_data_multiseason_validation.json",
+      "status": "DIAGNOSTIC_REPLAY_ONLY",
+      "candidate_count": 7,
+      "research_candidate_count": 2,
+      "candidates": [
+        {
+          "pattern_id": "FD_AH_969E263FF908",
+          "market": "AH",
+          "pattern_key": {
+            "favorite_side": "A",
+            "ah_line": -0.0,
+            "ah_price_band": [
+              1.8,
+              2.0
+            ],
+            "favorite_probability_band": [
+              0.3,
+              0.4
+            ]
+          },
+          "v1_status": "REJECT",
+          "v2_diagnostic_status": "RESEARCH_REJECT",
+          "train_n": 381,
+          "oos_n": 230,
+          "holdout_n": 62,
+          "train_roi": 0.000814,
+          "pooled_oos_roi": 0.00678261,
+          "holdout_roi": -0.049516,
+          "shrunk_oos_roi": 0.00362791,
+          "positive_league_share": 0.6,
+          "mde_roi_95": null,
+          "mde_note": "Unavailable from aggregate frozen report; raw per-bet returns are required. Future v2 forward evaluation computes MDE directly.",
+          "gates": {
+            "train_n": true,
+            "oos_n": true,
+            "train_roi_positive": true,
+            "pooled_oos_roi_positive": true,
+            "holdout_not_catastrophic": false,
+            "positive_league_share": true,
+            "shrunk_oos_roi_positive": true
+          },
+          "promotion_allowed": false
+        },
+        {
+          "pattern_id": "FD_AH_F5A9409C0EFA",
+          "market": "AH",
+          "pattern_key": {
+            "favorite_side": "A",
+            "ah_line": -0.5,
+            "ah_price_band": [
+              1.8,
+              2.0
+            ],
+            "favorite_probability_band": [
+              0.5,
+              0.6
+            ]
+          },
+          "v1_status": "REJECT",
+          "v2_diagnostic_status": "RESEARCH_REJECT",
+          "train_n": 158,
+          "oos_n": 99,
+          "holdout_n": 17,
+          "train_roi": 0.040823,
+          "pooled_oos_roi": 0.10484848,
+          "holdout_roi": -0.143529,
+          "shrunk_oos_roi": 0.03471572,
+          "positive_league_share": 0.8,
+          "mde_roi_95": null,
+          "mde_note": "Unavailable from aggregate frozen report; raw per-bet returns are required. Future v2 forward evaluation computes MDE directly.",
+          "gates": {
+            "train_n": true,
+            "oos_n": false,
+            "train_roi_positive": true,
+            "pooled_oos_roi_positive": true,
+            "holdout_not_catastrophic": false,
+            "positive_league_share": true,
+            "shrunk_oos_roi_positive": true
+          },
+          "promotion_allowed": false
+        },
+        {
+          "pattern_id": "FD_AH_4E30F9F2EC34",
+          "market": "AH",
+          "pattern_key": {
+            "favorite_side": "H",
+            "ah_line": -0.5,
+            "ah_price_band": [
+              1.8,
+              2.0
+            ],
+            "favorite_probability_band": [
+              0.4,
+              0.5
+            ]
+          },
+          "v1_status": "REJECT",
+          "v2_diagnostic_status": "RESEARCH_CANDIDATE",
+          "train_n": 258,
+          "oos_n": 252,
+          "holdout_n": 128,
+          "train_roi": 0.023217,
+          "pooled_oos_roi": 0.00373016,
+          "holdout_roi": -0.015391,
+          "shrunk_oos_roi": 0.00207965,
+          "positive_league_share": 0.6,
+          "mde_roi_95": null,
+          "mde_note": "Unavailable from aggregate frozen report; raw per-bet returns are required. Future v2 forward evaluation computes MDE directly.",
+          "gates": {
+            "train_n": true,
+            "oos_n": true,
+            "train_roi_positive": true,
+            "pooled_oos_roi_positive": true,
+            "holdout_not_catastrophic": true,
+            "positive_league_share": true,
+            "shrunk_oos_roi_positive": true
+          },
+          "promotion_allowed": false
+        },
+        {
+          "pattern_id": "FD_AH_FA5D745F699B",
+          "market": "AH",
+          "pattern_key": {
+            "favorite_side": "H",
+            "ah_line": -0.75,
+            "ah_price_band": [
+              2.0,
+              2.2
+            ],
+            "favorite_probability_band": [
+              0.5,
+              0.6
+            ]
+          },
+          "v1_status": "REJECT",
+          "v2_diagnostic_status": "RESEARCH_REJECT",
+          "train_n": 166,
+          "oos_n": 70,
+          "holdout_n": 6,
+          "train_roi": 0.050181,
+          "pooled_oos_roi": 0.06642857,
+          "holdout_roi": 0.171667,
+          "shrunk_oos_roi": 0.01722222,
+          "positive_league_share": 0.4,
+          "mde_roi_95": null,
+          "mde_note": "Unavailable from aggregate frozen report; raw per-bet returns are required. Future v2 forward evaluation computes MDE directly.",
+          "gates": {
+            "train_n": true,
+            "oos_n": false,
+            "train_roi_positive": true,
+            "pooled_oos_roi_positive": true,
+            "holdout_not_catastrophic": true,
+            "positive_league_share": false,
+            "shrunk_oos_roi_positive": true
+          },
+          "promotion_allowed": false
+        },
+        {
+          "pattern_id": "FD_AH_2CED3799E02A",
+          "market": "AH",
+          "pattern_key": {
+            "favorite_side": "H",
+            "ah_line": -1.0,
+            "ah_price_band": [
+              1.8,
+              2.0
+            ],
+            "favorite_probability_band": [
+              0.6,
+              0.7
+            ]
+          },
+          "v1_status": "REJECT",
+          "v2_diagnostic_status": "RESEARCH_REJECT",
+          "train_n": 300,
+          "oos_n": 183,
+          "holdout_n": 51,
+          "train_roi": 0.031833,
+          "pooled_oos_roi": -0.10010929,
+          "holdout_roi": -0.056667,
+          "shrunk_oos_roi": -0.0478329,
+          "positive_league_share": 0.2,
+          "mde_roi_95": null,
+          "mde_note": "Unavailable from aggregate frozen report; raw per-bet returns are required. Future v2 forward evaluation computes MDE directly.",
+          "gates": {
+            "train_n": true,
+            "oos_n": true,
+            "train_roi_positive": true,
+            "pooled_oos_roi_positive": false,
+            "holdout_not_catastrophic": false,
+            "positive_league_share": false,
+            "shrunk_oos_roi_positive": false
+          },
+          "promotion_allowed": false
+        },
+        {
+          "pattern_id": "FD_AH_1D65F429F6A5",
+          "market": "AH",
+          "pattern_key": {
+            "favorite_side": "H",
+            "ah_line": -1.25,
+            "ah_price_band": [
+              1.8,
+              2.0
+            ],
+            "favorite_probability_band": [
+              0.6,
+              0.7
+            ]
+          },
+          "v1_status": "REJECT",
+          "v2_diagnostic_status": "RESEARCH_CANDIDATE",
+          "train_n": 221,
+          "oos_n": 225,
+          "holdout_n": 80,
+          "train_roi": 0.055023,
+          "pooled_oos_roi": 0.02724444,
+          "holdout_roi": 0.062375,
+          "shrunk_oos_roi": 0.01442353,
+          "positive_league_share": 0.6,
+          "mde_roi_95": null,
+          "mde_note": "Unavailable from aggregate frozen report; raw per-bet returns are required. Future v2 forward evaluation computes MDE directly.",
+          "gates": {
+            "train_n": true,
+            "oos_n": true,
+            "train_roi_positive": true,
+            "pooled_oos_roi_positive": true,
+            "holdout_not_catastrophic": true,
+            "positive_league_share": true,
+            "shrunk_oos_roi_positive": true
+          },
+          "promotion_allowed": false
+        },
+        {
+          "pattern_id": "FD_AH_EB6F0E0CC67F",
+          "market": "AH",
+          "pattern_key": {
+            "favorite_side": "H",
+            "ah_line": 0.0,
+            "ah_price_band": [
+              1.8,
+              2.0
+            ],
+            "favorite_probability_band": [
+              0.3,
+              0.4
+            ]
+          },
+          "v1_status": "REJECT",
+          "v2_diagnostic_status": "RESEARCH_REJECT",
+          "train_n": 392,
+          "oos_n": 237,
+          "holdout_n": 68,
+          "train_roi": 0.006531,
+          "pooled_oos_roi": -0.06421941,
+          "holdout_roi": -0.023676,
+          "shrunk_oos_roi": -0.03482838,
+          "positive_league_share": 0.2,
+          "mde_roi_95": null,
+          "mde_note": "Unavailable from aggregate frozen report; raw per-bet returns are required. Future v2 forward evaluation computes MDE directly.",
+          "gates": {
+            "train_n": true,
+            "oos_n": true,
+            "train_roi_positive": true,
+            "pooled_oos_roi_positive": false,
+            "holdout_not_catastrophic": true,
+            "positive_league_share": false,
+            "shrunk_oos_roi_positive": false
+          },
+          "promotion_allowed": false
+        }
+      ]
+    },
+    {
+      "universe": "INDEPENDENT_AH",
+      "report": "reports/independent_league_validation.json",
+      "status": "DIAGNOSTIC_REPLAY_ONLY",
+      "candidate_count": 4,
+      "research_candidate_count": 0,
+      "candidates": [
+        {
+          "pattern_id": "FD_AH_371065922123",
+          "market": "AH",
+          "pattern_key": {
+            "favorite_side": "A",
+            "ah_line": -0.25,
+            "ah_price_band": [
+              2.0,
+              2.2
+            ],
+            "favorite_probability_band": [
+              0.3,
+              0.4
+            ]
+          },
+          "v1_status": "REJECT",
+          "v2_diagnostic_status": "RESEARCH_REJECT",
+          "train_n": 294,
+          "oos_n": 123,
+          "holdout_n": 20,
+          "train_roi": 0.036122,
+          "pooled_oos_roi": -0.02723577,
+          "holdout_roi": 0.011,
+          "shrunk_oos_roi": -0.01037152,
+          "positive_league_share": 0.4,
+          "mde_roi_95": null,
+          "mde_note": "Unavailable from aggregate frozen report; raw per-bet returns are required. Future v2 forward evaluation computes MDE directly.",
+          "gates": {
+            "train_n": true,
+            "oos_n": true,
+            "train_roi_positive": true,
+            "pooled_oos_roi_positive": false,
+            "holdout_not_catastrophic": true,
+            "positive_league_share": false,
+            "shrunk_oos_roi_positive": false
+          },
+          "promotion_allowed": false
+        },
+        {
+          "pattern_id": "FD_AH_70ABBCBEDECC",
+          "market": "AH",
+          "pattern_key": {
+            "favorite_side": "A",
+            "ah_line": -0.5,
+            "ah_price_band": [
+              1.8,
+              2.0
+            ],
+            "favorite_probability_band": [
+              0.4,
+              0.5
+            ]
+          },
+          "v1_status": "REJECT",
+          "v2_diagnostic_status": "RESEARCH_REJECT",
+          "train_n": 152,
+          "oos_n": 143,
+          "holdout_n": 65,
+          "train_roi": 0.047697,
+          "pooled_oos_roi": -0.13937063,
+          "holdout_roi": -0.149231,
+          "shrunk_oos_roi": -0.05810496,
+          "positive_league_share": 0.2,
+          "mde_roi_95": null,
+          "mde_note": "Unavailable from aggregate frozen report; raw per-bet returns are required. Future v2 forward evaluation computes MDE directly.",
+          "gates": {
+            "train_n": true,
+            "oos_n": true,
+            "train_roi_positive": true,
+            "pooled_oos_roi_positive": false,
+            "holdout_not_catastrophic": false,
+            "positive_league_share": false,
+            "shrunk_oos_roi_positive": false
+          },
+          "promotion_allowed": false
+        },
+        {
+          "pattern_id": "FD_AH_2CED3799E02A",
+          "market": "AH",
+          "pattern_key": {
+            "favorite_side": "H",
+            "ah_line": -1.0,
+            "ah_price_band": [
+              1.8,
+              2.0
+            ],
+            "favorite_probability_band": [
+              0.6,
+              0.7
+            ]
+          },
+          "v1_status": "REJECT",
+          "v2_diagnostic_status": "RESEARCH_REJECT",
+          "train_n": 190,
+          "oos_n": 130,
+          "holdout_n": 45,
+          "train_roi": 0.072421,
+          "pooled_oos_roi": -0.04907692,
+          "holdout_roi": -0.11,
+          "shrunk_oos_roi": -0.01933333,
+          "positive_league_share": 0.4,
+          "mde_roi_95": null,
+          "mde_note": "Unavailable from aggregate frozen report; raw per-bet returns are required. Future v2 forward evaluation computes MDE directly.",
+          "gates": {
+            "train_n": true,
+            "oos_n": true,
+            "train_roi_positive": true,
+            "pooled_oos_roi_positive": false,
+            "holdout_not_catastrophic": false,
+            "positive_league_share": false,
+            "shrunk_oos_roi_positive": false
+          },
+          "promotion_allowed": false
+        },
+        {
+          "pattern_id": "FD_AH_A5D29D701F7D",
+          "market": "AH",
+          "pattern_key": {
+            "favorite_side": "H",
+            "ah_line": 0.0,
+            "ah_price_band": [
+              1.6,
+              1.8
+            ],
+            "favorite_probability_band": [
+              0.3,
+              0.4
+            ]
+          },
+          "v1_status": "REJECT",
+          "v2_diagnostic_status": "RESEARCH_REJECT",
+          "train_n": 316,
+          "oos_n": 218,
+          "holdout_n": 100,
+          "train_roi": 0.000886,
+          "pooled_oos_roi": -0.05334862,
+          "holdout_roi": -0.0712,
+          "shrunk_oos_roi": -0.02782297,
+          "positive_league_share": 0.2,
+          "mde_roi_95": null,
+          "mde_note": "Unavailable from aggregate frozen report; raw per-bet returns are required. Future v2 forward evaluation computes MDE directly.",
+          "gates": {
+            "train_n": true,
+            "oos_n": true,
+            "train_roi_positive": true,
+            "pooled_oos_roi_positive": false,
+            "holdout_not_catastrophic": false,
+            "positive_league_share": false,
+            "shrunk_oos_roi_positive": false
+          },
+          "promotion_allowed": false
+        }
+      ]
+    },
+    {
+      "universe": "THIRD_UNIVERSE_OU",
+      "report": "reports/third_universe_ou_validation.json",
+      "status": "DIAGNOSTIC_REPLAY_ONLY",
+      "candidate_count": 4,
+      "research_candidate_count": 1,
+      "candidates": [
+        {
+          "pattern_id": "FD_OU25_32E0C4AAB49F",
+          "market": "OU",
+          "pattern_key": {
+            "favorite_side": "A",
+            "ah_line": -0.25,
+            "ou_side": "O",
+            "ou_line": 2.5,
+            "ou_price_band": [
+              1.6,
+              1.8
+            ],
+            "favorite_probability_band": [
+              0.4,
+              0.5
+            ]
+          },
+          "v1_status": "REJECT",
+          "v2_diagnostic_status": "RESEARCH_REJECT",
+          "train_n": 167,
+          "oos_n": 123,
+          "holdout_n": 40,
+          "train_roi": 0.026946,
+          "pooled_oos_roi": -0.07609756,
+          "holdout_roi": -0.10975,
+          "shrunk_oos_roi": -0.02897833,
+          "positive_league_share": 0.2,
+          "mde_roi_95": null,
+          "mde_note": "Unavailable from aggregate frozen report; raw per-bet returns are required. Future v2 forward evaluation computes MDE directly.",
+          "gates": {
+            "train_n": true,
+            "oos_n": true,
+            "train_roi_positive": true,
+            "pooled_oos_roi_positive": false,
+            "holdout_not_catastrophic": false,
+            "positive_league_share": false,
+            "shrunk_oos_roi_positive": false
+          },
+          "promotion_allowed": false
+        },
+        {
+          "pattern_id": "FD_OU25_F6B9D74622E5",
+          "market": "OU",
+          "pattern_key": {
+            "favorite_side": "H",
+            "ah_line": -0.25,
+            "ou_side": "U",
+            "ou_line": 2.5,
+            "ou_price_band": [
+              1.6,
+              1.8
+            ],
+            "favorite_probability_band": [
+              0.4,
+              0.5
+            ]
+          },
+          "v1_status": "REJECT",
+          "v2_diagnostic_status": "RESEARCH_REJECT",
+          "train_n": 253,
+          "oos_n": 170,
+          "holdout_n": 47,
+          "train_roi": 0.012569,
+          "pooled_oos_roi": -0.007,
+          "holdout_roi": -0.097447,
+          "shrunk_oos_roi": -0.00321622,
+          "positive_league_share": 0.4,
+          "mde_roi_95": null,
+          "mde_note": "Unavailable from aggregate frozen report; raw per-bet returns are required. Future v2 forward evaluation computes MDE directly.",
+          "gates": {
+            "train_n": true,
+            "oos_n": true,
+            "train_roi_positive": true,
+            "pooled_oos_roi_positive": false,
+            "holdout_not_catastrophic": false,
+            "positive_league_share": false,
+            "shrunk_oos_roi_positive": false
+          },
+          "promotion_allowed": false
+        },
+        {
+          "pattern_id": "FD_OU25_D0A17AE7DB9C",
+          "market": "OU",
+          "pattern_key": {
+            "favorite_side": "H",
+            "ah_line": -0.25,
+            "ou_side": "U",
+            "ou_line": 2.5,
+            "ou_price_band": [
+              1.8,
+              2.0
+            ],
+            "favorite_probability_band": [
+              0.4,
+              0.5
+            ]
+          },
+          "v1_status": "REJECT",
+          "v2_diagnostic_status": "RESEARCH_CANDIDATE",
+          "train_n": 235,
+          "oos_n": 235,
+          "holdout_n": 62,
+          "train_roi": 0.006,
+          "pooled_oos_roi": 0.03306383,
+          "holdout_roi": 0.069677,
+          "shrunk_oos_roi": 0.01786207,
+          "positive_league_share": 0.6,
+          "mde_roi_95": null,
+          "mde_note": "Unavailable from aggregate frozen report; raw per-bet returns are required. Future v2 forward evaluation computes MDE directly.",
+          "gates": {
+            "train_n": true,
+            "oos_n": true,
+            "train_roi_positive": true,
+            "pooled_oos_roi_positive": true,
+            "holdout_not_catastrophic": true,
+            "positive_league_share": true,
+            "shrunk_oos_roi_positive": true
+          },
+          "promotion_allowed": false
+        },
+        {
+          "pattern_id": "FD_OU25_783BFF86F05B",
+          "market": "OU",
+          "pattern_key": {
+            "favorite_side": "H",
+            "ah_line": -0.25,
+            "ou_side": "U",
+            "ou_line": 2.5,
+            "ou_price_band": [
+              2.0,
+              2.2
+            ],
+            "favorite_probability_band": [
+              0.4,
+              0.5
+            ]
+          },
+          "v1_status": "REJECT",
+          "v2_diagnostic_status": "RESEARCH_REJECT",
+          "train_n": 173,
+          "oos_n": 130,
+          "holdout_n": 37,
+          "train_roi": 0.020867,
+          "pooled_oos_roi": -0.05469231,
+          "holdout_roi": -0.211081,
+          "shrunk_oos_roi": -0.02154545,
+          "positive_league_share": 0.4,
+          "mde_roi_95": null,
+          "mde_note": "Unavailable from aggregate frozen report; raw per-bet returns are required. Future v2 forward evaluation computes MDE directly.",
+          "gates": {
+            "train_n": true,
+            "oos_n": true,
+            "train_roi_positive": true,
+            "pooled_oos_roi_positive": false,
+            "holdout_not_catastrophic": false,
+            "positive_league_share": false,
+            "shrunk_oos_roi_positive": false
+          },
+          "promotion_allowed": false
+        }
+      ]
+    }
+  ]
+}
