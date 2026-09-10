@@ -32,12 +32,16 @@ jobs:
       - name: Verify main-line observer contracts
         run: pytest -q tests/test_v2_mainline_observer.py tests/test_v2_research_shadow.py
       - name: Observe current Bet365 main lines across both v2 universes
-        run: python -m odds_scanner.v2_mainline_observer
+        run: python -m odds_scanner.v2_mainline_observer | tee /tmp/v2-mainline-observer-output.json
       - name: Persist observer-owned evidence safely
         run: |
           set -euo pipefail
           mkdir -p /tmp/v2-mainline
-          cp reports/v2_mainline_observer.json /tmp/v2-mainline/observer.json
+          if [ -f reports/v2_mainline_observer.json ]; then
+            cp reports/v2_mainline_observer.json /tmp/v2-mainline/observer.json
+          else
+            cp /tmp/v2-mainline-observer-output.json /tmp/v2-mainline/observer.json
+          fi
           if [ -f reports/v2_target_tournaments.json ]; then cp reports/v2_target_tournaments.json /tmp/v2-mainline/targets.json; fi
           if [ -f data/normalized/v2_mainline_snapshots.jsonl ]; then cp data/normalized/v2_mainline_snapshots.jsonl /tmp/v2-mainline/snapshots.jsonl; fi
           git config user.name 'odds-scanner-actions'
