@@ -1,0 +1,73 @@
+name: Validation V2 Diagnostic
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/validation_v2.py'
+      - 'tests/test_validation_v2.py'
+      - 'reports/validation_v2_preregistration.json'
+      - 'reports/football_data_multiseason_validation.json'
+      - 'reports/independent_league_validation.json'
+      - 'reports/third_universe_ou_validation.json'
+      - '.github/workflows/validation-v2.yml'
+  workflow_dispatch:
+concurrency:
+  group: validation-v2-diagnostic
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.11'}
+      - run: python -m pip install -e '.[dev]'
+      - run: pytest -q
+      - name: Verify v2 preregistration lock
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('reports/validation_v2_preregistration.json', encoding='utf-8'))
+          assert p['locked_before_future_v2_prospective_evaluation'] is True
+          assert p['promotion_policy']['historical_v1_replay_can_promote'] is False
+          assert p['promotion_policy']['production_registry_remains_fail_closed'] is True
+          print('VALIDATION_V2_PREREGISTRATION_LOCKED')
+          PY
+          cp reports/pattern_registry.json /tmp/pattern_registry.json
+      - name: Build v2 diagnostic replay
+        run: python -m odds_scanner.validation_v2
+      - name: Prove production registry unchanged
+        run: |
+          cmp -s reports/pattern_registry.json /tmp/pattern_registry.json
+          python - <<'PY'
+          import json
+          s=json.load(open('reports/validation_v2_status.json', encoding='utf-8'))
+          assert s['historical_replay_is_diagnostic_only'] is True
+          assert s['production_promotion_allowed'] is False
+          print({
+            'replayed': s['total_historical_candidates_replayed'],
+            'research_candidates': s['research_candidates_under_v2_diagnostic'],
+            'paper_candidates': s['paper_candidates']
+          })
+          PY
+      - name: Persist v2 status safely
+        run: |
+          set -euo pipefail
+          cp reports/validation_v2_status.json /tmp/validation_v2_status.json
+          git config user.name 'odds-scanner-actions'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/validation_v2_status.json reports/validation_v2_status.json
+            git add -f reports/validation_v2_status.json
+            git diff --cached --quiet && exit 0
+            git commit -m 'Update validation v2 diagnostic [skip ci]'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
