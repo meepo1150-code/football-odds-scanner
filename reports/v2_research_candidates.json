@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "classification": "VALIDATION_V2_RESEARCH_CANDIDATE_CATALOG",
+  "source": "reports/validation_v2_status.json",
+  "candidate_count": 3,
+  "paper_label": "PAPER_RESEARCH_ONLY",
+  "production_promotion_allowed": false,
+  "production_registry_must_remain_unchanged": true,
+  "forward_comparison_policy": {
+    "historical_reference_semantics": "FOOTBALL_DATA_FIRST_COLLECTED_AFTER_MARKET_OPENING_NOT_TRUE_OPEN",
+    "odds_source": "OddsPapi Bet365 strict pre-match history",
+    "line_semantics_requirement": "A forward row may be evaluated only when the source identifies a line comparable to the historical main/selected line. Alternative-line presence alone is insufficient.",
+    "missing_main_line_behavior": "NOT_COMPARABLE",
+    "no_alt_line_cherry_picking": true,
+    "no_retuning": true
+  },
+  "candidates": [
+    {
+      "pattern_id": "FD_AH_4E30F9F2EC34",
+      "universe": "BIG5_AH",
+      "market": "AH",
+      "selection": "FAVORITE",
+      "pattern_key": {
+        "favorite_side": "H",
+        "ah_line": -0.5,
+        "ah_price_band": [1.8, 2.0],
+        "favorite_probability_band": [0.4, 0.5]
+      },
+      "historical_v2_status": "RESEARCH_CANDIDATE"
+    },
+    {
+      "pattern_id": "FD_AH_1D65F429F6A5",
+      "universe": "BIG5_AH",
+      "market": "AH",
+      "selection": "FAVORITE",
+      "pattern_key": {
+        "favorite_side": "H",
+        "ah_line": -1.25,
+        "ah_price_band": [1.8, 2.0],
+        "favorite_probability_band": [0.6, 0.7]
+      },
+      "historical_v2_status": "RESEARCH_CANDIDATE"
+    },
+    {
+      "pattern_id": "FD_OU25_D0A17AE7DB9C",
+      "universe": "THIRD_UNIVERSE_OU",
+      "market": "OU",
+      "selection": "U",
+      "pattern_key": {
+        "favorite_side": "H",
+        "ah_line": -0.25,
+        "ou_side": "U",
+        "ou_line": 2.5,
+        "ou_price_band": [1.8, 2.0],
+        "favorite_probability_band": [0.4, 0.5]
+      },
+      "historical_v2_status": "RESEARCH_CANDIDATE"
+    }
+  ]
+}
