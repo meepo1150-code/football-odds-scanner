@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
   "status": "OK",
-  "generated_at": "2026-09-10T18:32:59.981372+00:00",
+  "generated_at": "2026-09-10T21:41:47.885027+00:00",
   "coverage_start": "2026-01-01T00:00:00+00:00",
   "last_discovery_at": "2026-09-10T04:53:14.444997+00:00",
   "discovery_cursor": "2026-03-23T00:00:00+00:00",
@@ -9,106 +9,6 @@
   "last_discovery_mode": null,
   "last_discovery_window": null,
   "fixture_queue": [
-    {
-      "fixtureId": "id1000002361061507",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-03-16T19:45:00.000Z",
-      "participant1Name": "US Cremonese",
-      "participant2Name": "ACF Fiorentina",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000000861624494",
-      "tournamentId": 8,
-      "tournamentName": "LaLiga",
-      "tournamentSlug": "laliga",
-      "startTime": "2026-03-16T20:00:00.000Z",
-      "participant1Name": "Rayo Vallecano",
-      "participant2Name": "Levante UD",
-      "archive_country": "Spain"
-    },
-    {
-      "fixtureId": "id1000001768096896",
-      "tournamentId": 17,
-      "tournamentName": "Premier League",
-      "tournamentSlug": "premier-league",
-      "startTime": "2026-03-16T20:00:00.000Z",
-      "participant1Name": "Brentford FC",
-      "participant2Name": "Wolverhampton Wanderers",
-      "archive_country": "England"
-    },
-    {
-      "fixtureId": "id1000002361061529",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-03-20T17:30:00.000Z",
-      "participant1Name": "Cagliari Calcio",
-      "participant2Name": "SSC Napoli",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000003561514082",
-      "tournamentId": 35,
-      "tournamentName": "Bundesliga",
-      "tournamentSlug": "bundesliga",
-      "startTime": "2026-03-20T19:30:00.000Z",
-      "participant1Name": "RB Leipzig",
-      "participant2Name": "TSG Hoffenheim",
-      "archive_country": "Germany"
-    },
-    {
-      "fixtureId": "id1000002361061535",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-03-20T19:45:00.000Z",
-      "participant1Name": "Genoa CFC",
-      "participant2Name": "Udinese Calcio",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000003461526466",
-      "tournamentId": 34,
-      "tournamentName": "Ligue 1",
-      "tournamentSlug": "ligue-1",
-      "startTime": "2026-03-20T19:45:00.000Z",
-      "participant1Name": "Racing Club De Lens",
-      "participant2Name": "Angers SCO",
-      "archive_country": "France"
-    },
-    {
-      "fixtureId": "id1000000861624516",
-      "tournamentId": 8,
-      "tournamentName": "LaLiga",
-      "tournamentSlug": "laliga",
-      "startTime": "2026-03-20T20:00:00.000Z",
-      "participant1Name": "Villarreal CF",
-      "participant2Name": "Real Sociedad San Sebastian",
-      "archive_country": "Spain"
-    },
-    {
-      "fixtureId": "id1000001761301119",
-      "tournamentId": 17,
-      "tournamentName": "Premier League",
-      "tournamentSlug": "premier-league",
-      "startTime": "2026-03-20T20:00:00.000Z",
-      "participant1Name": "AFC Bournemouth",
-      "participant2Name": "Manchester United",
-      "archive_country": "England"
-    },
-    {
-      "fixtureId": "id1000001761301123",
-      "tournamentId": 17,
-      "tournamentName": "Premier League",
-      "tournamentSlug": "premier-league",
-      "startTime": "2026-03-21T12:45:00.000Z",
-      "participant1Name": "Brighton & Hove Albion",
-      "participant2Name": "Liverpool FC",
-      "archive_country": "England"
-    },
     {
       "fixtureId": "id1000000861624502",
       "tournamentId": 8,
@@ -546,6 +446,7 @@
     "id1000000861624488",
     "id1000000861624490",
     "id1000000861624492",
+    "id1000000861624494",
     "id1000000861624496",
     "id1000000868917042",
     "id1000001761300879",
@@ -596,6 +497,7 @@
     "id1000001761301113",
     "id1000001761301115",
     "id1000001761301117",
+    "id1000001768096896",
     "id1000002361061269",
     "id1000002361061271",
     "id1000002361061273",
@@ -643,6 +545,7 @@
     "id1000002361061501",
     "id1000002361061503",
     "id1000002361061505",
+    "id1000002361061507",
     "id1000002361061509",
     "id1000002361061511",
     "id1000002361061513",
@@ -713,12 +616,15 @@
     "id1000003561514074",
     "id1000003567872358"
   ],
-  "queued_remaining": 49,
+  "queued_remaining": 39,
   "processed_this_run": 10,
-  "rows_added_this_run": 0,
-  "archive_rows": 322,
+  "rows_added_this_run": 7,
+  "archive_rows": 329,
   "history_storage": "LEGACY_PLUS_DAILY_SHARDS",
-  "touched_shards": [],
+  "touched_shards": [
+    "data/normalized/oddspapi_history_ticks/2026-03-20.jsonl",
+    "data/normalized/oddspapi_history_ticks/2026-03-21.jsonl"
+  ],
   "billable_requests_this_run": 0,
   "free_history_requests_this_run": 10,
   "history_request_spacing_seconds": 5.2,
