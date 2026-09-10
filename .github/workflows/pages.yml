@@ -10,6 +10,9 @@ on:
       - 'Current Multi-Market Provider Health'
       - 'Five Dollar Historical Snapshot Archive'
       - 'OddsPapi Current Provider Health'
+      - 'OddsPapi Historical Tick Archive'
+      - 'Flashscore Exact Result Backfill'
+      - 'Prospective 2026-27 Research Status'
     types: [completed]
 permissions:
   contents: read
@@ -57,4 +60,4 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v5
 
-# Redeploy marker after repository Pages was enabled in Settings.
+# Research data workflows trigger fresh Pages runs so deployed status does not lag generated reports.
