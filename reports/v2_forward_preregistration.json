@@ -1,6 +1,7 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "created_at": "2026-09-10T10:03:00Z",
+  "amended_at": "2026-09-10T13:25:00Z",
   "classification": "VALIDATION_V2_FORWARD_PAPER_PREREGISTRATION",
   "paper_label": "PAPER_RESEARCH_ONLY",
   "locked_before_forward_outcomes_inspected": true,
@@ -23,9 +24,19 @@
     "alternative_line_substitution_allowed": false,
     "fixture_join": "exact OddsPapi fixture_id only; fuzzy team/date joining is prohibited"
   },
+  "collection_policy": {
+    "scheduled_cadence_hours": 12,
+    "scheduled_runs_per_day": 2,
+    "batch_layout": ["BIG5_AH", "THIRD_UNIVERSE_OU"],
+    "leagues_per_batch": 5,
+    "current_odds_requests_per_scheduled_run": 2,
+    "quota_intent": "Keep normal current-odds usage near 120-124 requests per month while avoiding the provider HTTP 400 observed with one 10-tournament request.",
+    "cadence_change_reason": "The first 10-tournament engineering request returned HTTP 400 before any candidate outcome was evaluated. Split batching and the 12-hour cadence were frozen before forward entries were allowed to begin.",
+    "engineering_failures_before_lock_are_forward_entries": false
+  },
   "entry_policy": {
     "unit": "candidate_id x fixture_id",
-    "entry_definition": "the first scheduled observer snapshot after this preregistration is locked that satisfies every frozen condition for that candidate",
+    "entry_definition": "the first scheduled observer snapshot after this preregistration amendment is locked that satisfies every frozen condition for that candidate",
     "one_entry_per_candidate_fixture": true,
     "later_better_price_reselection_allowed": false,
     "retroactive_entry_creation_allowed": false,
@@ -84,7 +95,8 @@
   "anti_p_hacking_rule": "Do not change candidate thresholds, price/probability bands, line definitions, entry timing, one-entry rule, sample minimums, CLV definition, settlement rules, or forward gates after inspecting forward candidate outcomes. Any material change creates a new hypothesis and requires a new untouched forward sample.",
   "notes": [
     "The three candidates were selected retrospectively and therefore cannot become production patterns solely by passing this paper stage.",
-    "Six-hour collection cadence is a quota-aware observation schedule, so latest observed pre-match odds must not be described as the exact bookmaker closing tick.",
-    "Forward evidence begins only after this preregistration; earlier diagnostic or engineering observations cannot be promoted into candidate entries retroactively."
+    "Twelve-hour collection cadence is quota-aware, so latest observed pre-match odds must not be described as the exact bookmaker closing tick.",
+    "The split-batch/cadence amendment was made in response to an HTTP 400 engineering failure before any forward candidate result was evaluated.",
+    "Forward evidence begins only after this amended preregistration; earlier diagnostic or engineering observations cannot be promoted into candidate entries retroactively."
   ]
 }
