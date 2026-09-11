@@ -1,17 +1,93 @@
 {
   "schema_version": "1.0",
   "classification": "VALIDATION_V2_FORWARD_CLV_STATUS",
-  "status": "NO_FORWARD_ENTRIES",
-  "generated_at": "2026-09-11T04:48:24.221441+00:00",
-  "entries": 0,
-  "snapshots": 13,
-  "comparable_clv": 0,
+  "status": "COLLECTING_FORWARD_CLV",
+  "generated_at": "2026-09-11T16:34:33.641288+00:00",
+  "entries": 3,
+  "snapshots": 40,
+  "comparable_clv": 3,
   "clv_definition": "entry decimal price / latest-observed same-selection same-line price - 1",
   "line_change_policy": "report line move separately and mark price CLV not comparable when the main line changes",
   "closing_label": "LATEST_OBSERVED_PREMATCH_MAINLINE",
   "perfect_market_close_claim": false,
-  "by_candidate": {},
-  "evaluations": [],
+  "by_candidate": {
+    "FD_AH_1D65F429F6A5": {
+      "entries": 2,
+      "comparable_clv": 2,
+      "comparable_share": 1.0,
+      "mean_clv": 0.0,
+      "median_clv": 0.0,
+      "statuses": {
+        "CLV_COMPARABLE": 2
+      }
+    },
+    "FD_AH_4E30F9F2EC34": {
+      "entries": 1,
+      "comparable_clv": 1,
+      "comparable_share": 1.0,
+      "mean_clv": 0.0,
+      "median_clv": 0.0,
+      "statuses": {
+        "CLV_COMPARABLE": 1
+      }
+    }
+  },
+  "evaluations": [
+    {
+      "candidate_id": "FD_AH_1D65F429F6A5",
+      "fixture_id": "id1000000872478546",
+      "league": "LaLiga",
+      "market": "AH",
+      "selection": "H",
+      "latest_observed_at": "2026-09-11T16:34:32.879062+00:00",
+      "latest_line": -1.25,
+      "latest_price": 1.925,
+      "entry_line": -1.25,
+      "entry_price": 1.925,
+      "line_move": 0.0,
+      "closing_label": "LATEST_OBSERVED_PREMATCH_MAINLINE",
+      "perfect_market_close_claim": false,
+      "status": "CLV_COMPARABLE",
+      "clv_comparable": true,
+      "price_clv": 0.0
+    },
+    {
+      "candidate_id": "FD_AH_1D65F429F6A5",
+      "fixture_id": "id1000001772221264",
+      "league": "Premier League",
+      "market": "AH",
+      "selection": "H",
+      "latest_observed_at": "2026-09-11T16:34:32.879062+00:00",
+      "latest_line": -1.25,
+      "latest_price": 1.9,
+      "entry_line": -1.25,
+      "entry_price": 1.9,
+      "line_move": 0.0,
+      "closing_label": "LATEST_OBSERVED_PREMATCH_MAINLINE",
+      "perfect_market_close_claim": false,
+      "status": "CLV_COMPARABLE",
+      "clv_comparable": true,
+      "price_clv": 0.0
+    },
+    {
+      "candidate_id": "FD_AH_4E30F9F2EC34",
+      "fixture_id": "id1000000872478562",
+      "league": "LaLiga",
+      "market": "AH",
+      "selection": "H",
+      "latest_observed_at": "2026-09-11T16:34:32.879062+00:00",
+      "latest_line": -0.5,
+      "latest_price": 1.95,
+      "entry_line": -0.5,
+      "entry_price": 1.95,
+      "line_move": 0.0,
+      "closing_label": "LATEST_OBSERVED_PREMATCH_MAINLINE",
+      "perfect_market_close_claim": false,
+      "status": "CLV_COMPARABLE",
+      "clv_comparable": true,
+      "price_clv": 0.0
+    }
+  ],
   "paper_label": "PAPER_RESEARCH_ONLY",
   "production_promotion_allowed": false
 }

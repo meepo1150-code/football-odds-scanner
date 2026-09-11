@@ -2,18 +2,18 @@
   "schema_version": "1.0",
   "classification": "VALIDATION_V2_FORWARD_READINESS",
   "status": "COLLECTING_FORWARD_EVIDENCE",
-  "generated_at": "2026-09-11T12:56:21.405747+00:00",
+  "generated_at": "2026-09-11T16:34:33.679263+00:00",
   "candidate_count": 3,
   "forward_start": "2026-09-10T13:25:00Z",
   "scheduled_cadence_hours": 12,
   "entry_status": "COLLECTING_FORWARD_EVIDENCE",
-  "clv_status": "NO_FORWARD_ENTRIES",
+  "clv_status": "COLLECTING_FORWARD_CLV",
   "performance_status": "NO_FORWARD_ENTRIES",
   "candidates": [
     {
       "candidate_id": "FD_AH_4E30F9F2EC34",
       "status": "COLLECTING_FORWARD_EVIDENCE",
-      "entries_recorded": 0,
+      "entries_recorded": 1,
       "settled_entries": 0,
       "remaining_to_minimum_settled_entries": 150,
       "gates": [
@@ -43,13 +43,13 @@
         },
         {
           "gate": "positive_mean_comparable_clv",
-          "value": null,
+          "value": 0.0,
           "threshold": "> 0",
           "status": "PENDING"
         },
         {
           "gate": "positive_median_comparable_clv",
-          "value": null,
+          "value": 0.0,
           "threshold": "> 0",
           "status": "PENDING"
         },
@@ -79,13 +79,13 @@
         },
         {
           "gate": "entry_to_close_line_move_report",
-          "value": false,
+          "value": true,
           "threshold": true,
           "status": "PENDING"
         },
         {
           "gate": "minimum_comparable_clv_share",
-          "value": null,
+          "value": 1.0,
           "threshold": 0.7,
           "status": "PENDING"
         }
@@ -97,7 +97,7 @@
     {
       "candidate_id": "FD_AH_1D65F429F6A5",
       "status": "COLLECTING_FORWARD_EVIDENCE",
-      "entries_recorded": 0,
+      "entries_recorded": 2,
       "settled_entries": 0,
       "remaining_to_minimum_settled_entries": 150,
       "gates": [
@@ -127,13 +127,13 @@
         },
         {
           "gate": "positive_mean_comparable_clv",
-          "value": null,
+          "value": 0.0,
           "threshold": "> 0",
           "status": "PENDING"
         },
         {
           "gate": "positive_median_comparable_clv",
-          "value": null,
+          "value": 0.0,
           "threshold": "> 0",
           "status": "PENDING"
         },
@@ -163,13 +163,13 @@
         },
         {
           "gate": "entry_to_close_line_move_report",
-          "value": false,
+          "value": true,
           "threshold": true,
           "status": "PENDING"
         },
         {
           "gate": "minimum_comparable_clv_share",
-          "value": null,
+          "value": 1.0,
           "threshold": 0.7,
           "status": "PENDING"
         }
