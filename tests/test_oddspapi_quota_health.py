@@ -19,6 +19,7 @@ def test_available_quota_reports_remaining():
     assert out["status"] == "QUOTA_AVAILABLE"
     assert out["request_remaining"] == 225
     assert out["quota_exhausted"] is False
+    assert out["rate_limit"] == 1
     assert abs(out["usage_fraction"] - 0.1) < 1e-12
 
 
