@@ -33,9 +33,15 @@ def test_both_true_is_diagnostic_main_line():
     assert shape["both_true_lines"] == [-0.5]
 
 
-def test_one_side_true_is_visible_but_not_promoted_to_both_true():
+def test_home_only_true_is_visible_but_not_promoted_to_both_true():
     shape = ah_marker_shape(_fixture("TRUE", "FALSE"), _catalog())
     assert shape["signatures"] == {"H_TRUE__A_FALSE": 1}
+    assert shape["both_true_lines"] == []
+
+
+def test_away_only_true_is_visible_but_not_promoted_to_both_true():
+    shape = ah_marker_shape(_fixture("FALSE", "TRUE"), _catalog())
+    assert shape["signatures"] == {"H_FALSE__A_TRUE": 1}
     assert shape["both_true_lines"] == []
 
 
