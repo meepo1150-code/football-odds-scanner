@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.0",
+  "classification": "VALIDATION_V2_OPERATIONAL_PIPELINE_HEALTH",
+  "status": "OBSERVER_DEGRADED",
+  "generated_at": "2026-09-11T01:59:21.054702+00:00",
+  "research_gate_effect": "NONE_OPERATIONAL_HEALTH_DOES_NOT_CHANGE_FROZEN_FORWARD_GATES",
+  "quota": {
+    "status": "QUOTA_AVAILABLE",
+    "request_limit": 250,
+    "request_count": 63,
+    "request_remaining": 187,
+    "usage_fraction": 0.252,
+    "quota_exhausted": false,
+    "soccer_sport_id_10_allowed": true,
+    "bet365_allowed": true,
+    "generated_at": "2026-09-11T01:52:22.531272+00:00"
+  },
+  "observer": {
+    "status": "CURRENT_BATCH_UNAVAILABLE",
+    "operational_success": false,
+    "generated_at": "2026-09-11T01:14:24.589211+00:00",
+    "observed_at": null,
+    "age_hours": 0.7490181919444444,
+    "stale_after_hours": 18.0,
+    "stale": false,
+    "failed_universe": "THIRD_UNIVERSE_OU",
+    "errors": [
+      "HTTPError: HTTP Error 429: Too Many Requests"
+    ],
+    "requests_attempted": 2,
+    "batch_count": null,
+    "snapshots_stored": null
+  },
+  "forward": {
+    "entry_status": "COLLECTING_FORWARD_EVIDENCE",
+    "entries_total": 0,
+    "entries_with_exact_external_ids": null,
+    "result_backfill_status": "NOT_YET_RUN",
+    "result_requests_attempted": null,
+    "settled_entries": 0,
+    "performance_status": "NO_FORWARD_ENTRIES",
+    "readiness_status": "COLLECTING_FORWARD_EVIDENCE"
+  },
+  "operational_blockers": [
+    "MAINLINE_OBSERVER_CURRENT_BATCH_UNAVAILABLE"
+  ],
+  "paper_label": "PAPER_RESEARCH_ONLY",
+  "production_promotion_allowed": false
+}
