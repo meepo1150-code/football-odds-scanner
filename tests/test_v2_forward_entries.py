@@ -74,6 +74,19 @@ def test_first_qualifying_snapshot_after_amendment_becomes_entry(tmp_path):
     assert rows[0]["production_eligible"] is False
 
 
+def test_exact_external_ids_are_copied_into_new_immutable_entry(tmp_path):
+    _inputs(tmp_path)
+    snap = _snapshot("2026-09-10T13:25:00Z")
+    snap["external_providers"] = {"flashscoreId": "abc123", "sofascoreId": 456}
+    snap["external_provider_mapping_source"] = "ODDSPAPI_CURRENT_EXTERNALPROVIDERS_EXACT_IDS"
+    _jsonl(tmp_path / "data/normalized/v2_mainline_snapshots.jsonl", [snap])
+    status = build_forward_entries(tmp_path)
+    row = json.loads((tmp_path / "data/normalized/v2_forward_entries.jsonl").read_text().splitlines()[0])
+    assert row["external_providers"] == {"flashscoreId": "abc123", "sofascoreId": 456}
+    assert row["external_provider_mapping_source"] == "ODDSPAPI_CURRENT_EXTERNALPROVIDERS_EXACT_IDS"
+    assert status["entries_with_exact_external_ids"] == 1
+
+
 def test_existing_entry_is_never_rewritten_by_earlier_or_better_later_snapshot(tmp_path):
     _inputs(tmp_path)
     path = tmp_path / "data/normalized/v2_mainline_snapshots.jsonl"
