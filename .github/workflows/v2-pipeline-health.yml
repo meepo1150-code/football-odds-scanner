@@ -3,6 +3,13 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '50 2,8,14,20 * * *'
+  workflow_run:
+    workflows:
+      - 'Validation v2 Main-Line Observer'
+      - 'Validation v2 Forward Result Backfill'
+      - 'Validation v2 Forward Performance'
+      - 'OddsPapi Quota Health'
+    types: [completed]
   push:
     branches: [main]
     paths:
@@ -16,6 +23,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   health:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -45,6 +53,7 @@ jobs:
           exit 1
 
 # Zero provider calls. This report summarizes operational collection health only;
-# it cannot pass/fail or modify any frozen research gate. The narrow push trigger
-# seeds the first report when the health engine itself changes; generated report
-# commits are outside these paths and cannot loop this workflow.
+# it cannot pass/fail or modify any frozen research gate. Successful observer,
+# result, performance, and quota workflows trigger an immediate health refresh;
+# failed upstream workflows do not overwrite the last persisted evidence. The
+# narrow push trigger seeds the report when this health engine itself changes.
