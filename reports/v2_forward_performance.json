@@ -1,16 +1,16 @@
 {
   "schema_version": "1.0",
   "classification": "VALIDATION_V2_FORWARD_PERFORMANCE",
-  "status": "WAITING_FOR_EXACT_RESULTS",
-  "generated_at": "2026-09-11T21:57:49.458117+00:00",
+  "status": "FORWARD_PERFORMANCE_AVAILABLE",
+  "generated_at": "2026-09-11T22:43:05.636213+00:00",
   "entry_rows": 3,
-  "settled_entries": 0,
-  "missing_result_entries": 3,
+  "settled_entries": 1,
+  "missing_result_entries": 2,
   "ambiguous_result_entries": 0,
   "invalid_entry_rows": 0,
   "result_join": "EXACT_ODDSPAPI_FIXTURE_ID_ONLY",
   "fuzzy_result_join_allowed": false,
-  "result_rows_seen": 247,
+  "result_rows_seen": 248,
   "bootstrap_iterations": 10000,
   "by_candidate": {
     "FD_AH_1D65F429F6A5": {
@@ -34,24 +34,32 @@
       "unsettled_entries": 2
     },
     "FD_AH_4E30F9F2EC34": {
-      "settled_entries": 0,
-      "total_profit_units": 0,
-      "roi": null,
+      "settled_entries": 1,
+      "total_profit_units": 0.95,
+      "roi": 0.95,
       "bootstrap_iterations": 10000,
-      "bootstrap_roi_ci95_lower": null,
-      "bootstrap_roi_ci95_upper": null,
-      "distinct_leagues": 0,
-      "positive_leagues": 0,
-      "positive_league_share": null,
-      "max_single_league_share_of_absolute_profit": null,
+      "bootstrap_roi_ci95_lower": 0.95,
+      "bootstrap_roi_ci95_upper": 0.95,
+      "distinct_leagues": 1,
+      "positive_leagues": 1,
+      "positive_league_share": 1.0,
+      "max_single_league_share_of_absolute_profit": 1.0,
       "league_concentration_definition": "max(abs(net league profit)) / sum(abs(net league profit))",
-      "max_drawdown_units": null,
-      "longest_losing_streak": null,
+      "max_drawdown_units": 0.0,
+      "longest_losing_streak": 0,
       "losing_streak_definition": "consecutive settled entries with profit_units < 0; push/non-loss resets streak",
-      "settlement_counts": {},
-      "league_breakdown": {},
+      "settlement_counts": {
+        "FULL_WIN": 1
+      },
+      "league_breakdown": {
+        "LaLiga": {
+          "settled_entries": 1,
+          "profit_units": 0.95,
+          "roi": 0.95
+        }
+      },
       "entries_recorded": 1,
-      "unsettled_entries": 1
+      "unsettled_entries": 0
     }
   },
   "paper_label": "PAPER_RESEARCH_ONLY",
