@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .oddspapi_discovery import _rows
-from .oddspapi_provider import ENV_KEY, _get
+from .oddspapi_provider import ENV_KEY, _catalog, _get, _outcome_lookup, _player
 from .oddspapi_quota_health import summarize_account
 from .v2_mainline_observer import CATALOG_PATH, CANDIDATE_PATH, _load_json, extract_mainline_snapshot, mainline_shape, _in_band
 
@@ -57,12 +57,37 @@ def candidate_like(snapshot,candidates):
   matches.append(str(c.get('pattern_id')))
  return matches
 
+def ah_marker_diagnostic(fixture,catalog_rows,bookmaker='bet365'):
+ book=(fixture.get('bookmakerOdds') or {}).get(bookmaker)
+ if not isinstance(book,dict): return {'active_ah_markets':0,'marker_signatures':{},'market_state':'NO_BOOKMAKER'}
+ catalog=_catalog(catalog_rows); signatures=Counter(); active=0
+ for market_id,market_data in (book.get('markets') or {}).items():
+  meta=catalog.get(str(market_id))
+  if not isinstance(meta,dict) or not isinstance(market_data,dict) or market_data.get('marketActive') is not True: continue
+  if 'asian handicap' not in str(meta.get('marketName') or '').lower(): continue
+  names=_outcome_lookup(meta); selections={}
+  for outcome_id,outcome in (market_data.get('outcomes') or {}).items():
+   p=_player(outcome) if isinstance(outcome,dict) else None
+   if not p or p.get('active') is not True: continue
+   label=names.get(str(outcome_id),'').strip().lower()
+   if label: selections[label]=p
+  hp=selections.get('home') or selections.get('1'); ap=selections.get('away') or selections.get('2')
+  if not hp or not ap: continue
+  active+=1
+  def marker(p):
+   return 'TRUE' if p.get('mainLine') is True else ('FALSE' if p.get('mainLine') is False else 'MISSING')
+  signatures[f"H_{marker(hp)}__A_{marker(ap)}"]+=1
+ state='NO_ACTIVE_AH_MARKET' if active==0 else ('HAS_EXPLICIT_MAIN_AH' if signatures.get('H_TRUE__A_TRUE',0)>0 else 'AH_PRESENT_NO_EXPLICIT_MAIN')
+ return {'active_ah_markets':active,'marker_signatures':dict(sorted(signatures.items())),'market_state':state}
+
 def summarize_diagnostics(rows):
- overall_shapes=Counter(); overall_reasons=Counter(); by_league=defaultdict(lambda:{'fixtures':0,'shape_counts':Counter(),'reason_counts':Counter()})
+ overall_shapes=Counter(); overall_reasons=Counter(); marker_signatures=Counter(); market_states=Counter(); by_league=defaultdict(lambda:{'fixtures':0,'shape_counts':Counter(),'reason_counts':Counter(),'ah_marker_signatures':Counter(),'ah_market_states':Counter(),'active_ah_markets':0})
  for row in rows:
   key=f"{row.get('country') or ''} · {row.get('league') or '—'}"; shape=str(row.get('shape_key') or 'UNKNOWN'); reason=str(row.get('reason') or 'UNKNOWN')
   overall_shapes[shape]+=1; overall_reasons[reason]+=1; x=by_league[key]; x['fixtures']+=1; x['shape_counts'][shape]+=1; x['reason_counts'][reason]+=1
- return {'mainline_shape_counts':dict(sorted(overall_shapes.items())),'diagnostic_reason_counts':dict(sorted(overall_reasons.items())),'league_diagnostics':[{'league':k,'fixtures':x['fixtures'],'shape_counts':dict(sorted(x['shape_counts'].items())),'reason_counts':dict(sorted(x['reason_counts'].items()))} for k,x in sorted(by_league.items())],'diagnostic_policy':'Diagnostics only. No fallback AH line is selected; strict admissibility still requires exactly one explicit mainLine=true AH and one explicit mainLine=true full-time O/U.'}
+  md=row.get('ah_marker_diagnostic') or {}; state=str(md.get('market_state') or 'UNKNOWN'); market_states[state]+=1; x['ah_market_states'][state]+=1; n=int(md.get('active_ah_markets') or 0); x['active_ah_markets']+=n
+  for sig,count in (md.get('marker_signatures') or {}).items(): marker_signatures[str(sig)]+=int(count); x['ah_marker_signatures'][str(sig)]+=int(count)
+ return {'mainline_shape_counts':dict(sorted(overall_shapes.items())),'diagnostic_reason_counts':dict(sorted(overall_reasons.items())),'ah_market_marker_signatures':dict(sorted(marker_signatures.items())),'ah_fixture_market_states':dict(sorted(market_states.items())),'league_diagnostics':[{'league':k,'fixtures':x['fixtures'],'active_ah_markets':x['active_ah_markets'],'shape_counts':dict(sorted(x['shape_counts'].items())),'reason_counts':dict(sorted(x['reason_counts'].items())),'ah_marker_signatures':dict(sorted(x['ah_marker_signatures'].items())),'ah_market_states':dict(sorted(x['ah_market_states'].items()))} for k,x in sorted(by_league.items())],'diagnostic_policy':'Diagnostics only. Missing/false mainLine markers are observed, not repaired. No fallback AH line is selected; strict admissibility still requires exactly one explicit mainLine=true AH and one explicit mainLine=true full-time O/U.'}
 
 def merge(rows):
  existing={}
@@ -80,7 +105,7 @@ def write_report(report):
 
 def run():
  key=os.getenv(ENV_KEY,'').strip(); now=datetime.now(timezone.utc); requests=0
- report={'schema_version':'1.2','generated_at':now.isoformat(),'classification':'EUROPE_DISCOVERY_ONLY','production_promotion_allowed':False,'validation_gate_effect':'NONE','target_leagues':EXPECTED,'core_quota_reserve':CORE_QUOTA_RESERVE}
+ report={'schema_version':'1.3','generated_at':now.isoformat(),'classification':'EUROPE_DISCOVERY_ONLY','production_promotion_allowed':False,'validation_gate_effect':'NONE','target_leagues':EXPECTED,'core_quota_reserve':CORE_QUOTA_RESERVE}
  if not key:
   report['status']='API_KEY_NOT_CONFIGURED'; return write_report(report)
  try:
@@ -106,9 +131,9 @@ def run():
   meta={int(x['tournament_id']):x for x in batch}; fixtures=_rows(payload); fixture_count+=len(fixtures)
   for f in fixtures:
    tm={**(meta.get(int(f.get('tournamentId') or -1)) or {}),'universe':'EUROPE_DISCOVERY'}
-   shape=mainline_shape(f,catalog); shape_key=f"AH{shape['ah_main_count']}_OU{shape['ou_main_count']}"
+   shape=mainline_shape(f,catalog); shape_key=f"AH{shape['ah_main_count']}_OU{shape['ou_main_count']}"; marker_diag=ah_marker_diagnostic(f,catalog)
    s,reason=extract_mainline_snapshot(f,catalog,observed_at=now,tournament_meta=tm); reasons[reason]=reasons.get(reason,0)+1
-   diagnostic_rows.append({'country':tm.get('country'),'league':tm.get('tournament_name'),'shape_key':shape_key,'reason':reason})
+   diagnostic_rows.append({'country':tm.get('country'),'league':tm.get('tournament_name'),'shape_key':shape_key,'reason':reason,'ah_marker_diagnostic':marker_diag})
    if s: s['candidate_like_matches']=candidate_like(s,candidates); s['discovery_only']=True; strict.append(s)
  merge(strict)
  report.update(status='DISCOVERY_OBSERVED',resolved_leagues=len(selected),batches=3,requests_used=requests,fixtures_seen=fixture_count,strict_snapshots=len(strict),candidate_like_matches=sum(len(x['candidate_like_matches']) for x in strict),rejection_counts=reasons,odds_batch_min_cooldown_seconds=COOLDOWN,note='Candidate-like matches are expansion evidence only and never enter frozen forward validation.',**summarize_diagnostics(diagnostic_rows))
