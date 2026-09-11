@@ -3,23 +3,6 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '17 0,12 * * *'
-  push:
-    branches: [main]
-    paths:
-      - 'src/odds_scanner/v2_mainline_observer.py'
-      - 'src/odds_scanner/v2_tournament_diagnostics.py'
-      - 'src/odds_scanner/v2_forward_entries.py'
-      - 'src/odds_scanner/v2_forward_clv.py'
-      - 'src/odds_scanner/v2_forward_readiness.py'
-      - 'tests/test_v2_mainline_observer.py'
-      - 'tests/test_v2_forward_entries.py'
-      - 'tests/test_v2_forward_clv.py'
-      - 'tests/test_v2_forward_readiness.py'
-      - 'reports/v2_research_candidates.json'
-      - 'reports/v2_forward_preregistration.json'
-      - 'reports/v2_target_tournaments.json'
-      - 'data/normalized/oddspapi_market_catalog.json'
-      - '.github/workflows/v2-mainline-observer.yml'
 permissions:
   contents: write
 concurrency:
@@ -38,14 +21,14 @@ jobs:
       - uses: actions/setup-python@v6
         with: {python-version: '3.11'}
       - run: python -m pip install -e '.[dev]'
-      - name: Verify v2 observation, entry, CLV, and readiness contracts
-        run: pytest -q tests/test_v2_mainline_observer.py tests/test_v2_research_shadow.py tests/test_v2_forward_entries.py tests/test_v2_forward_clv.py tests/test_v2_forward_readiness.py
+      - name: Verify v2 observation, pacing, entry, CLV, and readiness contracts
+        run: pytest -q tests/test_v2_mainline_observer.py tests/test_v2_mainline_observer_runner.py tests/test_v2_research_shadow.py tests/test_v2_forward_entries.py tests/test_v2_forward_clv.py tests/test_v2_forward_readiness.py
       - name: Capture provider metadata before another discovery call
         run: python -m odds_scanner.v2_tournament_diagnostics
       - name: Observe current Bet365 main lines across both v2 universes
         run: |
           rm -f reports/v2_mainline_observer.json
-          python -m odds_scanner.v2_mainline_observer | tee /tmp/v2-mainline-observer-output.json
+          python -m odds_scanner.v2_mainline_observer_runner | tee /tmp/v2-mainline-observer-output.json
       - name: Build immutable forward-entry ledger
         run: python -m odds_scanner.v2_forward_entries
       - name: Refresh cadence-limited forward CLV
@@ -100,7 +83,9 @@ jobs:
           done
           exit 1
 
-# Readiness reads the frozen preregistration gates verbatim and remains fail-closed.
-# It adds no provider requests, cannot change candidate definitions, and can only
-# report FORWARD_PAPER_CONFIRMED after every frozen gate passes. Even that status
-# is explicitly not a production edge and still requires a separate post-forward audit.
+# Quota/rate-limit policy: live collection runs only on the frozen 12-hour schedule
+# (or explicit manual dispatch), never automatically on code/data pushes. The two
+# /odds-by-tournaments calls are separated by at least 1.25s after the previous
+# same-endpoint call completes, above the provider's documented 1000ms cooldown.
+# No automatic API retry is performed, so a 429 cannot silently spend extra quota.
+# Candidate definitions, entry semantics, and production gating remain unchanged.
