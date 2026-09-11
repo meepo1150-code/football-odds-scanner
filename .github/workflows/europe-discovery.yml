@@ -1,6 +1,9 @@
 name: Europe 15-League Discovery
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['controls/europe_discovery_run_token.txt']
   schedule:
     - cron: '47 4 * * *'
 permissions:
@@ -42,3 +45,4 @@ jobs:
 # Summary, movement, and movement-pattern reports are descriptive only and cannot promote patterns or alter frozen validation gates.
 # Movement uses first-vs-latest strict daily discovery observations; it must not be labeled bookmaker opening/closing or CLV.
 # Movement-pattern research uses no outcomes/ROI and cannot be interpreted as betting edge evidence.
+# Updating controls/europe_discovery_run_token.txt intentionally triggers one extra discovery scan; evidence commits do not retrigger this workflow.
