@@ -29,7 +29,7 @@ def quota_allows_probe(summary: dict, *, reserve: int = CORE_QUOTA_RESERVE, plan
         remaining = int(summary.get('request_remaining'))
     except (TypeError, ValueError):
         return False
-    return remaining - planned >= reserve
+    return remaining - planned > reserve
 
 
 def summarize_rows(rows: list[dict]) -> dict:
