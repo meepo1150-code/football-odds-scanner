@@ -19,7 +19,7 @@ jobs:
         with: {ref: main}
       - uses: actions/setup-python@v6
         with: {python-version: '3.12'}
-      - run: pip install -e .
+      - run: python -m pip install -e '.[dev]'
       - run: pytest -q tests/test_europe_discovery.py tests/test_europe_discovery_summary.py tests/test_europe_discovery_movement.py tests/test_europe_discovery_movement_research.py tests/test_discovery_workflow_contract.py
       - name: Scan 15 European discovery leagues
         env:
