@@ -12,20 +12,31 @@ REPORT_PATH = Path("reports/oddspapi_quota_health.json")
 
 def summarize_account(account: dict) -> dict:
     safe = _safe_account_summary(account)
-    if safe.get("active_subscription") is not True:
-        return {"status": "NO_ACTIVE_SUBSCRIPTION", **safe}
-    limit = safe.get("request_limit")
-    count = safe.get("request_count")
+    active = safe.get("active_subscription") is True
+    sports = safe.get("sport_ids") if isinstance(safe.get("sport_ids"), list) else []
+    bookmakers = safe.get("bookmakers") if isinstance(safe.get("bookmakers"), list) else []
+    base = {
+        "active_subscription": active,
+        "request_limit": safe.get("request_limit"),
+        "request_count": safe.get("request_count"),
+        "rate_limit": safe.get("rate_limit"),
+        "soccer_sport_id_10_allowed": 10 in sports,
+        "bet365_allowed": "bet365" in bookmakers,
+        "allowed_sport_count": len(sports),
+        "allowed_bookmaker_count": len(bookmakers),
+    }
+    if not active:
+        return {"status": "NO_ACTIVE_SUBSCRIPTION", **base}
     try:
-        limit_i = int(limit)
-        count_i = int(count)
+        limit_i = int(base["request_limit"])
+        count_i = int(base["request_count"])
     except (TypeError, ValueError):
-        return {"status": "USAGE_FIELDS_UNAVAILABLE", **safe}
+        return {"status": "USAGE_FIELDS_UNAVAILABLE", **base}
     remaining = max(0, limit_i - count_i)
     usage = (count_i / limit_i) if limit_i > 0 else None
     return {
         "status": "QUOTA_EXHAUSTED" if remaining == 0 else "QUOTA_AVAILABLE",
-        **safe,
+        **base,
         "request_remaining": remaining,
         "usage_fraction": usage,
         "quota_exhausted": remaining == 0,
@@ -37,7 +48,7 @@ def check_from_env(root: Path = Path(".")) -> dict:
     key = os.getenv(ENV_KEY)
     if not key:
         payload = {
-            "schema_version": "1.0",
+            "schema_version": "1.1",
             "provider": "oddspapi",
             "status": "API_KEY_NOT_CONFIGURED",
             "generated_at": generated_at,
@@ -48,7 +59,7 @@ def check_from_env(root: Path = Path(".")) -> dict:
         account = _get("/account", key)
         summary = summarize_account(account if isinstance(account, dict) else {})
         payload = {
-            "schema_version": "1.0",
+            "schema_version": "1.1",
             "provider": "oddspapi",
             "generated_at": generated_at,
             "account_endpoint_metered": False,
@@ -56,7 +67,7 @@ def check_from_env(root: Path = Path(".")) -> dict:
         }
     except Exception as exc:
         payload = {
-            "schema_version": "1.0",
+            "schema_version": "1.1",
             "provider": "oddspapi",
             "status": "ACCOUNT_UNAVAILABLE",
             "generated_at": generated_at,
