@@ -36,6 +36,14 @@ def test_missing_soccer_or_bet365_capability_is_explicit():
     assert out["bet365_allowed"] is False
 
 
+def test_no_active_subscription_fails_closed_without_usage_fields():
+    out = summarize_account({"subscriptions": [{"is_active": False, "request_limit": 250, "request_count": 1}]})
+    assert out["status"] == "NO_ACTIVE_SUBSCRIPTION"
+    assert out["active_subscription"] is False
+    assert "request_remaining" not in out
+    assert "usage_fraction" not in out
+
+
 def test_exhausted_quota_is_explicit():
     out = summarize_account(_account(250, 250))
     assert out["status"] == "QUOTA_EXHAUSTED"
