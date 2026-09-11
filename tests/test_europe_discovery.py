@@ -1,0 +1,20 @@
+from odds_scanner.europe_discovery import EXPECTED, TARGETS, candidate_like, resolve
+
+
+def test_exactly_15_european_discovery_leagues():
+    assert sum(len(v) for v in TARGETS.values()) == EXPECTED == 15
+    assert 'USA' not in TARGETS
+
+
+def test_resolve_requires_exact_country_and_alias():
+    rows=[{'categoryName':'England','tournamentName':'Championship','tournamentSlug':'championship','tournamentId':101}, {'categoryName':'England','tournamentName':'League One','tournamentSlug':'league-one','tournamentId':102}]
+    got=resolve(rows)
+    assert [x['tournament_id'] for x in got]==[101,102]
+
+
+def test_candidate_like_ignores_frozen_universe_but_not_conditions():
+    s={'favorite_side':'H','favorite_fair_probability':.65,'ah':{'selected_side_line':-1.25,'selected_side_price':1.91},'ou':{'line':2.5,'over_price':1.9,'under_price':1.9}}
+    c=[{'pattern_id':'X','universe':'BIG5_AH','market':'AH','pattern_key':{'favorite_side':'H','ah_line':-1.25,'ah_price_band':[1.8,2.0],'favorite_probability_band':[.6,.7]}}]
+    assert candidate_like(s,c)==['X']
+    s['ah']['selected_side_line']=-1.0
+    assert candidate_like(s,c)==[]
