@@ -1,0 +1,74 @@
+name: Validation v2 Forward Result Backfill
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '27 2,8,14,20 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: validation-v2-forward-result-backfill
+  cancel-in-progress: false
+jobs:
+  results:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -e '.[dev]'
+      - name: Verify exact-ID forward result contracts
+        run: pytest -q tests/test_v2_mainline_observer_runner.py tests/test_v2_forward_entries.py tests/test_v2_forward_result_backfill.py tests/test_v2_forward_performance.py tests/test_v2_forward_readiness.py
+      - name: Backfill matured exact-ID forward fixtures
+        run: python -m odds_scanner.v2_forward_result_backfill
+      - name: Refresh settlement performance and frozen readiness
+        run: |
+          python -m odds_scanner.v2_forward_performance
+          python -m odds_scanner.v2_forward_readiness
+      - name: Persist exact forward result evidence safely
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/v2-forward-results
+          for spec in \
+            'data/normalized/oddspapi_finished_results.jsonl results.jsonl' \
+            'data/normalized/v2_forward_settlements.jsonl settlements.jsonl' \
+            'reports/v2_forward_result_backfill.json backfill.json' \
+            'reports/v2_forward_performance.json performance.json' \
+            'reports/v2_forward_readiness.json readiness.json'; do
+            set -- $spec
+            [ -f "$1" ] && cp "$1" "/tmp/v2-forward-results/$2"
+          done
+          git config user.name 'odds-scanner-actions'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p reports data/normalized
+            [ -f /tmp/v2-forward-results/results.jsonl ] && cp /tmp/v2-forward-results/results.jsonl data/normalized/oddspapi_finished_results.jsonl
+            [ -f /tmp/v2-forward-results/settlements.jsonl ] && cp /tmp/v2-forward-results/settlements.jsonl data/normalized/v2_forward_settlements.jsonl
+            [ -f /tmp/v2-forward-results/backfill.json ] && cp /tmp/v2-forward-results/backfill.json reports/v2_forward_result_backfill.json
+            [ -f /tmp/v2-forward-results/performance.json ] && cp /tmp/v2-forward-results/performance.json reports/v2_forward_performance.json
+            [ -f /tmp/v2-forward-results/readiness.json ] && cp /tmp/v2-forward-results/readiness.json reports/v2_forward_readiness.json
+            for path in \
+              data/normalized/oddspapi_finished_results.jsonl \
+              data/normalized/v2_forward_settlements.jsonl \
+              reports/v2_forward_result_backfill.json \
+              reports/v2_forward_performance.json \
+              reports/v2_forward_readiness.json; do
+              [ -f "$path" ] && git add -f -- "$path"
+            done
+            git diff --cached --quiet && exit 0
+            git commit -m '[skip ci] Update validation v2 exact forward results'
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Push race on attempt $attempt; retrying"
+          done
+          exit 1
+
+# This workflow makes zero OddsPapi calls. It only requests an exact Flashscore
+# event page when an immutable forward entry already carries an OddsPapi-supplied
+# flashscoreId and kickoff is at least 3 hours old. Team/date fuzzy discovery is
+# prohibited. Results merge into the shared exact fixture-id cache, then the
+# frozen settlement/performance/readiness layers refresh automatically.
