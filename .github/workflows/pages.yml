@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['apps/dashboard/**','reports/**','.github/workflows/pages.yml']
+    paths: ['apps/dashboard/**','reports/**','data/normalized/v2_mainline_snapshots.jsonl','data/normalized/v2_forward_entries.jsonl','data/normalized/v2_forward_settlements.jsonl','.github/workflows/pages.yml']
   workflow_run:
     workflows:
       - 'Live Odds Scan'
@@ -39,8 +39,9 @@ jobs:
       - name: Build static site
         run: |
           set -euo pipefail
-          mkdir -p site/reports/breadth
+          mkdir -p site/reports/breadth site/data/normalized
           cp apps/dashboard/index.html site/index.html
+          test -f apps/dashboard/history.html && cp apps/dashboard/history.html site/history.html || true
           test -f apps/dashboard/research.html && cp apps/dashboard/research.html site/research.html || true
           for f in \
             today.json \
@@ -70,18 +71,10 @@ jobs:
             third_universe_ou_validation.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
+          for f in v2_mainline_snapshots.jsonl v2_forward_entries.jsonl v2_forward_settlements.jsonl; do
+            test -f "data/normalized/$f" && cp "data/normalized/$f" "site/data/normalized/$f" || true
+          done
           test -f reports/breadth/summary.json && cp reports/breadth/summary.json site/reports/breadth/summary.json || true
-          python - <<'PY'
-          from pathlib import Path
-          p=Path('site/index.html')
-          text=p.read_text(encoding='utf-8')
-          footer='<div style="max-width:1240px;margin:0 auto;padding:0 20px 28px;color:#91a1b8;font:12px system-ui">Football data by <a href="https://5dollarfootballapi.com" style="color:#8db8ff">5DollarFootballAPI</a>. · <a href="research.html" style="color:#8db8ff">Research status</a></div>'
-          if 'Football data by <a href="https://5dollarfootballapi.com"' not in text:
-              text=text.replace('</body>', footer+'</body>')
-          elif 'research.html' not in text:
-              text=text.replace('</body>', '<div style="max-width:1240px;margin:0 auto;padding:0 20px 28px;color:#91a1b8;font:12px system-ui"><a href="research.html" style="color:#8db8ff">Research status</a></div></body>')
-          p.write_text(text,encoding='utf-8')
-          PY
       - uses: actions/configure-pages@v6
         with:
           enablement: true
@@ -91,5 +84,5 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v5
 
+# Daily-use dashboard publishes human-readable entry/history data without changing research gates.
 # Research data workflows trigger fresh Pages runs so deployed status does not lag generated reports.
-# Validation v2 reports are explicitly copied into the static site; missing files remain fail-soft in research.html.
