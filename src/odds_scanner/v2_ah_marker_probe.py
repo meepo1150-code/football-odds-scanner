@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import time
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -11,6 +12,7 @@ from .oddspapi_provider import ENV_KEY, _catalog, _get, _outcome_lookup, _player
 from .v2_mainline_observer import CATALOG_PATH, TARGETS_PATH, _load_json, split_target_batches, targets_complete
 
 REPORT_PATH = Path("reports/v2_ah_marker_probe.json")
+MIN_BATCH_COOLDOWN_SECONDS = 1.25
 
 
 def _active_player(outcome: dict | None) -> dict | None:
@@ -76,16 +78,16 @@ def ah_marker_shape(fixture: dict, markets_catalog: list[dict], *, bookmaker: st
     }
 
 
-def probe_from_env(root: Path = Path(".")) -> dict:
+def probe_from_env(root: Path = Path("."), *, sleep_fn=time.sleep) -> dict:
     generated_at = datetime.now(timezone.utc)
     key = os.getenv(ENV_KEY)
     catalog = _load_json(root / CATALOG_PATH)
     targets_payload = _load_json(root / TARGETS_PATH)
     targets = (targets_payload or {}).get("tournaments") if isinstance(targets_payload, dict) else None
     if not key:
-        return _write(root, {"schema_version": "1.0", "status": "API_KEY_NOT_CONFIGURED", "generated_at": generated_at.isoformat(), "promotion_allowed": False})
+        return _write(root, {"schema_version": "1.1", "status": "API_KEY_NOT_CONFIGURED", "generated_at": generated_at.isoformat(), "promotion_allowed": False})
     if not isinstance(catalog, list) or not isinstance(targets, list) or not targets_complete(targets):
-        return _write(root, {"schema_version": "1.0", "status": "LOCKED_INPUT_UNAVAILABLE", "generated_at": generated_at.isoformat(), "promotion_allowed": False})
+        return _write(root, {"schema_version": "1.1", "status": "LOCKED_INPUT_UNAVAILABLE", "generated_at": generated_at.isoformat(), "promotion_allowed": False})
 
     requests_attempted = 0
     aggregate: Counter[str] = Counter()
@@ -93,13 +95,15 @@ def probe_from_env(root: Path = Path(".")) -> dict:
     universe_counts: dict[str, Counter[str]] = {}
     samples: list[dict] = []
     batch_reports: list[dict] = []
-    for universe, batch_rows in split_target_batches(targets):
+    for batch_index, (universe, batch_rows) in enumerate(split_target_batches(targets)):
+        if batch_index > 0:
+            sleep_fn(MIN_BATCH_COOLDOWN_SECONDS)
         ids = ",".join(str(x["tournament_id"]) for x in batch_rows)
         requests_attempted += 1
         try:
             fixtures = _rows(_get("/odds-by-tournaments", key, {"tournamentIds": ids, "bookmakers": "bet365", "language": "en", "verbosity": 3}))
         except Exception as exc:
-            return _write(root, {"schema_version": "1.0", "status": "CURRENT_BATCH_UNAVAILABLE", "generated_at": generated_at.isoformat(), "requests_attempted": requests_attempted, "failed_universe": universe, "errors": [f"{type(exc).__name__}: {exc}"], "promotion_allowed": False})
+            return _write(root, {"schema_version": "1.1", "status": "CURRENT_BATCH_UNAVAILABLE", "generated_at": generated_at.isoformat(), "requests_attempted": requests_attempted, "failed_universe": universe, "errors": [f"{type(exc).__name__}: {exc}"], "batch_cooldown_seconds": MIN_BATCH_COOLDOWN_SECONDS, "promotion_allowed": False})
         batch_reports.append({"universe": universe, "fixture_rows": len(fixtures), "tournament_count": len(batch_rows)})
         ucounter: Counter[str] = Counter()
         for fixture in fixtures:
@@ -114,11 +118,12 @@ def probe_from_env(root: Path = Path(".")) -> dict:
         universe_counts[universe] = ucounter
 
     payload = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "classification": "VALIDATION_V2_AH_MAINLINE_MARKER_DIAGNOSTIC",
         "status": "PROBE_COMPLETE",
         "generated_at": generated_at.isoformat(),
         "requests_attempted": requests_attempted,
+        "batch_cooldown_seconds": MIN_BATCH_COOLDOWN_SECONDS,
         "batch_reports": batch_reports,
         "ah_market_marker_signatures": dict(sorted(aggregate.items())),
         "fixture_shape_counts": dict(sorted(fixture_shape_counts.items())),
