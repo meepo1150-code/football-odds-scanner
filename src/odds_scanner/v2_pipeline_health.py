@@ -12,6 +12,10 @@ PERFORMANCE_PATH = Path("reports/v2_forward_performance.json")
 READINESS_PATH = Path("reports/v2_forward_readiness.json")
 REPORT_PATH = Path("reports/v2_pipeline_health.json")
 OBSERVER_STALE_AFTER = timedelta(hours=18)
+OBSERVER_OPERATIONAL_SUCCESS = {
+    "MAINLINE_SNAPSHOTS_OBSERVED",
+    "NO_UNAMBIGUOUS_MAINLINE_SNAPSHOTS",
+}
 
 
 def _load(path: Path) -> dict:
@@ -53,7 +57,7 @@ def build_pipeline_health(root: Path = Path("."), *, now: datetime | None = None
     observed_at = _utc(observer.get("observed_at") or observer.get("generated_at"))
     observer_age_hours = (current - observed_at).total_seconds() / 3600.0 if observed_at else None
     observer_stale = observer_age_hours is None or observer_age_hours > OBSERVER_STALE_AFTER.total_seconds() / 3600.0
-    observer_success = observer_status == "MAINLINE_SNAPSHOTS_OBSERVED"
+    observer_success = observer_status in OBSERVER_OPERATIONAL_SUCCESS and not observer.get("errors") and observer.get("failed_universe") is None
 
     blockers: list[str] = []
     if quota_status == "QUOTA_EXHAUSTED":
@@ -99,6 +103,7 @@ def build_pipeline_health(root: Path = Path("."), *, now: datetime | None = None
         },
         "observer": {
             "status": observer_status,
+            "operational_success": observer_success,
             "generated_at": observer.get("generated_at"),
             "observed_at": observer.get("observed_at"),
             "age_hours": observer_age_hours,
@@ -107,6 +112,7 @@ def build_pipeline_health(root: Path = Path("."), *, now: datetime | None = None
             "failed_universe": observer.get("failed_universe"),
             "errors": (observer.get("errors") or [])[:3],
             "requests_attempted": observer.get("requests_attempted"),
+            "batch_count": observer.get("batch_count"),
             "snapshots_stored": observer.get("snapshots_stored"),
         },
         "forward": {
