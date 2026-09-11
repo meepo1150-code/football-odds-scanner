@@ -17,20 +17,28 @@ jobs:
       - uses: actions/setup-python@v6
         with: {python-version: '3.12'}
       - run: python -m pip install -e '.[dev]'
-      - run: pytest -q tests/test_europe_bookmaker_coverage_probe.py tests/test_europe_pinnacle_discovery.py
+      - run: pytest -q tests/test_europe_bookmaker_coverage_probe.py tests/test_europe_pinnacle_discovery.py tests/test_europe_pinnacle_analysis.py
       - name: Collect strict Pinnacle discovery snapshots across 15 leagues
         env:
           ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
         run: python -m odds_scanner.europe_pinnacle_discovery
+      - name: Build Pinnacle accumulation summary
+        run: python -m odds_scanner.europe_pinnacle_summary
+      - name: Build Pinnacle first-vs-latest movement
+        run: python -m odds_scanner.europe_pinnacle_movement
+      - name: Build descriptive Pinnacle movement research
+        run: python -m odds_scanner.europe_pinnacle_movement_research
       - name: Persist Pinnacle discovery evidence
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add reports/europe_pinnacle_discovery_status.json data/normalized/europe_pinnacle_discovery_snapshots.jsonl
+          git add reports/europe_pinnacle_discovery_status.json reports/europe_pinnacle_discovery_summary.json reports/europe_pinnacle_discovery_movement.json reports/europe_pinnacle_discovery_movement_research.json data/normalized/europe_pinnacle_discovery_snapshots.jsonl
           git diff --cached --quiet && exit 0
           git commit -m 'data: update Pinnacle Europe discovery [skip ci]'
           git push
 # Scheduled replacement for the 15-league expansion collection stream.
 # Uses Pinnacle because the same sample showed 128/133 strict snapshots versus 0/134 on Bet365.
 # This is a separate discovery universe: no Bet365 candidate matching, no Validation v2 entry, and no automatic production promotion.
+# First-vs-latest movement is descriptive scanner observation history, not bookmaker open/close or CLV.
+# Movement research contains no outcomes, win rate or ROI and cannot establish betting edge.
 # Normal request cost: 3 current-odds requests/day; /account preflight is unmetered and protects the 30-request core reserve.
