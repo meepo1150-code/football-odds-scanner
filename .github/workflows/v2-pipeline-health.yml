@@ -3,6 +3,12 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '50 2,8,14,20 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/v2_pipeline_health.py'
+      - 'tests/test_v2_pipeline_health.py'
+      - '.github/workflows/v2-pipeline-health.yml'
 permissions:
   contents: write
 concurrency:
@@ -39,4 +45,6 @@ jobs:
           exit 1
 
 # Zero provider calls. This report summarizes operational collection health only;
-# it cannot pass/fail or modify any frozen research gate.
+# it cannot pass/fail or modify any frozen research gate. The narrow push trigger
+# seeds the first report when the health engine itself changes; generated report
+# commits are outside these paths and cannot loop this workflow.
