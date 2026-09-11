@@ -1,5 +1,7 @@
 from odds_scanner.europe_discovery import EXPECTED, TARGETS, ah_marker_diagnostic, candidate_like, quota_allows_discovery, resolve, summarize_diagnostics
 
+# Catalog diagnostics are descriptive only; strict discovery semantics remain unchanged.
+
 
 def test_exactly_15_european_discovery_leagues():
     assert sum(len(v) for v in TARGETS.values()) == EXPECTED == 15
