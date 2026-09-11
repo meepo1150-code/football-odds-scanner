@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .oddspapi_discovery import _rows
+from .oddspapi_fixture_refs import normalize_fixture_ref
 from .oddspapi_provider import ENV_KEY, _get
 from .oddspapi_quota_health import summarize_account
 from .v2_mainline_observer import CATALOG_PATH, CANDIDATE_PATH, _load_json, extract_mainline_snapshot, _in_band
@@ -72,11 +73,10 @@ def write_report(report):
 
 def run():
  key=os.getenv(ENV_KEY,'').strip(); now=datetime.now(timezone.utc); requests=0
- report={'schema_version':'1.1','generated_at':now.isoformat(),'classification':'EUROPE_DISCOVERY_ONLY','production_promotion_allowed':False,'validation_gate_effect':'NONE','target_leagues':EXPECTED,'core_quota_reserve':CORE_QUOTA_RESERVE}
+ report={'schema_version':'1.2','generated_at':now.isoformat(),'classification':'EUROPE_DISCOVERY_ONLY','production_promotion_allowed':False,'validation_gate_effect':'NONE','target_leagues':EXPECTED,'core_quota_reserve':CORE_QUOTA_RESERVE}
  if not key:
   report['status']='API_KEY_NOT_CONFIGURED'; return write_report(report)
- try:
-  quota=summarize_account(_get('/account',key))
+ try: quota=summarize_account(_get('/account',key))
  except Exception as exc:
   report.update(status='SKIPPED_QUOTA_HEALTH_UNAVAILABLE',account_endpoint_metered=False,errors=[f'{type(exc).__name__}: {exc}']); return write_report(report)
  report.update(account_endpoint_metered=False,quota_remaining=quota.get('request_remaining'),quota_status=quota.get('status'))
@@ -89,7 +89,7 @@ def run():
  if len(selected)!=EXPECTED:
   report.update(status='TARGET_RESOLUTION_INCOMPLETE',resolved_leagues=len(selected),requests_used=requests); return write_report(report)
  catalog=_load_json(CATALOG_PATH) or []; candidates=(_load_json(CANDIDATE_PATH) or {}).get('candidates',[])
- strict=[]; fixture_count=0; reasons={}; last_finished=None
+ strict=[]; fixture_count=0; reasons={}; last_finished=None; exact_ids=0
  for batch in [selected[i:i+5] for i in range(0,len(selected),5)]:
   if last_finished is not None:
    wait=COOLDOWN-(time.monotonic()-last_finished)
@@ -99,9 +99,13 @@ def run():
   for f in fixtures:
    tm={**(meta.get(int(f.get('tournamentId') or -1)) or {}),'universe':'EUROPE_DISCOVERY'}
    s,reason=extract_mainline_snapshot(f,catalog,observed_at=now,tournament_meta=tm); reasons[reason]=reasons.get(reason,0)+1
-   if s: s['candidate_like_matches']=candidate_like(s,candidates); s['discovery_only']=True; strict.append(s)
+   if s:
+    ref=normalize_fixture_ref(f)
+    if ref and isinstance(ref.get('external_providers'),dict) and ref['external_providers']:
+     s['external_providers']=dict(ref['external_providers']); s['external_provider_mapping_source']='ODDSPAPI_CURRENT_EXTERNALPROVIDERS_EXACT_IDS'; exact_ids+=1
+    s['candidate_like_matches']=candidate_like(s,candidates); s['discovery_only']=True; strict.append(s)
  merge(strict)
- report.update(status='DISCOVERY_OBSERVED',resolved_leagues=len(selected),batches=3,requests_used=requests,fixtures_seen=fixture_count,strict_snapshots=len(strict),candidate_like_matches=sum(len(x['candidate_like_matches']) for x in strict),rejection_counts=reasons,odds_batch_min_cooldown_seconds=COOLDOWN,note='Candidate-like matches are expansion evidence only and never enter frozen forward validation.')
+ report.update(status='DISCOVERY_OBSERVED',resolved_leagues=len(selected),batches=3,requests_used=requests,fixtures_seen=fixture_count,strict_snapshots=len(strict),strict_snapshots_with_exact_external_ids=exact_ids,candidate_like_matches=sum(len(x['candidate_like_matches']) for x in strict),rejection_counts=reasons,odds_batch_min_cooldown_seconds=COOLDOWN,note='Candidate-like matches are expansion evidence only and never enter frozen forward validation.')
  return write_report(report)
 
 if __name__=='__main__': print(json.dumps(run(),ensure_ascii=False))
