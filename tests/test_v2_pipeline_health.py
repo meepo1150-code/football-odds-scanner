@@ -40,6 +40,15 @@ def test_clean_zero_snapshot_run_is_operationally_healthy_not_research_success(t
     assert out["production_promotion_allowed"] is False
 
 
+def test_result_backfill_not_yet_run_is_non_blocking_before_entries(tmp_path):
+    _healthy_inputs(tmp_path)
+    out = build_pipeline_health(tmp_path, now=NOW)
+    assert out["forward"]["entries_total"] == 0
+    assert out["forward"]["result_backfill_status"] == "NOT_YET_RUN"
+    assert out["status"] == "HEALTHY_COLLECTING"
+    assert out["operational_blockers"] == []
+
+
 def test_observer_batch_failure_is_degraded_not_quota_exhausted(tmp_path):
     _healthy_inputs(tmp_path)
     _write(tmp_path, "reports/v2_mainline_observer.json", {"status": "CURRENT_BATCH_UNAVAILABLE", "generated_at": "2026-09-11T01:14:00Z", "failed_universe": "THIRD_UNIVERSE_OU", "errors": ["HTTPError: HTTP Error 429: Too Many Requests"]})
