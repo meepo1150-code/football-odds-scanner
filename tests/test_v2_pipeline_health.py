@@ -15,7 +15,7 @@ def _write(root: Path, path: str, payload: dict):
 
 def _healthy_inputs(root: Path):
     _write(root, "reports/oddspapi_quota_health.json", {"status": "QUOTA_AVAILABLE", "quota_exhausted": False, "request_limit": 250, "request_count": 63, "request_remaining": 187, "usage_fraction": 0.252, "soccer_sport_id_10_allowed": True, "bet365_allowed": True})
-    _write(root, "reports/v2_mainline_observer.json", {"status": "MAINLINE_SNAPSHOTS_OBSERVED", "observed_at": "2026-09-11T01:00:00Z", "requests_attempted": 2, "snapshots_stored": 12})
+    _write(root, "reports/v2_mainline_observer.json", {"status": "MAINLINE_SNAPSHOTS_OBSERVED", "observed_at": "2026-09-11T01:00:00Z", "requests_attempted": 2, "batch_count": 2, "snapshots_stored": 12})
     _write(root, "reports/v2_forward_entry_status.json", {"status": "COLLECTING_FORWARD_EVIDENCE", "entries_total": 0})
     _write(root, "reports/v2_forward_performance.json", {"status": "NO_FORWARD_ENTRIES", "settled_entries": 0})
     _write(root, "reports/v2_forward_readiness.json", {"status": "COLLECTING_FORWARD_EVIDENCE"})
@@ -30,13 +30,23 @@ def test_healthy_collection_is_operational_only(tmp_path):
     assert out["research_gate_effect"].startswith("NONE_")
 
 
+def test_clean_zero_snapshot_run_is_operationally_healthy_not_research_success(tmp_path):
+    _healthy_inputs(tmp_path)
+    _write(tmp_path, "reports/v2_mainline_observer.json", {"status": "NO_UNAMBIGUOUS_MAINLINE_SNAPSHOTS", "observed_at": "2026-09-11T01:00:00Z", "requests_attempted": 2, "batch_count": 2, "snapshots_stored": 0, "errors": []})
+    out = build_pipeline_health(tmp_path, now=NOW)
+    assert out["status"] == "HEALTHY_COLLECTING"
+    assert out["observer"]["operational_success"] is True
+    assert out["forward"]["readiness_status"] == "COLLECTING_FORWARD_EVIDENCE"
+    assert out["production_promotion_allowed"] is False
+
+
 def test_observer_batch_failure_is_degraded_not_quota_exhausted(tmp_path):
     _healthy_inputs(tmp_path)
-    _write(tmp_path, "reports/v2_mainline_observer.json", {"status": "CURRENT_ODDS_BATCH_UNAVAILABLE", "generated_at": "2026-09-11T01:14:00Z", "failed_universe": "THIRD_UNIVERSE_OU", "errors": ["HTTPError: HTTP Error 429: Too Many Requests"]})
+    _write(tmp_path, "reports/v2_mainline_observer.json", {"status": "CURRENT_BATCH_UNAVAILABLE", "generated_at": "2026-09-11T01:14:00Z", "failed_universe": "THIRD_UNIVERSE_OU", "errors": ["HTTPError: HTTP Error 429: Too Many Requests"]})
     out = build_pipeline_health(tmp_path, now=NOW)
     assert out["status"] == "OBSERVER_DEGRADED"
     assert "ODDSPAPI_MONTHLY_QUOTA_EXHAUSTED" not in out["operational_blockers"]
-    assert any("CURRENT_ODDS_BATCH_UNAVAILABLE" in x for x in out["operational_blockers"])
+    assert any("CURRENT_BATCH_UNAVAILABLE" in x for x in out["operational_blockers"])
 
 
 def test_monthly_quota_exhaustion_is_distinct_blocker(tmp_path):
