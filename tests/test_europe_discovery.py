@@ -1,4 +1,4 @@
-from odds_scanner.europe_discovery import EXPECTED, TARGETS, candidate_like, quota_allows_discovery, resolve
+from odds_scanner.europe_discovery import EXPECTED, TARGETS, candidate_like, quota_allows_discovery, resolve, summarize_diagnostics
 
 
 def test_exactly_15_european_discovery_leagues():
@@ -25,3 +25,18 @@ def test_discovery_preserves_core_quota_reserve():
     assert quota_allows_discovery({'status':'QUOTA_AVAILABLE','request_remaining':30}) is False
     assert quota_allows_discovery({'status':'QUOTA_EXHAUSTED','request_remaining':100}) is False
     assert quota_allows_discovery({'status':'USAGE_FIELDS_UNAVAILABLE'}) is False
+
+
+def test_diagnostics_are_descriptive_and_split_by_league():
+    report=summarize_diagnostics([
+        {'country':'England','league':'Championship','shape_key':'AH0_OU1','reason':'AMBIGUOUS_OR_MISSING_MAIN_AH'},
+        {'country':'England','league':'Championship','shape_key':'AH1_OU1','reason':'OK'},
+        {'country':'Italy','league':'Serie B','shape_key':'AH0_OU1','reason':'AMBIGUOUS_OR_MISSING_MAIN_AH'},
+    ])
+    assert report['mainline_shape_counts']=={'AH0_OU1':2,'AH1_OU1':1}
+    assert report['diagnostic_reason_counts']=={'AMBIGUOUS_OR_MISSING_MAIN_AH':2,'OK':1}
+    assert len(report['league_diagnostics'])==2
+    eng=next(x for x in report['league_diagnostics'] if x['league']=='England · Championship')
+    assert eng['fixtures']==2
+    assert eng['shape_counts']=={'AH0_OU1':1,'AH1_OU1':1}
+    assert 'No fallback AH line is selected' in report['diagnostic_policy']
