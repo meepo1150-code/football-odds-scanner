@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
   "classification": "VALIDATION_V2_OPERATIONAL_PIPELINE_HEALTH",
-  "status": "OBSERVER_DEGRADED",
-  "generated_at": "2026-09-11T02:35:27.593743+00:00",
+  "status": "HEALTHY_COLLECTING",
+  "generated_at": "2026-09-11T04:48:46.031894+00:00",
   "research_gate_effect": "NONE_OPERATIONAL_HEALTH_DOES_NOT_CHANGE_FROZEN_FORWARD_GATES",
   "quota": {
     "status": "QUOTA_AVAILABLE",
@@ -16,34 +16,30 @@
     "generated_at": "2026-09-11T01:52:22.531272+00:00"
   },
   "observer": {
-    "status": "CURRENT_BATCH_UNAVAILABLE",
-    "operational_success": false,
-    "generated_at": "2026-09-11T01:14:24.589211+00:00",
-    "observed_at": null,
-    "age_hours": 1.3508345922222222,
+    "status": "MAINLINE_SNAPSHOTS_OBSERVED",
+    "operational_success": true,
+    "generated_at": "2026-09-11T04:48:19.837899+00:00",
+    "observed_at": "2026-09-11T04:48:23.974332+00:00",
+    "age_hours": 0.0061271005555555555,
     "stale_after_hours": 18.0,
     "stale": false,
-    "failed_universe": "THIRD_UNIVERSE_OU",
-    "errors": [
-      "HTTPError: HTTP Error 429: Too Many Requests"
-    ],
+    "failed_universe": null,
+    "errors": [],
     "requests_attempted": 2,
-    "batch_count": null,
-    "snapshots_stored": null
+    "batch_count": 2,
+    "snapshots_stored": 13
   },
   "forward": {
     "entry_status": "COLLECTING_FORWARD_EVIDENCE",
     "entries_total": 0,
-    "entries_with_exact_external_ids": null,
+    "entries_with_exact_external_ids": 0,
     "result_backfill_status": "NOT_YET_RUN",
     "result_requests_attempted": null,
     "settled_entries": 0,
     "performance_status": "NO_FORWARD_ENTRIES",
     "readiness_status": "COLLECTING_FORWARD_EVIDENCE"
   },
-  "operational_blockers": [
-    "MAINLINE_OBSERVER_CURRENT_BATCH_UNAVAILABLE"
-  ],
+  "operational_blockers": [],
   "paper_label": "PAPER_RESEARCH_ONLY",
   "production_promotion_allowed": false
 }
