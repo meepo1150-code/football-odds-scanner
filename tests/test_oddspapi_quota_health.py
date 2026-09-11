@@ -27,6 +27,15 @@ def test_available_quota_reports_remaining_and_required_capabilities():
     assert abs(out["usage_fraction"] - 0.1) < 1e-12
 
 
+def test_missing_soccer_or_bet365_capability_is_explicit():
+    account = _account()
+    account["subscriptions"][0]["sport_ids"] = [11]
+    account["subscriptions"][0]["bookmakers"] = {"other": {}}
+    out = summarize_account(account)
+    assert out["soccer_sport_id_10_allowed"] is False
+    assert out["bet365_allowed"] is False
+
+
 def test_exhausted_quota_is_explicit():
     out = summarize_account(_account(250, 250))
     assert out["status"] == "QUOTA_EXHAUSTED"
