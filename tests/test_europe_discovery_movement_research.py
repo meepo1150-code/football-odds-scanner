@@ -28,13 +28,13 @@ def test_empty_research_is_non_promotional():
 
 
 def test_candidate_persistence_appearance_disappearance_and_buckets():
-    report = summarize({'
-        ' + "'source_semantics': 'FIRST_VS_LATEST_STRICT_DAILY_DISCOVERY_OBSERVATION'," + '
-        ' + "'movement_rows': [" + '
-            ' + "movement(fixture='1', first=['P1'], latest=['P1'], persisted=['P1'], ah='DOWN_.25', ou='FLAT')," + '
-            ' + "movement(fixture='2', first=['P1'], latest=[], disappeared=['P1'], ah='FLAT', ou='UP_.25', changed=True)," + '
-            ' + "movement(fixture='3', first=[], latest=['P1','P2'], appeared=['P1','P2'], ah='UP_.25', ou='DOWN_.25', league='Serie B')," + '
-        ' + ']
+    report = summarize({
+        'source_semantics': 'FIRST_VS_LATEST_STRICT_DAILY_DISCOVERY_OBSERVATION',
+        'movement_rows': [
+            movement(fixture='1', first=['P1'], latest=['P1'], persisted=['P1'], ah='DOWN_.25', ou='FLAT'),
+            movement(fixture='2', first=['P1'], latest=[], disappeared=['P1'], ah='FLAT', ou='UP_.25', changed=True),
+            movement(fixture='3', first=[], latest=['P1', 'P2'], appeared=['P1', 'P2'], ah='UP_.25', ou='DOWN_.25', league='Serie B'),
+        ],
     })
     assert report['repeated_fixtures'] == 3
     assert report['candidate_patterns_observed'] == 2
