@@ -65,7 +65,8 @@ def _entry_from_snapshot(snapshot: dict, candidate_id: str) -> dict:
         selection = "U"
         line = (snapshot.get("ou") or {}).get("line")
         price = (snapshot.get("ou") or {}).get("under_price")
-    return {
+    external = snapshot.get("external_providers")
+    entry = {
         "candidate_id": candidate_id,
         "fixture_id": snapshot.get("fixture_id"),
         "universe": snapshot.get("universe"),
@@ -89,6 +90,10 @@ def _entry_from_snapshot(snapshot: dict, candidate_id: str) -> dict:
         "paper_label": "PAPER_RESEARCH_ONLY",
         "production_eligible": False,
     }
+    if isinstance(external, dict) and external:
+        entry["external_providers"] = dict(external)
+        entry["external_provider_mapping_source"] = snapshot.get("external_provider_mapping_source") or "ODDSPAPI_CURRENT_EXTERNALPROVIDERS_EXACT_IDS"
+    return entry
 
 
 def build_forward_entries(root: Path = Path(".")) -> dict:
@@ -97,7 +102,7 @@ def build_forward_entries(root: Path = Path(".")) -> dict:
     catalog = _load_json(root / CANDIDATE_PATH)
     if not isinstance(prereg, dict) or not isinstance(catalog, dict):
         return _write_report(root, {
-            "schema_version": "1.1",
+            "schema_version": "1.2",
             "status": "FROZEN_INPUT_UNAVAILABLE",
             "generated_at": generated_at.isoformat(),
             "production_promotion_allowed": False,
@@ -118,7 +123,7 @@ def build_forward_entries(root: Path = Path(".")) -> dict:
         or set(frozen_ids) != set(catalog_ids)
     ):
         return _write_report(root, {
-            "schema_version": "1.1",
+            "schema_version": "1.2",
             "status": "PREREGISTRATION_DRIFT",
             "generated_at": generated_at.isoformat(),
             "production_promotion_allowed": False,
@@ -178,8 +183,9 @@ def build_forward_entries(root: Path = Path(".")) -> dict:
     )
 
     counts = Counter(str(r.get("candidate_id")) for r in ordered)
+    entries_with_external_ids = sum(1 for r in ordered if isinstance(r.get("external_providers"), dict) and r.get("external_providers"))
     return _write_report(root, {
-        "schema_version": "1.1",
+        "schema_version": "1.2",
         "classification": "VALIDATION_V2_FORWARD_ENTRY_LEDGER_STATUS",
         "status": "COLLECTING_FORWARD_EVIDENCE",
         "generated_at": generated_at.isoformat(),
@@ -189,6 +195,8 @@ def build_forward_entries(root: Path = Path(".")) -> dict:
         "entries_total": len(ordered),
         "entries_added_this_run": added,
         "entries_by_candidate": {cid: int(counts.get(cid, 0)) for cid in frozen_ids},
+        "entries_with_exact_external_ids": entries_with_external_ids,
+        "external_id_policy": "ODDSPAPI_CURRENT_EXTERNALPROVIDERS_EXACT_IDS_ONLY_NO_NAME_MATCHING",
         "duplicate_existing_rows_ignored": duplicate_existing,
         "entry_policy": "FIRST_QUALIFYING_SCHEDULED_OBSERVATION_AFTER_AMENDED_PREREGISTRATION",
         "existing_entries_are_immutable": True,
