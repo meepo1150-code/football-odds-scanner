@@ -1,4 +1,4 @@
-from odds_scanner.v2_ah_marker_probe import ah_marker_shape
+from odds_scanner.v2_ah_marker_probe import MIN_BATCH_COOLDOWN_SECONDS, ah_marker_shape
 
 
 def _player(price, marker="TRUE"):
@@ -21,6 +21,10 @@ def _catalog():
 
 def _fixture(home_marker="TRUE", away_marker="TRUE"):
     return {"bookmakerOdds": {"bet365": {"markets": {"201": _market(home_marker, away_marker)}}}}
+
+
+def test_probe_batch_cooldown_exceeds_documented_one_second_minimum():
+    assert MIN_BATCH_COOLDOWN_SECONDS > 1.0
 
 
 def test_both_true_is_diagnostic_main_line():
