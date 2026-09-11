@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['apps/dashboard/**','reports/**','data/normalized/v2_mainline_snapshots.jsonl','data/normalized/v2_forward_entries.jsonl','data/normalized/v2_forward_settlements.jsonl','data/normalized/europe_discovery_snapshots.jsonl','.github/workflows/pages.yml']
+    paths: ['apps/dashboard/**','reports/**','data/normalized/v2_mainline_snapshots.jsonl','data/normalized/v2_forward_entries.jsonl','data/normalized/v2_forward_settlements.jsonl','data/normalized/europe_discovery_snapshots.jsonl','data/normalized/europe_pinnacle_discovery_snapshots.jsonl','.github/workflows/pages.yml']
   workflow_run:
     workflows:
       - 'Live Odds Scan'
@@ -20,6 +20,7 @@ on:
       - 'OddsPapi Quota Health'
       - 'Validation v2 Pipeline Health'
       - 'Europe 15-League Discovery'
+      - 'Europe Pinnacle Daily Discovery'
     types: [completed]
 permissions:
   contents: read
@@ -45,10 +46,10 @@ jobs:
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery.html || true
           test -f apps/dashboard/research.html && cp apps/dashboard/research.html site/research.html || true
           sed -i 's#<a href="research.html">Advanced Research</a>#<a href="discovery.html">Europe Discovery</a><a href="research.html">Advanced Research</a>#' site/index.html site/history.html || true
-          for f in today.json pattern_registry.json current_provider_health.json provider_capabilities.json five_dollar_health.json oddspapi_health.json oddspapi_quota_health.json five_dollar_archive_state.json five_dollar_research.json source_qualification.json prospective_2026_27_status.json validation_v2_status.json validation_v2_preregistration.json v2_research_candidates.json v2_forward_preregistration.json v2_mainline_observer.json v2_forward_entry_status.json v2_forward_clv_status.json v2_forward_performance.json v2_forward_readiness.json v2_forward_result_backfill.json v2_pipeline_health.json europe_discovery_status.json europe_discovery_tournaments.json europe_discovery_summary.json europe_discovery_movement.json europe_discovery_movement_research.json football_data_multiseason_validation.json independent_league_validation.json third_universe_ou_validation.json; do
+          for f in today.json pattern_registry.json current_provider_health.json provider_capabilities.json five_dollar_health.json oddspapi_health.json oddspapi_quota_health.json five_dollar_archive_state.json five_dollar_research.json source_qualification.json prospective_2026_27_status.json validation_v2_status.json validation_v2_preregistration.json v2_research_candidates.json v2_forward_preregistration.json v2_mainline_observer.json v2_forward_entry_status.json v2_forward_clv_status.json v2_forward_performance.json v2_forward_readiness.json v2_forward_result_backfill.json v2_pipeline_health.json europe_discovery_status.json europe_discovery_tournaments.json europe_discovery_summary.json europe_discovery_movement.json europe_discovery_movement_research.json europe_pinnacle_discovery_status.json europe_pinnacle_discovery_summary.json europe_pinnacle_discovery_movement.json europe_pinnacle_discovery_movement_research.json football_data_multiseason_validation.json independent_league_validation.json third_universe_ou_validation.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
-          for f in v2_mainline_snapshots.jsonl v2_forward_entries.jsonl v2_forward_settlements.jsonl europe_discovery_snapshots.jsonl; do
+          for f in v2_mainline_snapshots.jsonl v2_forward_entries.jsonl v2_forward_settlements.jsonl europe_discovery_snapshots.jsonl europe_pinnacle_discovery_snapshots.jsonl; do
             test -f "data/normalized/$f" && cp "data/normalized/$f" "site/data/normalized/$f" || true
           done
           test -f reports/breadth/summary.json && cp reports/breadth/summary.json site/reports/breadth/summary.json || true
@@ -61,4 +62,4 @@ jobs:
         uses: actions/deploy-pages@v5
 
 # Daily-use dashboard publishes human-readable entry/history data without changing research gates.
-# Europe discovery is published separately and remains outside frozen Validation v2.
+# Bet365 and Pinnacle Europe discovery streams are published separately and remain outside frozen Validation v2.
