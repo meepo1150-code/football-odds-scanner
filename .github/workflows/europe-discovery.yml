@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-python@v6
         with: {python-version: '3.12'}
       - run: pip install -e .
-      - run: pytest -q tests/test_europe_discovery.py tests/test_europe_discovery_summary.py tests/test_europe_discovery_movement.py tests/test_discovery_workflow_contract.py
+      - run: pytest -q tests/test_europe_discovery.py tests/test_europe_discovery_summary.py tests/test_europe_discovery_movement.py tests/test_europe_discovery_movement_research.py tests/test_discovery_workflow_contract.py
       - name: Scan 15 European discovery leagues
         env:
           ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
@@ -26,16 +26,19 @@ jobs:
         run: python -m odds_scanner.europe_discovery_summary
       - name: Build descriptive discovery movement
         run: python -m odds_scanner.europe_discovery_movement
+      - name: Build descriptive movement-pattern research
+        run: python -m odds_scanner.europe_discovery_movement_research
       - name: Persist discovery evidence
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add reports/europe_discovery_tournaments.json reports/europe_discovery_status.json reports/europe_discovery_summary.json reports/europe_discovery_movement.json data/normalized/europe_discovery_snapshots.jsonl
+          git add reports/europe_discovery_tournaments.json reports/europe_discovery_status.json reports/europe_discovery_summary.json reports/europe_discovery_movement.json reports/europe_discovery_movement_research.json data/normalized/europe_discovery_snapshots.jsonl
           git diff --cached --quiet && exit 0
           git commit -m 'data: update Europe discovery [skip ci]'
           git push
 # Discovery is intentionally outside the frozen Validation v2 universe.
 # Normal run cost: 3 OddsPapi current-odds requests/day. Tournament discovery adds one request only when the persisted target map is absent/incomplete.
 # /account preflight is unmetered and preserves the frozen core scanner's quota reserve.
-# Summary and movement reports are descriptive only and cannot promote patterns or alter frozen validation gates.
+# Summary, movement, and movement-pattern reports are descriptive only and cannot promote patterns or alter frozen validation gates.
 # Movement uses first-vs-latest strict daily discovery observations; it must not be labeled bookmaker opening/closing or CLV.
+# Movement-pattern research uses no outcomes/ROI and cannot be interpreted as betting edge evidence.
