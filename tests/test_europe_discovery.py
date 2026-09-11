@@ -1,4 +1,4 @@
-from odds_scanner.europe_discovery import EXPECTED, TARGETS, candidate_like, resolve
+from odds_scanner.europe_discovery import EXPECTED, TARGETS, candidate_like, quota_allows_discovery, resolve
 
 
 def test_exactly_15_european_discovery_leagues():
@@ -18,3 +18,10 @@ def test_candidate_like_ignores_frozen_universe_but_not_conditions():
     assert candidate_like(s,c)==['X']
     s['ah']['selected_side_line']=-1.0
     assert candidate_like(s,c)==[]
+
+
+def test_discovery_preserves_core_quota_reserve():
+    assert quota_allows_discovery({'status':'QUOTA_AVAILABLE','request_remaining':31}) is True
+    assert quota_allows_discovery({'status':'QUOTA_AVAILABLE','request_remaining':30}) is False
+    assert quota_allows_discovery({'status':'QUOTA_EXHAUSTED','request_remaining':100}) is False
+    assert quota_allows_discovery({'status':'USAGE_FIELDS_UNAVAILABLE'}) is False
