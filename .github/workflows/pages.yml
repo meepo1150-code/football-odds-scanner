@@ -44,6 +44,7 @@ jobs:
           test -f apps/dashboard/history.html && cp apps/dashboard/history.html site/history.html || true
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery.html || true
           test -f apps/dashboard/research.html && cp apps/dashboard/research.html site/research.html || true
+          sed -i 's#<a href="research.html">Advanced Research</a>#<a href="discovery.html">Europe Discovery</a><a href="research.html">Advanced Research</a>#' site/index.html site/history.html || true
           for f in today.json pattern_registry.json current_provider_health.json provider_capabilities.json five_dollar_health.json oddspapi_health.json oddspapi_quota_health.json five_dollar_archive_state.json five_dollar_research.json source_qualification.json prospective_2026_27_status.json validation_v2_status.json validation_v2_preregistration.json v2_research_candidates.json v2_forward_preregistration.json v2_mainline_observer.json v2_forward_entry_status.json v2_forward_clv_status.json v2_forward_performance.json v2_forward_readiness.json v2_forward_result_backfill.json v2_pipeline_health.json europe_discovery_status.json europe_discovery_tournaments.json football_data_multiseason_validation.json independent_league_validation.json third_universe_ou_validation.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
