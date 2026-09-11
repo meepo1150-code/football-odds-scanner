@@ -59,11 +59,16 @@ def candidate_like(snapshot,candidates):
 
 def ah_marker_diagnostic(fixture,catalog_rows,bookmaker='bet365'):
  book=(fixture.get('bookmakerOdds') or {}).get(bookmaker)
- if not isinstance(book,dict): return {'active_ah_markets':0,'marker_signatures':{},'market_state':'NO_BOOKMAKER'}
- catalog=_catalog(catalog_rows); signatures=Counter(); active=0
+ if not isinstance(book,dict):
+  return {'active_bookmaker_markets':0,'catalog_known_active_markets':0,'unknown_active_market_ids':[],'recognized_active_ah_markets':0,'marker_signatures':{},'market_state':'NO_BOOKMAKER'}
+ catalog=_catalog(catalog_rows); signatures=Counter(); ah_active=0; active_total=0; known_total=0; unknown=[]
  for market_id,market_data in (book.get('markets') or {}).items():
+  if not isinstance(market_data,dict) or market_data.get('marketActive') is not True: continue
+  active_total+=1
   meta=catalog.get(str(market_id))
-  if not isinstance(meta,dict) or not isinstance(market_data,dict) or market_data.get('marketActive') is not True: continue
+  if not isinstance(meta,dict):
+   unknown.append(str(market_id)); continue
+  known_total+=1
   if 'asian handicap' not in str(meta.get('marketName') or '').lower(): continue
   names=_outcome_lookup(meta); selections={}
   for outcome_id,outcome in (market_data.get('outcomes') or {}).items():
@@ -73,21 +78,28 @@ def ah_marker_diagnostic(fixture,catalog_rows,bookmaker='bet365'):
    if label: selections[label]=p
   hp=selections.get('home') or selections.get('1'); ap=selections.get('away') or selections.get('2')
   if not hp or not ap: continue
-  active+=1
+  ah_active+=1
   def marker(p):
    return 'TRUE' if p.get('mainLine') is True else ('FALSE' if p.get('mainLine') is False else 'MISSING')
   signatures[f"H_{marker(hp)}__A_{marker(ap)}"]+=1
- state='NO_ACTIVE_AH_MARKET' if active==0 else ('HAS_EXPLICIT_MAIN_AH' if signatures.get('H_TRUE__A_TRUE',0)>0 else 'AH_PRESENT_NO_EXPLICIT_MAIN')
- return {'active_ah_markets':active,'marker_signatures':dict(sorted(signatures.items())),'market_state':state}
+ if ah_active:
+  state='HAS_EXPLICIT_MAIN_AH' if signatures.get('H_TRUE__A_TRUE',0)>0 else 'AH_PRESENT_NO_EXPLICIT_MAIN'
+ elif unknown:
+  state='NO_RECOGNIZED_ACTIVE_AH_WITH_UNKNOWN_MARKETS'
+ else:
+  state='NO_RECOGNIZED_ACTIVE_AH_MARKET'
+ return {'active_bookmaker_markets':active_total,'catalog_known_active_markets':known_total,'unknown_active_market_ids':sorted(set(unknown)),'recognized_active_ah_markets':ah_active,'marker_signatures':dict(sorted(signatures.items())),'market_state':state}
 
 def summarize_diagnostics(rows):
- overall_shapes=Counter(); overall_reasons=Counter(); marker_signatures=Counter(); market_states=Counter(); by_league=defaultdict(lambda:{'fixtures':0,'shape_counts':Counter(),'reason_counts':Counter(),'ah_marker_signatures':Counter(),'ah_market_states':Counter(),'active_ah_markets':0})
+ overall_shapes=Counter(); overall_reasons=Counter(); marker_signatures=Counter(); market_states=Counter(); unknown_ids=Counter(); by_league=defaultdict(lambda:{'fixtures':0,'shape_counts':Counter(),'reason_counts':Counter(),'ah_marker_signatures':Counter(),'ah_market_states':Counter(),'recognized_active_ah_markets':0,'active_bookmaker_markets':0,'catalog_known_active_markets':0,'unknown_active_market_ids':Counter()})
  for row in rows:
   key=f"{row.get('country') or ''} · {row.get('league') or '—'}"; shape=str(row.get('shape_key') or 'UNKNOWN'); reason=str(row.get('reason') or 'UNKNOWN')
   overall_shapes[shape]+=1; overall_reasons[reason]+=1; x=by_league[key]; x['fixtures']+=1; x['shape_counts'][shape]+=1; x['reason_counts'][reason]+=1
-  md=row.get('ah_marker_diagnostic') or {}; state=str(md.get('market_state') or 'UNKNOWN'); market_states[state]+=1; x['ah_market_states'][state]+=1; n=int(md.get('active_ah_markets') or 0); x['active_ah_markets']+=n
+  md=row.get('ah_marker_diagnostic') or {}; state=str(md.get('market_state') or 'UNKNOWN'); market_states[state]+=1; x['ah_market_states'][state]+=1
+  x['recognized_active_ah_markets']+=int(md.get('recognized_active_ah_markets') or 0); x['active_bookmaker_markets']+=int(md.get('active_bookmaker_markets') or 0); x['catalog_known_active_markets']+=int(md.get('catalog_known_active_markets') or 0)
+  for market_id in md.get('unknown_active_market_ids') or []: unknown_ids[str(market_id)]+=1; x['unknown_active_market_ids'][str(market_id)]+=1
   for sig,count in (md.get('marker_signatures') or {}).items(): marker_signatures[str(sig)]+=int(count); x['ah_marker_signatures'][str(sig)]+=int(count)
- return {'mainline_shape_counts':dict(sorted(overall_shapes.items())),'diagnostic_reason_counts':dict(sorted(overall_reasons.items())),'ah_market_marker_signatures':dict(sorted(marker_signatures.items())),'ah_fixture_market_states':dict(sorted(market_states.items())),'league_diagnostics':[{'league':k,'fixtures':x['fixtures'],'active_ah_markets':x['active_ah_markets'],'shape_counts':dict(sorted(x['shape_counts'].items())),'reason_counts':dict(sorted(x['reason_counts'].items())),'ah_marker_signatures':dict(sorted(x['ah_marker_signatures'].items())),'ah_market_states':dict(sorted(x['ah_market_states'].items()))} for k,x in sorted(by_league.items())],'diagnostic_policy':'Diagnostics only. Missing/false mainLine markers are observed, not repaired. No fallback AH line is selected; strict admissibility still requires exactly one explicit mainLine=true AH and one explicit mainLine=true full-time O/U.'}
+ return {'mainline_shape_counts':dict(sorted(overall_shapes.items())),'diagnostic_reason_counts':dict(sorted(overall_reasons.items())),'ah_market_marker_signatures':dict(sorted(marker_signatures.items())),'ah_fixture_market_states':dict(sorted(market_states.items())),'unknown_active_market_ids':dict(unknown_ids.most_common()),'league_diagnostics':[{'league':k,'fixtures':x['fixtures'],'active_bookmaker_markets':x['active_bookmaker_markets'],'catalog_known_active_markets':x['catalog_known_active_markets'],'recognized_active_ah_markets':x['recognized_active_ah_markets'],'unknown_active_market_ids':dict(x['unknown_active_market_ids'].most_common()),'shape_counts':dict(sorted(x['shape_counts'].items())),'reason_counts':dict(sorted(x['reason_counts'].items())),'ah_marker_signatures':dict(sorted(x['ah_marker_signatures'].items())),'ah_market_states':dict(sorted(x['ah_market_states'].items()))} for k,x in sorted(by_league.items())],'diagnostic_policy':'Diagnostics only. Unknown market IDs and recognized AH coverage are measured separately. Missing/false mainLine markers are observed, not repaired. No fallback AH line is selected; strict admissibility remains unchanged.'}
 
 def merge(rows):
  existing={}
@@ -105,7 +117,7 @@ def write_report(report):
 
 def run():
  key=os.getenv(ENV_KEY,'').strip(); now=datetime.now(timezone.utc); requests=0
- report={'schema_version':'1.3','generated_at':now.isoformat(),'classification':'EUROPE_DISCOVERY_ONLY','production_promotion_allowed':False,'validation_gate_effect':'NONE','target_leagues':EXPECTED,'core_quota_reserve':CORE_QUOTA_RESERVE}
+ report={'schema_version':'1.4','generated_at':now.isoformat(),'classification':'EUROPE_DISCOVERY_ONLY','production_promotion_allowed':False,'validation_gate_effect':'NONE','target_leagues':EXPECTED,'core_quota_reserve':CORE_QUOTA_RESERVE}
  if not key:
   report['status']='API_KEY_NOT_CONFIGURED'; return write_report(report)
  try:

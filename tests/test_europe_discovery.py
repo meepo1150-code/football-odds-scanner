@@ -1,5 +1,7 @@
 from odds_scanner.europe_discovery import EXPECTED, TARGETS, ah_marker_diagnostic, candidate_like, quota_allows_discovery, resolve, summarize_diagnostics
 
+# Catalog diagnostics are descriptive only; strict discovery semantics remain unchanged.
+
 
 def test_exactly_15_european_discovery_leagues():
     assert sum(len(v) for v in TARGETS.values()) == EXPECTED == 15
@@ -31,42 +33,44 @@ def _catalog():
     return [{'marketId':201,'sportId':10,'period':'fulltime','playerProp':False,'marketName':'Asian Handicap','marketType':'spreads','handicap':-0.5,'outcomes':[{'outcomeId':201,'outcomeName':'1'},{'outcomeId':202,'outcomeName':'2'}]}]
 
 
-def _fixture(home_marker='MISSING', away_marker='MISSING', *, active=True):
+def _fixture(home_marker='MISSING', away_marker='MISSING', *, active=True, unknown=False):
     def p(price, marker):
         x={'active':True,'price':price}
         if marker!='MISSING': x['mainLine']=(marker=='TRUE')
         return {'players':{'0':x}}
-    return {'bookmakerOdds':{'bet365':{'bookmakerIsActive':True,'suspended':False,'markets':{'201':{'marketActive':active,'outcomes':{'201':p(1.90,home_marker),'202':p(1.98,away_marker)}}}}}}
+    markets={'201':{'marketActive':active,'outcomes':{'201':p(1.90,home_marker),'202':p(1.98,away_marker)}}}
+    if unknown: markets['999']={'marketActive':True,'outcomes':{}}
+    return {'bookmakerOdds':{'bet365':{'bookmakerIsActive':True,'suspended':False,'markets':markets}}}
 
 
-def test_ah_marker_diagnostic_distinguishes_missing_false_true_and_no_active_market():
-    missing=ah_marker_diagnostic(_fixture(),_catalog())
-    assert missing=={'active_ah_markets':1,'marker_signatures':{'H_MISSING__A_MISSING':1},'market_state':'AH_PRESENT_NO_EXPLICIT_MAIN'}
-    false=ah_marker_diagnostic(_fixture('FALSE','FALSE'),_catalog())
-    assert false['marker_signatures']=={'H_FALSE__A_FALSE':1}
-    assert false['market_state']=='AH_PRESENT_NO_EXPLICIT_MAIN'
+def test_ah_marker_diagnostic_separates_catalog_coverage_from_ah_state():
+    missing=ah_marker_diagnostic(_fixture(unknown=True),_catalog())
+    assert missing['active_bookmaker_markets']==2
+    assert missing['catalog_known_active_markets']==1
+    assert missing['unknown_active_market_ids']==['999']
+    assert missing['recognized_active_ah_markets']==1
+    assert missing['marker_signatures']=={'H_MISSING__A_MISSING':1}
+    assert missing['market_state']=='AH_PRESENT_NO_EXPLICIT_MAIN'
     true=ah_marker_diagnostic(_fixture('TRUE','TRUE'),_catalog())
-    assert true['marker_signatures']=={'H_TRUE__A_TRUE':1}
     assert true['market_state']=='HAS_EXPLICIT_MAIN_AH'
     none=ah_marker_diagnostic(_fixture(active=False),_catalog())
-    assert none['active_ah_markets']==0
-    assert none['market_state']=='NO_ACTIVE_AH_MARKET'
+    assert none['recognized_active_ah_markets']==0
+    assert none['market_state']=='NO_RECOGNIZED_ACTIVE_AH_MARKET'
+    unknown_only=_fixture(active=False,unknown=True)
+    assert ah_marker_diagnostic(unknown_only,_catalog())['market_state']=='NO_RECOGNIZED_ACTIVE_AH_WITH_UNKNOWN_MARKETS'
 
 
-def test_diagnostics_are_descriptive_and_split_by_league():
+def test_diagnostics_aggregate_unknown_market_ids_without_selecting_fallback():
     report=summarize_diagnostics([
-        {'country':'England','league':'Championship','shape_key':'AH0_OU1','reason':'AMBIGUOUS_OR_MISSING_MAIN_AH','ah_marker_diagnostic':{'active_ah_markets':2,'marker_signatures':{'H_MISSING__A_MISSING':2},'market_state':'AH_PRESENT_NO_EXPLICIT_MAIN'}},
-        {'country':'England','league':'Championship','shape_key':'AH1_OU1','reason':'OK','ah_marker_diagnostic':{'active_ah_markets':1,'marker_signatures':{'H_TRUE__A_TRUE':1},'market_state':'HAS_EXPLICIT_MAIN_AH'}},
-        {'country':'Italy','league':'Serie B','shape_key':'AH0_OU1','reason':'AMBIGUOUS_OR_MISSING_MAIN_AH','ah_marker_diagnostic':{'active_ah_markets':0,'marker_signatures':{},'market_state':'NO_ACTIVE_AH_MARKET'}},
+        {'country':'England','league':'Championship','shape_key':'AH0_OU1','reason':'AMBIGUOUS_OR_MISSING_MAIN_AH','ah_marker_diagnostic':{'active_bookmaker_markets':3,'catalog_known_active_markets':2,'unknown_active_market_ids':['999'],'recognized_active_ah_markets':2,'marker_signatures':{'H_MISSING__A_MISSING':2},'market_state':'AH_PRESENT_NO_EXPLICIT_MAIN'}},
+        {'country':'England','league':'Championship','shape_key':'AH1_OU1','reason':'OK','ah_marker_diagnostic':{'active_bookmaker_markets':2,'catalog_known_active_markets':2,'unknown_active_market_ids':[],'recognized_active_ah_markets':1,'marker_signatures':{'H_TRUE__A_TRUE':1},'market_state':'HAS_EXPLICIT_MAIN_AH'}},
+        {'country':'Italy','league':'Serie B','shape_key':'AH0_OU1','reason':'AMBIGUOUS_OR_MISSING_MAIN_AH','ah_marker_diagnostic':{'active_bookmaker_markets':1,'catalog_known_active_markets':0,'unknown_active_market_ids':['999'],'recognized_active_ah_markets':0,'marker_signatures':{},'market_state':'NO_RECOGNIZED_ACTIVE_AH_WITH_UNKNOWN_MARKETS'}},
     ])
-    assert report['mainline_shape_counts']=={'AH0_OU1':2,'AH1_OU1':1}
-    assert report['diagnostic_reason_counts']=={'AMBIGUOUS_OR_MISSING_MAIN_AH':2,'OK':1}
+    assert report['unknown_active_market_ids']=={'999':2}
     assert report['ah_market_marker_signatures']=={'H_MISSING__A_MISSING':2,'H_TRUE__A_TRUE':1}
-    assert report['ah_fixture_market_states']=={'AH_PRESENT_NO_EXPLICIT_MAIN':1,'HAS_EXPLICIT_MAIN_AH':1,'NO_ACTIVE_AH_MARKET':1}
-    assert len(report['league_diagnostics'])==2
     eng=next(x for x in report['league_diagnostics'] if x['league']=='England · Championship')
-    assert eng['fixtures']==2
-    assert eng['active_ah_markets']==3
-    assert eng['shape_counts']=={'AH0_OU1':1,'AH1_OU1':1}
-    assert eng['ah_marker_signatures']=={'H_MISSING__A_MISSING':2,'H_TRUE__A_TRUE':1}
+    assert eng['active_bookmaker_markets']==5
+    assert eng['catalog_known_active_markets']==4
+    assert eng['recognized_active_ah_markets']==3
+    assert eng['unknown_active_market_ids']=={'999':1}
     assert 'No fallback AH line is selected' in report['diagnostic_policy']
