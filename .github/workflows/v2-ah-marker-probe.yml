@@ -1,12 +1,6 @@
 name: Validation v2 AH Marker Probe
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'src/odds_scanner/v2_ah_marker_probe.py'
-      - 'tests/test_v2_ah_marker_probe.py'
-      - '.github/workflows/v2-ah-marker-probe.yml'
 permissions:
   contents: write
 concurrency:
@@ -47,6 +41,6 @@ jobs:
           done
           exit 1
 
-# Diagnostic-only one-time/current-manual probe. No schedule is configured.
-# It spends two current-odds requests per run (one five-league batch per universe)
-# and cannot change the frozen forward candidate or main-line admissibility rules.
+# Diagnostic-only manual probe. Merging or editing research code cannot spend
+# current-odds quota. A manual run spends two current-odds requests (one exact
+# five-league batch per universe) and cannot alter the frozen v2 rules.
