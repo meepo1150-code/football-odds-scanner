@@ -1,6 +1,9 @@
 name: Europe Pinnacle Daily Discovery
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['controls/europe_pinnacle_discovery_run_token.txt']
   schedule:
     - cron: '47 4 * * *'
 permissions:
@@ -42,3 +45,4 @@ jobs:
 # First-vs-latest movement is descriptive scanner observation history, not bookmaker open/close or CLV.
 # Movement research contains no outcomes, win rate or ROI and cannot establish betting edge.
 # Normal request cost: 3 current-odds requests/day; /account preflight is unmetered and protects the 30-request core reserve.
+# Updating controls/europe_pinnacle_discovery_run_token.txt intentionally triggers one extra collection run.
