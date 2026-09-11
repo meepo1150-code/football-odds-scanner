@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import json, os, time
+from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
 from .oddspapi_discovery import _rows
 from .oddspapi_provider import ENV_KEY, _get
 from .oddspapi_quota_health import summarize_account
-from .v2_mainline_observer import CATALOG_PATH, CANDIDATE_PATH, _load_json, extract_mainline_snapshot, _in_band
+from .v2_mainline_observer import CATALOG_PATH, CANDIDATE_PATH, _load_json, extract_mainline_snapshot, mainline_shape, _in_band
 
 TARGET_PATH = Path('reports/europe_discovery_tournaments.json')
 SNAPSHOT_PATH = Path('data/normalized/europe_discovery_snapshots.jsonl')
@@ -56,6 +57,13 @@ def candidate_like(snapshot,candidates):
   matches.append(str(c.get('pattern_id')))
  return matches
 
+def summarize_diagnostics(rows):
+ overall_shapes=Counter(); overall_reasons=Counter(); by_league=defaultdict(lambda:{'fixtures':0,'shape_counts':Counter(),'reason_counts':Counter()})
+ for row in rows:
+  key=f"{row.get('country') or ''} · {row.get('league') or '—'}"; shape=str(row.get('shape_key') or 'UNKNOWN'); reason=str(row.get('reason') or 'UNKNOWN')
+  overall_shapes[shape]+=1; overall_reasons[reason]+=1; x=by_league[key]; x['fixtures']+=1; x['shape_counts'][shape]+=1; x['reason_counts'][reason]+=1
+ return {'mainline_shape_counts':dict(sorted(overall_shapes.items())),'diagnostic_reason_counts':dict(sorted(overall_reasons.items())),'league_diagnostics':[{'league':k,'fixtures':x['fixtures'],'shape_counts':dict(sorted(x['shape_counts'].items())),'reason_counts':dict(sorted(x['reason_counts'].items()))} for k,x in sorted(by_league.items())],'diagnostic_policy':'Diagnostics only. No fallback AH line is selected; strict admissibility still requires exactly one explicit mainLine=true AH and one explicit mainLine=true full-time O/U.'}
+
 def merge(rows):
  existing={}
  if SNAPSHOT_PATH.exists():
@@ -72,7 +80,7 @@ def write_report(report):
 
 def run():
  key=os.getenv(ENV_KEY,'').strip(); now=datetime.now(timezone.utc); requests=0
- report={'schema_version':'1.1','generated_at':now.isoformat(),'classification':'EUROPE_DISCOVERY_ONLY','production_promotion_allowed':False,'validation_gate_effect':'NONE','target_leagues':EXPECTED,'core_quota_reserve':CORE_QUOTA_RESERVE}
+ report={'schema_version':'1.2','generated_at':now.isoformat(),'classification':'EUROPE_DISCOVERY_ONLY','production_promotion_allowed':False,'validation_gate_effect':'NONE','target_leagues':EXPECTED,'core_quota_reserve':CORE_QUOTA_RESERVE}
  if not key:
   report['status']='API_KEY_NOT_CONFIGURED'; return write_report(report)
  try:
@@ -89,7 +97,7 @@ def run():
  if len(selected)!=EXPECTED:
   report.update(status='TARGET_RESOLUTION_INCOMPLETE',resolved_leagues=len(selected),requests_used=requests); return write_report(report)
  catalog=_load_json(CATALOG_PATH) or []; candidates=(_load_json(CANDIDATE_PATH) or {}).get('candidates',[])
- strict=[]; fixture_count=0; reasons={}; last_finished=None
+ strict=[]; fixture_count=0; reasons={}; diagnostic_rows=[]; last_finished=None
  for batch in [selected[i:i+5] for i in range(0,len(selected),5)]:
   if last_finished is not None:
    wait=COOLDOWN-(time.monotonic()-last_finished)
@@ -98,10 +106,12 @@ def run():
   meta={int(x['tournament_id']):x for x in batch}; fixtures=_rows(payload); fixture_count+=len(fixtures)
   for f in fixtures:
    tm={**(meta.get(int(f.get('tournamentId') or -1)) or {}),'universe':'EUROPE_DISCOVERY'}
+   shape=mainline_shape(f,catalog); shape_key=f"AH{shape['ah_main_count']}_OU{shape['ou_main_count']}"
    s,reason=extract_mainline_snapshot(f,catalog,observed_at=now,tournament_meta=tm); reasons[reason]=reasons.get(reason,0)+1
+   diagnostic_rows.append({'country':tm.get('country'),'league':tm.get('tournament_name'),'shape_key':shape_key,'reason':reason})
    if s: s['candidate_like_matches']=candidate_like(s,candidates); s['discovery_only']=True; strict.append(s)
  merge(strict)
- report.update(status='DISCOVERY_OBSERVED',resolved_leagues=len(selected),batches=3,requests_used=requests,fixtures_seen=fixture_count,strict_snapshots=len(strict),candidate_like_matches=sum(len(x['candidate_like_matches']) for x in strict),rejection_counts=reasons,odds_batch_min_cooldown_seconds=COOLDOWN,note='Candidate-like matches are expansion evidence only and never enter frozen forward validation.')
+ report.update(status='DISCOVERY_OBSERVED',resolved_leagues=len(selected),batches=3,requests_used=requests,fixtures_seen=fixture_count,strict_snapshots=len(strict),candidate_like_matches=sum(len(x['candidate_like_matches']) for x in strict),rejection_counts=reasons,odds_batch_min_cooldown_seconds=COOLDOWN,note='Candidate-like matches are expansion evidence only and never enter frozen forward validation.',**summarize_diagnostics(diagnostic_rows))
  return write_report(report)
 
 if __name__=='__main__': print(json.dumps(run(),ensure_ascii=False))
