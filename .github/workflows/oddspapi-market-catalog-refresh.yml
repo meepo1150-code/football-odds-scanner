@@ -1,0 +1,36 @@
+name: OddsPapi Market Catalog Refresh
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['controls/oddspapi_market_catalog_refresh_token.txt']
+permissions:
+  contents: write
+concurrency:
+  group: oddspapi-market-catalog-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: main}
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - run: python -m pip install -e '.[dev]'
+      - run: pytest -q tests/test_oddspapi_market_catalog_refresh.py tests/test_europe_discovery.py tests/test_discovery_workflow_contract.py
+      - name: Refresh current OddsPapi market catalog once
+        env:
+          ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
+        run: python -m odds_scanner.oddspapi_market_catalog_refresh
+      - name: Persist validated catalog refresh
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add data/normalized/oddspapi_market_catalog.json reports/oddspapi_market_catalog_refresh.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'data: refresh OddsPapi market catalog [skip ci]'
+          git push
+# Manual/one-time repair path only: this workflow is intentionally not scheduled.
+# /account preflight is unmetered; /markets consumes one request only when quota remains above the frozen core reserve.
+# The refreshed catalog changes metadata coverage only. It does not relax explicit mainLine=true requirements or frozen Validation v2 thresholds.
