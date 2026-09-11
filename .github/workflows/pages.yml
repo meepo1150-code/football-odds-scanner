@@ -14,6 +14,11 @@ on:
       - 'Flashscore Exact Result Backfill'
       - 'Prospective 2026-27 Research Status'
       - 'Validation V2 Diagnostic'
+      - 'Validation v2 Main-Line Observer'
+      - 'Validation v2 Forward Performance'
+      - 'Validation v2 Forward Result Backfill'
+      - 'OddsPapi Quota Health'
+      - 'Validation v2 Pipeline Health'
     types: [completed]
 permissions:
   contents: read
@@ -37,7 +42,32 @@ jobs:
           mkdir -p site/reports/breadth
           cp apps/dashboard/index.html site/index.html
           test -f apps/dashboard/research.html && cp apps/dashboard/research.html site/research.html || true
-          for f in today.json pattern_registry.json current_provider_health.json provider_capabilities.json five_dollar_health.json oddspapi_health.json five_dollar_archive_state.json five_dollar_research.json source_qualification.json prospective_2026_27_status.json validation_v2_status.json validation_v2_preregistration.json football_data_multiseason_validation.json independent_league_validation.json third_universe_ou_validation.json; do
+          for f in \
+            today.json \
+            pattern_registry.json \
+            current_provider_health.json \
+            provider_capabilities.json \
+            five_dollar_health.json \
+            oddspapi_health.json \
+            oddspapi_quota_health.json \
+            five_dollar_archive_state.json \
+            five_dollar_research.json \
+            source_qualification.json \
+            prospective_2026_27_status.json \
+            validation_v2_status.json \
+            validation_v2_preregistration.json \
+            v2_research_candidates.json \
+            v2_forward_preregistration.json \
+            v2_mainline_observer.json \
+            v2_forward_entry_status.json \
+            v2_forward_clv_status.json \
+            v2_forward_performance.json \
+            v2_forward_readiness.json \
+            v2_forward_result_backfill.json \
+            v2_pipeline_health.json \
+            football_data_multiseason_validation.json \
+            independent_league_validation.json \
+            third_universe_ou_validation.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
           test -f reports/breadth/summary.json && cp reports/breadth/summary.json site/reports/breadth/summary.json || true
@@ -62,3 +92,4 @@ jobs:
         uses: actions/deploy-pages@v5
 
 # Research data workflows trigger fresh Pages runs so deployed status does not lag generated reports.
+# Validation v2 reports are explicitly copied into the static site; missing files remain fail-soft in research.html.
