@@ -1,18 +1,18 @@
 {
   "schema_version": "1.1",
   "provider": "infersports_keyless",
-  "status": "UNAVAILABLE",
-  "generated_at": "2026-09-10T07:17:37.116969+00:00",
-  "execution_candidate": false,
-  "scheduled_events_seen": 0,
-  "events_probed": 0,
+  "status": "OK",
+  "generated_at": "2026-09-11T07:16:23.567740+00:00",
+  "scheduled_events_seen": 6,
+  "events_probed": 6,
   "successful_events": 0,
+  "stale_blocks": 0,
   "market_counts": {},
   "two_sided_market_counts": {},
   "quarter_line_counts": {},
   "bookmaker_counts": {},
-  "errors": [
-    "URLError: <urlopen error timed out>"
-  ],
-  "note": "Fail-closed health result. The provider was unreachable or invalid from the GitHub runner, so it is not eligible for execution-price use."
+  "errors": [],
+  "samples": [],
+  "execution_candidate": false,
+  "note": "Health-only live probe. Provider is not promoted to production until this report demonstrates fresh two-sided pre-match AH and totals coverage on the keyless tier."
 }
