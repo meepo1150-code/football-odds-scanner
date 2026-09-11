@@ -1,0 +1,33 @@
+name: Europe Pinnacle Coverage Probe
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['controls/europe_pinnacle_coverage_probe_token.txt']
+permissions:
+  contents: write
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: main}
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - run: python -m pip install -e '.[dev]'
+      - run: pytest -q tests/test_europe_bookmaker_coverage_probe.py tests/test_europe_discovery.py
+      - name: Probe Pinnacle market coverage across 15 discovery leagues
+        env:
+          ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
+        run: python -m odds_scanner.europe_bookmaker_coverage_probe
+      - name: Persist discovery-only coverage report
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add reports/europe_pinnacle_coverage_probe.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'data: update Pinnacle Europe coverage probe [skip ci]'
+          git push
+# One-time/manual discovery-only probe. No schedule.
+# Pinnacle prices are not interchangeable with Bet365 candidate bands.
+# This report cannot enter frozen Validation v2 or production promotion logic.
