@@ -1,0 +1,35 @@
+name: Europe Discovery Results
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '37 2,8,14,20 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: europe-discovery-results
+  cancel-in-progress: false
+jobs:
+  settle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: main}
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - run: pip install -e .
+      - run: pytest -q tests/test_europe_discovery_evidence.py tests/test_europe_discovery_result_backfill.py
+      - name: Refresh discovery entry ledger
+        run: python -m odds_scanner.europe_discovery_evidence
+      - name: Backfill exact results
+        run: python -m odds_scanner.europe_discovery_result_backfill
+      - name: Settle newly available results
+        run: python -m odds_scanner.europe_discovery_evidence
+      - name: Persist discovery results
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add data/normalized/oddspapi_finished_results.jsonl data/normalized/europe_discovery_entries.jsonl data/normalized/europe_discovery_settlements.jsonl reports/europe_discovery_evidence.json reports/europe_discovery_result_backfill.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'data: update Europe discovery results [skip ci]'
+          git push
+# Uses exact OddsPapi-provided Flashscore IDs captured prospectively. No team/date fuzzy matching and zero OddsPapi requests.
