@@ -1,0 +1,52 @@
+name: OddsPapi Quota Health
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '5 */6 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/oddspapi_quota_health.py'
+      - 'tests/test_oddspapi_quota_health.py'
+      - '.github/workflows/oddspapi-quota-health.yml'
+permissions:
+  contents: write
+concurrency:
+  group: oddspapi-quota-health
+  cancel-in-progress: false
+jobs:
+  quota:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.11'}
+      - run: python -m pip install -e '.[dev]'
+      - run: pytest -q tests/test_oddspapi_quota_health.py
+      - name: Read unmetered account quota
+        run: python -m odds_scanner.oddspapi_quota_health
+      - name: Persist quota health
+        run: |
+          set -euo pipefail
+          cp reports/oddspapi_quota_health.json /tmp/oddspapi-quota-health.json
+          git config user.name 'odds-scanner-actions'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/oddspapi-quota-health.json reports/oddspapi_quota_health.json
+            git add -- reports/oddspapi_quota_health.json
+            git diff --cached --quiet && exit 0
+            git commit -m '[skip ci] Update OddsPapi quota health'
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Push race on attempt $attempt; retrying"
+          done
+          exit 1
+
+# /v4/account is documented by OddsPapi as unmetered and available even when the
+# monthly request quota is exhausted. This workflow never calls current odds.
