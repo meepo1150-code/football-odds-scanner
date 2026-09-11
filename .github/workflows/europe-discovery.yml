@@ -1,0 +1,34 @@
+name: Europe 15-League Discovery
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '47 4 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: europe-15-league-discovery
+  cancel-in-progress: false
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: main}
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - run: pip install -e .
+      - run: pytest -q tests/test_europe_discovery.py
+      - name: Scan 15 European discovery leagues
+        env:
+          ODDSPAPI_API_KEY: ${{ secrets.ODDSPAPI_API_KEY }}
+        run: python -m odds_scanner.europe_discovery
+      - name: Persist discovery evidence
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add reports/europe_discovery_tournaments.json reports/europe_discovery_status.json data/normalized/europe_discovery_snapshots.jsonl
+          git diff --cached --quiet && exit 0
+          git commit -m 'data: update Europe discovery [skip ci]'
+          git push
+# Discovery is intentionally outside the frozen Validation v2 universe.
+# Normal run cost: 3 OddsPapi current-odds requests/day. Tournament discovery adds one request only when the persisted target map is absent/incomplete.
