@@ -49,6 +49,15 @@ def test_observer_batch_failure_is_degraded_not_quota_exhausted(tmp_path):
     assert any("CURRENT_BATCH_UNAVAILABLE" in x for x in out["operational_blockers"])
 
 
+def test_missing_quota_health_is_unknown_not_exhausted(tmp_path):
+    _healthy_inputs(tmp_path)
+    (tmp_path / "reports/oddspapi_quota_health.json").unlink()
+    out = build_pipeline_health(tmp_path, now=NOW)
+    assert out["status"] == "HEALTH_UNKNOWN"
+    assert "ODDSPAPI_QUOTA_HEALTH_UNAVAILABLE" in out["operational_blockers"]
+    assert "ODDSPAPI_MONTHLY_QUOTA_EXHAUSTED" not in out["operational_blockers"]
+
+
 def test_monthly_quota_exhaustion_is_distinct_blocker(tmp_path):
     _healthy_inputs(tmp_path)
     _write(tmp_path, "reports/oddspapi_quota_health.json", {"status": "QUOTA_EXHAUSTED", "quota_exhausted": True, "request_limit": 250, "request_count": 250, "request_remaining": 0, "soccer_sport_id_10_allowed": True, "bet365_allowed": True})
