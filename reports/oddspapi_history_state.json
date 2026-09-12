@@ -1,95 +1,14 @@
 {
   "schema_version": "1.2",
   "status": "OK",
-  "generated_at": "2026-09-12T04:45:00.946090+00:00",
+  "generated_at": "2026-09-12T09:26:27.664984+00:00",
   "coverage_start": "2026-01-01T00:00:00+00:00",
   "last_discovery_at": "2026-09-11T21:46:44.764434+00:00",
   "discovery_cursor": "2026-04-10T00:00:00+00:00",
   "backfill_complete": false,
   "last_discovery_mode": null,
   "last_discovery_window": null,
-  "fixture_queue": [
-    {
-      "fixtureId": "id1000002361061547",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-04-05T18:45:00.000Z",
-      "participant1Name": "Inter Milano",
-      "participant2Name": "AS Roma",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000003461526476",
-      "tournamentId": 34,
-      "tournamentName": "Ligue 1",
-      "tournamentSlug": "ligue-1",
-      "startTime": "2026-04-05T18:45:00.000Z",
-      "participant1Name": "AS Monaco",
-      "participant2Name": "Olympique Marseille",
-      "archive_country": "France"
-    },
-    {
-      "fixtureId": "id1000000861624518",
-      "tournamentId": 8,
-      "tournamentName": "LaLiga",
-      "tournamentSlug": "laliga",
-      "startTime": "2026-04-05T19:00:00.000Z",
-      "participant1Name": "Deportivo Alaves",
-      "participant2Name": "CA Osasuna",
-      "archive_country": "Spain"
-    },
-    {
-      "fixtureId": "id1000002361061561",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-04-06T10:30:00.000Z",
-      "participant1Name": "Udinese Calcio",
-      "participant2Name": "Como 1907",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000002361061553",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-04-06T13:00:00.000Z",
-      "participant1Name": "US Lecce",
-      "participant2Name": "Atalanta BC",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000002361061549",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-04-06T16:00:00.000Z",
-      "participant1Name": "Juventus Turin",
-      "participant2Name": "Genoa CFC",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000002361061555",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-04-06T18:45:00.000Z",
-      "participant1Name": "SSC Napoli",
-      "participant2Name": "AC Milan",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000000861624524",
-      "tournamentId": 8,
-      "tournamentName": "LaLiga",
-      "tournamentSlug": "laliga",
-      "startTime": "2026-04-06T19:00:00.000Z",
-      "participant1Name": "Girona FC",
-      "participant2Name": "Villarreal CF",
-      "archive_country": "Spain"
-    }
-  ],
+  "fixture_queue": [],
   "skipped_fixture_ids": [
     "id1000000861624278",
     "id1000000861624280",
@@ -306,16 +225,17 @@
     "id1000003561514074",
     "id1000003567872358"
   ],
-  "queued_remaining": 8,
-  "processed_this_run": 10,
-  "rows_added_this_run": 10,
-  "archive_rows": 398,
+  "queued_remaining": 0,
+  "processed_this_run": 8,
+  "rows_added_this_run": 8,
+  "archive_rows": 406,
   "history_storage": "LEGACY_PLUS_DAILY_SHARDS",
   "touched_shards": [
-    "data/normalized/oddspapi_history_ticks/2026-04-05.jsonl"
+    "data/normalized/oddspapi_history_ticks/2026-04-05.jsonl",
+    "data/normalized/oddspapi_history_ticks/2026-04-06.jsonl"
   ],
   "billable_requests_this_run": 0,
-  "free_history_requests_this_run": 10,
+  "free_history_requests_this_run": 8,
   "history_request_spacing_seconds": 5.2,
   "result_join_status": "NOT_JOINED",
   "promotion_eligible": false,
