@@ -2,36 +2,41 @@
   "schema_version": "1.0",
   "classification": "VALIDATION_V2_FORWARD_PERFORMANCE",
   "status": "FORWARD_PERFORMANCE_AVAILABLE",
-  "generated_at": "2026-09-12T21:41:14.147092+00:00",
+  "generated_at": "2026-09-12T22:28:01.044932+00:00",
   "entry_rows": 3,
-  "settled_entries": 2,
-  "missing_result_entries": 1,
+  "settled_entries": 3,
+  "missing_result_entries": 0,
   "ambiguous_result_entries": 0,
   "invalid_entry_rows": 0,
   "result_join": "EXACT_ODDSPAPI_FIXTURE_ID_ONLY",
   "fuzzy_result_join_allowed": false,
-  "result_rows_seen": 249,
+  "result_rows_seen": 250,
   "bootstrap_iterations": 10000,
   "by_candidate": {
     "FD_AH_1D65F429F6A5": {
-      "settled_entries": 1,
-      "total_profit_units": -1.0,
+      "settled_entries": 2,
+      "total_profit_units": -2.0,
       "roi": -1.0,
       "bootstrap_iterations": 10000,
       "bootstrap_roi_ci95_lower": -1.0,
       "bootstrap_roi_ci95_upper": -1.0,
-      "distinct_leagues": 1,
+      "distinct_leagues": 2,
       "positive_leagues": 0,
       "positive_league_share": 0.0,
-      "max_single_league_share_of_absolute_profit": 1.0,
+      "max_single_league_share_of_absolute_profit": 0.5,
       "league_concentration_definition": "max(abs(net league profit)) / sum(abs(net league profit))",
-      "max_drawdown_units": -1.0,
-      "longest_losing_streak": 1,
+      "max_drawdown_units": -2.0,
+      "longest_losing_streak": 2,
       "losing_streak_definition": "consecutive settled entries with profit_units < 0; push/non-loss resets streak",
       "settlement_counts": {
-        "FULL_LOSS": 1
+        "FULL_LOSS": 2
       },
       "league_breakdown": {
+        "LaLiga": {
+          "settled_entries": 1,
+          "profit_units": -1.0,
+          "roi": -1.0
+        },
         "Premier League": {
           "settled_entries": 1,
           "profit_units": -1.0,
@@ -39,7 +44,7 @@
         }
       },
       "entries_recorded": 2,
-      "unsettled_entries": 1
+      "unsettled_entries": 0
     },
     "FD_AH_4E30F9F2EC34": {
       "settled_entries": 1,

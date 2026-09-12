@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "classification": "VALIDATION_V2_FORWARD_READINESS",
   "status": "COLLECTING_FORWARD_EVIDENCE",
-  "generated_at": "2026-09-12T21:41:14.176284+00:00",
+  "generated_at": "2026-09-12T22:28:01.088594+00:00",
   "candidate_count": 3,
   "forward_start": "2026-09-10T13:25:00Z",
   "scheduled_cadence_hours": 12,
@@ -98,18 +98,18 @@
       "candidate_id": "FD_AH_1D65F429F6A5",
       "status": "COLLECTING_FORWARD_EVIDENCE",
       "entries_recorded": 2,
-      "settled_entries": 1,
-      "remaining_to_minimum_settled_entries": 149,
+      "settled_entries": 2,
+      "remaining_to_minimum_settled_entries": 148,
       "gates": [
         {
           "gate": "minimum_settled_entries",
-          "value": 1,
+          "value": 2,
           "threshold": 150,
           "status": "FAIL"
         },
         {
           "gate": "minimum_distinct_leagues",
-          "value": 1,
+          "value": 2,
           "threshold": 3,
           "status": "PENDING"
         },
@@ -145,19 +145,19 @@
         },
         {
           "gate": "maximum_single_league_profit_concentration",
-          "value": 1.0,
+          "value": 0.5,
           "threshold": "<= 0.6",
           "status": "PENDING"
         },
         {
           "gate": "empirical_drawdown_report",
-          "value": -1.0,
+          "value": -2.0,
           "threshold": "reported",
           "status": "PENDING"
         },
         {
           "gate": "longest_losing_streak_report",
-          "value": 1,
+          "value": 2,
           "threshold": "reported",
           "status": "PENDING"
         },
