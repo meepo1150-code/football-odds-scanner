@@ -1,117 +1,14 @@
 {
   "schema_version": "1.2",
   "status": "OK",
-  "generated_at": "2026-09-13T14:28:38.942145+00:00",
+  "generated_at": "2026-09-13T18:14:53.842660+00:00",
   "coverage_start": "2026-01-01T00:00:00+00:00",
   "last_discovery_at": "2026-09-13T14:28:38.942145+00:00",
   "discovery_cursor": "2026-04-28T00:00:00+00:00",
   "backfill_complete": false,
-  "last_discovery_mode": "BACKFILL",
-  "last_discovery_window": {
-    "from": "2026-04-19T00:00:00Z",
-    "to": "2026-04-28T00:00:00Z"
-  },
+  "last_discovery_mode": null,
+  "last_discovery_window": null,
   "fixture_queue": [
-    {
-      "fixtureId": "id1000001761301173",
-      "tournamentId": 17,
-      "tournamentName": "Premier League",
-      "tournamentSlug": "premier-league",
-      "startTime": "2026-04-19T15:30:00.000Z",
-      "participant1Name": "Manchester City",
-      "participant2Name": "Arsenal FC",
-      "archive_country": "England"
-    },
-    {
-      "fixtureId": "id1000003561514130",
-      "tournamentId": 35,
-      "tournamentName": "Bundesliga",
-      "tournamentSlug": "bundesliga",
-      "startTime": "2026-04-19T15:30:00.000Z",
-      "participant1Name": "Bayern Munich",
-      "participant2Name": "VfB Stuttgart",
-      "archive_country": "Germany"
-    },
-    {
-      "fixtureId": "id1000002361061595",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-04-19T16:00:00.000Z",
-      "participant1Name": "Pisa SC",
-      "participant2Name": "Genoa CFC",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000003561514140",
-      "tournamentId": 35,
-      "tournamentName": "Bundesliga",
-      "tournamentSlug": "bundesliga",
-      "startTime": "2026-04-19T17:30:00.000Z",
-      "participant1Name": "Borussia Monchengladbach",
-      "participant2Name": "FSV Mainz",
-      "archive_country": "Germany"
-    },
-    {
-      "fixtureId": "id1000002361061589",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-04-19T18:45:00.000Z",
-      "participant1Name": "Juventus Turin",
-      "participant2Name": "Bologna FC",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000003461526532",
-      "tournamentId": 34,
-      "tournamentName": "Ligue 1",
-      "tournamentSlug": "ligue-1",
-      "startTime": "2026-04-19T18:45:00.000Z",
-      "participant1Name": "Paris Saint-Germain",
-      "participant2Name": "Olympique Lyon",
-      "archive_country": "France"
-    },
-    {
-      "fixtureId": "id1000002361061591",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-04-20T18:45:00.000Z",
-      "participant1Name": "US Lecce",
-      "participant2Name": "ACF Fiorentina",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000001761301167",
-      "tournamentId": 17,
-      "tournamentName": "Premier League",
-      "tournamentSlug": "premier-league",
-      "startTime": "2026-04-20T19:00:00.000Z",
-      "participant1Name": "Crystal Palace",
-      "participant2Name": "West Ham United",
-      "archive_country": "England"
-    },
-    {
-      "fixtureId": "id1000000861624578",
-      "tournamentId": 8,
-      "tournamentName": "LaLiga",
-      "tournamentSlug": "laliga",
-      "startTime": "2026-04-21T17:00:00.000Z",
-      "participant1Name": "Athletic Bilbao",
-      "participant2Name": "CA Osasuna",
-      "archive_country": "Spain"
-    },
-    {
-      "fixtureId": "id1000000861624584",
-      "tournamentId": 8,
-      "tournamentName": "LaLiga",
-      "tournamentSlug": "laliga",
-      "startTime": "2026-04-21T17:00:00.000Z",
-      "participant1Name": "RCD Mallorca",
-      "participant2Name": "Valencia CF",
-      "archive_country": "Spain"
-    },
     {
       "fixtureId": "id1000001761301185",
       "tournamentId": 17,
@@ -900,15 +797,17 @@
     "id1000003561514074",
     "id1000003567872358"
   ],
-  "queued_remaining": 67,
+  "queued_remaining": 57,
   "processed_this_run": 10,
-  "rows_added_this_run": 9,
-  "archive_rows": 481,
+  "rows_added_this_run": 10,
+  "archive_rows": 491,
   "history_storage": "LEGACY_PLUS_DAILY_SHARDS",
   "touched_shards": [
-    "data/normalized/oddspapi_history_ticks/2026-04-19.jsonl"
+    "data/normalized/oddspapi_history_ticks/2026-04-19.jsonl",
+    "data/normalized/oddspapi_history_ticks/2026-04-20.jsonl",
+    "data/normalized/oddspapi_history_ticks/2026-04-21.jsonl"
   ],
-  "billable_requests_this_run": 1,
+  "billable_requests_this_run": 0,
   "free_history_requests_this_run": 10,
   "history_request_spacing_seconds": 5.2,
   "result_join_status": "NOT_JOINED",
