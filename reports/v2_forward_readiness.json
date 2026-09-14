@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "classification": "VALIDATION_V2_FORWARD_READINESS",
   "status": "COLLECTING_FORWARD_EVIDENCE",
-  "generated_at": "2026-09-14T22:45:22.209950+00:00",
+  "generated_at": "2026-09-14T23:18:40.048800+00:00",
   "candidate_count": 3,
   "forward_start": "2026-09-10T13:25:00Z",
   "scheduled_cadence_hours": 12,
@@ -14,12 +14,12 @@
       "candidate_id": "FD_AH_4E30F9F2EC34",
       "status": "COLLECTING_FORWARD_EVIDENCE",
       "entries_recorded": 3,
-      "settled_entries": 1,
-      "remaining_to_minimum_settled_entries": 149,
+      "settled_entries": 2,
+      "remaining_to_minimum_settled_entries": 148,
       "gates": [
         {
           "gate": "minimum_settled_entries",
-          "value": 1,
+          "value": 2,
           "threshold": 150,
           "status": "FAIL"
         },
@@ -31,13 +31,13 @@
         },
         {
           "gate": "minimum_positive_league_share",
-          "value": 1.0,
+          "value": 0.0,
           "threshold": 0.6,
           "status": "PENDING"
         },
         {
           "gate": "positive_flat_stake_roi",
-          "value": 0.95,
+          "value": -0.025000000000000022,
           "threshold": "> 0",
           "status": "PENDING"
         },
@@ -55,7 +55,7 @@
         },
         {
           "gate": "bootstrap_roi_ci95_lower_above_zero",
-          "value": 0.95,
+          "value": -1.0,
           "threshold": "> 0",
           "status": "PENDING"
         },
@@ -67,13 +67,13 @@
         },
         {
           "gate": "empirical_drawdown_report",
-          "value": 0.0,
+          "value": -1.0,
           "threshold": "reported",
           "status": "PENDING"
         },
         {
           "gate": "longest_losing_streak_report",
-          "value": 0,
+          "value": 1,
           "threshold": "reported",
           "status": "PENDING"
         },
