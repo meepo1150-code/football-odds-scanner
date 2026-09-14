@@ -1,6 +1,9 @@
 name: Resolve Research V2 Universe
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/resolve-research-universe.yml'
 permissions:
   contents: write
 jobs:
