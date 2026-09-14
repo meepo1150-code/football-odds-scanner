@@ -3,8 +3,9 @@ from __future__ import annotations
 import json
 import os
 import time
-from datetime import datetime, timezone
+from datetime import datetime, time as dtime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from .europe_bookmaker_coverage_probe import BOOKMAKER, CORE_QUOTA_RESERVE, EXPECTED, quota_allows_probe, summarize_rows
 from .oddspapi_discovery import _rows
@@ -13,11 +14,14 @@ from .oddspapi_quota_health import summarize_account
 from .v2_mainline_observer import CATALOG_PATH, _load_json, extract_mainline_snapshot, mainline_shape
 
 TARGET_PATH = Path('reports/europe_discovery_tournaments.json')
-SNAPSHOT_PATH = Path('data/normalized/europe_pinnacle_discovery_snapshots.jsonl')
-AUDIT_PATH = Path('data/normalized/europe_pinnacle_discovery_audit.jsonl')
-REPORT_PATH = Path('reports/europe_pinnacle_discovery_status.json')
+SNAPSHOT_PATH = Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl')
+AUDIT_PATH = Path('data/normalized/europe_pinnacle_research_v2_audit.jsonl')
+REPORT_PATH = Path('reports/europe_pinnacle_research_v2_status.json')
 BATCH_SIZE = 5
 COOLDOWN = 1.25
+BANGKOK = ZoneInfo('Asia/Bangkok')
+FOOTBALL_DAY_START_HOUR = 12
+FOOTBALL_DAY_END_HOUR = 6
 
 
 def _merge_jsonl(path: Path, new_rows: list[dict], key_fields: tuple[str, ...]) -> int:
@@ -38,12 +42,32 @@ def _merge_jsonl(path: Path, new_rows: list[dict], key_fields: tuple[str, ...]) 
     return len(ordered)
 
 
-def merge_snapshots(path: Path, new_rows: list[dict]) -> int:
-    return _merge_jsonl(path, new_rows, ('observed_at', 'fixture_id'))
+def _football_day_bounds(now_utc: datetime) -> tuple[datetime, datetime, str]:
+    local_now = now_utc.astimezone(BANGKOK)
+    # Scans at/after noon belong to the local calendar day. A 00:00 scan belongs
+    # to the previous evening's football day, so late European kickoffs remain grouped together.
+    if local_now.time() < dtime(FOOTBALL_DAY_END_HOUR, 0):
+        label_date = local_now.date() - timedelta(days=1)
+    else:
+        label_date = local_now.date()
+    start_local = datetime.combine(label_date, dtime(FOOTBALL_DAY_START_HOUR, 0), BANGKOK)
+    end_local = datetime.combine(label_date + timedelta(days=1), dtime(FOOTBALL_DAY_END_HOUR, 0), BANGKOK)
+    return start_local.astimezone(timezone.utc), end_local.astimezone(timezone.utc), label_date.isoformat()
 
 
-def merge_audit(path: Path, new_rows: list[dict]) -> int:
-    return _merge_jsonl(path, new_rows, ('observed_at', 'fixture_id'))
+def _parse_kickoff(value: object) -> datetime | None:
+    if not value:
+        return None
+    try:
+        dt = datetime.fromisoformat(str(value).replace('Z', '+00:00'))
+        return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+    except (TypeError, ValueError):
+        return None
+
+
+def _in_football_day(kickoff: object, start_utc: datetime, end_utc: datetime) -> bool:
+    dt = _parse_kickoff(kickoff)
+    return dt is not None and start_utc <= dt < end_utc
 
 
 def _write(report: dict, root: Path) -> dict:
@@ -55,15 +79,18 @@ def _write(report: dict, root: Path) -> dict:
 
 def run(root: Path = Path('.')) -> dict:
     now = datetime.now(timezone.utc)
+    window_start, window_end, football_day = _football_day_bounds(now)
     report = {
-        'schema_version': '1.1',
+        'schema_version': '2.0',
         'generated_at': now.isoformat(),
-        'classification': 'EUROPE_PINNACLE_DISCOVERY_ONLY',
+        'classification': 'PINNACLE_RESEARCH_V2',
         'bookmaker': BOOKMAKER,
+        'football_day': football_day,
+        'football_day_timezone': 'Asia/Bangkok',
+        'football_day_window_start': window_start.isoformat(),
+        'football_day_window_end': window_end.isoformat(),
+        'research_only': True,
         'production_promotion_allowed': False,
-        'validation_gate_effect': 'NONE',
-        'candidate_matching_allowed': False,
-        'cross_bookmaker_price_equivalence_allowed': False,
         'core_quota_reserve': CORE_QUOTA_RESERVE,
         'planned_requests': 3,
     }
@@ -91,8 +118,11 @@ def run(root: Path = Path('.')) -> dict:
     strict: list[dict] = []
     diagnostics: list[dict] = []
     audit_rows: list[dict] = []
+    all_api_fixtures = 0
+    excluded_outside_window = 0
     requests = 0
     last_finished = None
+
     for start in range(0, len(selected), BATCH_SIZE):
         batch = selected[start:start + BATCH_SIZE]
         if last_finished is not None:
@@ -108,63 +138,52 @@ def run(root: Path = Path('.')) -> dict:
         requests += 1
         last_finished = time.monotonic()
         meta = {int(x['tournament_id']): x for x in batch}
+
         for fixture in _rows(payload):
-            tm = {**(meta.get(int(fixture.get('tournamentId') or -1)) or {}), 'universe': 'EUROPE_PINNACLE_DISCOVERY'}
+            all_api_fixtures += 1
+            if not _in_football_day(fixture.get('startTime'), window_start, window_end):
+                excluded_outside_window += 1
+                continue
+
+            tm = {**(meta.get(int(fixture.get('tournamentId') or -1)) or {}), 'universe': 'PINNACLE_RESEARCH_V2'}
             book = (fixture.get('bookmakerOdds') or {}).get(BOOKMAKER)
             bookmaker_active = isinstance(book, dict) and book.get('bookmakerIsActive') is True and book.get('suspended') is False
             shape = mainline_shape(fixture, catalog, bookmaker=BOOKMAKER)
             snapshot, reason = extract_mainline_snapshot(fixture, catalog, observed_at=now, tournament_meta=tm, bookmaker=BOOKMAKER)
             diag = {
-                'country': tm.get('country'),
-                'league': tm.get('tournament_name'),
-                'fixture_id': fixture.get('fixtureId'),
-                'bookmaker_active': bookmaker_active,
-                'ah_main_count': shape.get('ah_main_count', 0),
-                'ou_main_count': shape.get('ou_main_count', 0),
-                'strict_snapshot': snapshot is not None,
-                'reason': reason,
+                'country': tm.get('country'), 'league': tm.get('tournament_name'),
+                'fixture_id': fixture.get('fixtureId'), 'bookmaker_active': bookmaker_active,
+                'ah_main_count': shape.get('ah_main_count', 0), 'ou_main_count': shape.get('ou_main_count', 0),
+                'strict_snapshot': snapshot is not None, 'reason': reason,
             }
             diagnostics.append(diag)
             audit_rows.append({
-                'fixture_id': fixture.get('fixtureId'),
-                'tournament_id': fixture.get('tournamentId'),
-                'country': tm.get('country'),
-                'league': tm.get('tournament_name'),
-                'home': fixture.get('participant1Name'),
-                'away': fixture.get('participant2Name'),
-                'kickoff': fixture.get('startTime'),
-                'observed_at': now.isoformat(),
-                'bookmaker': BOOKMAKER,
-                'eligibility_status': 'MATCH' if snapshot is not None else 'NOT_MATCH',
-                'eligibility_reason': reason,
-                'bookmaker_active': bookmaker_active,
-                'ah_main_count': shape.get('ah_main_count', 0),
-                'ou_main_count': shape.get('ou_main_count', 0),
-                'candidate_matching_allowed': False,
-                'interpretation': 'MATCH means strict Pinnacle discovery eligibility only; it is not a betting recommendation or Bet365 candidate match.',
+                'football_day': football_day,
+                'fixture_id': fixture.get('fixtureId'), 'tournament_id': fixture.get('tournamentId'),
+                'country': tm.get('country'), 'league': tm.get('tournament_name'),
+                'home': fixture.get('participant1Name'), 'away': fixture.get('participant2Name'),
+                'kickoff': fixture.get('startTime'), 'observed_at': now.isoformat(),
+                'bookmaker': BOOKMAKER, 'eligibility_status': 'MATCH' if snapshot is not None else 'NOT_MATCH',
+                'eligibility_reason': reason, 'bookmaker_active': bookmaker_active,
+                'ah_main_count': shape.get('ah_main_count', 0), 'ou_main_count': shape.get('ou_main_count', 0),
+                'research_population': True,
+                'interpretation': 'All fixtures in the Bangkok football-day window are retained for research. MATCH is descriptive metadata only.',
             })
             if snapshot:
-                snapshot['discovery_only'] = True
-                snapshot['candidate_like_matches'] = []
-                snapshot['candidate_matching_allowed'] = False
-                snapshot['cross_bookmaker_price_equivalence_allowed'] = False
+                snapshot['football_day'] = football_day
+                snapshot['research_only'] = True
                 strict.append(snapshot)
 
-    total_persisted = merge_snapshots(root / SNAPSHOT_PATH, strict)
-    total_audit = merge_audit(root / AUDIT_PATH, audit_rows)
+    total_snapshots = _merge_jsonl(root / SNAPSHOT_PATH, strict, ('observed_at', 'fixture_id'))
+    total_audit = _merge_jsonl(root / AUDIT_PATH, audit_rows, ('observed_at', 'fixture_id'))
     report.update(
-        status='DISCOVERY_OBSERVED',
-        resolved_leagues=len(selected),
-        requests_used=requests,
-        strict_snapshots_this_run=len(strict),
-        persisted_snapshot_rows=total_persisted,
-        persisted_audit_rows=total_audit,
-        audit_rows_this_run=len(audit_rows),
+        status='RESEARCH_V2_OBSERVED', resolved_leagues=len(selected), requests_used=requests,
+        api_fixtures_returned=all_api_fixtures, excluded_outside_football_day=excluded_outside_window,
+        football_day_fixtures=len(audit_rows), strict_snapshots_this_run=len(strict),
+        non_strict_fixtures_this_run=len(audit_rows) - len(strict),
+        persisted_snapshot_rows=total_snapshots, persisted_audit_rows=total_audit,
         **summarize_rows(diagnostics),
-        interpretation=(
-            'Independent Pinnacle Europe discovery stream. MATCH/NOT_MATCH in the audit means strict Pinnacle discovery eligibility only. '
-            'Pinnacle prices must not be matched to Bet365 candidate price bands and cannot enter frozen Validation v2 or production automatically.'
-        ),
+        interpretation='Day-scoped research population. Every selected-league fixture in the Bangkok football-day window is counted; strict status is a feature, not a recommendation.'
     )
     return _write(report, root)
 
