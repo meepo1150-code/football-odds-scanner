@@ -3,24 +3,18 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['apps/dashboard/**','reports/**','data/normalized/v2_mainline_snapshots.jsonl','data/normalized/v2_forward_entries.jsonl','data/normalized/v2_forward_settlements.jsonl','data/normalized/europe_discovery_snapshots.jsonl','data/normalized/europe_pinnacle_research_v2_snapshots.jsonl','data/normalized/europe_pinnacle_research_v2_audit.jsonl','data/normalized/oddspapi_finished_results.jsonl','.github/workflows/pages.yml']
+    paths:
+      - 'apps/dashboard/**'
+      - 'reports/europe_pinnacle_research_v2_status.json'
+      - 'reports/oddspapi_quota_health.json'
+      - 'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'
+      - 'data/normalized/europe_pinnacle_research_v2_audit.jsonl'
+      - 'data/normalized/oddspapi_finished_results.jsonl'
+      - '.github/workflows/pages.yml'
   workflow_run:
     workflows:
-      - 'Live Odds Scan'
-      - 'Current Multi-Market Provider Health'
-      - 'Five Dollar Historical Snapshot Archive'
-      - 'OddsPapi Current Provider Health'
-      - 'OddsPapi Historical Tick Archive'
-      - 'Flashscore Exact Result Backfill'
-      - 'Prospective 2026-27 Research Status'
-      - 'Validation V2 Diagnostic'
-      - 'Validation v2 Main-Line Observer'
-      - 'Validation v2 Forward Performance'
-      - 'Validation v2 Forward Result Backfill'
-      - 'OddsPapi Quota Health'
-      - 'Validation v2 Pipeline Health'
-      - 'Europe 15-League Discovery'
       - 'Europe Pinnacle Research V2'
+      - 'OddsPapi Quota Health'
     types: [completed]
 permissions:
   contents: read
@@ -40,19 +34,14 @@ jobs:
       - name: Build static site
         run: |
           set -euo pipefail
-          mkdir -p site/reports/breadth site/data/normalized
+          mkdir -p site/reports site/data/normalized
           cp apps/dashboard/index.html site/index.html
-          test -f apps/dashboard/history.html && cp apps/dashboard/history.html site/history.html || true
-          test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery.html || true
-          test -f apps/dashboard/research.html && cp apps/dashboard/research.html site/research.html || true
-          sed -i 's#<a href="research.html">Advanced Research</a>#<a href="discovery.html">Research V2</a><a href="research.html">Advanced Research</a>#' site/index.html site/history.html || true
-          for f in today.json pattern_registry.json current_provider_health.json provider_capabilities.json five_dollar_health.json oddspapi_health.json oddspapi_quota_health.json five_dollar_archive_state.json five_dollar_research.json source_qualification.json prospective_2026_27_status.json validation_v2_status.json validation_v2_preregistration.json v2_research_candidates.json v2_forward_preregistration.json v2_mainline_observer.json v2_forward_entry_status.json v2_forward_clv_status.json v2_forward_performance.json v2_forward_readiness.json v2_forward_result_backfill.json v2_pipeline_health.json europe_discovery_status.json europe_discovery_tournaments.json europe_discovery_summary.json europe_discovery_movement.json europe_discovery_movement_research.json europe_pinnacle_research_v2_status.json football_data_multiseason_validation.json independent_league_validation.json third_universe_ou_validation.json; do
+          for f in europe_pinnacle_research_v2_status.json oddspapi_quota_health.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
-          for f in v2_mainline_snapshots.jsonl v2_forward_entries.jsonl v2_forward_settlements.jsonl europe_discovery_snapshots.jsonl europe_pinnacle_research_v2_snapshots.jsonl europe_pinnacle_research_v2_audit.jsonl oddspapi_finished_results.jsonl; do
+          for f in europe_pinnacle_research_v2_snapshots.jsonl europe_pinnacle_research_v2_audit.jsonl oddspapi_finished_results.jsonl; do
             test -f "data/normalized/$f" && cp "data/normalized/$f" "site/data/normalized/$f" || true
           done
-          test -f reports/breadth/summary.json && cp reports/breadth/summary.json site/reports/breadth/summary.json || true
       - uses: actions/configure-pages@v6
         with: {enablement: true}
       - uses: actions/upload-pages-artifact@v5
@@ -60,5 +49,3 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v5
-
-# Research V2 dashboard publishes Football Day observations plus any exact finished results already available.
