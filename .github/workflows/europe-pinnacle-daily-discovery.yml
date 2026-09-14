@@ -1,6 +1,10 @@
 name: Europe Pinnacle Research V2
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'controls/europe_pinnacle_research_v2_run_token.txt'
   schedule:
     - cron: '0 14 * * 1-5'
     - cron: '0 17 * * 1-5'
