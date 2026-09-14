@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 import os
-import time
 from datetime import datetime, time as dtime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -17,8 +16,6 @@ TARGET_PATH = Path('reports/europe_discovery_tournaments.json')
 SNAPSHOT_PATH = Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl')
 AUDIT_PATH = Path('data/normalized/europe_pinnacle_research_v2_audit.jsonl')
 REPORT_PATH = Path('reports/europe_pinnacle_research_v2_status.json')
-BATCH_SIZE = 5
-COOLDOWN = 1.25
 BANGKOK = ZoneInfo('Asia/Bangkok')
 FOOTBALL_DAY_START_HOUR = 12
 FOOTBALL_DAY_END_HOUR = 6
@@ -44,8 +41,6 @@ def _merge_jsonl(path: Path, new_rows: list[dict], key_fields: tuple[str, ...]) 
 
 def _football_day_bounds(now_utc: datetime) -> tuple[datetime, datetime, str]:
     local_now = now_utc.astimezone(BANGKOK)
-    # Scans at/after noon belong to the local calendar day. A 00:00 scan belongs
-    # to the previous evening's football day, so late European kickoffs remain grouped together.
     if local_now.time() < dtime(FOOTBALL_DAY_END_HOUR, 0):
         label_date = local_now.date() - timedelta(days=1)
     else:
@@ -81,110 +76,61 @@ def run(root: Path = Path('.')) -> dict:
     now = datetime.now(timezone.utc)
     window_start, window_end, football_day = _football_day_bounds(now)
     report = {
-        'schema_version': '2.0',
-        'generated_at': now.isoformat(),
-        'classification': 'PINNACLE_RESEARCH_V2',
-        'bookmaker': BOOKMAKER,
-        'football_day': football_day,
-        'football_day_timezone': 'Asia/Bangkok',
-        'football_day_window_start': window_start.isoformat(),
-        'football_day_window_end': window_end.isoformat(),
-        'research_only': True,
-        'production_promotion_allowed': False,
-        'core_quota_reserve': CORE_QUOTA_RESERVE,
-        'planned_requests': 3,
+        'schema_version': '2.1', 'generated_at': now.isoformat(),
+        'classification': 'PINNACLE_RESEARCH_V2', 'bookmaker': BOOKMAKER,
+        'football_day': football_day, 'football_day_timezone': 'Asia/Bangkok',
+        'football_day_window_start': window_start.isoformat(), 'football_day_window_end': window_end.isoformat(),
+        'research_only': True, 'production_promotion_allowed': False,
+        'core_quota_reserve': CORE_QUOTA_RESERVE, 'planned_requests': 1,
+        'batching_strategy': 'ALL_SELECTED_TOURNAMENTS_ONE_REQUEST',
     }
     key = os.getenv(ENV_KEY, '').strip()
     if not key:
-        report['status'] = 'API_KEY_NOT_CONFIGURED'
-        return _write(report, root)
+        report['status'] = 'API_KEY_NOT_CONFIGURED'; return _write(report, root)
     try:
         quota = summarize_account(_get('/account', key))
     except Exception as exc:
-        report.update(status='SKIPPED_QUOTA_HEALTH_UNAVAILABLE', requests_used=0, errors=[f'{type(exc).__name__}: {exc}'])
-        return _write(report, root)
+        report.update(status='SKIPPED_QUOTA_HEALTH_UNAVAILABLE', requests_used=0, errors=[f'{type(exc).__name__}: {exc}']); return _write(report, root)
     report['quota_remaining_before'] = quota.get('request_remaining')
     if not quota_allows_probe(quota):
-        report.update(status='SKIPPED_TO_PROTECT_CORE_QUOTA', requests_used=0)
-        return _write(report, root)
+        report.update(status='SKIPPED_TO_PROTECT_CORE_QUOTA', requests_used=0); return _write(report, root)
 
     targets = _load_json(root / TARGET_PATH) or {}
     selected = targets.get('tournaments') or [] if isinstance(targets, dict) else []
     if len(selected) != EXPECTED:
-        report.update(status='TARGET_MAP_INCOMPLETE', resolved_leagues=len(selected), requests_used=0)
-        return _write(report, root)
+        report.update(status='TARGET_MAP_INCOMPLETE', resolved_leagues=len(selected), requests_used=0); return _write(report, root)
     catalog = _load_json(root / CATALOG_PATH) or []
+    meta = {int(x['tournament_id']): x for x in selected}
 
-    strict: list[dict] = []
-    diagnostics: list[dict] = []
-    audit_rows: list[dict] = []
-    all_api_fixtures = 0
-    excluded_outside_window = 0
-    requests = 0
-    last_finished = None
-
-    for start in range(0, len(selected), BATCH_SIZE):
-        batch = selected[start:start + BATCH_SIZE]
-        if last_finished is not None:
-            wait = COOLDOWN - (time.monotonic() - last_finished)
-            if wait > 0:
-                time.sleep(wait)
+    # OddsPAPI counts a billable endpoint call, not fixtures returned. The endpoint accepts
+    # comma-separated tournamentIds, so keep the entire 15-league universe in one request.
+    try:
         payload = _get('/odds-by-tournaments', key, {
-            'tournamentIds': ','.join(str(x['tournament_id']) for x in batch),
-            'bookmakers': BOOKMAKER,
-            'language': 'en',
-            'verbosity': 3,
-        }, 30)
-        requests += 1
-        last_finished = time.monotonic()
-        meta = {int(x['tournament_id']): x for x in batch}
+            'tournamentIds': ','.join(str(x['tournament_id']) for x in selected),
+            'bookmakers': BOOKMAKER, 'language': 'en', 'verbosity': 3,
+        }, 60)
+    except Exception as exc:
+        report.update(status='API_REQUEST_FAILED', requests_used=1, errors=[f'{type(exc).__name__}: {exc}']); return _write(report, root)
 
-        for fixture in _rows(payload):
-            all_api_fixtures += 1
-            if not _in_football_day(fixture.get('startTime'), window_start, window_end):
-                excluded_outside_window += 1
-                continue
-
-            tm = {**(meta.get(int(fixture.get('tournamentId') or -1)) or {}), 'universe': 'PINNACLE_RESEARCH_V2'}
-            book = (fixture.get('bookmakerOdds') or {}).get(BOOKMAKER)
-            bookmaker_active = isinstance(book, dict) and book.get('bookmakerIsActive') is True and book.get('suspended') is False
-            shape = mainline_shape(fixture, catalog, bookmaker=BOOKMAKER)
-            snapshot, reason = extract_mainline_snapshot(fixture, catalog, observed_at=now, tournament_meta=tm, bookmaker=BOOKMAKER)
-            diag = {
-                'country': tm.get('country'), 'league': tm.get('tournament_name'),
-                'fixture_id': fixture.get('fixtureId'), 'bookmaker_active': bookmaker_active,
-                'ah_main_count': shape.get('ah_main_count', 0), 'ou_main_count': shape.get('ou_main_count', 0),
-                'strict_snapshot': snapshot is not None, 'reason': reason,
-            }
-            diagnostics.append(diag)
-            audit_rows.append({
-                'football_day': football_day,
-                'fixture_id': fixture.get('fixtureId'), 'tournament_id': fixture.get('tournamentId'),
-                'country': tm.get('country'), 'league': tm.get('tournament_name'),
-                'home': fixture.get('participant1Name'), 'away': fixture.get('participant2Name'),
-                'kickoff': fixture.get('startTime'), 'observed_at': now.isoformat(),
-                'bookmaker': BOOKMAKER, 'eligibility_status': 'MATCH' if snapshot is not None else 'NOT_MATCH',
-                'eligibility_reason': reason, 'bookmaker_active': bookmaker_active,
-                'ah_main_count': shape.get('ah_main_count', 0), 'ou_main_count': shape.get('ou_main_count', 0),
-                'research_population': True,
-                'interpretation': 'All fixtures in the Bangkok football-day window are retained for research. MATCH is descriptive metadata only.',
-            })
-            if snapshot:
-                snapshot['football_day'] = football_day
-                snapshot['research_only'] = True
-                strict.append(snapshot)
+    strict, diagnostics, audit_rows = [], [], []
+    all_api_fixtures = excluded_outside_window = 0
+    for fixture in _rows(payload):
+        all_api_fixtures += 1
+        if not _in_football_day(fixture.get('startTime'), window_start, window_end):
+            excluded_outside_window += 1; continue
+        tm = {**(meta.get(int(fixture.get('tournamentId') or -1)) or {}), 'universe': 'PINNACLE_RESEARCH_V2'}
+        book = (fixture.get('bookmakerOdds') or {}).get(BOOKMAKER)
+        bookmaker_active = isinstance(book, dict) and book.get('bookmakerIsActive') is True and book.get('suspended') is False
+        shape = mainline_shape(fixture, catalog, bookmaker=BOOKMAKER)
+        snapshot, reason = extract_mainline_snapshot(fixture, catalog, observed_at=now, tournament_meta=tm, bookmaker=BOOKMAKER)
+        diagnostics.append({'country': tm.get('country'), 'league': tm.get('tournament_name'), 'fixture_id': fixture.get('fixtureId'), 'bookmaker_active': bookmaker_active, 'ah_main_count': shape.get('ah_main_count', 0), 'ou_main_count': shape.get('ou_main_count', 0), 'strict_snapshot': snapshot is not None, 'reason': reason})
+        audit_rows.append({'football_day': football_day, 'fixture_id': fixture.get('fixtureId'), 'tournament_id': fixture.get('tournamentId'), 'country': tm.get('country'), 'league': tm.get('tournament_name'), 'home': fixture.get('participant1Name'), 'away': fixture.get('participant2Name'), 'kickoff': fixture.get('startTime'), 'observed_at': now.isoformat(), 'bookmaker': BOOKMAKER, 'eligibility_status': 'MATCH' if snapshot is not None else 'NOT_MATCH', 'eligibility_reason': reason, 'bookmaker_active': bookmaker_active, 'ah_main_count': shape.get('ah_main_count', 0), 'ou_main_count': shape.get('ou_main_count', 0), 'research_population': True, 'interpretation': 'All fixtures in the Bangkok football-day window are retained for research. MATCH is descriptive metadata only.'})
+        if snapshot:
+            snapshot['football_day'] = football_day; snapshot['research_only'] = True; strict.append(snapshot)
 
     total_snapshots = _merge_jsonl(root / SNAPSHOT_PATH, strict, ('observed_at', 'fixture_id'))
     total_audit = _merge_jsonl(root / AUDIT_PATH, audit_rows, ('observed_at', 'fixture_id'))
-    report.update(
-        status='RESEARCH_V2_OBSERVED', resolved_leagues=len(selected), requests_used=requests,
-        api_fixtures_returned=all_api_fixtures, excluded_outside_football_day=excluded_outside_window,
-        football_day_fixtures=len(audit_rows), strict_snapshots_this_run=len(strict),
-        non_strict_fixtures_this_run=len(audit_rows) - len(strict),
-        persisted_snapshot_rows=total_snapshots, persisted_audit_rows=total_audit,
-        **summarize_rows(diagnostics),
-        interpretation='Day-scoped research population. Every selected-league fixture in the Bangkok football-day window is counted; strict status is a feature, not a recommendation.'
-    )
+    report.update(status='RESEARCH_V2_OBSERVED', resolved_leagues=len(selected), requests_used=1, api_fixtures_returned=all_api_fixtures, excluded_outside_football_day=excluded_outside_window, football_day_fixtures=len(audit_rows), strict_snapshots_this_run=len(strict), non_strict_fixtures_this_run=len(audit_rows)-len(strict), persisted_snapshot_rows=total_snapshots, persisted_audit_rows=total_audit, **summarize_rows(diagnostics), interpretation='Day-scoped research population. Every selected-league fixture in the Bangkok football-day window is counted; strict status is a feature, not a recommendation.')
     return _write(report, root)
 
 
