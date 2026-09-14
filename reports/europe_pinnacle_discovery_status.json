@@ -1,6 +1,6 @@
 {
-  "schema_version": "1.0",
-  "generated_at": "2026-09-14T10:08:07.577137+00:00",
+  "schema_version": "1.1",
+  "generated_at": "2026-09-14T12:17:21.188823+00:00",
   "classification": "EUROPE_PINNACLE_DISCOVERY_ONLY",
   "bookmaker": "pinnacle",
   "production_promotion_allowed": false,
@@ -9,22 +9,24 @@
   "cross_bookmaker_price_equivalence_allowed": false,
   "core_quota_reserve": 30,
   "planned_requests": 3,
-  "quota_remaining_before": 130,
+  "quota_remaining_before": 127,
   "status": "DISCOVERY_OBSERVED",
   "resolved_leagues": 15,
   "requests_used": 3,
-  "strict_snapshots_this_run": 99,
-  "persisted_snapshot_rows": 430,
-  "fixtures_seen": 105,
-  "bookmaker_active_fixtures": 103,
-  "fixtures_with_exactly_one_main_ah": 99,
-  "fixtures_with_exactly_one_main_ou": 99,
-  "fixtures_with_both_exact_mainlines": 99,
-  "strict_snapshots": 99,
+  "strict_snapshots_this_run": 106,
+  "persisted_snapshot_rows": 536,
+  "persisted_audit_rows": 111,
+  "audit_rows_this_run": 111,
+  "fixtures_seen": 111,
+  "bookmaker_active_fixtures": 110,
+  "fixtures_with_exactly_one_main_ah": 106,
+  "fixtures_with_exactly_one_main_ou": 106,
+  "fixtures_with_both_exact_mainlines": 106,
+  "strict_snapshots": 106,
   "rejection_counts": {
     "AMBIGUOUS_OR_MISSING_1X2": 4,
-    "BOOKMAKER_NOT_ACTIVE": 2,
-    "OK": 99
+    "BOOKMAKER_NOT_ACTIVE": 1,
+    "OK": 106
   },
   "league_coverage": [
     {
@@ -93,25 +95,24 @@
       "league": "France · Ligue 2",
       "fixtures": 7,
       "bookmaker_active": 7,
-      "ah_main_exactly_one": 6,
-      "ou_main_exactly_one": 6,
-      "both_main_exactly_one": 6,
-      "strict_snapshots": 6,
+      "ah_main_exactly_one": 7,
+      "ou_main_exactly_one": 7,
+      "both_main_exactly_one": 7,
+      "strict_snapshots": 7,
       "reason_counts": {
-        "AMBIGUOUS_OR_MISSING_1X2": 1,
-        "OK": 6
+        "OK": 7
       }
     },
     {
       "league": "Germany · 2. Bundesliga",
-      "fixtures": 6,
-      "bookmaker_active": 6,
-      "ah_main_exactly_one": 6,
-      "ou_main_exactly_one": 6,
-      "both_main_exactly_one": 6,
-      "strict_snapshots": 6,
+      "fixtures": 9,
+      "bookmaker_active": 9,
+      "ah_main_exactly_one": 9,
+      "ou_main_exactly_one": 9,
+      "both_main_exactly_one": 9,
+      "strict_snapshots": 9,
       "reason_counts": {
-        "OK": 6
+        "OK": 9
       }
     },
     {
@@ -153,13 +154,13 @@
     {
       "league": "Poland · Ekstraklasa",
       "fixtures": 7,
-      "bookmaker_active": 6,
+      "bookmaker_active": 7,
       "ah_main_exactly_one": 6,
       "ou_main_exactly_one": 6,
       "both_main_exactly_one": 6,
       "strict_snapshots": 6,
       "reason_counts": {
-        "BOOKMAKER_NOT_ACTIVE": 1,
+        "AMBIGUOUS_OR_MISSING_1X2": 1,
         "OK": 6
       }
     },
@@ -177,15 +178,15 @@
     },
     {
       "league": "Spain · LaLiga 2",
-      "fixtures": 8,
-      "bookmaker_active": 7,
-      "ah_main_exactly_one": 7,
-      "ou_main_exactly_one": 7,
-      "both_main_exactly_one": 7,
-      "strict_snapshots": 7,
+      "fixtures": 11,
+      "bookmaker_active": 10,
+      "ah_main_exactly_one": 10,
+      "ou_main_exactly_one": 10,
+      "both_main_exactly_one": 10,
+      "strict_snapshots": 10,
       "reason_counts": {
         "BOOKMAKER_NOT_ACTIVE": 1,
-        "OK": 7
+        "OK": 10
       }
     },
     {
@@ -213,5 +214,5 @@
       }
     }
   ],
-  "interpretation": "Independent Pinnacle Europe discovery stream. It exists because Bet365 had no active full-time AH coverage in the same 15-league expansion sample. Pinnacle prices must not be matched to Bet365 candidate price bands and cannot enter frozen Validation v2 or production automatically."
+  "interpretation": "Independent Pinnacle Europe discovery stream. MATCH/NOT_MATCH in the audit means strict Pinnacle discovery eligibility only. Pinnacle prices must not be matched to Bet365 candidate price bands and cannot enter frozen Validation v2 or production automatically."
 }
