@@ -8,8 +8,6 @@ on:
     # Primary collection window: 11:47 Asia/Bangkok.
     - cron: '47 4 * * *'
     # Fallback collection window: 16:30 Asia/Bangkok.
-    # Scheduled runs are duplicate-safe: if a successful observation already exists
-    # for the current Bangkok calendar day, this run exits before any OddsPapi call.
     - cron: '30 9 * * *'
 permissions:
   contents: write
@@ -39,17 +37,13 @@ jobs:
           from zoneinfo import ZoneInfo
 
           output = Path(os.environ['GITHUB_OUTPUT'])
-
-          # Explicit manual and token-triggered runs remain intentional extra samples.
           if os.environ.get('GITHUB_EVENT_NAME') != 'schedule':
               output.write_text('should_run=true\nreason=explicit_trigger\n', encoding='utf-8')
               raise SystemExit(0)
-
           status_path = Path('reports/europe_pinnacle_discovery_status.json')
           if not status_path.exists():
               output.write_text('should_run=true\nreason=no_status_report\n', encoding='utf-8')
               raise SystemExit(0)
-
           try:
               status = json.loads(status_path.read_text(encoding='utf-8'))
               generated_at = datetime.fromisoformat(status['generated_at'].replace('Z', '+00:00'))
@@ -66,7 +60,6 @@ jobs:
           except Exception as exc:
               output.write_text(f'should_run=true\nreason=status_unreadable_{type(exc).__name__}\n', encoding='utf-8')
               raise SystemExit(0)
-
           if valid_observation and observed_bangkok_date == today_bangkok:
               output.write_text('should_run=false\nreason=already_observed_today_bangkok\n', encoding='utf-8')
           else:
@@ -97,15 +90,10 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add reports/europe_pinnacle_discovery_status.json reports/europe_pinnacle_discovery_summary.json reports/europe_pinnacle_discovery_movement.json reports/europe_pinnacle_discovery_movement_research.json data/normalized/europe_pinnacle_discovery_snapshots.jsonl
+          git add reports/europe_pinnacle_discovery_status.json reports/europe_pinnacle_discovery_summary.json reports/europe_pinnacle_discovery_movement.json reports/europe_pinnacle_discovery_movement_research.json data/normalized/europe_pinnacle_discovery_snapshots.jsonl data/normalized/europe_pinnacle_discovery_audit.jsonl
           git diff --cached --quiet && exit 0
           git commit -m 'data: update Pinnacle Europe discovery [skip ci]'
           git push
-# Scheduled replacement for the 15-league expansion collection stream.
-# Uses Pinnacle because the same sample showed 128/133 strict snapshots versus 0/134 on Bet365.
-# This is a separate discovery universe: no Bet365 candidate matching, no Validation v2 entry, and no automatic production promotion.
-# First-vs-latest movement is descriptive scanner observation history, not bookmaker open/close or CLV.
-# Movement research contains no outcomes, win rate or ROI and cannot establish betting edge.
-# Normal request cost: 3 current-odds requests/day; /account preflight is unmetered and protects the 30-request core reserve.
-# The fallback schedule costs zero extra requests when a valid Pinnacle observation already exists for the current Bangkok day.
-# Updating controls/europe_pinnacle_discovery_run_token.txt intentionally triggers one extra collection run and bypasses the daily guard.
+# Pinnacle expansion discovery remains separate from frozen Bet365 Validation v2.
+# MATCH in the audit means strict Pinnacle discovery eligibility only, never a betting recommendation.
+# Normal request cost: 3 current-odds requests/day; fallback is duplicate-safe.
