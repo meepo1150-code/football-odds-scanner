@@ -34,8 +34,11 @@ jobs:
       - name: Build static site
         run: |
           set -euo pipefail
-          mkdir -p site/reports site/data/normalized
+          mkdir -p site/reports site/data/normalized site/discovery
           cp apps/dashboard/index.html site/index.html
+          test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery.html || true
+          test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery/index.html || true
+          test -f apps/dashboard/404.html && cp apps/dashboard/404.html site/404.html || true
           for f in europe_pinnacle_research_v2_status.json oddspapi_quota_health.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
