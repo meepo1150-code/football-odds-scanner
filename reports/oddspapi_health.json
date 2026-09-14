@@ -3,7 +3,7 @@
   "provider": "oddspapi_free",
   "mode": "BIG5_BATCH",
   "status": "EXECUTION_SAFE_ROWS_AVAILABLE",
-  "generated_at": "2026-09-08T09:33:50.532460+00:00",
+  "generated_at": "2026-09-14T09:13:20.139153+00:00",
   "execution_candidate": true,
   "requests_attempted": 4,
   "request_spacing_seconds": 1.1,
@@ -41,19 +41,19 @@
     }
   ],
   "selected_tournament_count": 5,
-  "batch_fixture_rows": 94,
-  "window_fixture_rows": 48,
-  "rows": 156,
-  "execution_safe_rows": 156,
+  "batch_fixture_rows": 71,
+  "window_fixture_rows": 61,
+  "rows": 1255,
+  "execution_safe_rows": 1255,
   "reasons": {
-    "EXECUTION_SAFE": 156
+    "EXECUTION_SAFE": 1255
   },
   "account": {
     "active_subscription": true,
     "price": null,
     "currency": "USD",
     "request_limit": 250,
-    "request_count": 26,
+    "request_count": 117,
     "rate_limit": null,
     "sport_ids": [
       10,
@@ -469,120 +469,109 @@
   },
   "market_diagnostics": [
     {
-      "fixture_id": "id1000003572513196",
-      "tournament": "Bundesliga",
-      "start_time": "2026-09-11T18:30:00.000Z",
+      "fixture_id": "id1000002371945248",
+      "tournament": "Serie A",
+      "start_time": "2026-09-14T16:30:00.000Z",
       "bookmaker_present": true,
       "bookmaker_active": true,
       "suspended": false,
-      "market_count": 156,
-      "active_market_count": 156,
-      "catalog_match_count": 156,
+      "market_count": 214,
+      "active_market_count": 214,
+      "catalog_match_count": 214,
       "market_samples": [
         {
-          "market_id": "10336",
+          "market_id": "102240",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Correct Score Full Time",
-          "market_type": "correctscore",
-          "period": "fulltime",
-          "handicap": 0.0,
+          "market_name": "Over Under Team 1 Second Half",
+          "market_type": "teamtotals-team1",
+          "period": "p2",
+          "handicap": 3.5,
           "outcome_labels": [
-            "0:0",
-            "4:7",
-            "1:4",
-            "2:1",
-            "5:5",
-            "5:7",
-            "6:7",
-            "7:7",
-            "6:5",
-            "6:2",
-            "2:7",
-            "6:1",
-            "0:3",
-            "3:0",
-            "2:2",
-            "4:2",
-            "1:5",
-            "0:2",
-            "6:0",
-            "0:4",
-            "6:3",
-            "7:2",
-            "2:5",
-            "0:6",
-            "4:1",
-            "7:0",
-            "1:2",
-            "1:0",
-            "3:4",
-            "6:6",
-            "7:4",
-            "5:6",
-            "0:7",
-            "4:0",
-            "3:5",
-            "3:3",
-            "2:0",
-            "1:6",
-            "4:4",
-            "1:1",
-            "3:7",
-            "0:5",
-            "1:7",
-            "5:3",
-            "0:1",
-            "7:6",
-            "2:6",
-            "1:3",
-            "6:4",
-            "3:6",
-            "5:4",
-            "3:1",
-            "7:1",
-            "4:6",
-            "2:3",
-            "5:2",
-            "5:1",
-            "3:2",
-            "2:4",
-            "5:0",
-            "7:3",
-            "4:3",
-            "4:5",
-            "7:5"
-          ],
-          "players_seen": 42,
-          "changed_at_present": 42,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "1070",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Asian Handicap",
-          "market_type": "spreads",
-          "period": "fulltime",
-          "handicap": -0.25,
-          "outcome_labels": [
-            "1",
-            "2"
+            "Under",
+            "Over"
           ],
           "players_seen": 2,
           "changed_at_present": 2,
           "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
+          "main_line_true": 0
         },
         {
-          "market_id": "101744",
+          "market_id": "101123",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Corners - Over Under Second Half",
+          "market_name": "Bookings - Over Under First Half",
+          "market_type": "totals-bookings",
+          "period": "p1",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "106",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Full Time",
+          "market_type": "totals",
+          "period": "fulltime",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101074",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Bookings - Over Under Team 2",
+          "market_type": "teamtotals-bookings-team2",
+          "period": "fulltime",
+          "handicap": 3.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "102250",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 2 Second Half",
+          "market_type": "teamtotals-team2",
+          "period": "p2",
+          "handicap": 1.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101555",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under First Half",
           "market_type": "totals-corners",
-          "period": "p2",
-          "handicap": 6.5,
+          "period": "p1",
+          "handicap": 5.5,
           "outcome_labels": [
             "Under",
             "Over"
@@ -593,46 +582,148 @@
           "main_line_true": 0
         },
         {
-          "market_id": "101838",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 Second Half",
-          "market_type": "teamtotals-corners-team1",
-          "period": "p2",
-          "handicap": 4.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101488",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2",
-          "market_type": "teamtotals-corners-team2",
-          "period": "fulltime",
-          "handicap": 4.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "101685",
+          "market_id": "101693",
           "market_active": true,
           "catalog_match": true,
           "market_name": "Corners - Over Under Team 2 First Half",
           "market_type": "teamtotals-corners-team2",
           "period": "p1",
+          "handicap": 4.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 1,
+          "changed_at_present": 1,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101850",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1 Second Half",
+          "market_type": "teamtotals-corners-team1",
+          "period": "p2",
+          "handicap": 7.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10771",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Full Time",
+          "market_type": "totals-corners",
+          "period": "fulltime",
+          "handicap": 1.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101846",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1 Second Half",
+          "market_type": "teamtotals-corners-team1",
+          "period": "p2",
+          "handicap": 6.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10224",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1",
+          "market_type": "teamtotals-team1",
+          "period": "fulltime",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101131",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Bookings - Over Under First Half",
+          "market_type": "totals-bookings",
+          "period": "p1",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "102234",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1 Second Half",
+          "market_type": "teamtotals-team1",
+          "period": "p2",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101649",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1 First Half",
+          "market_type": "teamtotals-corners-team1",
+          "period": "p1",
+          "handicap": 3.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "101480",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2",
+          "market_type": "teamtotals-corners-team2",
+          "period": "fulltime",
           "handicap": 2.5,
           "outcome_labels": [
             "Over",
@@ -644,12 +735,111 @@
           "main_line_true": 0
         },
         {
-          "market_id": "101563",
+          "market_id": "101902",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Double Chance Full Time",
+          "market_type": "doublechance",
+          "period": "fulltime",
+          "handicap": 0.0,
+          "outcome_labels": [
+            "2X",
+            "12",
+            "1X"
+          ],
+          "players_seen": 3,
+          "changed_at_present": 3,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        }
+      ]
+    },
+    {
+      "fixture_id": "id1000002371945262",
+      "tournament": "Serie A",
+      "start_time": "2026-09-14T16:30:00.000Z",
+      "bookmaker_present": true,
+      "bookmaker_active": true,
+      "suspended": false,
+      "market_count": 219,
+      "active_market_count": 219,
+      "catalog_match_count": 219,
+      "market_samples": [
+        {
+          "market_id": "101416",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1",
+          "market_type": "teamtotals-corners-team1",
+          "period": "fulltime",
+          "handicap": 1.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "106",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Full Time",
+          "market_type": "totals",
+          "period": "fulltime",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10966",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Bookings - Over Under Full Time",
+          "market_type": "totals-bookings",
+          "period": "fulltime",
+          "handicap": 13.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101539",
           "market_active": true,
           "catalog_match": true,
           "market_name": "Corners - Over Under First Half",
           "market_type": "totals-corners",
           "period": "p1",
+          "handicap": 1.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101500",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2",
+          "market_type": "teamtotals-corners-team2",
+          "period": "fulltime",
           "handicap": 7.5,
           "outcome_labels": [
             "Under",
@@ -661,12 +851,12 @@
           "main_line_true": 0
         },
         {
-          "market_id": "102236",
+          "market_id": "10918",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Over Under Team 1 Second Half",
-          "market_type": "teamtotals-team1",
-          "period": "p2",
+          "market_name": "Bookings - Over Under Full Time",
+          "market_type": "totals-bookings",
+          "period": "fulltime",
           "handicap": 1.5,
           "outcome_labels": [
             "Under",
@@ -678,12 +868,81 @@
           "main_line_true": 0
         },
         {
-          "market_id": "101657",
+          "market_id": "101338",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 First Half",
-          "market_type": "teamtotals-corners-team1",
-          "period": "p1",
+          "market_name": "Bookings - Over Under Team 1 Second Half",
+          "market_type": "teamtotals-bookings-team1",
+          "period": "p2",
+          "handicap": 1.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "102041",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Highest Scoring Half",
+          "market_type": "highestscoringh",
+          "period": null,
+          "handicap": 0.0,
+          "outcome_labels": [
+            "X",
+            "1st",
+            "2nd"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101512",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2",
+          "market_type": "teamtotals-corners-team2",
+          "period": "fulltime",
+          "handicap": 10.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 1,
+          "changed_at_present": 1,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10803",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Full Time",
+          "market_type": "totals-corners",
+          "period": "fulltime",
+          "handicap": 9.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "10787",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Full Time",
+          "market_type": "totals-corners",
+          "period": "fulltime",
           "handicap": 5.5,
           "outcome_labels": [
             "Over",
@@ -695,13 +954,13 @@
           "main_line_true": 0
         },
         {
-          "market_id": "102226",
+          "market_id": "101380",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Over Under Team 2 First Half",
-          "market_type": "teamtotals-team2",
-          "period": "p1",
-          "handicap": 3.5,
+          "market_name": "Bookings - Over Under Team 2 Second Half",
+          "market_type": "teamtotals-bookings-team2",
+          "period": "p2",
+          "handicap": 4.5,
           "outcome_labels": [
             "Over",
             "Under"
@@ -712,48 +971,31 @@
           "main_line_true": 0
         },
         {
-          "market_id": "101637",
+          "market_id": "10260",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 First Half",
-          "market_type": "teamtotals-corners-team1",
-          "period": "p1",
-          "handicap": 0.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101412",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1",
-          "market_type": "teamtotals-corners-team1",
-          "period": "fulltime",
-          "handicap": 0.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "102210",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 1 First Half",
-          "market_type": "teamtotals-team1",
+          "market_name": "Over Under First Half",
+          "market_type": "totals",
           "period": "p1",
           "handicap": 2.5,
           "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101677",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2 First Half",
+          "market_type": "teamtotals-corners-team2",
+          "period": "p1",
+          "handicap": 0.5,
+          "outcome_labels": [
             "Under",
             "Over"
           ],
@@ -763,45 +1005,11 @@
           "main_line_true": 0
         },
         {
-          "market_id": "10226",
+          "market_id": "101272",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Over Under Team 1",
-          "market_type": "teamtotals-team1",
-          "period": "fulltime",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "10280",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Second Half",
-          "market_type": "totals",
-          "period": "p2",
-          "handicap": 5.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101834",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 Second Half",
-          "market_type": "teamtotals-corners-team1",
+          "market_name": "Bookings - Over Under Second Half",
+          "market_type": "totals-bookings",
           "period": "p2",
           "handicap": 3.5,
           "outcome_labels": [
@@ -811,80 +1019,46 @@
           "players_seen": 2,
           "changed_at_present": 2,
           "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10954",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Bookings - Over Under Full Time",
+          "market_type": "totals-bookings",
+          "period": "fulltime",
+          "handicap": 10.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
         }
       ]
     },
     {
-      "fixture_id": "id1000002371945264",
+      "fixture_id": "id1000002371945252",
       "tournament": "Serie A",
-      "start_time": "2026-09-11T18:45:00.000Z",
+      "start_time": "2026-09-14T18:45:00.000Z",
       "bookmaker_present": true,
       "bookmaker_active": true,
       "suspended": false,
-      "market_count": 149,
-      "active_market_count": 149,
-      "catalog_match_count": 149,
+      "market_count": 220,
+      "active_market_count": 220,
+      "catalog_match_count": 220,
       "market_samples": [
         {
-          "market_id": "102226",
+          "market_id": "10234",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Over Under Team 2 First Half",
-          "market_type": "teamtotals-team2",
-          "period": "p1",
-          "handicap": 3.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10274",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Second Half",
-          "market_type": "totals",
-          "period": "p2",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "1074",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Asian Handicap",
-          "market_type": "spreads",
-          "period": "fulltime",
-          "handicap": 0.25,
-          "outcome_labels": [
-            "1",
-            "2"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "102236",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 1 Second Half",
+          "market_name": "Over Under Team 1",
           "market_type": "teamtotals-team1",
-          "period": "p2",
-          "handicap": 1.5,
+          "period": "fulltime",
+          "handicap": 5.5,
           "outcome_labels": [
             "Under",
             "Over"
@@ -895,29 +1069,108 @@
           "main_line_true": 0
         },
         {
-          "market_id": "101428",
+          "market_id": "10835",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1",
-          "market_type": "teamtotals-corners-team1",
+          "market_name": "Corners - Over Under Full Time",
+          "market_type": "totals-corners",
           "period": "fulltime",
-          "handicap": 4.5,
+          "handicap": 17.5,
           "outcome_labels": [
-            "Under",
-            "Over"
+            "Over",
+            "Under"
           ],
           "players_seen": 2,
           "changed_at_present": 2,
           "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
+          "main_line_true": 0
         },
         {
-          "market_id": "102206",
+          "market_id": "102462",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Over Under Team 1 First Half",
-          "market_type": "teamtotals-team1",
+          "market_name": "Correct Score First Half",
+          "market_type": "correctscore",
           "period": "p1",
+          "handicap": 0.0,
+          "outcome_labels": [
+            "6:5",
+            "6:7",
+            "3:2",
+            "5:4",
+            "0:5",
+            "6:2",
+            "3:4",
+            "0:2",
+            "0:6",
+            "2:5",
+            "4:1",
+            "5:3",
+            "1:2",
+            "1:5",
+            "2:2",
+            "6:3",
+            "6:1",
+            "2:3",
+            "0:4",
+            "4:6",
+            "1:0",
+            "3:5",
+            "4:0",
+            "4:7",
+            "7:2",
+            "3:0",
+            "4:3",
+            "7:5",
+            "2:0",
+            "1:4",
+            "1:7",
+            "0:3",
+            "3:7",
+            "1:6",
+            "2:4",
+            "7:3",
+            "5:5",
+            "7:7",
+            "3:3",
+            "4:2",
+            "5:1",
+            "2:1",
+            "7:1",
+            "4:4",
+            "7:0",
+            "3:1",
+            "1:1",
+            "7:6",
+            "1:3",
+            "6:4",
+            "0:7",
+            "5:7",
+            "6:6",
+            "5:0",
+            "5:2",
+            "2:7",
+            "0:1",
+            "3:6",
+            "6:0",
+            "0:0",
+            "5:6",
+            "4:5",
+            "2:6",
+            "7:4"
+          ],
+          "players_seen": 21,
+          "changed_at_present": 21,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101062",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Bookings - Over Under Team 2",
+          "market_type": "teamtotals-bookings-team2",
+          "period": "fulltime",
           "handicap": 0.5,
           "outcome_labels": [
             "Under",
@@ -926,107 +1179,39 @@
           "players_seen": 2,
           "changed_at_present": 2,
           "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "101842",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 Second Half",
-          "market_type": "teamtotals-corners-team1",
-          "period": "p2",
-          "handicap": 5.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
           "main_line_true": 0
         },
         {
-          "market_id": "1014",
+          "market_id": "101748",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Over Under Full Time",
-          "market_type": "totals",
-          "period": "fulltime",
-          "handicap": 4.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101834",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 Second Half",
-          "market_type": "teamtotals-corners-team1",
-          "period": "p2",
-          "handicap": 3.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "102254",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 2 Second Half",
-          "market_type": "teamtotals-team2",
-          "period": "p2",
-          "handicap": 3.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10230",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 1",
-          "market_type": "teamtotals-team1",
-          "period": "fulltime",
-          "handicap": 3.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101567",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under First Half",
+          "market_name": "Corners - Over Under Second Half",
           "market_type": "totals-corners",
+          "period": "p2",
+          "handicap": 7.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10260",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under First Half",
+          "market_type": "totals",
           "period": "p1",
-          "handicap": 8.5,
+          "handicap": 2.5,
           "outcome_labels": [
             "Over",
             "Under"
           ],
-          "players_seen": 1,
-          "changed_at_present": 1,
+          "players_seen": 2,
+          "changed_at_present": 2,
           "bookmaker_changed_at_present": 0,
           "main_line_true": 0
         },
@@ -1048,178 +1233,12 @@
           "main_line_true": 0
         },
         {
-          "market_id": "101689",
+          "market_id": "10918",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2 First Half",
-          "market_type": "teamtotals-corners-team2",
-          "period": "p1",
-          "handicap": 3.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101878",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2 Second Half",
-          "market_type": "teamtotals-corners-team2",
-          "period": "p2",
-          "handicap": 4.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101736",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Second Half",
-          "market_type": "totals-corners",
-          "period": "p2",
-          "handicap": 4.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        }
-      ]
-    },
-    {
-      "fixture_id": "id1000003472036180",
-      "tournament": "Ligue 1",
-      "start_time": "2026-09-11T18:45:00.000Z",
-      "bookmaker_present": true,
-      "bookmaker_active": true,
-      "suspended": false,
-      "market_count": 160,
-      "active_market_count": 160,
-      "catalog_match_count": 160,
-      "market_samples": [
-        {
-          "market_id": "101689",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2 First Half",
-          "market_type": "teamtotals-corners-team2",
-          "period": "p1",
-          "handicap": 3.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101508",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2",
-          "market_type": "teamtotals-corners-team2",
+          "market_name": "Bookings - Over Under Full Time",
+          "market_type": "totals-bookings",
           "period": "fulltime",
-          "handicap": 9.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101571",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under First Half",
-          "market_type": "totals-corners",
-          "period": "p1",
-          "handicap": 9.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101452",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1",
-          "market_type": "teamtotals-corners-team1",
-          "period": "fulltime",
-          "handicap": 10.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101567",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under First Half",
-          "market_type": "totals-corners",
-          "period": "p1",
-          "handicap": 8.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10787",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Full Time",
-          "market_type": "totals-corners",
-          "period": "fulltime",
-          "handicap": 5.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101539",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under First Half",
-          "market_type": "totals-corners",
-          "period": "p1",
           "handicap": 1.5,
           "outcome_labels": [
             "Under",
@@ -1231,421 +1250,16 @@
           "main_line_true": 0
         },
         {
-          "market_id": "101436",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1",
-          "market_type": "teamtotals-corners-team1",
-          "period": "fulltime",
-          "handicap": 6.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101866",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2 Second Half",
-          "market_type": "teamtotals-corners-team2",
-          "period": "p2",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "101440",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1",
-          "market_type": "teamtotals-corners-team1",
-          "period": "fulltime",
-          "handicap": 7.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101496",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2",
-          "market_type": "teamtotals-corners-team2",
-          "period": "fulltime",
-          "handicap": 6.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10827",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Full Time",
-          "market_type": "totals-corners",
-          "period": "fulltime",
-          "handicap": 15.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101661",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 First Half",
-          "market_type": "teamtotals-corners-team1",
-          "period": "p1",
-          "handicap": 6.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "102224",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 2 First Half",
-          "market_type": "teamtotals-team2",
-          "period": "p1",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10246",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 2",
-          "market_type": "teamtotals-team2",
-          "period": "fulltime",
-          "handicap": 3.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "1020",
+          "market_id": "1018",
           "market_active": true,
           "catalog_match": true,
           "market_name": "Over Under Full Time",
           "market_type": "totals",
           "period": "fulltime",
-          "handicap": 7.5,
+          "handicap": 6.5,
           "outcome_labels": [
             "Under",
             "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        }
-      ]
-    },
-    {
-      "fixture_id": "id1000000872478562",
-      "tournament": "LaLiga",
-      "start_time": "2026-09-11T19:00:00.000Z",
-      "bookmaker_present": true,
-      "bookmaker_active": true,
-      "suspended": false,
-      "market_count": 147,
-      "active_market_count": 147,
-      "catalog_match_count": 147,
-      "market_samples": [
-        {
-          "market_id": "102041",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Highest Scoring Half",
-          "market_type": "highestscoringh",
-          "period": null,
-          "handicap": 0.0,
-          "outcome_labels": [
-            "2nd",
-            "X",
-            "1st"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10272",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Second Half",
-          "market_type": "totals",
-          "period": "p2",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "1012",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Full Time",
-          "market_type": "totals",
-          "period": "fulltime",
-          "handicap": 3.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101748",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Second Half",
-          "market_type": "totals-corners",
-          "period": "p2",
-          "handicap": 7.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101830",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 Second Half",
-          "market_type": "teamtotals-corners-team1",
-          "period": "p2",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10270",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Second Half",
-          "market_type": "totals",
-          "period": "p2",
-          "handicap": 0.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101420",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1",
-          "market_type": "teamtotals-corners-team1",
-          "period": "fulltime",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101866",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2 Second Half",
-          "market_type": "teamtotals-corners-team2",
-          "period": "p2",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101428",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1",
-          "market_type": "teamtotals-corners-team1",
-          "period": "fulltime",
-          "handicap": 4.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "102224",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 2 First Half",
-          "market_type": "teamtotals-team2",
-          "period": "p1",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "102248",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 2 Second Half",
-          "market_type": "teamtotals-team2",
-          "period": "p2",
-          "handicap": 0.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "10258",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under First Half",
-          "market_type": "totals",
-          "period": "p1",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10244",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 2",
-          "market_type": "teamtotals-team2",
-          "period": "fulltime",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101697",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2 First Half",
-          "market_type": "teamtotals-corners-team2",
-          "period": "p1",
-          "handicap": 5.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "1016",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Full Time",
-          "market_type": "totals",
-          "period": "fulltime",
-          "handicap": 5.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
           ],
           "players_seen": 2,
           "changed_at_present": 2,
@@ -1668,800 +1282,18 @@
           "changed_at_present": 2,
           "bookmaker_changed_at_present": 0,
           "main_line_true": 0
-        }
-      ]
-    },
-    {
-      "fixture_id": "id1000000872478556",
-      "tournament": "LaLiga",
-      "start_time": "2026-09-12T12:00:00.000Z",
-      "bookmaker_present": true,
-      "bookmaker_active": true,
-      "suspended": false,
-      "market_count": 165,
-      "active_market_count": 165,
-      "catalog_match_count": 165,
-      "market_samples": [
-        {
-          "market_id": "101579",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under First Half",
-          "market_type": "totals-corners",
-          "period": "p1",
-          "handicap": 11.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
         },
         {
-          "market_id": "101697",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2 First Half",
-          "market_type": "teamtotals-corners-team2",
-          "period": "p1",
-          "handicap": 5.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101488",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2",
-          "market_type": "teamtotals-corners-team2",
-          "period": "fulltime",
-          "handicap": 4.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101705",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2 First Half",
-          "market_type": "teamtotals-corners-team2",
-          "period": "p1",
-          "handicap": 7.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10224",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 1",
-          "market_type": "teamtotals-team1",
-          "period": "fulltime",
-          "handicap": 0.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10280",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Second Half",
-          "market_type": "totals",
-          "period": "p2",
-          "handicap": 5.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101653",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 First Half",
-          "market_type": "teamtotals-corners-team1",
-          "period": "p1",
-          "handicap": 4.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101740",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Second Half",
-          "market_type": "totals-corners",
-          "period": "p2",
-          "handicap": 5.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "101436",
+          "market_id": "101424",
           "market_active": true,
           "catalog_match": true,
           "market_name": "Corners - Over Under Team 1",
           "market_type": "teamtotals-corners-team1",
           "period": "fulltime",
-          "handicap": 6.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "101547",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under First Half",
-          "market_type": "totals-corners",
-          "period": "p1",
-          "handicap": 3.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10827",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Full Time",
-          "market_type": "totals-corners",
-          "period": "fulltime",
-          "handicap": 15.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10246",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 2",
-          "market_type": "teamtotals-team2",
-          "period": "fulltime",
-          "handicap": 3.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101460",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1",
-          "market_type": "teamtotals-corners-team1",
-          "period": "fulltime",
-          "handicap": 12.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10775",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Full Time",
-          "market_type": "totals-corners",
-          "period": "fulltime",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "102224",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 2 First Half",
-          "market_type": "teamtotals-team2",
-          "period": "p1",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10244",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 2",
-          "market_type": "teamtotals-team2",
-          "period": "fulltime",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        }
-      ]
-    },
-    {
-      "fixture_id": "id1000002371945250",
-      "tournament": "Serie A",
-      "start_time": "2026-09-12T13:00:00.000Z",
-      "bookmaker_present": true,
-      "bookmaker_active": true,
-      "suspended": false,
-      "market_count": 154,
-      "active_market_count": 154,
-      "catalog_match_count": 154,
-      "market_samples": [
-        {
-          "market_id": "10815",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Full Time",
-          "market_type": "totals-corners",
-          "period": "fulltime",
-          "handicap": 12.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101535",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under First Half",
-          "market_type": "totals-corners",
-          "period": "p1",
-          "handicap": 0.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101830",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 Second Half",
-          "market_type": "teamtotals-corners-team1",
-          "period": "p2",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101760",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Second Half",
-          "market_type": "totals-corners",
-          "period": "p2",
-          "handicap": 10.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101645",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 First Half",
-          "market_type": "teamtotals-corners-team1",
-          "period": "p1",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "102220",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 2 First Half",
-          "market_type": "teamtotals-team2",
-          "period": "p1",
-          "handicap": 0.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "102222",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 2 First Half",
-          "market_type": "teamtotals-team2",
-          "period": "p1",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10799",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Full Time",
-          "market_type": "totals-corners",
-          "period": "fulltime",
-          "handicap": 8.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "101420",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1",
-          "market_type": "teamtotals-corners-team1",
-          "period": "fulltime",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101866",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2 Second Half",
-          "market_type": "teamtotals-corners-team2",
-          "period": "p2",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "101412",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1",
-          "market_type": "teamtotals-corners-team1",
-          "period": "fulltime",
-          "handicap": 0.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "102462",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Correct Score First Half",
-          "market_type": "correctscore",
-          "period": "p1",
-          "handicap": 0.0,
-          "outcome_labels": [
-            "5:7",
-            "5:2",
-            "6:5",
-            "3:2",
-            "1:7",
-            "3:6",
-            "3:5",
-            "6:3",
-            "4:6",
-            "5:6",
-            "7:4",
-            "0:4",
-            "6:4",
-            "4:5",
-            "3:3",
-            "0:6",
-            "2:5",
-            "4:3",
-            "7:0",
-            "1:1",
-            "0:1",
-            "3:1",
-            "0:3",
-            "4:7",
-            "1:6",
-            "6:2",
-            "6:1",
-            "7:1",
-            "1:5",
-            "2:2",
-            "5:5",
-            "6:0",
-            "4:0",
-            "6:7",
-            "2:6",
-            "2:4",
-            "2:1",
-            "7:3",
-            "0:5",
-            "2:7",
-            "0:0",
-            "5:3",
-            "4:2",
-            "4:1",
-            "7:2",
-            "5:4",
-            "1:3",
-            "6:6",
-            "5:1",
-            "7:5",
-            "5:0",
-            "0:7",
-            "3:0",
-            "3:4",
-            "3:7",
-            "2:3",
-            "1:4",
-            "7:6",
-            "4:4",
-            "0:2",
-            "1:2",
-            "2:0",
-            "1:0",
-            "7:7"
-          ],
-          "players_seen": 20,
-          "changed_at_present": 20,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10211",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Second Half Result",
-          "market_type": "1x2",
-          "period": "p2",
-          "handicap": 0.0,
-          "outcome_labels": [
-            "1",
-            "X",
-            "2"
-          ],
-          "players_seen": 3,
-          "changed_at_present": 3,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 3
-        },
-        {
-          "market_id": "10819",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Full Time",
-          "market_type": "totals-corners",
-          "period": "fulltime",
-          "handicap": 13.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101681",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2 First Half",
-          "market_type": "teamtotals-corners-team2",
-          "period": "p1",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "102254",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 2 Second Half",
-          "market_type": "teamtotals-team2",
-          "period": "p2",
           "handicap": 3.5,
           "outcome_labels": [
             "Over",
             "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        }
-      ]
-    },
-    {
-      "fixture_id": "id1000003572513184",
-      "tournament": "Bundesliga",
-      "start_time": "2026-09-12T13:30:00.000Z",
-      "bookmaker_present": true,
-      "bookmaker_active": true,
-      "suspended": false,
-      "market_count": 158,
-      "active_market_count": 158,
-      "catalog_match_count": 158,
-      "market_samples": [
-        {
-          "market_id": "10795",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Full Time",
-          "market_type": "totals-corners",
-          "period": "fulltime",
-          "handicap": 7.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101854",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 Second Half",
-          "market_type": "teamtotals-corners-team1",
-          "period": "p2",
-          "handicap": 8.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "102210",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 1 First Half",
-          "market_type": "teamtotals-team1",
-          "period": "p1",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101488",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2",
-          "market_type": "teamtotals-corners-team2",
-          "period": "fulltime",
-          "handicap": 4.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10783",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Full Time",
-          "market_type": "totals-corners",
-          "period": "fulltime",
-          "handicap": 4.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "1012",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Full Time",
-          "market_type": "totals",
-          "period": "fulltime",
-          "handicap": 3.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "102250",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 2 Second Half",
-          "market_type": "teamtotals-team2",
-          "period": "p2",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101669",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 First Half",
-          "market_type": "teamtotals-corners-team1",
-          "period": "p1",
-          "handicap": 8.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10831",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Full Time",
-          "market_type": "totals-corners",
-          "period": "fulltime",
-          "handicap": 16.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
           ],
           "players_seen": 2,
           "changed_at_present": 2,
@@ -2477,8 +1309,8 @@
           "period": "p2",
           "handicap": 6.5,
           "outcome_labels": [
-            "Under",
-            "Over"
+            "Over",
+            "Under"
           ],
           "players_seen": 2,
           "changed_at_present": 2,
@@ -2486,448 +1318,13 @@
           "main_line_true": 0
         },
         {
-          "market_id": "10262",
+          "market_id": "101376",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Over Under First Half",
-          "market_type": "totals",
-          "period": "p1",
+          "market_name": "Bookings - Over Under Team 2 Second Half",
+          "market_type": "teamtotals-bookings-team2",
+          "period": "p2",
           "handicap": 3.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101838",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 Second Half",
-          "market_type": "teamtotals-corners-team1",
-          "period": "p2",
-          "handicap": 4.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "108",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Full Time",
-          "market_type": "totals",
-          "period": "fulltime",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10256",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under First Half",
-          "market_type": "totals",
-          "period": "p1",
-          "handicap": 0.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10779",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Full Time",
-          "market_type": "totals-corners",
-          "period": "fulltime",
-          "handicap": 3.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101760",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Second Half",
-          "market_type": "totals-corners",
-          "period": "p2",
-          "handicap": 10.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        }
-      ]
-    },
-    {
-      "fixture_id": "id1000003572513188",
-      "tournament": "Bundesliga",
-      "start_time": "2026-09-12T13:30:00.000Z",
-      "bookmaker_present": true,
-      "bookmaker_active": true,
-      "suspended": false,
-      "market_count": 165,
-      "active_market_count": 165,
-      "catalog_match_count": 165,
-      "market_samples": [
-        {
-          "market_id": "101476",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2",
-          "market_type": "teamtotals-corners-team2",
-          "period": "fulltime",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "102208",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 1 First Half",
-          "market_type": "teamtotals-team1",
-          "period": "p1",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "1020",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Full Time",
-          "market_type": "totals",
-          "period": "fulltime",
-          "handicap": 7.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Full Time Result",
-          "market_type": "1x2",
-          "period": "fulltime",
-          "handicap": 0.0,
-          "outcome_labels": [
-            "1",
-            "X",
-            "2"
-          ],
-          "players_seen": 3,
-          "changed_at_present": 3,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 3
-        },
-        {
-          "market_id": "101661",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 First Half",
-          "market_type": "teamtotals-corners-team1",
-          "period": "p1",
-          "handicap": 6.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101740",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Second Half",
-          "market_type": "totals-corners",
-          "period": "p2",
-          "handicap": 5.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10274",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Second Half",
-          "market_type": "totals",
-          "period": "p2",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "102252",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 2 Second Half",
-          "market_type": "teamtotals-team2",
-          "period": "p2",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10214",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Draw No Bet",
-          "market_type": "drawnobet",
-          "period": "fulltime",
-          "handicap": 0.0,
-          "outcome_labels": [
-            "2",
-            "1"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10226",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 1",
-          "market_type": "teamtotals-team1",
-          "period": "fulltime",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "101890",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2 Second Half",
-          "market_type": "teamtotals-corners-team2",
-          "period": "p2",
-          "handicap": 7.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10783",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Full Time",
-          "market_type": "totals-corners",
-          "period": "fulltime",
-          "handicap": 4.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101559",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under First Half",
-          "market_type": "totals-corners",
-          "period": "p1",
-          "handicap": 6.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101752",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Second Half",
-          "market_type": "totals-corners",
-          "period": "p2",
-          "handicap": 8.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10242",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 2",
-          "market_type": "teamtotals-team2",
-          "period": "fulltime",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "101886",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2 Second Half",
-          "market_type": "teamtotals-corners-team2",
-          "period": "p2",
-          "handicap": 6.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        }
-      ]
-    },
-    {
-      "fixture_id": "id1000003572513190",
-      "tournament": "Bundesliga",
-      "start_time": "2026-09-12T13:30:00.000Z",
-      "bookmaker_present": true,
-      "bookmaker_active": true,
-      "suspended": false,
-      "market_count": 156,
-      "active_market_count": 156,
-      "catalog_match_count": 156,
-      "market_samples": [
-        {
-          "market_id": "101756",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Second Half",
-          "market_type": "totals-corners",
-          "period": "p2",
-          "handicap": 9.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101637",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 First Half",
-          "market_type": "teamtotals-corners-team1",
-          "period": "p1",
-          "handicap": 0.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "102210",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 1 First Half",
-          "market_type": "teamtotals-team1",
-          "period": "p1",
-          "handicap": 2.5,
           "outcome_labels": [
             "Under",
             "Over"
@@ -2955,30 +1352,13 @@
           "main_line_true": 2
         },
         {
-          "market_id": "102242",
+          "market_id": "101665",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Over Under Team 1 Second Half",
-          "market_type": "teamtotals-team1",
-          "period": "p2",
-          "handicap": 4.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101681",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2 First Half",
-          "market_type": "teamtotals-corners-team2",
+          "market_name": "Corners - Over Under Team 1 First Half",
+          "market_type": "teamtotals-corners-team1",
           "period": "p1",
-          "handicap": 1.5,
+          "handicap": 7.5,
           "outcome_labels": [
             "Under",
             "Over"
@@ -2986,16 +1366,46 @@
           "players_seen": 2,
           "changed_at_present": 2,
           "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
+          "main_line_true": 0
         },
         {
-          "market_id": "101661",
+          "market_id": "101728",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1 First Half",
-          "market_type": "teamtotals-corners-team1",
-          "period": "p1",
-          "handicap": 6.5,
+          "market_name": "Corners - Over Under Second Half",
+          "market_type": "totals-corners",
+          "period": "p2",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        }
+      ]
+    },
+    {
+      "fixture_id": "id1000000872478564",
+      "tournament": "LaLiga",
+      "start_time": "2026-09-14T19:00:00.000Z",
+      "bookmaker_present": true,
+      "bookmaker_active": true,
+      "suspended": false,
+      "market_count": 223,
+      "active_market_count": 223,
+      "catalog_match_count": 223,
+      "market_samples": [
+        {
+          "market_id": "10234",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1",
+          "market_type": "teamtotals-team1",
+          "period": "fulltime",
+          "handicap": 5.5,
           "outcome_labels": [
             "Under",
             "Over"
@@ -3006,11 +1416,164 @@
           "main_line_true": 0
         },
         {
-          "market_id": "101677",
+          "market_id": "101685",
           "market_active": true,
           "catalog_match": true,
           "market_name": "Corners - Over Under Team 2 First Half",
           "market_type": "teamtotals-corners-team2",
+          "period": "p1",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "101342",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Bookings - Over Under Team 1 Second Half",
+          "market_type": "teamtotals-bookings-team1",
+          "period": "p2",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10950",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Bookings - Over Under Full Time",
+          "market_type": "totals-bookings",
+          "period": "fulltime",
+          "handicap": 9.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101720",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Second Half",
+          "market_type": "totals-corners",
+          "period": "p2",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 1,
+          "changed_at_present": 1,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "1068",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Asian Handicap",
+          "market_type": "spreads",
+          "period": "fulltime",
+          "handicap": -0.5,
+          "outcome_labels": [
+            "2",
+            "1"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "101078",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Bookings - Over Under Team 2",
+          "market_type": "teamtotals-bookings-team2",
+          "period": "fulltime",
+          "handicap": 4.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101276",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Bookings - Over Under Second Half",
+          "market_type": "totals-bookings",
+          "period": "p2",
+          "handicap": 4.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101830",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1 Second Half",
+          "market_type": "teamtotals-corners-team1",
+          "period": "p2",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10787",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Full Time",
+          "market_type": "totals-corners",
+          "period": "fulltime",
+          "handicap": 5.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101227",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Bookings - Over Under Team 2 First Half",
+          "market_type": "teamtotals-bookings-team2",
           "period": "p1",
           "handicap": 0.5,
           "outcome_labels": [
@@ -3020,217 +1583,16 @@
           "players_seen": 2,
           "changed_at_present": 2,
           "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
+          "main_line_true": 2
         },
         {
-          "market_id": "101563",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under First Half",
-          "market_type": "totals-corners",
-          "period": "p1",
-          "handicap": 7.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101724",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Second Half",
-          "market_type": "totals-corners",
-          "period": "p2",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10775",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Full Time",
-          "market_type": "totals-corners",
-          "period": "fulltime",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101641",
+          "market_id": "101657",
           "market_active": true,
           "catalog_match": true,
           "market_name": "Corners - Over Under Team 1 First Half",
           "market_type": "teamtotals-corners-team1",
           "period": "p1",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        },
-        {
-          "market_id": "10211",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Second Half Result",
-          "market_type": "1x2",
-          "period": "p2",
-          "handicap": 0.0,
-          "outcome_labels": [
-            "1",
-            "X",
-            "2"
-          ],
-          "players_seen": 3,
-          "changed_at_present": 3,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 3
-        },
-        {
-          "market_id": "10278",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Second Half",
-          "market_type": "totals",
-          "period": "p2",
-          "handicap": 4.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101500",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2",
-          "market_type": "teamtotals-corners-team2",
-          "period": "fulltime",
-          "handicap": 7.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101740",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Second Half",
-          "market_type": "totals-corners",
-          "period": "p2",
           "handicap": 5.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 2
-        }
-      ]
-    },
-    {
-      "fixture_id": "id1000003572513192",
-      "tournament": "Bundesliga",
-      "start_time": "2026-09-12T13:30:00.000Z",
-      "bookmaker_present": true,
-      "bookmaker_active": true,
-      "suspended": false,
-      "market_count": 163,
-      "active_market_count": 163,
-      "catalog_match_count": 163,
-      "market_samples": [
-        {
-          "market_id": "102252",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Over Under Team 2 Second Half",
-          "market_type": "teamtotals-team2",
-          "period": "p2",
-          "handicap": 2.5,
-          "outcome_labels": [
-            "Under",
-            "Over"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101764",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Second Half",
-          "market_type": "totals-corners",
-          "period": "p2",
-          "handicap": 11.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 1,
-          "changed_at_present": 1,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "101416",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1",
-          "market_type": "teamtotals-corners-team1",
-          "period": "fulltime",
-          "handicap": 1.5,
-          "outcome_labels": [
-            "Over",
-            "Under"
-          ],
-          "players_seen": 2,
-          "changed_at_present": 2,
-          "bookmaker_changed_at_present": 0,
-          "main_line_true": 0
-        },
-        {
-          "market_id": "10815",
-          "market_active": true,
-          "catalog_match": true,
-          "market_name": "Corners - Over Under Full Time",
-          "market_type": "totals-corners",
-          "period": "fulltime",
-          "handicap": 12.5,
           "outcome_labels": [
             "Under",
             "Over"
@@ -3249,8 +1611,8 @@
           "period": "fulltime",
           "handicap": 13.5,
           "outcome_labels": [
-            "Under",
-            "Over"
+            "Over",
+            "Under"
           ],
           "players_seen": 2,
           "changed_at_present": 2,
@@ -3258,13 +1620,13 @@
           "main_line_true": 0
         },
         {
-          "market_id": "101740",
+          "market_id": "101504",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Corners - Over Under Second Half",
-          "market_type": "totals-corners",
-          "period": "p2",
-          "handicap": 5.5,
+          "market_name": "Corners - Over Under Team 2",
+          "market_type": "teamtotals-corners-team2",
+          "period": "fulltime",
+          "handicap": 8.5,
           "outcome_labels": [
             "Over",
             "Under"
@@ -3275,11 +1637,11 @@
           "main_line_true": 0
         },
         {
-          "market_id": "102224",
+          "market_id": "102210",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Over Under Team 2 First Half",
-          "market_type": "teamtotals-team2",
+          "market_name": "Over Under Team 1 First Half",
+          "market_type": "teamtotals-team1",
           "period": "p1",
           "handicap": 2.5,
           "outcome_labels": [
@@ -3292,13 +1654,43 @@
           "main_line_true": 0
         },
         {
-          "market_id": "101444",
+          "market_id": "101205",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1",
-          "market_type": "teamtotals-corners-team1",
+          "market_name": "Bookings - Over Under Team 1 First Half",
+          "market_type": "teamtotals-bookings-team1",
+          "period": "p1",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        }
+      ]
+    },
+    {
+      "fixture_id": "id1000001772221262",
+      "tournament": "Premier League",
+      "start_time": "2026-09-14T19:00:00.000Z",
+      "bookmaker_present": true,
+      "bookmaker_active": true,
+      "suspended": false,
+      "market_count": 220,
+      "active_market_count": 220,
+      "catalog_match_count": 220,
+      "market_samples": [
+        {
+          "market_id": "10228",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1",
+          "market_type": "teamtotals-team1",
           "period": "fulltime",
-          "handicap": 8.5,
+          "handicap": 2.5,
           "outcome_labels": [
             "Under",
             "Over"
@@ -3309,36 +1701,288 @@
           "main_line_true": 0
         },
         {
-          "market_id": "101448",
+          "market_id": "101834",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Corners - Over Under Team 1",
+          "market_name": "Corners - Over Under Team 1 Second Half",
           "market_type": "teamtotals-corners-team1",
-          "period": "fulltime",
-          "handicap": 9.5,
+          "period": "p2",
+          "handicap": 3.5,
           "outcome_labels": [
             "Under",
             "Over"
           ],
-          "players_seen": 1,
-          "changed_at_present": 1,
+          "players_seen": 2,
+          "changed_at_present": 2,
           "bookmaker_changed_at_present": 0,
           "main_line_true": 0
         },
         {
-          "market_id": "10252",
+          "market_id": "10246",
           "market_active": true,
           "catalog_match": true,
           "market_name": "Over Under Team 2",
           "market_type": "teamtotals-team2",
           "period": "fulltime",
-          "handicap": 6.5,
+          "handicap": 3.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101231",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Bookings - Over Under Team 2 First Half",
+          "market_type": "teamtotals-bookings-team2",
+          "period": "p1",
+          "handicap": 1.5,
           "outcome_labels": [
             "Under",
             "Over"
           ],
-          "players_seen": 1,
-          "changed_at_present": 1,
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101571",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under First Half",
+          "market_type": "totals-corners",
+          "period": "p1",
+          "handicap": 9.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "102234",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1 Second Half",
+          "market_type": "teamtotals-team1",
+          "period": "p2",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "101496",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2",
+          "market_type": "teamtotals-corners-team2",
+          "period": "fulltime",
+          "handicap": 6.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10775",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Full Time",
+          "market_type": "totals-corners",
+          "period": "fulltime",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101677",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2 First Half",
+          "market_type": "teamtotals-corners-team2",
+          "period": "p1",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101480",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2",
+          "market_type": "teamtotals-corners-team2",
+          "period": "fulltime",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101034",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Bookings - Over Under Team 1",
+          "market_type": "teamtotals-bookings-team1",
+          "period": "fulltime",
+          "handicap": 3.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "102220",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 2 First Half",
+          "market_type": "teamtotals-team2",
+          "period": "p1",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "101504",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2",
+          "market_type": "teamtotals-corners-team2",
+          "period": "fulltime",
+          "handicap": 8.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101681",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2 First Half",
+          "market_type": "teamtotals-corners-team2",
+          "period": "p1",
+          "handicap": 1.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "101728",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Second Half",
+          "market_type": "totals-corners",
+          "period": "p2",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10922",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Bookings - Over Under Full Time",
+          "market_type": "totals-bookings",
+          "period": "fulltime",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        }
+      ]
+    },
+    {
+      "fixture_id": "id1000000872478582",
+      "tournament": "LaLiga",
+      "start_time": "2026-09-15T17:00:00.000Z",
+      "bookmaker_present": true,
+      "bookmaker_active": true,
+      "suspended": false,
+      "market_count": 160,
+      "active_market_count": 160,
+      "catalog_match_count": 160,
+      "market_samples": [
+        {
+          "market_id": "102050",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "To Win From Behind Full Time",
+          "market_type": "winfrombehind",
+          "period": "fulltime",
+          "handicap": 0.0,
+          "outcome_labels": [
+            "2",
+            "X",
+            "1"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
           "bookmaker_changed_at_present": 0,
           "main_line_true": 0
         },
@@ -3351,6 +1995,74 @@
           "period": "p1",
           "handicap": 3.5,
           "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101681",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2 First Half",
+          "market_type": "teamtotals-corners-team2",
+          "period": "p1",
+          "handicap": 1.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "10779",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Full Time",
+          "market_type": "totals-corners",
+          "period": "fulltime",
+          "handicap": 3.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10234",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1",
+          "market_type": "teamtotals-team1",
+          "period": "fulltime",
+          "handicap": 5.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 1,
+          "changed_at_present": 1,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101732",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Second Half",
+          "market_type": "totals-corners",
+          "period": "p2",
+          "handicap": 3.5,
+          "outcome_labels": [
             "Under",
             "Over"
           ],
@@ -3360,16 +2072,737 @@
           "main_line_true": 0
         },
         {
-          "market_id": "101894",
+          "market_id": "1014",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Full Time",
+          "market_type": "totals",
+          "period": "fulltime",
+          "handicap": 4.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10228",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1",
+          "market_type": "teamtotals-team1",
+          "period": "fulltime",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10771",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Full Time",
+          "market_type": "totals-corners",
+          "period": "fulltime",
+          "handicap": 1.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "102236",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1 Second Half",
+          "market_type": "teamtotals-team1",
+          "period": "p2",
+          "handicap": 1.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "102234",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1 Second Half",
+          "market_type": "teamtotals-team1",
+          "period": "p2",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "101846",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1 Second Half",
+          "market_type": "teamtotals-corners-team1",
+          "period": "p2",
+          "handicap": 6.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "102212",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1 First Half",
+          "market_type": "teamtotals-team1",
+          "period": "p1",
+          "handicap": 3.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 1,
+          "changed_at_present": 1,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101862",
           "market_active": true,
           "catalog_match": true,
           "market_name": "Corners - Over Under Team 2 Second Half",
           "market_type": "teamtotals-corners-team2",
           "period": "p2",
-          "handicap": 8.5,
+          "handicap": 0.5,
           "outcome_labels": [
             "Under",
             "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "106",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Full Time",
+          "market_type": "totals",
+          "period": "fulltime",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "1070",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Asian Handicap",
+          "market_type": "spreads",
+          "period": "fulltime",
+          "handicap": -0.25,
+          "outcome_labels": [
+            "2",
+            "1"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        }
+      ]
+    },
+    {
+      "fixture_id": "id1000000872478566",
+      "tournament": "LaLiga",
+      "start_time": "2026-09-15T18:00:00.000Z",
+      "bookmaker_present": true,
+      "bookmaker_active": true,
+      "suspended": false,
+      "market_count": 159,
+      "active_market_count": 159,
+      "catalog_match_count": 159,
+      "market_samples": [
+        {
+          "market_id": "1070",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Asian Handicap",
+          "market_type": "spreads",
+          "period": "fulltime",
+          "handicap": -0.25,
+          "outcome_labels": [
+            "2",
+            "1"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101685",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2 First Half",
+          "market_type": "teamtotals-corners-team2",
+          "period": "p1",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "101436",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1",
+          "market_type": "teamtotals-corners-team1",
+          "period": "fulltime",
+          "handicap": 6.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "1010",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Full Time",
+          "market_type": "totals",
+          "period": "fulltime",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "10240",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 2",
+          "market_type": "teamtotals-team2",
+          "period": "fulltime",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "101677",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2 First Half",
+          "market_type": "teamtotals-corners-team2",
+          "period": "p1",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101874",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2 Second Half",
+          "market_type": "teamtotals-corners-team2",
+          "period": "p2",
+          "handicap": 3.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101732",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Second Half",
+          "market_type": "totals-corners",
+          "period": "p2",
+          "handicap": 3.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "102240",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1 Second Half",
+          "market_type": "teamtotals-team1",
+          "period": "p2",
+          "handicap": 3.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 1,
+          "changed_at_present": 1,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "102210",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1 First Half",
+          "market_type": "teamtotals-team1",
+          "period": "p1",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101919",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Half Time / Full Time",
+          "market_type": "halftime-fulltime",
+          "period": null,
+          "handicap": 0.0,
+          "outcome_labels": [
+            "1/1",
+            "2/2",
+            "X/X",
+            "2/X",
+            "X/1",
+            "1/X",
+            "2/1",
+            "1/2",
+            "X/2"
+          ],
+          "players_seen": 9,
+          "changed_at_present": 9,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "1016",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Full Time",
+          "market_type": "totals",
+          "period": "fulltime",
+          "handicap": 5.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101484",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2",
+          "market_type": "teamtotals-corners-team2",
+          "period": "fulltime",
+          "handicap": 3.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "1068",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Asian Handicap",
+          "market_type": "spreads",
+          "period": "fulltime",
+          "handicap": -0.5,
+          "outcome_labels": [
+            "2",
+            "1"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "101736",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Second Half",
+          "market_type": "totals-corners",
+          "period": "p2",
+          "handicap": 4.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "102212",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1 First Half",
+          "market_type": "teamtotals-team1",
+          "period": "p1",
+          "handicap": 3.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 1,
+          "changed_at_present": 1,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        }
+      ]
+    },
+    {
+      "fixture_id": "id1000000872478574",
+      "tournament": "LaLiga",
+      "start_time": "2026-09-15T19:30:00.000Z",
+      "bookmaker_present": true,
+      "bookmaker_active": true,
+      "suspended": false,
+      "market_count": 168,
+      "active_market_count": 168,
+      "catalog_match_count": 168,
+      "market_samples": [
+        {
+          "market_id": "102258",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 2 Second Half",
+          "market_type": "teamtotals-team2",
+          "period": "p2",
+          "handicap": 5.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 1,
+          "changed_at_present": 1,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101919",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Half Time / Full Time",
+          "market_type": "halftime-fulltime",
+          "period": null,
+          "handicap": 0.0,
+          "outcome_labels": [
+            "1/1",
+            "2/2",
+            "X/X",
+            "2/X",
+            "X/1",
+            "1/X",
+            "2/1",
+            "1/2",
+            "X/2"
+          ],
+          "players_seen": 9,
+          "changed_at_present": 9,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "1014",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Full Time",
+          "market_type": "totals",
+          "period": "fulltime",
+          "handicap": 4.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101697",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2 First Half",
+          "market_type": "teamtotals-corners-team2",
+          "period": "p1",
+          "handicap": 5.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "104",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Both Teams To Score",
+          "market_type": "bothteamsscore",
+          "period": "fulltime",
+          "handicap": 0.0,
+          "outcome_labels": [
+            "Yes",
+            "No"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "10779",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Full Time",
+          "market_type": "totals-corners",
+          "period": "fulltime",
+          "handicap": 3.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101830",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1 Second Half",
+          "market_type": "teamtotals-corners-team1",
+          "period": "p2",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "101842",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1 Second Half",
+          "market_type": "teamtotals-corners-team1",
+          "period": "p2",
+          "handicap": 5.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "102050",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "To Win From Behind Full Time",
+          "market_type": "winfrombehind",
+          "period": "fulltime",
+          "handicap": 0.0,
+          "outcome_labels": [
+            "2",
+            "X",
+            "1"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "1086",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Asian Handicap",
+          "market_type": "spreads",
+          "period": "fulltime",
+          "handicap": 1.75,
+          "outcome_labels": [
+            "1",
+            "2"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "101677",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2 First Half",
+          "market_type": "teamtotals-corners-team2",
+          "period": "p1",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101645",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1 First Half",
+          "market_type": "teamtotals-corners-team1",
+          "period": "p1",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10835",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Full Time",
+          "market_type": "totals-corners",
+          "period": "fulltime",
+          "handicap": 17.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10264",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under First Half",
+          "market_type": "totals",
+          "period": "p1",
+          "handicap": 4.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101571",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under First Half",
+          "market_type": "totals-corners",
+          "period": "p1",
+          "handicap": 9.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
           ],
           "players_seen": 1,
           "changed_at_present": 1,
@@ -3385,6 +2818,36 @@
           "period": "fulltime",
           "handicap": 0.5,
           "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        }
+      ]
+    },
+    {
+      "fixture_id": "id1000000872478568",
+      "tournament": "LaLiga",
+      "start_time": "2026-09-16T17:00:00.000Z",
+      "bookmaker_present": true,
+      "bookmaker_active": true,
+      "suspended": false,
+      "market_count": 162,
+      "active_market_count": 162,
+      "catalog_match_count": 162,
+      "market_samples": [
+        {
+          "market_id": "10260",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under First Half",
+          "market_type": "totals",
+          "period": "p1",
+          "handicap": 2.5,
+          "outcome_labels": [
             "Over",
             "Under"
           ],
@@ -3394,13 +2857,13 @@
           "main_line_true": 0
         },
         {
-          "market_id": "10230",
+          "market_id": "101555",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Over Under Team 1",
-          "market_type": "teamtotals-team1",
-          "period": "fulltime",
-          "handicap": 3.5,
+          "market_name": "Corners - Over Under First Half",
+          "market_type": "totals-corners",
+          "period": "p1",
+          "handicap": 5.5,
           "outcome_labels": [
             "Under",
             "Over"
@@ -3411,12 +2874,389 @@
           "main_line_true": 0
         },
         {
-          "market_id": "101693",
+          "market_id": "10819",
           "market_active": true,
           "catalog_match": true,
-          "market_name": "Corners - Over Under Team 2 First Half",
+          "market_name": "Corners - Over Under Full Time",
+          "market_type": "totals-corners",
+          "period": "fulltime",
+          "handicap": 13.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101476",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2",
           "market_type": "teamtotals-corners-team2",
+          "period": "fulltime",
+          "handicap": 1.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "102234",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1 Second Half",
+          "market_type": "teamtotals-team1",
+          "period": "p2",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101500",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2",
+          "market_type": "teamtotals-corners-team2",
+          "period": "fulltime",
+          "handicap": 7.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "1016",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Full Time",
+          "market_type": "totals",
+          "period": "fulltime",
+          "handicap": 5.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10799",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Full Time",
+          "market_type": "totals-corners",
+          "period": "fulltime",
+          "handicap": 8.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101919",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Half Time / Full Time",
+          "market_type": "halftime-fulltime",
+          "period": null,
+          "handicap": 0.0,
+          "outcome_labels": [
+            "1/1",
+            "2/2",
+            "X/X",
+            "2/X",
+            "X/1",
+            "1/X",
+            "2/1",
+            "1/2",
+            "X/2"
+          ],
+          "players_seen": 9,
+          "changed_at_present": 9,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101665",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1 First Half",
+          "market_type": "teamtotals-corners-team1",
           "period": "p1",
+          "handicap": 7.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 1,
+          "changed_at_present": 1,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101480",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2",
+          "market_type": "teamtotals-corners-team2",
+          "period": "fulltime",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "1064",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Asian Handicap",
+          "market_type": "spreads",
+          "period": "fulltime",
+          "handicap": -1.0,
+          "outcome_labels": [
+            "2",
+            "1"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101842",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1 Second Half",
+          "market_type": "teamtotals-corners-team1",
+          "period": "p2",
+          "handicap": 5.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101496",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2",
+          "market_type": "teamtotals-corners-team2",
+          "period": "fulltime",
+          "handicap": 6.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101661",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1 First Half",
+          "market_type": "teamtotals-corners-team1",
+          "period": "p1",
+          "handicap": 6.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101637",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1 First Half",
+          "market_type": "teamtotals-corners-team1",
+          "period": "p1",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        }
+      ]
+    },
+    {
+      "fixture_id": "id1000000872478572",
+      "tournament": "LaLiga",
+      "start_time": "2026-09-16T17:00:00.000Z",
+      "bookmaker_present": true,
+      "bookmaker_active": true,
+      "suspended": false,
+      "market_count": 160,
+      "active_market_count": 160,
+      "catalog_match_count": 160,
+      "market_samples": [
+        {
+          "market_id": "101649",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1 First Half",
+          "market_type": "teamtotals-corners-team1",
+          "period": "p1",
+          "handicap": 3.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101748",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Second Half",
+          "market_type": "totals-corners",
+          "period": "p2",
+          "handicap": 7.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10775",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Full Time",
+          "market_type": "totals-corners",
+          "period": "fulltime",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101547",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under First Half",
+          "market_type": "totals-corners",
+          "period": "p1",
+          "handicap": 3.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "10819",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Full Time",
+          "market_type": "totals-corners",
+          "period": "fulltime",
+          "handicap": 13.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "102236",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1 Second Half",
+          "market_type": "teamtotals-team1",
+          "period": "p2",
+          "handicap": 1.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "102252",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 2 Second Half",
+          "market_type": "teamtotals-team2",
+          "period": "p2",
+          "handicap": 2.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10783",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Full Time",
+          "market_type": "totals-corners",
+          "period": "fulltime",
           "handicap": 4.5,
           "outcome_labels": [
             "Under",
@@ -3428,13 +3268,132 @@
           "main_line_true": 0
         },
         {
-          "market_id": "10795",
+          "market_id": "101882",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2 Second Half",
+          "market_type": "teamtotals-corners-team2",
+          "period": "p2",
+          "handicap": 5.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10224",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1",
+          "market_type": "teamtotals-team1",
+          "period": "fulltime",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101539",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under First Half",
+          "market_type": "totals-corners",
+          "period": "p1",
+          "handicap": 1.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10226",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Over Under Team 1",
+          "market_type": "teamtotals-team1",
+          "period": "fulltime",
+          "handicap": 1.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 2
+        },
+        {
+          "market_id": "101641",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1 First Half",
+          "market_type": "teamtotals-corners-team1",
+          "period": "p1",
+          "handicap": 1.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101677",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 2 First Half",
+          "market_type": "teamtotals-corners-team2",
+          "period": "p1",
+          "handicap": 0.5,
+          "outcome_labels": [
+            "Under",
+            "Over"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "10823",
           "market_active": true,
           "catalog_match": true,
           "market_name": "Corners - Over Under Full Time",
           "market_type": "totals-corners",
           "period": "fulltime",
-          "handicap": 7.5,
+          "handicap": 14.5,
+          "outcome_labels": [
+            "Over",
+            "Under"
+          ],
+          "players_seen": 2,
+          "changed_at_present": 2,
+          "bookmaker_changed_at_present": 0,
+          "main_line_true": 0
+        },
+        {
+          "market_id": "101428",
+          "market_active": true,
+          "catalog_match": true,
+          "market_name": "Corners - Over Under Team 1",
+          "market_type": "teamtotals-corners-team1",
+          "period": "fulltime",
+          "handicap": 4.5,
           "outcome_labels": [
             "Over",
             "Under"
@@ -3449,57 +3408,57 @@
   ],
   "freshness_basis": "CURRENT_ODDSPAPI_ENDPOINT_ACTIVE_MARKETS_OBSERVED",
   "price_change_timestamp_semantics": "changedAt/bookmakerChangedAt records when the price last changed; it is retained separately and does not age an otherwise active current quote.",
-  "observed_at": "2026-09-08T09:33:57.257941+00:00",
+  "observed_at": "2026-09-14T09:13:26.049488+00:00",
   "samples": [
     {
       "source": "oddspapi:bet365:current-observed",
-      "league": "Bundesliga",
-      "date": "2026-09-12",
-      "kickoff": "13:30",
-      "home": "Borussia Dortmund",
-      "away": "SC Paderborn 07",
-      "ah_home_line": -2.0,
-      "ah_home_odds": 2.05,
-      "ah_away_line": 2.0,
-      "ah_away_odds": 1.8,
-      "ou_line": 7.5,
-      "over_odds": 1.286,
-      "under_odds": 3.5,
+      "league": "Serie A",
+      "date": "2026-09-14",
+      "kickoff": "16:30",
+      "home": "Como 1907",
+      "away": "Parma Calcio",
+      "ah_home_line": -1.75,
+      "ah_home_odds": 1.9,
+      "ah_away_line": 1.75,
+      "ah_away_odds": 1.95,
+      "ou_line": 0.5,
+      "over_odds": 1.04,
+      "under_odds": 13.0,
       "one_x_two_home": 1.19,
-      "one_x_two_draw": 6.0,
-      "one_x_two_away": 10.0,
+      "one_x_two_draw": 5.75,
+      "one_x_two_away": 13.0,
       "status": "pre_match",
-      "as_of": "2026-09-08T09:33:57.257941+00:00",
+      "as_of": "2026-09-14T09:13:26.049488+00:00",
       "stale": false,
       "tradable": true,
-      "observed_at": "2026-09-08T09:33:57.257941+00:00",
-      "price_changed_at": "2026-09-07T23:40:01.716Z",
+      "observed_at": "2026-09-14T09:13:26.049488+00:00",
+      "price_changed_at": "2026-09-12T23:01:39.974Z",
       "freshness_basis": "CURRENT_ODDSPAPI_ENDPOINT_ACTIVE_MARKETS_OBSERVED",
       "current_feed_verified": true
     },
     {
       "source": "oddspapi:bet365:current-observed",
-      "league": "Bundesliga",
-      "date": "2026-09-12",
-      "kickoff": "13:30",
-      "home": "Borussia Dortmund",
-      "away": "SC Paderborn 07",
-      "ah_home_line": -2.0,
-      "ah_home_odds": 2.05,
-      "ah_away_line": 2.0,
-      "ah_away_odds": 1.8,
-      "ou_line": 4.5,
+      "league": "Serie A",
+      "date": "2026-09-14",
+      "kickoff": "16:30",
+      "home": "Como 1907",
+      "away": "Parma Calcio",
+      "ah_home_line": -1.75,
+      "ah_home_odds": 1.9,
+      "ah_away_line": 1.75,
+      "ah_away_odds": 1.95,
+      "ou_line": 3.5,
       "over_odds": 5.0,
       "under_odds": 1.167,
       "one_x_two_home": 1.19,
-      "one_x_two_draw": 6.0,
-      "one_x_two_away": 10.0,
+      "one_x_two_draw": 5.75,
+      "one_x_two_away": 13.0,
       "status": "pre_match",
-      "as_of": "2026-09-08T09:33:57.257941+00:00",
+      "as_of": "2026-09-14T09:13:26.049488+00:00",
       "stale": false,
       "tradable": true,
-      "observed_at": "2026-09-08T09:33:57.257941+00:00",
-      "price_changed_at": "2026-09-07T23:40:01.716Z",
+      "observed_at": "2026-09-14T09:13:26.049488+00:00",
+      "price_changed_at": "2026-09-12T23:01:39.974Z",
       "freshness_basis": "CURRENT_ODDSPAPI_ENDPOINT_ACTIVE_MARKETS_OBSERVED",
       "current_feed_verified": true
     }
