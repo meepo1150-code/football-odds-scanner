@@ -36,7 +36,14 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add reports/europe_pinnacle_research_v2_status.json reports/research_v2_movement_status.json data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/research_v2_movement_features.jsonl
+          for f in \
+            reports/europe_pinnacle_research_v2_status.json \
+            reports/research_v2_movement_status.json \
+            data/normalized/europe_pinnacle_research_v2_snapshots.jsonl \
+            data/normalized/europe_pinnacle_research_v2_audit.jsonl \
+            data/normalized/research_v2_movement_features.jsonl; do
+            test -e "$f" && git add "$f"
+          done
           git diff --cached --quiet && exit 0
           git commit -m 'data: update Pinnacle research v2 [skip ci]'
           git push
