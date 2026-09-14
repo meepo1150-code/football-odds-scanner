@@ -1,96 +1,34 @@
 {
-  "schema_version": "1.0",
-  "resolved_at": "2026-09-11T07:35:45.525501+00:00",
+  "schema_version": "2.0",
+  "resolved_at": "2026-09-14",
+  "selection_policy": "VERIFIED_ODDSPAPI_IDS_ONLY; UEFA_STRENGTH_GUIDED; LEAGUES_AND_CUPS",
+  "notes": "Initial expanded universe. Domestic/european cups are added only when provider tournament IDs are verified; never infer IDs.",
   "tournaments": [
-    {
-      "country": "Austria",
-      "tournament_id": 45,
-      "tournament_name": "Bundesliga",
-      "tournament_slug": "bundesliga"
-    },
-    {
-      "country": "Czech Republic",
-      "tournament_id": 172,
-      "tournament_name": "1. Liga",
-      "tournament_slug": "1-liga"
-    },
-    {
-      "country": "Denmark",
-      "tournament_id": 39,
-      "tournament_name": "Superliga",
-      "tournament_slug": "superliga"
-    },
-    {
-      "country": "England",
-      "tournament_id": 18,
-      "tournament_name": "Championship",
-      "tournament_slug": "championship"
-    },
-    {
-      "country": "England",
-      "tournament_id": 24,
-      "tournament_name": "League One",
-      "tournament_slug": "league-one"
-    },
-    {
-      "country": "France",
-      "tournament_id": 182,
-      "tournament_name": "Ligue 2",
-      "tournament_slug": "ligue-2"
-    },
-    {
-      "country": "Germany",
-      "tournament_id": 44,
-      "tournament_name": "2. Bundesliga",
-      "tournament_slug": "2-bundesliga"
-    },
-    {
-      "country": "Greece",
-      "tournament_id": 185,
-      "tournament_name": "Super League",
-      "tournament_slug": "super-league"
-    },
-    {
-      "country": "Italy",
-      "tournament_id": 53,
-      "tournament_name": "Serie B",
-      "tournament_slug": "serie-b"
-    },
-    {
-      "country": "Norway",
-      "tournament_id": 20,
-      "tournament_name": "Eliteserien",
-      "tournament_slug": "eliteserien"
-    },
-    {
-      "country": "Poland",
-      "tournament_id": 202,
-      "tournament_name": "Ekstraklasa",
-      "tournament_slug": "ekstraklasa"
-    },
-    {
-      "country": "Romania",
-      "tournament_id": 152,
-      "tournament_name": "Superliga",
-      "tournament_slug": "superliga"
-    },
-    {
-      "country": "Spain",
-      "tournament_id": 54,
-      "tournament_name": "LaLiga 2",
-      "tournament_slug": "laliga-2"
-    },
-    {
-      "country": "Sweden",
-      "tournament_id": 40,
-      "tournament_name": "Allsvenskan",
-      "tournament_slug": "allsvenskan"
-    },
-    {
-      "country": "Switzerland",
-      "tournament_id": 215,
-      "tournament_name": "Super League",
-      "tournament_slug": "super-league"
-    }
+    {"country":"International Clubs","tournament_id":7,"tournament_name":"UEFA Champions League","tournament_slug":"uefa-champions-league","competition_type":"EUROPEAN_CUP"},
+    {"country":"England","tournament_id":17,"tournament_name":"Premier League","tournament_slug":"premier-league","competition_type":"LEAGUE"},
+    {"country":"England","tournament_id":18,"tournament_name":"Championship","tournament_slug":"championship","competition_type":"LEAGUE"},
+    {"country":"England","tournament_id":24,"tournament_name":"League One","tournament_slug":"league-one","competition_type":"LEAGUE"},
+    {"country":"Italy","tournament_id":23,"tournament_name":"Serie A","tournament_slug":"serie-a","competition_type":"LEAGUE"},
+    {"country":"Italy","tournament_id":53,"tournament_name":"Serie B","tournament_slug":"serie-b","competition_type":"LEAGUE"},
+    {"country":"Spain","tournament_id":8,"tournament_name":"LaLiga","tournament_slug":"laliga","competition_type":"LEAGUE"},
+    {"country":"Spain","tournament_id":54,"tournament_name":"LaLiga 2","tournament_slug":"laliga-2","competition_type":"LEAGUE"},
+    {"country":"Germany","tournament_id":35,"tournament_name":"Bundesliga","tournament_slug":"bundesliga","competition_type":"LEAGUE"},
+    {"country":"Germany","tournament_id":44,"tournament_name":"2. Bundesliga","tournament_slug":"2-bundesliga","competition_type":"LEAGUE"},
+    {"country":"France","tournament_id":34,"tournament_name":"Ligue 1","tournament_slug":"ligue-1","competition_type":"LEAGUE"},
+    {"country":"France","tournament_id":182,"tournament_name":"Ligue 2","tournament_slug":"ligue-2","competition_type":"LEAGUE"},
+    {"country":"Netherlands","tournament_id":37,"tournament_name":"Eredivisie","tournament_slug":"eredivisie","competition_type":"LEAGUE"},
+    {"country":"Portugal","tournament_id":238,"tournament_name":"Liga Portugal","tournament_slug":"liga-portugal","competition_type":"LEAGUE"},
+    {"country":"Belgium","tournament_id":38,"tournament_name":"Pro League","tournament_slug":"pro-league","competition_type":"LEAGUE"},
+    {"country":"Turkey","tournament_id":52,"tournament_name":"Super Lig","tournament_slug":"super-lig","competition_type":"LEAGUE"},
+    {"country":"Czech Republic","tournament_id":172,"tournament_name":"1. Liga","tournament_slug":"1-liga","competition_type":"LEAGUE"},
+    {"country":"Greece","tournament_id":185,"tournament_name":"Super League","tournament_slug":"super-league","competition_type":"LEAGUE"},
+    {"country":"Austria","tournament_id":45,"tournament_name":"Bundesliga","tournament_slug":"bundesliga","competition_type":"LEAGUE"},
+    {"country":"Denmark","tournament_id":39,"tournament_name":"Superliga","tournament_slug":"superliga","competition_type":"LEAGUE"},
+    {"country":"Norway","tournament_id":20,"tournament_name":"Eliteserien","tournament_slug":"eliteserien","competition_type":"LEAGUE"},
+    {"country":"Poland","tournament_id":202,"tournament_name":"Ekstraklasa","tournament_slug":"ekstraklasa","competition_type":"LEAGUE"},
+    {"country":"Romania","tournament_id":152,"tournament_name":"Superliga","tournament_slug":"superliga","competition_type":"LEAGUE"},
+    {"country":"Scotland","tournament_id":36,"tournament_name":"Premiership","tournament_slug":"premiership","competition_type":"LEAGUE"},
+    {"country":"Sweden","tournament_id":40,"tournament_name":"Allsvenskan","tournament_slug":"allsvenskan","competition_type":"LEAGUE"},
+    {"country":"Switzerland","tournament_id":215,"tournament_name":"Super League","tournament_slug":"super-league","competition_type":"LEAGUE"}
   ]
 }
