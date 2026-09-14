@@ -1,11 +1,12 @@
-name: Europe Pinnacle Daily Discovery
+name: Europe Pinnacle Research V2
 on:
   workflow_dispatch:
   schedule:
-    # Monday-Friday, Bangkok time: 21:00 and 00:00
+    # Bangkok football-day research schedule.
+    # Mon-Fri: 21:00 and 00:00 Bangkok (00:00 belongs to previous football day).
     - cron: '0 14 * * 1-5'
     - cron: '0 17 * * 1-5'
-    # Saturday-Sunday, Bangkok time: 12:00, 15:00, 18:00, 20:00
+    # Sat-Sun: 12:00, 15:00, 18:00, 20:00 Bangkok.
     - cron: '0 5 * * 6,0'
     - cron: '0 8 * * 6,0'
     - cron: '0 11 * * 6,0'
@@ -13,7 +14,7 @@ on:
 permissions:
   contents: write
 concurrency:
-  group: europe-pinnacle-daily-discovery
+  group: europe-pinnacle-research-v2
   cancel-in-progress: false
 jobs:
   scan:
@@ -24,24 +25,17 @@ jobs:
       - uses: actions/setup-python@v6
         with: {python-version: '3.12'}
       - run: python -m pip install -e '.[dev]'
-      - run: pytest -q tests/test_europe_bookmaker_coverage_probe.py tests/test_europe_pinnacle_discovery.py tests/test_europe_pinnacle_analysis.py
-      - name: Collect Pinnacle discovery snapshots across selected leagues
+      - name: Collect football-day research population
         env:
           ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
         run: python -m odds_scanner.europe_pinnacle_discovery
-      - name: Build Pinnacle accumulation summary
-        run: python -m odds_scanner.europe_pinnacle_summary
-      - name: Build Pinnacle first-vs-latest movement
-        run: python -m odds_scanner.europe_pinnacle_movement
-      - name: Build descriptive Pinnacle movement research
-        run: python -m odds_scanner.europe_pinnacle_movement_research
-      - name: Persist Pinnacle discovery evidence
+      - name: Persist research v2 evidence
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add reports/europe_pinnacle_discovery_status.json reports/europe_pinnacle_discovery_summary.json reports/europe_pinnacle_discovery_movement.json reports/europe_pinnacle_discovery_movement_research.json data/normalized/europe_pinnacle_discovery_snapshots.jsonl data/normalized/europe_pinnacle_discovery_audit.jsonl
+          git add reports/europe_pinnacle_research_v2_status.json data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl
           git diff --cached --quiet && exit 0
-          git commit -m 'data: update Pinnacle Europe discovery [skip ci]'
+          git commit -m 'data: update Pinnacle research v2 [skip ci]'
           git push
-# Research-only stream. Every fixture returned by the selected leagues is retained for descriptive statistics.
-# MATCH/NOT_MATCH is metadata, not a betting recommendation.
+# Research only: all fixtures in the selected leagues and Bangkok football-day window are retained.
+# MATCH/NOT_MATCH is a feature for later analysis, never a betting recommendation.
