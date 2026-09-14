@@ -14,7 +14,7 @@ jobs:
         with: {ref: main}
       - uses: actions/setup-python@v6
         with: {python-version: '3.12'}
-      - run: python -m pip install -e '.[dev]'
+      - run: python -m pip install -e '.[dev]' requests
       - name: Resolve provider-verified active competitions
         env:
           ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
