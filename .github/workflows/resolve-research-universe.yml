@@ -1,0 +1,28 @@
+name: Resolve Research V2 Universe
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  resolve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: main}
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - run: python -m pip install -e '.[dev]'
+      - name: Resolve provider-verified active competitions
+        env:
+          ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
+        run: python -m odds_scanner.oddspapi_tournament_universe
+      - name: Persist candidate universe evidence
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add reports/oddspapi_tournament_universe_candidates.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'data: resolve Research V2 tournament universe [skip ci]'
+          git push
+# Candidate output is deliberately not promoted automatically into the production
+# research universe. Review competition type, relevance and Pinnacle coverage first.
