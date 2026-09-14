@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import time
 from datetime import datetime, time as dtime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -20,6 +21,9 @@ BANGKOK = ZoneInfo('Asia/Bangkok')
 FOOTBALL_DAY_START_HOUR = 12
 FOOTBALL_DAY_END_HOUR = 6
 BATCH_SIZE = 5
+INTER_BATCH_DELAY_SECONDS = 2.0
+RATE_LIMIT_RETRY_DELAY_SECONDS = 5.0
+MAX_ATTEMPTS_PER_BATCH = 2
 
 
 def _merge_jsonl(path: Path, new_rows: list[dict], key_fields: tuple[str, ...]) -> int:
@@ -79,7 +83,7 @@ def run(root: Path = Path('.')):
     now = datetime.now(timezone.utc)
     window_start, window_end, football_day = _football_day_bounds(now)
     report = {
-        'schema_version': '2.3',
+        'schema_version': '2.4',
         'generated_at': now.isoformat(),
         'classification': 'PINNACLE_RESEARCH_V2',
         'bookmaker': BOOKMAKER,
@@ -91,7 +95,10 @@ def run(root: Path = Path('.')):
         'production_promotion_allowed': False,
         'core_quota_reserve': CORE_QUOTA_RESERVE,
         'batch_size': BATCH_SIZE,
-        'batching_strategy': 'VERIFIED_TOURNAMENTS_BATCHED',
+        'batching_strategy': 'VERIFIED_TOURNAMENTS_BATCHED_WITH_RATE_LIMIT_BACKOFF',
+        'inter_batch_delay_seconds': INTER_BATCH_DELAY_SECONDS,
+        'rate_limit_retry_delay_seconds': RATE_LIMIT_RETRY_DELAY_SECONDS,
+        'max_attempts_per_batch': MAX_ATTEMPTS_PER_BATCH,
     }
 
     targets = _load_json(root / TARGET_PATH) or {}
@@ -101,9 +108,11 @@ def run(root: Path = Path('.')):
         report.update(status='TARGET_MAP_INVALID', resolved_competitions=len(ids), requests_used=0, planned_requests=0)
         return _write(report, root)
 
-    planned = (len(ids) + BATCH_SIZE - 1) // BATCH_SIZE
+    normal_requests = (len(ids) + BATCH_SIZE - 1) // BATCH_SIZE
+    max_planned_requests = normal_requests * MAX_ATTEMPTS_PER_BATCH
     report['resolved_competitions'] = len(ids)
-    report['planned_requests'] = planned
+    report['planned_requests'] = normal_requests
+    report['max_planned_requests_with_retries'] = max_planned_requests
     report['competition_type_counts'] = {
         t: sum(1 for x in selected if x.get('competition_type', 'LEAGUE') == t)
         for t in sorted({x.get('competition_type', 'LEAGUE') for x in selected})
@@ -120,7 +129,7 @@ def run(root: Path = Path('.')):
         report.update(status='SKIPPED_QUOTA_HEALTH_UNAVAILABLE', requests_used=0, errors=[f'{type(exc).__name__}: {exc}'])
         return _write(report, root)
     report['quota_remaining_before'] = quota.get('request_remaining')
-    if not quota_allows_probe(quota, planned=planned):
+    if not quota_allows_probe(quota, planned=max_planned_requests):
         report.update(status='SKIPPED_TO_PROTECT_CORE_QUOTA', requests_used=0)
         return _write(report, root)
 
@@ -128,24 +137,50 @@ def run(root: Path = Path('.')):
     meta = {int(x['tournament_id']): x for x in selected}
     payloads = []
     requests_used = 0
-    for batch_number, batch in enumerate(_chunks(ids, BATCH_SIZE), start=1):
-        try:
-            payloads.append(_get('/odds-by-tournaments', key, {
-                'tournamentIds': ','.join(str(x) for x in batch),
-                'bookmakers': BOOKMAKER,
-                'language': 'en',
-                'verbosity': 3,
-            }, 90))
-            requests_used += 1
-        except Exception as exc:
+    rate_limit_retries = 0
+    batches = list(_chunks(ids, BATCH_SIZE))
+    for batch_number, batch in enumerate(batches, start=1):
+        if batch_number > 1:
+            time.sleep(INTER_BATCH_DELAY_SECONDS)
+        payload = None
+        last_exc = None
+        for attempt in range(1, MAX_ATTEMPTS_PER_BATCH + 1):
+            try:
+                payload = _get('/odds-by-tournaments', key, {
+                    'tournamentIds': ','.join(str(x) for x in batch),
+                    'bookmakers': BOOKMAKER,
+                    'language': 'en',
+                    'verbosity': 3,
+                }, 90)
+                requests_used += 1
+                break
+            except Exception as exc:
+                requests_used += 1
+                last_exc = exc
+                if getattr(exc, 'code', None) == 429 and attempt < MAX_ATTEMPTS_PER_BATCH:
+                    rate_limit_retries += 1
+                    time.sleep(RATE_LIMIT_RETRY_DELAY_SECONDS)
+                    continue
+                report.update(
+                    status='API_REQUEST_FAILED',
+                    requests_used=requests_used,
+                    rate_limit_retries=rate_limit_retries,
+                    failed_batch=batch_number,
+                    failed_batch_size=len(batch),
+                    failed_attempt=attempt,
+                    errors=[f'{type(exc).__name__}: {exc}'],
+                )
+                return _write(report, root)
+        if payload is None:
             report.update(
                 status='API_REQUEST_FAILED',
-                requests_used=requests_used + 1,
+                requests_used=requests_used,
+                rate_limit_retries=rate_limit_retries,
                 failed_batch=batch_number,
-                failed_batch_size=len(batch),
-                errors=[f'{type(exc).__name__}: {exc}'],
+                errors=[f'{type(last_exc).__name__}: {last_exc}'],
             )
             return _write(report, root)
+        payloads.append(payload)
 
     strict = []
     diagnostics = []
@@ -201,6 +236,7 @@ def run(root: Path = Path('.')):
     report.update(
         status='RESEARCH_V2_OBSERVED',
         requests_used=requests_used,
+        rate_limit_retries=rate_limit_retries,
         api_fixtures_returned=all_api_fixtures,
         excluded_outside_football_day=excluded,
         football_day_fixtures=len(audit_rows),
