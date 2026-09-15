@@ -30,6 +30,20 @@ def _parse(value):
         return None
 
 
+def _existing_day_rows(path: Path, football_day: str) -> list[dict]:
+    if not path.exists():
+        return []
+    found = []
+    for line in path.read_text(encoding='utf-8').splitlines():
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(row, dict) and str(row.get('football_day')) == football_day and row.get('fixture_id') is not None:
+            found.append(row)
+    return found
+
+
 def _merge(path: Path, new_rows: list[dict]) -> int:
     rows = {}
     if path.exists():
@@ -56,7 +70,7 @@ def run(root: Path = Path('.')) -> dict:
     end_local = datetime.combine(local.date() + timedelta(days=1), dtime(6), BANGKOK)
     start_utc, end_utc = start_local.astimezone(timezone.utc), end_local.astimezone(timezone.utc)
     report = {
-        'schema_version': '1.0',
+        'schema_version': '1.1',
         'classification': 'RESEARCH_V2_DAILY_FIXTURE_RESULT_SYNC',
         'generated_at': now.isoformat(),
         'football_day': football_day,
@@ -65,42 +79,52 @@ def run(root: Path = Path('.')) -> dict:
         'research_only': True,
         'odds_requested': False,
     }
-    key = os.getenv(ENV_KEY, '').strip()
-    if not key:
-        report.update(status='API_KEY_NOT_CONFIGURED', fixture_requests_used=0)
+    fixtures_path = root / FIXTURES_PATH
+    existing = _existing_day_rows(fixtures_path, football_day)
+    if existing:
+        report.update(
+            status='ALREADY_SYNCED',
+            fixture_requests_used=0,
+            football_day_fixtures=len(existing),
+            persisted_fixture_rows=sum(1 for line in fixtures_path.read_text(encoding='utf-8').splitlines() if line.strip()),
+        )
     else:
-        try:
-            payload = _get('/fixtures', key, {
-                'sportId': SPORT_ID,
-                'from': start_local.date().isoformat(),
-                'to': end_local.date().isoformat(),
-            }, 60)
-            api_rows = _rows(payload)
-            selected = []
-            for fixture in api_rows:
-                kickoff = _parse(fixture.get('startTime'))
-                if kickoff is None or not (start_utc <= kickoff < end_utc):
-                    continue
-                selected.append({
-                    'football_day': football_day,
-                    'fixture_id': fixture.get('fixtureId'),
-                    'tournament_id': fixture.get('tournamentId'),
-                    'league': fixture.get('tournamentName') or fixture.get('tournamentSlug'),
-                    'home': fixture.get('participant1Name'),
-                    'away': fixture.get('participant2Name'),
-                    'kickoff': fixture.get('startTime'),
-                    'status_id': fixture.get('statusId'),
-                    'status_name': fixture.get('statusName'),
-                    'has_odds': fixture.get('hasOdds'),
-                    'flashscore_id': fixture.get('flashscoreId'),
-                    'discovered_at': now.isoformat(),
-                    'source': 'oddspapi:/fixtures',
-                    'research_only': True,
-                })
-            total = _merge(root / FIXTURES_PATH, selected)
-            report.update(status='FIXTURES_SYNCED', fixture_requests_used=1, api_fixtures_returned=len(api_rows), football_day_fixtures=len(selected), persisted_fixture_rows=total)
-        except Exception as exc:
-            report.update(status='FIXTURE_SYNC_FAILED', fixture_requests_used=1, errors=[f'{type(exc).__name__}: {exc}'])
+        key = os.getenv(ENV_KEY, '').strip()
+        if not key:
+            report.update(status='API_KEY_NOT_CONFIGURED', fixture_requests_used=0)
+        else:
+            try:
+                payload = _get('/fixtures', key, {
+                    'sportId': SPORT_ID,
+                    'from': start_local.date().isoformat(),
+                    'to': end_local.date().isoformat(),
+                }, 60)
+                api_rows = _rows(payload)
+                selected = []
+                for fixture in api_rows:
+                    kickoff = _parse(fixture.get('startTime'))
+                    if kickoff is None or not (start_utc <= kickoff < end_utc):
+                        continue
+                    selected.append({
+                        'football_day': football_day,
+                        'fixture_id': fixture.get('fixtureId'),
+                        'tournament_id': fixture.get('tournamentId'),
+                        'league': fixture.get('tournamentName') or fixture.get('tournamentSlug'),
+                        'home': fixture.get('participant1Name'),
+                        'away': fixture.get('participant2Name'),
+                        'kickoff': fixture.get('startTime'),
+                        'status_id': fixture.get('statusId'),
+                        'status_name': fixture.get('statusName'),
+                        'has_odds': fixture.get('hasOdds'),
+                        'flashscore_id': fixture.get('flashscoreId'),
+                        'discovered_at': now.isoformat(),
+                        'source': 'oddspapi:/fixtures',
+                        'research_only': True,
+                    })
+                total = _merge(fixtures_path, selected)
+                report.update(status='FIXTURES_SYNCED', fixture_requests_used=1, api_fixtures_returned=len(api_rows), football_day_fixtures=len(selected), persisted_fixture_rows=total)
+            except Exception as exc:
+                report.update(status='FIXTURE_SYNC_FAILED', fixture_requests_used=1, errors=[f'{type(exc).__name__}: {exc}'])
     path = root / REPORT_PATH
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
