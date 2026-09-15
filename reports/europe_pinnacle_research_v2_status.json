@@ -1,45 +1,150 @@
 {
-  "schema_version": "2.4",
-  "generated_at": "2026-09-14T20:51:48.937815+00:00",
+  "schema_version": "2.6",
+  "generated_at": "2026-09-15T14:42:49.739659+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "bookmaker": "pinnacle",
-  "football_day": "2026-09-14",
+  "football_day": "2026-09-15",
   "football_day_timezone": "Asia/Bangkok",
-  "football_day_window_start": "2026-09-14T05:00:00+00:00",
-  "football_day_window_end": "2026-09-14T23:00:00+00:00",
+  "football_day_window_start": "2026-09-15T05:00:00+00:00",
+  "football_day_window_end": "2026-09-15T23:00:00+00:00",
+  "scheduled_target_at": "2026-09-15T21:00:00+07:00",
+  "actual_observed_at": "2026-09-15T21:42:49.739659+07:00",
+  "schedule_lag_minutes": 42.83,
+  "recovery_window_minutes": 105,
+  "force_run": false,
   "research_only": true,
   "production_promotion_allowed": false,
   "core_quota_reserve": 30,
-  "batch_size": 5,
-  "batching_strategy": "VERIFIED_TOURNAMENTS_BATCHED_WITH_RATE_LIMIT_BACKOFF",
-  "inter_batch_delay_seconds": 2.0,
-  "rate_limit_retry_delay_seconds": 5.0,
-  "max_attempts_per_batch": 2,
   "resolved_competitions": 38,
   "planned_requests": 8,
   "max_planned_requests_with_retries": 16,
-  "competition_type_counts": {
-    "DOMESTIC_CUP": 7,
-    "EUROPEAN_CUP": 3,
-    "LEAGUE": 28
-  },
-  "quota_remaining_before": 100,
+  "quota_remaining_before": 87,
   "status": "RESEARCH_V2_OBSERVED",
   "requests_used": 8,
   "rate_limit_retries": 0,
-  "api_fixtures_returned": 326,
-  "excluded_outside_football_day": 326,
-  "football_day_fixtures": 0,
-  "strict_snapshots_this_run": 0,
-  "non_strict_fixtures_this_run": 0,
-  "persisted_snapshot_rows": 24,
-  "persisted_audit_rows": 24,
-  "fixtures_seen": 0,
-  "bookmaker_active_fixtures": 0,
-  "fixtures_with_exactly_one_main_ah": 0,
-  "fixtures_with_exactly_one_main_ou": 0,
-  "fixtures_with_both_exact_mainlines": 0,
-  "strict_snapshots": 0,
-  "rejection_counts": {},
-  "league_coverage": []
+  "api_fixtures_returned": 331,
+  "excluded_outside_football_day": 307,
+  "football_day_fixtures": 24,
+  "strict_snapshots_this_run": 24,
+  "persisted_snapshot_rows": 48,
+  "persisted_audit_rows": 48,
+  "fixtures_seen": 24,
+  "bookmaker_active_fixtures": 24,
+  "fixtures_with_exactly_one_main_ah": 24,
+  "fixtures_with_exactly_one_main_ou": 24,
+  "fixtures_with_both_exact_mainlines": 24,
+  "strict_snapshots": 24,
+  "rejection_counts": {
+    "OK": 24
+  },
+  "league_coverage": [
+    {
+      "league": "England · Championship",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
+      "reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "league": "England · EFL Cup",
+      "fixtures": 5,
+      "bookmaker_active": 5,
+      "ah_main_exactly_one": 5,
+      "ou_main_exactly_one": 5,
+      "both_main_exactly_one": 5,
+      "strict_snapshots": 5,
+      "reason_counts": {
+        "OK": 5
+      }
+    },
+    {
+      "league": "Germany · 3. Liga",
+      "fixtures": 5,
+      "bookmaker_active": 5,
+      "ah_main_exactly_one": 5,
+      "ou_main_exactly_one": 5,
+      "both_main_exactly_one": 5,
+      "strict_snapshots": 5,
+      "reason_counts": {
+        "OK": 5
+      }
+    },
+    {
+      "league": "Italy · Coppa Italia",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
+      "reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "league": "Netherlands · Eredivisie",
+      "fixtures": 1,
+      "bookmaker_active": 1,
+      "ah_main_exactly_one": 1,
+      "ou_main_exactly_one": 1,
+      "both_main_exactly_one": 1,
+      "strict_snapshots": 1,
+      "reason_counts": {
+        "OK": 1
+      }
+    },
+    {
+      "league": "Poland · Ekstraklasa",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
+      "reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "league": "Scotland · Premiership",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Spain · LaLiga",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Switzerland · Super League",
+      "fixtures": 1,
+      "bookmaker_active": 1,
+      "ah_main_exactly_one": 1,
+      "ou_main_exactly_one": 1,
+      "both_main_exactly_one": 1,
+      "strict_snapshots": 1,
+      "reason_counts": {
+        "OK": 1
+      }
+    }
+  ]
 }
