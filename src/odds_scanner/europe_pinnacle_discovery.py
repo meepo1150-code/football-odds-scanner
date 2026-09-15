@@ -24,6 +24,9 @@ BATCH_SIZE = 5
 INTER_BATCH_DELAY_SECONDS = 2.0
 RATE_LIMIT_RETRY_DELAY_SECONDS = 5.0
 MAX_ATTEMPTS_PER_BATCH = 2
+SCHEDULE_LAG_LIMIT_MINUTES = 45
+WEEKDAY_TARGET_HOURS = (21, 0)
+WEEKEND_TARGET_HOURS = (12, 15, 18, 20)
 
 
 def _merge_jsonl(path: Path, new_rows: list[dict], key_fields: tuple[str, ...]) -> int:
@@ -50,6 +53,25 @@ def _football_day_bounds(now_utc: datetime):
     start = datetime.combine(label_date, dtime(FOOTBALL_DAY_START_HOUR), BANGKOK)
     end = datetime.combine(label_date + timedelta(days=1), dtime(FOOTBALL_DAY_END_HOUR), BANGKOK)
     return start.astimezone(timezone.utc), end.astimezone(timezone.utc), label_date.isoformat()
+
+
+def _schedule_timing(now_utc: datetime):
+    local_now = now_utc.astimezone(BANGKOK)
+    candidates = []
+    for delta in (-1, 0):
+        day = local_now.date() + timedelta(days=delta)
+        # Bangkok weekend daytime cadence; weekday cadence includes midnight Tue-Sat
+        hours = WEEKEND_TARGET_HOURS if day.weekday() >= 5 else (21,)
+        for hour in hours:
+            candidates.append(datetime.combine(day, dtime(hour), BANGKOK))
+        if day.weekday() in (1, 2, 3, 4, 5):
+            candidates.append(datetime.combine(day, dtime(0), BANGKOK))
+    eligible = [x for x in candidates if x <= local_now]
+    target = max(eligible) if eligible else None
+    if target is None:
+        return None, None
+    lag = (local_now - target).total_seconds() / 60.0
+    return target, round(lag, 2)
 
 
 def _parse_kickoff(value):
@@ -82,8 +104,10 @@ def _chunks(values, size):
 def run(root: Path = Path('.')):
     now = datetime.now(timezone.utc)
     window_start, window_end, football_day = _football_day_bounds(now)
+    scheduled_target, schedule_lag = _schedule_timing(now)
+    force_run = os.getenv('RESEARCH_V2_FORCE_RUN', '').strip().lower() in {'1', 'true', 'yes'}
     report = {
-        'schema_version': '2.4',
+        'schema_version': '2.5',
         'generated_at': now.isoformat(),
         'classification': 'PINNACLE_RESEARCH_V2',
         'bookmaker': BOOKMAKER,
@@ -91,6 +115,11 @@ def run(root: Path = Path('.')):
         'football_day_timezone': 'Asia/Bangkok',
         'football_day_window_start': window_start.isoformat(),
         'football_day_window_end': window_end.isoformat(),
+        'scheduled_target_at': scheduled_target.isoformat() if scheduled_target else None,
+        'actual_observed_at': now.astimezone(BANGKOK).isoformat(),
+        'schedule_lag_minutes': schedule_lag,
+        'schedule_lag_limit_minutes': SCHEDULE_LAG_LIMIT_MINUTES,
+        'force_run': force_run,
         'research_only': True,
         'production_promotion_allowed': False,
         'core_quota_reserve': CORE_QUOTA_RESERVE,
@@ -100,6 +129,11 @@ def run(root: Path = Path('.')):
         'rate_limit_retry_delay_seconds': RATE_LIMIT_RETRY_DELAY_SECONDS,
         'max_attempts_per_batch': MAX_ATTEMPTS_PER_BATCH,
     }
+
+    # Fail closed before touching OddsPAPI when GitHub cron arrives too late.
+    if not force_run and (schedule_lag is None or schedule_lag > SCHEDULE_LAG_LIMIT_MINUTES):
+        report.update(status='SKIPPED_EXCESSIVE_SCHEDULE_LAG', requests_used=0, planned_requests=0)
+        return _write(report, root)
 
     targets = _load_json(root / TARGET_PATH) or {}
     selected = targets.get('tournaments') or [] if isinstance(targets, dict) else []
@@ -161,24 +195,10 @@ def run(root: Path = Path('.')):
                     rate_limit_retries += 1
                     time.sleep(RATE_LIMIT_RETRY_DELAY_SECONDS)
                     continue
-                report.update(
-                    status='API_REQUEST_FAILED',
-                    requests_used=requests_used,
-                    rate_limit_retries=rate_limit_retries,
-                    failed_batch=batch_number,
-                    failed_batch_size=len(batch),
-                    failed_attempt=attempt,
-                    errors=[f'{type(exc).__name__}: {exc}'],
-                )
+                report.update(status='API_REQUEST_FAILED', requests_used=requests_used, rate_limit_retries=rate_limit_retries, failed_batch=batch_number, failed_batch_size=len(batch), failed_attempt=attempt, errors=[f'{type(exc).__name__}: {exc}'])
                 return _write(report, root)
         if payload is None:
-            report.update(
-                status='API_REQUEST_FAILED',
-                requests_used=requests_used,
-                rate_limit_retries=rate_limit_retries,
-                failed_batch=batch_number,
-                errors=[f'{type(last_exc).__name__}: {last_exc}'],
-            )
+            report.update(status='API_REQUEST_FAILED', requests_used=requests_used, rate_limit_retries=rate_limit_retries, failed_batch=batch_number, errors=[f'{type(last_exc).__name__}: {last_exc}'])
             return _write(report, root)
         payloads.append(payload)
 
@@ -198,54 +218,15 @@ def run(root: Path = Path('.')):
             active = isinstance(book, dict) and book.get('bookmakerIsActive') is True and book.get('suspended') is False
             shape = mainline_shape(fixture, catalog, bookmaker=BOOKMAKER)
             snapshot, reason = extract_mainline_snapshot(fixture, catalog, observed_at=now, tournament_meta=tm, bookmaker=BOOKMAKER)
-            diagnostics.append({
-                'country': tm.get('country'),
-                'league': tm.get('tournament_name'),
-                'fixture_id': fixture.get('fixtureId'),
-                'bookmaker_active': active,
-                'ah_main_count': shape.get('ah_main_count', 0),
-                'ou_main_count': shape.get('ou_main_count', 0),
-                'strict_snapshot': snapshot is not None,
-                'reason': reason,
-            })
-            audit_rows.append({
-                'football_day': football_day,
-                'fixture_id': fixture.get('fixtureId'),
-                'tournament_id': fixture.get('tournamentId'),
-                'competition_type': tm.get('competition_type', 'LEAGUE'),
-                'country': tm.get('country'),
-                'league': tm.get('tournament_name'),
-                'home': fixture.get('participant1Name'),
-                'away': fixture.get('participant2Name'),
-                'kickoff': fixture.get('startTime'),
-                'observed_at': now.isoformat(),
-                'bookmaker': BOOKMAKER,
-                'eligibility_status': 'MATCH' if snapshot else 'NOT_MATCH',
-                'eligibility_reason': reason,
-                'bookmaker_active': active,
-                'ah_main_count': shape.get('ah_main_count', 0),
-                'ou_main_count': shape.get('ou_main_count', 0),
-                'research_population': True,
-            })
+            diagnostics.append({'country': tm.get('country'), 'league': tm.get('tournament_name'), 'fixture_id': fixture.get('fixtureId'), 'bookmaker_active': active, 'ah_main_count': shape.get('ah_main_count', 0), 'ou_main_count': shape.get('ou_main_count', 0), 'strict_snapshot': snapshot is not None, 'reason': reason})
+            audit_rows.append({'football_day': football_day, 'fixture_id': fixture.get('fixtureId'), 'tournament_id': fixture.get('tournamentId'), 'competition_type': tm.get('competition_type', 'LEAGUE'), 'country': tm.get('country'), 'league': tm.get('tournament_name'), 'home': fixture.get('participant1Name'), 'away': fixture.get('participant2Name'), 'kickoff': fixture.get('startTime'), 'observed_at': now.isoformat(), 'scheduled_target_at': scheduled_target.isoformat() if scheduled_target else None, 'schedule_lag_minutes': schedule_lag, 'bookmaker': BOOKMAKER, 'eligibility_status': 'MATCH' if snapshot else 'NOT_MATCH', 'eligibility_reason': reason, 'bookmaker_active': active, 'ah_main_count': shape.get('ah_main_count', 0), 'ou_main_count': shape.get('ou_main_count', 0), 'research_population': True})
             if snapshot:
-                snapshot.update(football_day=football_day, research_only=True, competition_type=tm.get('competition_type', 'LEAGUE'))
+                snapshot.update(football_day=football_day, research_only=True, competition_type=tm.get('competition_type', 'LEAGUE'), scheduled_target_at=scheduled_target.isoformat() if scheduled_target else None, schedule_lag_minutes=schedule_lag)
                 strict.append(snapshot)
 
     total_snapshots = _merge_jsonl(root / SNAPSHOT_PATH, strict, ('observed_at', 'fixture_id'))
     total_audit = _merge_jsonl(root / AUDIT_PATH, audit_rows, ('observed_at', 'fixture_id'))
-    report.update(
-        status='RESEARCH_V2_OBSERVED',
-        requests_used=requests_used,
-        rate_limit_retries=rate_limit_retries,
-        api_fixtures_returned=all_api_fixtures,
-        excluded_outside_football_day=excluded,
-        football_day_fixtures=len(audit_rows),
-        strict_snapshots_this_run=len(strict),
-        non_strict_fixtures_this_run=len(audit_rows) - len(strict),
-        persisted_snapshot_rows=total_snapshots,
-        persisted_audit_rows=total_audit,
-        **summarize_rows(diagnostics),
-    )
+    report.update(status='RESEARCH_V2_OBSERVED', requests_used=requests_used, rate_limit_retries=rate_limit_retries, api_fixtures_returned=all_api_fixtures, excluded_outside_football_day=excluded, football_day_fixtures=len(audit_rows), strict_snapshots_this_run=len(strict), non_strict_fixtures_this_run=len(audit_rows) - len(strict), persisted_snapshot_rows=total_snapshots, persisted_audit_rows=total_audit, **summarize_rows(diagnostics))
     return _write(report, root)
 
 
