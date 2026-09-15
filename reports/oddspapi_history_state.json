@@ -1,117 +1,14 @@
 {
   "schema_version": "1.2",
   "status": "OK",
-  "generated_at": "2026-09-14T23:12:29.640958+00:00",
+  "generated_at": "2026-09-15T01:33:53.854669+00:00",
   "coverage_start": "2026-01-01T00:00:00+00:00",
   "last_discovery_at": "2026-09-14T23:12:29.640958+00:00",
   "discovery_cursor": "2026-05-07T00:00:00+00:00",
   "backfill_complete": false,
-  "last_discovery_mode": "BACKFILL",
-  "last_discovery_window": {
-    "from": "2026-04-28T00:00:00Z",
-    "to": "2026-05-07T00:00:00Z"
-  },
+  "last_discovery_mode": null,
+  "last_discovery_window": null,
   "fixture_queue": [
-    {
-      "fixtureId": "id1000003561514182",
-      "tournamentId": 35,
-      "tournamentName": "Bundesliga",
-      "tournamentSlug": "bundesliga",
-      "startTime": "2026-05-02T13:30:00.000Z",
-      "participant1Name": "TSG Hoffenheim",
-      "participant2Name": "VfB Stuttgart",
-      "archive_country": "Germany"
-    },
-    {
-      "fixtureId": "id1000001761301207",
-      "tournamentId": 17,
-      "tournamentName": "Premier League",
-      "tournamentSlug": "premier-league",
-      "startTime": "2026-05-02T14:00:00.000Z",
-      "participant1Name": "Brentford FC",
-      "participant2Name": "West Ham United",
-      "archive_country": "England"
-    },
-    {
-      "fixtureId": "id1000001761301221",
-      "tournamentId": 17,
-      "tournamentName": "Premier League",
-      "tournamentSlug": "premier-league",
-      "startTime": "2026-05-02T14:00:00.000Z",
-      "participant1Name": "Newcastle United",
-      "participant2Name": "Brighton & Hove Albion",
-      "archive_country": "England"
-    },
-    {
-      "fixtureId": "id1000001761301223",
-      "tournamentId": 17,
-      "tournamentName": "Premier League",
-      "tournamentSlug": "premier-league",
-      "startTime": "2026-05-02T14:00:00.000Z",
-      "participant1Name": "Wolverhampton Wanderers",
-      "participant2Name": "Sunderland AFC",
-      "archive_country": "England"
-    },
-    {
-      "fixtureId": "id1000000861624610",
-      "tournamentId": 8,
-      "tournamentName": "LaLiga",
-      "tournamentSlug": "laliga",
-      "startTime": "2026-05-02T14:15:00.000Z",
-      "participant1Name": "Valencia CF",
-      "participant2Name": "Atletico Madrid",
-      "archive_country": "Spain"
-    },
-    {
-      "fixtureId": "id1000003461526552",
-      "tournamentId": 34,
-      "tournamentName": "Ligue 1",
-      "tournamentSlug": "ligue-1",
-      "startTime": "2026-05-02T15:00:00.000Z",
-      "participant1Name": "Paris Saint-Germain",
-      "participant2Name": "FC Lorient",
-      "archive_country": "France"
-    },
-    {
-      "fixtureId": "id1000002361061629",
-      "tournamentId": 23,
-      "tournamentName": "Serie A",
-      "tournamentSlug": "serie-a",
-      "startTime": "2026-05-02T16:00:00.000Z",
-      "participant1Name": "Como 1907",
-      "participant2Name": "SSC Napoli",
-      "archive_country": "Italy"
-    },
-    {
-      "fixtureId": "id1000000861624598",
-      "tournamentId": 8,
-      "tournamentName": "LaLiga",
-      "tournamentSlug": "laliga",
-      "startTime": "2026-05-02T16:30:00.000Z",
-      "participant1Name": "Deportivo Alaves",
-      "participant2Name": "Athletic Bilbao",
-      "archive_country": "Spain"
-    },
-    {
-      "fixtureId": "id1000001761301203",
-      "tournamentId": 17,
-      "tournamentName": "Premier League",
-      "tournamentSlug": "premier-league",
-      "startTime": "2026-05-02T16:30:00.000Z",
-      "participant1Name": "Arsenal FC",
-      "participant2Name": "Fulham FC",
-      "archive_country": "England"
-    },
-    {
-      "fixtureId": "id1000003561514168",
-      "tournamentId": 35,
-      "tournamentName": "Bundesliga",
-      "tournamentSlug": "bundesliga",
-      "startTime": "2026-05-02T16:30:00.000Z",
-      "participant1Name": "Bayer Leverkusen",
-      "participant2Name": "RB Leipzig",
-      "archive_country": "Germany"
-    },
     {
       "fixtureId": "id1000003461526556",
       "tournamentId": 34,
@@ -611,16 +508,15 @@
     "id1000003561514074",
     "id1000003567872358"
   ],
-  "queued_remaining": 38,
+  "queued_remaining": 28,
   "processed_this_run": 10,
   "rows_added_this_run": 10,
-  "archive_rows": 557,
+  "archive_rows": 567,
   "history_storage": "LEGACY_PLUS_DAILY_SHARDS",
   "touched_shards": [
-    "data/normalized/oddspapi_history_ticks/2026-05-01.jsonl",
     "data/normalized/oddspapi_history_ticks/2026-05-02.jsonl"
   ],
-  "billable_requests_this_run": 1,
+  "billable_requests_this_run": 0,
   "free_history_requests_this_run": 10,
   "history_request_spacing_seconds": 5.2,
   "result_join_status": "NOT_JOINED",
