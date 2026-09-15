@@ -1,6 +1,9 @@
 name: Research V2 Daily Fixture Result Sync
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['controls/research_v2_daily_sync_run_token.txt']
   schedule:
     - cron: '0 8 * * *'
     - cron: '0 9 * * *'
@@ -20,7 +23,7 @@ jobs:
       - uses: actions/setup-python@v6
         with: {python-version: '3.12'}
       - run: python -m pip install -e '.[dev]'
-      - name: Discover today's Football Day fixtures without requesting odds
+      - name: Discover current and previous Football Day fixtures without requesting odds
         env:
           ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
         run: python -m odds_scanner.daily_fixture_result_sync
@@ -50,6 +53,6 @@ jobs:
             sleep 3
           done
           exit 1
-# 15:00 Bangkok primary, 16:00/17:00 fallbacks. Completion marker prevents duplicate /fixtures requests, including valid zero-fixture days.
+# 15:00 Bangkok primary, 16:00/17:00 fallbacks. One fixture request covers previous + current Football Day.
+# Completion marker prevents duplicate /fixtures requests after both coverage days are mapped.
 # Daily results use exact OddsPapi-supplied Flashscore IDs only; no fuzzy team/date matching and zero OddsPAPI result calls.
-# Research metadata is not a betting recommendation, edge, CLV, or profit claim.
