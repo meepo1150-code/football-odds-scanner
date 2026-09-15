@@ -4,6 +4,7 @@ on:
   schedule:
     - cron: '0 8 * * *'
     - cron: '0 9 * * *'
+    - cron: '0 10 * * *'
 permissions:
   contents: write
 concurrency:
@@ -12,20 +13,20 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
-        with:
-          ref: main
+        with: {ref: main}
       - uses: actions/setup-python@v6
-        with:
-          python-version: '3.12'
+        with: {python-version: '3.12'}
       - run: python -m pip install -e '.[dev]'
       - name: Discover today's Football Day fixtures without requesting odds
         env:
           ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
         run: python -m odds_scanner.daily_fixture_result_sync
-      - name: Backfill matured exact-ID results from prior observations
+      - name: Backfill matured exact-ID results for daily fixtures
+        run: python -m odds_scanner.daily_fixture_result_backfill
+      - name: Backfill matured exact-ID results from forward validation entries
         run: python -m odds_scanner.v2_forward_result_backfill
       - name: Refresh settlement performance and readiness
         run: |
@@ -36,26 +37,19 @@ jobs:
           set -euo pipefail
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          for path in \
-            reports/research_v2_daily_sync_status.json \
-            data/normalized/research_v2_daily_fixtures.jsonl \
-            data/normalized/oddspapi_finished_results.jsonl \
-            data/normalized/v2_forward_settlements.jsonl \
-            reports/v2_forward_result_backfill.json \
-            reports/v2_forward_performance.json \
-            reports/v2_forward_readiness.json; do
-            test -e "$path" && git add -f -- "$path"
-          done
-          git diff --cached --quiet && exit 0
-          git commit -m 'data: daily fixture and result sync [skip ci]'
+          mkdir -p /tmp/daily-sync
+          paths=(reports/research_v2_daily_sync_status.json reports/research_v2_daily_result_backfill.json data/normalized/research_v2_daily_fixtures.jsonl data/normalized/oddspapi_finished_results.jsonl data/normalized/v2_forward_settlements.jsonl reports/v2_forward_result_backfill.json reports/v2_forward_performance.json reports/v2_forward_readiness.json)
+          for path in "${paths[@]}"; do if test -e "$path"; then mkdir -p "/tmp/daily-sync/$(dirname "$path")"; cp "$path" "/tmp/daily-sync/$path"; fi; done
           for attempt in 1 2 3; do
-            if git push origin HEAD:main; then exit 0; fi
-            git pull --rebase origin main
+            git fetch origin main
+            git reset --hard origin/main
+            for path in "${paths[@]}"; do if test -e "/tmp/daily-sync/$path"; then mkdir -p "$(dirname "$path")"; cp "/tmp/daily-sync/$path" "$path"; git add -f -- "$path"; fi; done
+            git diff --cached --quiet && exit 0
+            git commit -m 'data: daily fixture and result sync [skip ci]'
+            git push origin HEAD:main && exit 0
+            sleep 3
           done
           exit 1
-
-# 15:00 Asia/Bangkok primary + 16:00 fallback.
-# daily_fixture_result_sync is idempotent by football_day and skips the API when today's fixture population is already persisted.
-# Fixture discovery uses /fixtures only; it never requests odds.
-# Result backfill is exact-ID only and makes zero OddsPAPI calls.
+# 15:00 Bangkok primary, 16:00/17:00 fallbacks. Completion marker prevents duplicate /fixtures requests, including valid zero-fixture days.
+# Daily results use exact OddsPapi-supplied Flashscore IDs only; no fuzzy team/date matching and zero OddsPAPI result calls.
 # Research metadata is not a betting recommendation, edge, CLV, or profit claim.
