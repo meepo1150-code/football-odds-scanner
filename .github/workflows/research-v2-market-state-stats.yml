@@ -1,0 +1,25 @@
+name: Research V2 Market State Stats
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - controls/research_v2_stats_rebuild_token.txt
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - run: python -m odds_scanner.research_v2_pattern_stats
+      - name: Persist generated statistics
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add data/normalized/research_v2_pattern_outcomes.jsonl reports/research_v2_pattern_statistics.json
+          git diff --cached --quiet || git commit -m "Rebuild Research V2 market-state statistics"
+          git push
