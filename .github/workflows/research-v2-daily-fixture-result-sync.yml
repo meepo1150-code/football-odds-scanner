@@ -3,6 +3,7 @@ on:
   workflow_dispatch:
   schedule:
     - cron: '0 8 * * *'
+    - cron: '0 9 * * *'
 permissions:
   contents: write
 concurrency:
@@ -53,7 +54,8 @@ jobs:
           done
           exit 1
 
-# 15:00 Asia/Bangkok daily data-completeness layer.
+# 15:00 Asia/Bangkok primary + 16:00 fallback.
+# daily_fixture_result_sync is idempotent by football_day and skips the API when today's fixture population is already persisted.
 # Fixture discovery uses /fixtures only; it never requests odds.
 # Result backfill is exact-ID only and makes zero OddsPAPI calls.
 # Research metadata is not a betting recommendation, edge, CLV, or profit claim.
