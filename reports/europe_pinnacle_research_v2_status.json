@@ -1,22 +1,79 @@
 {
   "schema_version": "2.7",
-  "generated_at": "2026-09-16T16:12:02.925502+00:00",
+  "generated_at": "2026-09-16T17:53:57.394972+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "bookmaker": "pinnacle",
   "football_day": "2026-09-16",
   "football_day_timezone": "Asia/Bangkok",
   "football_day_window_start": "2026-09-16T05:00:00+00:00",
   "football_day_window_end": "2026-09-16T23:00:00+00:00",
-  "scheduled_target_at": "2026-09-16T21:00:00+07:00",
-  "actual_observed_at": "2026-09-16T23:12:02.925502+07:00",
-  "schedule_lag_minutes": 132.05,
+  "scheduled_target_at": "2026-09-17T00:00:00+07:00",
+  "actual_observed_at": "2026-09-17T00:53:57.394972+07:00",
+  "schedule_lag_minutes": 53.96,
   "recovery_window_minutes": 105,
   "force_run": false,
   "force_target_at": null,
   "research_only": true,
   "production_promotion_allowed": false,
   "core_quota_reserve": 30,
-  "status": "SKIPPED_OUTSIDE_RECOVERY_WINDOW",
-  "requests_used": 0,
-  "planned_requests": 0
+  "resolved_competitions": 38,
+  "planned_requests": 8,
+  "max_planned_requests_with_retries": 16,
+  "quota_remaining_before": 61,
+  "status": "RESEARCH_V2_OBSERVED",
+  "requests_used": 8,
+  "rate_limit_retries": 0,
+  "api_fixtures_returned": 354,
+  "excluded_outside_football_day": 341,
+  "football_day_fixtures": 13,
+  "strict_snapshots_this_run": 13,
+  "persisted_snapshot_rows": 74,
+  "persisted_audit_rows": 74,
+  "fixtures_seen": 13,
+  "bookmaker_active_fixtures": 13,
+  "fixtures_with_exactly_one_main_ah": 13,
+  "fixtures_with_exactly_one_main_ou": 13,
+  "fixtures_with_both_exact_mainlines": 13,
+  "strict_snapshots": 13,
+  "rejection_counts": {
+    "OK": 13
+  },
+  "league_coverage": [
+    {
+      "league": "England · EFL Cup",
+      "fixtures": 4,
+      "bookmaker_active": 4,
+      "ah_main_exactly_one": 4,
+      "ou_main_exactly_one": 4,
+      "both_main_exactly_one": 4,
+      "strict_snapshots": 4,
+      "reason_counts": {
+        "OK": 4
+      }
+    },
+    {
+      "league": "International Clubs · UEFA Europa League",
+      "fixtures": 7,
+      "bookmaker_active": 7,
+      "ah_main_exactly_one": 7,
+      "ou_main_exactly_one": 7,
+      "both_main_exactly_one": 7,
+      "strict_snapshots": 7,
+      "reason_counts": {
+        "OK": 7
+      }
+    },
+    {
+      "league": "Spain · LaLiga",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
+      "reason_counts": {
+        "OK": 2
+      }
+    }
+  ]
 }
