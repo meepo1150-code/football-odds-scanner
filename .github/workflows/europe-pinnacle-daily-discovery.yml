@@ -1,12 +1,21 @@
 name: Europe Pinnacle Research V2
 on:
   workflow_dispatch:
+    inputs:
+      force_run:
+        description: 'Force a missed canonical slot recovery outside the normal recovery window'
+        required: false
+        default: 'false'
+        type: choice
+        options: ['false','true']
+      force_target_at:
+        description: 'Canonical target in ISO-8601, e.g. 2026-09-16T21:00:00+07:00'
+        required: false
+        type: string
   push:
     branches: [main]
     paths: ['controls/europe_pinnacle_research_v2_run_token.txt']
   schedule:
-    # Heartbeats around canonical observation slots. Python owns slot eligibility
-    # and idempotency, so delayed/duplicate GitHub cron wakes do not duplicate API scans.
     - cron: '0,30 14,15 * * 1-5'
     - cron: '0,30 17,18 * * 1-5'
     - cron: '0,30 5,6,8,9,11,12,13,14 * * 6,0'
@@ -25,7 +34,10 @@ jobs:
         with: {python-version: '3.12'}
       - run: python -m pip install -e '.[dev]'
       - name: Collect canonical-slot football-day research population
-        env: {ODDSPAPI_KEY: '${{ secrets.ODDSPAPI_KEY }}'}
+        env:
+          ODDSPAPI_KEY: '${{ secrets.ODDSPAPI_KEY }}'
+          RESEARCH_V2_FORCE_RUN: '${{ inputs.force_run }}'
+          RESEARCH_V2_FORCE_TARGET_AT: '${{ inputs.force_target_at }}'
         run: python -m odds_scanner.europe_pinnacle_discovery
       - name: Build current movement features
         run: python -m odds_scanner.research_v2_movement
@@ -48,6 +60,6 @@ jobs:
           done
           exit 1
 # Canonical slots remain 21:00/00:00 weekdays and 12:00/15:00/18:00/20:00 weekends Bangkok.
-# Recovery window is 105 minutes; scheduled_target_at is canonical and actual_observed_at is real collection time.
-# Duplicate heartbeats skip before OddsPAPI calls once that canonical slot is present in audit data.
+# Scheduled heartbeats retain the 105-minute guard. Manual recovery can force one explicitly named missed slot.
+# _slot_done remains authoritative, so a force recovery cannot duplicate an already-observed canonical target.
 # MATCH/NOT_MATCH and movement are research metadata, never a betting recommendation, edge, CLV, or profit claim.
