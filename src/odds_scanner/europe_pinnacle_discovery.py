@@ -56,9 +56,13 @@ def _chunks(v,n):
     for i in range(0,len(v),n):yield v[i:i+n]
 
 def run(root=Path('.')):
-    now=datetime.now(timezone.utc); ws,we,day=_football_day_bounds(now); target,lag=_schedule_timing(now); force=os.getenv('RESEARCH_V2_FORCE_RUN','').strip().lower() in {'1','true','yes'}
-    report={'schema_version':'2.6','generated_at':now.isoformat(),'classification':'PINNACLE_RESEARCH_V2','bookmaker':BOOKMAKER,'football_day':day,'football_day_timezone':'Asia/Bangkok','football_day_window_start':ws.isoformat(),'football_day_window_end':we.isoformat(),'scheduled_target_at':target.isoformat() if target else None,'actual_observed_at':now.astimezone(BANGKOK).isoformat(),'schedule_lag_minutes':lag,'recovery_window_minutes':RECOVERY_WINDOW_MINUTES,'force_run':force,'research_only':True,'production_promotion_allowed':False,'core_quota_reserve':CORE_QUOTA_RESERVE}
-    if not force and _slot_done(root/AUDIT_PATH,target): report.update(status='SKIPPED_SLOT_ALREADY_OBSERVED',requests_used=0,planned_requests=0);return _write(report,root)
+    now=datetime.now(timezone.utc); ws,we,day=_football_day_bounds(now); target,lag=_schedule_timing(now); force=os.getenv('RESEARCH_V2_FORCE_RUN','').strip().lower() in {'1','true','yes'}; force_target=os.getenv('RESEARCH_V2_FORCE_TARGET_AT','').strip()
+    if force and force_target:
+        parsed=_parse(force_target)
+        if parsed is not None:
+            target=parsed.astimezone(BANGKOK); lag=round((now.astimezone(BANGKOK)-target).total_seconds()/60,2)
+    report={'schema_version':'2.7','generated_at':now.isoformat(),'classification':'PINNACLE_RESEARCH_V2','bookmaker':BOOKMAKER,'football_day':day,'football_day_timezone':'Asia/Bangkok','football_day_window_start':ws.isoformat(),'football_day_window_end':we.isoformat(),'scheduled_target_at':target.isoformat() if target else None,'actual_observed_at':now.astimezone(BANGKOK).isoformat(),'schedule_lag_minutes':lag,'recovery_window_minutes':RECOVERY_WINDOW_MINUTES,'force_run':force,'force_target_at':force_target or None,'research_only':True,'production_promotion_allowed':False,'core_quota_reserve':CORE_QUOTA_RESERVE}
+    if _slot_done(root/AUDIT_PATH,target): report.update(status='SKIPPED_SLOT_ALREADY_OBSERVED',requests_used=0,planned_requests=0);return _write(report,root)
     if not force and (lag is None or lag>RECOVERY_WINDOW_MINUTES): report.update(status='SKIPPED_OUTSIDE_RECOVERY_WINDOW',requests_used=0,planned_requests=0);return _write(report,root)
     targets=_load_json(root/TARGET_PATH) or {}; selected=targets.get('tournaments') or [] if isinstance(targets,dict) else []; ids=[x.get('tournament_id') for x in selected if isinstance(x,dict) and x.get('tournament_id') is not None]
     if not ids or len(ids)!=len(set(ids)):report.update(status='TARGET_MAP_INVALID',resolved_competitions=len(ids),requests_used=0,planned_requests=0);return _write(report,root)
