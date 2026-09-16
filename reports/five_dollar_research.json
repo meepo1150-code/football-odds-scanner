@@ -8,7 +8,7 @@
   "promotion_block_reason": "Free history is a short rolling snapshot archive and cannot satisfy the frozen multi-season train-validation-holdout production gate.",
   "minimum_rows_for_exploratory_backtest": 20,
   "coverage": {
-    "rows": 194,
+    "rows": 197,
     "leagues": [
       "England Premier League",
       "France Ligue 1",
@@ -17,56 +17,56 @@
       "Spain La Liga"
     ],
     "date_min": "2026-08-15",
-    "date_max": "2026-09-14",
+    "date_max": "2026-09-15",
     "opening_ou_lines": {
       "1.75": 3,
       "2.00": 9,
-      "2.25": 37,
-      "2.50": 48,
+      "2.25": 38,
+      "2.50": 49,
       "2.75": 43,
       "3.00": 27,
       "3.25": 20,
-      "3.50": 5,
+      "3.50": 6,
       "3.75": 1,
       "4.00": 1
     },
     "closing_ou_lines": {
       "1.75": 3,
       "2.00": 9,
-      "2.25": 33,
+      "2.25": 35,
       "2.50": 30,
       "2.75": 45,
       "3.00": 32,
       "3.25": 21,
       "3.50": 12,
-      "3.75": 3,
+      "3.75": 4,
       "4.00": 3,
       "4.25": 2,
       "4.50": 1
     },
     "opening_ah_lines": {
       "-0.00": 15,
-      "-0.25": 50,
+      "-0.25": 52,
       "-0.50": 27,
       "-0.75": 30,
       "-1.00": 18,
       "-1.25": 16,
       "-1.50": 9,
-      "-1.75": 3,
+      "-1.75": 4,
       "-2.00": 8,
       "-2.25": 1,
       "0.00": 17
     },
     "closing_ah_lines": {
       "-0.00": 8,
-      "-0.25": 48,
+      "-0.25": 49,
       "-0.50": 38,
-      "-0.75": 24,
+      "-0.75": 25,
       "-1.00": 11,
       "-1.25": 16,
       "-1.50": 9,
       "-1.75": 4,
-      "-2.00": 9,
+      "-2.00": 10,
       "-2.25": 3,
       "-2.50": 1,
       "-2.75": 2,
@@ -74,14 +74,14 @@
       "0.25": 4,
       "0.50": 1
     },
-    "quarter_ou_open_rows": 104,
-    "quarter_ou_close_rows": 107,
-    "quarter_ah_open_rows": 100,
-    "quarter_ah_close_rows": 101,
-    "nonzero_ah_line_movement_rows": 117,
-    "nonzero_ou_line_movement_rows": 138,
-    "opening_and_closing_ou_complete_rows": 194,
-    "opening_and_closing_ah_complete_rows": 194
+    "quarter_ou_open_rows": 105,
+    "quarter_ou_close_rows": 110,
+    "quarter_ah_open_rows": 103,
+    "quarter_ah_close_rows": 103,
+    "nonzero_ah_line_movement_rows": 119,
+    "nonzero_ou_line_movement_rows": 140,
+    "opening_and_closing_ou_complete_rows": 197,
+    "opening_and_closing_ah_complete_rows": 197
   },
   "coarse_diagnostics": {
     "classification": "DESCRIPTIVE_EXPLORATORY_ONLY",
@@ -89,10 +89,10 @@
     "minimum_n_for_inference": null,
     "favorite_ah_opening_settlement_by_line_move": {
       "FAVORITE_STRENGTHENED": {
-        "n": 66,
-        "roi": 0.137121,
+        "n": 68,
+        "roi": 0.103676,
         "settlements": {
-          "FULL_LOSS": 20,
+          "FULL_LOSS": 22,
           "FULL_WIN": 34,
           "HALF_LOSS": 5,
           "HALF_WIN": 1,
@@ -111,11 +111,11 @@
         }
       },
       "FLAT": {
-        "n": 77,
-        "roi": -0.023701,
+        "n": 78,
+        "roi": -0.013141,
         "settlements": {
           "FULL_LOSS": 25,
-          "FULL_WIN": 31,
+          "FULL_WIN": 32,
           "HALF_LOSS": 13,
           "HALF_WIN": 3,
           "PUSH": 5
@@ -124,10 +124,10 @@
     },
     "over_opening_settlement_by_total_line_move": {
       "FLAT": {
-        "n": 56,
-        "roi": 0.163616,
+        "n": 57,
+        "roi": 0.143202,
         "settlements": {
-          "FULL_LOSS": 15,
+          "FULL_LOSS": 16,
           "FULL_WIN": 29,
           "HALF_LOSS": 8,
           "HALF_WIN": 3,
@@ -135,21 +135,21 @@
         }
       },
       "TOTAL_DOWN": {
-        "n": 39,
-        "roi": -0.03141,
+        "n": 40,
+        "roi": -0.004375,
         "settlements": {
           "FULL_LOSS": 18,
-          "FULL_WIN": 18,
+          "FULL_WIN": 19,
           "HALF_LOSS": 1,
           "PUSH": 2
         }
       },
       "TOTAL_UP": {
-        "n": 99,
-        "roi": 0.107955,
+        "n": 100,
+        "roi": 0.117125,
         "settlements": {
           "FULL_LOSS": 35,
-          "FULL_WIN": 50,
+          "FULL_WIN": 51,
           "HALF_LOSS": 5,
           "HALF_WIN": 6,
           "PUSH": 3
@@ -158,31 +158,31 @@
     },
     "under_opening_settlement_by_total_line_move": {
       "FLAT": {
-        "n": 56,
-        "roi": -0.233036,
+        "n": 57,
+        "roi": -0.214912,
         "settlements": {
           "FULL_LOSS": 29,
-          "FULL_WIN": 15,
+          "FULL_WIN": 16,
           "HALF_LOSS": 3,
           "HALF_WIN": 8,
           "PUSH": 1
         }
       },
       "TOTAL_DOWN": {
-        "n": 39,
-        "roi": -0.039103,
+        "n": 40,
+        "roi": -0.063125,
         "settlements": {
-          "FULL_LOSS": 18,
+          "FULL_LOSS": 19,
           "FULL_WIN": 18,
           "HALF_WIN": 1,
           "PUSH": 2
         }
       },
       "TOTAL_UP": {
-        "n": 99,
-        "roi": -0.177904,
+        "n": 100,
+        "roi": -0.186125,
         "settlements": {
-          "FULL_LOSS": 50,
+          "FULL_LOSS": 51,
           "FULL_WIN": 35,
           "HALF_LOSS": 6,
           "HALF_WIN": 5,
@@ -195,14 +195,14 @@
   "hierarchical": {
     "schema_version": "1.4",
     "engine": "HIERARCHICAL_MULTI_MARKET_BACKTEST",
-    "source_rows": 194,
+    "source_rows": 197,
     "test_seasons": [
       "__NONE__"
     ],
     "min_n": 20,
     "family_counts": {
-      "AH_MOVE": 1,
-      "AH_LINE": 2
+      "AH_LINE": 2,
+      "AH_MOVE": 1
     },
     "buckets": [
       {
@@ -221,48 +221,48 @@
           "ah_line_move": null,
           "ou_line_move": null
         },
-        "n": 33,
-        "ah_roi": 0.025758,
+        "n": 35,
+        "ah_roi": 0.018571,
         "ou_roi": null,
         "ah_settlements": {
-          "FULL_WIN": 14,
+          "FULL_WIN": 15,
           "HALF_WIN": 0,
           "PUSH": 0,
           "HALF_LOSS": 13,
-          "FULL_LOSS": 6
+          "FULL_LOSS": 7
         },
         "ou_settlements": null,
         "ah_diagnostics": {
-          "n": 33,
-          "mean_roi": 0.025758,
-          "sample_sd": 0.829521,
+          "n": 35,
+          "mean_roi": 0.018571,
+          "sample_sd": 0.834357,
           "bootstrap_ci95": [
-            -0.256572,
-            0.292102
+            -0.249321,
+            0.288982
           ],
           "bootstrap_draws": 500,
-          "sign_flip_p": 0.849151,
+          "sign_flip_p": 0.914086,
           "sign_flip_draws": 1000,
           "max_drawdown_units": 3.5,
-          "longest_losing_streak": 4,
-          "worst_season_roi": 0.025758,
+          "longest_losing_streak": 5,
+          "worst_season_roi": 0.018571,
           "season_abs_concentration": 1.0,
           "season_rois": {
-            "2627": 0.025758
+            "2627": 0.018571
           }
         },
         "ou_diagnostics": null,
         "seasons": {
           "2627": {
-            "n": 33,
-            "ah_roi": 0.025758,
+            "n": 35,
+            "ah_roi": 0.018571,
             "ou_roi": null,
             "ah_settlements": {
-              "FULL_WIN": 14,
+              "FULL_WIN": 15,
               "HALF_WIN": 0,
               "PUSH": 0,
               "HALF_LOSS": 13,
-              "FULL_LOSS": 6
+              "FULL_LOSS": 7
             },
             "ou_settlements": null
           }
@@ -347,11 +347,11 @@
           "ah_line_move": 0.0,
           "ou_line_move": null
         },
-        "n": 21,
-        "ah_roi": 0.038095,
+        "n": 22,
+        "ah_roi": 0.072727,
         "ou_roi": null,
         "ah_settlements": {
-          "FULL_WIN": 9,
+          "FULL_WIN": 10,
           "HALF_WIN": 0,
           "PUSH": 0,
           "HALF_LOSS": 8,
@@ -359,32 +359,32 @@
         },
         "ou_settlements": null,
         "ah_diagnostics": {
-          "n": 21,
-          "mean_roi": 0.038095,
-          "sample_sd": 0.854716,
+          "n": 22,
+          "mean_roi": 0.072727,
+          "sample_sd": 0.849787,
           "bootstrap_ci95": [
-            -0.313095,
-            0.383393
+            -0.258068,
+            0.420795
           ],
           "bootstrap_draws": 500,
-          "sign_flip_p": 0.858142,
+          "sign_flip_p": 0.689311,
           "sign_flip_draws": 1000,
           "max_drawdown_units": 3.0,
           "longest_losing_streak": 4,
-          "worst_season_roi": 0.038095,
+          "worst_season_roi": 0.072727,
           "season_abs_concentration": 1.0,
           "season_rois": {
-            "2627": 0.038095
+            "2627": 0.072727
           }
         },
         "ou_diagnostics": null,
         "seasons": {
           "2627": {
-            "n": 21,
-            "ah_roi": 0.038095,
+            "n": 22,
+            "ah_roi": 0.072727,
             "ou_roi": null,
             "ah_settlements": {
-              "FULL_WIN": 9,
+              "FULL_WIN": 10,
               "HALF_WIN": 0,
               "PUSH": 0,
               "HALF_LOSS": 8,
