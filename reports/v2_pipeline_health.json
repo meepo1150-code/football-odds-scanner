@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
   "classification": "VALIDATION_V2_OPERATIONAL_PIPELINE_HEALTH",
-  "status": "HEALTHY_COLLECTING",
-  "generated_at": "2026-09-17T16:52:21.929315+00:00",
+  "status": "OBSERVER_DEGRADED",
+  "generated_at": "2026-09-17T17:07:00.071556+00:00",
   "research_gate_effect": "NONE_OPERATIONAL_HEALTH_DOES_NOT_CHANGE_FROZEN_FORWARD_GATES",
   "quota": {
     "status": "QUOTA_AVAILABLE",
@@ -13,21 +13,23 @@
     "quota_exhausted": false,
     "soccer_sport_id_10_allowed": true,
     "bet365_allowed": true,
-    "generated_at": "2026-09-17T16:51:56.997924+00:00"
+    "generated_at": "2026-09-17T17:06:33.420229+00:00"
   },
   "observer": {
-    "status": "MAINLINE_SNAPSHOTS_OBSERVED",
-    "operational_success": true,
-    "generated_at": "2026-09-17T04:58:48.977373+00:00",
-    "observed_at": "2026-09-17T04:58:52.963219+00:00",
-    "age_hours": 11.89137947111111,
+    "status": "CURRENT_BATCH_UNAVAILABLE",
+    "operational_success": false,
+    "generated_at": "2026-09-17T17:06:21.196261+00:00",
+    "observed_at": null,
+    "age_hours": 0.010798693055555557,
     "stale_after_hours": 18.0,
     "stale": false,
-    "failed_universe": null,
-    "errors": [],
-    "requests_attempted": 2,
-    "batch_count": 2,
-    "snapshots_stored": 131
+    "failed_universe": "BIG5_AH",
+    "errors": [
+      "HTTPError: HTTP Error 500: Internal Server Error"
+    ],
+    "requests_attempted": 1,
+    "batch_count": null,
+    "snapshots_stored": null
   },
   "forward": {
     "entry_status": "COLLECTING_FORWARD_EVIDENCE",
@@ -39,7 +41,9 @@
     "performance_status": "FORWARD_PERFORMANCE_AVAILABLE",
     "readiness_status": "COLLECTING_FORWARD_EVIDENCE"
   },
-  "operational_blockers": [],
+  "operational_blockers": [
+    "MAINLINE_OBSERVER_CURRENT_BATCH_UNAVAILABLE"
+  ],
   "paper_label": "PAPER_RESEARCH_ONLY",
   "production_promotion_allowed": false
 }
