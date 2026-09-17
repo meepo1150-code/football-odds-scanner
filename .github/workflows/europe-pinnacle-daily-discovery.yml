@@ -9,18 +9,15 @@ on:
         type: choice
         options: ['false','true']
       force_target_at:
-        description: 'Canonical target in ISO-8601, e.g. 2026-09-16T21:00:00+07:00'
+        description: 'Canonical target in ISO-8601, e.g. 2026-09-17T21:00:00+07:00'
         required: false
         type: string
   push:
     branches: [main]
     paths: ['controls/europe_pinnacle_research_v2_run_token.txt']
   schedule:
-    # Weekday 21:00 Bangkok canonical slot: frequent heartbeats through the recovery window.
     - cron: '0,20,40 14,15,16 * * 1-5'
-    # Tue-Sat 00:00 Bangkok canonical slot: frequent heartbeats through the recovery window.
     - cron: '0,20,40 17,18,19 * * 1-5'
-    # Weekend canonical slots 12:00/15:00/18:00/20:00 Bangkok, with recovery heartbeats.
     - cron: '0,20,40 5,6,7,8,9,10,11,12,13,14 * * 6,0'
 permissions: {contents: write}
 concurrency:
@@ -36,11 +33,29 @@ jobs:
       - uses: actions/setup-python@v6
         with: {python-version: '3.12'}
       - run: python -m pip install -e '.[dev]'
+      - name: Resolve Research V2 recovery controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            TARGET="$(head -n 1 controls/europe_pinnacle_research_v2_run_token.txt | tr -d '\r\n')"
+            if [[ "$TARGET" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}[+-][0-9]{2}:[0-9]{2}$ ]]; then
+              echo "RESEARCH_V2_FORCE_RUN=true" >> "$GITHUB_ENV"
+              echo "RESEARCH_V2_FORCE_TARGET_AT=$TARGET" >> "$GITHUB_ENV"
+            else
+              echo "Invalid recovery token. Expected exact ISO-8601 target only, e.g. 2026-09-17T21:00:00+07:00" >&2
+              exit 1
+            fi
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "RESEARCH_V2_FORCE_RUN=${{ inputs.force_run }}" >> "$GITHUB_ENV"
+            echo "RESEARCH_V2_FORCE_TARGET_AT=${{ inputs.force_target_at }}" >> "$GITHUB_ENV"
+          else
+            echo "RESEARCH_V2_FORCE_RUN=false" >> "$GITHUB_ENV"
+            echo "RESEARCH_V2_FORCE_TARGET_AT=" >> "$GITHUB_ENV"
+          fi
       - name: Collect canonical-slot football-day research population
         env:
           ODDSPAPI_KEY: '${{ secrets.ODDSPAPI_KEY }}'
-          RESEARCH_V2_FORCE_RUN: '${{ inputs.force_run }}'
-          RESEARCH_V2_FORCE_TARGET_AT: '${{ inputs.force_target_at }}'
         run: python -m odds_scanner.europe_pinnacle_discovery
       - name: Build current movement features
         run: python -m odds_scanner.research_v2_movement
@@ -63,8 +78,8 @@ jobs:
           done
           exit 1
 # Canonical observations remain 21:00/00:00 weekdays and 12:00/15:00/18:00/20:00 weekends Bangkok.
-# Heartbeats run every 20 minutes around canonical slots; _slot_done makes duplicate heartbeats zero-API skips.
-# Recovery window is 150 minutes. Actual observation time, lag, and ON_TIME/LATE status are retained for QA.
-# A slot that remains unobserved beyond the recovery window is explicitly reported as MISSED_SLOT.
-# Manual recovery can force one explicitly named missed slot; _slot_done still prevents duplication.
-# MATCH/NOT_MATCH and movement are research metadata, never a betting recommendation, edge, CLV, or profit claim.
+# Scheduled heartbeats run every 20 minutes around canonical slots; duplicates are zero-API skips.
+# Recovery window is 150 minutes and actual lag/timing is retained for QA.
+# Push-token recovery is an independent fallback: the token's first line must be the exact canonical ISO target.
+# _slot_done remains authoritative, so fallback recovery cannot duplicate an already-observed slot.
+# MATCH/NOT_MATCH and movement are research metadata, never betting recommendations, edge, CLV, or profit claims.
