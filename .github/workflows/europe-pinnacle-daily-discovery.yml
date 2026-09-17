@@ -16,9 +16,12 @@ on:
     branches: [main]
     paths: ['controls/europe_pinnacle_research_v2_run_token.txt']
   schedule:
-    - cron: '0,30 14,15 * * 1-5'
-    - cron: '0,30 17,18 * * 1-5'
-    - cron: '0,30 5,6,8,9,11,12,13,14 * * 6,0'
+    # Weekday 21:00 Bangkok canonical slot: frequent heartbeats through the recovery window.
+    - cron: '0,20,40 14,15,16 * * 1-5'
+    # Tue-Sat 00:00 Bangkok canonical slot: frequent heartbeats through the recovery window.
+    - cron: '0,20,40 17,18,19 * * 1-5'
+    # Weekend canonical slots 12:00/15:00/18:00/20:00 Bangkok, with recovery heartbeats.
+    - cron: '0,20,40 5,6,7,8,9,10,11,12,13,14 * * 6,0'
 permissions: {contents: write}
 concurrency:
   group: europe-pinnacle-research-v2
@@ -59,7 +62,9 @@ jobs:
             sleep 3
           done
           exit 1
-# Canonical slots remain 21:00/00:00 weekdays and 12:00/15:00/18:00/20:00 weekends Bangkok.
-# Scheduled heartbeats retain the 105-minute guard. Manual recovery can force one explicitly named missed slot.
-# _slot_done remains authoritative, so a force recovery cannot duplicate an already-observed canonical target.
+# Canonical observations remain 21:00/00:00 weekdays and 12:00/15:00/18:00/20:00 weekends Bangkok.
+# Heartbeats run every 20 minutes around canonical slots; _slot_done makes duplicate heartbeats zero-API skips.
+# Recovery window is 150 minutes. Actual observation time, lag, and ON_TIME/LATE status are retained for QA.
+# A slot that remains unobserved beyond the recovery window is explicitly reported as MISSED_SLOT.
+# Manual recovery can force one explicitly named missed slot; _slot_done still prevents duplication.
 # MATCH/NOT_MATCH and movement are research metadata, never a betting recommendation, edge, CLV, or profit claim.
