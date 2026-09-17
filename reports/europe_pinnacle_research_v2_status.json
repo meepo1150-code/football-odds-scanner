@@ -1,92 +1,26 @@
 {
   "schema_version": "2.8",
-  "generated_at": "2026-09-17T15:15:56.773773+00:00",
+  "generated_at": "2026-09-17T18:04:51.884464+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "bookmaker": "pinnacle",
   "football_day": "2026-09-17",
   "football_day_timezone": "Asia/Bangkok",
   "football_day_window_start": "2026-09-17T05:00:00+00:00",
   "football_day_window_end": "2026-09-17T23:00:00+00:00",
-  "scheduled_target_at": "2026-09-17T21:00:00+07:00",
-  "actual_observed_at": "2026-09-17T22:15:56.773773+07:00",
-  "schedule_lag_minutes": 75.95,
+  "scheduled_target_at": "2026-09-18T00:00:00+07:00",
+  "actual_observed_at": "2026-09-18T01:04:51.884464+07:00",
+  "schedule_lag_minutes": 64.86,
   "recovery_window_minutes": 150,
   "observation_timing": "LATE",
-  "force_run": true,
-  "force_target_at": "2026-09-17T21:00:00+07:00",
+  "force_run": false,
+  "force_target_at": null,
   "research_only": true,
   "production_promotion_allowed": false,
   "core_quota_reserve": 30,
   "resolved_competitions": 38,
   "planned_requests": 8,
   "max_planned_requests_with_retries": 16,
-  "quota_remaining_before": 48,
-  "status": "RESEARCH_V2_OBSERVED",
-  "requests_used": 8,
-  "rate_limit_retries": 0,
-  "api_fixtures_returned": 352,
-  "excluded_outside_football_day": 339,
-  "football_day_fixtures": 13,
-  "strict_snapshots_this_run": 13,
-  "persisted_snapshot_rows": 87,
-  "persisted_audit_rows": 87,
-  "fixtures_seen": 13,
-  "bookmaker_active_fixtures": 13,
-  "fixtures_with_exactly_one_main_ah": 13,
-  "fixtures_with_exactly_one_main_ou": 13,
-  "fixtures_with_both_exact_mainlines": 13,
-  "strict_snapshots": 13,
-  "rejection_counts": {
-    "OK": 13
-  },
-  "league_coverage": [
-    {
-      "league": "England · EFL Cup",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "OK": 1
-      }
-    },
-    {
-      "league": "England · League One",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "OK": 1
-      }
-    },
-    {
-      "league": "International Clubs · UEFA Europa League",
-      "fixtures": 9,
-      "bookmaker_active": 9,
-      "ah_main_exactly_one": 9,
-      "ou_main_exactly_one": 9,
-      "both_main_exactly_one": 9,
-      "strict_snapshots": 9,
-      "reason_counts": {
-        "OK": 9
-      }
-    },
-    {
-      "league": "Spain · LaLiga",
-      "fixtures": 2,
-      "bookmaker_active": 2,
-      "ah_main_exactly_one": 2,
-      "ou_main_exactly_one": 2,
-      "both_main_exactly_one": 2,
-      "strict_snapshots": 2,
-      "reason_counts": {
-        "OK": 2
-      }
-    }
-  ]
+  "quota_remaining_before": 40,
+  "status": "SKIPPED_TO_PROTECT_CORE_QUOTA",
+  "requests_used": 0
 }
