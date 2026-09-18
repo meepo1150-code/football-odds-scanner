@@ -1,49 +1,45 @@
 {
   "schema_version": "1.0",
   "classification": "VALIDATION_V2_OPERATIONAL_PIPELINE_HEALTH",
-  "status": "OBSERVER_DEGRADED",
-  "generated_at": "2026-09-18T04:32:42.026851+00:00",
+  "status": "HEALTHY_COLLECTING",
+  "generated_at": "2026-09-18T04:51:32.325916+00:00",
   "research_gate_effect": "NONE_OPERATIONAL_HEALTH_DOES_NOT_CHANGE_FROZEN_FORWARD_GATES",
   "quota": {
     "status": "QUOTA_AVAILABLE",
     "request_limit": 250,
-    "request_count": 210,
-    "request_remaining": 40,
-    "usage_fraction": 0.84,
+    "request_count": 212,
+    "request_remaining": 38,
+    "usage_fraction": 0.848,
     "quota_exhausted": false,
     "soccer_sport_id_10_allowed": true,
     "bet365_allowed": true,
-    "generated_at": "2026-09-18T04:32:22.500895+00:00"
+    "generated_at": "2026-09-18T04:51:11.905498+00:00"
   },
   "observer": {
-    "status": "CURRENT_BATCH_UNAVAILABLE",
-    "operational_success": false,
-    "generated_at": "2026-09-17T17:06:21.196261+00:00",
-    "observed_at": null,
-    "age_hours": 11.439119608333332,
+    "status": "MAINLINE_SNAPSHOTS_OBSERVED",
+    "operational_success": true,
+    "generated_at": "2026-09-18T04:51:07.715135+00:00",
+    "observed_at": "2026-09-18T04:51:10.932092+00:00",
+    "age_hours": 0.005942728888888888,
     "stale_after_hours": 18.0,
     "stale": false,
-    "failed_universe": "BIG5_AH",
-    "errors": [
-      "HTTPError: HTTP Error 500: Internal Server Error"
-    ],
-    "requests_attempted": 1,
-    "batch_count": null,
-    "snapshots_stored": null
+    "failed_universe": null,
+    "errors": [],
+    "requests_attempted": 2,
+    "batch_count": 2,
+    "snapshots_stored": 165
   },
   "forward": {
     "entry_status": "COLLECTING_FORWARD_EVIDENCE",
-    "entries_total": 11,
-    "entries_with_exact_external_ids": 11,
+    "entries_total": 12,
+    "entries_with_exact_external_ids": 12,
     "result_backfill_status": "NO_MATURE_EXACT_ID_CANDIDATES",
     "result_requests_attempted": 0,
     "settled_entries": 5,
     "performance_status": "FORWARD_PERFORMANCE_AVAILABLE",
     "readiness_status": "COLLECTING_FORWARD_EVIDENCE"
   },
-  "operational_blockers": [
-    "MAINLINE_OBSERVER_CURRENT_BATCH_UNAVAILABLE"
-  ],
+  "operational_blockers": [],
   "paper_label": "PAPER_RESEARCH_ONLY",
   "production_promotion_allowed": false
 }
