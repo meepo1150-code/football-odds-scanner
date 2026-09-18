@@ -41,7 +41,7 @@ def _slot_done(path,target):
     for line in path.read_text(encoding='utf-8').splitlines():
         try:r=json.loads(line)
         except json.JSONDecodeError:continue
-        if isinstance(r,dict) and str(r.get('scheduled_target_at'))==key and str(r.get('state')) in {'OBSERVED','ZERO_FIXTURES'}:return True
+        if isinstance(r,dict) and str(r.get('scheduled_target_at'))==key and (r.get('state') is None or str(r.get('state')) in {'OBSERVED','ZERO_FIXTURES'}):return True
     return False
 
 def _record_slot(path,report,state,reason=None):
