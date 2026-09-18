@@ -54,7 +54,7 @@ def _record_slot(path,report,state,reason=None):
             if isinstance(r,dict) and r.get('scheduled_target_at'):rows[str(r['scheduled_target_at'])]=r
     rows[str(row['scheduled_target_at'])]=row
     path.parent.mkdir(parents=True,exist_ok=True)
-    path.write_text(''.join(json.dumps(x,ensure_ascii=False,separators=(',',':'))+'\\n' for _,x in sorted(rows.items())),encoding='utf-8')
+    path.write_text(''.join(json.dumps(x,ensure_ascii=False,separators=(',',':'))+'\n' for _,x in sorted(rows.items())),encoding='utf-8')
 
 def _parse(v):
     try:
