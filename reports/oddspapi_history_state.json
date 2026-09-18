@@ -1,13 +1,16 @@
 {
   "schema_version": "1.2",
   "status": "OK",
-  "generated_at": "2026-09-18T11:26:56.749931+00:00",
+  "generated_at": "2026-09-18T16:32:18.260289+00:00",
   "coverage_start": "2026-01-01T00:00:00+00:00",
-  "last_discovery_at": "2026-09-17T01:31:00.198233+00:00",
-  "discovery_cursor": "2026-05-25T00:00:00+00:00",
+  "last_discovery_at": "2026-09-18T16:32:18.260289+00:00",
+  "discovery_cursor": "2026-06-03T00:00:00+00:00",
   "backfill_complete": false,
-  "last_discovery_mode": null,
-  "last_discovery_window": null,
+  "last_discovery_mode": "BACKFILL",
+  "last_discovery_window": {
+    "from": "2026-05-25T00:00:00Z",
+    "to": "2026-06-03T00:00:00Z"
+  },
   "fixture_queue": [],
   "skipped_fixture_ids": [
     "id1000000861624278",
@@ -229,15 +232,17 @@
     "id1000003567872358"
   ],
   "queued_remaining": 0,
-  "processed_this_run": 7,
-  "rows_added_this_run": 7,
-  "archive_rows": 735,
+  "processed_this_run": 3,
+  "rows_added_this_run": 3,
+  "archive_rows": 738,
   "history_storage": "LEGACY_PLUS_DAILY_SHARDS",
   "touched_shards": [
-    "data/normalized/oddspapi_history_ticks/2026-05-24.jsonl"
+    "data/normalized/oddspapi_history_ticks/2026-05-25.jsonl",
+    "data/normalized/oddspapi_history_ticks/2026-05-26.jsonl",
+    "data/normalized/oddspapi_history_ticks/2026-05-29.jsonl"
   ],
-  "billable_requests_this_run": 0,
-  "free_history_requests_this_run": 7,
+  "billable_requests_this_run": 1,
+  "free_history_requests_this_run": 3,
   "history_request_spacing_seconds": 5.2,
   "result_join_status": "NOT_JOINED",
   "promotion_eligible": false,
