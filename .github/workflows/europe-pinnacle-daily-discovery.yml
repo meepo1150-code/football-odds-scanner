@@ -64,7 +64,7 @@ jobs:
           set -euo pipefail
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          paths=(reports/europe_pinnacle_research_v2_status.json reports/research_v2_movement_status.json data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/research_v2_movement_features.jsonl)
+          paths=(reports/europe_pinnacle_research_v2_status.json reports/research_v2_movement_status.json data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/research_v2_movement_features.jsonl data/normalized/research_v2_slot_ledger.jsonl)
           rm -rf /tmp/research-v2 && mkdir -p /tmp/research-v2
           for f in "${paths[@]}"; do if test -e "$f"; then mkdir -p "/tmp/research-v2/$(dirname "$f")"; cp "$f" "/tmp/research-v2/$f"; fi; done
           for attempt in 1 2 3; do
