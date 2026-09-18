@@ -2,15 +2,15 @@
   "schema_version": "1.0",
   "classification": "VALIDATION_V2_FORWARD_PERFORMANCE",
   "status": "FORWARD_PERFORMANCE_AVAILABLE",
-  "generated_at": "2026-09-18T21:53:24.153602+00:00",
+  "generated_at": "2026-09-18T22:13:28.922530+00:00",
   "entry_rows": 13,
-  "settled_entries": 5,
-  "missing_result_entries": 8,
+  "settled_entries": 6,
+  "missing_result_entries": 7,
   "ambiguous_result_entries": 0,
   "invalid_entry_rows": 0,
   "result_join": "EXACT_ODDSPAPI_FIXTURE_ID_ONLY",
   "fuzzy_result_join_allowed": false,
-  "result_rows_seen": 1185,
+  "result_rows_seen": 1233,
   "bootstrap_iterations": 10000,
   "by_candidate": {
     "FD_AH_1D65F429F6A5": {
@@ -48,33 +48,38 @@
       "unsettled_entries": 1
     },
     "FD_AH_4E30F9F2EC34": {
-      "settled_entries": 2,
-      "total_profit_units": -0.050000000000000044,
-      "roi": -0.025000000000000022,
+      "settled_entries": 3,
+      "total_profit_units": 0.915,
+      "roi": 0.305,
       "bootstrap_iterations": 10000,
       "bootstrap_roi_ci95_lower": -1.0,
-      "bootstrap_roi_ci95_upper": 0.95,
-      "distinct_leagues": 1,
-      "positive_leagues": 0,
-      "positive_league_share": 0.0,
-      "max_single_league_share_of_absolute_profit": 1.0,
+      "bootstrap_roi_ci95_upper": 0.9650000000000002,
+      "distinct_leagues": 2,
+      "positive_leagues": 1,
+      "positive_league_share": 0.5,
+      "max_single_league_share_of_absolute_profit": 0.9507389162561576,
       "league_concentration_definition": "max(abs(net league profit)) / sum(abs(net league profit))",
       "max_drawdown_units": -1.0,
       "longest_losing_streak": 1,
       "losing_streak_definition": "consecutive settled entries with profit_units < 0; push/non-loss resets streak",
       "settlement_counts": {
         "FULL_LOSS": 1,
-        "FULL_WIN": 1
+        "FULL_WIN": 2
       },
       "league_breakdown": {
         "LaLiga": {
           "settled_entries": 2,
           "profit_units": -0.050000000000000044,
           "roi": -0.025000000000000022
+        },
+        "Ligue 1": {
+          "settled_entries": 1,
+          "profit_units": 0.9650000000000001,
+          "roi": 0.9650000000000001
         }
       },
       "entries_recorded": 9,
-      "unsettled_entries": 7
+      "unsettled_entries": 6
     }
   },
   "paper_label": "PAPER_RESEARCH_ONLY",
