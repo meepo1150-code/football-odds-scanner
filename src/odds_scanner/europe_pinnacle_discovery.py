@@ -15,7 +15,7 @@ from .oddspapi_quota_health import summarize_account
 from .v2_mainline_observer import CATALOG_PATH, _load_json, extract_mainline_snapshot, mainline_shape
 
 TARGET_PATH=Path('reports/europe_discovery_tournaments.json'); SNAPSHOT_PATH=Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'); AUDIT_PATH=Path('data/normalized/europe_pinnacle_research_v2_audit.jsonl'); REPORT_PATH=Path('reports/europe_pinnacle_research_v2_status.json'); SLOT_LEDGER_PATH=Path('data/normalized/research_v2_slot_ledger.jsonl')
-BANGKOK=ZoneInfo('Asia/Bangkok'); FOOTBALL_DAY_START_HOUR=12; FOOTBALL_DAY_END_HOUR=6; BATCH_SIZE=10; INTER_BATCH_DELAY_SECONDS=2.0; RATE_LIMIT_RETRY_DELAY_SECONDS=5.0; MAX_ATTEMPTS_PER_BATCH=2; RECOVERY_WINDOW_MINUTES=150; WEEKEND_TARGET_HOURS=(12,15,18,19,20,21,22)
+BANGKOK=ZoneInfo('Asia/Bangkok'); FOOTBALL_DAY_START_HOUR=12; FOOTBALL_DAY_END_HOUR=6; BATCH_SIZE=5; INTER_BATCH_DELAY_SECONDS=2.0; RATE_LIMIT_RETRY_DELAY_SECONDS=5.0; MAX_ATTEMPTS_PER_BATCH=2; RECOVERY_WINDOW_MINUTES=150; WEEKEND_TARGET_HOURS=(12,15,18,19,20,21,22)
 
 def _merge_jsonl(path,new_rows,key_fields):
     rows={}
