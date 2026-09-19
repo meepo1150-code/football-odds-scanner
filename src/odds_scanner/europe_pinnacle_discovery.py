@@ -15,7 +15,7 @@ from .oddspapi_quota_health import summarize_account
 from .v2_mainline_observer import CATALOG_PATH, _load_json, extract_mainline_snapshot, mainline_shape
 
 TARGET_PATH=Path('reports/europe_discovery_tournaments.json'); SNAPSHOT_PATH=Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'); AUDIT_PATH=Path('data/normalized/europe_pinnacle_research_v2_audit.jsonl'); REPORT_PATH=Path('reports/europe_pinnacle_research_v2_status.json'); SLOT_LEDGER_PATH=Path('data/normalized/research_v2_slot_ledger.jsonl')
-BANGKOK=ZoneInfo('Asia/Bangkok'); FOOTBALL_DAY_START_HOUR=12; FOOTBALL_DAY_END_HOUR=6; BATCH_SIZE=5; INTER_BATCH_DELAY_SECONDS=2.0; RATE_LIMIT_RETRY_DELAY_SECONDS=5.0; MAX_ATTEMPTS_PER_BATCH=2; RECOVERY_WINDOW_MINUTES=150; WEEKEND_TARGET_HOURS=(12,15,18,19,20,21,22)
+BANGKOK=ZoneInfo('Asia/Bangkok'); FOOTBALL_DAY_START_HOUR=12; FOOTBALL_DAY_END_HOUR=6; BATCH_SIZE=5; LOW_QUOTA_CORE_IDS=(17,23,8,35,34); LOW_QUOTA_THRESHOLD=15; INTER_BATCH_DELAY_SECONDS=2.0; RATE_LIMIT_RETRY_DELAY_SECONDS=5.0; MAX_ATTEMPTS_PER_BATCH=2; RECOVERY_WINDOW_MINUTES=150; WEEKEND_TARGET_HOURS=(12,15,18,19,20,21,22)
 
 def _merge_jsonl(path,new_rows,key_fields):
     rows={}
@@ -82,7 +82,7 @@ def run(root=Path('.')):
     if not force and (lag is None or lag>RECOVERY_WINDOW_MINUTES): report.update(status='MISSED_SLOT',requests_used=0,planned_requests=0);_record_slot(root/SLOT_LEDGER_PATH,report,'MISSED');return _write(report,root)
     targets=_load_json(root/TARGET_PATH) or {}; selected=targets.get('tournaments') or [] if isinstance(targets,dict) else []; ids=[x.get('tournament_id') for x in selected if isinstance(x,dict) and x.get('tournament_id') is not None]
     if not ids or len(ids)!=len(set(ids)):report.update(status='TARGET_MAP_INVALID',resolved_competitions=len(ids),requests_used=0,planned_requests=0);return _write(report,root)
-    normal=(len(ids)+BATCH_SIZE-1)//BATCH_SIZE; maxplan=normal*MAX_ATTEMPTS_PER_BATCH; report.update(resolved_competitions=len(ids),planned_requests=normal,max_planned_requests_with_retries=maxplan)
+    normal=(len(ids)+BATCH_SIZE-1)//BATCH_SIZE; maxplan=normal*MAX_ATTEMPTS_PER_BATCH; report.update(resolved_competitions=len(ids),planned_requests=normal,max_planned_requests_with_retries=maxplan,coverage_mode='FULL_CORE38')
     key=os.getenv(ENV_KEY,'').strip()
     if not key:report.update(status='API_KEY_NOT_CONFIGURED',requests_used=0);return _write(report,root)
     try:q=summarize_account(_get('/account',key))
@@ -90,7 +90,16 @@ def run(root=Path('.')):
     report['quota_remaining_before']=q.get('request_remaining')
     try: remaining=int(q.get('request_remaining'))
     except (TypeError,ValueError): remaining=-1
-    if remaining-normal < CORE_QUOTA_RESERVE:report.update(status='SKIPPED_TO_PROTECT_CORE_QUOTA',requests_used=0);return _write(report,root)
+    # Under low monthly quota, preserve every canonical observation by switching to a
+    # fixed Big-5 top-flight panel. A stable one-request panel is analytically cleaner
+    # than collecting one full 38-competition snapshot and missing the remaining slots.
+    if 0 <= remaining <= LOW_QUOTA_THRESHOLD:
+        selected=[x for x in selected if int(x.get('tournament_id') or -1) in LOW_QUOTA_CORE_IDS]
+        ids=[x.get('tournament_id') for x in selected]
+        normal=(len(ids)+BATCH_SIZE-1)//BATCH_SIZE
+        maxplan=normal*MAX_ATTEMPTS_PER_BATCH
+        report.update(coverage_mode='LOW_QUOTA_BIG5_TOP_FLIGHT',resolved_competitions=len(ids),planned_requests=normal,max_planned_requests_with_retries=maxplan,coverage_tournament_ids=ids)
+    if not ids or remaining-normal < CORE_QUOTA_RESERVE:report.update(status='SKIPPED_TO_PROTECT_CORE_QUOTA',requests_used=0);return _write(report,root)
     catalog=_load_json(root/CATALOG_PATH) or []; meta={int(x['tournament_id']):x for x in selected}; payloads=[]; used=0; retries=0
     for bn,batch in enumerate(_chunks(ids,BATCH_SIZE),1):
         if bn>1:time.sleep(INTER_BATCH_DELAY_SECONDS)
