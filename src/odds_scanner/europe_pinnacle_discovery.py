@@ -8,7 +8,7 @@ from .europe_bookmaker_coverage_probe import BOOKMAKER, quota_allows_probe, summ
 
 # Research V2 is the primary forward data collector. Keep a small emergency reserve,
 # while background/history jobs yield to the canonical weekend observations.
-CORE_QUOTA_RESERVE = 4
+CORE_QUOTA_RESERVE = 3
 from .oddspapi_discovery import _rows
 from .oddspapi_provider import ENV_KEY, _get
 from .oddspapi_quota_health import summarize_account
