@@ -8,14 +8,14 @@ from .europe_bookmaker_coverage_probe import BOOKMAKER, quota_allows_probe, summ
 
 # Research V2 is the primary forward data collector. Keep a small emergency reserve,
 # while background/history jobs yield to the canonical weekend observations.
-CORE_QUOTA_RESERVE = 8
+CORE_QUOTA_RESERVE = 4
 from .oddspapi_discovery import _rows
 from .oddspapi_provider import ENV_KEY, _get
 from .oddspapi_quota_health import summarize_account
 from .v2_mainline_observer import CATALOG_PATH, _load_json, extract_mainline_snapshot, mainline_shape
 
 TARGET_PATH=Path('reports/europe_discovery_tournaments.json'); SNAPSHOT_PATH=Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'); AUDIT_PATH=Path('data/normalized/europe_pinnacle_research_v2_audit.jsonl'); REPORT_PATH=Path('reports/europe_pinnacle_research_v2_status.json'); SLOT_LEDGER_PATH=Path('data/normalized/research_v2_slot_ledger.jsonl')
-BANGKOK=ZoneInfo('Asia/Bangkok'); FOOTBALL_DAY_START_HOUR=12; FOOTBALL_DAY_END_HOUR=6; BATCH_SIZE=5; INTER_BATCH_DELAY_SECONDS=2.0; RATE_LIMIT_RETRY_DELAY_SECONDS=5.0; MAX_ATTEMPTS_PER_BATCH=2; RECOVERY_WINDOW_MINUTES=150; WEEKEND_TARGET_HOURS=(12,15,18,19,20,21,22)
+BANGKOK=ZoneInfo('Asia/Bangkok'); FOOTBALL_DAY_START_HOUR=12; FOOTBALL_DAY_END_HOUR=6; BATCH_SIZE=10; INTER_BATCH_DELAY_SECONDS=2.0; RATE_LIMIT_RETRY_DELAY_SECONDS=5.0; MAX_ATTEMPTS_PER_BATCH=2; RECOVERY_WINDOW_MINUTES=150; WEEKEND_TARGET_HOURS=(12,15,18,19,20,21,22)
 
 def _merge_jsonl(path,new_rows,key_fields):
     rows={}
@@ -88,7 +88,9 @@ def run(root=Path('.')):
     try:q=summarize_account(_get('/account',key))
     except Exception as e:report.update(status='SKIPPED_QUOTA_HEALTH_UNAVAILABLE',requests_used=0,errors=[f'{type(e).__name__}: {e}']);return _write(report,root)
     report['quota_remaining_before']=q.get('request_remaining')
-    if not quota_allows_probe(q,planned=maxplan):report.update(status='SKIPPED_TO_PROTECT_CORE_QUOTA',requests_used=0);return _write(report,root)
+    try: remaining=int(q.get('request_remaining'))
+    except (TypeError,ValueError): remaining=-1
+    if remaining-normal < CORE_QUOTA_RESERVE:report.update(status='SKIPPED_TO_PROTECT_CORE_QUOTA',requests_used=0);return _write(report,root)
     catalog=_load_json(root/CATALOG_PATH) or []; meta={int(x['tournament_id']):x for x in selected}; payloads=[]; used=0; retries=0
     for bn,batch in enumerate(_chunks(ids,BATCH_SIZE),1):
         if bn>1:time.sleep(INTER_BATCH_DELAY_SECONDS)
