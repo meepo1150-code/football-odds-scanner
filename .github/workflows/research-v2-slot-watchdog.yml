@@ -10,9 +10,9 @@ on:
     # Tue-Sat 00:00 Bangkok: +10,+30,+50,+70,+90,+110,+130 minutes.
     - cron: '10,30,50 17,18 * * 1-5'
     - cron: '10,30 19 * * 1-5'
-    # Weekend 12/15/18/20 Bangkok recovery heartbeats, kept inside 150 minutes.
-    - cron: '10,30,50 5,8,11,13 * * 6,0'
-    - cron: '10,30 6,9,12,14 * * 6,0'
+    # Weekend hourly 18-22 Bangkok plus 12/15 recovery heartbeats.
+    - cron: '10,30,50 5,8,11,12,13,14,15 * * 6,0'
+    - cron: '10,30 6,9,16 * * 6,0'
 permissions: {contents: write}
 concurrency:
   group: europe-pinnacle-research-v2
