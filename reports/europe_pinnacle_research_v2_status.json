@@ -1,6 +1,6 @@
 {
   "schema_version": "2.8",
-  "generated_at": "2026-09-19T17:08:54.510865+00:00",
+  "generated_at": "2026-09-19T17:29:05.714415+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "bookmaker": "pinnacle",
   "football_day": "2026-09-19",
@@ -8,219 +8,16 @@
   "football_day_window_start": "2026-09-19T05:00:00+00:00",
   "football_day_window_end": "2026-09-19T23:00:00+00:00",
   "scheduled_target_at": "2026-09-19T22:00:00+07:00",
-  "actual_observed_at": "2026-09-20T00:08:54.510865+07:00",
-  "schedule_lag_minutes": 128.91,
+  "actual_observed_at": "2026-09-20T00:29:05.714415+07:00",
+  "schedule_lag_minutes": 149.1,
   "recovery_window_minutes": 150,
   "observation_timing": "LATE",
-  "force_run": true,
-  "force_target_at": "2026-09-19T22:00:00+07:00",
+  "force_run": false,
+  "force_target_at": null,
   "research_only": true,
   "production_promotion_allowed": false,
   "core_quota_reserve": 4,
-  "resolved_competitions": 38,
-  "planned_requests": 8,
-  "max_planned_requests_with_retries": 16,
-  "quota_remaining_before": 19,
-  "status": "RESEARCH_V2_OBSERVED",
-  "requests_used": 8,
-  "rate_limit_retries": 0,
-  "api_fixtures_returned": 253,
-  "excluded_outside_football_day": 218,
-  "football_day_fixtures": 35,
-  "strict_snapshots_this_run": 19,
-  "persisted_snapshot_rows": 106,
-  "persisted_audit_rows": 122,
-  "fixtures_seen": 35,
-  "bookmaker_active_fixtures": 21,
-  "fixtures_with_exactly_one_main_ah": 21,
-  "fixtures_with_exactly_one_main_ou": 21,
-  "fixtures_with_both_exact_mainlines": 21,
-  "strict_snapshots": 19,
-  "rejection_counts": {
-    "KICKOFF_NOT_FUTURE": 16,
-    "OK": 19
-  },
-  "league_coverage": [
-    {
-      "league": "Austria · Bundesliga",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "OK": 1
-      }
-    },
-    {
-      "league": "Belgium · Pro League",
-      "fixtures": 2,
-      "bookmaker_active": 2,
-      "ah_main_exactly_one": 2,
-      "ou_main_exactly_one": 2,
-      "both_main_exactly_one": 2,
-      "strict_snapshots": 2,
-      "reason_counts": {
-        "OK": 2
-      }
-    },
-    {
-      "league": "England · FA Cup",
-      "fixtures": 14,
-      "bookmaker_active": 0,
-      "ah_main_exactly_one": 0,
-      "ou_main_exactly_one": 0,
-      "both_main_exactly_one": 0,
-      "strict_snapshots": 0,
-      "reason_counts": {
-        "KICKOFF_NOT_FUTURE": 14
-      }
-    },
-    {
-      "league": "France · Ligue 1",
-      "fixtures": 4,
-      "bookmaker_active": 4,
-      "ah_main_exactly_one": 4,
-      "ou_main_exactly_one": 4,
-      "both_main_exactly_one": 4,
-      "strict_snapshots": 4,
-      "reason_counts": {
-        "OK": 4
-      }
-    },
-    {
-      "league": "France · Ligue 2",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "OK": 1
-      }
-    },
-    {
-      "league": "Germany · 2. Bundesliga",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "OK": 1
-      }
-    },
-    {
-      "league": "Italy · Serie A",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "OK": 1
-      }
-    },
-    {
-      "league": "Italy · Serie B",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "OK": 1
-      }
-    },
-    {
-      "league": "Netherlands · Eredivisie",
-      "fixtures": 2,
-      "bookmaker_active": 2,
-      "ah_main_exactly_one": 2,
-      "ou_main_exactly_one": 2,
-      "both_main_exactly_one": 2,
-      "strict_snapshots": 2,
-      "reason_counts": {
-        "OK": 2
-      }
-    },
-    {
-      "league": "Poland · Ekstraklasa",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "OK": 1
-      }
-    },
-    {
-      "league": "Portugal · Liga Portugal",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "OK": 1
-      }
-    },
-    {
-      "league": "Portugal · Taca de Portugal",
-      "fixtures": 3,
-      "bookmaker_active": 3,
-      "ah_main_exactly_one": 3,
-      "ou_main_exactly_one": 3,
-      "both_main_exactly_one": 3,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "KICKOFF_NOT_FUTURE": 2,
-        "OK": 1
-      }
-    },
-    {
-      "league": "Romania · Superliga",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "OK": 1
-      }
-    },
-    {
-      "league": "Spain · LaLiga",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "OK": 1
-      }
-    },
-    {
-      "league": "Spain · LaLiga 2",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "OK": 1
-      }
-    }
-  ]
+  "status": "SKIPPED_SLOT_ALREADY_OBSERVED",
+  "requests_used": 0,
+  "planned_requests": 0
 }
