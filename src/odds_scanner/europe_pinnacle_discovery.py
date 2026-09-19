@@ -4,7 +4,11 @@ import json, os, time
 from datetime import datetime, time as dtime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
-from .europe_bookmaker_coverage_probe import BOOKMAKER, CORE_QUOTA_RESERVE, quota_allows_probe, summarize_rows
+from .europe_bookmaker_coverage_probe import BOOKMAKER, quota_allows_probe, summarize_rows
+
+# Research V2 is the primary forward data collector. Keep a small emergency reserve,
+# while background/history jobs yield to the canonical weekend observations.
+CORE_QUOTA_RESERVE = 8
 from .oddspapi_discovery import _rows
 from .oddspapi_provider import ENV_KEY, _get
 from .oddspapi_quota_health import summarize_account
