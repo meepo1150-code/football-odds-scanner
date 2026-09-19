@@ -77,6 +77,18 @@ jobs:
             sleep 3
           done
           exit 1
+      - name: Enforce collector business health
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('reports/europe_pinnacle_research_v2_status.json').read_text())
+          bad={'API_REQUEST_FAILED','API_KEY_NOT_CONFIGURED','TARGET_MAP_INVALID','SKIPPED_QUOTA_HEALTH_UNAVAILABLE'}
+          if r.get('status') in bad:
+              raise SystemExit(f"Research V2 unhealthy: {r.get('status')} {r.get('errors', [])}")
+          print(f"Research V2 business status: {r.get('status')} coverage={r.get('coverage_mode')}")
+          PY
 # Canonical observations remain 21:00/00:00 weekdays and 12:00/15:00/18:00/19:00/20:00/21:00/22:00 weekends Bangkok.
 # Scheduled heartbeats run every 20 minutes around canonical slots; duplicates are zero-API skips.
 # Recovery window is 150 minutes and actual lag/timing is retained for QA.
