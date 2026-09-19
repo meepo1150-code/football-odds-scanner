@@ -18,7 +18,7 @@ on:
   schedule:
     - cron: '0,20,40 14,15,16 * * 1-5'
     - cron: '0,20,40 17,18,19 * * 1-5'
-    - cron: '0,20,40 5,6,7,8,9,10,11,12,13,14 * * 6,0'
+    - cron: '0,20,40 5,6,7,8,9,10,11,12,13,14,15 * * 6,0'
 permissions: {contents: write}
 concurrency:
   group: europe-pinnacle-research-v2
@@ -77,7 +77,7 @@ jobs:
             sleep 3
           done
           exit 1
-# Canonical observations remain 21:00/00:00 weekdays and 12:00/15:00/18:00/20:00 weekends Bangkok.
+# Canonical observations remain 21:00/00:00 weekdays and 12:00/15:00/18:00/19:00/20:00/21:00/22:00 weekends Bangkok.
 # Scheduled heartbeats run every 20 minutes around canonical slots; duplicates are zero-API skips.
 # Recovery window is 150 minutes and actual lag/timing is retained for QA.
 # Push-token recovery is an independent fallback: the token's first line must be the exact canonical ISO target.
