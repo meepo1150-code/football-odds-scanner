@@ -1,23 +1,112 @@
 {
   "schema_version": "2.8",
-  "generated_at": "2026-09-19T18:34:22.639269+00:00",
+  "generated_at": "2026-09-20T05:32:16.710452+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "bookmaker": "pinnacle",
-  "football_day": "2026-09-19",
+  "football_day": "2026-09-20",
   "football_day_timezone": "Asia/Bangkok",
-  "football_day_window_start": "2026-09-19T05:00:00+00:00",
-  "football_day_window_end": "2026-09-19T23:00:00+00:00",
-  "scheduled_target_at": "2026-09-19T22:00:00+07:00",
-  "actual_observed_at": "2026-09-20T01:34:22.639269+07:00",
-  "schedule_lag_minutes": 214.38,
+  "football_day_window_start": "2026-09-20T05:00:00+00:00",
+  "football_day_window_end": "2026-09-20T23:00:00+00:00",
+  "scheduled_target_at": "2026-09-20T12:00:00+07:00",
+  "actual_observed_at": "2026-09-20T12:32:16.710452+07:00",
+  "schedule_lag_minutes": 32.28,
   "recovery_window_minutes": 150,
-  "observation_timing": "OUTSIDE_WINDOW",
-  "force_run": false,
-  "force_target_at": null,
+  "observation_timing": "LATE",
+  "force_run": true,
+  "force_target_at": "2026-09-20T12:00:00+07:00",
   "research_only": true,
   "production_promotion_allowed": false,
   "core_quota_reserve": 3,
-  "status": "SKIPPED_SLOT_ALREADY_OBSERVED",
-  "requests_used": 0,
-  "planned_requests": 0
+  "resolved_competitions": 5,
+  "planned_requests": 1,
+  "max_planned_requests_with_retries": 2,
+  "coverage_mode": "LOW_QUOTA_BIG5_TOP_FLIGHT",
+  "quota_remaining_before": 9,
+  "coverage_tournament_ids": [
+    17,
+    23,
+    8,
+    35,
+    34
+  ],
+  "status": "RESEARCH_V2_OBSERVED",
+  "requests_used": 1,
+  "rate_limit_retries": 0,
+  "api_fixtures_returned": 68,
+  "excluded_outside_football_day": 48,
+  "football_day_fixtures": 20,
+  "strict_snapshots_this_run": 20,
+  "persisted_snapshot_rows": 126,
+  "persisted_audit_rows": 142,
+  "fixtures_seen": 20,
+  "bookmaker_active_fixtures": 20,
+  "fixtures_with_exactly_one_main_ah": 20,
+  "fixtures_with_exactly_one_main_ou": 20,
+  "fixtures_with_both_exact_mainlines": 20,
+  "strict_snapshots": 20,
+  "rejection_counts": {
+    "OK": 20
+  },
+  "league_coverage": [
+    {
+      "league": "England · Premier League",
+      "fixtures": 4,
+      "bookmaker_active": 4,
+      "ah_main_exactly_one": 4,
+      "ou_main_exactly_one": 4,
+      "both_main_exactly_one": 4,
+      "strict_snapshots": 4,
+      "reason_counts": {
+        "OK": 4
+      }
+    },
+    {
+      "league": "France · Ligue 1",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Germany · Bundesliga",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Italy · Serie A",
+      "fixtures": 5,
+      "bookmaker_active": 5,
+      "ah_main_exactly_one": 5,
+      "ou_main_exactly_one": 5,
+      "both_main_exactly_one": 5,
+      "strict_snapshots": 5,
+      "reason_counts": {
+        "OK": 5
+      }
+    },
+    {
+      "league": "Spain · LaLiga",
+      "fixtures": 5,
+      "bookmaker_active": 5,
+      "ah_main_exactly_one": 5,
+      "ou_main_exactly_one": 5,
+      "both_main_exactly_one": 5,
+      "strict_snapshots": 5,
+      "reason_counts": {
+        "OK": 5
+      }
+    }
+  ]
 }
