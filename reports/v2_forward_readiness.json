@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "classification": "VALIDATION_V2_FORWARD_READINESS",
   "status": "COLLECTING_FORWARD_EVIDENCE",
-  "generated_at": "2026-09-20T21:51:11.905478+00:00",
+  "generated_at": "2026-09-20T22:09:25.119772+00:00",
   "candidate_count": 3,
   "forward_start": "2026-09-10T13:25:00Z",
   "scheduled_cadence_hours": 12,
@@ -98,12 +98,12 @@
       "candidate_id": "FD_AH_1D65F429F6A5",
       "status": "COLLECTING_FORWARD_EVIDENCE",
       "entries_recorded": 4,
-      "settled_entries": 3,
-      "remaining_to_minimum_settled_entries": 147,
+      "settled_entries": 4,
+      "remaining_to_minimum_settled_entries": 146,
       "gates": [
         {
           "gate": "minimum_settled_entries",
-          "value": 3,
+          "value": 4,
           "threshold": 150,
           "status": "FAIL"
         },
@@ -115,13 +115,13 @@
         },
         {
           "gate": "minimum_positive_league_share",
-          "value": 0.0,
+          "value": 0.5,
           "threshold": 0.6,
           "status": "PENDING"
         },
         {
           "gate": "positive_flat_stake_roi",
-          "value": -0.3833333333333333,
+          "value": -0.03999999999999998,
           "threshold": "> 0",
           "status": "PENDING"
         },
@@ -145,7 +145,7 @@
         },
         {
           "gate": "maximum_single_league_profit_concentration",
-          "value": 0.8695652173913044,
+          "value": 0.5434782608695652,
           "threshold": "<= 0.6",
           "status": "PENDING"
         },
