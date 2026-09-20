@@ -2,10 +2,10 @@
   "schema_version": "1.0",
   "classification": "VALIDATION_V2_FORWARD_CLV_STATUS",
   "status": "COLLECTING_FORWARD_CLV",
-  "generated_at": "2026-09-19T15:56:34.349007+00:00",
+  "generated_at": "2026-09-20T04:59:45.788606+00:00",
   "entries": 14,
-  "snapshots": 260,
-  "comparable_clv": 14,
+  "snapshots": 271,
+  "comparable_clv": 13,
   "clv_definition": "entry decimal price / latest-observed same-selection same-line price - 1",
   "line_change_policy": "report line move separately and mark price CLV not comparable when the main line changes",
   "closing_label": "LATEST_OBSERVED_PREMATCH_MAINLINE",
@@ -13,12 +13,13 @@
   "by_candidate": {
     "FD_AH_1D65F429F6A5": {
       "entries": 4,
-      "comparable_clv": 4,
-      "comparable_share": 1.0,
-      "mean_clv": 0.006666666666666654,
+      "comparable_clv": 3,
+      "comparable_share": 0.75,
+      "mean_clv": 0.008888888888888872,
       "median_clv": 0.0,
       "statuses": {
-        "CLV_COMPARABLE": 4
+        "CLV_COMPARABLE": 3,
+        "CLV_NOT_COMPARABLE_LINE_CHANGED": 1
       }
     },
     "FD_AH_4E30F9F2EC34": {
@@ -237,7 +238,7 @@
       "league": "LaLiga",
       "market": "AH",
       "selection": "H",
-      "latest_observed_at": "2026-09-19T15:56:33.669124+00:00",
+      "latest_observed_at": "2026-09-20T04:59:45.230448+00:00",
       "latest_line": -0.5,
       "latest_price": 1.965,
       "entry_line": -0.5,
@@ -255,17 +256,17 @@
       "league": "LaLiga",
       "market": "AH",
       "selection": "H",
-      "latest_observed_at": "2026-09-19T04:43:57.433661+00:00",
-      "latest_line": -1.25,
-      "latest_price": 1.99,
+      "latest_observed_at": "2026-09-20T04:59:45.230448+00:00",
+      "latest_line": -1.0,
+      "latest_price": 1.74,
       "entry_line": -1.25,
       "entry_price": 1.99,
-      "line_move": 0.0,
+      "line_move": 0.25,
       "closing_label": "LATEST_OBSERVED_PREMATCH_MAINLINE",
       "perfect_market_close_claim": false,
-      "status": "CLV_COMPARABLE",
-      "clv_comparable": true,
-      "price_clv": 0.0
+      "status": "CLV_NOT_COMPARABLE_LINE_CHANGED",
+      "clv_comparable": false,
+      "price_clv": null
     },
     {
       "candidate_id": "FD_AH_4E30F9F2EC34",
