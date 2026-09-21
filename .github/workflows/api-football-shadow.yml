@@ -29,6 +29,7 @@ jobs:
       - name: Collect isolated Big-5 fixture and FT shadow data
         env:
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          API_FOOTBALL_ODDS_PROBE: 'true'
         run: python -m odds_scanner.api_football_provider
       - name: Persist shadow health without mixing provider identities
         run: |
@@ -37,14 +38,16 @@ jobs:
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           mkdir -p /tmp/api-football-shadow/reports /tmp/api-football-shadow/data/normalized
           cp reports/api_football_shadow_health.json /tmp/api-football-shadow/reports/
+          cp reports/api_football_odds_probe.json /tmp/api-football-shadow/reports/
           cp data/normalized/api_football_fixtures.jsonl /tmp/api-football-shadow/data/normalized/
           for attempt in 1 2 3; do
             git fetch origin main
             git reset --hard origin/main
             mkdir -p reports data/normalized
             cp /tmp/api-football-shadow/reports/api_football_shadow_health.json reports/
+            cp /tmp/api-football-shadow/reports/api_football_odds_probe.json reports/
             cp /tmp/api-football-shadow/data/normalized/api_football_fixtures.jsonl data/normalized/
-            git add -f -- reports/api_football_shadow_health.json data/normalized/api_football_fixtures.jsonl
+            git add -f -- reports/api_football_shadow_health.json reports/api_football_odds_probe.json data/normalized/api_football_fixtures.jsonl
             git diff --cached --quiet && exit 0
             git commit -m 'data: update API-Football shadow health [skip ci]'
             git push origin HEAD:main && exit 0
