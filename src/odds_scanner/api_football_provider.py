@@ -194,7 +194,80 @@ def probe_odds(root: Path = Path("."), *, key: str | None = None, get_fn=_get) -
     return report
 
 
+V2_SNAPSHOT_PATH = Path("data/normalized/europe_pinnacle_research_v2_snapshots.jsonl")
+V2_REPORT_PATH = Path("reports/europe_pinnacle_research_v2_status.json")
+V2_LEDGER_PATH = Path("data/normalized/research_v2_slot_ledger.jsonl")
+
+def _pick_balanced(values):
+    pairs = {}
+    for x in values or []:
+        v=str(x.get("value") or ""); parts=v.split()
+        if len(parts)<2: continue
+        side=parts[0].lower()
+        try: line=float(parts[-1]); odd=float(x.get("odd"))
+        except (ValueError,TypeError): continue
+        pairs[(side,line)]=odd
+    candidates=[]
+    for (side,line),odd in pairs.items():
+        if side!="home": continue
+        away=pairs.get(("away",-line))
+        if away is None: continue
+        candidates.append((abs(odd-away),line,odd,away))
+    return min(candidates) if candidates else None
+
+def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|None=None, get_fn=_get) -> dict:
+    api_key=(key or os.getenv(ENV_KEY,"")).strip(); now=datetime.now(timezone.utc); local=now.astimezone(BANGKOK)
+    target=target_at or os.getenv("RESEARCH_V2_FORCE_TARGET_AT","").strip() or local.replace(hour=21,minute=0,second=0,microsecond=0).isoformat()
+    report={"schema_version":"3.0","generated_at":now.isoformat(),"classification":"PINNACLE_RESEARCH_V2","provider":"api_football","bookmaker":"pinnacle","scheduled_target_at":target,"actual_observed_at":local.isoformat(),"research_only":True,"production_promotion_allowed":False,"requests_used":0}
+    if not api_key: report["status"]="API_KEY_NOT_CONFIGURED"
+    else:
+        try:
+            day=local.date().isoformat(); rows=[]; page=1
+            while True:
+                payload=get_fn("/odds",api_key,{"date":day,"bookmaker":4,"page":page}); report["requests_used"]+=1
+                if payload.get("errors"): raise RuntimeError(str(payload["errors"]))
+                batch=payload.get("response") if isinstance(payload.get("response"),list) else []; rows.extend(batch)
+                paging=payload.get("paging") or {}
+                if page>=int(paging.get("total") or 1): break
+                page+=1
+            snaps=[]
+            for item in rows:
+                league=item.get("league") or {}; fixture=item.get("fixture") or {}
+                if league.get("id") not in BIG5_LEAGUES: continue
+                try: ko=datetime.fromisoformat(str(fixture.get("date")).replace("Z","+00:00")).astimezone(timezone.utc)
+                except Exception: continue
+                if ko<=now: continue
+                book=next((b for b in item.get("bookmakers",[]) if b.get("id")==4),None)
+                if not book: continue
+                bets={int(b.get("id")):b for b in book.get("bets",[]) if b.get("id") is not None}
+                one=bets.get(1); ah=bets.get(4); ou=bets.get(5)
+                if not one or not ah or not ou: continue
+                onevals={str(x.get("value")).lower():float(x.get("odd")) for x in one.get("values",[]) if x.get("odd")}
+                hp=onevals.get("home"); dp=onevals.get("draw"); ap=onevals.get("away")
+                pick=_pick_balanced(ah.get("values",[]))
+                oupick=_pick_balanced([{"value":str(x.get("value")).replace("Over","Home").replace("Under","Away"),"odd":x.get("odd")} for x in ou.get("values",[])])
+                if not all([hp,dp,ap]) or not pick or not oupick: continue
+                inv=[1/hp,1/dp,1/ap]; tot=sum(inv); fh,fd,fa=[x/tot for x in inv]; fav="H" if fh>=fa else "A"
+                _,line,hprice,aprice=pick; _,ouline,oprice,uprice=oupick
+                snap={"fixture_id":f"api_football:{fixture.get('id')}","provider_fixture_id":str(fixture.get("id")),"tournament_id":league.get("id"),"universe":"PINNACLE_RESEARCH_V2","league":league.get("name"),"country":league.get("country"),"kickoff":ko.isoformat(),"home":None,"away":None,"bookmaker":"pinnacle","provider":"api_football","observed_at":now.isoformat(),"source_semantics":"CURRENT_API_FOOTBALL_PINNACLE_BALANCED_LINE_OBSERVED","mainline_verified":False,"line_selection_semantics":"MOST_BALANCED_AVAILABLE_PAIR","favorite_side":fav,"favorite_fair_probability":round(fh if fav=="H" else fa,8),"one_x_two":{"home":hp,"draw":dp,"away":ap,"fair_home":round(fh,8),"fair_draw":round(fd,8),"fair_away":round(fa,8)},"ah":{"home_line":line,"home_price":hprice,"away_line":-line,"away_price":aprice,"selected_side_line":line if fav=="H" else -line,"selected_side_price":hprice if fav=="H" else aprice,"opposite_side_price":aprice if fav=="H" else hprice},"ou":{"line":ouline,"over_price":oprice,"under_price":uprice},"promotion_eligible":False,"football_day":day,"research_only":True,"scheduled_target_at":target}
+                snaps.append(snap)
+            existing=[]
+            p=root/V2_SNAPSHOT_PATH
+            if p.exists():
+                for line in p.read_text(encoding="utf-8").splitlines():
+                    try: existing.append(json.loads(line))
+                    except: pass
+            keys={(str(x.get("fixture_id")),str(x.get("observed_at"))) for x in existing}
+            existing.extend(x for x in snaps if (str(x.get("fixture_id")),str(x.get("observed_at"))) not in keys)
+            p.parent.mkdir(parents=True,exist_ok=True); p.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\\n" for x in existing),encoding="utf-8")
+            report.update(status="RESEARCH_V2_OBSERVED" if snaps else "ZERO_FIXTURES",football_day=day,api_rows_returned=len(rows),football_day_fixtures=len(snaps),strict_snapshots_this_run=len(snaps),persisted_snapshot_rows=len(existing),coverage_mode="API_FOOTBALL_BIG5_PINNACLE")
+        except Exception as exc: report.update(status="API_REQUEST_FAILED",errors=[f"{type(exc).__name__}: {exc}"])
+    rp=root/V2_REPORT_PATH; rp.parent.mkdir(parents=True,exist_ok=True); rp.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8"); return report
+
+
 if __name__ == "__main__":
+    if os.getenv("API_FOOTBALL_V2_SCAN", "").strip().lower() in {"1","true","yes"}:
+        print(json.dumps(collect_v2_odds(), ensure_ascii=False)); raise SystemExit(0)
     shadow = collect()
     if os.getenv("API_FOOTBALL_ODDS_PROBE", "").strip().lower() in {"1", "true", "yes"}:
         print(json.dumps({"shadow": shadow, "odds_probe": probe_odds()}, ensure_ascii=False))
