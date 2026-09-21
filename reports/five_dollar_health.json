@@ -1,8 +1,8 @@
 {
   "schema_version": "1.3",
   "provider": "5dollarfootballapi_free",
-  "status": "SCHEMA_OK_FRESHNESS_UNVERIFIED",
-  "generated_at": "2026-09-20T07:43:27.486233+00:00",
+  "status": "NO_ROWS",
+  "generated_at": "2026-09-21T07:56:09.700436+00:00",
   "execution_candidate": false,
   "account_plan": "free",
   "account_limits": {
@@ -11,68 +11,15 @@
     "burst_per_minute": 20
   },
   "account_usage": {
-    "today": 48
+    "today": 42
   },
-  "rows": 3,
-  "two_sided_ah": 3,
-  "two_sided_ou": 3,
-  "quarter_ah": 2,
-  "quarter_ou": 1,
+  "rows": 0,
+  "two_sided_ah": 0,
+  "two_sided_ou": 0,
+  "quarter_ah": 0,
+  "quarter_ou": 0,
   "fixture_window": "next_24_hours_from_probe_time_utc",
   "freshness_basis": "summary endpoint has no bookmaker quote timestamp; request time is not substituted",
   "production_blocker": "QUOTE_TIMESTAMP_UNVERIFIED",
-  "samples": [
-    {
-      "source": "5dollarfootballapi:bet365:latest_pre_match",
-      "league": "Italy Serie A",
-      "date": "2026-09-20",
-      "kickoff": "10:30",
-      "home": "Fiorentina",
-      "away": "Napoli",
-      "ah_home_line": 0.25,
-      "ah_home_odds": 1.925,
-      "ah_away_line": -0.25,
-      "ah_away_odds": 1.925,
-      "ou_line": 2.5,
-      "over_odds": 1.825,
-      "under_odds": 2.025,
-      "one_x_two_home": 3.2,
-      "one_x_two_draw": 3.4,
-      "one_x_two_away": 2.25,
-      "status": "scheduled",
-      "as_of": null,
-      "stale": null,
-      "tradable": true,
-      "observed_at": null,
-      "price_changed_at": null,
-      "freshness_basis": null,
-      "current_feed_verified": false
-    },
-    {
-      "source": "5dollarfootballapi:bet365:latest_pre_match",
-      "league": "Spain La Liga",
-      "date": "2026-09-20",
-      "kickoff": "12:00",
-      "home": "Getafe",
-      "away": "Malaga",
-      "ah_home_line": -0.5,
-      "ah_home_odds": 2.05,
-      "ah_away_line": 0.5,
-      "ah_away_odds": 1.8,
-      "ou_line": 2.0,
-      "over_odds": 2.05,
-      "under_odds": 1.8,
-      "one_x_two_home": 2.05,
-      "one_x_two_draw": 3.1,
-      "one_x_two_away": 4.1,
-      "status": "scheduled",
-      "as_of": null,
-      "stale": null,
-      "tradable": true,
-      "observed_at": null,
-      "price_changed_at": null,
-      "freshness_basis": null,
-      "current_feed_verified": false
-    }
-  ]
+  "samples": []
 }
