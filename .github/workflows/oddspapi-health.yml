@@ -1,8 +1,6 @@
 name: OddsPapi Current Provider Health
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '35 3 * * 1'
   push:
     branches: [main]
     paths:
@@ -60,3 +58,5 @@ jobs:
 # Free-plan budget: the health probe is weekly (4 requests/run) so normal quota
 # is reserved for production scans. A production scan uses 3 requests and only
 # occurs when the validated pattern registry is non-empty.
+
+# Automatic OddsPapi schedule paused 2026-09-21 after free quota reached 250/250. Manual dispatch retained.

@@ -22,8 +22,6 @@ on:
       - 'tests/test_settled_history.py'
       - 'tests/test_asian_settlement.py'
       - '.github/workflows/oddspapi-history-archive.yml'
-  schedule:
-    - cron: '25 * * * 1-5'
 permissions: {contents: write}
 concurrency: {group: oddspapi-history-archive, cancel-in-progress: false}
 jobs:
@@ -109,3 +107,5 @@ jobs:
 # Settlement outputs remain exploratory and promotion-disabled until a
 # preregistered multi-season chronological validation passes.
 # Manual discovery advance marker: 2026-09-09T14:21Z
+
+# Automatic OddsPapi schedule paused 2026-09-21 after free quota reached 250/250. Manual dispatch retained.

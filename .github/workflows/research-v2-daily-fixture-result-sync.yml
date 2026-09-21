@@ -4,10 +4,6 @@ on:
   push:
     branches: [main]
     paths: ['controls/research_v2_daily_sync_run_token.txt']
-  schedule:
-    - cron: '0 8 * * *'
-    - cron: '0 9 * * *'
-    - cron: '0 10 * * *'
 permissions:
   contents: write
 concurrency:
@@ -58,3 +54,5 @@ jobs:
 # Completion marker prevents duplicate /fixtures requests after both coverage days are mapped.
 # Daily results use exact OddsPapi-supplied Flashscore IDs only; no fuzzy team/date matching and zero OddsPAPI result calls.
 # Historical pattern statistics are descriptive research only: MATCH/movement are not picks, edge, CLV, or profit signals.
+
+# Automatic OddsPapi schedule paused 2026-09-21 after free quota reached 250/250. Manual dispatch retained.
