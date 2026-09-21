@@ -8,6 +8,7 @@ from .europe_bookmaker_coverage_probe import BOOKMAKER, quota_allows_probe, summ
 
 # Research V2 is the primary forward data collector. Keep a small emergency reserve,
 # while background/history jobs yield to the canonical weekend observations.
+# Keep enough quota for one full CORE38 observation after batching 10 tournaments/request.
 CORE_QUOTA_RESERVE = 3
 from .oddspapi_discovery import _rows
 from .oddspapi_provider import ENV_KEY, _get
@@ -15,7 +16,7 @@ from .oddspapi_quota_health import summarize_account
 from .v2_mainline_observer import CATALOG_PATH, _load_json, extract_mainline_snapshot, mainline_shape
 
 TARGET_PATH=Path('reports/europe_discovery_tournaments.json'); SNAPSHOT_PATH=Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'); AUDIT_PATH=Path('data/normalized/europe_pinnacle_research_v2_audit.jsonl'); REPORT_PATH=Path('reports/europe_pinnacle_research_v2_status.json'); SLOT_LEDGER_PATH=Path('data/normalized/research_v2_slot_ledger.jsonl')
-BANGKOK=ZoneInfo('Asia/Bangkok'); FOOTBALL_DAY_START_HOUR=12; FOOTBALL_DAY_END_HOUR=6; BATCH_SIZE=5; LOW_QUOTA_CORE_IDS=(17,23,8,35,34); LOW_QUOTA_THRESHOLD=15; INTER_BATCH_DELAY_SECONDS=2.0; RATE_LIMIT_RETRY_DELAY_SECONDS=5.0; MAX_ATTEMPTS_PER_BATCH=2; RECOVERY_WINDOW_MINUTES=150; WEEKEND_TARGET_HOURS=(12,15,18,19,20,21,22)
+BANGKOK=ZoneInfo('Asia/Bangkok'); FOOTBALL_DAY_START_HOUR=12; FOOTBALL_DAY_END_HOUR=6; BATCH_SIZE=10; LOW_QUOTA_CORE_IDS=(17,23,8,35,34); LOW_QUOTA_THRESHOLD=6; INTER_BATCH_DELAY_SECONDS=2.0; RATE_LIMIT_RETRY_DELAY_SECONDS=5.0; MAX_ATTEMPTS_PER_BATCH=2; RECOVERY_WINDOW_MINUTES=150; WEEKEND_TARGET_HOURS=(12,15,18,19,20,21,22)
 
 def _merge_jsonl(path,new_rows,key_fields):
     rows={}
