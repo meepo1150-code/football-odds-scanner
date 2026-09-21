@@ -14,6 +14,7 @@ BANGKOK = ZoneInfo("Asia/Bangkok")
 BIG5_LEAGUES = {39: "Premier League", 61: "Ligue 1", 78: "Bundesliga", 135: "Serie A", 140: "La Liga"}
 FIXTURES_PATH = Path("data/normalized/api_football_fixtures.jsonl")
 REPORT_PATH = Path("reports/api_football_shadow_health.json")
+ODDS_PROBE_PATH = Path("reports/api_football_odds_probe.json")
 
 
 def _get(path: str, key: str, params: dict | None = None, timeout: int = 45) -> dict:
@@ -138,5 +139,64 @@ def collect(root: Path = Path("."), *, key: str | None = None, today: date | Non
     return report
 
 
+def probe_odds(root: Path = Path("."), *, key: str | None = None, get_fn=_get) -> dict:
+    """Validate API-Football Pinnacle Asian Handicap semantics before provider promotion."""
+    api_key = (key or os.getenv(ENV_KEY, "")).strip()
+    now = datetime.now(timezone.utc)
+    report = {
+        "schema_version": "1.0",
+        "provider": "api_football",
+        "generated_at": now.isoformat(),
+        "mode": "PINNACLE_ASIAN_HANDICAP_ODDS_PROBE",
+        "promotion_eligible": False,
+        "requests_used": 0,
+    }
+    out = root / ODDS_PROBE_PATH
+    if not api_key:
+        report["status"] = "API_KEY_NOT_CONFIGURED"
+    else:
+        try:
+            bookmakers = get_fn("/odds/bookmakers", api_key, {"search": "Pinnacle"})
+            report["requests_used"] += 1
+            bets = get_fn("/odds/bets", api_key, {"search": "Handicap"})
+            report["requests_used"] += 1
+            b_rows = bookmakers.get("response") if isinstance(bookmakers.get("response"), list) else []
+            bet_rows = bets.get("response") if isinstance(bets.get("response"), list) else []
+            pinnacle = next((x for x in b_rows if "pinnacle" in str(x.get("name", "")).lower()), None)
+            handicap = [x for x in bet_rows if "handicap" in str(x.get("name", "")).lower()]
+            report["bookmaker_matches"] = b_rows
+            report["handicap_bet_matches"] = handicap
+            if not pinnacle or not handicap:
+                report["status"] = "REFERENCE_NOT_FOUND"
+            else:
+                # One tightly-scoped request is enough to prove response shape/coverage.
+                day = now.astimezone(BANGKOK).date().isoformat()
+                payload = get_fn("/odds", api_key, {
+                    "date": day,
+                    "bookmaker": pinnacle.get("id"),
+                    "bet": handicap[0].get("id"),
+                })
+                report["requests_used"] += 1
+                rows = payload.get("response") if isinstance(payload.get("response"), list) else []
+                report["date"] = day
+                report["pinnacle_bookmaker"] = pinnacle
+                report["selected_handicap_bet"] = handicap[0]
+                report["odds_results"] = len(rows)
+                report["paging"] = payload.get("paging")
+                report["api_errors"] = payload.get("errors")
+                report["sample"] = rows[:2]
+                report["status"] = "ODDS_PROBE_OK" if rows and not payload.get("errors") else "ODDS_PROBE_EMPTY"
+        except Exception as exc:
+            report["status"] = "ODDS_PROBE_FAILED"
+            report["errors"] = [f"{type(exc).__name__}: {exc}"]
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+    return report
+
+
 if __name__ == "__main__":
-    print(json.dumps(collect(), ensure_ascii=False))
+    shadow = collect()
+    if os.getenv("API_FOOTBALL_ODDS_PROBE", "").strip().lower() in {"1", "true", "yes"}:
+        print(json.dumps({"shadow": shadow, "odds_probe": probe_odds()}, ensure_ascii=False))
+    else:
+        print(json.dumps(shadow, ensure_ascii=False))
