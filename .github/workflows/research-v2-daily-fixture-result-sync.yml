@@ -31,10 +31,11 @@ jobs:
         run: python -m odds_scanner.daily_fixture_result_backfill
       - name: Backfill matured exact-ID results from forward validation entries
         run: python -m odds_scanner.v2_forward_result_backfill
-      - name: Refresh settlement performance, pattern statistics, and readiness
+      - name: Refresh settlement performance, pattern statistics, ROI, and readiness
         run: |
           python -m odds_scanner.v2_forward_performance
           python -m odds_scanner.research_v2_pattern_stats
+          python -m odds_scanner.research_v2_roi_stats
           python -m odds_scanner.v2_forward_readiness
       - name: Persist daily fixture, result, and historical pattern evidence safely
         run: |
@@ -42,7 +43,7 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           mkdir -p /tmp/daily-sync
-          paths=(reports/research_v2_daily_sync_status.json reports/research_v2_daily_result_backfill.json data/normalized/research_v2_daily_fixtures.jsonl data/normalized/oddspapi_finished_results.jsonl data/normalized/v2_forward_settlements.jsonl reports/v2_forward_result_backfill.json reports/v2_forward_performance.json reports/v2_forward_readiness.json data/normalized/research_v2_pattern_outcomes.jsonl reports/research_v2_pattern_statistics.json)
+          paths=(reports/research_v2_daily_sync_status.json reports/research_v2_daily_result_backfill.json data/normalized/research_v2_daily_fixtures.jsonl data/normalized/oddspapi_finished_results.jsonl data/normalized/v2_forward_settlements.jsonl reports/v2_forward_result_backfill.json reports/v2_forward_performance.json reports/v2_forward_readiness.json data/normalized/research_v2_pattern_outcomes.jsonl reports/research_v2_pattern_statistics.json reports/research_v2_roi_statistics.json)
           for path in "${paths[@]}"; do if test -e "$path"; then mkdir -p "/tmp/daily-sync/$(dirname "$path")"; cp "$path" "/tmp/daily-sync/$path"; fi; done
           for attempt in 1 2 3; do
             git fetch origin main
@@ -57,4 +58,4 @@ jobs:
 # 15:00 Bangkok primary, 16:00/17:00 fallbacks. One fixture request covers previous + current Football Day.
 # Completion marker prevents duplicate /fixtures requests after both coverage days are mapped.
 # Daily results use exact OddsPapi-supplied Flashscore IDs only; no fuzzy team/date matching and zero OddsPAPI result calls.
-# Historical pattern statistics are descriptive research only: MATCH/movement are not picks, edge, CLV, or profit signals.
+# Historical pattern and ROI statistics are descriptive research only: MATCH/movement are not picks, edge, CLV, or profit signals.
