@@ -83,7 +83,7 @@ def run(root=Path('.')):
     if not force and (lag is None or lag>RECOVERY_WINDOW_MINUTES): report.update(status='MISSED_SLOT',requests_used=0,planned_requests=0);_record_slot(root/SLOT_LEDGER_PATH,report,'MISSED');return _write(report,root)
     targets=_load_json(root/TARGET_PATH) or {}; selected=targets.get('tournaments') or [] if isinstance(targets,dict) else []; ids=[x.get('tournament_id') for x in selected if isinstance(x,dict) and x.get('tournament_id') is not None]
     if not ids or len(ids)!=len(set(ids)):report.update(status='TARGET_MAP_INVALID',resolved_competitions=len(ids),requests_used=0,planned_requests=0);return _write(report,root)
-    normal=(len(ids)+BATCH_SIZE-1)//BATCH_SIZE; maxplan=normal*MAX_ATTEMPTS_PER_BATCH; report.update(resolved_competitions=len(ids),planned_requests=normal,max_planned_requests_with_retries=maxplan,coverage_mode='FULL_CORE38')
+    normal=(len(ids)+BATCH_SIZE-1)//BATCH_SIZE; maxplan=normal*MAX_ATTEMPTS_PER_BATCH; report.update(resolved_competitions=len(ids),planned_requests=normal,max_planned_requests_with_retries=maxplan,coverage_mode='FULL_RESEARCH_UNIVERSE')
     key=os.getenv(ENV_KEY,'').strip()
     if not key:report.update(status='API_KEY_NOT_CONFIGURED',requests_used=0);return _write(report,root)
     try:q=summarize_account(_get('/account',key))
