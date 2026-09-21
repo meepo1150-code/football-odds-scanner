@@ -222,14 +222,18 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
     if not api_key: report["status"]="API_KEY_NOT_CONFIGURED"
     else:
         try:
-            day=local.date().isoformat(); rows=[]; page=1
-            while True:
-                payload=get_fn("/odds",api_key,{"date":day,"bookmaker":4,"page":page}); report["requests_used"]+=1
-                if payload.get("errors"): raise RuntimeError(str(payload["errors"]))
-                batch=payload.get("response") if isinstance(payload.get("response"),list) else []; rows.extend(batch)
-                paging=payload.get("paging") or {}
-                if page>=int(paging.get("total") or 1): break
-                page+=1
+            day=local.date().isoformat(); rows=[]
+            # Free plan caps page<=3. Query each locked Big-5 league independently so
+            # unrelated global fixtures cannot consume the pagination window.
+            for league_id in BIG5_LEAGUES:
+                page=1
+                while True:
+                    payload=get_fn("/odds",api_key,{"date":day,"league":league_id,"season":local.year,"bookmaker":4,"page":page}); report["requests_used"]+=1
+                    if payload.get("errors"): raise RuntimeError(str(payload["errors"]))
+                    batch=payload.get("response") if isinstance(payload.get("response"),list) else []; rows.extend(batch)
+                    paging=payload.get("paging") or {}; total=min(int(paging.get("total") or 1),3)
+                    if page>=total: break
+                    page+=1
             snaps=[]
             for item in rows:
                 league=item.get("league") or {}; fixture=item.get("fixture") or {}
