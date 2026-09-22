@@ -1,0 +1,38 @@
+name: 5Dollar Live Research V2
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['controls/five_dollar_live_scan_token.txt']
+permissions: {contents: write}
+concurrency: {group: five-dollar-live-research-v2, cancel-in-progress: false}
+jobs:
+  scan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    env:
+      FIVE_DOLLAR_FOOTBALL_API_KEY: ${{ secrets.FIVE_DOLLAR_FOOTBALL_API_KEY }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: main}
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - run: python -m pip install -e '.[dev]'
+      - run: python -m odds_scanner.five_dollar_live_research_v2
+      - name: Persist live Research V2 observations
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          paths=(reports/five_dollar_live_research_v2_status.json data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl)
+          rm -rf /tmp/fd-live && mkdir -p /tmp/fd-live
+          for f in "${paths[@]}"; do mkdir -p "/tmp/fd-live/$(dirname "$f")"; cp "$f" "/tmp/fd-live/$f"; done
+          for attempt in 1 2 3; do
+            git fetch origin main; git reset --hard origin/main
+            for f in "${paths[@]}"; do mkdir -p "$(dirname "$f")"; cp "/tmp/fd-live/$f" "$f"; git add -f -- "$f"; done
+            git diff --cached --quiet && exit 0
+            git commit -m 'data: update 5Dollar live Research V2 [skip ci]'
+            git push origin HEAD:main && exit 0
+            sleep 3
+          done
+          exit 1
