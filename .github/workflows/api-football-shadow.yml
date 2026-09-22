@@ -31,7 +31,7 @@ jobs:
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
           API_FOOTBALL_ODDS_PROBE: 'false'
           API_FOOTBALL_V2_SCAN: 'true'
-          RESEARCH_V2_FORCE_TARGET_AT: '2026-09-21T21:00:00+07:00'
+          RESEARCH_V2_FORCE_TARGET_AT: ''
         run: python -m odds_scanner.api_football_provider
       - name: Persist shadow health without mixing provider identities
         run: |
