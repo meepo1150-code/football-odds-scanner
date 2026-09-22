@@ -228,7 +228,7 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
             for league_id in BIG5_LEAGUES:
                 page=1
                 while True:
-                    payload=get_fn("/odds",api_key,{"date":day,"league":league_id,"season":local.year,"bookmaker":4,"page":page}); report["requests_used"]+=1
+                    payload=get_fn("/odds",api_key,{"date":day,"league":league_id,"bookmaker":4,"page":page}); report["requests_used"]+=1
                     if payload.get("errors"): raise RuntimeError(str(payload["errors"]))
                     batch=payload.get("response") if isinstance(payload.get("response"),list) else []; rows.extend(batch)
                     paging=payload.get("paging") or {}; total=min(int(paging.get("total") or 1),3)
