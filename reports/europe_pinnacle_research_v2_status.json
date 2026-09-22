@@ -1,16 +1,35 @@
 {
-  "schema_version": "3.0",
-  "generated_at": "2026-09-22T14:29:04.196716+00:00",
+  "schema_version": "2.9",
+  "generated_at": "2026-09-22T14:33:07.014312+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
-  "provider": "api_football",
   "bookmaker": "pinnacle",
+  "football_day": "2026-09-22",
+  "football_day_timezone": "Asia/Bangkok",
+  "football_day_window_start": "2026-09-22T05:00:00+00:00",
+  "football_day_window_end": "2026-09-22T23:00:00+00:00",
   "scheduled_target_at": "2026-09-22T21:00:00+07:00",
-  "actual_observed_at": "2026-09-22T21:29:04.196716+07:00",
+  "actual_observed_at": "2026-09-22T21:33:07.014312+07:00",
+  "schedule_lag_minutes": 33.12,
+  "recovery_window_minutes": 150,
+  "observation_timing": "LATE",
+  "force_run": true,
+  "force_target_at": "2026-09-22T21:00:00+07:00",
   "research_only": true,
   "production_promotion_allowed": false,
-  "requests_used": 1,
-  "status": "API_REQUEST_FAILED",
-  "errors": [
-    "RuntimeError: {'plan': 'Free plans do not have access to this season, try from 2022 to 2024.'}"
-  ]
+  "core_quota_reserve": 3,
+  "resolved_competitions": 5,
+  "planned_requests": 1,
+  "max_planned_requests_with_retries": 2,
+  "coverage_mode": "LOW_QUOTA_BIG5_TOP_FLIGHT",
+  "quota_remaining_before": 0,
+  "coverage_tournament_ids": [
+    17,
+    23,
+    8,
+    35,
+    34
+  ],
+  "effective_quota_reserve": 0,
+  "status": "SKIPPED_TO_PROTECT_CORE_QUOTA",
+  "requests_used": 0
 }
