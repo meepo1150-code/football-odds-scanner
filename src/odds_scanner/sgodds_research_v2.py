@@ -69,11 +69,18 @@ def run(root: Path = Path(".")) -> dict:
     snapshots, audits = [], []
     source_rows_in_day = 0
     parse_failures = 0
+    parsed_dates: dict[str, int] = {}
+    source_date_samples: list[dict] = []
     for m in markets:
         kickoff = _parse_source_dt(m.date, m.kickoff)
         if kickoff is None:
             parse_failures += 1
+            if len(source_date_samples) < 12:
+                source_date_samples.append({"date": m.date, "kickoff": m.kickoff, "league": m.league, "parsed": None})
             continue
+        parsed_dates[kickoff.date().isoformat()] = parsed_dates.get(kickoff.date().isoformat(), 0) + 1
+        if len(source_date_samples) < 12:
+            source_date_samples.append({"date": m.date, "kickoff": m.kickoff, "league": m.league, "parsed": kickoff.isoformat()})
         if not (ws <= kickoff < we):
             continue
         source_rows_in_day += 1
