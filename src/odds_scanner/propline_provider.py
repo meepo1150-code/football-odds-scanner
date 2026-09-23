@@ -6,6 +6,15 @@ from datetime import datetime, timezone
 BASE="https://api.prop-line.com/v1"
 ENV_KEY="PROPLINE_API_KEY"
 SPORTS=("soccer_epl","soccer_uefa_champs_league","soccer_uefa_europa_league","soccer_uefa_conference_league","soccer_efl_champ","soccer_germany_bundesliga","soccer_spain_la_liga","soccer_italy_serie_a","soccer_france_ligue_one","soccer_netherlands_eredivisie","soccer_japan_j_league","soccer_usa_mls","soccer_sweden_allsvenskan","soccer_turkey_super_lig")
+
+def active_soccer_sports(key):
+    try:
+        payload=_get("/sports",key)
+        items=payload.get("data") or payload.get("sports") or [] if isinstance(payload,dict) else payload
+        keys=[str(x.get("key")) for x in (items or []) if isinstance(x,dict) and x.get("active") is not False and str(x.get("key","")).startswith("soccer")]
+        return tuple(dict.fromkeys(keys)) or SPORTS
+    except Exception:
+        return SPORTS
 PREFERRED=("pinnacle","marathonbet","matchbook","betonlineag","bovada")
 
 def _get(path,key,params=None):
@@ -29,7 +38,8 @@ def fetch(key=None):
     key=key or os.getenv(ENV_KEY)
     if not key: raise RuntimeError(f"{ENV_KEY} is not configured")
     rows=[]; errors=[]
-    for sport in SPORTS:
+    sports=active_soccer_sports(key)
+    for sport in sports:
         try: events=_get(f"/sports/{sport}/odds",key,{"markets":"h2h,spreads,totals"})
         except Exception as e: errors.append(f"{sport}:{type(e).__name__}:{e}"); continue
         if isinstance(events,dict): events=events.get("data") or events.get("events") or []
