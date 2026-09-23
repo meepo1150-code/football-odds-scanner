@@ -1,23 +1,16 @@
 {
-  "schema_version": "2.9",
-  "generated_at": "2026-09-22T22:06:38.959010+00:00",
+  "schema_version": "3.0",
+  "generated_at": "2026-09-23T13:36:19.666130+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
+  "provider": "api_football",
   "bookmaker": "pinnacle",
-  "football_day": "2026-09-22",
-  "football_day_timezone": "Asia/Bangkok",
-  "football_day_window_start": "2026-09-22T05:00:00+00:00",
-  "football_day_window_end": "2026-09-22T23:00:00+00:00",
-  "scheduled_target_at": "2026-09-23T00:00:00+07:00",
-  "actual_observed_at": "2026-09-23T05:06:38.959010+07:00",
-  "schedule_lag_minutes": 306.65,
-  "recovery_window_minutes": 150,
-  "observation_timing": "OUTSIDE_WINDOW",
-  "force_run": false,
-  "force_target_at": null,
+  "scheduled_target_at": "2026-09-23T21:00:00+07:00",
+  "actual_observed_at": "2026-09-23T20:36:19.666130+07:00",
   "research_only": true,
   "production_promotion_allowed": false,
-  "core_quota_reserve": 3,
-  "status": "MISSED_SLOT",
-  "requests_used": 0,
-  "planned_requests": 0
+  "requests_used": 1,
+  "status": "API_REQUEST_FAILED",
+  "errors": [
+    "RuntimeError: {'plan': 'Free plans do not have access to this season, try from 2022 to 2024.'}"
+  ]
 }
