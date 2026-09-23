@@ -1,6 +1,9 @@
 name: Free Research V2 Scanner
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['src/odds_scanner/sgodds_research_v2.py', '.github/workflows/free-research-v2-scanner.yml']
   schedule:
     # Weekdays: 18:00 and 21:00 Bangkok.
     - cron: '0 11,14 * * 1-5'
