@@ -1,0 +1,21 @@
+name: PropLine Provider Probe
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['src/odds_scanner/propline_provider.py', '.github/workflows/propline-probe.yml']
+permissions: {contents: read}
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: main}
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - run: python -m pip install -e .
+      - name: Probe current PropLine soccer AH/O-U
+        run: python -m odds_scanner.propline_provider
