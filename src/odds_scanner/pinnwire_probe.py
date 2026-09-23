@@ -18,7 +18,7 @@ def probe():
             p0=periods.get("num_0") or periods.get("0") or {}
             sp=p0.get("spreads") or {}
             if sp: spreads+=1
-            if len(samples)<3: samples.append({"id":ev.get("id"),"home":ev.get("home"),"away":ev.get("away"),"starts":ev.get("starts") or ev.get("start_time"),"spread_keys":list(sp)[:5] if isinstance(sp,dict) else []})
+            if len(samples)<3: samples.append({"id":ev.get("id"),"home":ev.get("home"),"away":ev.get("away"),"starts":ev.get("starts") or ev.get("start_time"),"spread_keys":list(sp)[:5] if isinstance(sp,dict) else [], "period_keys":list(periods)[:8] if isinstance(periods,dict) else [], "period0":p0})
         return {"provider":"pinnwire_demo","generated_at":now,"status":"OK" if events else "NO_EVENTS","events":len(events),"events_with_spreads":spreads,"provider_generated_at":payload.get("generated_at"),"samples":samples}
     except Exception as e:
         return {"provider":"pinnwire_demo","generated_at":now,"status":"UNAVAILABLE","events":0,"errors":[f"{type(e).__name__}: {e}"]}
