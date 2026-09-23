@@ -139,7 +139,7 @@ def run(root: Path = Path(".")) -> dict:
     report.update(
         status="RESEARCH_V2_OBSERVED" if snapshots else "ZERO_USABLE_FIXTURES",
         source_rows=len(markets), source_rows_in_football_day=source_rows_in_day,
-        date_parse_failures=parse_failures, strict_snapshots_this_run=len(snapshots),
+        date_parse_failures=parse_failures, parsed_date_counts=parsed_dates, source_date_samples=source_date_samples, football_window_start=ws.isoformat(), football_window_end=we.isoformat(), strict_snapshots_this_run=len(snapshots),
         core_price_snapshots=sum(1 for s in snapshots if 1.8 <= s["ah"]["selected_side_price"] <= 2.2),
         persisted_snapshot_rows=total_s, persisted_audit_rows=total_a,
     )
