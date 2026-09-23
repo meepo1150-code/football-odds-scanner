@@ -22,9 +22,13 @@ def run(root=Path(".")):
     now=datetime.now(timezone.utc); ws,we,day=_football_day(now)
     try: rows,errors=fetch()
     except Exception as e: rows=[]; errors=[f"{type(e).__name__}: {e}"]
-    snaps=[]; audits=[]; in_day=0
+    snaps=[]; audits=[]; in_day=0; kickoff_dates={}; kickoff_samples=[]
     for m in rows:
         ko=_dt(m.get("kickoff"))
+        if ko:
+            local_date=ko.astimezone(BKK).date().isoformat()
+            kickoff_dates[local_date]=kickoff_dates.get(local_date,0)+1
+            if len(kickoff_samples)<20: kickoff_samples.append({"sport":m.get("sport"),"home":m.get("home"),"away":m.get("away"),"kickoff":m.get("kickoff"),"local":ko.astimezone(BKK).isoformat(),"bookmaker":m.get("bookmaker")})
         if not ko or not (ws.astimezone(timezone.utc)<=ko<we.astimezone(timezone.utc)): continue
         in_day+=1
         hl=m.get("ah_home_line"); hp=m.get("ah_home_odds"); al=m.get("ah_away_line"); ap=m.get("ah_away_odds")
@@ -43,6 +47,6 @@ def run(root=Path(".")):
         audits.append({"football_day":day,"fixture_id":fid,"provider":"propline","bookmaker":m["bookmaker"],"league":m["sport"],"home":m["home"],"away":m["away"],"kickoff":ko.isoformat(),"observed_at":observed,"scheduled_target_at":snap["scheduled_target_at"],"observation_timing":snap["observation_timing"],"eligibility_status":"MATCH" if core else "NOT_MATCH","eligibility_reason":"AH_CORE_PRICE" if core else "AH_OUTSIDE_CORE_PRICE","research_population":True})
     ts=_merge_jsonl(root/SNAPSHOT_PATH,snaps,("observed_at","fixture_id")) if snaps else 0
     ta=_merge_jsonl(root/AUDIT_PATH,audits,("observed_at","fixture_id")) if audits else 0
-    report={"schema_version":"1.0","provider":"propline","football_day":day,"generated_at":now.isoformat(),"status":"RESEARCH_V2_OBSERVED" if snaps else "ZERO_USABLE_FIXTURES","source_rows":len(rows),"source_rows_in_football_day":in_day,"strict_snapshots_this_run":len(snaps),"core_price_snapshots":sum(1 for s in snaps if 1.8<=float(s["ah"]["selected_side_price"])<=2.2),"persisted_snapshot_rows":ts,"persisted_audit_rows":ta,"errors":errors[:10]}
+    report={"schema_version":"1.0","provider":"propline","football_day":day,"generated_at":now.isoformat(),"status":"RESEARCH_V2_OBSERVED" if snaps else "ZERO_USABLE_FIXTURES","source_rows":len(rows),"source_rows_in_football_day":in_day,"strict_snapshots_this_run":len(snaps),"core_price_snapshots":sum(1 for s in snaps if 1.8<=float(s["ah"]["selected_side_price"])<=2.2),"persisted_snapshot_rows":ts,"persisted_audit_rows":ta,"kickoff_date_counts":kickoff_dates,"kickoff_samples":kickoff_samples,"errors":errors[:10]}
     p=root/REPORT;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(report,indent=2),encoding="utf-8");return report
 if __name__=="__main__":print(json.dumps(run()))
