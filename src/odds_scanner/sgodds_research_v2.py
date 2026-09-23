@@ -15,7 +15,7 @@ BOOKMAKER = "singapore_pools"
 
 def _parse_source_dt(date_text: str, time_text: str) -> datetime | None:
     raw = f"{date_text} {time_text}".strip()
-    for fmt in ("%Y-%m-%d %H:%M", "%d/%m/%Y %H:%M", "%d-%m-%Y %H:%M", "%d/%m/%y %H:%M"):
+    for fmt in ("%Y-%m-%d %H:%M", "%d/%m/%Y %H:%M", "%d-%m-%Y %H:%M", "%d/%m/%y %H:%M", "%d %b %Y %H:%M", "%d %B %Y %H:%M", "%d %b %y %H:%M"):
         try:
             return datetime.strptime(raw, fmt).replace(tzinfo=BKK)
         except ValueError:
