@@ -16,10 +16,13 @@ def _get(path,key,params=None):
 def _dec(v):
     try:
         x=float(v)
-        if x>1: return x
-        if x>0: return 1+100/x
-        if x<0: return 1+100/abs(x)
-    except: pass
+        # PropLine emits American prices as integers (e.g. +276 / -112),
+        # while decimal prices are already small positive floats.
+        if x >= 10: return 1 + x / 100
+        if x <= -10: return 1 + 100 / abs(x)
+        if x > 1: return x
+    except (TypeError, ValueError):
+        pass
     return None
 
 def fetch(key=None):
