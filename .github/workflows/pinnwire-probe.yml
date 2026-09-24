@@ -25,10 +25,26 @@ jobs:
         run: python -m odds_scanner.research_v2_pattern_stats
       - name: Persist Research V2 data
         run: |
+          set -euo pipefail
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add -f data/normalized/europe_pinnacle_research_v2_snapshots.jsonl reports/pinnwire_research_v2_status.json reports/research_v2_pattern_statistics.json data/normalized/research_v2_pattern_outcomes.jsonl
-          git diff --cached --quiet && exit 0
-          git commit -m 'data: collect PinnWire Research V2'
-          git pull --rebase origin main
-          git push origin HEAD:main
+          mkdir -p /tmp/pinnwire/data/normalized /tmp/pinnwire/reports
+          cp data/normalized/europe_pinnacle_research_v2_snapshots.jsonl /tmp/pinnwire/data/normalized/
+          cp data/normalized/research_v2_pattern_outcomes.jsonl /tmp/pinnwire/data/normalized/
+          cp reports/pinnwire_research_v2_status.json /tmp/pinnwire/reports/
+          cp reports/research_v2_pattern_statistics.json /tmp/pinnwire/reports/
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p data/normalized reports
+            cp /tmp/pinnwire/data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/
+            cp /tmp/pinnwire/data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/
+            cp /tmp/pinnwire/reports/pinnwire_research_v2_status.json reports/
+            cp /tmp/pinnwire/reports/research_v2_pattern_statistics.json reports/
+            git add -f data/normalized/europe_pinnacle_research_v2_snapshots.jsonl reports/pinnwire_research_v2_status.json reports/research_v2_pattern_statistics.json data/normalized/research_v2_pattern_outcomes.jsonl
+            git diff --cached --quiet && exit 0
+            git commit -m 'data: collect PinnWire Research V2'
+            git push origin HEAD:main && exit 0
+            sleep 3
+          done
+          exit 1
