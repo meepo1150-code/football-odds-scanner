@@ -236,12 +236,23 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
             # /odds does not include team names. Free API plans cannot use
             # /fixtures?ids=..., so fetch today's fixture list once and join by id.
             team_map={}
-            fp=get_fn("/fixtures",api_key,{"date":day,"timezone":"Asia/Bangkok"}); report["requests_used"]+=1
-            if fp.get("errors"): raise RuntimeError(str(fp["errors"]))
-            for fr in (fp.get("response") or []):
-                fid=str((fr.get("fixture") or {}).get("id") or "")
-                teams=fr.get("teams") or {}
-                team_map[fid]={"home":str((teams.get("home") or {}).get("name") or ""),"away":str((teams.get("away") or {}).get("name") or "")}
+            # Odds date filtering follows the API's fixture-date semantics, while
+            # Bangkok-local /fixtures?date can straddle UTC midnight. Fetch both
+            # Bangkok day and adjacent UTC day, then join strictly by fixture id.
+            fixture_dates={day}
+            for x in rows:
+                raw_date=str(((x.get("fixture") or {}).get("date")) or "")
+                try:
+                    fixture_dates.add(datetime.fromisoformat(raw_date.replace("Z","+00:00")).astimezone(timezone.utc).date().isoformat())
+                except Exception:
+                    pass
+            for fixture_day in sorted(fixture_dates):
+                fp=get_fn("/fixtures",api_key,{"date":fixture_day,"timezone":"UTC"}); report["requests_used"]+=1
+                if fp.get("errors"): raise RuntimeError(str(fp["errors"]))
+                for fr in (fp.get("response") or []):
+                    fid=str((fr.get("fixture") or {}).get("id") or "")
+                    teams=fr.get("teams") or {}
+                    team_map[fid]={"home":str((teams.get("home") or {}).get("name") or ""),"away":str((teams.get("away") or {}).get("name") or "")}
             snaps=[]
             for item in rows:
                 league=item.get("league") or {}; fixture=item.get("fixture") or {}
