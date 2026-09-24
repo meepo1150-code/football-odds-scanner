@@ -69,7 +69,7 @@ def collect():
             home=str(ev.get("home") or ""); away=str(ev.get("away") or "")
             rawid=str(ev.get("id") or "")
             stable=rawid or hashlib.sha1(f"{home}|{away}|{ko.isoformat()}".encode()).hexdigest()[:16]
-            snaps.append({"fixture_id":f"pinnwire:{stable}","provider_fixture_id":rawid or stable,"universe":"PINNACLE_RESEARCH_V2","league":ev.get("league") or ev.get("league_name"),"country":ev.get("country"),"kickoff":ko.isoformat(),"home":home,"away":away,"bookmaker":"pinnacle","provider":"pinnwire","observed_at":now.isoformat(),"source_semantics":"PINNWIRE_PREMATCH_FULL_SNAPSHOT","mainline_verified":False,"line_selection_semantics":"MOST_BALANCED_AVAILABLE_PAIR","favorite_side":fav,"ah":{"home_line":line,"home_price":hp,"away_line":-line,"away_price":ap,"selected_side_line":line if fav=="H" else -line,"selected_side_price":hp if fav=="H" else ap,"opposite_side_price":ap if fav=="H" else hp},"ou":{"line":2.5 if t25 else None,"over_price":t25.get("over"),"under_price":t25.get("under")},"promotion_eligible":False,"football_day":day,"research_only":True})
+            snaps.append({"fixture_id":f"pinnwire:{stable}","provider_fixture_id":rawid or stable,"result_match_key":hashlib.sha1(f"{home.strip().casefold()}|{away.strip().casefold()}|{ko.isoformat()}".encode()).hexdigest(),"result_match_policy":"EXACT_NORMALIZED_TEAMS_AND_KICKOFF_ONLY","universe":"PINNACLE_RESEARCH_V2","league":ev.get("league") or ev.get("league_name"),"country":ev.get("country"),"kickoff":ko.isoformat(),"home":home,"away":away,"bookmaker":"pinnacle","provider":"pinnwire","observed_at":now.isoformat(),"source_semantics":"PINNWIRE_PREMATCH_FULL_SNAPSHOT","mainline_verified":False,"line_selection_semantics":"MOST_BALANCED_AVAILABLE_PAIR","favorite_side":fav,"ah":{"home_line":line,"home_price":hp,"away_line":-line,"away_price":ap,"selected_side_line":line if fav=="H" else -line,"selected_side_price":hp if fav=="H" else ap,"opposite_side_price":ap if fav=="H" else hp},"ou":{"line":2.5 if t25 else None,"over_price":t25.get("over"),"under_price":t25.get("under")},"promotion_eligible":False,"football_day":day,"research_only":True})
         existing=[]
         if SNAP.exists():
             for line in SNAP.read_text(encoding="utf-8").splitlines():
@@ -78,7 +78,7 @@ def collect():
         keys={(str(x.get("fixture_id")),str(x.get("observed_at"))) for x in existing}
         existing.extend(x for x in snaps if (str(x.get("fixture_id")),str(x.get("observed_at"))) not in keys)
         SNAP.parent.mkdir(parents=True,exist_ok=True); SNAP.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in existing),encoding="utf-8")
-        report.update(status="RESEARCH_V2_OBSERVED" if snaps else "ZERO_FIXTURES",provider_events=len(events),strict_snapshots_this_run=len(snaps),persisted_snapshot_rows=len(existing),coverage_mode="PINNWIRE_PREMATCH_ALL_SOCCER_TODAY_BANGKOK")
+        report.update(status="RESEARCH_V2_OBSERVED" if snaps else "ZERO_FIXTURES",provider_events=len(events),strict_snapshots_this_run=len(snaps),persisted_snapshot_rows=len(existing),result_match_keys=sum(1 for x in snaps if x.get("result_match_key")),coverage_mode="PINNWIRE_PREMATCH_ALL_SOCCER_TODAY_BANGKOK")
     except Exception as e: report.update(status="API_REQUEST_FAILED",errors=[f"{type(e).__name__}: {e}"])
     REPORT.parent.mkdir(parents=True,exist_ok=True); REPORT.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8"); return report
 
