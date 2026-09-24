@@ -1,4 +1,4 @@
-name: API-Football Shadow Fixture and Result Health
+name: API-Football Legacy Shadow (Manual Only)
 on:
   workflow_dispatch:
   push:
@@ -8,11 +8,6 @@ on:
       - 'src/odds_scanner/pinnwire_result_join.py'
       - 'tests/test_api_football_provider.py'
       - '.github/workflows/api-football-shadow.yml'
-  schedule:
-    # Post-match FT refreshes: 03:15 and 09:15 Bangkok (UTC+7).
-    # Two passes catch late-night matches while staying well inside the free quota.
-    - cron: '15 20 * * *'
-    - cron: '15 2 * * *'
 permissions:
   contents: write
 concurrency:
@@ -80,5 +75,5 @@ jobs:
           exit 1
 # This is an isolated shadow feed. It never joins API-Football IDs to OddsPapi IDs by team names.
 # Each run uses 3 requests: previous date fixtures, current date fixtures, and account status.
-# Scheduled twice daily = 6 requests/day for FT/result refreshes.
+# Manual-only legacy diagnostic. No scheduled quota consumption.
 # Odds remain disabled until Big-5 coverage and market/timestamp semantics are audited.
