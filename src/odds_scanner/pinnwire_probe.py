@@ -77,7 +77,7 @@ def collect():
                 except Exception: pass
         keys={(str(x.get("fixture_id")),str(x.get("observed_at"))) for x in existing}
         existing.extend(x for x in snaps if (str(x.get("fixture_id")),str(x.get("observed_at"))) not in keys)
-        SNAP.parent.mkdir(parents=True,exist_ok=True); SNAP.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\\n" for x in existing),encoding="utf-8")
+        SNAP.parent.mkdir(parents=True,exist_ok=True); SNAP.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in existing),encoding="utf-8")
         report.update(status="RESEARCH_V2_OBSERVED" if snaps else "ZERO_FIXTURES",provider_events=len(events),strict_snapshots_this_run=len(snaps),persisted_snapshot_rows=len(existing),coverage_mode="PINNWIRE_PREMATCH_ALL_SOCCER_TODAY_BANGKOK")
     except Exception as e: report.update(status="API_REQUEST_FAILED",errors=[f"{type(e).__name__}: {e}"])
     REPORT.parent.mkdir(parents=True,exist_ok=True); REPORT.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8"); return report
