@@ -21,11 +21,13 @@ jobs:
         env:
           PINNWIRE_V2_SCAN: 'true'
         run: python -m odds_scanner.pinnwire_probe
+      - name: Rebuild statistics from latest snapshots
+        run: python -m odds_scanner.research_v2_pattern_stats
       - name: Persist Research V2 data
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add -f data/normalized/europe_pinnacle_research_v2_snapshots.jsonl reports/pinnwire_research_v2_status.json
+          git add -f data/normalized/europe_pinnacle_research_v2_snapshots.jsonl reports/pinnwire_research_v2_status.json reports/research_v2_pattern_statistics.json data/normalized/research_v2_pattern_outcomes.jsonl
           git diff --cached --quiet && exit 0
           git commit -m 'data: collect PinnWire Research V2'
           git pull --rebase origin main
