@@ -1,19 +1,16 @@
 {
   "schema_version": "3.0",
-  "generated_at": "2026-09-24T04:28:01.041217+00:00",
+  "generated_at": "2026-09-24T04:29:38.247934+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "provider": "api_football",
   "bookmaker": "pinnacle",
   "scheduled_target_at": "2026-09-24T21:00:00+07:00",
-  "actual_observed_at": "2026-09-24T11:28:01.041217+07:00",
+  "actual_observed_at": "2026-09-24T11:29:38.247934+07:00",
   "research_only": true,
   "production_promotion_allowed": false,
   "requests_used": 4,
-  "status": "RESEARCH_V2_OBSERVED",
-  "football_day": "2026-09-24",
-  "api_rows_returned": 30,
-  "football_day_fixtures": 20,
-  "strict_snapshots_this_run": 20,
-  "persisted_snapshot_rows": 266,
-  "coverage_mode": "API_FOOTBALL_GLOBAL_PINNACLE_PAGE_1_3"
+  "status": "API_REQUEST_FAILED",
+  "errors": [
+    "RuntimeError: {'plan': 'Free plans are limited to a maximum value of 3 for the Page parameter'}"
+  ]
 }
