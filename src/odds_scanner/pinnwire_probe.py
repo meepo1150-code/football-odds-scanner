@@ -49,7 +49,7 @@ def _balanced(spreads):
 
 def collect():
     now=datetime.now(timezone.utc); local=now.astimezone(BANGKOK); day=local.date().isoformat()
-    report={"schema_version":"3.1","generated_at":now.isoformat(),"classification":"PINNACLE_RESEARCH_V2","provider":"pinnwire","bookmaker":"pinnacle","football_day":day,"requests_used":1}
+    report={"schema_version":"3.2","generated_at":now.isoformat(),"classification":"PINNACLE_RESEARCH_V2","provider":"pinnwire","bookmaker":"pinnacle","football_day":day,"requests_used":1}
     try:
         url=BASE+"?"+urllib.parse.urlencode({"sport_id":1,"key":"demo"})
         req=urllib.request.Request(url,headers={"Accept":"application/json","User-Agent":"football-odds-scanner/0.1"})
@@ -67,7 +67,7 @@ def collect():
             fav="H" if line<0 else "A"
             totals=p0.get("totals") or {}; t25=totals.get("2.5") or {}
             home=str(ev.get("home") or ""); away=str(ev.get("away") or "")
-            rawid=str(ev.get("id") or "")
+            rawid=str(ev.get("event_id") or ev.get("id") or "")
             stable=rawid or hashlib.sha1(f"{home}|{away}|{ko.isoformat()}".encode()).hexdigest()[:16]
             snaps.append({"fixture_id":f"pinnwire:{stable}","provider_fixture_id":rawid or stable,"result_match_key":hashlib.sha1(f"{home.strip().casefold()}|{away.strip().casefold()}|{ko.isoformat()}".encode()).hexdigest(),"result_match_policy":"EXACT_NORMALIZED_TEAMS_AND_KICKOFF_ONLY","universe":"PINNACLE_RESEARCH_V2","league":ev.get("league") or ev.get("league_name"),"country":ev.get("country"),"kickoff":ko.isoformat(),"home":home,"away":away,"bookmaker":"pinnacle","provider":"pinnwire","observed_at":now.isoformat(),"source_semantics":"PINNWIRE_PREMATCH_FULL_SNAPSHOT","mainline_verified":False,"line_selection_semantics":"MOST_BALANCED_AVAILABLE_PAIR","favorite_side":fav,"ah":{"home_line":line,"home_price":hp,"away_line":-line,"away_price":ap,"selected_side_line":line if fav=="H" else -line,"selected_side_price":hp if fav=="H" else ap,"opposite_side_price":ap if fav=="H" else hp},"ou":{"line":2.5 if t25 else None,"over_price":t25.get("over"),"under_price":t25.get("under")},"promotion_eligible":False,"football_day":day,"research_only":True})
         existing=[]
