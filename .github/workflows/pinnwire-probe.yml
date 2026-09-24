@@ -2,8 +2,8 @@ name: PinnWire Current AH Probe
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 11,14 * * 1-5'
-    - cron: '0 5,8,11,12,13,14,15 * * 0,6'
+    - cron: '0 11,14 * * 1-5' # 18:00,21:00 Bangkok weekdays
+    - cron: '0 5,8,11,12,13,14,15 * * 0,6' # 12:00,15:00,18:00-22:00 Bangkok weekends
   push:
     branches: [main]
     paths: ['src/odds_scanner/pinnwire_probe.py','.github/workflows/pinnwire-probe.yml']
