@@ -33,15 +33,15 @@ def normalize_fixture(item: dict, observed_at: str) -> dict | None:
     league_id = league.get("id")
     fixture_id = fixture.get("id")
     kickoff = fixture.get("date")
-    if league_id not in BIG5_LEAGUES or fixture_id is None or not kickoff:
+    if fixture_id is None or not kickoff:
         return None
     short = str(status.get("short") or "")
     finished = short in {"FT", "AET", "PEN"} and goals.get("home") is not None and goals.get("away") is not None
     return {
         "provider": "api_football",
         "provider_fixture_id": str(fixture_id),
-        "league_id": int(league_id),
-        "league": str(league.get("name") or BIG5_LEAGUES[league_id]),
+        "league_id": int(league_id) if league_id is not None else None,
+        "league": str(league.get("name") or BIG5_LEAGUES.get(league_id, "")),
         "season": league.get("season"),
         "kickoff": str(kickoff),
         "home": str((teams.get("home") or {}).get("name") or ""),
@@ -81,10 +81,10 @@ def collect(root: Path = Path("."), *, key: str | None = None, today: date | Non
     api_key = (key or os.getenv(ENV_KEY, "")).strip()
     now = datetime.now(timezone.utc)
     report = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "provider": "api_football",
         "generated_at": now.isoformat(),
-        "mode": "SHADOW_FIXTURE_RESULT_ONLY",
+        "mode": "GLOBAL_FIXTURE_RESULT_ONLY",
         "promotion_eligible": False,
         "odds_ingested": False,
     }
@@ -126,7 +126,7 @@ def collect(root: Path = Path("."), *, key: str | None = None, today: date | Non
             status="SHADOW_OK" if selected and not errors else ("SHADOW_PARTIAL" if selected else "SHADOW_FAILED"),
             requests_used=3,
             dates=[day.isoformat() for day in days],
-            big5_rows_observed=len(selected),
+            fixture_rows_observed=len(selected),
             finished_rows_observed=sum(1 for row in selected if row["finished"]),
             persisted_rows=len(existing),
             request_count=current,
