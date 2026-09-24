@@ -256,7 +256,7 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
             # remaining per-run budget to query leagues not represented there.
             # One league/date request usually covers a compact competition without
             # consuming the inaccessible global page 4+.
-            max_requests=max(4,int(os.getenv("API_FOOTBALL_V2_MAX_REQUESTS","12")))
+            max_requests=max(4,int(os.getenv("API_FOOTBALL_V2_MAX_REQUESTS","12")))  # targeted coverage budget
             seen_fixture_ids={str(((x.get("fixture") or {}).get("id") or "")) for x in rows}
             global_league_ids={int((x.get("league") or {}).get("id")) for x in rows if (x.get("league") or {}).get("id") is not None}
             league_counts={}
