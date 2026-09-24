@@ -11,6 +11,7 @@ on:
       - 'reports/oddspapi_quota_health.json'
       - 'reports/research_v2_pattern_statistics.json'
       - 'reports/pinnwire_result_join_status.json'
+      - 'reports/pinnwire_research_v2_status.json'
       - 'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'
       - 'data/normalized/europe_pinnacle_research_v2_audit.jsonl'
       - 'data/normalized/oddspapi_finished_results.jsonl'
@@ -43,7 +44,7 @@ jobs:
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery.html || true
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery/index.html || true
           test -f apps/dashboard/404.html && cp apps/dashboard/404.html site/404.html || true
-          for f in europe_pinnacle_research_v2_status.json oddspapi_quota_health.json research_v2_pattern_statistics.json pinnwire_result_join_status.json; do
+          for f in europe_pinnacle_research_v2_status.json oddspapi_quota_health.json research_v2_pattern_statistics.json pinnwire_result_join_status.json pinnwire_research_v2_status.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
           for f in europe_pinnacle_research_v2_snapshots.jsonl europe_pinnacle_research_v2_audit.jsonl oddspapi_finished_results.jsonl; do
