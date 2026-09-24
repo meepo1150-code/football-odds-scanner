@@ -22,7 +22,10 @@ def _name(v):
 TEAM_EQUIV={
     "drcongo":"congodr","congorepublic":"congo",
     "alsohar":"sohar","alseeb":"seeb",
-    "uskkok":"uskokklis","kunkhalifat":"kunkhalifatfc",
+    "uskkok":"uskokklis","uskok":"uskokklis","kunkhalifat":"kunkhalifatfc",
+    "hapoelmigdalhaemeq":"hapoelmigdalhaemek","hapoelnofhagalil":"hapoelnazarethillit",
+    "elnasrcairo":"alnasr","alnasrcairo":"alnasr","elsekkaelhadid":"elsekaelhadid",
+    "soharclub":"sohar","alseeb":"alseeb","maccabikiryatatabialik":"maccabikatabialik",
 }
 def _aliases(v):
     n=_name(v); out={n}
