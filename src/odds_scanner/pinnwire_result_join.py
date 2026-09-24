@@ -19,6 +19,14 @@ def _read(p):
 def _name(v):
     s=unicodedata.normalize("NFKD",str(v or "")).encode("ascii","ignore").decode().casefold()
     return re.sub(r"[^a-z0-9]+","",s)
+def _aliases(v):
+    n=_name(v); out={n}
+    for token in ("footballclub","fc","sc"):
+        if n.endswith(token) and len(n)>len(token)+2: out.add(n[:-len(token)])
+        if n.startswith(token) and len(n)>len(token)+2: out.add(n[len(token):])
+    return {x for x in out if x}
+def _same_team(a,b):
+    return bool(_aliases(a)&_aliases(b))
 def _utc(v):
     try:
         d=datetime.fromisoformat(str(v).replace("Z","+00:00"))
@@ -26,10 +34,7 @@ def _utc(v):
     except (TypeError,ValueError):return None
 def run(root=Path("."),kickoff_tolerance_seconds=60):
     snaps=[x for x in _read(root/SNAPSHOTS_PATH) if x.get("provider")=="pinnwire"]; fixtures=_read(root/API_FIXTURES_PATH)
-    by={}
-    for f in fixtures:
-        k=(_name(f.get("home")),_name(f.get("away")))
-        if all(k):by.setdefault(k,[]).append(f)
+    # Match kickoff first, then require deterministic team aliases. This safely handles\n    # provider decoration such as "Pharco FC" vs "Pharco" without fuzzy guessing.
     latest={}
     for s in snaps:
         fid=str(s.get("fixture_id") or "")
@@ -37,9 +42,10 @@ def run(root=Path("."),kickoff_tolerance_seconds=60):
     results=[];settlements=[];unmatched=[];ambiguous=[]
     for fid,s in latest.items():
         ko=_utc(s.get("kickoff")); exact=[]
-        for f in by.get((_name(s.get("home")),_name(s.get("away"))),[]):
+        for f in fixtures:
             fk=_utc(f.get("kickoff"))
-            if ko and fk and abs((fk-ko).total_seconds())<=kickoff_tolerance_seconds:exact.append(f)
+            if not (ko and fk and abs((fk-ko).total_seconds())<=kickoff_tolerance_seconds): continue
+            if _same_team(s.get("home"),f.get("home")) and _same_team(s.get("away"),f.get("away")): exact.append(f)
         if len(exact)!=1:
             (ambiguous if len(exact)>1 else unmatched).append(fid);continue
         f=exact[0]
@@ -53,6 +59,6 @@ def run(root=Path("."),kickoff_tolerance_seconds=60):
         settlements.append({"fixture_id":fid,"football_day":s.get("football_day"),"home":s.get("home"),"away":s.get("away"),"kickoff":s.get("kickoff"),"observed_at":s.get("observed_at"),"side":s.get("favorite_side"),"line":ah.get("selected_side_line"),"odds":ah.get("selected_side_price"),"ft_home_goals":hg,"ft_away_goals":ag,"settlement":b.settlement.value,"profit_units":b.profit_units,"result_source":"API_FOOTBALL_EXACT_NORMALIZED_TEAMS_KICKOFF"})
     added=merge_normalized_results(root/RESULTS_PATH,results)
     p=root/SETTLEMENTS_PATH;p.parent.mkdir(parents=True,exist_ok=True);p.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in settlements),encoding="utf-8")
-    report={"schema_version":"1.0","classification":"PINNWIRE_RESULT_JOIN","generated_at":datetime.now(timezone.utc).isoformat(),"pinnwire_fixtures":len(latest),"api_fixture_rows":len(fixtures),"finished_exact_matches":len(results),"results_added":added,"settlements":len(settlements),"unmatched":len(unmatched),"ambiguous_rejected":len(ambiguous),"join_policy":"EXACT_NORMALIZED_TEAMS_AND_KICKOFF","kickoff_tolerance_seconds":kickoff_tolerance_seconds,"fuzzy_matching_allowed":False}
+    report={"schema_version":"1.0","classification":"PINNWIRE_RESULT_JOIN","generated_at":datetime.now(timezone.utc).isoformat(),"pinnwire_fixtures":len(latest),"api_fixture_rows":len(fixtures),"finished_exact_matches":len(results),"results_added":added,"settlements":len(settlements),"unmatched":len(unmatched),"ambiguous_rejected":len(ambiguous),"join_policy":"DETERMINISTIC_TEAM_ALIASES_AND_EXACT_KICKOFF","kickoff_tolerance_seconds":kickoff_tolerance_seconds,"fuzzy_matching_allowed":False}
     q=root/REPORT_PATH;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8");return report
 if __name__=="__main__":print(json.dumps(run(),ensure_ascii=False))
