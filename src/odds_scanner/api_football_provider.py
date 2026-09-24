@@ -233,17 +233,15 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
                 paging=payload.get("paging") or {}; total=min(int(paging.get("total") or 1),3)
                 if page>=total: break
                 page+=1
-            # /odds does not include team names. Resolve fixture IDs in one batched
-            # /fixtures request and join the canonical home/away names.
-            fixture_ids=[str((x.get("fixture") or {}).get("id")) for x in rows if (x.get("fixture") or {}).get("id") is not None]
+            # /odds does not include team names. Free API plans cannot use
+            # /fixtures?ids=..., so fetch today's fixture list once and join by id.
             team_map={}
-            if fixture_ids:
-                fp=get_fn("/fixtures",api_key,{"ids":"-".join(fixture_ids),"timezone":"Asia/Bangkok"}); report["requests_used"]+=1
-                if fp.get("errors"): raise RuntimeError(str(fp["errors"]))
-                for fr in (fp.get("response") or []):
-                    fid=str((fr.get("fixture") or {}).get("id") or "")
-                    teams=fr.get("teams") or {}
-                    team_map[fid]={"home":str((teams.get("home") or {}).get("name") or ""),"away":str((teams.get("away") or {}).get("name") or "")}
+            fp=get_fn("/fixtures",api_key,{"date":day,"timezone":"Asia/Bangkok"}); report["requests_used"]+=1
+            if fp.get("errors"): raise RuntimeError(str(fp["errors"]))
+            for fr in (fp.get("response") or []):
+                fid=str((fr.get("fixture") or {}).get("id") or "")
+                teams=fr.get("teams") or {}
+                team_map[fid]={"home":str((teams.get("home") or {}).get("name") or ""),"away":str((teams.get("away") or {}).get("name") or "")}
             snaps=[]
             for item in rows:
                 league=item.get("league") or {}; fixture=item.get("fixture") or {}
