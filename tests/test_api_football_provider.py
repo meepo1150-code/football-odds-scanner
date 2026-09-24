@@ -20,8 +20,10 @@ def test_normalizes_finished_big5_fixture():
     assert row["identity_semantics"] == "API_FOOTBALL_PROVIDER_FIXTURE_ID_EXACT"
 
 
-def test_rejects_non_big5_fixture():
-    assert normalize_fixture(fixture_payload(league_id=2), "now") is None
+def test_accepts_non_big5_fixture_for_global_result_matching():
+    row = normalize_fixture(fixture_payload(league_id=2), "now")
+    assert row is not None
+    assert row["league_id"] == 2
 
 
 def test_collect_keeps_provider_namespace_and_reports_quota(tmp_path):
@@ -37,6 +39,6 @@ def test_collect_keeps_provider_namespace_and_reports_quota(tmp_path):
     assert report["status"] == "SHADOW_OK"
     assert report["requests_used"] == 3
     assert report["request_remaining"] == 93
-    assert report["big5_rows_observed"] == 2
+    assert report["fixture_rows_observed"] == 2
     rows = (tmp_path / "data/normalized/api_football_fixtures.jsonl").read_text().splitlines()
     assert len(rows) == 2
