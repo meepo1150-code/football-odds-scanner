@@ -256,7 +256,7 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
             # remaining per-run budget to query leagues not represented there.
             # One league/date request usually covers a compact competition without
             # consuming the inaccessible global page 4+.
-            max_requests=max(4,int(os.getenv("API_FOOTBALL_V2_MAX_REQUESTS","12")))  # targeted coverage budget
+            max_requests=max(4,int(os.getenv("API_FOOTBALL_V2_MAX_REQUESTS","4")))  # free-tier global scan + fixture metadata; targeted probes disabled by default
             seen_fixture_ids={str(((x.get("fixture") or {}).get("id") or "")) for x in rows}
             global_league_ids={int((x.get("league") or {}).get("id")) for x in rows if (x.get("league") or {}).get("id") is not None}
             league_counts={}
@@ -289,7 +289,7 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
                 if added: targeted_leagues+=1
             report["targeted_leagues_with_new_odds"]=targeted_leagues
             report["targeted_query_mode"]="LEAGUE_SEASON_WITHOUT_DATE_THEN_LOCAL_DAY_FILTER"
-            report["coverage_finding"]="TARGETED_LEAGUE_QUERIES_ADDED_NO_FIXTURES_ON_FREE_PLAN"
+            report["coverage_finding"]="FREE_PLAN_GLOBAL_ODDS_CEILING_CONFIRMED; TARGETED_PROBES_DISABLED_BY_DEFAULT"
             report["league_candidates"]=len(league_counts)
             report["request_budget"]=max_requests
             snaps=[]
