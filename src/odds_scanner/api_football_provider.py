@@ -236,7 +236,6 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
             snaps=[]
             for item in rows:
                 league=item.get("league") or {}; fixture=item.get("fixture") or {}
-                if league.get("id") not in BIG5_LEAGUES: continue
                 try: ko=datetime.fromisoformat(str(fixture.get("date")).replace("Z","+00:00")).astimezone(timezone.utc)
                 except Exception: continue
                 if ko<=now: continue
