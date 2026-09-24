@@ -223,17 +223,16 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
     else:
         try:
             day=local.date().isoformat(); rows=[]
-            # Free plan caps page<=3. Query each locked Big-5 league independently so
-            # unrelated global fixtures cannot consume the pagination window.
-            for league_id in BIG5_LEAGUES:
-                page=1
-                while True:
-                    payload=get_fn("/odds",api_key,{"date":day,"league":league_id,"season":local.year,"bookmaker":4,"page":page}); report["requests_used"]+=1
-                    if payload.get("errors"): raise RuntimeError(str(payload["errors"]))
-                    batch=payload.get("response") if isinstance(payload.get("response"),list) else []; rows.extend(batch)
-                    paging=payload.get("paging") or {}; total=min(int(paging.get("total") or 1),3)
-                    if page>=total: break
-                    page+=1
+            # Free tier allows only pages 1-3. Use the global Pinnacle football feed
+            # so weekday cup/international/non-Big5 matches are not silently excluded.
+            page=1
+            while True:
+                payload=get_fn("/odds",api_key,{"date":day,"bookmaker":4,"page":page}); report["requests_used"]+=1
+                if payload.get("errors"): raise RuntimeError(str(payload["errors"]))
+                batch=payload.get("response") if isinstance(payload.get("response"),list) else []; rows.extend(batch)
+                paging=payload.get("paging") or {}; total=min(int(paging.get("total") or 1),3)
+                if page>=total: break
+                page+=1
             snaps=[]
             for item in rows:
                 league=item.get("league") or {}; fixture=item.get("fixture") or {}
@@ -264,7 +263,7 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
             keys={(str(x.get("fixture_id")),str(x.get("observed_at"))) for x in existing}
             existing.extend(x for x in snaps if (str(x.get("fixture_id")),str(x.get("observed_at"))) not in keys)
             p.parent.mkdir(parents=True,exist_ok=True); p.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\\n" for x in existing),encoding="utf-8")
-            report.update(status="RESEARCH_V2_OBSERVED" if snaps else "ZERO_FIXTURES",football_day=day,api_rows_returned=len(rows),football_day_fixtures=len(snaps),strict_snapshots_this_run=len(snaps),persisted_snapshot_rows=len(existing),coverage_mode="API_FOOTBALL_BIG5_PINNACLE")
+            report.update(status="RESEARCH_V2_OBSERVED" if snaps else "ZERO_FIXTURES",football_day=day,api_rows_returned=len(rows),football_day_fixtures=len(snaps),strict_snapshots_this_run=len(snaps),persisted_snapshot_rows=len(existing),coverage_mode="API_FOOTBALL_GLOBAL_PINNACLE_PAGE_1_3")
         except Exception as exc: report.update(status="API_REQUEST_FAILED",errors=[f"{type(exc).__name__}: {exc}"])
     rp=root/V2_REPORT_PATH; rp.parent.mkdir(parents=True,exist_ok=True); rp.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8"); return report
 
