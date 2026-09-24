@@ -289,6 +289,7 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
                 if added: targeted_leagues+=1
             report["targeted_leagues_with_new_odds"]=targeted_leagues
             report["targeted_query_mode"]="LEAGUE_SEASON_WITHOUT_DATE_THEN_LOCAL_DAY_FILTER"
+            report["coverage_finding"]="TARGETED_LEAGUE_QUERIES_ADDED_NO_FIXTURES_ON_FREE_PLAN"
             report["league_candidates"]=len(league_counts)
             report["request_budget"]=max_requests
             snaps=[]
