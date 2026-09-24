@@ -252,6 +252,44 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
                     fid=str((fr.get("fixture") or {}).get("id") or "")
                     teams=fr.get("teams") or {}
                     team_map[fid]={"home":str((teams.get("home") or {}).get("name") or ""),"away":str((teams.get("away") or {}).get("name") or "")}
+            # Free tier exposes only the first 3 global odds pages. Use the
+            # remaining per-run budget to query leagues not represented there.
+            # One league/date request usually covers a compact competition without
+            # consuming the inaccessible global page 4+.
+            max_requests=max(4,int(os.getenv("API_FOOTBALL_V2_MAX_REQUESTS","12")))
+            seen_fixture_ids={str(((x.get("fixture") or {}).get("id") or "")) for x in rows}
+            global_league_ids={int((x.get("league") or {}).get("id")) for x in rows if (x.get("league") or {}).get("id") is not None}
+            league_counts={}
+            league_seasons={}
+            for fixture_day in sorted(fixture_dates):
+                # team_map was populated above; reuse the same fixture payload shape
+                # through one cached re-read only when targeted discovery has budget.
+                if report["requests_used"]>=max_requests: break
+                dp=get_fn("/fixtures",api_key,{"date":fixture_day,"timezone":"UTC"}); report["requests_used"]+=1
+                if dp.get("errors"): continue
+                for fr in (dp.get("response") or []):
+                    lg=fr.get("league") or {}; lid=lg.get("id")
+                    if lid is None: continue
+                    lid=int(lid); league_counts[lid]=league_counts.get(lid,0)+1
+                    if lg.get("season") is not None: league_seasons[lid]=lg.get("season")
+            targeted_leagues=0
+            for lid,_ in sorted(league_counts.items(),key=lambda kv:(-kv[1],kv[0])):
+                if report["requests_used"]>=max_requests: break
+                if lid in global_league_ids: continue
+                params={"date":day,"bookmaker":4,"league":lid,"page":1}
+                if lid in league_seasons: params["season"]=league_seasons[lid]
+                lp=get_fn("/odds",api_key,params); report["requests_used"]+=1
+                if lp.get("errors"): continue
+                batch=lp.get("response") if isinstance(lp.get("response"),list) else []
+                added=0
+                for item in batch:
+                    fid=str(((item.get("fixture") or {}).get("id") or ""))
+                    if fid and fid not in seen_fixture_ids:
+                        rows.append(item); seen_fixture_ids.add(fid); added+=1
+                if added: targeted_leagues+=1
+            report["targeted_leagues_with_new_odds"]=targeted_leagues
+            report["league_candidates"]=len(league_counts)
+            report["request_budget"]=max_requests
             snaps=[]
             for item in rows:
                 league=item.get("league") or {}; fixture=item.get("fixture") or {}
@@ -296,7 +334,7 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
             keys={(str(x.get("fixture_id")),str(x.get("observed_at"))) for x in existing}
             existing.extend(x for x in snaps if (str(x.get("fixture_id")),str(x.get("observed_at"))) not in keys)
             p.parent.mkdir(parents=True,exist_ok=True); p.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in existing),encoding="utf-8")
-            report.update(status="RESEARCH_V2_OBSERVED" if snaps else "ZERO_FIXTURES",football_day=day,api_rows_returned=len(rows),football_day_fixtures=len(snaps),strict_snapshots_this_run=len(snaps),persisted_snapshot_rows=len(existing),coverage_mode="API_FOOTBALL_FREE_TIER_GLOBAL_PINNACLE_PAGE_1_3")
+            report.update(status="RESEARCH_V2_OBSERVED" if snaps else "ZERO_FIXTURES",football_day=day,api_rows_returned=len(rows),football_day_fixtures=len(snaps),strict_snapshots_this_run=len(snaps),persisted_snapshot_rows=len(existing),coverage_mode="API_FOOTBALL_FREE_TIER_GLOBAL_3_PLUS_TARGETED_LEAGUES")
         except Exception as exc: report.update(status="API_REQUEST_FAILED",errors=[f"{type(exc).__name__}: {exc}"])
     rp=root/V2_REPORT_PATH; rp.parent.mkdir(parents=True,exist_ok=True); rp.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8"); return report
 
