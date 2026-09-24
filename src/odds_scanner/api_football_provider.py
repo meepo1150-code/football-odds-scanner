@@ -276,7 +276,7 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
                     except: pass
             keys={(str(x.get("fixture_id")),str(x.get("observed_at"))) for x in existing}
             existing.extend(x for x in snaps if (str(x.get("fixture_id")),str(x.get("observed_at"))) not in keys)
-            p.parent.mkdir(parents=True,exist_ok=True); p.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\\n" for x in existing),encoding="utf-8")
+            p.parent.mkdir(parents=True,exist_ok=True); p.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in existing),encoding="utf-8")
             report.update(status="RESEARCH_V2_OBSERVED" if snaps else "ZERO_FIXTURES",football_day=day,api_rows_returned=len(rows),football_day_fixtures=len(snaps),strict_snapshots_this_run=len(snaps),persisted_snapshot_rows=len(existing),coverage_mode="API_FOOTBALL_GLOBAL_PINNACLE_PAGE_1_3")
         except Exception as exc: report.update(status="API_REQUEST_FAILED",errors=[f"{type(exc).__name__}: {exc}"])
     rp=root/V2_REPORT_PATH; rp.parent.mkdir(parents=True,exist_ok=True); rp.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8"); return report
