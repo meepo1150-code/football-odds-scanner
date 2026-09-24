@@ -233,6 +233,17 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
                 paging=payload.get("paging") or {}; total=min(int(paging.get("total") or 1),3)
                 if page>=total: break
                 page+=1
+            # /odds does not include team names. Resolve fixture IDs in one batched
+            # /fixtures request and join the canonical home/away names.
+            fixture_ids=[str((x.get("fixture") or {}).get("id")) for x in rows if (x.get("fixture") or {}).get("id") is not None]
+            team_map={}
+            if fixture_ids:
+                fp=get_fn("/fixtures",api_key,{"ids":"-".join(fixture_ids),"timezone":"Asia/Bangkok"}); report["requests_used"]+=1
+                if fp.get("errors"): raise RuntimeError(str(fp["errors"]))
+                for fr in (fp.get("response") or []):
+                    fid=str((fr.get("fixture") or {}).get("id") or "")
+                    teams=fr.get("teams") or {}
+                    team_map[fid]={"home":str((teams.get("home") or {}).get("name") or ""),"away":str((teams.get("away") or {}).get("name") or "")}
             snaps=[]
             for item in rows:
                 league=item.get("league") or {}; fixture=item.get("fixture") or {}
@@ -266,7 +277,7 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
                     else: continue
                 if oupick: _,ouline,oprice,uprice=oupick
                 else: ouline=oprice=uprice=None
-                snap={"fixture_id":f"api_football:{fixture.get('id')}","provider_fixture_id":str(fixture.get("id")),"tournament_id":league.get("id"),"universe":"PINNACLE_RESEARCH_V2","league":league.get("name"),"country":league.get("country"),"kickoff":ko.isoformat(),"home":str(((item.get("teams") or {}).get("home") or {}).get("name") or ""),"away":str(((item.get("teams") or {}).get("away") or {}).get("name") or ""),"bookmaker":"pinnacle","provider":"api_football","observed_at":now.isoformat(),"source_semantics":"CURRENT_API_FOOTBALL_PINNACLE_BALANCED_LINE_OBSERVED","mainline_verified":False,"line_selection_semantics":"MOST_BALANCED_AVAILABLE_PAIR","favorite_side":fav,"favorite_fair_probability":round(fh if fav=="H" else fa,8) if fh is not None else None,"one_x_two":{"home":hp,"draw":dp,"away":ap,"fair_home":round(fh,8) if fh is not None else None,"fair_draw":round(fd,8) if fd is not None else None,"fair_away":round(fa,8) if fa is not None else None},"ah":{"home_line":line,"home_price":hprice,"away_line":-line,"away_price":aprice,"selected_side_line":line if fav=="H" else -line,"selected_side_price":hprice if fav=="H" else aprice,"opposite_side_price":aprice if fav=="H" else hprice},"ou":{"line":ouline,"over_price":oprice,"under_price":uprice},"promotion_eligible":False,"football_day":day,"research_only":True,"scheduled_target_at":target}
+                snap={"fixture_id":f"api_football:{fixture.get('id')}","provider_fixture_id":str(fixture.get("id")),"tournament_id":league.get("id"),"universe":"PINNACLE_RESEARCH_V2","league":league.get("name"),"country":league.get("country"),"kickoff":ko.isoformat(),"home":team_map.get(str(fixture.get("id")),{}).get("home",""),"away":team_map.get(str(fixture.get("id")),{}).get("away",""),"bookmaker":"pinnacle","provider":"api_football","observed_at":now.isoformat(),"source_semantics":"CURRENT_API_FOOTBALL_PINNACLE_BALANCED_LINE_OBSERVED","mainline_verified":False,"line_selection_semantics":"MOST_BALANCED_AVAILABLE_PAIR","favorite_side":fav,"favorite_fair_probability":round(fh if fav=="H" else fa,8) if fh is not None else None,"one_x_two":{"home":hp,"draw":dp,"away":ap,"fair_home":round(fh,8) if fh is not None else None,"fair_draw":round(fd,8) if fd is not None else None,"fair_away":round(fa,8) if fa is not None else None},"ah":{"home_line":line,"home_price":hprice,"away_line":-line,"away_price":aprice,"selected_side_line":line if fav=="H" else -line,"selected_side_price":hprice if fav=="H" else aprice,"opposite_side_price":aprice if fav=="H" else hprice},"ou":{"line":ouline,"over_price":oprice,"under_price":uprice},"promotion_eligible":False,"football_day":day,"research_only":True,"scheduled_target_at":target}
                 snaps.append(snap)
             existing=[]
             p=root/V2_SNAPSHOT_PATH
