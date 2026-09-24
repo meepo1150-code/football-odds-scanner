@@ -31,7 +31,6 @@ def probe():
     except Exception as e:
         return {"provider":"pinnwire_demo","generated_at":now,"status":"UNAVAILABLE","events":0,"errors":[f"{type(e).__name__}: {e}"]}
 
-if __name__=="__main__": print(json.dumps(collect() if os.getenv("PINNWIRE_V2_SCAN","").lower() in {"1","true","yes"} else probe(),ensure_ascii=False))
 
 
 BANGKOK=ZoneInfo("Asia/Bangkok")
@@ -82,3 +81,5 @@ def collect():
         report.update(status="RESEARCH_V2_OBSERVED" if snaps else "ZERO_FIXTURES",provider_events=len(events),strict_snapshots_this_run=len(snaps),persisted_snapshot_rows=len(existing),coverage_mode="PINNWIRE_PREMATCH_ALL_SOCCER_TODAY_BANGKOK")
     except Exception as e: report.update(status="API_REQUEST_FAILED",errors=[f"{type(e).__name__}: {e}"])
     REPORT.parent.mkdir(parents=True,exist_ok=True); REPORT.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8"); return report
+
+if __name__=="__main__": print(json.dumps(collect() if os.getenv("PINNWIRE_V2_SCAN","").lower() in {"1","true","yes"} else probe(),ensure_ascii=False))
