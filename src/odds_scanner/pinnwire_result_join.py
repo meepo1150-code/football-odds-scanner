@@ -19,9 +19,16 @@ def _read(p):
 def _name(v):
     s=unicodedata.normalize("NFKD",str(v or "")).encode("ascii","ignore").decode().casefold()
     return re.sub(r"[^a-z0-9]+","",s)
+TEAM_EQUIV={
+    "drcongo":"congodr","congorepublic":"congo",
+    "alsohar":"sohar","alseeb":"seeb",
+    "uskkok":"uskokklis","kunkhalifat":"kunkhalifatfc",
+}
 def _aliases(v):
     n=_name(v); out={n}
-    for token in ("footballclub","fc","sc"):
+    if n in TEAM_EQUIV: out.add(TEAM_EQUIV[n])
+    out.update(k for k,val in TEAM_EQUIV.items() if val==n)
+    for token in ("footballclub","club","fc","sc"):
         if n.endswith(token) and len(n)>len(token)+2: out.add(n[:-len(token)])
         if n.startswith(token) and len(n)>len(token)+2: out.add(n[len(token):])
     return {x for x in out if x}
@@ -60,6 +67,6 @@ def run(root=Path("."),kickoff_tolerance_seconds=60):
         settlements.append({"fixture_id":fid,"football_day":s.get("football_day"),"home":s.get("home"),"away":s.get("away"),"kickoff":s.get("kickoff"),"observed_at":s.get("observed_at"),"side":s.get("favorite_side"),"line":ah.get("selected_side_line"),"odds":ah.get("selected_side_price"),"ft_home_goals":hg,"ft_away_goals":ag,"settlement":b.settlement.value,"profit_units":b.profit_units,"result_source":"API_FOOTBALL_EXACT_NORMALIZED_TEAMS_KICKOFF"})
     added=merge_normalized_results(root/RESULTS_PATH,results)
     p=root/SETTLEMENTS_PATH;p.parent.mkdir(parents=True,exist_ok=True);p.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in settlements),encoding="utf-8")
-    report={"schema_version":"1.0","classification":"PINNWIRE_RESULT_JOIN","generated_at":datetime.now(timezone.utc).isoformat(),"pinnwire_fixtures":len(latest),"api_fixture_rows":len(fixtures),"matched_total":matched_total,"matched_pending":matched_pending,"finished_exact_matches":len(results),"results_added":added,"settlements":len(settlements),"unmatched":len(unmatched),"ambiguous_rejected":len(ambiguous),"join_policy":"DETERMINISTIC_TEAM_ALIASES_AND_EXACT_KICKOFF","kickoff_tolerance_seconds":kickoff_tolerance_seconds,"fuzzy_matching_allowed":False}
+    report={"schema_version":"1.0","classification":"PINNWIRE_RESULT_JOIN","generated_at":datetime.now(timezone.utc).isoformat(),"pinnwire_fixtures":len(latest),"api_fixture_rows":len(fixtures),"matched_total":matched_total,"matched_pending":matched_pending,"finished_exact_matches":len(results),"results_added":added,"settlements":len(settlements),"unmatched":len(unmatched),"ambiguous_rejected":len(ambiguous),"join_policy":"CURATED_DETERMINISTIC_TEAM_ALIASES_AND_EXACT_KICKOFF","kickoff_tolerance_seconds":kickoff_tolerance_seconds,"fuzzy_matching_allowed":False}
     q=root/REPORT_PATH;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8");return report
 if __name__=="__main__":print(json.dumps(run(),ensure_ascii=False))
