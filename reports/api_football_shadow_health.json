@@ -1,21 +1,24 @@
 {
   "schema_version": "1.1",
   "provider": "api_football",
-  "generated_at": "2026-09-24T10:09:21.090947+00:00",
+  "generated_at": "2026-09-24T10:10:32.583904+00:00",
   "mode": "GLOBAL_FIXTURE_RESULT_ONLY",
   "promotion_eligible": false,
   "odds_ingested": false,
-  "status": "SHADOW_OK",
+  "status": "SHADOW_FAILED",
   "requests_used": 3,
   "dates": [
     "2026-09-23",
     "2026-09-24"
   ],
-  "fixture_rows_observed": 390,
-  "finished_rows_observed": 328,
+  "fixture_rows_observed": 0,
+  "finished_rows_observed": 0,
   "persisted_rows": 417,
-  "request_count": 70,
-  "request_limit_day": 100,
-  "request_remaining": 30,
-  "errors": []
+  "request_count": null,
+  "request_limit_day": null,
+  "request_remaining": null,
+  "errors": [
+    "2026-09-23:API_ERRORS:{'access': 'Your account is suspended, check on https://dashboard.api-football.com.'}",
+    "2026-09-24:API_ERRORS:{'access': 'Your account is suspended, check on https://dashboard.api-football.com.'}"
+  ]
 }
