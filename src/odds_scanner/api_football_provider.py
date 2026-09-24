@@ -244,15 +244,30 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
                 if not book: continue
                 bets={int(b.get("id")):b for b in book.get("bets",[]) if b.get("id") is not None}
                 one=bets.get(1); ah=bets.get(4); ou=bets.get(5)
-                if not one or not ah or not ou: continue
-                onevals={str(x.get("value")).lower():float(x.get("odd")) for x in one.get("values",[]) if x.get("odd")}
+                # AH is the hard requirement for Research V2. 1X2 and O/U enrich
+                # the row when the provider publishes them, but must not suppress
+                # an otherwise usable Asian Handicap observation.
+                if not ah: continue
+                onevals={str(x.get("value")).lower():float(x.get("odd")) for x in (one or {}).get("values",[]) if x.get("odd")}
                 hp=onevals.get("home"); dp=onevals.get("draw"); ap=onevals.get("away")
                 pick=_pick_balanced(ah.get("values",[]))
-                oupick=_pick_balanced([{"value":str(x.get("value")).replace("Over","Home").replace("Under","Away"),"odd":x.get("odd")} for x in ou.get("values",[])])
-                if not all([hp,dp,ap]) or not pick or not oupick: continue
-                inv=[1/hp,1/dp,1/ap]; tot=sum(inv); fh,fd,fa=[x/tot for x in inv]; fav="H" if fh>=fa else "A"
-                _,line,hprice,aprice=pick; _,ouline,oprice,uprice=oupick
-                snap={"fixture_id":f"api_football:{fixture.get('id')}","provider_fixture_id":str(fixture.get("id")),"tournament_id":league.get("id"),"universe":"PINNACLE_RESEARCH_V2","league":league.get("name"),"country":league.get("country"),"kickoff":ko.isoformat(),"home":None,"away":None,"bookmaker":"pinnacle","provider":"api_football","observed_at":now.isoformat(),"source_semantics":"CURRENT_API_FOOTBALL_PINNACLE_BALANCED_LINE_OBSERVED","mainline_verified":False,"line_selection_semantics":"MOST_BALANCED_AVAILABLE_PAIR","favorite_side":fav,"favorite_fair_probability":round(fh if fav=="H" else fa,8),"one_x_two":{"home":hp,"draw":dp,"away":ap,"fair_home":round(fh,8),"fair_draw":round(fd,8),"fair_away":round(fa,8)},"ah":{"home_line":line,"home_price":hprice,"away_line":-line,"away_price":aprice,"selected_side_line":line if fav=="H" else -line,"selected_side_price":hprice if fav=="H" else aprice,"opposite_side_price":aprice if fav=="H" else hprice},"ou":{"line":ouline,"over_price":oprice,"under_price":uprice},"promotion_eligible":False,"football_day":day,"research_only":True,"scheduled_target_at":target}
+                oupick=_pick_balanced([{"value":str(x.get("value")).replace("Over","Home").replace("Under","Away"),"odd":x.get("odd")} for x in (ou or {}).get("values",[])])
+                if not pick: continue
+                if all([hp,dp,ap]):
+                    inv=[1/hp,1/dp,1/ap]; tot=sum(inv); fh,fd,fa=[x/tot for x in inv]; fav="H" if fh>=fa else "A"
+                else:
+                    fh=fd=fa=None
+                    # With no 1X2 market, the balanced AH line itself identifies
+                    # the giving side. Pick'em is intentionally skipped.
+                    fav=None
+                _,line,hprice,aprice=pick
+                if fav is None:
+                    if line<0: fav="H"
+                    elif line>0: fav="A"
+                    else: continue
+                if oupick: _,ouline,oprice,uprice=oupick
+                else: ouline=oprice=uprice=None
+                snap={"fixture_id":f"api_football:{fixture.get('id')}","provider_fixture_id":str(fixture.get("id")),"tournament_id":league.get("id"),"universe":"PINNACLE_RESEARCH_V2","league":league.get("name"),"country":league.get("country"),"kickoff":ko.isoformat(),"home":None,"away":None,"bookmaker":"pinnacle","provider":"api_football","observed_at":now.isoformat(),"source_semantics":"CURRENT_API_FOOTBALL_PINNACLE_BALANCED_LINE_OBSERVED","mainline_verified":False,"line_selection_semantics":"MOST_BALANCED_AVAILABLE_PAIR","favorite_side":fav,"favorite_fair_probability":round(fh if fav=="H" else fa,8) if fh is not None else None,"one_x_two":{"home":hp,"draw":dp,"away":ap,"fair_home":round(fh,8) if fh is not None else None,"fair_draw":round(fd,8) if fd is not None else None,"fair_away":round(fa,8) if fa is not None else None},"ah":{"home_line":line,"home_price":hprice,"away_line":-line,"away_price":aprice,"selected_side_line":line if fav=="H" else -line,"selected_side_price":hprice if fav=="H" else aprice,"opposite_side_price":aprice if fav=="H" else hprice},"ou":{"line":ouline,"over_price":oprice,"under_price":uprice},"promotion_eligible":False,"football_day":day,"research_only":True,"scheduled_target_at":target}
                 snaps.append(snap)
             existing=[]
             p=root/V2_SNAPSHOT_PATH
