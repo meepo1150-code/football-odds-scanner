@@ -1,16 +1,18 @@
 import json
-from datetime import datetime, timezone
+from datetime import datetime, time, timedelta, timezone
 
 from odds_scanner import propline_research_v2 as scanner
 
 
 def test_unchanged_bookmaker_quote_still_records_new_scan_round(tmp_path, monkeypatch):
+    window_start, _, _ = scanner._football_day(datetime.now(timezone.utc))
+    kickoff = (window_start + timedelta(hours=8)).astimezone(timezone.utc)
     row = {
-        "kickoff": "2026-09-26T14:00:00Z", "sport": "soccer_epl",
+        "kickoff": kickoff.isoformat(), "sport": "soccer_epl",
         "event_id": "123", "bookmaker": "pinnacle", "home": "A", "away": "B",
         "ah_home_line": -0.5, "ah_home_odds": 1.9,
         "ah_away_line": 0.5, "ah_away_odds": 1.95,
-        "bookmaker_updated_at": "2026-09-26T09:00:00Z",
+        "bookmaker_updated_at": (kickoff - timedelta(hours=6)).isoformat(),
     }
     monkeypatch.setattr(scanner, "fetch", lambda: ([row], []))
     scanner.run(tmp_path)
