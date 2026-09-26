@@ -23,7 +23,9 @@ jobs:
         run: python -m odds_scanner.daily_fixture_result_backfill
       - name: Backfill matured forward results
         run: python -m odds_scanner.v2_forward_result_backfill
-      - name: Diagnose exact PinnWire identity coverage\n        run: python -m odds_scanner.pinnwire_identity_diagnostics\n      - name: Refresh Research V2 statistics and readiness
+      - name: Diagnose exact PinnWire identity coverage
+        run: python -m odds_scanner.pinnwire_identity_diagnostics
+      - name: Refresh Research V2 statistics and readiness
         run: |
           python -m odds_scanner.v2_forward_performance
           python -m odds_scanner.research_v2_pattern_stats
