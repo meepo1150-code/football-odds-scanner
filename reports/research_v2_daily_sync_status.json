@@ -1,22 +1,20 @@
 {
   "schema_version": "1.4",
   "classification": "RESEARCH_V2_DAILY_FIXTURE_RESULT_SYNC",
-  "generated_at": "2026-09-20T13:51:36.667731+00:00",
-  "football_day": "2026-09-20",
+  "generated_at": "2026-09-26T13:12:07.275775+00:00",
+  "football_day": "2026-09-26",
   "coverage_days": [
-    "2026-09-19",
-    "2026-09-20"
+    "2026-09-25",
+    "2026-09-26"
   ],
-  "window_start": "2026-09-20T05:00:00+00:00",
-  "window_end": "2026-09-20T23:00:00+00:00",
+  "window_start": "2026-09-26T05:00:00+00:00",
+  "window_end": "2026-09-26T23:00:00+00:00",
   "research_only": true,
   "odds_requested": false,
-  "status": "ALREADY_SYNCED",
-  "fixture_requests_used": 0,
-  "football_day_fixtures": 1398,
-  "previous_day_fixtures": 1897,
-  "persisted_fixture_rows": 4982,
-  "required_research_fixture_ids": 55,
-  "missing_research_fixture_ids": 0,
-  "completion_marker": true
+  "status": "FIXTURE_SYNC_FAILED",
+  "fixture_requests_used": 1,
+  "completion_marker": false,
+  "errors": [
+    "HTTPError: HTTP Error 429: Too Many Requests"
+  ]
 }

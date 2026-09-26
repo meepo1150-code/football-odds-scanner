@@ -2,15 +2,16 @@
   "schema_version": "1.1",
   "classification": "RESEARCH_V2_DAILY_FIXTURE_EXACT_RESULT_BACKFILL",
   "status": "RESULTS_ADDED",
-  "generated_at": "2026-09-26T06:58:57.114833+00:00",
+  "generated_at": "2026-09-26T13:12:07.927263+00:00",
   "daily_fixture_rows": 4982,
-  "existing_result_rows": 2539,
-  "eligible_exact_id_fixtures": 1606,
+  "existing_result_rows": 2565,
+  "eligible_exact_id_fixtures": 1580,
+  "research_v2_priority_ids": 798,
   "research_v2_priority_candidates": 1,
   "requests_attempted": 80,
   "research_v2_priority_attempted": 1,
-  "results_parsed": 26,
-  "results_added": 26,
+  "results_parsed": 25,
+  "results_added": 25,
   "maturity_delay_hours": 3,
   "mapping_policy": "EXACT_FLASHSCORE_ID_FROM_ODDSPAPI_DAILY_FIXTURE_ONLY_RESEARCH_V2_PRIORITY",
   "team_name_or_date_fuzzy_matching_allowed": false,
@@ -339,6 +340,12 @@
       "flashscore_id": "EHhdAkNq",
       "http_status": 200,
       "final_url": "https://www.flashscore.com/match/football/cska-sofia-dArgbmrK/septemvri-sofia-joukWniE/?mid=EHhdAkNq"
+    },
+    {
+      "fixture_id": "id1004072772653978",
+      "flashscore_id": "GCVWAjMP",
+      "http_status": 404,
+      "error": "HTTPError: HTTP Error 404: Not Found"
     }
   ],
   "research_only": true
