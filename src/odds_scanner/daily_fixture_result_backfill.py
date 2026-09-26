@@ -11,6 +11,7 @@ from .oddspapi_result_cache import RESULTS_PATH, merge_normalized_results
 
 REPORT_PATH = Path('reports/research_v2_daily_result_backfill.json')
 AUDIT_PATH = Path('data/normalized/europe_pinnacle_research_v2_audit.jsonl')
+SNAPSHOTS_PATH = Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl')
 RESULT_MATURITY_DELAY = timedelta(hours=3)
 
 
@@ -44,8 +45,8 @@ def select_candidates(fixtures:list[dict],existing_ids:set[str],*,now:datetime,p
 
 
 def run_backfill(root:Path=Path('.'),*,now:datetime|None=None,max_requests:int=80,sleep_seconds:float=0.25)->dict:
-    current=(now or datetime.now(timezone.utc)).astimezone(timezone.utc); fixtures=_load_jsonl(root/FIXTURES_PATH); existing=_load_jsonl(root/RESULTS_PATH); audit=_load_jsonl(root/AUDIT_PATH)
-    existing_ids={str(r.get('fixture_id')) for r in existing if r.get('fixture_id') is not None}; priority_ids={str(r.get('fixture_id')) for r in audit if r.get('fixture_id') is not None}
+    current=(now or datetime.now(timezone.utc)).astimezone(timezone.utc); fixtures=_load_jsonl(root/FIXTURES_PATH); existing=_load_jsonl(root/RESULTS_PATH); audit=_load_jsonl(root/AUDIT_PATH); snapshots=_load_jsonl(root/SNAPSHOTS_PATH)
+    existing_ids={str(r.get('fixture_id')) for r in existing if r.get('fixture_id') is not None}; priority_ids={str(r.get('fixture_id')) for r in audit if r.get('fixture_id') is not None} | {str(r.get('fixture_id')) for r in snapshots if r.get('fixture_id') is not None}
     candidates=select_candidates(fixtures,existing_ids,now=current,priority_ids=priority_ids); attempted=0; normalized=[]; failures=[]; priority_attempted=0
     for ref in candidates[:max_requests]:
         attempted+=1; priority_attempted+=int(bool(ref.get('research_v2_priority'))); result,meta=fetch_exact_result(ref)
@@ -54,7 +55,7 @@ def run_backfill(root:Path=Path('.'),*,now:datetime|None=None,max_requests:int=8
         else: failures.append({'fixture_id':ref.get('fixture_id'),'flashscore_id':(ref.get('external_providers') or {}).get('flashscoreId'),**meta})
         if sleep_seconds>0 and attempted<min(max_requests,len(candidates)): time.sleep(sleep_seconds)
     added=merge_normalized_results(root/RESULTS_PATH,normalized)
-    payload={'schema_version':'1.1','classification':'RESEARCH_V2_DAILY_FIXTURE_EXACT_RESULT_BACKFILL','status':'RESULTS_ADDED' if added else ('REQUESTS_ATTEMPTED_NO_NEW_RESULTS' if attempted else 'NO_MATURE_EXACT_ID_CANDIDATES'),'generated_at':current.isoformat(),'daily_fixture_rows':len(fixtures),'existing_result_rows':len(existing),'eligible_exact_id_fixtures':len(candidates),'research_v2_priority_candidates':sum(1 for r in candidates if r.get('research_v2_priority')),'requests_attempted':attempted,'research_v2_priority_attempted':priority_attempted,'results_parsed':len(normalized),'results_added':added,'maturity_delay_hours':3,'mapping_policy':'EXACT_FLASHSCORE_ID_FROM_ODDSPAPI_DAILY_FIXTURE_ONLY_RESEARCH_V2_PRIORITY','team_name_or_date_fuzzy_matching_allowed':False,'odds_api_requests':0,'failures':failures[:80],'research_only':True}
+    payload={'schema_version':'1.1','classification':'RESEARCH_V2_DAILY_FIXTURE_EXACT_RESULT_BACKFILL','status':'RESULTS_ADDED' if added else ('REQUESTS_ATTEMPTED_NO_NEW_RESULTS' if attempted else 'NO_MATURE_EXACT_ID_CANDIDATES'),'generated_at':current.isoformat(),'daily_fixture_rows':len(fixtures),'existing_result_rows':len(existing),'eligible_exact_id_fixtures':len(candidates),'research_v2_priority_ids':len(priority_ids),'research_v2_priority_candidates':sum(1 for r in candidates if r.get('research_v2_priority')),'requests_attempted':attempted,'research_v2_priority_attempted':priority_attempted,'results_parsed':len(normalized),'results_added':added,'maturity_delay_hours':3,'mapping_policy':'EXACT_FLASHSCORE_ID_FROM_ODDSPAPI_DAILY_FIXTURE_ONLY_RESEARCH_V2_PRIORITY','team_name_or_date_fuzzy_matching_allowed':False,'odds_api_requests':0,'failures':failures[:80],'research_only':True}
     path=root/REPORT_PATH; path.parent.mkdir(parents=True,exist_ok=True); path.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8'); return payload
 
 if __name__=='__main__': print(json.dumps(run_backfill(),ensure_ascii=False))
