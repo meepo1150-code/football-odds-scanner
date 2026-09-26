@@ -22,10 +22,18 @@ def run(root=Path(".")):
         fid=str(s.get("fixture_id") or "")
         if fid.startswith("pinnwire:"): unique.setdefault(fid,s)
     missing=[s for fid,s in unique.items() if fid not in settled]
-    counts=Counter(); samples=[]
+    counts=Counter(); samples=[]; offsets=Counter(); nearest_samples=[]\n    fixture_times=sorted(((_utc(f.get("kickoff")),f) for f in fixtures if _utc(f.get("kickoff")) and f.get("flashscore_id")), key=lambda x:x[0])
     for s in missing:
         ko=_utc(s.get("kickoff")); cands=by_ko.get(ko.isoformat(),[]) if ko else []
-        if not cands: counts["no_exact_kickoff_candidate"]+=1; continue
+        if not cands:
+            counts["no_exact_kickoff_candidate"]+=1
+            if ko and fixture_times:
+                nearest=min(fixture_times,key=lambda x:abs((x[0]-ko).total_seconds()))
+                delta=int((nearest[0]-ko).total_seconds()//60)
+                offsets[str(delta)]+=1
+                if len(nearest_samples)<40:
+                    nearest_samples.append({"pinnwire_fixture_id":s.get("fixture_id"),"kickoff":s.get("kickoff"),"home":s.get("home"),"away":s.get("away"),"nearest_delta_minutes":delta,"nearest_fixture_id":nearest[1].get("fixture_id"),"nearest_home":nearest[1].get("home"),"nearest_away":nearest[1].get("away"),"nearest_kickoff":nearest[1].get("kickoff")})
+            continue
         counts["has_exact_kickoff_candidate"]+=1
         exact=[f for f in cands if norm(f.get("home"))==norm(s.get("home")) and norm(f.get("away"))==norm(s.get("away"))]
         home=[f for f in cands if norm(f.get("home"))==norm(s.get("home"))]
@@ -37,6 +45,6 @@ def run(root=Path(".")):
         else: counts["same_kickoff_names_differ"]+=1
         if len(samples)<40 and not exact:
             samples.append({"pinnwire_fixture_id":s.get("fixture_id"),"kickoff":s.get("kickoff"),"pinnwire_home":s.get("home"),"pinnwire_away":s.get("away"),"candidate_count":len(cands),"candidates":[{"fixture_id":f.get("fixture_id"),"home":f.get("home"),"away":f.get("away"),"flashscore_id":f.get("flashscore_id")} for f in cands[:8]]})
-    payload={"schema_version":"1.0","classification":"PINNWIRE_IDENTITY_DIAGNOSTICS_ONLY","snapshot_unique_pinnwire":len(unique),"missing_pinnwire_results":len(missing),"daily_fixture_rows":len(fixtures),"exact_kickoff_counts":dict(counts),"mismatch_samples":samples,"settlement_effect":"NONE","fuzzy_matching_used":False}
+    payload={"schema_version":"1.0","classification":"PINNWIRE_IDENTITY_DIAGNOSTICS_ONLY","snapshot_unique_pinnwire":len(unique),"missing_pinnwire_results":len(missing),"daily_fixture_rows":len(fixtures),"exact_kickoff_counts":dict(counts),"mismatch_samples":samples,"nearest_kickoff_offset_minutes":dict(offsets.most_common(30)),"nearest_kickoff_samples":nearest_samples,"settlement_effect":"NONE","fuzzy_matching_used":False}
     (root/OUT).parent.mkdir(parents=True,exist_ok=True);(root/OUT).write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8");return payload
 if __name__=="__main__": print(json.dumps(run(),ensure_ascii=False))
