@@ -17,6 +17,11 @@ from .oddspapi_result_cache import RESULTS_PATH, merge_normalized_results
 REPORT_PATH = Path("reports/flashscore_result_backfill.json")
 SCORE_RE = re.compile(r"\s(\d+)\s*-\s*(\d+)\s*$")
 
+JSON_SCORE_PATTERNS = [
+    re.compile(r'"homeScore"\s*:\s*\{[^{}]{0,300}?"current"\s*:\s*"?(\d{1,2})"?', re.I),
+    re.compile(r'"awayScore"\s*:\s*\{[^{}]{0,300}?"current"\s*:\s*"?(\d{1,2})"?', re.I),
+]
+
 
 class MetaParser(HTMLParser):
     def __init__(self) -> None:
