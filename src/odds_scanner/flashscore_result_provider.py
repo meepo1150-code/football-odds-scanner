@@ -112,7 +112,8 @@ def parse_exact_result(ref: dict, *, final_url: str, body: bytes) -> dict | None
         "provider_evidence": {
             "og_title": og_title,
             "page_title": parser.title,
-            "og_description": parser.meta.get("og:description"),\n            "score_extraction": source,
+            "og_description": parser.meta.get("og:description"),
+            "score_extraction": source,
         },
         "promotion_eligible": False,
     }
