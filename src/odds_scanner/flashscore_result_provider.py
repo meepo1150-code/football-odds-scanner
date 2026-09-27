@@ -106,13 +106,13 @@ def parse_exact_result(ref: dict, *, final_url: str, body: bytes) -> dict | None
         "fixture_id": str(fixture_id),
         "ft_home_goals": hg,
         "ft_away_goals": ag,
-        "result_source": "FLASHSCORE_EXACT_EXTERNAL_ID_OG_TITLE_FINAL_SCORE",
+        "result_source": f"FLASHSCORE_EXACT_EXTERNAL_ID_{source}_FINAL_SCORE",
         "result_identity": "ODDSPAPI_EXTERNALPROVIDERS_FLASHSCOREID_EXACT",
         "provider_event_id": flashscore_id,
         "provider_evidence": {
             "og_title": og_title,
             "page_title": parser.title,
-            "og_description": parser.meta.get("og:description"),
+            "og_description": parser.meta.get("og:description"),\n            "score_extraction": source,
         },
         "promotion_eligible": False,
     }
