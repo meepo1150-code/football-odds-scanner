@@ -17,6 +17,11 @@ from .oddspapi_result_cache import RESULTS_PATH, merge_normalized_results
 REPORT_PATH = Path("reports/flashscore_result_backfill.json")
 SCORE_RE = re.compile(r"\s(\d+)\s*-\s*(\d+)\s*$")
 
+JSON_SCORE_PATTERNS = [
+    re.compile(r'"homeScore"\s*:\s*\{[^{}]{0,300}?"current"\s*:\s*"?(\d{1,2})"?', re.I),
+    re.compile(r'"awayScore"\s*:\s*\{[^{}]{0,300}?"current"\s*:\s*"?(\d{1,2})"?', re.I),
+]
+
 
 class MetaParser(HTMLParser):
     def __init__(self) -> None:
@@ -89,14 +94,20 @@ def parse_exact_result(ref: dict, *, final_url: str, body: bytes) -> dict | None
         return None
 
     parser = MetaParser()
-    parser.feed(body.decode("utf-8", errors="replace"))
+    text = body.decode("utf-8", errors="replace")
+    parser.feed(text)
     og_title = parser.meta.get("og:title")
-    if not og_title:
-        return None
-    match = SCORE_RE.search(og_title)
-    if not match:
-        return None
-    hg, ag = int(match.group(1)), int(match.group(2))
+    match = SCORE_RE.search(og_title or "")
+    source = "OG_TITLE"
+    if match:
+        hg, ag = int(match.group(1)), int(match.group(2))
+    else:
+        hm = JSON_SCORE_PATTERNS[0].search(text)
+        am = JSON_SCORE_PATTERNS[1].search(text)
+        if not hm or not am:
+            return None
+        hg, ag = int(hm.group(1)), int(am.group(1))
+        source = "EXACT_PAGE_STRUCTURED_SCORE"
     if hg < 0 or ag < 0 or hg > 30 or ag > 30:
         return None
 
@@ -106,13 +117,14 @@ def parse_exact_result(ref: dict, *, final_url: str, body: bytes) -> dict | None
         "fixture_id": str(fixture_id),
         "ft_home_goals": hg,
         "ft_away_goals": ag,
-        "result_source": "FLASHSCORE_EXACT_EXTERNAL_ID_OG_TITLE_FINAL_SCORE",
+        "result_source": f"FLASHSCORE_EXACT_EXTERNAL_ID_{source}_FINAL_SCORE",
         "result_identity": "ODDSPAPI_EXTERNALPROVIDERS_FLASHSCOREID_EXACT",
         "provider_event_id": flashscore_id,
         "provider_evidence": {
             "og_title": og_title,
             "page_title": parser.title,
             "og_description": parser.meta.get("og:description"),
+            "score_extraction": source,
         },
         "promotion_eligible": False,
     }
