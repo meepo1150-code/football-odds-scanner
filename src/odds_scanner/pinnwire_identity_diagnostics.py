@@ -22,7 +22,8 @@ def run(root=Path(".")):
         fid=str(s.get("fixture_id") or "")
         if fid.startswith("pinnwire:"): unique.setdefault(fid,s)
     missing=[s for fid,s in unique.items() if fid not in settled]
-    counts=Counter(); samples=[]; offsets=Counter(); nearest_samples=[]\n    fixture_times=sorted(((_utc(f.get("kickoff")),f) for f in fixtures if _utc(f.get("kickoff")) and f.get("flashscore_id")), key=lambda x:x[0])
+    counts=Counter(); samples=[]; offsets=Counter(); nearest_samples=[]
+    fixture_times=sorted(((_utc(f.get("kickoff")),f) for f in fixtures if _utc(f.get("kickoff")) and f.get("flashscore_id")), key=lambda x:x[0])
     for s in missing:
         ko=_utc(s.get("kickoff")); cands=by_ko.get(ko.isoformat(),[]) if ko else []
         if not cands:
