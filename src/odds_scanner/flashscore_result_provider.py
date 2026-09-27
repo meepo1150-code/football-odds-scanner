@@ -89,14 +89,20 @@ def parse_exact_result(ref: dict, *, final_url: str, body: bytes) -> dict | None
         return None
 
     parser = MetaParser()
-    parser.feed(body.decode("utf-8", errors="replace"))
+    text = body.decode("utf-8", errors="replace")
+    parser.feed(text)
     og_title = parser.meta.get("og:title")
-    if not og_title:
-        return None
-    match = SCORE_RE.search(og_title)
-    if not match:
-        return None
-    hg, ag = int(match.group(1)), int(match.group(2))
+    match = SCORE_RE.search(og_title or "")
+    source = "OG_TITLE"
+    if match:
+        hg, ag = int(match.group(1)), int(match.group(2))
+    else:
+        hm = JSON_SCORE_PATTERNS[0].search(text)
+        am = JSON_SCORE_PATTERNS[1].search(text)
+        if not hm or not am:
+            return None
+        hg, ag = int(hm.group(1)), int(am.group(1))
+        source = "EXACT_PAGE_STRUCTURED_SCORE"
     if hg < 0 or ag < 0 or hg > 30 or ag > 30:
         return None
 
