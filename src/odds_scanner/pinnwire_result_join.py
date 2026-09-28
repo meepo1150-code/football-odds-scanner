@@ -37,6 +37,20 @@ def _aliases(v):
     return {x for x in out if x}
 def _same_team(a,b):
     return bool(_aliases(a)&_aliases(b))
+
+def _age_token(v):
+    m=re.search(r"(?:^|[^a-z0-9])u(\d{2})(?:$|[^a-z0-9])",str(v or "").casefold())
+    return f"u{m.group(1)}" if m else None
+
+def _same_team_with_league_context(snapshot_name, fixture_name, league):
+    if _same_team(snapshot_name,fixture_name): return True
+    age=_age_token(league)
+    if not age: return False
+    # PinnWire sometimes omits the age suffix from national-team names while its league retains it.
+    # Accept only the exact normalized base name after removing that one league-confirmed suffix.
+    fn=_name(fixture_name); suffix=_name(age)
+    if fn.endswith(suffix) and fn[:-len(suffix)]==_name(snapshot_name): return True
+    return False
 def _utc(v):
     try:
         d=datetime.fromisoformat(str(v).replace("Z","+00:00"))
@@ -56,7 +70,7 @@ def run(root=Path("."),kickoff_tolerance_seconds=60):
             fk=_utc(f.get("kickoff"))
             if not (ko and fk and abs((fk-ko).total_seconds())<=kickoff_tolerance_seconds): continue
             kickoff_candidates.append(f)
-            if _same_team(s.get("home"),f.get("home")) and _same_team(s.get("away"),f.get("away")): exact.append(f)
+            if _same_team_with_league_context(s.get("home"),f.get("home"),s.get("league")) and _same_team_with_league_context(s.get("away"),f.get("away"),s.get("league")): exact.append(f)
         if len(exact)==0 and len(kickoff_candidates)==1:
             # Safe fallback: only accept a sole kickoff candidate when one team is an exact deterministic match.
             only=kickoff_candidates[0]
