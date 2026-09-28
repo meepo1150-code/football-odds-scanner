@@ -93,7 +93,7 @@ def collect(root: Path = Path("."), *, key: str | None = None, today: date | Non
         report.update(status="API_KEY_NOT_CONFIGURED", requests_used=0)
     else:
         local_day = today or now.astimezone(BANGKOK).date()
-        days = [local_day - timedelta(days=1), local_day]
+        days = [local_day - timedelta(days=1), local_day, local_day + timedelta(days=1)]
         existing = _read(root / FIXTURES_PATH)
         selected: list[dict] = []
         errors: list[str] = []
@@ -124,7 +124,7 @@ def collect(root: Path = Path("."), *, key: str | None = None, today: date | Non
         _write(root / FIXTURES_PATH, existing)
         report.update(
             status="SHADOW_OK" if selected and not errors else ("SHADOW_PARTIAL" if selected else "SHADOW_FAILED"),
-            requests_used=3,
+            requests_used=4,
             dates=[day.isoformat() for day in days],
             fixture_rows_observed=len(selected),
             finished_rows_observed=sum(1 for row in selected if row["finished"]),
