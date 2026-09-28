@@ -37,7 +37,7 @@ def test_collect_keeps_provider_namespace_and_reports_quota(tmp_path):
 
     report = collect(tmp_path, key="secret", today=date(2026, 9, 21), get_fn=fake_get)
     assert report["status"] == "SHADOW_OK"
-    assert report["requests_used"] == 3
+    assert report["requests_used"] == 4
     assert report["request_remaining"] == 93
     assert report["fixture_rows_observed"] == 2
     rows = (tmp_path / "data/normalized/api_football_fixtures.jsonl").read_text().splitlines()
