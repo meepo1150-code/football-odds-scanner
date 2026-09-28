@@ -51,9 +51,9 @@ def probe(root=Path(".")):
         fid=str(s.get("fixture_id") or "")
         if fid and fid not in have: latest[fid]=s
     days=sorted({str(x.get("football_day")) for x in latest.values() if x.get("football_day")})
-    fetched=[]; failures=[]
+    fetched=[]; failures=[]; schema_samples=[]
     for day in days:
-        try:fetched.extend(_events(_fetch(day)))
+        try:\n            payload=_fetch(day)\n            schema_samples.append({"day":day,"top_type":type(payload).__name__,"top_keys":list(payload.keys())[:30] if isinstance(payload,dict) else [],"sample":str(payload)[:3000]})\n            fetched.extend(_events(payload))
         except Exception as e:failures.append({"day":day,"error":f"{type(e).__name__}: {e}"})
     idx={}
     for e in fetched:
@@ -70,7 +70,7 @@ def probe(root=Path(".")):
             exact+=1
             if ms[0]["finished"] and isinstance(ms[0]["hg"],int) and isinstance(ms[0]["ag"],int):finished+=1
             if len(samples)<20:samples.append({"fixture_id":fid,"snapshot":[s.get("home"),s.get("away"),s.get("kickoff")],"fotmob":{"id":ms[0]["id"],"home":ms[0]["home"],"away":ms[0]["away"],"finished":ms[0]["finished"],"score":[ms[0]["hg"],ms[0]["ag"]]}})
-    report={"schema_version":"1.0","classification":"FOTMOB_PINNWIRE_EXACT_COVERAGE_PROBE","generated_at":datetime.now(timezone.utc).isoformat(),"missing_before":len(latest),"days_requested":days,"events_fetched":len(fetched),"exact_unique_matches":exact,"finished_exact_unique_matches":finished,"ambiguous_exact_matches_rejected":amb,"request_failures":failures,"matching_policy":"EXACT_NORMALIZED_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY","fuzzy_matching_used":False,"promotion_eligible":False,"samples":samples}
+    report={"schema_version":"1.0","classification":"FOTMOB_PINNWIRE_EXACT_COVERAGE_PROBE","generated_at":datetime.now(timezone.utc).isoformat(),"missing_before":len(latest),"days_requested":days,"events_fetched":len(fetched),"exact_unique_matches":exact,"finished_exact_unique_matches":finished,"ambiguous_exact_matches_rejected":amb,"request_failures":failures,"matching_policy":"EXACT_NORMALIZED_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY","fuzzy_matching_used":False,"promotion_eligible":False,"schema_samples":schema_samples,"samples":samples}
     q=root/REPORT;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8");return report
 
 if __name__=="__main__":print(json.dumps(probe(),ensure_ascii=False))
