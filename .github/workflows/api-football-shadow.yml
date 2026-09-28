@@ -83,6 +83,6 @@ jobs:
           done
           exit 1
 # This is an isolated shadow feed. It never joins API-Football IDs to OddsPapi IDs by team names.
-# Each run uses 3 requests: previous date fixtures, current date fixtures, and account status.
+# Each regular collection uses 4 requests: yesterday, today, tomorrow fixtures, and account status.
 # Scheduled identity/result guard. Two runs/day keep current fixtures and FT evidence inside the Free-plan date window.
 # Odds remain disabled until Big-5 coverage and market/timestamp semantics are audited.
