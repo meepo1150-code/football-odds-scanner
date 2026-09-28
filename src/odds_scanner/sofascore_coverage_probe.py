@@ -9,7 +9,7 @@ SNAP=Path("data/normalized/europe_pinnacle_research_v2_snapshots.jsonl")
 RESULTS=Path("data/normalized/oddspapi_finished_results.jsonl")
 REPORT=Path("reports/sofascore_pinnwire_coverage_probe.json")
 BACKFILL_REPORT=Path("reports/sofascore_pinnwire_result_backfill.json")
-BASE="https://www.sofascore.com/api/v1/sport/football/scheduled-events"
+BASE="https://api.sofascore.com/api/v1/sport/football/scheduled-events"
 
 
 def _rows(path):
