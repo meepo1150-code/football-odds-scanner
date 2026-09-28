@@ -139,6 +139,38 @@ def collect(root: Path = Path("."), *, key: str | None = None, today: date | Non
     return report
 
 
+def collect_missing_pinnwire_days(root: Path = Path("."), *, key: str | None = None, get_fn=_get) -> dict:
+    api_key=(key or os.getenv(ENV_KEY,"")).strip(); now=datetime.now(timezone.utc)
+    snaps=[]
+    p=root/V2_SNAPSHOT_PATH
+    if p.exists():
+        for line in p.read_text(encoding="utf-8").splitlines():
+            try: row=json.loads(line)
+            except json.JSONDecodeError: continue
+            if row.get("provider")=="pinnwire": snaps.append(row)
+    existing_results=set()
+    rp=root/Path("data/normalized/oddspapi_finished_results.jsonl")
+    if rp.exists():
+        for line in rp.read_text(encoding="utf-8").splitlines():
+            try: row=json.loads(line)
+            except json.JSONDecodeError: continue
+            if row.get("fixture_id"): existing_results.add(str(row["fixture_id"]))
+    missing=[s for s in snaps if str(s.get("fixture_id") or "") not in existing_results]
+    days=sorted({str(s.get("football_day") or "") for s in missing if s.get("football_day")})
+    existing=_read(root/FIXTURES_PATH); observed=[]; errors=[]
+    if api_key:
+        for day in days:
+            try:
+                payload=get_fn("/fixtures",api_key,{"date":day,"timezone":"Asia/Bangkok"})
+                if payload.get("errors"): errors.append(f"{day}:API_ERRORS:{payload.get('errors')}")
+                for item in payload.get("response") or []:
+                    row=normalize_fixture(item,now.isoformat())
+                    if row: observed.append(row); existing[row["provider_fixture_id"]]=row
+            except Exception as exc: errors.append(f"{day}:{type(exc).__name__}:{exc}")
+        _write(root/FIXTURES_PATH,existing)
+    report={"schema_version":"1.0","classification":"API_FOOTBALL_TARGETED_PINNWIRE_MISSING_DAYS","generated_at":now.isoformat(),"missing_pinnwire_snapshots":len({str(x.get("fixture_id")) for x in missing}),"dates_requested":days,"requests_used":len(days) if api_key else 0,"fixture_rows_observed":len(observed),"finished_rows_observed":sum(1 for x in observed if x.get("finished")),"persisted_rows":len(existing),"errors":errors,"status":"OK" if api_key and not errors else ("PARTIAL" if observed else "FAILED"),"research_only":True}
+    q=root/Path("reports/api_football_pinnwire_backfill.json"); q.parent.mkdir(parents=True,exist_ok=True); q.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8"); return report
+
 def probe_odds(root: Path = Path("."), *, key: str | None = None, get_fn=_get) -> dict:
     """Validate API-Football Pinnacle Asian Handicap semantics before provider promotion."""
     api_key = (key or os.getenv(ENV_KEY, "")).strip()
