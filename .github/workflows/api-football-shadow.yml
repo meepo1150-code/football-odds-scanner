@@ -1,6 +1,9 @@
-name: API-Football Legacy Shadow (Manual Only)
+name: API-Football Result Identity Guard
 on:
   workflow_dispatch:
+  schedule:
+    # Bangkok 06:40 and 18:40. Keeps fixture/result identity cached before the Free-plan history window expires.
+    - cron: '40 23,11 * * *'
   push:
     branches: [main]
     paths:
@@ -81,5 +84,5 @@ jobs:
           exit 1
 # This is an isolated shadow feed. It never joins API-Football IDs to OddsPapi IDs by team names.
 # Each run uses 3 requests: previous date fixtures, current date fixtures, and account status.
-# Manual-only legacy diagnostic. No scheduled quota consumption.
+# Scheduled identity/result guard. Two runs/day keep current fixtures and FT evidence inside the Free-plan date window.
 # Odds remain disabled until Big-5 coverage and market/timestamp semantics are audited.
