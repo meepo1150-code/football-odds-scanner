@@ -8,6 +8,7 @@ from pathlib import Path
 SNAP=Path("data/normalized/europe_pinnacle_research_v2_snapshots.jsonl")
 RESULTS=Path("data/normalized/oddspapi_finished_results.jsonl")
 REPORT=Path("reports/sofascore_pinnwire_coverage_probe.json")
+BACKFILL_REPORT=Path("reports/sofascore_pinnwire_result_backfill.json")
 BASE="https://www.sofascore.com/api/v1/sport/football/scheduled-events"
 
 
@@ -69,3 +70,36 @@ def run(root=Path(".")):
     p=root/REPORT;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8");return report
 
 if __name__=="__main__": print(json.dumps(run(),ensure_ascii=False))
+
+
+def backfill(root=Path(".")):
+    snaps=_rows(root/SNAP); existing=_rows(root/RESULTS); settled={str(x.get("fixture_id")) for x in existing}
+    missing={}
+    for s in snaps:
+        fid=str(s.get("fixture_id") or ""); ko=_utc(s.get("kickoff"))
+        if fid.startswith("pinnwire:") and fid not in settled and ko: missing.setdefault(fid,s)
+    days=sorted({_utc(s.get("kickoff")).date().isoformat() for s in missing.values()})
+    index={}; failures=[]; fetched=0
+    for day in days:
+        try: events=_fetch(day); fetched+=len(events)
+        except Exception as exc: failures.append({"day":day,"error":f"{type(exc).__name__}: {exc}"}); continue
+        for e in events:
+            ko=_utc(e.get("startTimestamp")); h=e.get("homeTeam") or {}; a=e.get("awayTeam") or {}
+            if not ko: continue
+            index.setdefault((_norm(h.get("name")),_norm(a.get("name")),ko.isoformat()),[]).append(e)
+    added=[]; ambiguous=0; nonfinal=0
+    for fid,s in missing.items():
+        ko=_utc(s.get("kickoff")); matches=index.get((_norm(s.get("home")),_norm(s.get("away")),ko.isoformat()),[])
+        if len(matches)>1: ambiguous+=1; continue
+        if len(matches)!=1: continue
+        e=matches[0]; status=str((e.get("status") or {}).get("type") or "").lower()
+        hs=(e.get("homeScore") or {}).get("current"); aw=(e.get("awayScore") or {}).get("current")
+        if status not in {"finished","afterextra","afterpenalties"} or not isinstance(hs,(int,float)) or not isinstance(aw,(int,float)):
+            nonfinal+=1; continue
+        added.append({"fixture_id":fid,"ft_home_goals":int(hs),"ft_away_goals":int(aw),"result_source":"SOFASCORE_EXACT_UNIQUE_HOME_AWAY_KICKOFF","result_identity":"PINNWIRE_EXACT_HOME_AWAY_UTC_KICKOFF","provider_event_id":e.get("id"),"promotion_eligible":False})
+    if added:
+        byid={str(x.get("fixture_id")):x for x in existing if x.get("fixture_id")}
+        for x in added: byid[x["fixture_id"]]=x
+        p=root/RESULTS; p.write_text("\n".join(json.dumps(x,ensure_ascii=False,separators=(",",":")) for x in byid.values())+"\n",encoding="utf-8")
+    report={"schema_version":"1.0","classification":"SOFASCORE_PINNWIRE_EXACT_RESULT_BACKFILL","missing_before":len(missing),"days_requested":len(days),"events_fetched":fetched,"results_added":len(added),"ambiguous_exact_matches_rejected":ambiguous,"exact_but_not_final":nonfinal,"request_failures":failures,"matching_policy":"EXACT_STRIP_CASEFOLD_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY","fuzzy_matching_used":False,"promotion_eligible":False}
+    p=root/BACKFILL_REPORT; p.parent.mkdir(parents=True,exist_ok=True); p.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8"); return report
