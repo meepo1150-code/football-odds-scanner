@@ -1,6 +1,9 @@
 name: Research V2 Free Result Backfill
 on:
   workflow_dispatch:
+  schedule:
+    # 08:15 and 14:15 Bangkok daily: repeatedly collect FT for already-scanned matured fixtures without OddsPapi quota.
+    - cron: '15 1,7 * * *'
   push:
     branches: [main]
     paths: ['controls/research_v2_free_result_backfill_token.txt']
