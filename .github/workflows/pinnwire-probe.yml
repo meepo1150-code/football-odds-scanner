@@ -48,7 +48,7 @@ jobs:
             cp /tmp/pinnwire/reports/research_v2_movement_status.json reports/
             cp /tmp/pinnwire/data/normalized/research_v2_movement_features.jsonl data/normalized/
             git add -f data/normalized/europe_pinnacle_research_v2_snapshots.jsonl reports/pinnwire_research_v2_status.json reports/research_v2_pattern_statistics.json reports/research_v2_movement_status.json data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
-            git diff --cached --quiet && exit 0
+            git diff --cached --quiet && break
             git commit -m 'data: collect PinnWire Research V2'
             git push origin HEAD:main && break
             sleep 3
