@@ -15,7 +15,7 @@ def active_soccer_sports(key):
         return tuple(dict.fromkeys(keys)) or SPORTS
     except Exception:
         return SPORTS
-PREFERRED=("pinnacle","marathonbet","matchbook","betonlineag","bovada")
+PREFERRED=("pinnacle",)
 
 def _get(path,key,params=None):
     q=dict(params or {}); q["apiKey"]=key
