@@ -28,6 +28,8 @@ jobs:
         run: python -c "from odds_scanner.daily_fixture_result_backfill import run_backfill; import json; print(json.dumps(run_backfill(max_requests=20), ensure_ascii=False))"
       - name: Backfill matured forward results
         run: python -m odds_scanner.v2_forward_result_backfill
+      - name: Backfill exact FotMob results
+        run: python -m odds_scanner.fotmob_result_backfill
       - name: Backfill exact OpenLigaDB secondary results
         run: python -m odds_scanner.openligadb_result_backfill
       - name: Diagnose exact PinnWire identity coverage
@@ -43,7 +45,7 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           mkdir -p /tmp/free-result-backfill
-          paths=(reports/sofascore_pinnwire_result_backfill.json reports/openligadb_result_backfill.json reports/pinnwire_identity_diagnostics.json reports/research_v2_daily_result_backfill.json data/normalized/oddspapi_finished_results.jsonl data/normalized/v2_forward_settlements.jsonl reports/v2_forward_result_backfill.json reports/v2_forward_performance.json reports/v2_forward_readiness.json data/normalized/research_v2_pattern_outcomes.jsonl reports/research_v2_pattern_statistics.json)
+          paths=(reports/sofascore_pinnwire_result_backfill.json reports/fotmob_result_backfill.json reports/openligadb_result_backfill.json reports/pinnwire_identity_diagnostics.json reports/research_v2_daily_result_backfill.json data/normalized/oddspapi_finished_results.jsonl data/normalized/v2_forward_settlements.jsonl reports/v2_forward_result_backfill.json reports/v2_forward_performance.json reports/v2_forward_readiness.json data/normalized/research_v2_pattern_outcomes.jsonl reports/research_v2_pattern_statistics.json)
           for path in "${paths[@]}"; do if test -e "$path"; then mkdir -p "/tmp/free-result-backfill/$(dirname "$path")"; cp "$path" "/tmp/free-result-backfill/$path"; fi; done
           for attempt in 1 2 3; do
             git fetch origin main
