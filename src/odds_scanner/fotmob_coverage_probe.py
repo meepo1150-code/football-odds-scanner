@@ -28,9 +28,13 @@ def _utc(v):
     except Exception:return None
 
 def _fetch(day):
-    q=urllib.parse.urlencode({"date":day,"ccode3":"THA","timezone":"Asia/Bangkok"})
+    compact=day.replace("-","")
+    q=urllib.parse.urlencode({"date":compact,"ccode3":"THA","timezone":"Asia/Bangkok"})
     req=urllib.request.Request(BASE+"?"+q,headers={"User-Agent":"Mozilla/5.0","Accept":"application/json"})
-    with urllib.request.urlopen(req,timeout=30) as r:return json.loads(r.read().decode())
+    with urllib.request.urlopen(req,timeout=30) as r:
+        raw=r.read()
+        text=raw.decode("utf-8","replace")
+        return {"_http_status":getattr(r,"status",None),"_content_type":r.headers.get("Content-Type"),"_final_url":r.geturl(),"_raw_len":len(raw),"_raw_prefix":text[:500],"_json":json.loads(text) if text.strip() else None}
 
 def _events(payload):
     leagues=payload.get("leagues") if isinstance(payload,dict) else []
@@ -54,8 +58,9 @@ def probe(root=Path(".")):
     fetched=[]; failures=[]; schema_samples=[]
     for day in days:
         try:
-            payload=_fetch(day)
-            schema_samples.append({"day":day,"top_type":type(payload).__name__,"top_keys":list(payload.keys())[:30] if isinstance(payload,dict) else [],"sample":str(payload)[:3000]})
+            meta=_fetch(day)
+            payload=meta.get("_json")
+            schema_samples.append({"day":day,"http_status":meta.get("_http_status"),"content_type":meta.get("_content_type"),"final_url":meta.get("_final_url"),"raw_len":meta.get("_raw_len"),"raw_prefix":meta.get("_raw_prefix"),"top_type":type(payload).__name__,"top_keys":list(payload.keys())[:30] if isinstance(payload,dict) else [],"sample":str(payload)[:3000]})
             fetched.extend(_events(payload))
         except Exception as e:failures.append({"day":day,"error":f"{type(e).__name__}: {e}"})
     idx={}
