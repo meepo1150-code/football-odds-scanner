@@ -48,9 +48,18 @@ jobs:
             cp /tmp/pinnwire/reports/research_v2_movement_status.json reports/
             cp /tmp/pinnwire/data/normalized/research_v2_movement_features.jsonl data/normalized/
             git add -f data/normalized/europe_pinnacle_research_v2_snapshots.jsonl reports/pinnwire_research_v2_status.json reports/research_v2_pattern_statistics.json reports/research_v2_movement_status.json data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
-            git diff --cached --quiet && exit 0
+            git diff --cached --quiet && break
             git commit -m 'data: collect PinnWire Research V2'
-            git push origin HEAD:main && exit 0
+            git push origin HEAD:main && break
             sleep 3
           done
-          exit 1
+          git fetch origin main
+          git reset --hard origin/main
+          python - <<'PY'
+          import json,sys
+          p='reports/pinnwire_research_v2_status.json'
+          r=json.load(open(p,encoding='utf-8'))
+          ok=r.get('status') in {'RESEARCH_V2_OBSERVED','ZERO_FIXTURES'}
+          print(json.dumps({'operational_status':r.get('status'),'requests_used':r.get('requests_used'),'request_attempts':r.get('request_attempts'),'rate_limit_responses':r.get('rate_limit_responses')},ensure_ascii=False))
+          sys.exit(0 if ok else 1)
+          PY
