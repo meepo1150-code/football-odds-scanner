@@ -69,9 +69,9 @@ def _safe_club_key(v):
     return n
 def _category(v):
     s=str(v or "").casefold()
-    m=re.search(r"\\bu\\s*-?(\\d{2})\\b",s)
+    m=re.search(r"\bu\s*-?(\d{2})\b",s)
     if m: return "u"+m.group(1)
-    if re.search(r"women|woman|female|feminin|femenin|kvinner|dam|\\(w\\)",s): return "women"
+    if re.search(r"women|woman|female|feminin|femenin|kvinner|dam|\(w\)",s): return "women"
     return None
 
 def _category_base_key(v, category):
