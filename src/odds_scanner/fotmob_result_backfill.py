@@ -6,6 +6,12 @@ SNAP=Path("data/normalized/europe_pinnacle_research_v2_snapshots.jsonl")
 RESULTS=Path("data/normalized/oddspapi_finished_results.jsonl")
 REPORT=Path("reports/fotmob_result_backfill.json")
 BASE="https://www.fotmob.com/api/data/matches"
+TEAM_ALIASES={
+    "riversunited":"riversunitedfc",
+    "unitedarabemirates":"uae",
+    "congorepublic":"congo",
+    "hapoelacre":"hapoelironiakko",
+}
 def _read(p):
     out=[]
     if not p.exists(): return out
@@ -17,6 +23,9 @@ def _read(p):
 def _norm(v):
     s=unicodedata.normalize("NFKD",str(v or "")).encode("ascii","ignore").decode().casefold()
     return re.sub(r"[^a-z0-9]+","",s)
+def _team_key(v):
+    n=_norm(v)
+    return TEAM_ALIASES.get(n,n)
 def _utc(v):
     try:
         d=datetime.fromisoformat(str(v).replace("Z","+00:00"))
@@ -60,13 +69,13 @@ def run(root=Path(".")):
     idx={}; kickoff_idx={}
     for e in events:
         if e["kickoff"]:
-            idx.setdefault((_norm(e["home"]),_norm(e["away"]),e["kickoff"].isoformat()),[]).append(e)
+            idx.setdefault((_team_key(e["home"]),_team_key(e["away"]),e["kickoff"].isoformat()),[]).append(e)
             kickoff_idx.setdefault(e["kickoff"].isoformat(),[]).append(e)
     added=[];ambiguous=0; exact_unfinished=0; no_exact_identity=0; kickoff_candidate_only=0; candidate_samples=[]
     for fid,s in missing.items():
         ko=_utc(s.get("kickoff"))
         if not ko:continue
-        ms=idx.get((_norm(s.get("home")),_norm(s.get("away")),ko.isoformat()),[])
+        ms=idx.get((_team_key(s.get("home")),_team_key(s.get("away")),ko.isoformat()),[])
         if len(ms)>1:ambiguous+=1;continue
         if len(ms)!=1:
             no_exact_identity+=1
@@ -80,11 +89,11 @@ def run(root=Path(".")):
         if not e["finished"] or not isinstance(e["hg"],int) or not isinstance(e["ag"],int):
             exact_unfinished+=1
             continue
-        added.append({"fixture_id":fid,"ft_home_goals":e["hg"],"ft_away_goals":e["ag"],"result_source":"FOTMOB_DAILY_MATCH_EXACT_IDENTITY","result_identity":"EXACT_NORMALIZED_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE","provider_event_id":e["id"],"provider_evidence":{"provider":"fotmob","event_id":e["id"],"home":e["home"],"away":e["away"],"kickoff":e["kickoff"].isoformat(),"league":e["league"]},"promotion_eligible":False,"research_only":True})
+        added.append({"fixture_id":fid,"ft_home_goals":e["hg"],"ft_away_goals":e["ag"],"result_source":"FOTMOB_DAILY_MATCH_EXACT_IDENTITY","result_identity":"EXACT_OR_EXPLICIT_ALIAS_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE","provider_event_id":e["id"],"provider_evidence":{"provider":"fotmob","event_id":e["id"],"home":e["home"],"away":e["away"],"kickoff":e["kickoff"].isoformat(),"league":e["league"]},"promotion_eligible":False,"research_only":True})
     rows={str(x.get("fixture_id")):x for x in existing if x.get("fixture_id")}
     for x in added:rows.setdefault(x["fixture_id"],x)
     if added:
         p=root/RESULTS;p.parent.mkdir(parents=True,exist_ok=True);p.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in rows.values()),encoding="utf-8")
-    report={"schema_version":"1.0","classification":"FOTMOB_EXACT_RESULT_BACKFILL","missing_before":len(missing),"days_requested":days,"events_fetched":len(events),"exact_results_added":len(added),"ambiguous_exact_matches_rejected":ambiguous,"exact_identity_unfinished":exact_unfinished,"no_exact_identity":no_exact_identity,"kickoff_candidate_only":kickoff_candidate_only,"kickoff_candidate_samples":candidate_samples,"request_failures":failures,"matching_policy":"EXACT_NORMALIZED_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY","fuzzy_matching_used":False,"promotion_eligible":False}
+    report={"schema_version":"1.0","classification":"FOTMOB_EXACT_RESULT_BACKFILL","missing_before":len(missing),"days_requested":days,"events_fetched":len(events),"exact_results_added":len(added),"ambiguous_exact_matches_rejected":ambiguous,"exact_identity_unfinished":exact_unfinished,"no_exact_identity":no_exact_identity,"kickoff_candidate_only":kickoff_candidate_only,"kickoff_candidate_samples":candidate_samples,"request_failures":failures,"matching_policy":"EXACT_OR_EXPLICIT_ALIAS_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY","fuzzy_matching_used":False,"promotion_eligible":False}
     p=root/REPORT;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8");return report
 if __name__=="__main__":print(json.dumps(run(),ensure_ascii=False))
