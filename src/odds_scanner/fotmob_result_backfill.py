@@ -14,6 +14,8 @@ TEAM_ALIASES={
     "extremadura":"cdextremadura",
     "zamoracf":"zamora",
     "nantongzhiyun":"nantongzhiyunfc",
+    "uralyekaterinburg":"ural",
+    "halifaxtown":"fchalifaxtown",
 }
 def _read(p):
     out=[]
