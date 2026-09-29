@@ -62,7 +62,7 @@ def run(root=Path(".")):
         if e["kickoff"]:
             idx.setdefault((_norm(e["home"]),_norm(e["away"]),e["kickoff"].isoformat()),[]).append(e)
             kickoff_idx.setdefault(e["kickoff"].isoformat(),[]).append(e)
-    added=[];ambiguous=0; exact_unfinished=0; no_exact_identity=0; kickoff_candidate_only=0
+    added=[];ambiguous=0; exact_unfinished=0; no_exact_identity=0; kickoff_candidate_only=0; candidate_samples=[]
     for fid,s in missing.items():
         ko=_utc(s.get("kickoff"))
         if not ko:continue
@@ -70,7 +70,11 @@ def run(root=Path(".")):
         if len(ms)>1:ambiguous+=1;continue
         if len(ms)!=1:
             no_exact_identity+=1
-            if kickoff_idx.get(ko.isoformat()): kickoff_candidate_only+=1
+            candidates=kickoff_idx.get(ko.isoformat(),[])
+            if candidates:
+                kickoff_candidate_only+=1
+                if len(candidate_samples)<100:
+                    candidate_samples.append({"fixture_id":fid,"snapshot":{"home":s.get("home"),"away":s.get("away"),"kickoff":ko.isoformat()},"fotmob_candidates":[{"id":e.get("id"),"home":e.get("home"),"away":e.get("away"),"finished":e.get("finished"),"score":[e.get("hg"),e.get("ag")],"league":e.get("league")} for e in candidates]})
             continue
         e=ms[0]
         if not e["finished"] or not isinstance(e["hg"],int) or not isinstance(e["ag"],int):
@@ -81,6 +85,6 @@ def run(root=Path(".")):
     for x in added:rows.setdefault(x["fixture_id"],x)
     if added:
         p=root/RESULTS;p.parent.mkdir(parents=True,exist_ok=True);p.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in rows.values()),encoding="utf-8")
-    report={"schema_version":"1.0","classification":"FOTMOB_EXACT_RESULT_BACKFILL","missing_before":len(missing),"days_requested":days,"events_fetched":len(events),"exact_results_added":len(added),"ambiguous_exact_matches_rejected":ambiguous,"exact_identity_unfinished":exact_unfinished,"no_exact_identity":no_exact_identity,"kickoff_candidate_only":kickoff_candidate_only,"request_failures":failures,"matching_policy":"EXACT_NORMALIZED_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY","fuzzy_matching_used":False,"promotion_eligible":False}
+    report={"schema_version":"1.0","classification":"FOTMOB_EXACT_RESULT_BACKFILL","missing_before":len(missing),"days_requested":days,"events_fetched":len(events),"exact_results_added":len(added),"ambiguous_exact_matches_rejected":ambiguous,"exact_identity_unfinished":exact_unfinished,"no_exact_identity":no_exact_identity,"kickoff_candidate_only":kickoff_candidate_only,"kickoff_candidate_samples":candidate_samples,"request_failures":failures,"matching_policy":"EXACT_NORMALIZED_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY","fuzzy_matching_used":False,"promotion_eligible":False}
     p=root/REPORT;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8");return report
 if __name__=="__main__":print(json.dumps(run(),ensure_ascii=False))
