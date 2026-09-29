@@ -36,7 +36,7 @@ def run(root=Path('.')):
     groups=defaultdict(list)
     source=_rows(root/SNAP)
     source_all=list(source)
-    source=[r for r in source if str(r.get('provider') or '').lower()!='propline']
+    source=[r for r in source if str(r.get('provider') or '').lower()!='propline' or (r.get('mainline_verified') is True and r.get('source_semantics')=='PROPLINE_PINNACLE_TWO_SIDED_CORE_MAINLINE' and 1.80<=float((r.get('ah') or {}).get('selected_side_price',0))<=2.20)]
     quarantined=len(source_all)-len(source)
     for r in source: groups[str(r.get('fixture_id'))].append(r)
     features=[]
