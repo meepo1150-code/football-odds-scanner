@@ -42,7 +42,8 @@ def _read(p):
         if isinstance(x,dict):out.append(x)
     return out
 def _norm(v):
-    s=unicodedata.normalize("NFKD",str(v or "")).encode("ascii","ignore").decode().casefold()
+    raw=str(v or "").casefold().translate(str.maketrans({"ø":"o","æ":"ae","å":"a","ð":"d","þ":"th","ł":"l","đ":"d"}))
+    s=unicodedata.normalize("NFKD",raw).encode("ascii","ignore").decode().casefold()
     return re.sub(r"[^a-z0-9]+","",s)
 def _team_key(v):
     n=_norm(v)
