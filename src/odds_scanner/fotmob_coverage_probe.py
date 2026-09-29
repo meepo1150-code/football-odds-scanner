@@ -53,7 +53,10 @@ def probe(root=Path(".")):
     days=sorted({str(x.get("football_day")) for x in latest.values() if x.get("football_day")})
     fetched=[]; failures=[]; schema_samples=[]
     for day in days:
-        try:\n            payload=_fetch(day)\n            schema_samples.append({"day":day,"top_type":type(payload).__name__,"top_keys":list(payload.keys())[:30] if isinstance(payload,dict) else [],"sample":str(payload)[:3000]})\n            fetched.extend(_events(payload))
+        try:
+            payload=_fetch(day)
+            schema_samples.append({"day":day,"top_type":type(payload).__name__,"top_keys":list(payload.keys())[:30] if isinstance(payload,dict) else [],"sample":str(payload)[:3000]})
+            fetched.extend(_events(payload))
         except Exception as e:failures.append({"day":day,"error":f"{type(e).__name__}: {e}"})
     idx={}
     for e in fetched:
