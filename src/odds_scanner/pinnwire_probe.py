@@ -1,5 +1,5 @@
 from __future__ import annotations
-import json, urllib.parse, urllib.request, hashlib, os
+import json, urllib.parse, urllib.request, urllib.error, hashlib, os, time
 from pathlib import Path
 from zoneinfo import ZoneInfo
 from datetime import datetime, timezone
@@ -37,6 +37,28 @@ BANGKOK=ZoneInfo("Asia/Bangkok")
 SNAP=Path("data/normalized/europe_pinnacle_research_v2_snapshots.jsonl")
 REPORT=Path("reports/pinnwire_research_v2_status.json")
 
+def _fetch_payload(max_attempts=3, sleep=time.sleep):
+    url=BASE+"?"+urllib.parse.urlencode({"sport_id":1,"key":"demo"})
+    req=urllib.request.Request(url,headers={"Accept":"application/json","User-Agent":"football-odds-scanner/0.1"})
+    attempts=0; rate_limits=0
+    while attempts < max_attempts:
+        attempts += 1
+        try:
+            with urllib.request.urlopen(req,timeout=30) as r:
+                return json.loads(r.read().decode()), attempts, rate_limits
+        except urllib.error.HTTPError as e:
+            if e.code == 429:
+                rate_limits += 1
+                if attempts < max_attempts:
+                    retry_after=e.headers.get("Retry-After") if e.headers else None
+                    try: delay=max(5,min(60,int(retry_after)))
+                    except (TypeError,ValueError): delay=15*attempts
+                    sleep(delay); continue
+            elif 500 <= e.code < 600 and attempts < max_attempts:
+                sleep(5*attempts); continue
+            raise
+    raise RuntimeError("PinnWire retry budget exhausted")
+
 def _balanced(spreads):
     best=None
     for _,v in (spreads or {}).items():
@@ -51,9 +73,10 @@ def collect():
     now=datetime.now(timezone.utc); local=now.astimezone(BANGKOK); day=local.date().isoformat()
     report={"schema_version":"3.2","generated_at":now.isoformat(),"classification":"PINNACLE_RESEARCH_V2","provider":"pinnwire","bookmaker":"pinnacle","football_day":day,"requests_used":1}
     try:
-        url=BASE+"?"+urllib.parse.urlencode({"sport_id":1,"key":"demo"})
-        req=urllib.request.Request(url,headers={"Accept":"application/json","User-Agent":"football-odds-scanner/0.1"})
-        with urllib.request.urlopen(req,timeout=30) as r: payload=json.loads(r.read().decode())
+        payload,attempts,rate_limits=_fetch_payload()
+        report["requests_used"]=attempts
+        report["request_attempts"]=attempts
+        report["rate_limit_responses"]=rate_limits
         events=payload.get("events") or payload.get("data") or []; snaps=[]
         for ev in events:
             try: ko=datetime.fromisoformat(str(ev.get("starts") or ev.get("start_time")).replace("Z","+00:00")).astimezone(timezone.utc)
