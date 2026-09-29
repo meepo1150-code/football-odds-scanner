@@ -21,6 +21,16 @@ jobs:
         env:
           PINNWIRE_V2_SCAN: 'true'
         run: python -m odds_scanner.pinnwire_probe
+      - name: Recover with PropLine when PinnWire is unavailable
+        env:
+          PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json,subprocess
+          r=json.load(open('reports/pinnwire_research_v2_status.json',encoding='utf-8'))
+          if r.get('status') not in {'RESEARCH_V2_OBSERVED','ZERO_FIXTURES'}:
+              subprocess.run(['python','-m','odds_scanner.propline_research_v2'],check=True)
+          PY
       - name: Rebuild movement and statistics from latest snapshots
         run: |
           python -m odds_scanner.research_v2_movement
@@ -31,6 +41,8 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           mkdir -p /tmp/pinnwire/data/normalized /tmp/pinnwire/reports
+          test -e data/normalized/europe_pinnacle_research_v2_audit.jsonl && cp data/normalized/europe_pinnacle_research_v2_audit.jsonl /tmp/pinnwire/data/normalized/
+          test -e reports/propline_research_v2_status.json && cp reports/propline_research_v2_status.json /tmp/pinnwire/reports/
           cp data/normalized/europe_pinnacle_research_v2_snapshots.jsonl /tmp/pinnwire/data/normalized/
           cp data/normalized/research_v2_pattern_outcomes.jsonl /tmp/pinnwire/data/normalized/
           cp reports/pinnwire_research_v2_status.json /tmp/pinnwire/reports/
@@ -41,13 +53,15 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             mkdir -p data/normalized reports
+            test -e /tmp/pinnwire/data/normalized/europe_pinnacle_research_v2_audit.jsonl && cp /tmp/pinnwire/data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/
+            test -e /tmp/pinnwire/reports/propline_research_v2_status.json && cp /tmp/pinnwire/reports/propline_research_v2_status.json reports/
             cp /tmp/pinnwire/data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/
             cp /tmp/pinnwire/data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/
             cp /tmp/pinnwire/reports/pinnwire_research_v2_status.json reports/
             cp /tmp/pinnwire/reports/research_v2_pattern_statistics.json reports/
             cp /tmp/pinnwire/reports/research_v2_movement_status.json reports/
             cp /tmp/pinnwire/data/normalized/research_v2_movement_features.jsonl data/normalized/
-            git add -f data/normalized/europe_pinnacle_research_v2_snapshots.jsonl reports/pinnwire_research_v2_status.json reports/research_v2_pattern_statistics.json reports/research_v2_movement_status.json data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
+            git add -f data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl reports/propline_research_v2_status.json reports/pinnwire_research_v2_status.json reports/research_v2_pattern_statistics.json reports/research_v2_movement_status.json data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
             git diff --cached --quiet && break
             git commit -m 'data: collect PinnWire Research V2'
             git push origin HEAD:main && break
@@ -59,7 +73,12 @@ jobs:
           import json,sys
           p='reports/pinnwire_research_v2_status.json'
           r=json.load(open(p,encoding='utf-8'))
-          ok=r.get('status') in {'RESEARCH_V2_OBSERVED','ZERO_FIXTURES'}
-          print(json.dumps({'operational_status':r.get('status'),'requests_used':r.get('requests_used'),'request_attempts':r.get('request_attempts'),'rate_limit_responses':r.get('rate_limit_responses')},ensure_ascii=False))
+          p={}
+          try: p=json.load(open('reports/propline_research_v2_status.json',encoding='utf-8'))
+          except Exception: pass
+          primary_ok=r.get('status') in {'RESEARCH_V2_OBSERVED','ZERO_FIXTURES'}
+          fallback_ok=p.get('football_day')==r.get('football_day') and p.get('status') in {'RESEARCH_V2_OBSERVED','ZERO_USABLE_FIXTURES'}
+          ok=primary_ok or fallback_ok
+          print(json.dumps({'operational_status':r.get('status'),'fallback_status':p.get('status'),'fallback_day':p.get('football_day'),'requests_used':r.get('requests_used'),'request_attempts':r.get('request_attempts'),'rate_limit_responses':r.get('rate_limit_responses')},ensure_ascii=False))
           sys.exit(0 if ok else 1)
           PY
