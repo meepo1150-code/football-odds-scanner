@@ -1,0 +1,73 @@
+from __future__ import annotations
+import json,re,unicodedata,urllib.parse,urllib.request
+from datetime import datetime,timezone
+from pathlib import Path
+SNAP=Path("data/normalized/europe_pinnacle_research_v2_snapshots.jsonl")
+RESULTS=Path("data/normalized/oddspapi_finished_results.jsonl")
+REPORT=Path("reports/fotmob_result_backfill.json")
+BASE="https://www.fotmob.com/api/data/matches"
+def _read(p):
+    out=[]
+    if not p.exists(): return out
+    for line in p.read_text(encoding="utf-8").splitlines():
+        try:x=json.loads(line)
+        except json.JSONDecodeError:continue
+        if isinstance(x,dict):out.append(x)
+    return out
+def _norm(v):
+    s=unicodedata.normalize("NFKD",str(v or "")).encode("ascii","ignore").decode().casefold()
+    return re.sub(r"[^a-z0-9]+","",s)
+def _utc(v):
+    try:
+        d=datetime.fromisoformat(str(v).replace("Z","+00:00"))
+        return (d if d.tzinfo else d.replace(tzinfo=timezone.utc)).astimezone(timezone.utc)
+    except Exception:return None
+def _fetch(day):
+    q=urllib.parse.urlencode({"date":day.replace("-",""),"ccode3":"THA","timezone":"Asia/Bangkok"})
+    req=urllib.request.Request(BASE+"?"+q,headers={"User-Agent":"Mozilla/5.0","Accept":"application/json"})
+    with urllib.request.urlopen(req,timeout=30) as r:
+        data=json.loads(r.read().decode())
+    return data if isinstance(data,dict) else {}
+def _events(payload):
+    out=[]
+    for league in payload.get("leagues") or []:
+        for m in league.get("matches") or []:
+            h=m.get("home") or {};a=m.get("away") or {};status=m.get("status") or {}
+            ko=_utc(status.get("utcTime"))
+            if not ko:
+                ts=m.get("timeTS")
+                if isinstance(ts,(int,float)):ko=datetime.fromtimestamp(ts/1000 if ts>1e12 else ts,timezone.utc)
+            out.append({"id":m.get("id"),"home":h.get("name") or h.get("longName"),"away":a.get("name") or a.get("longName"),"kickoff":ko,"finished":status.get("finished") is True,"hg":h.get("score"),"ag":a.get("score"),"league":league.get("name")})
+    return out
+def run(root=Path(".")):
+    snaps=[x for x in _read(root/SNAP) if x.get("provider")=="pinnwire"]
+    existing=_read(root/RESULTS); existing_ids={str(x.get("fixture_id")) for x in existing}
+    missing={}
+    for s in snaps:
+        fid=str(s.get("fixture_id") or "")
+        if fid and fid not in existing_ids:missing[fid]=s
+    days=sorted({str(s.get("football_day")) for s in missing.values() if s.get("football_day")})
+    events=[];failures=[]
+    for day in days:
+        try:events.extend(_events(_fetch(day)))
+        except Exception as e:failures.append({"day":day,"error":f"{type(e).__name__}: {e}"})
+    idx={}
+    for e in events:
+        if e["kickoff"]:idx.setdefault((_norm(e["home"]),_norm(e["away"]),e["kickoff"].isoformat()),[]).append(e)
+    added=[];ambiguous=0
+    for fid,s in missing.items():
+        ko=_utc(s.get("kickoff"))
+        if not ko:continue
+        ms=idx.get((_norm(s.get("home")),_norm(s.get("away")),ko.isoformat()),[])
+        if len(ms)>1:ambiguous+=1;continue
+        if len(ms)!=1:continue
+        e=ms[0]
+        if not e["finished"] or not isinstance(e["hg"],int) or not isinstance(e["ag"],int):continue
+        added.append({"fixture_id":fid,"ft_home_goals":e["hg"],"ft_away_goals":e["ag"],"result_source":"FOTMOB_DAILY_MATCH_EXACT_IDENTITY","result_identity":"EXACT_NORMALIZED_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE","provider_event_id":e["id"],"provider_evidence":{"provider":"fotmob","event_id":e["id"],"home":e["home"],"away":e["away"],"kickoff":e["kickoff"].isoformat(),"league":e["league"]},"promotion_eligible":False,"research_only":True})
+    rows={str(x.get("fixture_id")):x for x in existing if x.get("fixture_id")}
+    for x in added:rows.setdefault(x["fixture_id"],x)
+    if added:
+        p=root/RESULTS;p.parent.mkdir(parents=True,exist_ok=True);p.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in rows.values()),encoding="utf-8")
+    report={"schema_version":"1.0","classification":"FOTMOB_EXACT_RESULT_BACKFILL","missing_before":len(missing),"days_requested":days,"events_fetched":len(events),"exact_results_added":len(added),"ambiguous_exact_matches_rejected":ambiguous,"request_failures":failures,"matching_policy":"EXACT_NORMALIZED_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY","fuzzy_matching_used":False,"promotion_eligible":False}
+    p=root/REPORT;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8");return report
+if __name__=="__main__":print(json.dumps(run(),ensure_ascii=False))
