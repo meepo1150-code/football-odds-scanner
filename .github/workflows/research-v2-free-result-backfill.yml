@@ -22,14 +22,14 @@ jobs:
       - uses: actions/setup-python@v6
         with: {python-version: '3.12'}
       - run: python -m pip install -e '.[dev]'
+      - name: Backfill exact FotMob results
+        run: python -m odds_scanner.fotmob_result_backfill
       - name: Backfill exact PinnWire results from Sofascore
         run: python -c "from odds_scanner.sofascore_coverage_probe import backfill; import json; print(json.dumps(backfill(), ensure_ascii=False))"
       - name: Backfill matured Research V2 results without OddsPapi requests
         run: python -c "from odds_scanner.daily_fixture_result_backfill import run_backfill; import json; print(json.dumps(run_backfill(max_requests=20), ensure_ascii=False))"
       - name: Backfill matured forward results
         run: python -m odds_scanner.v2_forward_result_backfill
-      - name: Backfill exact FotMob results
-        run: python -m odds_scanner.fotmob_result_backfill
       - name: Backfill exact OpenLigaDB secondary results
         run: python -m odds_scanner.openligadb_result_backfill
       - name: Diagnose exact PinnWire identity coverage
