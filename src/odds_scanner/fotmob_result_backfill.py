@@ -11,6 +11,9 @@ TEAM_ALIASES={
     "unitedarabemirates":"uae",
     "congorepublic":"congo",
     "hapoelacre":"hapoelironiakko",
+    "extremadura":"cdextremadura",
+    "zamoracf":"zamora",
+    "nantongzhiyun":"nantongzhiyunfc",
 }
 def _read(p):
     out=[]
