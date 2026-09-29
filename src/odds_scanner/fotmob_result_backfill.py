@@ -16,6 +16,18 @@ TEAM_ALIASES={
     "nantongzhiyun":"nantongzhiyunfc",
     "uralyekaterinburg":"ural",
     "halifaxtown":"fchalifaxtown",
+    "gateshead":"gatesheadfc",
+    "limavadyunited":"limavady",
+    "readyfotball":"ready",
+    "sfgrei":"grei",
+    "kfumosloii":"kfum2",
+    "sundby":"sundbybk",
+    "nykobing":"nykobingfc",
+    "steinbachhaiger":"tsvsteinbach",
+    "fc08homburg":"homburg",
+    "sotra":"sotrasportsklubb",
+    "porsgrenland":"pors",
+    "rotweisserfurt":"rwerfurt",
 }
 def _read(p):
     out=[]
