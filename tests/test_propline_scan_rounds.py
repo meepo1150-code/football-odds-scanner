@@ -4,31 +4,36 @@ from datetime import datetime, timedelta, timezone
 from odds_scanner import propline_research_v2 as scanner
 
 
-def test_unqualified_propline_quote_is_quarantined_not_canonical(tmp_path, monkeypatch):
-    window_start, _, _ = scanner._football_day(datetime.now(timezone.utc))
-    kickoff = (window_start + timedelta(hours=8)).astimezone(timezone.utc)
-    row = {
+def _row(kickoff, *, price=1.9, book="pinnacle"):
+    return {
         "kickoff": kickoff.isoformat(), "sport": "soccer_epl",
-        "event_id": "123", "bookmaker": "pinnacle", "home": "A", "away": "B",
-        "ah_home_line": -0.5, "ah_home_odds": 1.9,
+        "event_id": "123", "bookmaker": book, "home": "A", "away": "B",
+        "ah_home_line": -0.5, "ah_home_odds": price,
         "ah_away_line": 0.5, "ah_away_odds": 1.95,
         "bookmaker_updated_at": (kickoff - timedelta(hours=6)).isoformat(),
     }
-    monkeypatch.setattr(scanner, "fetch", lambda: ([row], []))
+
+
+def test_verified_pinnacle_core_mainline_is_canonical(tmp_path, monkeypatch):
+    window_start, _, _ = scanner._football_day(datetime.now(timezone.utc))
+    kickoff = (window_start + timedelta(hours=8)).astimezone(timezone.utc)
+    monkeypatch.setattr(scanner, "fetch", lambda: ([_row(kickoff)], []))
     report = scanner.run(tmp_path)
+    snap=json.loads((tmp_path/scanner.SNAPSHOT_PATH).read_text().splitlines()[0])
+    audit=json.loads((tmp_path/scanner.AUDIT_PATH).read_text().splitlines()[0])
+    assert snap["mainline_verified"] is True
+    assert snap["source_semantics"] == "PROPLINE_PINNACLE_TWO_SIDED_CORE_MAINLINE"
+    assert 1.80 <= snap["ah"]["selected_side_price"] <= 2.20
+    assert audit["eligibility_status"] == "ELIGIBLE"
+    assert report["strict_snapshots_this_run"] == 1
 
-    assert not (tmp_path / scanner.SNAPSHOT_PATH).exists()
-    audit_path = tmp_path / scanner.AUDIT_PATH
-    audit = json.loads(audit_path.read_text().splitlines()[0])
+
+def test_noncore_or_nonpinnacle_quote_is_quarantined(tmp_path, monkeypatch):
+    window_start, _, _ = scanner._football_day(datetime.now(timezone.utc))
+    kickoff = (window_start + timedelta(hours=8)).astimezone(timezone.utc)
+    monkeypatch.setattr(scanner, "fetch", lambda: ([_row(kickoff, price=4.3)], []))
+    report=scanner.run(tmp_path)
+    assert not (tmp_path/scanner.SNAPSHOT_PATH).exists()
+    audit=json.loads((tmp_path/scanner.AUDIT_PATH).read_text().splitlines()[0])
     assert audit["eligibility_status"] == "QUARANTINED"
-    assert audit["eligibility_reason"] == "PROPLINE_AH_SEMANTICS_UNVERIFIED"
-    assert audit["research_population"] is False
-    assert audit["quarantined"] is True
-    assert report["strict_snapshots_this_run"] == 0
     assert report["quarantined_observations_this_run"] == 1
-
-    # Re-running preserves a separate audit observation while canonical snapshots stay empty.
-    scanner.run(tmp_path)
-    observations = [json.loads(line) for line in audit_path.read_text().splitlines()]
-    assert len(observations) == 2
-    assert all(x["eligibility_status"] == "QUARANTINED" for x in observations)
