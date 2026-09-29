@@ -45,12 +45,19 @@ def run(root=Path(".")):
         # change can predate several scans and must never deduplicate them.
         observed=now.isoformat()
         snap={"provider":"propline","source":f"propline:{m['bookmaker']}","bookmaker":m["bookmaker"],"fixture_id":fid,"football_day":day,"observed_at":observed,"price_changed_at":m.get("bookmaker_updated_at"),"scheduled_target_at":now.astimezone(BKK).isoformat(),"observation_timing":"SCHEDULED_FREE_SCAN","research_only":True,"league":m["sport"],"home":m["home"],"away":m["away"],"kickoff":ko.isoformat(),"favorite_side":fav,"favorite_fair_probability":fair[0] if fair and fav=="H" else (fair[2] if fair else None),"one_x_two":{"home":m.get("one_x_two_home"),"draw":m.get("one_x_two_draw"),"away":m.get("one_x_two_away")},"ah":{"selected_side_line":line,"selected_side_price":price,"home_line":hl,"home_price":hp,"away_line":al,"away_price":ap},"ou":{"line":m.get("ou_line"),"over_price":m.get("over_odds"),"under_price":m.get("under_odds")},"quote_timestamp_verified":bool(m.get("bookmaker_updated_at"))}
-        # PropLine AH semantics are not yet qualified for Research V2.
-        # Keep the observation in the audit ledger but never persist it as a canonical snapshot.
+        # propline_provider has already qualified the quote as a Pinnacle,
+        # two-sided opposite AH mainline with both sides in 1.80..2.20.
         core=1.8<=float(price)<=2.2
-        audits.append({"football_day":day,"fixture_id":fid,"provider":"propline","bookmaker":m["bookmaker"],"league":m["sport"],"home":m["home"],"away":m["away"],"kickoff":ko.isoformat(),"observed_at":observed,"scheduled_target_at":snap["scheduled_target_at"],"observation_timing":snap["observation_timing"],"eligibility_status":"QUARANTINED","eligibility_reason":"PROPLINE_AH_SEMANTICS_UNVERIFIED","research_population":False,"quarantined":True})
+        if m.get("bookmaker")=="pinnacle" and core:
+            snap["source_semantics"]="PROPLINE_PINNACLE_TWO_SIDED_CORE_MAINLINE"
+            snap["mainline_verified"]=True
+            snap["promotion_eligible"]=True
+            snaps.append(snap)
+            audits.append({"football_day":day,"fixture_id":fid,"provider":"propline","bookmaker":m["bookmaker"],"league":m["sport"],"home":m["home"],"away":m["away"],"kickoff":ko.isoformat(),"observed_at":observed,"scheduled_target_at":snap["scheduled_target_at"],"observation_timing":snap["observation_timing"],"eligibility_status":"ELIGIBLE","eligibility_reason":"PINNACLE_TWO_SIDED_CORE_MAINLINE","research_population":True,"quarantined":False})
+        else:
+            audits.append({"football_day":day,"fixture_id":fid,"provider":"propline","bookmaker":m["bookmaker"],"league":m["sport"],"home":m["home"],"away":m["away"],"kickoff":ko.isoformat(),"observed_at":observed,"scheduled_target_at":snap["scheduled_target_at"],"observation_timing":snap["observation_timing"],"eligibility_status":"QUARANTINED","eligibility_reason":"PROPLINE_AH_MAINLINE_NOT_VERIFIED","research_population":False,"quarantined":True})
     ts=_merge_jsonl(root/SNAPSHOT_PATH,snaps,("observed_at","fixture_id")) if snaps else 0
     ta=_merge_jsonl(root/AUDIT_PATH,audits,("observed_at","fixture_id")) if audits else 0
-    report={"schema_version":"1.1","provider":"propline","football_day":day,"generated_at":now.isoformat(),"status":"RESEARCH_V2_OBSERVED" if snaps else "ZERO_USABLE_FIXTURES","source_rows":len(rows),"source_rows_in_football_day":in_day,"strict_snapshots_this_run":0,"quarantined_observations_this_run":len(audits),"core_price_snapshots":0,"persisted_snapshot_rows":ts,"persisted_audit_rows":ta,"kickoff_date_counts":kickoff_dates,"kickoff_samples":kickoff_samples,"errors":errors[:10]}
+    report={"schema_version":"1.1","provider":"propline","football_day":day,"generated_at":now.isoformat(),"status":"RESEARCH_V2_OBSERVED" if snaps else "ZERO_USABLE_FIXTURES","source_rows":len(rows),"source_rows_in_football_day":in_day,"strict_snapshots_this_run":len(snaps),"quarantined_observations_this_run":sum(1 for x in audits if x.get("quarantined")),"core_price_snapshots":len(snaps),"persisted_snapshot_rows":ts,"persisted_audit_rows":ta,"kickoff_date_counts":kickoff_dates,"kickoff_samples":kickoff_samples,"errors":errors[:10]}
     p=root/REPORT;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(report,indent=2),encoding="utf-8");return report
 if __name__=="__main__":print(json.dumps(run()))
