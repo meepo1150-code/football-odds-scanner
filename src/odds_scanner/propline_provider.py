@@ -47,11 +47,30 @@ def fetch(key=None):
             books=ev.get("bookmakers") or []
             book=next((b for k in PREFERRED for b in books if str(b.get("key","")).lower()==k), books[0] if books else None)
             if not book: continue
-            markets={m.get("key"):m for m in book.get("markets",[])}
-            sp=markets.get("spreads"); tot=markets.get("totals"); h2h=markets.get("h2h")
+            # A provider can expose more than one object for the same market key.
+            # Do not collapse those objects into a dict and accidentally keep an
+            # alternate spread.  For AH, only accept a two-sided pair whose
+            # decimal prices form a plausible mainline (both 1.80..2.20).
+            market_list=book.get("markets",[])
+            h2h=next((m for m in market_list if m.get("key")=="h2h"),None)
+            tot=next((m for m in market_list if m.get("key")=="totals"),None)
+            spread_candidates=[m for m in market_list if m.get("key")=="spreads"]
+            sp=None
+            home,away=ev.get("home_team"),ev.get("away_team")
+            for candidate in spread_candidates:
+                co=candidate.get("outcomes") or []
+                ch=next((o for o in co if o.get("name")==home),None)
+                ca=next((o for o in co if o.get("name")==away),None)
+                if not ch or not ca: continue
+                hp,ap=_dec(ch.get("price")),_dec(ca.get("price"))
+                try:
+                    opposite=abs(float(ch.get("point"))+float(ca.get("point"))) < 1e-9
+                except (TypeError,ValueError):
+                    opposite=False
+                if opposite and hp is not None and ap is not None and 1.80 <= hp <= 2.20 and 1.80 <= ap <= 2.20:
+                    sp=candidate; break
             if not sp: continue
             outs=sp.get("outcomes") or []
-            home,away=ev.get("home_team"),ev.get("away_team")
             ho=next((o for o in outs if o.get("name")==home),None); ao=next((o for o in outs if o.get("name")==away),None)
             if not ho or not ao: continue
             tout=(tot or {}).get("outcomes") or []
