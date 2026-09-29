@@ -1,6 +1,6 @@
 from __future__ import annotations
 import json,re,unicodedata,urllib.parse,urllib.request
-from datetime import datetime,timezone
+from datetime import datetime,timezone,timedelta
 from pathlib import Path
 SNAP=Path("data/normalized/europe_pinnacle_research_v2_snapshots.jsonl")
 RESULTS=Path("data/normalized/oddspapi_finished_results.jsonl")
@@ -46,28 +46,41 @@ def run(root=Path(".")):
     for s in snaps:
         fid=str(s.get("fixture_id") or "")
         if fid and fid not in existing_ids:missing[fid]=s
-    days=sorted({str(s.get("football_day")) for s in missing.values() if s.get("football_day")})
+    day_set=set()
+    for s in missing.values():
+        ko=_utc(s.get("kickoff"))
+        if ko:
+            for delta in (-1,0,1): day_set.add((ko+timedelta(days=delta)).date().isoformat())
+        elif s.get("football_day"): day_set.add(str(s.get("football_day")))
+    days=sorted(day_set)
     events=[];failures=[]
     for day in days:
         try:events.extend(_events(_fetch(day)))
         except Exception as e:failures.append({"day":day,"error":f"{type(e).__name__}: {e}"})
-    idx={}
+    idx={}; kickoff_idx={}
     for e in events:
-        if e["kickoff"]:idx.setdefault((_norm(e["home"]),_norm(e["away"]),e["kickoff"].isoformat()),[]).append(e)
-    added=[];ambiguous=0
+        if e["kickoff"]:
+            idx.setdefault((_norm(e["home"]),_norm(e["away"]),e["kickoff"].isoformat()),[]).append(e)
+            kickoff_idx.setdefault(e["kickoff"].isoformat(),[]).append(e)
+    added=[];ambiguous=0; exact_unfinished=0; no_exact_identity=0; kickoff_candidate_only=0
     for fid,s in missing.items():
         ko=_utc(s.get("kickoff"))
         if not ko:continue
         ms=idx.get((_norm(s.get("home")),_norm(s.get("away")),ko.isoformat()),[])
         if len(ms)>1:ambiguous+=1;continue
-        if len(ms)!=1:continue
+        if len(ms)!=1:
+            no_exact_identity+=1
+            if kickoff_idx.get(ko.isoformat()): kickoff_candidate_only+=1
+            continue
         e=ms[0]
-        if not e["finished"] or not isinstance(e["hg"],int) or not isinstance(e["ag"],int):continue
+        if not e["finished"] or not isinstance(e["hg"],int) or not isinstance(e["ag"],int):
+            exact_unfinished+=1
+            continue
         added.append({"fixture_id":fid,"ft_home_goals":e["hg"],"ft_away_goals":e["ag"],"result_source":"FOTMOB_DAILY_MATCH_EXACT_IDENTITY","result_identity":"EXACT_NORMALIZED_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE","provider_event_id":e["id"],"provider_evidence":{"provider":"fotmob","event_id":e["id"],"home":e["home"],"away":e["away"],"kickoff":e["kickoff"].isoformat(),"league":e["league"]},"promotion_eligible":False,"research_only":True})
     rows={str(x.get("fixture_id")):x for x in existing if x.get("fixture_id")}
     for x in added:rows.setdefault(x["fixture_id"],x)
     if added:
         p=root/RESULTS;p.parent.mkdir(parents=True,exist_ok=True);p.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in rows.values()),encoding="utf-8")
-    report={"schema_version":"1.0","classification":"FOTMOB_EXACT_RESULT_BACKFILL","missing_before":len(missing),"days_requested":days,"events_fetched":len(events),"exact_results_added":len(added),"ambiguous_exact_matches_rejected":ambiguous,"request_failures":failures,"matching_policy":"EXACT_NORMALIZED_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY","fuzzy_matching_used":False,"promotion_eligible":False}
+    report={"schema_version":"1.0","classification":"FOTMOB_EXACT_RESULT_BACKFILL","missing_before":len(missing),"days_requested":days,"events_fetched":len(events),"exact_results_added":len(added),"ambiguous_exact_matches_rejected":ambiguous,"exact_identity_unfinished":exact_unfinished,"no_exact_identity":no_exact_identity,"kickoff_candidate_only":kickoff_candidate_only,"request_failures":failures,"matching_policy":"EXACT_NORMALIZED_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY","fuzzy_matching_used":False,"promotion_eligible":False}
     p=root/REPORT;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8");return report
 if __name__=="__main__":print(json.dumps(run(),ensure_ascii=False))
