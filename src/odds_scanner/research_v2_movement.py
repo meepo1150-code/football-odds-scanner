@@ -35,6 +35,9 @@ def _get(row,key):
 def run(root=Path('.')):
     groups=defaultdict(list)
     source=_rows(root/SNAP)
+    source_all=list(source)
+    source=[r for r in source if str(r.get('provider') or '').lower()!='propline']
+    quarantined=len(source_all)-len(source)
     for r in source: groups[str(r.get('fixture_id'))].append(r)
     features=[]
     numeric_delta_count=0
@@ -51,7 +54,7 @@ def run(root=Path('.')):
         features.append(row)
     features.sort(key=lambda x:(str(x.get('football_day')),x['fixture_id']))
     p=root/OUT;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(''.join(json.dumps(x,separators=(',',':'))+'\n' for x in features),encoding='utf-8')
-    report={'schema_version':'1.1','status':'MOVEMENT_BUILT','fixtures_with_two_plus_snapshots':len(features),'source_snapshot_rows':len(source),'numeric_delta_fields_built':numeric_delta_count}
+    report={'schema_version':'1.1','status':'MOVEMENT_BUILT','fixtures_with_two_plus_snapshots':len(features),'source_snapshot_rows':len(source),'quarantined_snapshot_rows':quarantined,'raw_source_snapshot_rows':len(source_all),'numeric_delta_fields_built':numeric_delta_count}
     q=root/REPORT;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(report,indent=2),encoding='utf-8');return report
 
 if __name__=='__main__':print(json.dumps(run()))
