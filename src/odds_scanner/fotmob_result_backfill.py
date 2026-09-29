@@ -32,6 +32,8 @@ TEAM_ALIASES={
     "ishoj":"ishojif",
     "sandefjordii":"sandefjord2",
     "lillehammer":"lillehammerfk",
+    "ceuta":"adceutafc",
+    "realsociedadii":"realsociedadb",
 }
 def _read(p):
     out=[]
