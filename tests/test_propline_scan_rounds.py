@@ -1,10 +1,10 @@
 import json
-from datetime import datetime, time, timedelta, timezone
+from datetime import datetime, timedelta, timezone
 
 from odds_scanner import propline_research_v2 as scanner
 
 
-def test_unchanged_bookmaker_quote_still_records_new_scan_round(tmp_path, monkeypatch):
+def test_unqualified_propline_quote_is_quarantined_not_canonical(tmp_path, monkeypatch):
     window_start, _, _ = scanner._football_day(datetime.now(timezone.utc))
     kickoff = (window_start + timedelta(hours=8)).astimezone(timezone.utc)
     row = {
@@ -15,13 +15,20 @@ def test_unchanged_bookmaker_quote_still_records_new_scan_round(tmp_path, monkey
         "bookmaker_updated_at": (kickoff - timedelta(hours=6)).isoformat(),
     }
     monkeypatch.setattr(scanner, "fetch", lambda: ([row], []))
-    scanner.run(tmp_path)
-    path = tmp_path / scanner.SNAPSHOT_PATH
-    first = json.loads(path.read_text().splitlines()[0])
-    assert first["price_changed_at"] == row["bookmaker_updated_at"]
-    assert first["observed_at"] != row["bookmaker_updated_at"]
+    report = scanner.run(tmp_path)
 
-    # Re-running against unchanged prices must retain a separate observation.
+    assert not (tmp_path / scanner.SNAPSHOT_PATH).exists()
+    audit_path = tmp_path / scanner.AUDIT_PATH
+    audit = json.loads(audit_path.read_text().splitlines()[0])
+    assert audit["eligibility_status"] == "QUARANTINED"
+    assert audit["eligibility_reason"] == "PROPLINE_AH_SEMANTICS_UNVERIFIED"
+    assert audit["research_population"] is False
+    assert audit["quarantined"] is True
+    assert report["strict_snapshots_this_run"] == 0
+    assert report["quarantined_observations_this_run"] == 1
+
+    # Re-running preserves a separate audit observation while canonical snapshots stay empty.
     scanner.run(tmp_path)
-    observations = [json.loads(line) for line in path.read_text().splitlines()]
+    observations = [json.loads(line) for line in audit_path.read_text().splitlines()]
     assert len(observations) == 2
+    assert all(x["eligibility_status"] == "QUARANTINED" for x in observations)
