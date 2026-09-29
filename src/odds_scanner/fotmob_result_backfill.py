@@ -28,6 +28,10 @@ TEAM_ALIASES={
     "sotra":"sotrasportsklubb",
     "porsgrenland":"pors",
     "rotweisserfurt":"rwerfurt",
+    "holstebro":"holstebroboldklub",
+    "ishoj":"ishojif",
+    "sandefjordii":"sandefjord2",
+    "lillehammer":"lillehammerfk",
 }
 def _read(p):
     out=[]
