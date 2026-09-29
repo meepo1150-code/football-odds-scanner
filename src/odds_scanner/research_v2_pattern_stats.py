@@ -5,7 +5,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from .asian_settlement import settle_asian_handicap
-SNAPSHOTS=Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl');RESULTS=Path('data/normalized/oddspapi_finished_results.jsonl');AUDIT=Path('data/normalized/europe_pinnacle_research_v2_audit.jsonl');OUTCOMES=Path('data/normalized/research_v2_pattern_outcomes.jsonl');REPORT=Path('reports/research_v2_pattern_statistics.json')
+SNAPSHOTS=Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl');RESULTS=Path('data/normalized/oddspapi_finished_results.jsonl');AUDIT=Path('data/normalized/europe_pinnacle_research_v2_audit.jsonl');OUTCOMES=Path('data/normalized/research_v2_pattern_outcomes.jsonl');REPORT=Path('reports/research_v2_pattern_statistics.json');MISSING_LEDGER=Path('reports/research_v2_missing_ft_ledger.json')
 def _rows(path):
     if not path.exists():return []
     out=[]
@@ -75,15 +75,21 @@ def build(root=Path('.')):
     for s in snaps:
         if s.get('fixture_id'):grouped[str(s['fixture_id'])].append(s)
     for ss in grouped.values():ss.sort(key=lambda x:str(x.get('observed_at') or ''))
-    outcomes=[];missing=0;missing_by_provider=Counter();unique_by_provider=Counter()
+    outcomes=[];missing=0;missing_by_provider=Counter();unique_by_provider=Counter();excluded_derivative=0;missing_rows=[]
     for fid,ss in sorted(grouped.items()):
         provider=str((ss[-1].get("provider") if ss else None) or "UNKNOWN")
         unique_by_provider[provider]+=1
         if fid in ambiguous:continue
+        last=ss[-1]
+        derivative=bool(__import__('re').search(r'\\((?:corners?|bookings?|cards?)\\)',str(last.get('home') or '')+' '+str(last.get('away') or ''),__import__('re').I))
+        if derivative:
+            excluded_derivative+=1
+            continue
         r=results.get(fid)
         if not r:
             missing+=1
             missing_by_provider[provider]+=1
+            missing_rows.append({'fixture_id':fid,'provider':provider,'football_day':last.get('football_day'),'league':last.get('league'),'kickoff':last.get('kickoff'),'home':last.get('home'),'away':last.get('away'),'status':'MISSING_FT','required_identity':'EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF'})
             continue
         s=ss[-1];h,a=_score(r);fav=str(s.get('favorite_side') or '').upper();ah=s.get('ah') or {};one=s.get('one_x_two') or {};au=ag.get((fid,str(s.get('observed_at'))),{});settle=None;profit_units=None;dog_profit_units=None
         try:
@@ -96,6 +102,7 @@ def build(root=Path('.')):
         except (TypeError,ValueError):pass
         price=ah.get('selected_side_price');market_side='HOME_FAVORITE' if fav=='H' else 'AWAY_FAVORITE' if fav=='A' else 'UNKNOWN'
         outcomes.append({'fixture_id':fid,'football_day':s.get('football_day'),'league':s.get('league'),'home':s.get('home'),'away':s.get('away'),'favorite_side':fav,'market_side':market_side,'favorite_team':s.get('home') if fav=='H' else s.get('away') if fav=='A' else None,'underdog_team':s.get('away') if fav=='H' else s.get('home') if fav=='A' else None,'favorite_1x2_price':one.get('home') if fav=='H' else one.get('away') if fav=='A' else None,'favorite_fair_probability':s.get('favorite_fair_probability'),'favorite_probability_bucket':_prob_bucket(s.get('favorite_fair_probability')),'ah_line':ah.get('selected_side_line'),'ah_price':price,'ah_price_bucket':_price_bucket(price),'ah_core_price':_core(price),'scan_count':len(ss),'first_ah_line':(ss[0].get('ah') or {}).get('selected_side_line'),'first_ah_price':(ss[0].get('ah') or {}).get('selected_side_price'),'movement':_movement(ss[0],s),'match_status':au.get('eligibility_status','UNCLASSIFIED'),'ft_home_goals':h,'ft_away_goals':a,'favorite_ah_settlement':settle,'favorite_profit_units':profit_units,'underdog_profit_units':dog_profit_units,'price_result':_price_result(settle),'price_winner_side':'FAVORITE' if settle in ('FULL_WIN','HALF_WIN') else 'UNDERDOG' if settle in ('FULL_LOSS','HALF_LOSS') else 'PUSH' if settle=='PUSH' else 'UNSETTLED','price_winner_home_away':('HOME' if fav=='H' else 'AWAY') if settle in ('FULL_WIN','HALF_WIN') else ('AWAY' if fav=='H' else 'HOME') if settle in ('FULL_LOSS','HALF_LOSS') else 'PUSH' if settle=='PUSH' else 'UNSETTLED','result_join':'EXACT_FIXTURE_ID_ONLY','research_only':True,**_ou25(s,h,a)})
+    ledger=root/MISSING_LEDGER;ledger.parent.mkdir(parents=True,exist_ok=True);ledger.write_text(json.dumps({'schema_version':'1.0','missing_ft_count':len(missing_rows),'excluded_derivative_markets':excluded_derivative,'fixtures':missing_rows},ensure_ascii=False,indent=2),encoding='utf-8')
     p=root/OUTCOMES;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(''.join(json.dumps(x,ensure_ascii=False,separators=(',',':'))+'\n' for x in outcomes),encoding='utf-8')
     def aggregate(keys,core_only=False):
         groups=defaultdict(list)
@@ -121,6 +128,6 @@ def build(root=Path('.')):
     baseline=aggregate(['market_side','ah_line'],True);bmap={(x['market_side'],x['ah_line']):x.get('favorite_price_win_pct') for x in baseline};by_state=aggregate(['market_side','ah_line','ah_price_bucket'],True)
     for x in by_state:
         b=bmap.get((x['market_side'],x['ah_line']));x['baseline_favorite_price_win_pct']=b;x['difference_vs_line_baseline_pp']=round(x['favorite_price_win_pct']-b,2) if b is not None and x['favorite_price_win_pct'] is not None else None
-    payload={'schema_version':'2.5','classification':'RESEARCH_V2_AH_MARKET_STATE_STATISTICS','generated_at':datetime.now(timezone.utc).isoformat(),'research_only':True,'recommendation_semantics':False,'signal_policy':'N>=30 AND ROI DIRECTION AGREES WITH WILSON95 VS 50%; OTHERWISE INCONCLUSIVE','primary_market':'ASIAN_HANDICAP','core_ah_decimal_odds_range':[1.80,2.20],'price_buckets':['1.80-1.89','1.90-1.99','2.00-2.09','2.10-2.20'],'one_x_two_role':'CONTEXT_FAIR_PROBABILITY_ONLY','price_win_definition':'ASIAN_HANDICAP_SETTLEMENT_ONLY','ou25_source':'PREMATCH_PINNWIRE_EXACT_2_5_WHEN_AVAILABLE','snapshot_rows':len(snaps),'unique_snapshot_fixtures':len(grouped),'settled_fixtures':len(outcomes),'core_price_settled_fixtures':sum(x['ah_core_price'] for x in outcomes),'missing_result_fixtures':missing,'missing_result_fixtures_by_provider':dict(sorted(missing_by_provider.items())),'unique_snapshot_fixtures_by_provider':dict(sorted(unique_by_provider.items())),'pinnwire_missing_result_fixtures':missing_by_provider.get('pinnwire',0),'non_pinnwire_missing_result_fixtures':missing-missing_by_provider.get('pinnwire',0),'ambiguous_result_fixtures':len(ambiguous),'baseline_by_market_side_line':baseline,'market_state_by_side_line_price':by_state,'market_state_by_side_line_price_probability':aggregate(['market_side','ah_line','ah_price_bucket','favorite_probability_bucket'],True),'market_state_by_side_line_price_movement':aggregate(['market_side','ah_line','ah_price_bucket','movement'],True),'all_by_movement':aggregate(['movement']),'over_under_2_5_by_ah_line':aggregate_ou(['market_side','ah_line'],True),'over_under_2_5_by_ah_line_price':aggregate_ou(['market_side','ah_line','ah_price_bucket'],True)}
+    payload={'schema_version':'2.5','classification':'RESEARCH_V2_AH_MARKET_STATE_STATISTICS','generated_at':datetime.now(timezone.utc).isoformat(),'research_only':True,'recommendation_semantics':False,'signal_policy':'N>=30 AND ROI DIRECTION AGREES WITH WILSON95 VS 50%; OTHERWISE INCONCLUSIVE','primary_market':'ASIAN_HANDICAP','core_ah_decimal_odds_range':[1.80,2.20],'price_buckets':['1.80-1.89','1.90-1.99','2.00-2.09','2.10-2.20'],'one_x_two_role':'CONTEXT_FAIR_PROBABILITY_ONLY','price_win_definition':'ASIAN_HANDICAP_SETTLEMENT_ONLY','ou25_source':'PREMATCH_PINNWIRE_EXACT_2_5_WHEN_AVAILABLE','snapshot_rows':len(snaps),'unique_snapshot_fixtures':len(grouped),'settled_fixtures':len(outcomes),'core_price_settled_fixtures':sum(x['ah_core_price'] for x in outcomes),'missing_result_fixtures':missing,'excluded_derivative_markets_from_ft_completeness':excluded_derivative,'ft_completeness_pct':round(100*len(outcomes)/(len(outcomes)+missing),2) if (len(outcomes)+missing) else 100.0,'missing_result_fixtures_by_provider':dict(sorted(missing_by_provider.items())),'unique_snapshot_fixtures_by_provider':dict(sorted(unique_by_provider.items())),'pinnwire_missing_result_fixtures':missing_by_provider.get('pinnwire',0),'non_pinnwire_missing_result_fixtures':missing-missing_by_provider.get('pinnwire',0),'ambiguous_result_fixtures':len(ambiguous),'baseline_by_market_side_line':baseline,'market_state_by_side_line_price':by_state,'market_state_by_side_line_price_probability':aggregate(['market_side','ah_line','ah_price_bucket','favorite_probability_bucket'],True),'market_state_by_side_line_price_movement':aggregate(['market_side','ah_line','ah_price_bucket','movement'],True),'all_by_movement':aggregate(['movement']),'over_under_2_5_by_ah_line':aggregate_ou(['market_side','ah_line'],True),'over_under_2_5_by_ah_line_price':aggregate_ou(['market_side','ah_line','ah_price_bucket'],True)}
     q=root/REPORT;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8');return payload
 if __name__=='__main__':print(json.dumps(build(),ensure_ascii=False))
