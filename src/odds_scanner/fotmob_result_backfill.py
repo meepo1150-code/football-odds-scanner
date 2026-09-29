@@ -67,6 +67,21 @@ def _safe_club_key(v):
         n=re.sub(r"(?:fc|fk|cf|sc|sk|ac|cd|ca|bk|if)$","",n)
         changed=n!=old
     return n
+def _category(v):
+    s=str(v or "").casefold()
+    m=re.search(r"\\bu\\s*-?(\\d{2})\\b",s)
+    if m: return "u"+m.group(1)
+    if re.search(r"women|woman|female|feminin|femenin|kvinner|dam|\\(w\\)",s): return "women"
+    return None
+
+def _category_base_key(v, category):
+    n=_safe_club_key(v)
+    if category=="women":
+        n=re.sub(r"(?:women|woman|female|feminin|femenin|kvinner|dam|w)$","",n)
+    elif category and category.startswith("u"):
+        n=re.sub(category+r"$","",n)
+    return n
+
 def _utc(v):
     try:
         d=datetime.fromisoformat(str(v).replace("Z","+00:00"))
@@ -120,6 +135,17 @@ def run(root=Path(".")):
         ms=idx.get((_team_key(s.get("home")),_team_key(s.get("away")),ko.isoformat()),[])
         if not ms:
             ms=safe_idx.get((_safe_club_key(s.get("home")),_safe_club_key(s.get("away")),ko.isoformat()),[])
+        if not ms:
+            category=_category(s.get("league"))
+            if category:
+                contextual=[]
+                for e in kickoff_idx.get(ko.isoformat(),[]):
+                    event_category=_category(e.get("league")) or _category(e.get("home")) or _category(e.get("away"))
+                    if event_category!=category: continue
+                    if (_category_base_key(s.get("home"),category)==_category_base_key(e.get("home"),category)
+                        and _category_base_key(s.get("away"),category)==_category_base_key(e.get("away"),category)):
+                        contextual.append(e)
+                ms=contextual
         if len(ms)>1:ambiguous+=1;continue
         if len(ms)!=1:
             no_exact_identity+=1
@@ -133,7 +159,7 @@ def run(root=Path(".")):
         if not e["finished"] or not isinstance(e["hg"],int) or not isinstance(e["ag"],int):
             exact_unfinished+=1
             continue
-        added.append({"fixture_id":fid,"ft_home_goals":e["hg"],"ft_away_goals":e["ag"],"result_source":"FOTMOB_DAILY_MATCH_EXACT_IDENTITY","result_identity":"EXACT_ALIAS_OR_SAFE_CLUB_TOKEN_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE","provider_event_id":e["id"],"provider_evidence":{"provider":"fotmob","event_id":e["id"],"home":e["home"],"away":e["away"],"kickoff":e["kickoff"].isoformat(),"league":e["league"]},"promotion_eligible":False,"research_only":True})
+        added.append({"fixture_id":fid,"ft_home_goals":e["hg"],"ft_away_goals":e["ag"],"result_source":"FOTMOB_DAILY_MATCH_EXACT_IDENTITY","result_identity":"EXACT_ALIAS_SAFE_TOKEN_OR_LEAGUE_CATEGORY_CONTEXT_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE","provider_event_id":e["id"],"provider_evidence":{"provider":"fotmob","event_id":e["id"],"home":e["home"],"away":e["away"],"kickoff":e["kickoff"].isoformat(),"league":e["league"]},"promotion_eligible":False,"research_only":True})
     rows={str(x.get("fixture_id")):x for x in existing if x.get("fixture_id")}
     for x in added:rows.setdefault(x["fixture_id"],x)
     if added:
