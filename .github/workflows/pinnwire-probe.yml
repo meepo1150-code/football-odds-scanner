@@ -43,7 +43,7 @@ jobs:
           mkdir -p /tmp/pinnwire/data/normalized /tmp/pinnwire/reports
           test -e data/normalized/europe_pinnacle_research_v2_audit.jsonl && cp data/normalized/europe_pinnacle_research_v2_audit.jsonl /tmp/pinnwire/data/normalized/
           test -e reports/propline_research_v2_status.json && cp reports/propline_research_v2_status.json /tmp/pinnwire/reports/
-          cp data/normalized/europe_pinnacle_research_v2_snapshots.jsonl /tmp/pinnwire/data/normalized/
+          if test -s data/normalized/europe_pinnacle_research_v2_snapshots.jsonl; then cp data/normalized/europe_pinnacle_research_v2_snapshots.jsonl /tmp/pinnwire/data/normalized/; fi
           cp data/normalized/research_v2_pattern_outcomes.jsonl /tmp/pinnwire/data/normalized/
           cp reports/pinnwire_research_v2_status.json /tmp/pinnwire/reports/
           cp reports/research_v2_pattern_statistics.json /tmp/pinnwire/reports/
@@ -55,7 +55,7 @@ jobs:
             mkdir -p data/normalized reports
             test -e /tmp/pinnwire/data/normalized/europe_pinnacle_research_v2_audit.jsonl && cp /tmp/pinnwire/data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/
             test -e /tmp/pinnwire/reports/propline_research_v2_status.json && cp /tmp/pinnwire/reports/propline_research_v2_status.json reports/
-            cp /tmp/pinnwire/data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/
+            if test -s /tmp/pinnwire/data/normalized/europe_pinnacle_research_v2_snapshots.jsonl; then cp /tmp/pinnwire/data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/; fi
             cp /tmp/pinnwire/data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/
             cp /tmp/pinnwire/reports/pinnwire_research_v2_status.json reports/
             cp /tmp/pinnwire/reports/research_v2_pattern_statistics.json reports/
