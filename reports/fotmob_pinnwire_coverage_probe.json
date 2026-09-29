@@ -1,15 +1,15 @@
 {
   "schema_version": "1.0",
   "classification": "FOTMOB_PINNWIRE_EXACT_COVERAGE_PROBE",
-  "generated_at": "2026-09-29T03:27:56.685439+00:00",
+  "generated_at": "2026-09-29T03:33:38.128732+00:00",
   "missing_before": 628,
   "days_requested": [
     "2026-09-24",
     "2026-09-26"
   ],
-  "events_fetched": 0,
-  "exact_unique_matches": 0,
-  "finished_exact_unique_matches": 0,
+  "events_fetched": 467,
+  "exact_unique_matches": 130,
+  "finished_exact_unique_matches": 127,
   "ambiguous_exact_matches_rejected": 0,
   "request_failures": [],
   "matching_policy": "EXACT_NORMALIZED_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY",
@@ -18,16 +18,393 @@
   "schema_samples": [
     {
       "day": "2026-09-24",
-      "top_type": "NoneType",
-      "top_keys": [],
-      "sample": "None"
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "final_url": "https://www.fotmob.com/api/data/matches?date=20260924&ccode3=THA&timezone=Asia%2FBangkok",
+      "raw_len": 43243,
+      "raw_prefix": "{\"leagues\":[{\"isGroup\":true,\"groupName\":\"1\",\"ccode\":\"INT\",\"id\":920754,\"primaryId\":9809,\"name\":\"UEFA Nations League D Grp. 1\",\"matches\":[{\"id\":5181874,\"leagueId\":920754,\"time\":\"24.09.2026 18:00\",\"home\":{\"id\":10045,\"score\":1,\"name\":\"Andorra\",\"longName\":\"Andorra\"},\"away\":{\"id\":8495,\"score\":2,\"name\":\"Malta\",\"longName\":\"Malta\"},\"eliminatedTeamId\":null,\"statusId\":6,\"tournamentStage\":\"1\",\"status\":{\"utcTime\":\"2026-09-24T16:00:00.000Z\",\"halfs\":{\"firstHalfStarted\":\"24.09.2026 18:03:56\",\"secondHalfStarted\"",
+      "top_type": "dict",
+      "top_keys": [
+        "leagues",
+        "date"
+      ],
+      "sample": "{'leagues': [{'isGroup': True, 'groupName': '1', 'ccode': 'INT', 'id': 920754, 'primaryId': 9809, 'name': 'UEFA Nations League D Grp. 1', 'matches': [{'id': 5181874, 'leagueId': 920754, 'time': '24.09.2026 18:00', 'home': {'id': 10045, 'score': 1, 'name': 'Andorra', 'longName': 'Andorra'}, 'away': {'id': 8495, 'score': 2, 'name': 'Malta', 'longName': 'Malta'}, 'eliminatedTeamId': None, 'statusId': 6, 'tournamentStage': '1', 'status': {'utcTime': '2026-09-24T16:00:00.000Z', 'halfs': {'firstHalfStarted': '24.09.2026 18:03:56', 'secondHalfStarted': '24.09.2026 19:06:19'}, 'periodLength': 45, 'finished': True, 'started': True, 'cancelled': False, 'awarded': False, 'scoreStr': '1 - 2', 'reason': {'short': 'FT', 'shortKey': 'fulltime_short', 'long': 'Full-Time', 'longKey': 'finished'}}, 'timeTS': 1790265600000}], 'parentLeagueId': 9809, 'parentLeagueName': 'UEFA Nations League D', 'internalRank': 0, 'simpleLeague': False, 'localRank': 13}, {'ccode': 'INT', 'id': 914609, 'primaryId': 114, 'name': 'Friendlies', 'matches': [{'id': 6280193, 'leagueId': 914609, 'time': '24.09.2026 11:30', 'home': {'id': 6333, 'score': 2, 'name': 'Palestine', 'longName': 'Palestine'}, 'away': {'id': 5820, 'score': 2, 'name': 'New Zealand', 'longName': 'New Zealand'}, 'eliminatedTeamId': None, 'statusId': 6, 'tournamentStage': '1', 'status': {'utcTime': '2026-09-24T09:30:00.000Z', 'halfs': {'firstHalfStarted': '24.09.2026 11:32:42', 'secondHalfStarted': '24.09.2026 12:40:12'}, 'periodLength': 45, 'finished': True, 'started': True, 'cancelled': False, 'awarded': False, 'scoreStr': '2 - 2', 'reason': {'short': 'FT', 'shortKey': 'fulltime_short', 'long': 'Full-Time', 'longKey': 'finished'}}, 'timeTS': 1790242200000}, {'id': 6280194, 'leagueId': 914609, 'time': '24.09.2026 12:05', 'home': {'id': 6715, 'score': 3, 'name': 'Japan', 'longName': 'Japan'}, 'away': {'id': 5796, 'score': 1, 'name': 'Uruguay', 'longName': 'Uruguay'}, 'eliminatedTeamId': None, 'statusId': 6, 'tournamentStage': '1', 'status': {'utcTime': '2026-09-24T10:05:00.000Z', 'halfs': {'firstHalfStarted': '24.09.2026 12:11:04', 'secondHalfStarted': '24.09.2026 13:12:41'}, 'periodLength': 45, 'finished': True, 'started': True, 'cancelled': False, 'awarded': False, 'scoreStr': '3 - 1', 'reason': {'short': 'FT', 'shortKey': 'fulltime_short', 'long': 'Full-Time', 'longKey': 'finished'}}, 'timeTS': 1790244300000}, {'id': 6280195, 'leagueId': 914609, 'time': '24.09.2026 13:00', 'home': {'id': 7804, 'score': 3, 'name': 'South Korea', 'longName': 'South Korea'}, 'away': {'id': 6707, 'score': 0, 'name': 'Ecuador', 'longName': 'Ecuador'}, 'eliminatedTeamId': None, 'statusId': 6, 'tournamentStage': '1', 'status': {'utcTime': '2026-09-24T11:00:00.000Z', 'halfs': {'firstHalfStarted': '24.09.2026 13:02:39', 'secondHalfStarted': '24.09.2026 14:09:06'}, 'periodLength': 45, 'finished': True, 'started': True, 'cancelled': False, 'awarded': False, 'scoreStr': '3 - 0', 'reason': {'short': 'FT', 'shortKey': 'fulltime_short', 'long': 'Ful"
     },
     {
       "day": "2026-09-26",
-      "top_type": "NoneType",
-      "top_keys": [],
-      "sample": "None"
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "final_url": "https://www.fotmob.com/api/data/matches?date=20260926&ccode3=THA&timezone=Asia%2FBangkok",
+      "raw_len": 280642,
+      "raw_prefix": "{\"leagues\":[{\"isGroup\":true,\"groupName\":\"1\",\"ccode\":\"INT\",\"id\":920741,\"primaryId\":9806,\"name\":\"UEFA Nations League A Grp. 1\",\"matches\":[{\"id\":5181788,\"leagueId\":920741,\"time\":\"25.09.2026 20:45\",\"home\":{\"id\":8204,\"score\":0,\"name\":\"Italy\",\"longName\":\"Italy\"},\"away\":{\"id\":8263,\"score\":2,\"name\":\"Belgium\",\"longName\":\"Belgium\"},\"eliminatedTeamId\":null,\"statusId\":6,\"tournamentStage\":\"1\",\"status\":{\"utcTime\":\"2026-09-25T18:45:00.000Z\",\"halfs\":{\"firstHalfStarted\":\"25.09.2026 20:48:19\",\"secondHalfStarted\":",
+      "top_type": "dict",
+      "top_keys": [
+        "leagues",
+        "date"
+      ],
+      "sample": "{'leagues': [{'isGroup': True, 'groupName': '1', 'ccode': 'INT', 'id': 920741, 'primaryId': 9806, 'name': 'UEFA Nations League A Grp. 1', 'matches': [{'id': 5181788, 'leagueId': 920741, 'time': '25.09.2026 20:45', 'home': {'id': 8204, 'score': 0, 'name': 'Italy', 'longName': 'Italy'}, 'away': {'id': 8263, 'score': 2, 'name': 'Belgium', 'longName': 'Belgium'}, 'eliminatedTeamId': None, 'statusId': 6, 'tournamentStage': '1', 'status': {'utcTime': '2026-09-25T18:45:00.000Z', 'halfs': {'firstHalfStarted': '25.09.2026 20:48:19', 'secondHalfStarted': '25.09.2026 21:50:47'}, 'periodLength': 45, 'finished': True, 'started': True, 'cancelled': False, 'awarded': False, 'scoreStr': '0 - 2', 'reason': {'short': 'FT', 'shortKey': 'fulltime_short', 'long': 'Full-Time', 'longKey': 'finished'}}, 'timeTS': 1790361900000}, {'id': 5181789, 'leagueId': 920741, 'time': '25.09.2026 20:45', 'home': {'id': 6595, 'score': 0, 'name': 'Turkiye', 'redCards': 1, 'longName': 'Turkiye'}, 'away': {'id': 6723, 'score': 1, 'name': 'France', 'longName': 'France'}, 'eliminatedTeamId': None, 'statusId': 6, 'tournamentStage': '1', 'status': {'utcTime': '2026-09-25T18:45:00.000Z', 'numberOfHomeRedCards': 1, 'halfs': {'firstHalfStarted': '25.09.2026 20:49:07', 'secondHalfStarted': '25.09.2026 21:52:35'}, 'periodLength': 45, 'finished': True, 'started': True, 'cancelled': False, 'awarded': False, 'scoreStr': '0 - 1', 'reason': {'short': 'FT', 'shortKey': 'fulltime_short', 'long': 'Full-Time', 'longKey': 'finished'}}, 'timeTS': 1790361900000}], 'parentLeagueId': 9806, 'parentLeagueName': 'UEFA Nations League A', 'internalRank': 0, 'simpleLeague': False, 'localRank': 8}, {'isGroup': True, 'groupName': '2', 'ccode': 'INT', 'id': 920746, 'primaryId': 9807, 'name': 'UEFA Nations League B Grp. 2', 'matches': [{'id': 5181801, 'leagueId': 920746, 'time': '25.09.2026 20:45', 'home': {'id': 8565, 'score': 0, 'name': 'Hungary', 'longName': 'Hungary'}, 'away': {'id': 6718, 'score': 1, 'name': 'Ukraine', 'redCards': 1, 'longName': 'Ukraine'}, 'eliminatedTeamId': None, 'statusId': 6, 'tournamentStage': '1', 'status': {'utcTime': '2026-09-25T18:45:00.000Z', 'numberOfAwayRedCards': 1, 'halfs': {'firstHalfStarted': '25.09.2026 20:49:56', 'secondHalfStarted': '25.09.2026 21:53:23'}, 'periodLength': 45, 'finished': True, 'started': True, 'cancelled': False, 'awarded': False, 'scoreStr': '0 - 1', 'reason': {'short': 'FT', 'shortKey': 'fulltime_short', 'long': 'Full-Time', 'longKey': 'finished'}}, 'timeTS': 1790361900000}], 'parentLeagueId': 9807, 'parentLeagueName': 'UEFA Nations League B', 'internalRank': 0, 'simpleLeague': False, 'localRank': 11}, {'isGroup': True, 'groupName': '4', 'ccode': 'INT', 'id': 920748, 'primaryId': 9807, 'name': 'UEFA Nations League B Grp. 4', 'matches': [{'id': 5181837, 'leagueId': 920748, 'time': '25.09.2026 20:45', 'home': {'id': 8568, 'score': 0, 'name': 'Poland', 'longName': 'Poland'}, 'away': {'id': 10106, 'score': 0, 'name': 'Bosnia and Herzegovina', 'longName': 'Bosnia "
     }
   ],
-  "samples": []
+  "samples": [
+    {
+      "fixture_id": "pinnwire:0418f6d9c643ae12",
+      "snapshot": [
+        "Andorra",
+        "Malta",
+        "2026-09-24T16:00:00+00:00"
+      ],
+      "fotmob": {
+        "id": 5181874,
+        "home": "Andorra",
+        "away": "Malta",
+        "finished": true,
+        "score": [
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:0fc795194aaa7f45",
+      "snapshot": [
+        "Ironi Modiin",
+        "FC Ashdod",
+        "2026-09-24T16:00:00+00:00"
+      ],
+      "fotmob": {
+        "id": 5832580,
+        "home": "Ironi Modiin",
+        "away": "FC Ashdod",
+        "finished": true,
+        "score": [
+          1,
+          3
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:294782b95f869d61",
+      "snapshot": [
+        "Libya",
+        "Botswana",
+        "2026-09-24T16:00:00+00:00"
+      ],
+      "fotmob": {
+        "id": 6040344,
+        "home": "Libya",
+        "away": "Botswana",
+        "finished": true,
+        "score": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:701a393d64af28eb",
+      "snapshot": [
+        "FAR Rabat",
+        "Raja Casablanca",
+        "2026-09-24T15:00:00+00:00"
+      ],
+      "fotmob": {
+        "id": 6150376,
+        "home": "FAR Rabat",
+        "away": "Raja Casablanca",
+        "finished": false,
+        "score": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:8b3380f50224253b",
+      "snapshot": [
+        "DR Congo",
+        "Equatorial Guinea",
+        "2026-09-24T16:00:00+00:00"
+      ],
+      "fotmob": {
+        "id": 6040259,
+        "home": "DR Congo",
+        "away": "Equatorial Guinea",
+        "finished": true,
+        "score": [
+          2,
+          0
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:8f8b715fb6164b77",
+      "snapshot": [
+        "Sportfreunde Siegen",
+        "Borussia Monchengladbach",
+        "2026-09-24T16:30:00+00:00"
+      ],
+      "fotmob": {
+        "id": 6306838,
+        "home": "Sportfreunde Siegen",
+        "away": "Borussia Mönchengladbach",
+        "finished": true,
+        "score": [
+          0,
+          3
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:b27de05f06d3f4f6",
+      "snapshot": [
+        "Myanmar",
+        "Timor-Leste",
+        "2026-09-24T12:00:00+00:00"
+      ],
+      "fotmob": {
+        "id": 6233017,
+        "home": "Myanmar",
+        "away": "Timor-Leste",
+        "finished": true,
+        "score": [
+          2,
+          0
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:e5b82d489cffae53",
+      "snapshot": [
+        "Japan",
+        "Uruguay",
+        "2026-09-24T10:05:00+00:00"
+      ],
+      "fotmob": {
+        "id": 6280194,
+        "home": "Japan",
+        "away": "Uruguay",
+        "finished": true,
+        "score": [
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:ed5fb274cdd3e9c9",
+      "snapshot": [
+        "South Korea",
+        "Ecuador",
+        "2026-09-24T11:00:00+00:00"
+      ],
+      "fotmob": {
+        "id": 6280195,
+        "home": "South Korea",
+        "away": "Ecuador",
+        "finished": true,
+        "score": [
+          3,
+          0
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:ef97fb96092650a5",
+      "snapshot": [
+        "Hapoel Rishon Lezion",
+        "Maccabi Ahi Nazareth",
+        "2026-09-24T16:00:00+00:00"
+      ],
+      "fotmob": {
+        "id": 5832579,
+        "home": "Hapoel Rishon LeZion",
+        "away": "Maccabi Ahi Nazareth",
+        "finished": true,
+        "score": [
+          1,
+          0
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:f6dd6df760a0a55d",
+      "snapshot": [
+        "China",
+        "Maldives",
+        "2026-09-24T11:35:00+00:00"
+      ],
+      "fotmob": {
+        "id": 6280196,
+        "home": "China",
+        "away": "Maldives",
+        "finished": true,
+        "score": [
+          3,
+          0
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:1636231278",
+      "snapshot": [
+        "South Korea",
+        "Ecuador",
+        "2026-09-24T11:00:00+00:00"
+      ],
+      "fotmob": {
+        "id": 6280195,
+        "home": "South Korea",
+        "away": "Ecuador",
+        "finished": true,
+        "score": [
+          3,
+          0
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:1636868408",
+      "snapshot": [
+        "Andorra",
+        "Malta",
+        "2026-09-24T16:00:00+00:00"
+      ],
+      "fotmob": {
+        "id": 5181874,
+        "home": "Andorra",
+        "away": "Malta",
+        "finished": true,
+        "score": [
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:1636868583",
+      "snapshot": [
+        "Hapoel Rishon Lezion",
+        "Maccabi Ahi Nazareth",
+        "2026-09-24T16:00:00+00:00"
+      ],
+      "fotmob": {
+        "id": 5832579,
+        "home": "Hapoel Rishon LeZion",
+        "away": "Maccabi Ahi Nazareth",
+        "finished": true,
+        "score": [
+          1,
+          0
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:1636868585",
+      "snapshot": [
+        "Ironi Modiin",
+        "FC Ashdod",
+        "2026-09-24T16:00:00+00:00"
+      ],
+      "fotmob": {
+        "id": 5832580,
+        "home": "Ironi Modiin",
+        "away": "FC Ashdod",
+        "finished": true,
+        "score": [
+          1,
+          3
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:1636919994",
+      "snapshot": [
+        "Mauritania",
+        "Central African Republic",
+        "2026-09-24T16:00:00+00:00"
+      ],
+      "fotmob": {
+        "id": 6040274,
+        "home": "Mauritania",
+        "away": "Central African Republic",
+        "finished": true,
+        "score": [
+          3,
+          1
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:1636920024",
+      "snapshot": [
+        "Myanmar",
+        "Timor-Leste",
+        "2026-09-24T12:00:00+00:00"
+      ],
+      "fotmob": {
+        "id": 6233017,
+        "home": "Myanmar",
+        "away": "Timor-Leste",
+        "finished": true,
+        "score": [
+          2,
+          0
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:1637165545",
+      "snapshot": [
+        "Libya",
+        "Botswana",
+        "2026-09-24T16:00:00+00:00"
+      ],
+      "fotmob": {
+        "id": 6040344,
+        "home": "Libya",
+        "away": "Botswana",
+        "finished": true,
+        "score": [
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:1637165546",
+      "snapshot": [
+        "DR Congo",
+        "Equatorial Guinea",
+        "2026-09-24T16:00:00+00:00"
+      ],
+      "fotmob": {
+        "id": 6040259,
+        "home": "DR Congo",
+        "away": "Equatorial Guinea",
+        "finished": true,
+        "score": [
+          2,
+          0
+        ]
+      }
+    },
+    {
+      "fixture_id": "pinnwire:1637215617",
+      "snapshot": [
+        "Sportfreunde Siegen",
+        "Borussia Monchengladbach",
+        "2026-09-24T16:30:00+00:00"
+      ],
+      "fotmob": {
+        "id": 6306838,
+        "home": "Sportfreunde Siegen",
+        "away": "Borussia Mönchengladbach",
+        "finished": true,
+        "score": [
+          0,
+          3
+        ]
+      }
+    }
+  ]
 }
