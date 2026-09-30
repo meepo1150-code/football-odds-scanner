@@ -1,20 +1,20 @@
 {
   "schema_version": "3.2",
-  "generated_at": "2026-09-30T01:15:33.669187+00:00",
+  "generated_at": "2026-09-30T14:41:56.748532+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "provider": "pinnwire",
   "bookmaker": "pinnacle",
   "football_day": "2026-09-30",
   "requests_used": 1,
   "workflow_success": true,
-  "data_source_health": "AVAILABLE",
+  "data_source_health": "RATE_LIMITED",
   "capability": "RESEARCH_ONLY",
+  "status": "RATE_LIMITED",
   "request_attempts": 1,
-  "rate_limit_responses": 0,
-  "status": "RESEARCH_V2_OBSERVED",
-  "provider_events": 694,
-  "strict_snapshots_this_run": 36,
-  "persisted_snapshot_rows": 1222,
-  "result_match_keys": 36,
-  "coverage_mode": "PINNWIRE_PREMATCH_ALL_SOCCER_TODAY_BANGKOK"
+  "rate_limit_responses": 1,
+  "http_status": 429,
+  "errors": [
+    "HTTPError: HTTP 429"
+  ],
+  "cooldown_until": "2026-09-30T23:59:59.748532+00:00"
 }
