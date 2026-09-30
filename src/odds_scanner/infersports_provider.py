@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 import urllib.parse
 import urllib.request
 from collections import Counter
@@ -52,7 +53,7 @@ def _two_sided(quote: dict) -> bool:
     else:
         return False
     for group in keys:
-        if all(isinstance(prices.get(k), (int, float)) and float(prices[k]) > 1.0 for k in group):
+        if all(type(prices.get(k)) in (int, float) and math.isfinite(prices[k]) and float(prices[k]) > 1.0 for k in group):
             return True
     return False
 
@@ -67,13 +68,20 @@ def probe(limit_events: int = 6) -> dict:
     successful_events = 0
     attempted_events = 0
     missing_event_ids = 0
+    excluded_nonfuture_events = 0
     errors: list[str] = []
     samples: list[dict] = []
 
     for event in events[:limit_events]:
-        event_id = event.get("event_id")
+        event_id = event.get("event_id") or event.get("id")
         if not event_id:
             missing_event_ids += 1
+            continue
+        try:
+            kickoff=datetime.fromisoformat(str(event.get('scheduled_at') or event.get('kickoff')).replace('Z','+00:00'))
+            if kickoff.tzinfo is None or kickoff<=datetime.now(timezone.utc):raise ValueError('not future')
+        except (ValueError,TypeError):
+            excluded_nonfuture_events+=1
             continue
         attempted_events += 1
         try:
@@ -118,6 +126,7 @@ def probe(limit_events: int = 6) -> dict:
         "scheduled_events_seen": len(events),
         "events_probed": attempted_events,
         "missing_event_ids": missing_event_ids,
+        "excluded_nonfuture_events": excluded_nonfuture_events,
         "successful_events": successful_events,
         "stale_blocks": stale_blocks,
         "market_counts": dict(sorted(market_counts.items())),
@@ -126,7 +135,8 @@ def probe(limit_events: int = 6) -> dict:
         "bookmaker_counts": dict(bookmaker_counts.most_common()),
         "errors": errors[:10],
         "samples": samples,
-        "execution_candidate": successful_events > 0 and ah_two > 0 and totals_two > 0 and stale_blocks < successful_events,
+        "execution_candidate": False,
+        "qualification_blocker": "SOURCE_TIMESTAMP_AND_MAINLINE_SEMANTICS_NOT_QUALIFIED",
         "note": "Health-only live probe. Provider is not promoted to production until this report demonstrates fresh two-sided pre-match AH and totals coverage on the keyless tier.",
     }
 

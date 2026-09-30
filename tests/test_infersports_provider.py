@@ -38,3 +38,25 @@ def test_write_health_records_provider_failure_instead_of_raising(tmp_path: Path
     assert out["execution_candidate"] is False
     persisted = json.loads((tmp_path / "reports/infersports_health.json").read_text())
     assert persisted["status"] == "UNAVAILABLE"
+
+
+def test_live_id_shape_and_no_unverified_execution_promotion(monkeypatch):
+    from datetime import datetime,timedelta,timezone
+    future=(datetime.now(timezone.utc)+timedelta(days=1)).isoformat()
+    monkeypatch.setattr(provider,'list_scheduled_football',lambda **kw:[{'id':'real-id','scheduled_at':future}])
+    ids=[]
+    def odds(event_id):
+        ids.append(event_id)
+        return {'stale':False,'odds':[{'market_type':'asian_handicap','prices':{'home':1.9,'away':1.9}},{'market_type':'totals','prices':{'over':1.9,'under':1.9}}]}
+    monkeypatch.setattr(provider,'event_odds',odds)
+    result=provider.probe()
+    assert ids==['real-id'] and result['status']=='MARKETS_OBSERVED'
+    assert result['execution_candidate'] is False
+    assert result['capability']=='HEALTH_ONLY'
+
+
+def test_provider_scheduled_label_cannot_override_past_kickoff(monkeypatch):
+    monkeypatch.setattr(provider,'list_scheduled_football',lambda **kw:[{'id':'old','scheduled_at':'2020-01-01T00:00:00Z','status':'scheduled'}])
+    monkeypatch.setattr(provider,'event_odds',lambda _: (_ for _ in ()).throw(AssertionError('must not fetch')))
+    result=provider.probe()
+    assert result['excluded_nonfuture_events']==1 and result['events_probed']==0
