@@ -2,6 +2,7 @@ import json
 from datetime import datetime,timedelta,timezone
 from odds_scanner.result_response_cache import fetch_day, merge_cache, CACHE
 from odds_scanner.fotmob_result_backfill import _events
+from odds_scanner.fotmob_result_backfill import revalidate_existing, RESULTS
 from odds_scanner.oddspapi_result_cache import merge_normalized_results
 
 NOW=datetime(2026,9,30,5,tzinfo=timezone.utc)
@@ -47,3 +48,14 @@ def test_existing_conflicting_cache_cannot_be_collapsed_last_write_wins(tmp_path
     assert p.read_text()==''
     conflict=json.loads(p.with_suffix('.conflicts.jsonl').read_text())
     assert conflict['existing']['ft_home_goals']==1 and conflict['incoming']['ft_home_goals']==2
+
+
+def test_previously_stored_aet_is_quarantined_with_original_evidence(tmp_path):
+    row={'fixture_id':'pinnwire:x','ft_home_goals':2,'ft_away_goals':1,'result_source':'FOTMOB_DAILY_MATCH_EXACT_IDENTITY','provider_event_id':123,'provider_evidence':{'home':'Alpha','away':'Beta','kickoff':NOW.isoformat()}}
+    event={'id':123,'home':'Alpha','away':'Beta','kickoff':NOW,'hg':2,'ag':1,'provider_status':{'finished':True,'reason':{'short':'AET'}},'retrieved_at':NOW.isoformat()}
+    p=tmp_path/RESULTS;p.parent.mkdir(parents=True);p.write_text(json.dumps(row)+'\n')
+    assert revalidate_existing(tmp_path,[row],[event])==(1,['pinnwire:x'])
+    merge_normalized_results(p,[])
+    assert not p.read_text()
+    proof=json.loads(p.with_suffix('.conflicts.jsonl').read_text())
+    assert proof['existing']==row and proof['source_status']['reason']['short']=='AET'
