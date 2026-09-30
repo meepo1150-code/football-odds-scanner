@@ -59,3 +59,10 @@ def test_wrong_semantics_are_not_used():
     result = evaluate_entry_clv(_entry(), [snap])
     assert result["status"] == "NO_ADMISSIBLE_POST_ENTRY_SNAPSHOT"
     assert result["clv_comparable"] is False
+
+
+def test_invalid_close_prices_are_not_comparable():
+    for price in [0, 1, float("nan"), float("inf")]:
+        result = evaluate_entry_clv(_entry(), [_snap("2026-09-11T10:00:00Z", ah_home=price)])
+        assert result["clv_comparable"] is False
+        assert result["status"] == "CLV_NOT_COMPARABLE_INVALID_QUOTE"

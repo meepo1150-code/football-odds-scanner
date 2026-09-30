@@ -4,13 +4,8 @@ on:
   push:
     branches: [main]
     paths: ['src/odds_scanner/propline_research_v2.py', 'src/odds_scanner/propline_provider.py', '.github/workflows/free-research-v2-scanner.yml', 'controls/free_research_v2_scan_token.txt']
-  schedule:
-    # Weekdays: 18:00 and 21:00 Bangkok.
-    - cron: '0 11,14 * * 1-5'
-    # Weekends: 12:00, 15:00, then hourly 18:00-22:00 Bangkok.
-    - cron: '0 5,8,11,12,13,14,15 * * 6,0'
 permissions: {contents: write}
-concurrency: {group: free-research-v2-scanner, cancel-in-progress: false}
+concurrency: {group: research-v2-collectors, cancel-in-progress: false}
 jobs:
   scan:
     runs-on: ubuntu-latest
@@ -27,21 +22,27 @@ jobs:
         run: python -m odds_scanner.propline_research_v2
       - name: Build movement features
         run: python -m odds_scanner.research_v2_movement
-      - name: Persist observations safely
+      - name: Persist raw evidence and rebuild against latest main
         run: |
           set -euo pipefail
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          paths=(reports/propline_research_v2_status.json reports/research_v2_movement_status.json data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/research_v2_movement_features.jsonl)
-          rm -rf /tmp/free-scan && mkdir -p /tmp/free-scan
-          for f in "${paths[@]}"; do if test -e "$f"; then mkdir -p "/tmp/free-scan/$(dirname "$f")"; cp "$f" "/tmp/free-scan/$f"; fi; done
+          stage=$(mktemp -d)
+          paths=(data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/research_v2_slot_ledger.jsonl reports/pinnwire_research_v2_status.json reports/propline_research_v2_status.json reports/europe_pinnacle_research_v2_status.json)
+          for f in "${paths[@]}"; do if test -f "$f"; then mkdir -p "$stage/$(dirname "$f")"; cp "$f" "$stage/$f"; fi; done
           for attempt in 1 2 3; do
             git fetch origin main
             git reset --hard origin/main
-            for f in "${paths[@]}"; do if test -e "/tmp/free-scan/$f"; then mkdir -p "$(dirname "$f")"; cp "/tmp/free-scan/$f" "$f"; git add -f -- "$f"; fi; done
+            python -m odds_scanner.research_v2_persistence "$stage"
+            python -m odds_scanner.research_v2_movement
+            python -m odds_scanner.research_v2_pattern_stats
+            python -m odds_scanner.legacy_propline_recovery
+            python -m odds_scanner.research_v2_operational_audit
+            git add -f data/normalized reports
             git diff --cached --quiet && exit 0
-            git commit -m 'data: free Research V2 scan [skip ci]'
+            git commit -m 'data: merge Research V2 evidence and rebuild [skip ci]'
             git push origin HEAD:main && exit 0
             sleep 3
           done
+          echo 'Failed to persist Research V2 output' >&2
           exit 1

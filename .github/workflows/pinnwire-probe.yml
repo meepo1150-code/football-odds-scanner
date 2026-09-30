@@ -6,14 +6,16 @@ on:
     - cron: '0 5,8,11,12,13,14,15 * * 0,6' # 12:00,15:00,18:00-22:00 Bangkok weekends
   push:
     branches: [main]
-    paths: ['src/odds_scanner/pinnwire_probe.py','src/odds_scanner/propline_research_v2.py','src/odds_scanner/research_v2_movement.py','src/odds_scanner/research_v2_pattern_stats.py','.github/workflows/pinnwire-probe.yml']
+    paths: ['src/odds_scanner/pinnwire_probe.py','src/odds_scanner/provider_request_budget.py','.github/workflows/pinnwire-probe.yml']
 permissions: {contents: write}
+concurrency: {group: research-v2-collectors, cancel-in-progress: false}
 jobs:
   probe:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
+        with: {ref: main}
       - uses: actions/setup-python@v6
         with: {python-version: '3.12'}
       - run: python -m pip install -e .
@@ -35,50 +37,27 @@ jobs:
         run: |
           python -m odds_scanner.research_v2_movement
           python -m odds_scanner.research_v2_pattern_stats
-      - name: Persist Research V2 data
+      - name: Persist raw evidence and rebuild against latest main
         run: |
           set -euo pipefail
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          mkdir -p /tmp/pinnwire/data/normalized /tmp/pinnwire/reports
-          test -e data/normalized/europe_pinnacle_research_v2_audit.jsonl && cp data/normalized/europe_pinnacle_research_v2_audit.jsonl /tmp/pinnwire/data/normalized/
-          test -e reports/propline_research_v2_status.json && cp reports/propline_research_v2_status.json /tmp/pinnwire/reports/
-          if test -s data/normalized/europe_pinnacle_research_v2_snapshots.jsonl; then cp data/normalized/europe_pinnacle_research_v2_snapshots.jsonl /tmp/pinnwire/data/normalized/; fi
-          cp data/normalized/research_v2_pattern_outcomes.jsonl /tmp/pinnwire/data/normalized/
-          cp reports/pinnwire_research_v2_status.json /tmp/pinnwire/reports/
-          cp reports/research_v2_pattern_statistics.json /tmp/pinnwire/reports/
-          cp reports/research_v2_movement_status.json /tmp/pinnwire/reports/
-          cp data/normalized/research_v2_movement_features.jsonl /tmp/pinnwire/data/normalized/
+          stage=$(mktemp -d)
+          paths=(data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/research_v2_slot_ledger.jsonl reports/pinnwire_research_v2_status.json reports/propline_research_v2_status.json reports/europe_pinnacle_research_v2_status.json)
+          for f in "${paths[@]}"; do if test -f "$f"; then mkdir -p "$stage/$(dirname "$f")"; cp "$f" "$stage/$f"; fi; done
           for attempt in 1 2 3; do
             git fetch origin main
             git reset --hard origin/main
-            mkdir -p data/normalized reports
-            test -e /tmp/pinnwire/data/normalized/europe_pinnacle_research_v2_audit.jsonl && cp /tmp/pinnwire/data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/
-            test -e /tmp/pinnwire/reports/propline_research_v2_status.json && cp /tmp/pinnwire/reports/propline_research_v2_status.json reports/
-            if test -s /tmp/pinnwire/data/normalized/europe_pinnacle_research_v2_snapshots.jsonl; then cp /tmp/pinnwire/data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/; fi
-            cp /tmp/pinnwire/data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/
-            cp /tmp/pinnwire/reports/pinnwire_research_v2_status.json reports/
-            cp /tmp/pinnwire/reports/research_v2_pattern_statistics.json reports/
-            cp /tmp/pinnwire/reports/research_v2_movement_status.json reports/
-            cp /tmp/pinnwire/data/normalized/research_v2_movement_features.jsonl data/normalized/
-            git add -f data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl reports/propline_research_v2_status.json reports/pinnwire_research_v2_status.json reports/research_v2_pattern_statistics.json reports/research_v2_movement_status.json data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
-            git diff --cached --quiet && break
-            git commit -m 'data: collect PinnWire Research V2'
-            git push origin HEAD:main && break
+            python -m odds_scanner.research_v2_persistence "$stage"
+            python -m odds_scanner.research_v2_movement
+            python -m odds_scanner.research_v2_pattern_stats
+            python -m odds_scanner.legacy_propline_recovery
+            python -m odds_scanner.research_v2_operational_audit
+            git add -f data/normalized reports
+            git diff --cached --quiet && exit 0
+            git commit -m 'data: merge Research V2 evidence and rebuild [skip ci]'
+            git push origin HEAD:main && exit 0
             sleep 3
           done
-          git fetch origin main
-          git reset --hard origin/main
-          python - <<'PY'
-          import json,sys
-          p='reports/pinnwire_research_v2_status.json'
-          r=json.load(open(p,encoding='utf-8'))
-          p={}
-          try: p=json.load(open('reports/propline_research_v2_status.json',encoding='utf-8'))
-          except Exception: pass
-          primary_ok=r.get('status') in {'RESEARCH_V2_OBSERVED','ZERO_FIXTURES'}
-          fallback_ok=p.get('football_day')==r.get('football_day') and p.get('status') in {'RESEARCH_V2_OBSERVED','ZERO_USABLE_FIXTURES'}
-          ok=primary_ok or fallback_ok
-          print(json.dumps({'operational_status':r.get('status'),'fallback_status':p.get('status'),'fallback_day':p.get('football_day'),'requests_used':r.get('requests_used'),'request_attempts':r.get('request_attempts'),'rate_limit_responses':r.get('rate_limit_responses')},ensure_ascii=False))
-          sys.exit(0 if ok else 1)
-          PY
+          echo 'Failed to persist Research V2 output' >&2
+          exit 1

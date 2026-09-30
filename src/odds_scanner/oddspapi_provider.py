@@ -4,6 +4,7 @@ import json
 import os
 import urllib.parse
 import urllib.request
+import urllib.error
 from dataclasses import asdict
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -30,12 +31,22 @@ def _quarter(value) -> float | None:
 
 
 def _get(path: str, key: str, params: dict | None = None, timeout: int = 20):
+    from .provider_request_budget import reserve_request, observe_account, block_metered_requests
+    reserve_request(path)
     query = dict(params or {})
     query["apiKey"] = key
     url = BASE + path + "?" + urllib.parse.urlencode(query)
     req = urllib.request.Request(url, headers={"Accept": "application/json", "User-Agent": USER_AGENT})
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            payload = json.loads(resp.read().decode("utf-8"))
+        if path.rstrip("/") == "/account":
+            observe_account(payload)
+        return payload
+    except urllib.error.HTTPError as exc:
+        if exc.code == 429:
+            block_metered_requests()
+        raise
 
 
 def _catalog(markets: list[dict]) -> dict[str, dict]:

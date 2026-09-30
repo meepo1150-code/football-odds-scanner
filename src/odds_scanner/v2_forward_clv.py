@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 import statistics
 from collections import Counter
 from datetime import datetime, timezone
@@ -100,6 +101,9 @@ def evaluate_entry_clv(entry: dict, snapshots: list[dict]) -> dict:
             "latest_observed_at": close.get("observed_at"),
             "closing_label": "LATEST_OBSERVED_PREMATCH_MAINLINE",
         }
+
+    if not all(math.isfinite(x) for x in (entry_line, entry_price, close_line_f, close_price_f)) or min(entry_price, close_price_f) <= 1.0:
+        return {"status": "CLV_NOT_COMPARABLE_INVALID_QUOTE", "clv_comparable": False}
 
     line_move = close_line_f - entry_line
     base = {

@@ -82,3 +82,15 @@ def test_preregistration_drift_fails_closed(tmp_path):
     out = build_readiness(tmp_path)
     assert out["status"] == "PREREGISTRATION_UNAVAILABLE_OR_DRIFTED"
     assert out["production_promotion_allowed"] is False
+
+
+def test_sample_minimum_cannot_be_lowered_by_report_drift(tmp_path):
+    _prereg(tmp_path)
+    path = tmp_path / "reports/v2_forward_preregistration.json"
+    prereg = json.loads(path.read_text())
+    prereg["forward_evaluation"]["minimum_settled_entries_per_candidate"] = 1
+    _write(path, prereg)
+    _write(tmp_path / "reports/v2_forward_performance.json", {"by_candidate": {x: {"settled_entries": 10} for x in IDS}})
+    out = build_readiness(tmp_path)
+    assert out["status"] == "COLLECTING_FORWARD_EVIDENCE"
+    assert all(c["remaining_to_minimum_settled_entries"] == 140 for c in out["candidates"])

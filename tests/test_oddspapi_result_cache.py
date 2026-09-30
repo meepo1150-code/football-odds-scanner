@@ -25,3 +25,21 @@ def test_merge_normalized_results_accepts_only_explicit_integer_ft_scores(tmp_pa
     assert merge_normalized_results(path,results)==1
     rows=[json.loads(x) for x in path.read_text().splitlines()]
     assert rows==[{"fixture_id":"1","ft_home_goals":2,"ft_away_goals":1,"result_source":"exact"}]
+
+
+def test_conflicting_score_is_quarantined_and_cannot_silently_return(tmp_path):
+    path=tmp_path/'results.jsonl'
+    a={'fixture_id':'a','ft_home_goals':1,'ft_away_goals':0,'result_source':'first'}
+    b={**a,'ft_home_goals':2,'result_source':'second'}
+    merge_normalized_results(path,[a])
+    assert merge_normalized_results(path,[b]) == 0
+    assert path.read_text() == ''
+    conflicts=[json.loads(x) for x in path.with_suffix('.conflicts.jsonl').read_text().splitlines()]
+    assert conflicts[0]['existing']==a and conflicts[0]['incoming']==b
+    merge_normalized_results(path,[a])
+    assert path.read_text() == ''
+
+
+def test_boolean_scores_are_not_integer_results(tmp_path):
+    path=tmp_path/'results.jsonl'
+    assert merge_normalized_results(path,[{'fixture_id':'a','ft_home_goals':True,'ft_away_goals':0}])==0

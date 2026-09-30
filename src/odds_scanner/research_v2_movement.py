@@ -2,6 +2,7 @@ from __future__ import annotations
 import json
 from collections import defaultdict
 from pathlib import Path
+from .research_v2_integrity import trusted_snapshot, finite_number
 
 SNAP=Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl')
 OUT=Path('data/normalized/research_v2_movement_features.jsonl')
@@ -36,7 +37,7 @@ def run(root=Path('.')):
     groups=defaultdict(list)
     source=_rows(root/SNAP)
     source_all=list(source)
-    source=[r for r in source if str(r.get('provider') or '').lower()!='propline' or (r.get('mainline_verified') is True and r.get('source_semantics')=='PROPLINE_PINNACLE_TWO_SIDED_CORE_MAINLINE' and 1.80<=float((r.get('ah') or {}).get('selected_side_price',0))<=2.20)]
+    source=[r for r in source if trusted_snapshot(r)]
     quarantined=len(source_all)-len(source)
     for r in source: groups[str(r.get('fixture_id'))].append(r)
     features=[]
@@ -47,7 +48,7 @@ def run(root=Path('.')):
         a,b=rs[0],rs[-1]
         row={'fixture_id':fid,'football_day':b.get('football_day'),'league':b.get('league'),'country':b.get('country'),'competition_type':b.get('competition_type'),'observations':len(rs),'first_observed_at':a.get('observed_at'),'last_observed_at':b.get('observed_at')}
         for key in ('ah_line','favorite_price','ou_line','over_price','under_price','home_price','draw_price','away_price'):
-            av,bv=_num(_get(a,key)),_num(_get(b,key))
+            av,bv=finite_number(_get(a,key)),finite_number(_get(b,key))
             row['first_'+key]=av; row['last_'+key]=bv
             row['delta_'+key]=None if av is None or bv is None else round(bv-av,4)
             if row['delta_'+key] is not None:numeric_delta_count+=1

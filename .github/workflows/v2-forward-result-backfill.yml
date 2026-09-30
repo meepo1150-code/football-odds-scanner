@@ -1,6 +1,14 @@
 name: Validation v2 Forward Result Backfill
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/odds_scanner/v2_forward_result_backfill.py'
+      - 'src/odds_scanner/flashscore_result_provider.py'
+      - 'src/odds_scanner/oddspapi_result_cache.py'
+      - 'tests/test_v2_forward_result_backfill.py'
+      - '.github/workflows/v2-forward-result-backfill.yml'
   schedule:
     - cron: '27 2,8,14,20 * * *'
 permissions:
@@ -34,6 +42,7 @@ jobs:
           mkdir -p /tmp/v2-forward-results
           for spec in \
             'data/normalized/oddspapi_finished_results.jsonl results.jsonl' \
+            'data/normalized/oddspapi_finished_results.conflicts.jsonl conflicts.jsonl' \
             'data/normalized/v2_forward_settlements.jsonl settlements.jsonl' \
             'reports/v2_forward_result_backfill.json backfill.json' \
             'reports/v2_forward_performance.json performance.json' \
@@ -47,15 +56,20 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             mkdir -p reports data/normalized
-            [ -f /tmp/v2-forward-results/results.jsonl ] && cp /tmp/v2-forward-results/results.jsonl data/normalized/oddspapi_finished_results.jsonl
-            [ -f /tmp/v2-forward-results/settlements.jsonl ] && cp /tmp/v2-forward-results/settlements.jsonl data/normalized/v2_forward_settlements.jsonl
+            # Merge the fetched exact results into the latest cache rather than
+            # replacing results another workflow wrote during this request.
+            python -c 'import json; from pathlib import Path; p=Path("data/normalized/oddspapi_finished_results.conflicts.jsonl"); q=Path("/tmp/v2-forward-results/conflicts.jsonl"); rows=[json.loads(x) for f in (p,q) if f.exists() for x in f.read_text().splitlines() if x.strip()]; p.write_text("".join(x+"\n" for x in sorted({json.dumps(r,sort_keys=True) for r in rows}))) if rows else None'
+            python -c 'import json; from pathlib import Path; from odds_scanner.oddspapi_result_cache import merge_normalized_results; p=Path("/tmp/v2-forward-results/results.jsonl"); merge_normalized_results(Path("data/normalized/oddspapi_finished_results.jsonl"), [json.loads(x) for x in p.read_text().splitlines() if x.strip()] if p.exists() else [])'
             [ -f /tmp/v2-forward-results/backfill.json ] && cp /tmp/v2-forward-results/backfill.json reports/v2_forward_result_backfill.json
-            [ -f /tmp/v2-forward-results/performance.json ] && cp /tmp/v2-forward-results/performance.json reports/v2_forward_performance.json
-            [ -f /tmp/v2-forward-results/readiness.json ] && cp /tmp/v2-forward-results/readiness.json reports/v2_forward_readiness.json
+            python -m odds_scanner.v2_forward_clv
+            python -m odds_scanner.v2_forward_performance
+            python -m odds_scanner.v2_forward_readiness
             for path in \
               data/normalized/oddspapi_finished_results.jsonl \
+              data/normalized/oddspapi_finished_results.conflicts.jsonl \
               data/normalized/v2_forward_settlements.jsonl \
               reports/v2_forward_result_backfill.json \
+              reports/v2_forward_clv_status.json \
               reports/v2_forward_performance.json \
               reports/v2_forward_readiness.json; do
               [ -f "$path" ] && git add -f -- "$path"

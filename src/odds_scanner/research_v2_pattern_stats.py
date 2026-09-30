@@ -5,6 +5,7 @@ from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from .asian_settlement import settle_asian_handicap
+from .research_v2_integrity import trusted_snapshot
 SNAPSHOTS=Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl');RESULTS=Path('data/normalized/oddspapi_finished_results.jsonl');AUDIT=Path('data/normalized/europe_pinnacle_research_v2_audit.jsonl');OUTCOMES=Path('data/normalized/research_v2_pattern_outcomes.jsonl');REPORT=Path('reports/research_v2_pattern_statistics.json');MISSING_LEDGER=Path('reports/research_v2_missing_ft_ledger.json')
 def _rows(path):
     if not path.exists():return []
@@ -15,11 +16,13 @@ def _rows(path):
         if isinstance(x,dict):out.append(x)
     return out
 def _num(v):
-    try:return float(v)
+    try:
+        x=float(v)
+        return x if math.isfinite(x) else None
     except (TypeError,ValueError):return None
 def _score(r):
-    try:h,a=int(r.get('ft_home_goals')),int(r.get('ft_away_goals'))
-    except (TypeError,ValueError):return None
+    h,a=r.get('ft_home_goals'),r.get('ft_away_goals')
+    if type(h) is not int or type(a) is not int:return None
     return (h,a) if h>=0 and a>=0 else None
 def _prob_bucket(v):
     p=_num(v)
@@ -37,10 +40,28 @@ def _price_bucket(v):
 def _core(v):
     x=_num(v);return x is not None and 1.80<=x<=2.20
 def _ou25(s,h,a):
+    # Goal-frequency statistics require FT only; priced returns require an exact,
+    # identifiable prematch 2.5 quote. Never relabel a mainline alternate total.
     ou=s.get('ou') or s.get('over_under_2_5') or s.get('ou_2_5') or {}
-    over=_num((ou.get('over_price') if 'over_price' in ou else ou.get('over')) if isinstance(ou,dict) else None);under=_num((ou.get('under_price') if 'under_price' in ou else ou.get('under')) if isinstance(ou,dict) else None)
+    over=under=None
+    reason='MISSING_QUOTE'
+    quote_time=None
+    if isinstance(ou,dict) and ou:
+        line=_num(ou.get('line'))
+        op=_num(ou.get('over_price',ou.get('over')))
+        up=_num(ou.get('under_price',ou.get('under')))
+        reason='NOT_EXACT_2_5' if line!=2.5 else 'INVALID_TWO_SIDED_PRICES'
+        if line==2.5 and op is not None and up is not None and op>1 and up>1:
+            reason='UNVERIFIED_PROVENANCE_OR_TIMESTAMP'
+            try:
+                observed=datetime.fromisoformat(str(s.get('observed_at')).replace('Z','+00:00'))
+                kickoff=datetime.fromisoformat(str(s.get('kickoff')).replace('Z','+00:00'))
+                valid_time=observed.tzinfo is not None and kickoff.tzinfo is not None and observed<kickoff
+            except (TypeError,ValueError):valid_time=False
+            if valid_time and s.get('source_semantics') and s.get('bookmaker'):
+                over,under=op,up;quote_time=s['observed_at'];reason='VERIFIED_EXACT_2_5_PREMATCH'
     total=h+a
-    return {'ou25_over_price':over,'ou25_under_price':under,'ou25_result':'OVER' if total>2.5 else 'UNDER','total_goals':total}
+    return {'ou25_over_price':over,'ou25_under_price':under,'ou25_quote_status':reason,'ou25_observed_at':quote_time,'ou25_bookmaker':s.get('bookmaker') if over is not None else None,'ou25_source_semantics':s.get('source_semantics') if over is not None else None,'ou25_result':'OVER' if total>2.5 else 'UNDER','total_goals':total}
 def _result_index(rows):
     g=defaultdict(list)
     for r in rows:
@@ -72,10 +93,7 @@ def _signal(n,roi,ci):
     return 'INCONCLUSIVE'
 def build(root=Path('.')):
     raw_snaps=_rows(root/SNAPSHOTS)
-    def trusted(x):
-        if str(x.get('provider') or '').lower()!='propline': return True
-        return x.get('mainline_verified') is True and x.get('source_semantics')=='PROPLINE_PINNACLE_TWO_SIDED_CORE_MAINLINE' and _core((x.get('ah') or {}).get('selected_side_price'))
-    snaps=[x for x in raw_snaps if trusted(x)];quarantined_snapshots=len(raw_snaps)-len(snaps);audits=_rows(root/AUDIT);results,ambiguous=_result_index(_rows(root/RESULTS));ag={(str(x.get('fixture_id')),str(x.get('observed_at'))):x for x in audits};grouped=defaultdict(list)
+    snaps=[x for x in raw_snaps if trusted_snapshot(x)];quarantined_snapshots=len(raw_snaps)-len(snaps);audits=_rows(root/AUDIT);results,ambiguous=_result_index(_rows(root/RESULTS));ag={(str(x.get('fixture_id')),str(x.get('observed_at'))):x for x in audits};grouped=defaultdict(list)
     for s in snaps:
         if s.get('fixture_id'):grouped[str(s['fixture_id'])].append(s)
     for ss in grouped.values():ss.sort(key=lambda x:str(x.get('observed_at') or ''))
@@ -102,7 +120,7 @@ def build(root=Path('.')):
         try:
             dog_side='A' if fav=='H' else 'H' if fav=='A' else None
             if dog_side:
-                dog=settle_asian_handicap(h,a,-float(ah.get('selected_side_line')),float(ah.get('opposite_side_price')),dog_side);dog_profit_units=dog.profit_units
+                dog=settle_asian_handicap(h,a,-float(ah.get('selected_side_line')),float(ah.get('opposite_side_price',ah.get('away_price') if fav=='H' else ah.get('home_price'))),dog_side);dog_profit_units=dog.profit_units
         except (TypeError,ValueError):pass
         price=ah.get('selected_side_price');market_side='HOME_FAVORITE' if fav=='H' else 'AWAY_FAVORITE' if fav=='A' else 'UNKNOWN'
         outcomes.append({'fixture_id':fid,'football_day':s.get('football_day'),'league':s.get('league'),'home':s.get('home'),'away':s.get('away'),'favorite_side':fav,'market_side':market_side,'favorite_team':s.get('home') if fav=='H' else s.get('away') if fav=='A' else None,'underdog_team':s.get('away') if fav=='H' else s.get('home') if fav=='A' else None,'favorite_1x2_price':one.get('home') if fav=='H' else one.get('away') if fav=='A' else None,'favorite_fair_probability':s.get('favorite_fair_probability'),'favorite_probability_bucket':_prob_bucket(s.get('favorite_fair_probability')),'ah_line':ah.get('selected_side_line'),'ah_price':price,'ah_price_bucket':_price_bucket(price),'ah_core_price':_core(price),'scan_count':len(ss),'first_ah_line':(ss[0].get('ah') or {}).get('selected_side_line'),'first_ah_price':(ss[0].get('ah') or {}).get('selected_side_price'),'movement':_movement(ss[0],s),'match_status':au.get('eligibility_status','UNCLASSIFIED'),'ft_home_goals':h,'ft_away_goals':a,'favorite_ah_settlement':settle,'favorite_profit_units':profit_units,'underdog_profit_units':dog_profit_units,'price_result':_price_result(settle),'price_winner_side':'FAVORITE' if settle in ('FULL_WIN','HALF_WIN') else 'UNDERDOG' if settle in ('FULL_LOSS','HALF_LOSS') else 'PUSH' if settle=='PUSH' else 'UNSETTLED','price_winner_home_away':('HOME' if fav=='H' else 'AWAY') if settle in ('FULL_WIN','HALF_WIN') else ('AWAY' if fav=='H' else 'HOME') if settle in ('FULL_LOSS','HALF_LOSS') else 'PUSH' if settle=='PUSH' else 'UNSETTLED','result_join':'EXACT_FIXTURE_ID_ONLY','research_only':True,**_ou25(s,h,a)})
@@ -132,6 +150,6 @@ def build(root=Path('.')):
     baseline=aggregate(['market_side','ah_line'],True);bmap={(x['market_side'],x['ah_line']):x.get('favorite_price_win_pct') for x in baseline};by_state=aggregate(['market_side','ah_line','ah_price_bucket'],True)
     for x in by_state:
         b=bmap.get((x['market_side'],x['ah_line']));x['baseline_favorite_price_win_pct']=b;x['difference_vs_line_baseline_pp']=round(x['favorite_price_win_pct']-b,2) if b is not None and x['favorite_price_win_pct'] is not None else None
-    payload={'schema_version':'2.5','classification':'RESEARCH_V2_AH_MARKET_STATE_STATISTICS','statistical_population_policy':'VERIFIED_FT_ONLY; RAW UNRESOLVED FIXTURES QUARANTINED AND EXCLUDED','generated_at':datetime.now(timezone.utc).isoformat(),'research_only':True,'recommendation_semantics':False,'signal_policy':'N>=30 AND ROI DIRECTION AGREES WITH WILSON95 VS 50%; OTHERWISE INCONCLUSIVE','primary_market':'ASIAN_HANDICAP','core_ah_decimal_odds_range':[1.80,2.20],'price_buckets':['1.80-1.89','1.90-1.99','2.00-2.09','2.10-2.20'],'one_x_two_role':'CONTEXT_FAIR_PROBABILITY_ONLY','price_win_definition':'ASIAN_HANDICAP_SETTLEMENT_ONLY','ou25_source':'PREMATCH_PINNWIRE_EXACT_2_5_WHEN_AVAILABLE','snapshot_rows':len(snaps),'raw_snapshot_rows':len(raw_snaps),'quarantined_snapshot_rows':quarantined_snapshots,'quarantine_policy':'LEGACY_PROPLINE_EXCLUDED; VERIFIED_PINNACLE_TWO_SIDED_CORE_MAINLINE_ALLOWED','unique_snapshot_fixtures':len(grouped),'settled_fixtures':len(outcomes),'core_price_settled_fixtures':sum(x['ah_core_price'] for x in outcomes),'missing_result_fixtures':0,'raw_unresolved_ft_fixtures':missing,'excluded_missing_ft_from_statistical_population':missing,'excluded_derivative_markets_from_ft_completeness':excluded_derivative,'eligible_statistical_fixtures':len(outcomes),'ft_completeness_pct':100.0,'missing_result_fixtures_by_provider':{},'unique_snapshot_fixtures_by_provider':dict(sorted(unique_by_provider.items())),'pinnwire_missing_result_fixtures':0,'non_pinnwire_missing_result_fixtures':0,'raw_unresolved_ft_by_provider':dict(sorted(missing_by_provider.items())),'raw_pinnwire_unresolved_ft':missing_by_provider.get('pinnwire',0),'raw_non_pinnwire_unresolved_ft':missing-missing_by_provider.get('pinnwire',0),'ambiguous_result_fixtures':len(ambiguous),'baseline_by_market_side_line':baseline,'market_state_by_side_line_price':by_state,'market_state_by_side_line_price_probability':aggregate(['market_side','ah_line','ah_price_bucket','favorite_probability_bucket'],True),'market_state_by_side_line_price_movement':aggregate(['market_side','ah_line','ah_price_bucket','movement'],True),'all_by_movement':aggregate(['movement']),'over_under_2_5_by_ah_line':aggregate_ou(['market_side','ah_line'],True),'over_under_2_5_by_ah_line_price':aggregate_ou(['market_side','ah_line','ah_price_bucket'],True)}
+    payload={'schema_version':'2.6','classification':'RESEARCH_V2_AH_MARKET_STATE_STATISTICS','statistical_population_policy':'VERIFIED_FT_ONLY; RAW UNRESOLVED FIXTURES QUARANTINED AND EXCLUDED','generated_at':datetime.now(timezone.utc).isoformat(),'research_only':True,'recommendation_semantics':False,'signal_policy':'N>=30 AND ROI DIRECTION AGREES WITH WILSON95 VS 50%; OTHERWISE INCONCLUSIVE','primary_market':'ASIAN_HANDICAP','core_ah_decimal_odds_range':[1.80,2.20],'price_buckets':['1.80-1.89','1.90-1.99','2.00-2.09','2.10-2.20'],'one_x_two_role':'CONTEXT_FAIR_PROBABILITY_ONLY','price_win_definition':'ASIAN_HANDICAP_SETTLEMENT_ONLY','ou25_source':'EXACT_2_5_TWO_SIDED_PREMATCH_WITH_PROVENANCE_ONLY','ou25_frequency_population':'VERIFIED_FT_GROUPED_BY_AH_STATE; PRICED_RETURNS_USE_SEPARATE_VERIFIED_QUOTE_N','ou25_quote_status_counts':dict(Counter(x['ou25_quote_status'] for x in outcomes)),'snapshot_rows':len(snaps),'raw_snapshot_rows':len(raw_snaps),'quarantined_snapshot_rows':quarantined_snapshots,'quarantine_policy':'LEGACY_PROPLINE_EXCLUDED; VERIFIED_PINNACLE_TWO_SIDED_CORE_MAINLINE_ALLOWED','unique_snapshot_fixtures':len(grouped),'settled_fixtures':len(outcomes),'core_price_settled_fixtures':sum(x['ah_core_price'] for x in outcomes),'missing_result_fixtures':0,'raw_unresolved_ft_fixtures':missing,'excluded_missing_ft_from_statistical_population':missing,'excluded_derivative_markets_from_ft_completeness':excluded_derivative,'eligible_statistical_fixtures':len(outcomes),'ft_completeness_pct':100.0,'missing_result_fixtures_by_provider':{},'unique_snapshot_fixtures_by_provider':dict(sorted(unique_by_provider.items())),'pinnwire_missing_result_fixtures':0,'non_pinnwire_missing_result_fixtures':0,'raw_unresolved_ft_by_provider':dict(sorted(missing_by_provider.items())),'raw_pinnwire_unresolved_ft':missing_by_provider.get('pinnwire',0),'raw_non_pinnwire_unresolved_ft':missing-missing_by_provider.get('pinnwire',0),'ambiguous_result_fixtures':len(ambiguous),'baseline_by_market_side_line':baseline,'market_state_by_side_line_price':by_state,'market_state_by_side_line_price_probability':aggregate(['market_side','ah_line','ah_price_bucket','favorite_probability_bucket'],True),'market_state_by_side_line_price_movement':aggregate(['market_side','ah_line','ah_price_bucket','movement'],True),'all_by_movement':aggregate(['movement']),'over_under_2_5_by_ah_line':aggregate_ou(['market_side','ah_line'],True),'over_under_2_5_by_ah_line_price':aggregate_ou(['market_side','ah_line','ah_price_bucket'],True)}
     q=root/REPORT;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8');return payload
 if __name__=='__main__':print(json.dumps(build(),ensure_ascii=False))
