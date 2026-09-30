@@ -30,8 +30,14 @@ def _write(path: Path, existing: dict[str, dict]) -> None:
 
 def merge_normalized_results(path: Path, results: list[dict]) -> int:
     """Merge already-normalized exact-ID result rows into the shared cache."""
-    existing = _load(path)
-    before_ids = set(existing)
+    old_rows = []
+    if path.exists():
+        for line in path.read_text(encoding='utf-8').splitlines():
+            if line.strip():
+                row=json.loads(line)  # Corrupt storage must not be silently rewritten.
+                if isinstance(row,dict):old_rows.append(row)
+    existing = {}
+    before_ids = {str(row.get('fixture_id')) for row in old_rows}
     conflict_path = path.with_suffix('.conflicts.jsonl')
     conflicts = []
     if conflict_path.exists():
@@ -39,7 +45,7 @@ def merge_normalized_results(path: Path, results: list[dict]) -> int:
             try: conflicts.append(json.loads(line))
             except json.JSONDecodeError: continue
     blocked = {str(r.get('fixture_id')) for r in conflicts}
-    for result in results:
+    for result in old_rows + results:
         if not isinstance(result, dict) or result.get("fixture_id") is None:
             continue
         hg, ag = result.get("ft_home_goals"), result.get("ft_away_goals")

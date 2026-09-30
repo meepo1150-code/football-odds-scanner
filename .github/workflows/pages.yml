@@ -60,7 +60,7 @@ jobs:
           for f in research_v2_operational_audit.json legacy_propline_recovery.json research_v2_daily_sync_status.json research_v2_movement_status.json propline_research_v2_status.json europe_pinnacle_research_v2_status.json oddspapi_quota_health.json research_v2_pattern_statistics.json pinnwire_result_join_status.json pinnwire_research_v2_status.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
-          for f in europe_pinnacle_research_v2_snapshots.jsonl europe_pinnacle_research_v2_audit.jsonl oddspapi_finished_results.jsonl dashboard_verified_results.jsonl; do
+          for f in europe_pinnacle_research_v2_snapshots.jsonl europe_pinnacle_research_v2_audit.jsonl oddspapi_finished_results.conflicts.jsonl oddspapi_finished_results.jsonl dashboard_verified_results.jsonl; do
             test -f "data/normalized/$f" && cp "data/normalized/$f" "site/data/normalized/$f" || true
           done
       - uses: actions/configure-pages@v6

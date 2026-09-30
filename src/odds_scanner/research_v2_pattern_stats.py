@@ -94,6 +94,8 @@ def _signal(n,roi,ci):
 def build(root=Path('.')):
     raw_snaps=_rows(root/SNAPSHOTS)
     snaps=[x for x in raw_snaps if trusted_snapshot(x)];quarantined_snapshots=len(raw_snaps)-len(snaps);audits=_rows(root/AUDIT);results,ambiguous=_result_index(_rows(root/RESULTS));ag={(str(x.get('fixture_id')),str(x.get('observed_at'))):x for x in audits};grouped=defaultdict(list)
+    blocked_results={str(x.get('fixture_id')) for x in _rows((root/RESULTS).with_suffix('.conflicts.jsonl'))}
+    for fid in blocked_results:results.pop(fid,None)
     for s in snaps:
         if s.get('fixture_id'):grouped[str(s['fixture_id'])].append(s)
     for ss in grouped.values():ss.sort(key=lambda x:str(x.get('observed_at') or ''))

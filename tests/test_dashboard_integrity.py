@@ -16,6 +16,7 @@ def test_dashboard_data_guards():
     checks='''
 const assert=require('assert');
 assert.equal(n(null),'—');
+assert.equal(exactResults([{fixture_id:'blocked',ft_home_goals:2,ft_away_goals:1}],[{fixture_id:'blocked'}]).size,0);
 assert.equal(ahSettlement(1,0,-1.5,'H'),'FULL_LOSS');
 assert.equal(ahSettlement(1,0,null,'H'),null);
 assert.equal(ahSettlement(1,0,-.6,'H'),null);
