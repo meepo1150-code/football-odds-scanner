@@ -20,6 +20,14 @@ def test_three_way_requires_all_prices():
     assert not _two_sided({"market_type": "1x2", "prices": {"home": 2.1, "away": 3.4}})
 
 
+def test_event_list_without_ids_is_not_healthy_odds(monkeypatch):
+    monkeypatch.setattr(provider,'list_scheduled_football',lambda **kw:[{'name':'unknown'}])
+    out=provider.probe()
+    assert out['status']=='NO_USABLE_MARKETS'
+    assert out['events_probed']==0 and out['missing_event_ids']==1
+    assert out['execution_candidate'] is False
+
+
 def test_write_health_records_provider_failure_instead_of_raising(tmp_path: Path, monkeypatch):
     def boom(*args, **kwargs):
         raise TimeoutError("timed out")

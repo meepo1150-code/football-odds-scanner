@@ -57,14 +57,21 @@ def discover_finished_big5_window(key: str, start, end) -> list[dict]:
 def main() -> None:
     archive._discover_window = discover_finished_big5_window
     archive._get = _history_aware_get
-    from .provider_request_budget import QuotaBlocked
+    from .provider_request_budget import QuotaBlocked, reserve_request
+    archive_started = False
     try:
+        # Zero-cost preflight. Historical odds are unmetered but unavailable at
+        # exhausted quota; do not enter discovery or alter its cursor then.
+        reserve_request('/historical-odds', _ROOT)
+        archive_started = True
         print(archive.run_archive(_ROOT))
     except QuotaBlocked as exc:
         path = _ROOT / 'reports/oddspapi_history_state.json'
         state = json.loads(path.read_text()) if path.exists() else {}
         state.update(status='WAITING_EXTERNAL_DATA', provider_health='QUOTA_BLOCKED',
                      generated_at=datetime.now(timezone.utc).isoformat(), reason=str(exc))
+        for key in ('billable_requests_this_run','free_history_requests_this_run','processed_this_run','rows_added_this_run'):
+            state[key] = None if archive_started else 0
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(state, indent=2))
         print(json.dumps({'status':state['status'],'reason':str(exc),'cursor_preserved':True}))
