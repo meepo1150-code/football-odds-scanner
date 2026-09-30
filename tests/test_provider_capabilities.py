@@ -32,13 +32,13 @@ def test_current_price_capability_is_distinct_from_execution_readiness():
     assert "sgodds_singapore_pools_open" not in ids
     assert {"infersports_keyless", "5dollarfootballapi_free", "oddspapi_free", "odds_api_io", "isports_historical_all", "tipsme_pro"}.issubset(ids)
     infer = next(p for p in current if p["provider_id"] == "infersports_keyless")
-    assert infer["production_status"] == "GITHUB_RUNNER_UNREACHABLE"
+    assert infer["production_status"] == "HEALTH_ONLY_NOT_EXECUTION_QUALIFIED"
     five = next(p for p in current if p["provider_id"] == "5dollarfootballapi_free")
     assert five["zero_cost_confirmed"] is True
     assert five["production_status"] == "ACTIVE_RESEARCH_EXECUTION_FRESHNESS_UNVERIFIED"
     op = next(p for p in current if p["provider_id"] == "oddspapi_free")
     assert op["zero_cost_confirmed"] is True
-    assert op["production_status"] == "FREE_KEY_REQUIRED_LIVE_PROBE_PENDING"
+    assert op["production_status"] == "QUOTA_GATED_REQUIRES_CURRENT_VALIDATION"
     paused = next(p for p in current if p["provider_id"] == "odds_api_io")
     assert paused["zero_cost_confirmed"] is False
     assert paused["production_status"] == "FREE_SIGNUP_PAUSED_2026_09_08"
@@ -49,4 +49,4 @@ def test_movement_history_capability_is_explicit_not_execution_claim():
     ids = {p["provider_id"] for p in movement}
     assert {"infersports_keyless", "oddspapi_free", "tipsme_pro"}.issubset(ids)
     infer = next(p for p in movement if p["provider_id"] == "infersports_keyless")
-    assert infer["production_status"] == "GITHUB_RUNNER_UNREACHABLE"
+    assert infer["production_status"] == "HEALTH_ONLY_NOT_EXECUTION_QUALIFIED"

@@ -26,4 +26,4 @@ def test_documented_keyless_current_feed_stays_blocked_when_unreachable():
     assert row["zero_cost_confirmed"] is True
     assert row["execution_ready"] is False
     assert "operational_execution_availability" in row["execution_missing"]
-    assert row["production_status"] == "GITHUB_RUNNER_UNREACHABLE"
+    assert row["production_status"] == "HEALTH_ONLY_NOT_EXECUTION_QUALIFIED"

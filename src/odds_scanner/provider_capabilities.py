@@ -62,9 +62,9 @@ PROVIDERS = (
         opening_odds=True, closing_odds=False, movement_history=True, current_odds=True,
         api_key_required=False, zero_cost_confirmed=True,
         redistribution_status="API terms apply; health probe stores metadata only",
-        production_status="GITHUB_RUNNER_UNREACHABLE",
+        production_status="HEALTH_ONLY_NOT_EXECUTION_QUALIFIED",
         source_url="https://api.infersports.dev",
-        note="Current two-sided Asian markets documented, but GitHub-hosted runner timed out before any quote was returned.",
+        note="Documented market capability is not operational qualification. Read infersports_health.json for latest runner evidence; source timestamps and mainline semantics remain unqualified.",
     ),
     ProviderCapability(
         provider_id="5dollarfootballapi_free",
@@ -88,9 +88,9 @@ PROVIDERS = (
         opening_odds=True, closing_odds=True, movement_history=True, current_odds=True,
         api_key_required=True, zero_cost_confirmed=True,
         redistribution_status="provider terms apply; only normalized health/research outputs should be persisted until redistribution terms are audited",
-        production_status="FREE_KEY_REQUIRED_LIVE_PROBE_PENDING",
+        production_status="QUOTA_GATED_REQUIRES_CURRENT_VALIDATION",
         source_url="https://oddspapi.io/us/docs/get-odds",
-        note="Free tier is documented at 250 metered requests/month with no card; historical-odds calls are unmetered. Current selections expose bookmakerChangedAt/changedAt, active/suspended flags, price, limit and mainLine. Dynamic market catalog supplies handicap and outcome labels, avoiding hard-coded IDs. Must pass a real GitHub-runner Bet365 probe before scanner integration.",
+        note="Free tier is documented at 250 metered requests/month with no card; historical-odds calls are unmetered. Current selections expose bookmakerChangedAt/changedAt, active/suspended flags, price, limit and mainLine. Dynamic market catalog supplies handicap and outcome labels, avoiding hard-coded IDs. Key integration exists. Read oddspapi_quota_health.json for current quota; current active quote validation remains mandatory.",
     ),
     ProviderCapability(
         provider_id="odds_api_io",
