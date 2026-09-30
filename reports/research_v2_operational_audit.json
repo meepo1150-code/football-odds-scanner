@@ -1,32 +1,30 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-09-30T01:15:15.617189+00:00",
+  "generated_at": "2026-09-30T01:15:44.377422+00:00",
   "workflow_success_is_not_data_source_health": true,
-  "status": "WAITING_EXTERNAL_DATA",
+  "status": "COLLECTING_WITH_EXTERNAL_BLOCKERS",
   "data_assertions_passed": true,
   "assertion_failures": [],
   "counts": {
-    "raw_snapshots": 1186,
-    "verified_snapshots": 1100,
+    "raw_snapshots": 1222,
+    "verified_snapshots": 1136,
     "quarantined_snapshots": 86,
     "recovered_legacy_snapshots": 0,
-    "unresolved_ft_fixtures": 501,
-    "settled_statistical_fixtures": 324,
-    "core_price_settled_fixtures": 302,
+    "unresolved_ft_fixtures": 527,
+    "settled_statistical_fixtures": 334,
+    "core_price_settled_fixtures": 312,
     "movement_fixtures": 110,
     "numeric_movement_deltas": 652,
-    "current_day_valid_scans": 0,
-    "current_day_distinct_scan_times": 0
+    "current_day_valid_scans": 36,
+    "current_day_distinct_scan_times": 1
   },
   "providers": {
     "pinnwire": {
-      "status": "API_REQUEST_FAILED",
+      "status": "AVAILABLE",
       "capability": "RESEARCH_ONLY",
-      "usable_recent_output": false,
-      "generated_at": "2026-09-29T16:47:53.148301+00:00",
-      "errors": [
-        "HTTPError: HTTP Error 429: Too Many Requests"
-      ],
+      "usable_recent_output": true,
+      "generated_at": "2026-09-30T01:15:33.669187+00:00",
+      "errors": [],
       "execution_ready": false
     },
     "propline": {
@@ -46,7 +44,7 @@
       "capability": "WAITING_EXTERNAL_DATA"
     }
   },
-  "daily_sync_status": "FIXTURE_SYNC_FAILED",
+  "daily_sync_status": "LOCAL_FIXTURE_COVERAGE_SYNCED",
   "forward_candidates": [
     {
       "candidate_id": "FD_AH_4E30F9F2EC34",
