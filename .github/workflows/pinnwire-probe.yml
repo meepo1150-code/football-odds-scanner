@@ -6,7 +6,7 @@ on:
     - cron: '0 5,8,11,12,13,14,15 * * 0,6' # 12:00,15:00,18:00-22:00 Bangkok weekends
   push:
     branches: [main]
-    paths: ['src/odds_scanner/pinnwire_probe.py','src/odds_scanner/provider_request_budget.py','.github/workflows/pinnwire-probe.yml']
+    paths: ['controls/pinnwire_research_v2_scan_token.txt','src/odds_scanner/pinnwire_probe.py','src/odds_scanner/provider_request_budget.py','.github/workflows/pinnwire-probe.yml']
 permissions: {contents: write}
 concurrency: {group: research-v2-collectors, cancel-in-progress: false}
 jobs:
