@@ -2,6 +2,7 @@ name: Resolve Research V2 Universe
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - '.github/workflows/resolve-research-universe.yml'
       - 'src/odds_scanner/oddspapi_tournament_universe.py'
@@ -25,6 +26,7 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add reports/oddspapi_tournament_universe_candidates.json
+          test ! -f reports/oddspapi_universe_health.json || git add reports/oddspapi_universe_health.json
           git diff --cached --quiet && exit 0
           git commit -m 'data: resolve Research V2 tournament universe [skip ci]'
           git push

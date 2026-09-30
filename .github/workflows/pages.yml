@@ -47,9 +47,9 @@ jobs:
         run: |
           set -euo pipefail
           python - <<'PYBUILD'
-          import json, os
+          import json, os, subprocess
           from pathlib import Path
-          Path("apps/dashboard/deployment.json").write_text(json.dumps({"source_sha": os.environ["GITHUB_SHA"], "run_id": os.environ["GITHUB_RUN_ID"]}))
+          Path("apps/dashboard/deployment.json").write_text(json.dumps({"source_sha": subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(), "run_id": os.environ["GITHUB_RUN_ID"]}))
           PYBUILD
           mkdir -p site/reports site/data/normalized site/discovery
           cp apps/dashboard/index.html site/index.html

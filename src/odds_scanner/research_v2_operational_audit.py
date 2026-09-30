@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 from .research_v2_integrity import trusted_snapshot
+from .research_v2_pattern_stats import _result_index, _rows
 
 
 def load(root, name):
@@ -41,6 +42,10 @@ def build(root=Path('.'), now=None):
         providers[name]={'status':p.get('data_source_health') or p.get('status','UNKNOWN'), 'capability':'FALLBACK' if name=='propline' else 'RESEARCH_ONLY', 'usable_recent_output':usable,'generated_at':p.get('generated_at'),'errors':p.get('errors',[]),'execution_ready':False}
     providers['oddspapi']={'status':quota.get('status','UNKNOWN'),'request_limit':quota.get('request_limit'),'request_count':quota.get('request_count'),'request_remaining':quota.get('request_remaining'),'generated_at':quota.get('generated_at'),'capability':'WAITING_EXTERNAL_DATA' if quota.get('quota_exhausted') else 'REQUIRES_CURRENT_VALIDATION'}
     counts={'raw_snapshots':len(raw),'verified_snapshots':len(valid),'quarantined_snapshots':len(raw)-len(valid),'recovered_legacy_snapshots':legacy.get('recovered',0),'unresolved_ft_fixtures':stats.get('raw_unresolved_ft_fixtures'),'settled_statistical_fixtures':stats.get('settled_fixtures'),'core_price_settled_fixtures':stats.get('core_price_settled_fixtures'),'movement_fixtures':move.get('fixtures_with_two_plus_snapshots'),'numeric_movement_deltas':move.get('numeric_delta_fields_built'),'current_day_valid_scans':len(day_scans),'current_day_distinct_scan_times':len({x.get('observed_at') for x in day_scans})}
+    results, _ = _result_index(_rows(root/'data/normalized/oddspapi_finished_results.jsonl'))
+    missing = {str(s.get('fixture_id')):s for s in valid if str(s.get('fixture_id')) not in results}
+    counts['unresolved_matured_3h_fixtures'] = sum(1 for s in missing.values() if utc(s.get('kickoff')) and (now-utc(s['kickoff'])).total_seconds() >= 10800)
+    counts['unresolved_future_or_recent_fixtures'] = len(missing)-counts['unresolved_matured_3h_fixtures']
     failures=[]
     if stats.get('raw_snapshot_rows') != len(raw):failures.append('STATISTICS_RAW_COUNT_STALE')
     if stats.get('snapshot_rows') != len(valid):failures.append('STATISTICS_VERIFIED_COUNT_STALE')
