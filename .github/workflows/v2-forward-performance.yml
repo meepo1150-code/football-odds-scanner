@@ -7,6 +7,8 @@ on:
     branches: [main]
     paths:
       - 'src/odds_scanner/v2_forward_performance.py'
+      - 'src/odds_scanner/v2_forward_clv.py'
+      - 'src/odds_scanner/asian_settlement.py'
       - 'src/odds_scanner/v2_forward_readiness.py'
       - 'tests/test_v2_forward_performance.py'
       - 'tests/test_v2_forward_readiness.py'
@@ -39,20 +41,18 @@ jobs:
       - name: Persist performance evidence safely
         run: |
           set -euo pipefail
-          mkdir -p /tmp/v2-performance
-          if [ -f reports/v2_forward_performance.json ]; then cp reports/v2_forward_performance.json /tmp/v2-performance/performance.json; fi
-          if [ -f reports/v2_forward_readiness.json ]; then cp reports/v2_forward_readiness.json /tmp/v2-performance/readiness.json; fi
-          if [ -f data/normalized/v2_forward_settlements.jsonl ]; then cp data/normalized/v2_forward_settlements.jsonl /tmp/v2-performance/settlements.jsonl; fi
           git config user.name 'odds-scanner-actions'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           for attempt in 1 2 3; do
             git fetch origin main
             git reset --hard origin/main
             mkdir -p reports data/normalized
-            if [ -f /tmp/v2-performance/performance.json ]; then cp /tmp/v2-performance/performance.json reports/v2_forward_performance.json; fi
-            if [ -f /tmp/v2-performance/readiness.json ]; then cp /tmp/v2-performance/readiness.json reports/v2_forward_readiness.json; fi
-            if [ -f /tmp/v2-performance/settlements.jsonl ]; then cp /tmp/v2-performance/settlements.jsonl data/normalized/v2_forward_settlements.jsonl; fi
-            for path in reports/v2_forward_performance.json reports/v2_forward_readiness.json data/normalized/v2_forward_settlements.jsonl; do
+            # Recompute on the refreshed inputs on every retry; copied derived
+            # artifacts from the original checkout can erase newer settlements.
+            python -m odds_scanner.v2_forward_clv
+            python -m odds_scanner.v2_forward_performance
+            python -m odds_scanner.v2_forward_readiness
+            for path in reports/v2_forward_clv_status.json reports/v2_forward_performance.json reports/v2_forward_readiness.json data/normalized/v2_forward_settlements.jsonl; do
               if [ -f "$path" ]; then git add -- "$path"; fi
             done
             git diff --cached --quiet && exit 0

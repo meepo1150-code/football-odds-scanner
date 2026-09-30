@@ -2,17 +2,15 @@ from __future__ import annotations
 import json, urllib.parse, urllib.request, urllib.error, hashlib, os, time
 from pathlib import Path
 from zoneinfo import ZoneInfo
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
+from email.utils import parsedate_to_datetime
 
 BASE="https://pinnwire.com/kit/v1/prematch/fixtures"
 
 def probe():
     now=datetime.now(timezone.utc).isoformat()
     try:
-        url=BASE+"?"+urllib.parse.urlencode({"sport_id":1,"key":"demo"})
-        req=urllib.request.Request(url,headers={"Accept":"application/json","User-Agent":"football-odds-scanner/0.1"})
-        with urllib.request.urlopen(req,timeout=20) as r:
-            payload=json.loads(r.read().decode())
+        payload, _, _ = _fetch_payload()
         events=payload.get("events") or payload.get("data") or []
         samples=[]; spreads=0; future=0; core_ah=0; totals25=0
         for ev in events:
@@ -37,27 +35,39 @@ BANGKOK=ZoneInfo("Asia/Bangkok")
 SNAP=Path("data/normalized/europe_pinnacle_research_v2_snapshots.jsonl")
 REPORT=Path("reports/pinnwire_research_v2_status.json")
 
-def _fetch_payload(max_attempts=3, sleep=time.sleep):
+class PinnWireCooldown(RuntimeError):
+    def __init__(self, until):
+        self.until = until
+        super().__init__(f"PinnWire cooldown until {until}")
+
+
+def _cooldown_until(exc, now):
+    raw = exc.headers.get("Retry-After") if exc.headers else None
+    try:
+        seconds = max(0, int(raw))
+    except (TypeError, ValueError):
+        try:
+            seconds = max(0, (parsedate_to_datetime(raw) - now).total_seconds())
+        except (TypeError, ValueError, OverflowError):
+            seconds = 3600
+    # Never shorten the provider's advertised cooldown, including HTTP-date.
+    return (now + timedelta(seconds=max(3600, seconds))).isoformat()
+
+
+def _fetch_payload(max_attempts=1, sleep=time.sleep):
+    # A 429 ends the run. Retry in a later scheduled run, never in a tight loop.
+    now = datetime.now(timezone.utc)
+    try:
+        previous = json.loads(REPORT.read_text())
+        until = previous.get("cooldown_until")
+        if until and datetime.fromisoformat(until) > now:
+            raise PinnWireCooldown(until)
+    except (OSError, ValueError, TypeError):
+        pass
     url=BASE+"?"+urllib.parse.urlencode({"sport_id":1,"key":"demo"})
     req=urllib.request.Request(url,headers={"Accept":"application/json","User-Agent":"football-odds-scanner/0.1"})
-    attempts=0; rate_limits=0
-    while attempts < max_attempts:
-        attempts += 1
-        try:
-            with urllib.request.urlopen(req,timeout=30) as r:
-                return json.loads(r.read().decode()), attempts, rate_limits
-        except urllib.error.HTTPError as e:
-            if e.code == 429:
-                rate_limits += 1
-                if attempts < max_attempts:
-                    retry_after=e.headers.get("Retry-After") if e.headers else None
-                    try: delay=max(5,min(60,int(retry_after)))
-                    except (TypeError,ValueError): delay=15*attempts
-                    sleep(delay); continue
-            elif 500 <= e.code < 600 and attempts < max_attempts:
-                sleep(5*attempts); continue
-            raise
-    raise RuntimeError("PinnWire retry budget exhausted")
+    with urllib.request.urlopen(req,timeout=30) as r:
+        return json.loads(r.read().decode()), 1, 0
 
 def _balanced(spreads):
     best=None
@@ -71,9 +81,10 @@ def _balanced(spreads):
 
 def collect():
     now=datetime.now(timezone.utc); local=now.astimezone(BANGKOK); day=local.date().isoformat()
-    report={"schema_version":"3.2","generated_at":now.isoformat(),"classification":"PINNACLE_RESEARCH_V2","provider":"pinnwire","bookmaker":"pinnacle","football_day":day,"requests_used":1}
+    report={"schema_version":"3.2","generated_at":now.isoformat(),"classification":"PINNACLE_RESEARCH_V2","provider":"pinnwire","bookmaker":"pinnacle","football_day":day,"requests_used":0,"workflow_success":True,"data_source_health":"NOT_CHECKED","capability":"RESEARCH_ONLY"}
     try:
         payload,attempts,rate_limits=_fetch_payload()
+        report["data_source_health"]="AVAILABLE"
         report["requests_used"]=attempts
         report["request_attempts"]=attempts
         report["rate_limit_responses"]=rate_limits
@@ -102,7 +113,15 @@ def collect():
         existing.extend(x for x in snaps if (str(x.get("fixture_id")),str(x.get("observed_at"))) not in keys)
         SNAP.parent.mkdir(parents=True,exist_ok=True); SNAP.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in existing),encoding="utf-8")
         report.update(status="RESEARCH_V2_OBSERVED" if snaps else "ZERO_FIXTURES",provider_events=len(events),strict_snapshots_this_run=len(snaps),persisted_snapshot_rows=len(existing),result_match_keys=sum(1 for x in snaps if x.get("result_match_key")),coverage_mode="PINNWIRE_PREMATCH_ALL_SOCCER_TODAY_BANGKOK")
-    except Exception as e: report.update(status="API_REQUEST_FAILED",errors=[f"{type(e).__name__}: {e}"])
+    except PinnWireCooldown as e:
+        report.update(status="RATE_LIMIT_COOLDOWN", data_source_health="RATE_LIMITED", cooldown_until=e.until, requests_used=0, request_attempts=0, rate_limit_responses=0)
+    except urllib.error.HTTPError as e:
+        limited = e.code == 429
+        report.update(status="RATE_LIMITED" if limited else "API_REQUEST_FAILED", data_source_health="RATE_LIMITED" if limited else "UNAVAILABLE", requests_used=1, request_attempts=1, rate_limit_responses=int(limited), http_status=e.code, errors=[f"HTTPError: HTTP {e.code}"])
+        if limited:
+            report["cooldown_until"] = _cooldown_until(e, now)
+    except Exception as e:
+        report.update(status="API_REQUEST_FAILED", data_source_health="UNAVAILABLE", requests_used=1, request_attempts=1, errors=[f"{type(e).__name__}: {e}"])
     REPORT.parent.mkdir(parents=True,exist_ok=True); REPORT.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8"); return report
 
 if __name__=="__main__": print(json.dumps(collect() if os.getenv("PINNWIRE_V2_SCAN","").lower() in {"1","true","yes"} else probe(),ensure_ascii=False))

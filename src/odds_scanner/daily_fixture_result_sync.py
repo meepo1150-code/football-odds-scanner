@@ -117,6 +117,27 @@ def run(root: Path = Path('.')) -> dict:
                 still_missing = sorted(required_research_ids - merged_ids)
                 report.update(status='FIXTURES_SYNCED' if not still_missing else 'FIXTURES_SYNCED_RESEARCH_IDS_MISSING', fixture_requests_used=1, api_fixtures_returned=len(api_rows), football_day_fixtures=counts[football_day], previous_day_fixtures=counts[previous_day], persisted_fixture_rows=total, required_research_fixture_ids=len(required_research_ids), missing_research_fixture_ids=len(still_missing), missing_research_fixture_id_sample=still_missing[:20], completion_marker=not still_missing)
             except Exception as exc: report.update(status='FIXTURE_SYNC_FAILED', fixture_requests_used=1, completion_marker=False, errors=[f'{type(exc).__name__}: {exc}'])
+    # Provider discovery and local coverage are independent health dimensions.
+    report['fixture_provider_status'] = report['status']
+    if not report.get('completion_marker'):
+        local_rows = []
+        source = root / 'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'
+        if source.exists():
+            for line in source.read_text(encoding='utf-8').splitlines():
+                try: snapshot = json.loads(line)
+                except json.JSONDecodeError: continue
+                if not isinstance(snapshot,dict) or str(snapshot.get('football_day')) not in coverage_days: continue
+                if not snapshot.get('fixture_id') or not _parse(snapshot.get('kickoff')): continue
+                local_rows.append({k:snapshot.get(k) for k in ('football_day','fixture_id','league','home','away','kickoff')})
+        # Add local observations without overwriting richer external-ID mappings.
+        known = {(str(r.get('football_day')),str(r.get('fixture_id'))) for day_value in coverage_days for r in _existing_day_rows(fixtures_path,day_value)}
+        additions = [{**r,'source':'LOCAL_RESEARCH_SNAPSHOT','discovered_at':now.isoformat()} for r in local_rows if (str(r['football_day']),str(r['fixture_id'])) not in known]
+        report['persisted_fixture_rows'] = _merge(fixtures_path,additions)
+        report['local_snapshot_fixture_rows'] = len({str(r['fixture_id']) for r in local_rows})
+        report['status'] = 'LOCAL_FIXTURE_COVERAGE_SYNCED' if local_rows else 'WAITING_EXTERNAL_DATA'
+        report['completion_marker'] = False
+        report['discovery_complete'] = False
+        report['local_state_preserved'] = True
     report_path.parent.mkdir(parents=True, exist_ok=True); report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8'); return report
 
 

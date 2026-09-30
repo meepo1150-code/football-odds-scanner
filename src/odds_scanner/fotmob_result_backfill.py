@@ -105,12 +105,12 @@ def _events(payload):
             out.append({"id":m.get("id"),"home":h.get("name") or h.get("longName"),"away":a.get("name") or a.get("longName"),"kickoff":ko,"finished":status.get("finished") is True,"hg":h.get("score"),"ag":a.get("score"),"league":league.get("name")})
     return out
 def run(root=Path(".")):
-    snaps=[x for x in _read(root/SNAP) if x.get("provider")=="pinnwire"]
+    snaps=_read(root/SNAP)
     existing=_read(root/RESULTS); existing_ids={str(x.get("fixture_id")) for x in existing}
     missing={}
     for s in snaps:
         fid=str(s.get("fixture_id") or "")
-        if fid and fid not in existing_ids:missing[fid]=s
+        if fid and fid not in existing_ids and _utc(s.get("kickoff")) and _utc(s.get("kickoff")) + timedelta(hours=3) <= datetime.now(timezone.utc):missing[fid]=s
     day_set=set()
     for s in missing.values():
         ko=_utc(s.get("kickoff"))
@@ -122,6 +122,13 @@ def run(root=Path(".")):
     for day in days:
         try:events.extend(_events(_fetch(day)))
         except Exception as e:failures.append({"day":day,"error":f"{type(e).__name__}: {e}"})
+    # Neighbor-day responses can repeat one event; count unique provider identities.
+    # Conflicting copies remain separate so the unique-match gate fails closed.
+    unique={}
+    for event in events:
+        signature=(event.get("id"),event.get("home"),event.get("away"),event.get("kickoff"),event.get("finished"),event.get("hg"),event.get("ag"))
+        unique[signature]=event
+    events=list(unique.values())
     idx={}; safe_idx={}; kickoff_idx={}
     for e in events:
         if e["kickoff"]:
@@ -164,6 +171,6 @@ def run(root=Path(".")):
     for x in added:rows.setdefault(x["fixture_id"],x)
     if added:
         p=root/RESULTS;p.parent.mkdir(parents=True,exist_ok=True);p.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in rows.values()),encoding="utf-8")
-    report={"schema_version":"1.0","classification":"FOTMOB_EXACT_RESULT_BACKFILL","missing_before":len(missing),"days_requested":days,"events_fetched":len(events),"exact_results_added":len(added),"ambiguous_exact_matches_rejected":ambiguous,"exact_identity_unfinished":exact_unfinished,"no_exact_identity":no_exact_identity,"kickoff_candidate_only":kickoff_candidate_only,"kickoff_candidate_samples":candidate_samples,"request_failures":failures,"matching_policy":"EXACT_ALIAS_OR_SAFE_CLUB_TOKEN_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY","fuzzy_matching_used":False,"promotion_eligible":False}
+    report={"schema_version":"1.0","classification":"FOTMOB_EXACT_RESULT_BACKFILL","missing_before":len(missing),"missing_after":len(missing)-len(added),"verified_bridge_matches":len(added),"days_requested":days,"events_fetched":len(events),"exact_results_added":len(added),"ambiguous_exact_matches_rejected":ambiguous,"exact_identity_unfinished":exact_unfinished,"no_exact_identity":no_exact_identity,"kickoff_candidate_only":kickoff_candidate_only,"kickoff_candidate_samples":candidate_samples,"request_failures":failures,"matching_policy":"EXACT_ALIAS_OR_SAFE_CLUB_TOKEN_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY","fuzzy_matching_used":False,"promotion_eligible":False}
     p=root/REPORT;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8");return report
 if __name__=="__main__":print(json.dumps(run(),ensure_ascii=False))

@@ -4,6 +4,7 @@ import json
 import os
 import urllib.parse
 import urllib.request
+import urllib.error
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -19,12 +20,19 @@ PROBE_TO = "2026-02-09T00:00:00Z"
 
 
 def _get_v5(path: str, key: str, params: dict | None = None, timeout: int = 20):
+    from .provider_request_budget import reserve_request, block_metered_requests
+    reserve_request(path)
     query = dict(params or {})
     query["apiKey"] = key
     url = BASE_V5 + path + "?" + urllib.parse.urlencode(query)
     req = urllib.request.Request(url, headers={"Accept": "application/json", "User-Agent": USER_AGENT})
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as exc:
+        if exc.code == 429:
+            block_metered_requests()
+        raise
 
 
 def inspect_fixture_payload(payload) -> dict:

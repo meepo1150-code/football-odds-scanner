@@ -28,7 +28,7 @@ def _gate(name: str, value, threshold, passed: bool | None, status: str | None =
 
 
 def _candidate_readiness(candidate_id: str, rules: dict, entries: dict, clv: dict, perf: dict) -> dict:
-    minimum_n = int(rules.get("minimum_settled_entries_per_candidate", 150))
+    minimum_n = max(150, int(rules.get("minimum_settled_entries_per_candidate", 150)))
     minimum_leagues = int(rules.get("minimum_distinct_leagues_per_candidate", 3))
     minimum_positive_share = float(rules.get("minimum_positive_league_share", 0.60))
     minimum_clv_share = float(rules.get("minimum_comparable_clv_share", 0.70))

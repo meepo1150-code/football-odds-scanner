@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import random
 import statistics
 from collections import Counter, defaultdict
@@ -34,12 +35,8 @@ def _jsonl(path: Path) -> list[dict]:
 
 
 def _valid_score(row: dict) -> tuple[int, int] | None:
-    try:
-        home = int(row.get("ft_home_goals"))
-        away = int(row.get("ft_away_goals"))
-    except (TypeError, ValueError):
-        return None
-    if home < 0 or away < 0:
+    home, away = row.get("ft_home_goals"), row.get("ft_away_goals")
+    if type(home) is not int or type(away) is not int or home < 0 or away < 0:
         return None
     return home, away
 
@@ -76,7 +73,7 @@ def settle_entry(entry: dict, result: dict) -> dict:
         price = float(entry.get("entry_price"))
     except (TypeError, ValueError) as exc:
         raise ValueError("Entry line/price invalid") from exc
-    if price <= 1.0:
+    if not math.isfinite(line) or not math.isfinite(price) or price <= 1.0:
         raise ValueError("Entry price must be decimal odds > 1")
 
     market = str(entry.get("market") or "").upper()
@@ -207,11 +204,26 @@ def build_forward_performance(root: Path = Path(".")) -> dict:
     result_rows = _jsonl(root / RESULTS_PATH)
     results, ambiguous_results = _result_index(result_rows)
 
+    # One immutable candidate/fixture is one trial. Conflicting duplicates must
+    # not inflate sample size or silently choose an entry after seeing outcomes.
+    grouped_entries: dict[tuple[str, str], list[dict]] = defaultdict(list)
+    for entry in entries:
+        grouped_entries[(str(entry.get("candidate_id") or ""), str(entry.get("fixture_id") or ""))].append(entry)
+    unique_entries = []
+    ambiguous_entries = 0
+    duplicate_entries = 0
+    for key, rows in grouped_entries.items():
+        if not all(key) or len({json.dumps(r, sort_keys=True) for r in rows}) > 1:
+            ambiguous_entries += len(rows)
+            continue
+        unique_entries.append(rows[0])
+        duplicate_entries += len(rows) - 1
+
     settled: list[dict] = []
     invalid_entries = 0
     missing_results = 0
     ambiguous_result_entries = 0
-    for entry in entries:
+    for entry in unique_entries:
         fixture_id = str(entry.get("fixture_id") or "")
         if fixture_id in ambiguous_results:
             ambiguous_result_entries += 1
@@ -238,7 +250,7 @@ def build_forward_performance(root: Path = Path(".")) -> dict:
         for candidate_id in candidate_ids
     }
     for candidate_id in candidate_ids:
-        entry_n = sum(1 for e in entries if str(e.get("candidate_id")) == candidate_id)
+        entry_n = sum(1 for e in unique_entries if str(e.get("candidate_id")) == candidate_id)
         by_candidate[candidate_id]["entries_recorded"] = entry_n
         by_candidate[candidate_id]["unsettled_entries"] = entry_n - by_candidate[candidate_id]["settled_entries"]
 
@@ -259,6 +271,8 @@ def build_forward_performance(root: Path = Path(".")) -> dict:
         "missing_result_entries": missing_results,
         "ambiguous_result_entries": ambiguous_result_entries,
         "invalid_entry_rows": invalid_entries,
+        "duplicate_entry_rows_ignored": duplicate_entries,
+        "ambiguous_entry_rows_excluded": ambiguous_entries,
         "result_join": "EXACT_ODDSPAPI_FIXTURE_ID_ONLY",
         "fuzzy_result_join_allowed": False,
         "result_rows_seen": len(result_rows),

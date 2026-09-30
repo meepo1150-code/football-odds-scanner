@@ -68,3 +68,32 @@ def test_performance_reports_roi_league_stability_drawdown_and_streak(tmp_path):
     assert c["longest_losing_streak"] == 1
     assert c["bootstrap_roi_ci95_lower"] <= c["bootstrap_roi_ci95_upper"]
     assert out["production_promotion_allowed"] is False
+
+
+def test_duplicate_entries_cannot_inflate_forward_sample(tmp_path):
+    _jsonl(tmp_path / "data/normalized/v2_forward_entries.jsonl", [_entry(), _entry()])
+    _jsonl(tmp_path / "data/normalized/oddspapi_finished_results.jsonl", [_result()])
+    out = build_forward_performance(tmp_path)
+    assert out["settled_entries"] == 1
+    assert out["duplicate_entry_rows_ignored"] == 1
+
+
+def test_conflicting_forward_entries_are_excluded(tmp_path):
+    _jsonl(tmp_path / "data/normalized/v2_forward_entries.jsonl", [_entry(), _entry(price=2.1)])
+    _jsonl(tmp_path / "data/normalized/oddspapi_finished_results.jsonl", [_result()])
+    out = build_forward_performance(tmp_path)
+    assert out["settled_entries"] == 0
+    assert out["ambiguous_entry_rows_excluded"] == 2
+
+
+def test_invalid_score_and_nonfinite_odds_fail_closed():
+    import pytest
+    for bad in [1.5, True, "1", float("nan"), float("inf")]:
+        with pytest.raises(ValueError):
+            settle_entry(_entry(), _result(home=bad))
+    for field in ["entry_price", "entry_line"]:
+        for bad in [float("nan"), float("inf")]:
+            entry = _entry()
+            entry[field] = bad
+            with pytest.raises(ValueError):
+                settle_entry(entry, _result())

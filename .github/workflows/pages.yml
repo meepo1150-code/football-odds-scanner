@@ -22,6 +22,11 @@ on:
       - 'Europe Pinnacle Research V2'
       - 'OddsPapi Quota Health'
       - 'Research V2 Free Result Backfill'
+      - 'PinnWire Current AH Probe'
+      - 'Free Research V2 Scanner'
+      - 'Research V2 Market State Stats'
+      - 'Research V2 Daily Fixture Result Sync'
+      - 'Research V2 Results and Movement'
     types: [completed]
 permissions:
   contents: read
@@ -41,12 +46,18 @@ jobs:
       - name: Build static site
         run: |
           set -euo pipefail
+          python - <<'PYBUILD'
+          import json, os
+          from pathlib import Path
+          Path("apps/dashboard/deployment.json").write_text(json.dumps({"source_sha": os.environ["GITHUB_SHA"], "run_id": os.environ["GITHUB_RUN_ID"]}))
+          PYBUILD
           mkdir -p site/reports site/data/normalized site/discovery
           cp apps/dashboard/index.html site/index.html
+          cp apps/dashboard/deployment.json site/deployment.json
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery.html || true
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery/index.html || true
           test -f apps/dashboard/404.html && cp apps/dashboard/404.html site/404.html || true
-          for f in europe_pinnacle_research_v2_status.json oddspapi_quota_health.json research_v2_pattern_statistics.json pinnwire_result_join_status.json pinnwire_research_v2_status.json; do
+          for f in research_v2_operational_audit.json legacy_propline_recovery.json research_v2_daily_sync_status.json research_v2_movement_status.json propline_research_v2_status.json europe_pinnacle_research_v2_status.json oddspapi_quota_health.json research_v2_pattern_statistics.json pinnwire_result_join_status.json pinnwire_research_v2_status.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
           for f in europe_pinnacle_research_v2_snapshots.jsonl europe_pinnacle_research_v2_audit.jsonl oddspapi_finished_results.jsonl dashboard_verified_results.jsonl; do

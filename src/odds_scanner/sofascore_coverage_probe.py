@@ -93,8 +93,8 @@ def backfill(root=Path(".")):
         if len(matches)>1: ambiguous+=1; continue
         if len(matches)!=1: continue
         e=matches[0]; status=str((e.get("status") or {}).get("type") or "").lower()
-        hs=(e.get("homeScore") or {}).get("current"); aw=(e.get("awayScore") or {}).get("current")
-        if status not in {"finished","afterextra","afterpenalties"} or not isinstance(hs,(int,float)) or not isinstance(aw,(int,float)):
+        hs=(e.get("homeScore") or {}).get("normaltime"); aw=(e.get("awayScore") or {}).get("normaltime")
+        if status != "finished" or type(hs) is not int or type(aw) is not int or hs < 0 or aw < 0:
             nonfinal+=1; continue
         added.append({"fixture_id":fid,"ft_home_goals":int(hs),"ft_away_goals":int(aw),"result_source":"SOFASCORE_EXACT_UNIQUE_HOME_AWAY_KICKOFF","result_identity":"PINNWIRE_EXACT_HOME_AWAY_UTC_KICKOFF","provider_event_id":e.get("id"),"promotion_eligible":False})
     if added:

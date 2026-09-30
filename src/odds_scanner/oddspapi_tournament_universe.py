@@ -72,9 +72,8 @@ def main() -> None:
     key = os.environ.get("ODDSPAPI_KEY")
     if not key:
         raise SystemExit("ODDSPAPI_KEY is required")
-    response = requests.get(API_URL, params={"sportId": SPORT_ID, "language": "en", "apiKey": key}, timeout=45)
-    response.raise_for_status()
-    catalog = response.json()
+    from .oddspapi_provider import _get
+    catalog = _get("/tournaments", key, {"sportId": SPORT_ID, "language": "en"}, timeout=45)
 
     selected = []
     rejected = {"non_target": 0, "inactive": 0, "women_youth_reserve": 0, "lower_tier": 0}
