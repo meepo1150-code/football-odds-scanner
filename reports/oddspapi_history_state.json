@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
-  "status": "OK",
-  "generated_at": "2026-09-19T11:32:49.714289+00:00",
+  "status": "WAITING_EXTERNAL_DATA",
+  "generated_at": "2026-09-30T01:31:42.759703+00:00",
   "coverage_start": "2026-01-01T00:00:00+00:00",
   "last_discovery_at": "2026-09-19T11:32:49.714289+00:00",
   "discovery_cursor": "2026-07-27T00:00:00+00:00",
@@ -246,5 +246,7 @@
     "MATCH_RESULTS_NOT_JOINED",
     "ODDSPAPI_HISTORY_STARTS_2026_AND_IS_NOT_YET_MULTI_SEASON"
   ],
-  "errors": []
+  "errors": [],
+  "provider_health": "QUOTA_BLOCKED",
+  "reason": "ODDSPAPI_EXTERNALLY_QUOTA_BLOCKED: no metered request sent"
 }
