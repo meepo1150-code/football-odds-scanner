@@ -17,7 +17,7 @@ def snapshot(fid):
 
 def test_fotmob_deduplicates_neighbor_days_and_supports_propline(tmp_path,monkeypatch):
     write(tmp_path,fotmob.SNAP,[snapshot('propline:x')])
-    event={'id':123,'home':{'name':'Alpha','score':2},'away':{'name':'Beta','score':1},'status':{'utcTime':'2026-01-01T12:00:00Z','finished':True}}
+    event={'id':123,'home':{'name':'Alpha','score':2},'away':{'name':'Beta','score':1},'status':{'utcTime':'2026-01-01T12:00:00Z','finished':True,'reason':{'short':'FT'}}}
     monkeypatch.setattr(fotmob,'_fetch',lambda day:{'leagues':[{'name':'Test','matches':[event]}]})
     report=fotmob.run(tmp_path)
     assert report['exact_results_added']==1

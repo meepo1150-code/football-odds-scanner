@@ -2,6 +2,8 @@ from __future__ import annotations
 import json,re,unicodedata,urllib.parse,urllib.request
 from datetime import datetime,timezone,timedelta
 from pathlib import Path
+from .result_response_cache import fetch_day
+from .oddspapi_result_cache import merge_normalized_results
 SNAP=Path("data/normalized/europe_pinnacle_research_v2_snapshots.jsonl")
 RESULTS=Path("data/normalized/oddspapi_finished_results.jsonl")
 REPORT=Path("reports/fotmob_result_backfill.json")
@@ -102,7 +104,9 @@ def _events(payload):
             if not ko:
                 ts=m.get("timeTS")
                 if isinstance(ts,(int,float)):ko=datetime.fromtimestamp(ts/1000 if ts>1e12 else ts,timezone.utc)
-            out.append({"id":m.get("id"),"home":h.get("name") or h.get("longName"),"away":a.get("name") or a.get("longName"),"kickoff":ko,"finished":status.get("finished") is True,"hg":h.get("score"),"ag":a.get("score"),"league":league.get("name")})
+            reason=status.get('reason') or {}
+            normal_ft=(status.get('finished') is True and not status.get('cancelled') and not status.get('awarded') and str(reason.get('short','')).upper()=='FT')
+            out.append({"id":m.get("id"),"home":h.get("name") or h.get("longName"),"away":a.get("name") or a.get("longName"),"kickoff":ko,"finished":normal_ft,"hg":h.get("score"),"ag":a.get("score"),"league":league.get("name"),'provider_status':status})
     return out
 def run(root=Path(".")):
     snaps=_read(root/SNAP)
@@ -118,15 +122,22 @@ def run(root=Path(".")):
             for delta in (-1,0,1): day_set.add((ko+timedelta(days=delta)).date().isoformat())
         elif s.get("football_day"): day_set.add(str(s.get("football_day")))
     days=sorted(day_set)
-    events=[];failures=[]
+    events=[];failures=[];fetch_evidence=[];requests_used=0
     for day in days:
-        try:events.extend(_events(_fetch(day)))
-        except Exception as e:failures.append({"day":day,"error":f"{type(e).__name__}: {e}"})
+        try:
+            payload, evidence=fetch_day(root,day,_fetch)
+            fetch_evidence.append({'day':day,**evidence});requests_used+=evidence['requests']
+            day_events=_events(payload)
+            for event in day_events:event['retrieved_at']=evidence['fetched_at']
+            events.extend(day_events)
+        except Exception as e:
+            requests_used+=1
+            failures.append({"day":day,"error":f"{type(e).__name__}: {e}"})
     # Neighbor-day responses can repeat one event; count unique provider identities.
     # Conflicting copies remain separate so the unique-match gate fails closed.
     unique={}
     for event in events:
-        signature=(event.get("id"),event.get("home"),event.get("away"),event.get("kickoff"),event.get("finished"),event.get("hg"),event.get("ag"))
+        signature=(event.get("id"),event.get("home"),event.get("away"),event.get("kickoff"),event.get("league"),event.get("finished"),event.get("hg"),event.get("ag"))
         unique[signature]=event
     events=list(unique.values())
     idx={}; safe_idx={}; kickoff_idx={}
@@ -163,14 +174,13 @@ def run(root=Path(".")):
                     candidate_samples.append({"fixture_id":fid,"snapshot":{"home":s.get("home"),"away":s.get("away"),"kickoff":ko.isoformat()},"fotmob_candidates":[{"id":e.get("id"),"home":e.get("home"),"away":e.get("away"),"finished":e.get("finished"),"score":[e.get("hg"),e.get("ag")],"league":e.get("league")} for e in candidates]})
             continue
         e=ms[0]
-        if not e["finished"] or not isinstance(e["hg"],int) or not isinstance(e["ag"],int):
+        if not e.get('id') or not e["finished"] or type(e["hg"]) is not int or type(e["ag"]) is not int or min(e['hg'],e['ag'])<0:
             exact_unfinished+=1
             continue
         added.append({"fixture_id":fid,"ft_home_goals":e["hg"],"ft_away_goals":e["ag"],"result_source":"FOTMOB_DAILY_MATCH_EXACT_IDENTITY","result_identity":"EXACT_ALIAS_SAFE_TOKEN_OR_LEAGUE_CATEGORY_CONTEXT_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE","provider_event_id":e["id"],"provider_evidence":{"provider":"fotmob","event_id":e["id"],"home":e["home"],"away":e["away"],"kickoff":e["kickoff"].isoformat(),"league":e["league"]},"promotion_eligible":False,"research_only":True})
-    rows={str(x.get("fixture_id")):x for x in existing if x.get("fixture_id")}
-    for x in added:rows.setdefault(x["fixture_id"],x)
-    if added:
-        p=root/RESULTS;p.parent.mkdir(parents=True,exist_ok=True);p.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in rows.values()),encoding="utf-8")
+        added[-1]['provider_evidence'].update(retrieved_at=e.get('retrieved_at'),status=e.get('provider_status'))
+    added_count=merge_normalized_results(root/RESULTS,added)
     report={"schema_version":"1.0","classification":"FOTMOB_EXACT_RESULT_BACKFILL","missing_before":len(missing),"missing_after":len(missing)-len(added),"verified_bridge_matches":len(added),"days_requested":days,"events_fetched":len(events),"exact_results_added":len(added),"ambiguous_exact_matches_rejected":ambiguous,"exact_identity_unfinished":exact_unfinished,"no_exact_identity":no_exact_identity,"kickoff_candidate_only":kickoff_candidate_only,"kickoff_candidate_samples":candidate_samples,"request_failures":failures,"matching_policy":"EXACT_ALIAS_OR_SAFE_CLUB_TOKEN_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY","fuzzy_matching_used":False,"promotion_eligible":False}
+    report.update(generated_at=datetime.now(timezone.utc).isoformat(),requests_used=requests_used,cache_hits=sum(x['source']=='CACHE' for x in fetch_evidence),stale_cache_fallbacks=sum(x['source'].startswith('STALE') for x in fetch_evidence),fetch_evidence=fetch_evidence,exact_results_added=added_count,verified_bridge_matches=added_count,missing_after=len(missing)-added_count)
     p=root/REPORT;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8");return report
 if __name__=="__main__":print(json.dumps(run(),ensure_ascii=False))
