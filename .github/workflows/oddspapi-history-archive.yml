@@ -76,12 +76,19 @@ jobs:
               [join-report.json]=reports/oddspapi_result_join.json
               [settled-report.json]=reports/oddspapi_settled_history.json)
             for src in "${!MAP[@]}"; do
+              if [ "$src" = results.jsonl ]; then
+                python -c "import json; from pathlib import Path; from odds_scanner.oddspapi_result_cache import merge_normalized_results, RESULTS_PATH; p=Path('/tmp/oddspapi-history/results.jsonl'); merge_normalized_results(RESULTS_PATH,[json.loads(x) for x in p.read_text().splitlines() if x.strip()] if p.exists() else [])"
+                continue
+              fi
               [ -f "/tmp/oddspapi-history/$src" ] && cp "/tmp/oddspapi-history/$src" "${MAP[$src]}"
             done
             if [ -d /tmp/oddspapi-history/tick-shards ]; then
               mkdir -p data/normalized/oddspapi_history_ticks
               cp -a /tmp/oddspapi-history/tick-shards/. data/normalized/oddspapi_history_ticks/
             fi
+            python -c "from odds_scanner.oddspapi_result_join import write_join; write_join()"
+            python -c "from odds_scanner.settled_history import write_settled; write_settled()"
+            test ! -f data/normalized/oddspapi_finished_results.conflicts.jsonl || git add -f data/normalized/oddspapi_finished_results.conflicts.jsonl
             for path in \
               reports/oddspapi_history_state.json \
               data/normalized/oddspapi_market_catalog.json \

@@ -10,8 +10,6 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 
-import requests
-
 API_URL = "https://api.oddspapi.io/v4/tournaments"
 SPORT_ID = 10
 OUT = Path("reports/oddspapi_tournament_universe_candidates.json")
@@ -73,7 +71,15 @@ def main() -> None:
     if not key:
         raise SystemExit("ODDSPAPI_KEY is required")
     from .oddspapi_provider import _get
-    catalog = _get("/tournaments", key, {"sportId": SPORT_ID, "language": "en"}, timeout=45)
+    from .provider_request_budget import QuotaBlocked
+    health = Path('reports/oddspapi_universe_health.json')
+    try:
+        catalog = _get("/tournaments", key, {"sportId": SPORT_ID, "language": "en"}, timeout=45)
+    except QuotaBlocked as exc:
+        health.parent.mkdir(parents=True, exist_ok=True)
+        health.write_text(json.dumps({'status':'WAITING_EXTERNAL_DATA','provider_health':'QUOTA_BLOCKED','generated_at':datetime.now(timezone.utc).isoformat(),'requests_sent':0,'reason':str(exc),'existing_candidates_preserved':OUT.exists()}, indent=2))
+        print(health.read_text())
+        return
 
     selected = []
     rejected = {"non_target": 0, "inactive": 0, "women_youth_reserve": 0, "lower_tier": 0}
