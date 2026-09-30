@@ -78,3 +78,13 @@ def test_ou25_roi_denominator_excludes_alternate_lines_end_to_end(tmp_path):
     assert exact['ou25_observed_at']=='2026-09-29T10:00:00Z'
     assert exact['ou25_bookmaker']=='pinnacle'
     assert report['quarantined_snapshot_rows']==0
+
+
+def test_conflict_ledger_blocks_result_reintroduced_by_another_writer(tmp_path):
+    import json
+    from odds_scanner.research_v2_pattern_stats import build,SNAPSHOTS,RESULTS
+    s=quote();s.update(fixture_id='blocked',football_day='2026-09-29')
+    for path,rows in [(SNAPSHOTS,[s]),(RESULTS,[{'fixture_id':'blocked','ft_home_goals':2,'ft_away_goals':1}]),(RESULTS.with_suffix('.conflicts.jsonl'),[{'fixture_id':'blocked','reason':'FOTMOB_NOT_NORMAL_TIME_FT'}])]:
+        p=tmp_path/path;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(''.join(json.dumps(x)+'\n' for x in rows))
+    report=build(tmp_path)
+    assert report['settled_fixtures']==0 and report['raw_unresolved_ft_fixtures']==1
