@@ -2,11 +2,13 @@ name: PinnWire Current AH Probe
 on:
   workflow_dispatch:
   schedule:
+    - cron: '37 11,14 * * 1-5' # Bounded recovery checks, 37 minutes after the existing weekday slots.
+    - cron: '37 5,8,11,12,13,14,15 * * 0,6' # Same for weekend slots; persisted attempts suppress duplicate calls.
     - cron: '0 11,14 * * 1-5' # 18:00,21:00 Bangkok weekdays
     - cron: '0 5,8,11,12,13,14,15 * * 0,6' # 12:00,15:00,18:00-22:00 Bangkok weekends
   push:
     branches: [main]
-    paths: ['controls/pinnwire_research_v2_scan_token.txt','src/odds_scanner/pinnwire_probe.py','src/odds_scanner/provider_request_budget.py','.github/workflows/pinnwire-probe.yml']
+    paths: ['controls/pinnwire_research_v2_scan_token.txt','src/odds_scanner/pinnwire_probe.py','src/odds_scanner/research_v2_scan_due.py','src/odds_scanner/provider_request_budget.py','.github/workflows/pinnwire-probe.yml']
 permissions: {contents: write}
 concurrency: {group: research-v2-collectors, cancel-in-progress: false}
 jobs:
@@ -16,14 +18,24 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with: {ref: main}
+      - name: Check whether this scheduled slot still needs an attempt
+        id: due
+        env:
+          SCAN_EVENT: ${{ github.event_name }}
+          PYTHONPATH: src
+        run: python -m odds_scanner.research_v2_scan_due >> "$GITHUB_OUTPUT"
       - uses: actions/setup-python@v6
+        if: steps.due.outputs.collect == 'true'
         with: {python-version: '3.12'}
       - run: python -m pip install -e .
+        if: steps.due.outputs.collect == 'true'
       - name: Collect PinnWire Research V2
+        if: steps.due.outputs.collect == 'true'
         env:
           PINNWIRE_V2_SCAN: 'true'
         run: python -m odds_scanner.pinnwire_probe
       - name: Recover with PropLine when PinnWire is unavailable
+        if: steps.due.outputs.collect == 'true'
         env:
           PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
         run: |
@@ -34,10 +46,12 @@ jobs:
               subprocess.run(['python','-m','odds_scanner.propline_research_v2'],check=True)
           PY
       - name: Rebuild movement and statistics from latest snapshots
+        if: steps.due.outputs.collect == 'true'
         run: |
           python -m odds_scanner.research_v2_movement
           python -m odds_scanner.research_v2_pattern_stats
       - name: Persist raw evidence and rebuild against latest main
+        if: steps.due.outputs.collect == 'true'
         run: |
           set -euo pipefail
           git config user.name github-actions[bot]

@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from zoneinfo import ZoneInfo
+from .europe_pinnacle_discovery import _football_day_bounds
 from .research_v2_integrity import trusted_snapshot
 from .research_v2_pattern_stats import _result_index, _rows
 
@@ -31,8 +31,8 @@ def build(root=Path('.'), now=None):
     path=root/'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'
     raw=[json.loads(x) for x in path.read_text().splitlines() if x.strip()] if path.exists() else []
     valid=[x for x in raw if trusted_snapshot(x)]
-    today=now.astimezone(ZoneInfo('Asia/Bangkok')).date().isoformat()
-    day_scans=[x for x in valid if (utc(x.get('observed_at')) and utc(x['observed_at']).astimezone(ZoneInfo('Asia/Bangkok')).date().isoformat()==today)]
+    today=_football_day_bounds(now)[2]
+    day_scans=[x for x in valid if x.get('football_day')==today]
     providers={}
     for name in ('pinnwire','propline'):
         p=load(root,f'{name}_research_v2_status')
@@ -54,7 +54,7 @@ def build(root=Path('.'), now=None):
     if stats.get('quarantined_snapshot_rows') != len(raw)-len(valid):failures.append('QUARANTINE_COUNT_MISMATCH')
     if move.get('source_snapshot_rows') != len(valid):failures.append('MOVEMENT_INPUT_STALE')
     ready=[{'candidate_id':c.get('candidate_id'),'settled':c.get('settled_entries'),'minimum':150,'status':c.get('status'),'production_promotion_allowed':c.get('production_promotion_allowed',False)} for c in forward.get('candidates',[])]
-    result={'schema_version':'1.0','generated_at':now.isoformat(),'workflow_success_is_not_data_source_health':True,'status':'BROKEN_DATA_ASSERTIONS' if failures else ('COLLECTING_WITH_EXTERNAL_BLOCKERS' if any(p.get('usable_recent_output') for p in providers.values()) else 'WAITING_EXTERNAL_DATA'),'data_assertions_passed':not failures,'assertion_failures':failures,'counts':counts,'providers':providers,'daily_sync_status':sync.get('status','UNKNOWN'),'forward_candidates':ready,'paper_label':'PAPER_RESEARCH_ONLY','production_promotion_allowed':False,'legacy_recovery_status':legacy.get('status','UNKNOWN'),'dashboard_browser_verified':False}
+    result={'schema_version':'1.1','football_day':today,'generated_at':now.isoformat(),'workflow_success_is_not_data_source_health':True,'status':'BROKEN_DATA_ASSERTIONS' if failures else ('COLLECTING_WITH_EXTERNAL_BLOCKERS' if any(p.get('usable_recent_output') for p in providers.values()) else 'WAITING_EXTERNAL_DATA'),'data_assertions_passed':not failures,'assertion_failures':failures,'counts':counts,'providers':providers,'daily_sync_status':sync.get('status','UNKNOWN'),'forward_candidates':ready,'paper_label':'PAPER_RESEARCH_ONLY','production_promotion_allowed':False,'legacy_recovery_status':legacy.get('status','UNKNOWN'),'dashboard_browser_verified':False}
     p=root/'reports/research_v2_operational_audit.json';p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(result,indent=2)+'\n')
     return result
 

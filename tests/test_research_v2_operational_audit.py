@@ -19,3 +19,12 @@ def test_stale_fallback_does_not_claim_current_health(tmp_path):
     assert r['data_assertions_passed']
     assert not r['providers']['propline']['usable_recent_output']
     assert r['providers']['oddspapi']['status']=='QUOTA_EXHAUSTED'
+
+
+def test_overnight_audit_uses_dashboard_football_day(tmp_path):
+    path=tmp_path/'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'
+    path.parent.mkdir(parents=True)
+    path.write_text(json.dumps({'fixture_id':'sample','provider':'pinnwire','football_day':'2026-09-30','observed_at':'2026-09-30T14:00:00Z','kickoff':'2026-09-30T19:00:00Z'})+'\n')
+    result=build(tmp_path, datetime.fromisoformat('2026-10-01T01:00:00+07:00'))
+    assert result['football_day']=='2026-09-30'
+    assert result['counts']['current_day_valid_scans']==1

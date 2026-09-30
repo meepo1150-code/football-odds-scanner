@@ -4,6 +4,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 from datetime import datetime, timezone, timedelta
 from email.utils import parsedate_to_datetime
+from .europe_pinnacle_discovery import _football_day_bounds
 
 BASE="https://pinnwire.com/kit/v1/prematch/fixtures"
 
@@ -80,7 +81,7 @@ def _balanced(spreads):
     return best
 
 def collect():
-    now=datetime.now(timezone.utc); local=now.astimezone(BANGKOK); day=local.date().isoformat()
+    now=datetime.now(timezone.utc); ws,we,day=_football_day_bounds(now)
     report={"schema_version":"3.2","generated_at":now.isoformat(),"classification":"PINNACLE_RESEARCH_V2","provider":"pinnwire","bookmaker":"pinnacle","football_day":day,"requests_used":0,"workflow_success":True,"data_source_health":"NOT_CHECKED","capability":"RESEARCH_ONLY"}
     try:
         payload,attempts,rate_limits=_fetch_payload()
@@ -92,7 +93,7 @@ def collect():
         for ev in events:
             try: ko=datetime.fromisoformat(str(ev.get("starts") or ev.get("start_time")).replace("Z","+00:00")).astimezone(timezone.utc)
             except Exception: continue
-            if ko<=now or ko.astimezone(BANGKOK).date().isoformat()!=day: continue
+            if ko<=now or not ws<=ko<we: continue
             p0=(ev.get("periods") or {}).get("num_0") or (ev.get("periods") or {}).get("0") or {}
             pick=_balanced(p0.get("spreads") or {})
             if not pick: continue
@@ -112,7 +113,7 @@ def collect():
         keys={(str(x.get("fixture_id")),str(x.get("observed_at"))) for x in existing}
         existing.extend(x for x in snaps if (str(x.get("fixture_id")),str(x.get("observed_at"))) not in keys)
         SNAP.parent.mkdir(parents=True,exist_ok=True); SNAP.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in existing),encoding="utf-8")
-        report.update(status="RESEARCH_V2_OBSERVED" if snaps else "ZERO_FIXTURES",provider_events=len(events),strict_snapshots_this_run=len(snaps),persisted_snapshot_rows=len(existing),result_match_keys=sum(1 for x in snaps if x.get("result_match_key")),coverage_mode="PINNWIRE_PREMATCH_ALL_SOCCER_TODAY_BANGKOK")
+        report.update(status="RESEARCH_V2_OBSERVED" if snaps else "ZERO_FIXTURES",provider_events=len(events),strict_snapshots_this_run=len(snaps),persisted_snapshot_rows=len(existing),result_match_keys=sum(1 for x in snaps if x.get("result_match_key")),coverage_mode="PINNWIRE_PREMATCH_FOOTBALL_DAY_NOON_TO_0600_BANGKOK")
     except PinnWireCooldown as e:
         report.update(status="RATE_LIMIT_COOLDOWN", data_source_health="RATE_LIMITED", cooldown_until=e.until, requests_used=0, request_attempts=0, rate_limit_responses=0)
     except urllib.error.HTTPError as e:
