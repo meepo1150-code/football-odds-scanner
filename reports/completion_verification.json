@@ -1,0 +1,81 @@
+{
+  "pr": 231,
+  "tests_passed": 323,
+  "deployment": {
+    "source_sha": "3e6555c9e4fc5a88f2168846ddb55b6e568208e2",
+    "run_id": "36748012253"
+  },
+  "counts": {
+    "raw_snapshots": 1222,
+    "verified_snapshots": 1136,
+    "quarantined_snapshots": 86,
+    "recovered_legacy_snapshots": 0,
+    "unresolved_ft_fixtures": 525,
+    "settled_statistical_fixtures": 336,
+    "core_price_settled_fixtures": 314,
+    "movement_fixtures": 110,
+    "numeric_movement_deltas": 652,
+    "current_day_valid_scans": 36,
+    "current_day_distinct_scan_times": 1,
+    "unresolved_matured_3h_fixtures": 513,
+    "unresolved_future_or_recent_fixtures": 12
+  },
+  "data_assertions_passed": true,
+  "deployed_js_data_guards_passed": true,
+  "ou_groups_checked": 82,
+  "blocked_result_ids": 2,
+  "interactive_browser_tested": false,
+  "collector_run": 36747940645,
+  "collector_requests_used": 0,
+  "collector_status": "RATE_LIMIT_COOLDOWN",
+  "free_result_run": 36747798445,
+  "provider_health": {
+    "pinnwire": {
+      "status": "RATE_LIMITED",
+      "capability": "RESEARCH_ONLY",
+      "usable_recent_output": false,
+      "generated_at": "2026-09-30T16:57:30.941588+00:00",
+      "errors": [],
+      "execution_ready": false
+    },
+    "propline": {
+      "status": "AVAILABLE",
+      "capability": "FALLBACK",
+      "usable_recent_output": false,
+      "generated_at": "2026-09-30T16:57:31.062917+00:00",
+      "errors": [],
+      "execution_ready": false
+    },
+    "oddspapi": {
+      "status": "QUOTA_EXHAUSTED",
+      "request_limit": 250,
+      "request_count": 281,
+      "request_remaining": 0,
+      "generated_at": "2026-09-30T12:26:13.266729+00:00",
+      "capability": "WAITING_EXTERNAL_DATA"
+    }
+  },
+  "forward": [
+    {
+      "candidate_id": "FD_AH_4E30F9F2EC34",
+      "settled": 10,
+      "minimum": 150,
+      "status": "COLLECTING_FORWARD_EVIDENCE",
+      "production_promotion_allowed": false
+    },
+    {
+      "candidate_id": "FD_AH_1D65F429F6A5",
+      "settled": 4,
+      "minimum": 150,
+      "status": "COLLECTING_FORWARD_EVIDENCE",
+      "production_promotion_allowed": false
+    },
+    {
+      "candidate_id": "FD_OU25_D0A17AE7DB9C",
+      "settled": 0,
+      "minimum": 150,
+      "status": "COLLECTING_FORWARD_EVIDENCE",
+      "production_promotion_allowed": false
+    }
+  ]
+}
