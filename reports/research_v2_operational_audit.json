@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-09-30T01:14:59.775192+00:00",
+  "workflow_success_is_not_data_source_health": true,
+  "status": "COLLECTING_WITH_EXTERNAL_BLOCKERS",
+  "data_assertions_passed": true,
+  "assertion_failures": [],
+  "counts": {
+    "raw_snapshots": 1186,
+    "verified_snapshots": 1100,
+    "quarantined_snapshots": 86,
+    "recovered_legacy_snapshots": 0,
+    "unresolved_ft_fixtures": 501,
+    "settled_statistical_fixtures": 324,
+    "core_price_settled_fixtures": 302,
+    "movement_fixtures": 110,
+    "numeric_movement_deltas": 652,
+    "current_day_valid_scans": 0,
+    "current_day_distinct_scan_times": 0
+  },
+  "providers": {
+    "pinnwire": {
+      "status": "API_REQUEST_FAILED",
+      "capability": "RESEARCH_ONLY",
+      "usable_recent_output": false,
+      "generated_at": "2026-09-29T16:47:53.148301+00:00",
+      "errors": [
+        "HTTPError: HTTP Error 429: Too Many Requests"
+      ],
+      "execution_ready": false
+    },
+    "propline": {
+      "status": "RESEARCH_V2_OBSERVED",
+      "capability": "FALLBACK",
+      "usable_recent_output": true,
+      "generated_at": "2026-09-29T16:49:54.224921+00:00",
+      "errors": [],
+      "execution_ready": false
+    },
+    "oddspapi": {
+      "status": "QUOTA_EXHAUSTED",
+      "request_limit": 250,
+      "request_count": 280,
+      "request_remaining": 0,
+      "generated_at": "2026-09-29T22:10:13.042878+00:00",
+      "capability": "WAITING_EXTERNAL_DATA"
+    }
+  },
+  "daily_sync_status": "FIXTURE_SYNC_FAILED",
+  "forward_candidates": [
+    {
+      "candidate_id": "FD_AH_4E30F9F2EC34",
+      "settled": 10,
+      "minimum": 150,
+      "status": "COLLECTING_FORWARD_EVIDENCE",
+      "production_promotion_allowed": false
+    },
+    {
+      "candidate_id": "FD_AH_1D65F429F6A5",
+      "settled": 4,
+      "minimum": 150,
+      "status": "COLLECTING_FORWARD_EVIDENCE",
+      "production_promotion_allowed": false
+    },
+    {
+      "candidate_id": "FD_OU25_D0A17AE7DB9C",
+      "settled": 0,
+      "minimum": 150,
+      "status": "COLLECTING_FORWARD_EVIDENCE",
+      "production_promotion_allowed": false
+    }
+  ],
+  "paper_label": "PAPER_RESEARCH_ONLY",
+  "production_promotion_allowed": false,
+  "legacy_recovery_status": "WAITING_EXTERNAL_DATA",
+  "dashboard_browser_verified": false
+}
