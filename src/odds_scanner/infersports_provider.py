@@ -65,13 +65,17 @@ def probe(limit_events: int = 6) -> dict:
     two_sided = Counter()
     stale_blocks = 0
     successful_events = 0
+    attempted_events = 0
+    missing_event_ids = 0
     errors: list[str] = []
     samples: list[dict] = []
 
     for event in events[:limit_events]:
         event_id = event.get("event_id")
         if not event_id:
+            missing_event_ids += 1
             continue
+        attempted_events += 1
         try:
             block = event_odds(str(event_id))
         except Exception as exc:
@@ -108,10 +112,12 @@ def probe(limit_events: int = 6) -> dict:
     return {
         "schema_version": "1.1",
         "provider": "infersports_keyless",
-        "status": "OK",
+        "status": "MARKETS_OBSERVED" if market_counts else "NO_USABLE_MARKETS",
+        "capability": "HEALTH_ONLY",
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "scheduled_events_seen": len(events),
-        "events_probed": min(len(events), limit_events),
+        "events_probed": attempted_events,
+        "missing_event_ids": missing_event_ids,
         "successful_events": successful_events,
         "stale_blocks": stale_blocks,
         "market_counts": dict(sorted(market_counts.items())),
