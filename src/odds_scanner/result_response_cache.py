@@ -28,11 +28,11 @@ def fetch_day(root, day, fetch, now=None):
         payload=fetch(day)
         if not isinstance(payload,dict) or not isinstance(payload.get('leagues'),list):
             raise ValueError('Result response has no leagues list; existing cache preserved')
-    except Exception:
+    except Exception as exc:
         # Final historical scores remain usable evidence during a provider outage.
         # Caller records this as stale fallback, never as a live successful request.
         if cached and cached[1] <= now:
-            return cached[0]['payload'], {'source':'STALE_CACHE_AFTER_REQUEST_FAILURE','fetched_at':cached[0]['fetched_at'],'requests':1}
+            return cached[0]['payload'], {'source':'STALE_CACHE_AFTER_REQUEST_FAILURE','fetched_at':cached[0]['fetched_at'],'requests':1,'error':f'{type(exc).__name__}: {exc}'}
         raise
     row={'schema_version':'1.0','provider':'fotmob','requested_day':day,'fetched_at':now.isoformat(),'payload':payload}
     path.parent.mkdir(parents=True,exist_ok=True)
