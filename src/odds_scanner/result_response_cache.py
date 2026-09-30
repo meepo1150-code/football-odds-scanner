@@ -16,10 +16,11 @@ def read(path):
     except (OSError,ValueError,KeyError,TypeError):return None
 
 
-def fetch_day(root, day, fetch, now=None):
+def fetch_day(root, day, fetch, now=None, provider="fotmob"):
+    if provider not in {"fotmob", "espn"}: raise ValueError("Unsupported cache provider")
     now=now or datetime.now(timezone.utc)
     parsed=date.fromisoformat(day)  # Reject path-like input before touching disk.
-    path=root/CACHE/f'{parsed.isoformat()}.json'
+    path=root/'data/cache'/provider/f'{parsed.isoformat()}.json'
     cached=read(path)
     ttl=86400 if (now.date()-parsed).days >= 2 else 3600
     if cached and 0 <= (now-cached[1]).total_seconds() < ttl:
@@ -34,17 +35,19 @@ def fetch_day(root, day, fetch, now=None):
         if cached and cached[1] <= now:
             return cached[0]['payload'], {'source':'STALE_CACHE_AFTER_REQUEST_FAILURE','fetched_at':cached[0]['fetched_at'],'requests':1,'error':f'{type(exc).__name__}: {exc}'}
         raise
-    row={'schema_version':'1.0','provider':'fotmob','requested_day':day,'fetched_at':now.isoformat(),'payload':payload}
+    row={'schema_version':'1.0','provider':provider,'requested_day':day,'fetched_at':now.isoformat(),'payload':payload}
     path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text(json.dumps(row,ensure_ascii=False,separators=(',',':'))+'\n')
     return payload, {'source':'NETWORK','fetched_at':row['fetched_at'],'requests':1}
 
 
 def merge_cache(staged,root):
-    for source in (staged/CACHE).glob('*.json'):
-        new=read(source)
-        if not new:continue
-        target=root/CACHE/source.name;old=read(target)
-        if not old or new[1]>old[1]:
-            target.parent.mkdir(parents=True,exist_ok=True)
-            target.write_text(source.read_text())
+    for provider in ('fotmob','espn'):
+        cache=Path('data/cache')/provider
+        for source in (staged/cache).glob('*.json'):
+            new=read(source)
+            if not new:continue
+            target=root/cache/source.name;old=read(target)
+            if not old or new[1]>old[1]:
+                target.parent.mkdir(parents=True,exist_ok=True)
+                target.write_text(source.read_text())
