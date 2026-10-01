@@ -18,7 +18,11 @@ def identity(row):
 def run(root=Path('.')):
     snapshots = _load_jsonl(root/SNAPSHOTS)
     results = _load_jsonl(root/RESULTS_PATH)
-    blocked = {str(r.get('fixture_id')) for r in _load_jsonl((root/RESULTS_PATH).with_suffix('.conflicts.jsonl'))}
+    ledger = (root/RESULTS_PATH).with_suffix('.conflicts.jsonl')
+    conflict_rows = [json.loads(line) for line in ledger.read_text().splitlines() if line.strip()] if ledger.exists() else []
+    if any(not isinstance(r,dict) or not r.get('fixture_id') for r in conflict_rows):
+        raise ValueError('INVALID_RESULT_CONFLICT_LEDGER')
+    blocked = {str(r['fixture_id']) for r in conflict_rows}
     by_id = {}
     for r in results:
         if type(r.get('ft_home_goals')) is int and type(r.get('ft_away_goals')) is int and min(r['ft_home_goals'],r['ft_away_goals']) >= 0:
