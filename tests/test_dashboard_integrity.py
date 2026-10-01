@@ -16,6 +16,14 @@ def test_dashboard_data_guards():
     checks='''
 const assert=require('assert');
 assert.equal(n(null),'—');
+const sourceRows=[{fixture_id:'a',home:'H',away:'A',kickoff:'K',league:'L',provider:'pinnwire'},{fixture_id:'b',home:'H',away:'A',kickoff:'K',league:'L2',provider:'propline'}];
+const bridges=[{canonical_fixture_id:'a',members:sourceRows}];
+const fm=fixtureIdentityMap(sourceRows,bridges);
+assert.equal(fm.get('b'),'a');
+assert.equal(fixtureIdentityMap([...sourceRows,{...sourceRows[1],home:'Different'}],bridges).size,0);
+assert.equal(exactResults(projectFixtureRows([{fixture_id:'a',ft_home_goals:1,ft_away_goals:0},{fixture_id:'b',ft_home_goals:0,ft_away_goals:0}],fm)).size,0);
+assert.equal(exactResults(projectFixtureRows([{fixture_id:'a',ft_home_goals:1,ft_away_goals:0}],fm),projectFixtureRows([{fixture_id:'b'}],fm)).size,0);
+
 assert.equal(activeTimelineGroups([['old',[]],['new',[]]],['old'],new Map).length,1);
 assert.equal(activeTimelineGroups([['old',[]]],['old'],new Map([['old',{}]])).length,1);
 assert.equal(exactResults([{fixture_id:'x',ft_home_goals:1,ft_away_goals:0}],null).size,0);

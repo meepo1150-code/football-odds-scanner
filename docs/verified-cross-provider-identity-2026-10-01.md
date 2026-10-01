@@ -1,0 +1,15 @@
+# Verified cross-provider identity and independent slot recovery
+
+Problem: PinnWire and PropLine can report the same Pinnacle match under different fixture IDs. Grouping by provider ID double-counts a settled match and splits movement. The public dashboard previously showed 83 provider IDs for 76 exact match identities on October 1.
+
+Policy: keep raw snapshots and canonical result storage unchanged. Build a derived bridge only for a unique PinnWire–PropLine pair with exact home and away names, exact timezone-aware kickoff, Pinnacle bookmaker, valid pre-match snapshots, and a verified competition match. Category markers are never stripped. The explicit Nations League competition hierarchy maps PropLine's generic competition to PinnWire A/B/C/D labels; team names and kickoff must still match exactly. All other competitions require the same label. Inconsistent identity within an ID or multiple IDs from one provider blocks the bridge.
+
+The review artifact is `reports/research_v2_fixture_identity.json`, generated before statistics consume the mapping. Raw provider IDs remain in derived observation and result provenance. Results join by their original exact source ID through this bridge; disagreeing scores or a quarantine conflict on either ID blocks the canonical match. Raw snapshots/results are never rewritten. Dashboard validates every bridge member against its loaded snapshot identities before grouping and applies the same conflict handling.
+
+Statistical selection is the latest verified observation, with source fixture ID as deterministic tie-break. One canonical match contributes once to AH/O/U groups; every observation remains in the timeline with its provider shown. Movement now joins verified Pinnacle quotes across these feeds. Counts of provider IDs are retained separately from canonical matches.
+
+Local actual-data review: eight pairs qualify, seven on October 1 and Finland–Belarus on September 29. Finland–Belarus was already settled under both provider IDs. Deduplication changes settled353→352/core331→330, not because a result was deleted. Movement110→117; raw1305/verified1219/quarantine86 unchanged. October1 remains83 observations but76 match groups. No legacy quote promoted. Future collection will change counts legitimately.
+
+Independent recovery workflow checks weekday18:17/18:47 and21:17/21:47 Bangkok (and corresponding weekend slots). It shares `research-v2-collectors` concurrency and the primary collector's local attempt gate, so a completed slot makes zero provider requests. PinnWire cooldown is preserved; validated PropLine fallback is still available during cooldown. This reduces dependence on a single delayed schedule; GitHub scheduling still cannot guarantee precise wall-clock execution.
+
+Regression suite:341 passed before publication, including duplicate settlement/O-U denominator, exact-source results on either ID, conflicting scores/quarantine, ambiguous identity, raw preservation, browser mapping mismatch, and shared schedule attempt gate. Actual runner/deployment verification follows publication.
