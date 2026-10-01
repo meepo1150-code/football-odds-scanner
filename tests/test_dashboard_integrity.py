@@ -63,3 +63,29 @@ const assert=require('assert');
     assert result.returncode==0,result.stderr
     assert "conflicts.jsonl',true)" in html
     assert "if(!validConflictLedger(resultConflicts))" in html
+
+
+def test_result_status_boundaries_do_not_claim_live_or_finished():
+    node=shutil.which('node')
+    if not node:pytest.skip('Node unavailable')
+    html=Path('apps/dashboard/index.html').read_text()
+    script=html.split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
+    checks=r"""
+const assert=require('assert');
+const s={kickoff:'2026-10-01T12:00:00Z'},ko=Date.parse(s.kickoff);
+assert.equal(fixtureResultState(s,null,ko-1).code,'SCHEDULED');
+assert.equal(fixtureResultState(s,null,ko).code,'AWAITING_RESULT');
+assert.equal(fixtureResultState(s,null,ko+10800000-1).code,'AWAITING_RESULT');
+assert.equal(fixtureResultState(s,null,ko+10800000).code,'OVERDUE_RESULT');
+assert.equal(fixtureResultState({kickoff:'2026-10-01T12:00:00'},null,ko).code,'UNKNOWN_KICKOFF');
+assert.equal(fixtureResultState({kickoff:'bad'},null,ko).code,'UNKNOWN_KICKOFF');
+assert.equal(fixtureResultState(s,{ft_home_goals:0,ft_away_goals:0},ko).label,'FT 0 - 0');
+assert.equal(fixtureResultState(s,{ft_home_goals:0,ft_away_goals:0},ko,true).code,'CONFLICT');
+assert.equal(priceResultFromFT(null,s),'');
+assert.equal(observationLabel({provider:'pinnwire'},null),'ข้อมูลวิจัย · mainline ยังไม่ยืนยัน');
+assert.equal(observationLabel({provider:'other'},null),'ยังไม่มีผลประเมินราคา');
+"""
+    r=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
+    assert r.returncode==0,r.stderr
+    assert 'data-f="OVERDUE"' in html and 'data-f="SCHEDULED"' in html
+    assert "'UNCLASSIFIED'" not in html
