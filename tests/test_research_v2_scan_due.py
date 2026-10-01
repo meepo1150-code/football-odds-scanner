@@ -35,3 +35,10 @@ def test_pinnwire_includes_after_midnight_in_previous_football_day(tmp_path, mon
     assert row['fixture_id']=='pinnwire:after-midnight'
     assert row['football_day']=='2026-09-30'
     assert row['observed_at']=='2026-09-30T16:00:00+00:00'
+
+
+def test_independent_evening_checks_share_attempt_gate():
+    for minute in (17,37,47):
+        now=datetime.fromisoformat(f'2026-10-01T18:{minute}:00+07:00')
+        assert due(now, {'generated_at':'2026-10-01T17:49:38+07:00'})
+        assert not due(now, {'generated_at':'2026-10-01T18:10:00+07:00','status':'RATE_LIMIT_COOLDOWN'})

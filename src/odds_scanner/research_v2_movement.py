@@ -3,6 +3,7 @@ import json
 from collections import defaultdict
 from pathlib import Path
 from .research_v2_integrity import trusted_snapshot, finite_number
+from .research_v2_fixture_identity import build_bridge, project
 
 SNAP=Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl')
 OUT=Path('data/normalized/research_v2_movement_features.jsonl')
@@ -39,14 +40,16 @@ def run(root=Path('.')):
     source_all=list(source)
     source=[r for r in source if trusted_snapshot(r)]
     quarantined=len(source_all)-len(source)
+    mapping, bridge = build_bridge(source)
+    source = project(source, mapping)
     for r in source: groups[str(r.get('fixture_id'))].append(r)
     features=[]
     numeric_delta_count=0
     for fid,rs in groups.items():
-        rs.sort(key=lambda x:str(x.get('observed_at') or ''))
+        rs.sort(key=lambda x:(str(x.get('observed_at') or ''),str(x.get('source_fixture_id') or x.get('fixture_id') or '')))
         if len(rs)<2:continue
         a,b=rs[0],rs[-1]
-        row={'fixture_id':fid,'football_day':b.get('football_day'),'league':b.get('league'),'country':b.get('country'),'competition_type':b.get('competition_type'),'observations':len(rs),'first_observed_at':a.get('observed_at'),'last_observed_at':b.get('observed_at')}
+        row={'fixture_id':fid,'source_fixture_ids':sorted({str(r.get('source_fixture_id')) for r in rs}),'cross_provider':len({r.get('provider') for r in rs})>1,'football_day':b.get('football_day'),'league':b.get('league'),'country':b.get('country'),'competition_type':b.get('competition_type'),'observations':len(rs),'first_observed_at':a.get('observed_at'),'last_observed_at':b.get('observed_at')}
         for key in ('ah_line','favorite_price','ou_line','over_price','under_price','home_price','draw_price','away_price'):
             av,bv=finite_number(_get(a,key)),finite_number(_get(b,key))
             row['first_'+key]=av; row['last_'+key]=bv
