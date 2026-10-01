@@ -88,3 +88,19 @@ def test_conflict_ledger_blocks_result_reintroduced_by_another_writer(tmp_path):
         p=tmp_path/path;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(''.join(json.dumps(x)+'\n' for x in rows))
     report=build(tmp_path)
     assert report['settled_fixtures']==0 and report['raw_unresolved_ft_fixtures']==1
+
+
+def test_retirement_changes_queue_counts_not_settled_statistics(tmp_path):
+    import json
+    from odds_scanner.research_v2_pattern_stats import build,SNAPSHOTS,RESULTS
+    path=tmp_path/SNAPSHOTS;path.parent.mkdir(parents=True)
+    good={**quote(),'fixture_id':'settled'};missing={**quote(),'fixture_id':'missing'}
+    path.write_text(json.dumps(good)+'\n'+json.dumps(missing)+'\n')
+    (tmp_path/RESULTS).write_text(json.dumps({'fixture_id':'settled','ft_home_goals':1,'ft_away_goals':0})+'\n')
+    before=build(tmp_path)
+    (path.parent/'research_v2_retired_fixtures.jsonl').write_text(json.dumps({'fixture_id':'missing'})+'\n')
+    after=build(tmp_path)
+    for field in ['settled_fixtures','core_price_settled_fixtures','market_state_by_side_line_price','over_under_2_5_by_ah_line_price']:
+        assert before[field]==after[field]
+    assert after['raw_unresolved_ft_fixtures']==1
+    assert after['retired_unresolved_ft_fixtures']==1 and after['active_unresolved_ft_fixtures']==0

@@ -37,3 +37,9 @@ def test_conflicting_provider_copies_not_joined(tmp_path,monkeypatch):
     monkeypatch.setattr(p,'fetch',lambda day:data)
     r=p.run(tmp_path,now=datetime(2026,9,30,tzinfo=timezone.utc))
     assert r['ambiguous']==1 and r['results_added']==0
+
+
+def test_identity_normalizes_accents_without_stripping_team_category():
+    assert p.identity('Madrid CFF','Alavés','time')==p.identity('Madrid CFF','Alaves','time')
+    assert p.identity('Madrid CFF Women','Alaves','time')!=p.identity('Madrid CFF','Alaves','time')
+    assert p.identity('Madrid CFF','Alaves','time')!=p.identity('Madrid CFF','Alaves','other-time')

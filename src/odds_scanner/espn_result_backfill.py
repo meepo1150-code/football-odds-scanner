@@ -1,9 +1,11 @@
 """Keyless result evidence; exact teams/kickoff only, never an odds source."""
 import json
+import unicodedata
 import re
 import urllib.request
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
+from .result_recovery_lifecycle import retired_ids
 from .fotmob_result_backfill import _read
 from .research_v2_integrity import trusted_snapshot
 from .oddspapi_result_cache import merge_normalized_results
@@ -21,7 +23,9 @@ def utc(value):
 
 
 def identity(home,away,kickoff):
-    return (str(home or '').strip().casefold(),str(away or '').strip().casefold(),kickoff)
+    def text(value):
+        return ''.join(c for c in unicodedata.normalize('NFKD',str(value or '').strip().casefold()) if not unicodedata.combining(c))
+    return (text(home),text(away),kickoff)
 
 
 def events(payload):
@@ -51,7 +55,7 @@ def fetch(day):
 
 def run(root=Path('.'),max_requests=12,now=None):
     now=now or datetime.now(timezone.utc)
-    existing=_read(root/RESULTS); known={str(r.get('fixture_id')) for r in existing}
+    existing=_read(root/RESULTS); known={str(r.get('fixture_id')) for r in existing} | retired_ids(root)
     blocked={str(r.get('fixture_id')) for r in _read((root/RESULTS).with_suffix('.conflicts.jsonl'))}
     missing={};days=set()
     for s in _read(root/'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'):
@@ -79,7 +83,7 @@ def run(root=Path('.'),max_requests=12,now=None):
         if len(matches)>1:ambiguous+=1;continue
         if not matches:not_found+=1;continue
         e=matches[0]
-        staged.append({'fixture_id':fid,'ft_home_goals':e['hg'],'ft_away_goals':e['ag'],'provider_event_id':e['id'],'result_source':'ESPN_EXACT_TEAMS_KICKOFF_FULL_TIME','result_identity':'VERIFIED_UNIQUE_HOME_AWAY_EXACT_UTC_KICKOFF','provider_evidence':{'provider':'espn','source_url':BASE,**e},'research_only':True,'promotion_eligible':False})
+        staged.append({'fixture_id':fid,'ft_home_goals':e['hg'],'ft_away_goals':e['ag'],'provider_event_id':e['id'],'result_source':'ESPN_EXACT_TEAMS_KICKOFF_FULL_TIME','result_identity':'VERIFIED_UNIQUE_ACCENT_NORMALIZED_HOME_AWAY_EXACT_UTC_KICKOFF','provider_evidence':{'provider':'espn','source_url':BASE,**e},'research_only':True,'promotion_eligible':False})
     stage=root/'data/normalized/espn_result_recovery_staged.jsonl';stage.parent.mkdir(parents=True,exist_ok=True)
     stage.write_text(''.join(json.dumps(r,ensure_ascii=False)+'\n' for r in staged))
     added=merge_normalized_results(root/RESULTS,staged)

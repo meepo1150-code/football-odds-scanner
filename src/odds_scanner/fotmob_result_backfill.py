@@ -2,6 +2,7 @@ from __future__ import annotations
 import json,re,unicodedata,urllib.parse,urllib.request
 from datetime import datetime,timezone,timedelta
 from pathlib import Path
+from .result_recovery_lifecycle import retired_ids
 from .result_response_cache import fetch_day
 from .oddspapi_result_cache import merge_normalized_results
 SNAP=Path("data/normalized/europe_pinnacle_research_v2_snapshots.jsonl")
@@ -136,7 +137,7 @@ def revalidate_existing(root, existing, events):
 
 def run(root=Path(".")):
     snaps=_read(root/SNAP)
-    existing=_read(root/RESULTS); existing_ids={str(x.get("fixture_id")) for x in existing}
+    existing=_read(root/RESULTS); existing_ids={str(x.get("fixture_id")) for x in existing} | retired_ids(root)
     missing={}
     for s in snaps:
         fid=str(s.get("fixture_id") or "")

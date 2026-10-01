@@ -4,6 +4,7 @@ import json
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
+from .result_recovery_lifecycle import retired_ids
 from .oddspapi_result_cache import merge_normalized_results
 
 SNAPSHOTS_PATH = Path("data/normalized/europe_pinnacle_research_v2_snapshots.jsonl")
@@ -56,7 +57,7 @@ def _score(match):
 def run(root=Path("."), season=None):
     season=str(season or datetime.now(timezone.utc).year)
     snaps=_load_jsonl(root/SNAPSHOTS_PATH); existing=_load_jsonl(root/RESULTS_PATH)
-    existing_ids={str(x.get("fixture_id")) for x in existing}
+    existing_ids={str(x.get("fixture_id")) for x in existing} | retired_ids(root)
     index={}
     api_rows=0; requests=0
     for league in LEAGUES:

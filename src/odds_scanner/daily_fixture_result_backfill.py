@@ -5,6 +5,7 @@ import json
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from .result_recovery_lifecycle import retired_ids
 
 from .daily_fixture_result_sync import FIXTURES_PATH
 from .flashscore_result_provider import fetch_exact_result
@@ -76,7 +77,7 @@ def select_candidates(fixtures:list[dict],existing_ids:set[str],*,now:datetime,p
 
 def run_backfill(root:Path=Path('.'),*,now:datetime|None=None,max_requests:int=80,sleep_seconds:float=0.25)->dict:
     current=(now or datetime.now(timezone.utc)).astimezone(timezone.utc); fixtures=_load_jsonl(root/FIXTURES_PATH); existing=_load_jsonl(root/RESULTS_PATH); audit=_load_jsonl(root/AUDIT_PATH); snapshots=_load_jsonl(root/SNAPSHOTS_PATH)
-    existing_ids={str(r.get('fixture_id')) for r in existing if r.get('fixture_id') is not None}; priority_ids={str(r.get('fixture_id')) for r in audit if r.get('fixture_id') is not None} | {str(r.get('fixture_id')) for r in snapshots if r.get('fixture_id') is not None}
+    existing_ids={str(r.get('fixture_id')) for r in existing if r.get('fixture_id') is not None} | retired_ids(root); priority_ids={str(r.get('fixture_id')) for r in audit if r.get('fixture_id') is not None} | {str(r.get('fixture_id')) for r in snapshots if r.get('fixture_id') is not None}
     direct_candidates=select_candidates(fixtures,existing_ids,now=current,priority_ids=priority_ids); bridged_candidates,bridge_ambiguous=_pinnwire_bridge_candidates(fixtures,snapshots,existing_ids,now=current); bridged_ids={r['fixture_id'] for r in bridged_candidates}; candidates=bridged_candidates+[r for r in direct_candidates if r['fixture_id'] not in bridged_ids]; attempted=0; normalized=[]; failures=[]; priority_attempted=0; bridge_attempted=0; bridge_parsed=0
     for ref in candidates[:max_requests]:
         attempted+=1; priority_attempted+=int(bool(ref.get('research_v2_priority'))); is_bridge=str(ref.get('mapping_source') or '').startswith('PINNWIRE_'); bridge_attempted+=int(is_bridge); result,meta=fetch_exact_result(ref)

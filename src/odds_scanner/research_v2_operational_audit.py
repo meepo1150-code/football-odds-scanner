@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+from .result_recovery_lifecycle import retired_ids
 from .europe_pinnacle_discovery import _football_day_bounds
 from .research_v2_integrity import trusted_snapshot
 from .research_v2_pattern_stats import _result_index, _rows
@@ -48,6 +49,9 @@ def build(root=Path('.'), now=None):
     missing = {str(s.get('fixture_id')):s for s in valid if str(s.get('fixture_id')) not in results}
     counts['unresolved_matured_3h_fixtures'] = sum(1 for s in missing.values() if utc(s.get('kickoff')) and (now-utc(s['kickoff'])).total_seconds() >= 10800)
     counts['unresolved_future_or_recent_fixtures'] = len(missing)-counts['unresolved_matured_3h_fixtures']
+    retired=set(missing)&retired_ids(root)
+    counts['retired_unresolved_ft_fixtures']=len(retired)
+    counts['active_unresolved_matured_3h_fixtures']=counts['unresolved_matured_3h_fixtures']-sum(1 for fid in retired if utc(missing[fid].get('kickoff')) and (now-utc(missing[fid]['kickoff'])).total_seconds()>=10800)
     failures=[]
     if stats.get('raw_snapshot_rows') != len(raw):failures.append('STATISTICS_RAW_COUNT_STALE')
     if stats.get('snapshot_rows') != len(valid):failures.append('STATISTICS_VERIFIED_COUNT_STALE')
