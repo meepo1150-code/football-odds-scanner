@@ -16,6 +16,9 @@ def test_dashboard_data_guards():
     checks='''
 const assert=require('assert');
 assert.equal(n(null),'—');
+assert.equal(exactResults([{fixture_id:'x',ft_home_goals:1,ft_away_goals:0}],null).size,0);
+assert.equal(exactResults([{fixture_id:'x',ft_home_goals:1,ft_away_goals:0}],[{}]).size,0);
+assert.equal(exactResults([{fixture_id:'x',ft_home_goals:true,ft_away_goals:0}]).size,0);
 assert.equal(exactResults([{fixture_id:'blocked',ft_home_goals:2,ft_away_goals:1}],[{fixture_id:'blocked'}]).size,0);
 assert.equal(ahSettlement(1,0,-1.5,'H'),'FULL_LOSS');
 assert.equal(ahSettlement(1,0,null,'H'),null);
@@ -28,3 +31,25 @@ assert.equal(sortedRows([{favorite_price_win_pct:null},{favorite_price_win_pct:4
 '''
     result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
+
+
+def test_required_quarantine_fetch_does_not_become_empty_list():
+    node=shutil.which('node')
+    if not node:pytest.skip('Node unavailable')
+    html=Path('apps/dashboard/index.html').read_text()
+    script=html.split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
+    checks="""
+const assert=require('assert');
+(async()=>{
+ global.fetch=async()=>({ok:false});
+ assert.equal(await jl('ledger',true),null);
+ global.fetch=async()=>({ok:true,text:async()=>'{bad json'});
+ assert.equal(await jl('ledger',true),null);
+ global.fetch=async()=>({ok:true,text:async()=>''});
+ assert.deepEqual(await jl('ledger',true),[]);
+})().catch(e=>{console.error(e);process.exit(1)});
+"""
+    result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
+    assert result.returncode==0,result.stderr
+    assert "conflicts.jsonl',true)" in html
+    assert "if(!validConflictLedger(resultConflicts))" in html

@@ -6,6 +6,7 @@ on:
   push:
     branches: [main]
     paths:
+      - 'controls/oddspapi_quota_refresh_token.txt'
       - 'src/odds_scanner/oddspapi_quota_health.py'
       - 'tests/test_oddspapi_quota_health.py'
       - '.github/workflows/oddspapi-quota-health.yml'
@@ -40,7 +41,8 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             cp /tmp/oddspapi-quota-health.json reports/oddspapi_quota_health.json
-            git add -- reports/oddspapi_quota_health.json
+            python -m odds_scanner.research_v2_operational_audit
+            git add -- reports/oddspapi_quota_health.json reports/research_v2_operational_audit.json
             git diff --cached --quiet && exit 0
             git commit -m '[skip ci] Update OddsPapi quota health'
             if git push origin HEAD:main; then exit 0; fi
