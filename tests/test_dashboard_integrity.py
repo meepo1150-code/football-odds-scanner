@@ -16,6 +16,8 @@ def test_dashboard_data_guards():
     checks='''
 const assert=require('assert');
 assert.equal(n(null),'—');
+assert.equal(activeTimelineGroups([['old',[]],['new',[]]],['old'],new Map).length,1);
+assert.equal(activeTimelineGroups([['old',[]]],['old'],new Map([['old',{}]])).length,1);
 assert.equal(exactResults([{fixture_id:'x',ft_home_goals:1,ft_away_goals:0}],null).size,0);
 assert.equal(exactResults([{fixture_id:'x',ft_home_goals:1,ft_away_goals:0}],[{}]).size,0);
 assert.equal(exactResults([{fixture_id:'x',ft_home_goals:true,ft_away_goals:0}]).size,0);

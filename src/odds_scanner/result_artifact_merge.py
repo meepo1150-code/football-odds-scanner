@@ -13,6 +13,8 @@ def rows(path):
 def merge(staged, root=Path('.')):
     from .result_response_cache import merge_cache
     merge_cache(staged,root)
+    from .result_recovery_lifecycle import merge as merge_recovery
+    merge_recovery(staged,root)
     relative=RESULTS_PATH.with_suffix('.conflicts.jsonl')
     conflicts=rows(root/relative)+rows(staged/relative)
     if conflicts:

@@ -4,6 +4,7 @@ import json, urllib.request
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
+from .result_recovery_lifecycle import retired_ids
 
 SNAP=Path("data/normalized/europe_pinnacle_research_v2_snapshots.jsonl")
 RESULTS=Path("data/normalized/oddspapi_finished_results.jsonl")
@@ -73,7 +74,7 @@ if __name__=="__main__": print(json.dumps(run(),ensure_ascii=False))
 
 
 def backfill(root=Path(".")):
-    snaps=_rows(root/SNAP); existing=_rows(root/RESULTS); settled={str(x.get("fixture_id")) for x in existing}
+    snaps=_rows(root/SNAP); existing=_rows(root/RESULTS); settled={str(x.get("fixture_id")) for x in existing} | retired_ids(root)
     missing={}
     for s in snaps:
         fid=str(s.get("fixture_id") or ""); ko=_utc(s.get("kickoff"))
