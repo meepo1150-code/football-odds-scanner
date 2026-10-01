@@ -18,6 +18,11 @@ def identity(row):
 def run(root=Path('.')):
     snapshots = _load_jsonl(root/SNAPSHOTS)
     results = _load_jsonl(root/RESULTS_PATH)
+    ledger = (root/RESULTS_PATH).with_suffix('.conflicts.jsonl')
+    conflict_rows = [json.loads(line) for line in ledger.read_text().splitlines() if line.strip()] if ledger.exists() else []
+    if any(not isinstance(r,dict) or not r.get('fixture_id') for r in conflict_rows):
+        raise ValueError('INVALID_RESULT_CONFLICT_LEDGER')
+    blocked = {str(r['fixture_id']) for r in conflict_rows}
     by_id = {}
     for r in results:
         if type(r.get('ft_home_goals')) is int and type(r.get('ft_away_goals')) is int and min(r['ft_home_goals'],r['ft_away_goals']) >= 0:
@@ -30,12 +35,15 @@ def run(root=Path('.')):
             identities.setdefault(fid,set()).add(identity(s))
     index = {}
     for fid, keys in identities.items():
-        if len(keys) != 1 or None in keys or fid not in by_id: continue
+        if fid in blocked or len(keys) != 1 or None in keys or fid not in by_id: continue
         rs = by_id[fid]
         if len({(r['ft_home_goals'],r['ft_away_goals']) for r in rs}) != 1: continue
         index.setdefault(next(iter(keys)),[]).append(rs[-1])
     missing = set(fixtures)-set(by_id); added=[]; reasons=[]; ambiguous=0
     for fid in sorted(missing):
+        if fid in blocked:
+            reasons.append({'fixture_id':fid,'reason':'RESULT_CONFLICT_REQUIRES_REVIEW'})
+            continue
         keys=identities[fid]
         matches=index.get(next(iter(keys)),[]) if len(keys)==1 and None not in keys else []
         if len(matches) != 1:

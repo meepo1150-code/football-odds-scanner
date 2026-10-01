@@ -49,3 +49,28 @@ def test_sofascore_rejects_extra_time_current_score(tmp_path,monkeypatch):
     assert sofa.backfill(tmp_path)['results_added']==0
 
 from pathlib import Path
+
+
+def test_local_reuse_never_uses_conflicted_donor_or_target(tmp_path):
+    write(tmp_path,reuse.SNAPSHOTS,[snapshot('old'),snapshot('new')])
+    source={'fixture_id':'old','ft_home_goals':1,'ft_away_goals':0,'result_source':'EXACT'}
+    for blocked in ('old','new'):
+        write(tmp_path,reuse.RESULTS_PATH,[source])
+        write(tmp_path,reuse.RESULTS_PATH.with_suffix('.conflicts.jsonl'),[{'fixture_id':blocked}])
+        report=reuse.run(tmp_path)
+        assert report['results_added']==0
+        rows=[json.loads(x) for x in (tmp_path/reuse.RESULTS_PATH).read_text().splitlines()]
+        assert all(r['fixture_id']!='new' for r in rows)
+        assert len(rows)==(0 if blocked=='old' else 1)
+
+
+def test_local_reuse_fails_closed_on_corrupt_conflict_ledger(tmp_path):
+    import pytest
+    write(tmp_path,reuse.SNAPSHOTS,[snapshot('old'),snapshot('new')])
+    write(tmp_path,reuse.RESULTS_PATH,[{'fixture_id':'old','ft_home_goals':1,'ft_away_goals':0}])
+    before=(tmp_path/reuse.RESULTS_PATH).read_bytes()
+    ledger=tmp_path/reuse.RESULTS_PATH.with_suffix('.conflicts.jsonl')
+    for text in ('{bad json', '{}', 'null'):
+        ledger.write_text(text)
+        with pytest.raises(ValueError):reuse.run(tmp_path)
+        assert (tmp_path/reuse.RESULTS_PATH).read_bytes()==before
