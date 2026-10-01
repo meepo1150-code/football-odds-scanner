@@ -1,42 +1,44 @@
 {
   "schema_version": "1.1",
   "football_day": "2026-10-01",
-  "generated_at": "2026-10-01T07:11:53.647780+00:00",
+  "generated_at": "2026-10-01T10:50:00.698304+00:00",
   "workflow_success_is_not_data_source_health": true,
   "status": "COLLECTING_WITH_EXTERNAL_BLOCKERS",
   "data_assertions_passed": true,
   "assertion_failures": [],
   "counts": {
-    "raw_snapshots": 1298,
-    "verified_snapshots": 1212,
+    "raw_snapshots": 1305,
+    "verified_snapshots": 1219,
     "quarantined_snapshots": 86,
     "recovered_legacy_snapshots": 0,
-    "unresolved_ft_fixtures": 584,
+    "unresolved_ft_fixtures": 591,
     "settled_statistical_fixtures": 353,
     "core_price_settled_fixtures": 331,
     "movement_fixtures": 110,
     "numeric_movement_deltas": 652,
-    "current_day_valid_scans": 76,
-    "current_day_distinct_scan_times": 1,
-    "unresolved_matured_3h_fixtures": 508,
-    "unresolved_future_or_recent_fixtures": 76,
+    "current_day_valid_scans": 83,
+    "current_day_distinct_scan_times": 2,
+    "unresolved_matured_3h_fixtures": 510,
+    "unresolved_future_or_recent_fixtures": 81,
     "retired_unresolved_ft_fixtures": 439,
-    "active_unresolved_matured_3h_fixtures": 69
+    "active_unresolved_matured_3h_fixtures": 71
   },
   "providers": {
     "pinnwire": {
-      "status": "AVAILABLE",
+      "status": "RATE_LIMITED",
       "capability": "RESEARCH_ONLY",
-      "usable_recent_output": true,
-      "generated_at": "2026-10-01T02:40:14.789964+00:00",
-      "errors": [],
+      "usable_recent_output": false,
+      "generated_at": "2026-10-01T10:49:38.048287+00:00",
+      "errors": [
+        "HTTPError: HTTP 429"
+      ],
       "execution_ready": false
     },
     "propline": {
       "status": "AVAILABLE",
       "capability": "FALLBACK",
-      "usable_recent_output": false,
-      "generated_at": "2026-09-30T16:57:31.062917+00:00",
+      "usable_recent_output": true,
+      "generated_at": "2026-10-01T10:49:38.728919+00:00",
       "errors": [],
       "execution_ready": false
     },
