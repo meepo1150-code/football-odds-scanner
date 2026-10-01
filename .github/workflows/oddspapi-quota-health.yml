@@ -6,6 +6,7 @@ on:
   push:
     branches: [main]
     paths:
+      - 'controls/oddspapi_quota_refresh_token.txt'
       - 'src/odds_scanner/oddspapi_quota_health.py'
       - 'tests/test_oddspapi_quota_health.py'
       - '.github/workflows/oddspapi-quota-health.yml'
