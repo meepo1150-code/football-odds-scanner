@@ -42,3 +42,54 @@ def test_collect_keeps_provider_namespace_and_reports_quota(tmp_path):
     assert report["fixture_rows_observed"] == 3
     rows = (tmp_path / "data/normalized/api_football_fixtures.jsonl").read_text().splitlines()
     assert len(rows) == 3
+
+
+def test_rejects_extra_time_penalties_and_non_integer_goals():
+    for status in ('AET', 'PEN', 'LIVE', 'NS'):
+        row = normalize_fixture(fixture_payload(status=status), 'now')
+        assert row['finished'] is False
+        assert row['ft_home_goals'] is None
+    for score in (True, -1, 1.5, '2'):
+        assert not normalize_fixture(fixture_payload(home_goals=score), 'now')['finished']
+    assert normalize_fixture(fixture_payload(home_goals=0, away_goals=0), 'now')['finished']
+
+
+def test_suspension_stops_requests_and_reuses_original_retry_boundary(tmp_path):
+    import json
+    from odds_scanner.api_football_provider import collect_missing_pinnwire_days
+    calls = []
+    def suspended(path, key, params=None):
+        calls.append(path)
+        return {'errors': {'access': 'Your account is suspended'}, 'response': []}
+    report = collect(tmp_path, key='secret', get_fn=suspended)
+    assert calls == ['/fixtures']
+    assert report['requests_used'] == 1
+    assert report['status'] == 'ACCOUNT_SUSPENDED'
+    again = collect(tmp_path, key='secret', get_fn=suspended)
+    assert again['requests_used'] == 0
+    assert again['retry_after'] == report['retry_after']
+    targeted = collect_missing_pinnwire_days(tmp_path, key='secret', get_fn=suspended)
+    assert targeted['requests_used'] == 0
+    assert calls == ['/fixtures']
+    # Once expired, the normal collection path resumes automatically.
+    path = tmp_path / 'reports/api_football_shadow_health.json'
+    again['retry_after'] = '2000-01-01T00:00:00+00:00'
+    path.write_text(json.dumps(again))
+    assert collect(tmp_path, key='secret', get_fn=suspended)['requests_used'] == 1
+
+
+def test_join_rejects_one_team_time_nearby_and_legacy_extra_time(tmp_path):
+    import json
+    from odds_scanner.pinnwire_result_join import run, SNAPSHOTS_PATH, API_FIXTURES_PATH
+    def put(path, row):
+        dest = tmp_path / path
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(json.dumps(row)+'\n')
+    snap = {'fixture_id':'pinnwire:test','provider':'pinnwire','home':'Home','away':'Away','kickoff':'2026-09-20T12:00:00Z','observed_at':'2026-09-20T10:00:00Z'}
+    put(SNAPSHOTS_PATH, snap)
+    fixture = normalize_fixture(fixture_payload(), 'now')
+    for changes in ({'away':'Different'}, {'kickoff':'2026-09-20T12:00:30Z'}, {'status':'AET'}, {'status':'PEN'}):
+        put(API_FIXTURES_PATH, {**fixture, **changes})
+        assert run(tmp_path)['finished_exact_matches'] == 0
+    put(API_FIXTURES_PATH, fixture)
+    assert run(tmp_path)['finished_exact_matches'] == 1

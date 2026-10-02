@@ -24,6 +24,23 @@ def _get(path: str, key: str, params: dict | None = None, timeout: int = 45) -> 
         return json.loads(response.read().decode("utf-8"))
 
 
+def _suspension_cooldown(root: Path, now: datetime) -> str | None:
+    """Reuse an explicit suspension for 24h without extending it on skipped runs."""
+    path = root / REPORT_PATH
+    if not path.exists():
+        return None
+    previous = json.loads(path.read_text())
+    if not (previous.get("status") == "ACCOUNT_SUSPENDED" or
+            "suspended" in str(previous.get("errors", "")).lower()):
+        return None
+    until = previous.get("retry_after")
+    if until:
+        boundary = datetime.fromisoformat(until)
+    else:
+        boundary = datetime.fromisoformat(previous["generated_at"]) + timedelta(hours=24)
+    return boundary.isoformat() if now < boundary else None
+
+
 def normalize_fixture(item: dict, observed_at: str) -> dict | None:
     fixture = item.get("fixture") if isinstance(item.get("fixture"), dict) else {}
     league = item.get("league") if isinstance(item.get("league"), dict) else {}
@@ -36,7 +53,7 @@ def normalize_fixture(item: dict, observed_at: str) -> dict | None:
     if fixture_id is None or not kickoff:
         return None
     short = str(status.get("short") or "")
-    finished = short in {"FT", "AET", "PEN"} and goals.get("home") is not None and goals.get("away") is not None
+    finished = short == "FT" and all(type(goals.get(side)) is int and goals[side] >= 0 for side in ("home", "away"))
     return {
         "provider": "api_football",
         "provider_fixture_id": str(fixture_id),
@@ -89,7 +106,10 @@ def collect(root: Path = Path("."), *, key: str | None = None, today: date | Non
         "odds_ingested": False,
     }
     report_path = root / REPORT_PATH
-    if not api_key:
+    cooldown = _suspension_cooldown(root, now)
+    if cooldown:
+        report.update(status="ACCOUNT_SUSPENDED", retry_after=cooldown, requests_used=0, errors=["Previously observed account suspension; automatic retry deferred"] )
+    elif not api_key:
         report.update(status="API_KEY_NOT_CONFIGURED", requests_used=0)
     else:
         local_day = today or now.astimezone(BANGKOK).date()
@@ -98,33 +118,42 @@ def collect(root: Path = Path("."), *, key: str | None = None, today: date | Non
         selected: list[dict] = []
         errors: list[str] = []
         current = limit = None
+        requests_used = 0
+        suspended = False
         for day in days:
             try:
+                requests_used += 1
                 payload = get_fn("/fixtures", api_key, {"date": day.isoformat(), "timezone": "Asia/Bangkok"})
                 request_info = payload.get("results")
                 response_rows = payload.get("response") if isinstance(payload.get("response"), list) else []
                 api_errors = payload.get("errors")
                 if api_errors:
                     errors.append(f"{day.isoformat()}:API_ERRORS:{api_errors}")
+                    if "suspended" in str(api_errors).lower():
+                        suspended = True
+                        break
+                    continue
                 for item in response_rows:
                     row = normalize_fixture(item, now.isoformat())
                     if row:
                         selected.append(row)
             except Exception as exc:
                 errors.append(f"{day.isoformat()}:{type(exc).__name__}:{exc}")
-        try:
-            status_payload = get_fn("/status", api_key)
-            account = status_payload.get("response") if isinstance(status_payload.get("response"), dict) else {}
-            requests = account.get("requests") if isinstance(account.get("requests"), dict) else {}
-            current, limit = requests.get("current"), requests.get("limit_day")
-        except Exception as exc:
-            errors.append(f"STATUS:{type(exc).__name__}:{exc}")
+        if not suspended:
+            try:
+                requests_used += 1
+                status_payload = get_fn("/status", api_key)
+                account = status_payload.get("response") if isinstance(status_payload.get("response"), dict) else {}
+                requests = account.get("requests") if isinstance(account.get("requests"), dict) else {}
+                current, limit = requests.get("current"), requests.get("limit_day")
+            except Exception as exc:
+                errors.append(f"STATUS:{type(exc).__name__}:{exc}")
         for row in selected:
             existing[row["provider_fixture_id"]] = row
         _write(root / FIXTURES_PATH, existing)
         report.update(
             status="SHADOW_OK" if selected and not errors else ("SHADOW_PARTIAL" if selected else "SHADOW_FAILED"),
-            requests_used=4,
+            requests_used=requests_used,
             dates=[day.isoformat() for day in days],
             fixture_rows_observed=len(selected),
             finished_rows_observed=sum(1 for row in selected if row["finished"]),
@@ -134,6 +163,8 @@ def collect(root: Path = Path("."), *, key: str | None = None, today: date | Non
             request_remaining=(limit - current) if isinstance(limit, int) and isinstance(current, int) else None,
             errors=errors,
         )
+        if suspended:
+            report.update(status="ACCOUNT_SUSPENDED", retry_after=(now + timedelta(hours=24)).isoformat())
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     return report
@@ -158,6 +189,10 @@ def collect_missing_pinnwire_days(root: Path = Path("."), *, key: str | None = N
     missing=[s for s in snaps if str(s.get("fixture_id") or "") not in existing_results]
     days=sorted({str(s.get("football_day") or "") for s in missing if s.get("football_day")})
     existing=_read(root/FIXTURES_PATH); observed=[]; errors=[]
+    cooldown = _suspension_cooldown(root, now)
+    if cooldown:
+        report={"generated_at":now.isoformat(),"status":"ACCOUNT_SUSPENDED","retry_after":cooldown,"requests_used":0,"results_added":0,"persisted_rows":len(existing),"research_only":True}
+        q=root/Path("reports/api_football_pinnwire_backfill.json"); q.parent.mkdir(parents=True,exist_ok=True); q.write_text(json.dumps(report,indent=2)); return report
     if api_key:
         for day in days:
             try:
