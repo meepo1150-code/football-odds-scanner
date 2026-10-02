@@ -1,4 +1,5 @@
 from __future__ import annotations
+from .research_population import in_scope, exclusion_reason, POLICY
 import json, os, time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -39,6 +40,7 @@ def run(root=Path(".")):
             fav="H" if fh>=fa else "A"; favprob=fh if fav=="H" else fa; favline=hl if fav=="H" else -hl; favprice=hp if fav=="H" else ap
             teams=fx.get("teams") or {}; league=fx.get("league") or {}; kickoff=str(fx.get("kickoff_utc") or ""); home=str((teams.get("home") or {}).get("name") or ""); away=str((teams.get("away") or {}).get("name") or ""); sid=f"5dollar:{fid}"
             snap={"provider":"5dollarfootballapi_free","source":"5dollarfootballapi:bet365:latest_pre_match","bookmaker":BOOKMAKER,"fixture_id":sid,"provider_fixture_id":fid,"football_day":day,"observed_at":now.isoformat(),"scheduled_target_at":now.astimezone(BKK).isoformat(),"observation_timing":"MANUAL_LIVE","research_only":True,"league":str(league.get("name") or league.get("id") or ""),"home":home,"away":away,"kickoff":kickoff,"favorite_side":fav,"favorite_fair_probability":favprob,"one_x_two":{"home":h,"draw":d,"away":a},"ah":{"selected_side_line":favline,"selected_side_price":favprice,"home_line":hl,"home_price":hp,"away_line":-hl,"away_price":ap},"ou":{"line":_line(ou.get("line")),"over_price":_f(ou.get("over")),"under_price":_f(ou.get("under"))},"quote_timestamp_verified":False}
+            if not in_scope(snap): continue
             snaps.append(snap); audits.append({"football_day":day,"fixture_id":sid,"provider_fixture_id":fid,"provider":"5dollarfootballapi_free","bookmaker":BOOKMAKER,"league":snap["league"],"home":home,"away":away,"kickoff":kickoff,"observed_at":now.isoformat(),"scheduled_target_at":snap["scheduled_target_at"],"observation_timing":"MANUAL_LIVE","eligibility_status":"MATCH" if 1.8<=favprice<=2.2 else "NOT_MATCH","eligibility_reason":"AH_CORE_PRICE" if 1.8<=favprice<=2.2 else "AH_OUTSIDE_CORE_PRICE","research_population":True})
         except Exception as e: errors.append(f"{fid}:{type(e).__name__}:{e}")
     total_s=_merge_jsonl(root/SNAPSHOT_PATH,snaps,("observed_at","fixture_id")) if snaps else _count(root/SNAPSHOT_PATH); total_a=_merge_jsonl(root/AUDIT_PATH,audits,("observed_at","fixture_id")) if audits else _count(root/AUDIT_PATH)

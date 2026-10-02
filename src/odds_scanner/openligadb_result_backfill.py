@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from .research_population import in_scope, exclusion_reason, POLICY
 import json
 import urllib.request
 from datetime import datetime, timezone
@@ -72,6 +73,7 @@ def run(root=Path("."), season=None):
             index.setdefault(key,[]).append((m,score,league))
     added=[]; ambiguous=0
     for s in snaps:
+        if not in_scope(s): continue
         fid=str(s.get("fixture_id") or "")
         if not fid.startswith("pinnwire:") or fid in existing_ids: continue
         ko=_utc(s.get("kickoff"))

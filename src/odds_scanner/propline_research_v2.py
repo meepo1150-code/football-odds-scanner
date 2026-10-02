@@ -1,4 +1,5 @@
 from __future__ import annotations
+from .research_population import in_scope, exclusion_reason, POLICY
 import json
 from datetime import datetime,time as dtime,timedelta,timezone
 from pathlib import Path
@@ -24,6 +25,7 @@ def run(root=Path(".")):
     except Exception as e: rows=[]; errors=[f"{type(e).__name__}: {e}"]
     snaps=[]; audits=[]; in_day=0; kickoff_dates={}; kickoff_samples=[]
     for m in rows:
+        if not in_scope(m): continue
         ko=_dt(m.get("kickoff"))
         if ko:
             local_date=ko.astimezone(BKK).date().isoformat()

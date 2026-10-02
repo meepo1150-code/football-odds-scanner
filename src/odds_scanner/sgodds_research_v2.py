@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from .research_population import in_scope, exclusion_reason, POLICY
 import json
 from datetime import datetime, time as dtime, timedelta, timezone
 from pathlib import Path
@@ -131,6 +132,7 @@ def run(root: Path = Path(".")) -> dict:
             "ou": {"line": m.ou_line, "over_price": m.over_odds, "under_price": m.under_odds},
             "quote_timestamp_verified": False,
         }
+        if not in_scope(snap): continue
         snapshots.append(snap)
         core = 1.8 <= selected_price <= 2.2
         audits.append({

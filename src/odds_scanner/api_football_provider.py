@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from .research_population import in_scope, exclusion_reason, POLICY
 import json
 import os
 from datetime import date, datetime, time, timedelta, timezone
@@ -393,6 +394,7 @@ def collect_v2_odds(root: Path=Path("."), *, key: str|None=None, target_at: str|
                 if oupick: _,ouline,oprice,uprice=oupick
                 else: ouline=oprice=uprice=None
                 snap={"fixture_id":f"api_football:{fixture.get('id')}","provider_fixture_id":str(fixture.get("id")),"tournament_id":league.get("id"),"universe":"PINNACLE_RESEARCH_V2","league":league.get("name"),"country":league.get("country"),"kickoff":ko.isoformat(),"home":team_map.get(str(fixture.get("id")),{}).get("home",""),"away":team_map.get(str(fixture.get("id")),{}).get("away",""),"bookmaker":"pinnacle","provider":"api_football","observed_at":now.isoformat(),"source_semantics":"CURRENT_API_FOOTBALL_PINNACLE_BALANCED_LINE_OBSERVED","mainline_verified":False,"line_selection_semantics":"MOST_BALANCED_AVAILABLE_PAIR","favorite_side":fav,"favorite_fair_probability":round(fh if fav=="H" else fa,8) if fh is not None else None,"one_x_two":{"home":hp,"draw":dp,"away":ap,"fair_home":round(fh,8) if fh is not None else None,"fair_draw":round(fd,8) if fd is not None else None,"fair_away":round(fa,8) if fa is not None else None},"ah":{"home_line":line,"home_price":hprice,"away_line":-line,"away_price":aprice,"selected_side_line":line if fav=="H" else -line,"selected_side_price":hprice if fav=="H" else aprice,"opposite_side_price":aprice if fav=="H" else hprice},"ou":{"line":ouline,"over_price":oprice,"under_price":uprice},"promotion_eligible":False,"football_day":day,"research_only":True,"scheduled_target_at":target}
+                if not in_scope(snap): continue
                 snaps.append(snap)
             existing=[]
             p=root/V2_SNAPSHOT_PATH

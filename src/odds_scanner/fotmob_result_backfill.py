@@ -1,4 +1,5 @@
 from __future__ import annotations
+from .research_population import in_scope, exclusion_reason, POLICY
 import json,re,unicodedata,urllib.parse,urllib.request
 from datetime import datetime,timezone,timedelta
 from pathlib import Path
@@ -142,6 +143,7 @@ def run(root=Path(".")):
     existing=_read(root/RESULTS); existing_ids={str(x.get("fixture_id")) for x in existing} | retired_ids(root)
     missing={}
     for s in snaps:
+        if not in_scope(s): continue
         fid=str(s.get("fixture_id") or "")
         if fid and fid not in existing_ids and _utc(s.get("kickoff")) and _utc(s.get("kickoff")) + timedelta(hours=3) <= datetime.now(timezone.utc):missing[fid]=s
     day_set=set()

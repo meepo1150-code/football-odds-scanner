@@ -1,4 +1,5 @@
 """Keyless result evidence; exact teams/kickoff only, never an odds source."""
+from .research_population import in_scope, exclusion_reason, POLICY
 import json
 import unicodedata
 import re
@@ -60,7 +61,7 @@ def run(root=Path('.'),max_requests=12,now=None):
     missing={};days=set()
     for s in _read(root/'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'):
         fid=str(s.get('fixture_id'));ko=utc(s.get('kickoff'))
-        if not trusted_snapshot(s) or fid in known or fid in blocked or not ko or now-ko<timedelta(hours=3):continue
+        if not (trusted_snapshot(s) and in_scope(s)) or fid in known or fid in blocked or not ko or now-ko<timedelta(hours=3):continue
         key=identity(s.get('home'),s.get('away'),ko.isoformat())
         missing.setdefault(fid,set()).add(key)
         for delta in (-1,0,1):

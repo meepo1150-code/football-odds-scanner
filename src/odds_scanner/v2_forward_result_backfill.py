@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from .research_population import in_scope, exclusion_reason, POLICY
 import json
 import time
 from datetime import datetime, timedelta, timezone
@@ -78,7 +79,7 @@ def run_backfill(
     sleep_seconds: float = 1.0,
 ) -> dict:
     current = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
-    entries = _load_jsonl(root / ENTRIES_PATH)
+    entries = [r for r in _load_jsonl(root / ENTRIES_PATH) if in_scope(r)]
     existing_rows = _load_jsonl(root / RESULTS_PATH)
     existing_ids = {str(r.get("fixture_id")) for r in existing_rows if r.get("fixture_id") is not None}
     candidates = select_result_candidates(entries, existing_ids, now=current)

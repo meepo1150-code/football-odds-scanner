@@ -6,7 +6,7 @@ on:
     - cron: '15 1,7,13,19 * * *'
   push:
     branches: [main]
-    paths: ['controls/research_v2_free_result_backfill_token.txt', 'src/odds_scanner/*result*.py', 'src/odds_scanner/fotmob_result_backfill.py', '.github/workflows/research-v2-free-result-backfill.yml']
+    paths: ['controls/research_v2_free_result_backfill_token.txt', 'src/odds_scanner/*result*.py', 'src/odds_scanner/research_population.py', 'src/odds_scanner/research_v2_pattern_stats.py', 'src/odds_scanner/research_v2_movement.py', 'src/odds_scanner/fotmob_result_backfill.py', '.github/workflows/research-v2-free-result-backfill.yml']
 permissions:
   contents: write
 concurrency:

@@ -1,4 +1,5 @@
 """Evidence-backed retirement of unresolved fixtures; raw observations never deleted."""
+from .research_population import in_scope, exclusion_reason, POLICY
 import hashlib
 import json
 from datetime import datetime,timezone,timedelta
@@ -76,7 +77,7 @@ def record(root,provider,report,snapshots=None,results=None,proof_commit=None,re
     snapshots=snapshots if snapshots is not None else rows(root/SNAP)
     for s in snapshots:
         fid=str(s.get('fixture_id') or '');ko=utc(s.get('kickoff'));observed=utc(s.get('observed_at'))
-        if not fid or fid in known or not trusted_snapshot(s) or not ko or not observed or observed>when or when-ko<timedelta(hours=3):continue
+        if not fid or fid in known or not (trusted_snapshot(s) and in_scope(s)) or not ko or not observed or observed>when or when-ko<timedelta(hours=3):continue
         fp=fingerprint(round_,s.get('kickoff'))
         if not fp:continue
         # Cached source evidence predating maturity is not a recovery attempt.
@@ -102,7 +103,7 @@ def review(root=Path('.'),now=None):
     blocked={str(r.get('fixture_id')) for r in rows((root/RESULTS).with_suffix('.conflicts.jsonl'))}
     snapshots={};identities={}
     for s in rows(root/SNAP):
-        if not trusted_snapshot(s):continue
+        if not (trusted_snapshot(s) and in_scope(s)):continue
         fid=str(s.get('fixture_id'));snapshots[fid]=s
         identities.setdefault(fid,set()).add(tuple(s.get(k) for k in ('home','away','kickoff','league')))
     retired=[];pending=[]

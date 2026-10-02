@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from .research_population import in_scope, exclusion_reason, POLICY
 import json
 from collections import Counter
 from datetime import datetime, timezone
@@ -145,6 +146,7 @@ def build_forward_entries(root: Path = Path(".")) -> dict:
     snapshots = _load_jsonl(root / SNAPSHOTS_PATH)
     admissible: list[dict] = []
     for snap in snapshots:
+        if not in_scope(snap): continue
         observed_at = _utc(snap.get("observed_at"))
         kickoff = _utc(snap.get("kickoff"))
         if observed_at is None or kickoff is None:
