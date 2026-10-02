@@ -11,6 +11,8 @@ RESULTS=Path("data/normalized/oddspapi_finished_results.jsonl")
 REPORT=Path("reports/fotmob_result_backfill.json")
 BASE="https://www.fotmob.com/api/data/matches"
 TEAM_ALIASES={
+    # Official club/J.League name: https://www.jleague.jp/en/club/sapporo/
+    "consadolesapporo":"hokkaidoconsadolesapporo",
     # FotMob player 1200953 uses Wuxi Wugo in its club label and Wuxi Wugou FC in career history.
     "wuxiwugou":"wuxiwugo",
     "riversunited":"riversunitedfc",
@@ -140,7 +142,9 @@ def revalidate_existing(root, existing, events):
 
 def run(root=Path(".")):
     snaps=_read(root/SNAP)
-    existing=_read(root/RESULTS); existing_ids={str(x.get("fixture_id")) for x in existing} | retired_ids(root)
+    # Re-review this archived identity after adding its verified club alias.
+    # Still requires both teams, exact kickoff, unique source event and normal FT.
+    existing=_read(root/RESULTS); existing_ids={str(x.get("fixture_id")) for x in existing} | (retired_ids(root)-{'pinnwire:1637183975'})
     missing={}
     for s in snaps:
         if not in_scope(s): continue
@@ -205,6 +209,9 @@ def run(root=Path(".")):
                     candidate_samples.append({"fixture_id":fid,"snapshot":{"home":s.get("home"),"away":s.get("away"),"kickoff":ko.isoformat()},"fotmob_candidates":[{"id":e.get("id"),"home":e.get("home"),"away":e.get("away"),"finished":e.get("finished"),"score":[e.get("hg"),e.get("ag")],"league":e.get("league")} for e in candidates]})
             continue
         e=ms[0]
+        if fid=='pinnwire:1637183975' and (str(e.get('id'))!='6189153' or e.get('league')!='League Cup' or s.get('league')!='Japan - League Cup'):
+            ambiguous+=1
+            continue
         if not e.get('id') or not e["finished"] or type(e["hg"]) is not int or type(e["ag"]) is not int or min(e['hg'],e['ag'])<0:
             exact_unfinished+=1
             continue
