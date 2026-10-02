@@ -3,89 +3,84 @@
   "provider": "infersports_keyless",
   "status": "MARKETS_OBSERVED",
   "capability": "HEALTH_ONLY",
-  "generated_at": "2026-10-01T08:52:51.673613+00:00",
+  "generated_at": "2026-10-02T08:28:46.427937+00:00",
   "scheduled_events_seen": 6,
-  "events_probed": 6,
+  "events_probed": 4,
   "missing_event_ids": 0,
-  "excluded_nonfuture_events": 0,
-  "successful_events": 6,
-  "stale_blocks": 2,
+  "excluded_nonfuture_events": 2,
+  "successful_events": 4,
+  "stale_blocks": 0,
   "market_counts": {
-    "1x2": 15,
-    "asian_handicap": 36,
-    "totals": 38
+    "1x2": 3,
+    "asian_handicap": 3,
+    "totals": 3
   },
   "two_sided_market_counts": {
-    "1x2": 11,
-    "asian_handicap": 23,
-    "totals": 25
+    "1x2": 3,
+    "asian_handicap": 3,
+    "totals": 3
   },
   "quarter_line_counts": {
-    "asian_handicap": 20,
-    "totals": 19
+    "asian_handicap": 1,
+    "totals": 1
   },
   "bookmaker_counts": {
-    "macau": 25,
-    "crown": 19,
-    "nova88": 16,
-    "m8bet": 15,
-    "sbobet": 8,
-    "hkjc": 6
+    "crown": 9
   },
   "errors": [],
   "samples": [
     {
-      "event_id": "evt_PY8H6KWS",
+      "event_id": "evt_VE07CJS2",
       "bookmaker": "crown",
       "market_type": "1x2",
       "line": null,
-      "status": "suspended",
-      "as_of": "2026-10-01T04:21:00Z",
-      "two_sided": false
-    },
-    {
-      "event_id": "evt_PY8H6KWS",
-      "bookmaker": "m8bet",
-      "market_type": "1x2",
-      "line": null,
       "status": "open",
-      "as_of": "2026-10-01T08:52:41Z",
+      "as_of": "2026-10-02T08:27:31Z",
       "two_sided": true
     },
     {
-      "event_id": "evt_PY8H6KWS",
-      "bookmaker": "macau",
-      "market_type": "1x2",
-      "line": null,
-      "status": "open",
-      "as_of": "2026-10-01T08:17:13Z",
-      "two_sided": true
-    },
-    {
-      "event_id": "evt_PY8H6KWS",
-      "bookmaker": "nova88",
-      "market_type": "1x2",
-      "line": null,
-      "status": "open",
-      "as_of": "2026-10-01T08:52:20Z",
-      "two_sided": true
-    },
-    {
-      "event_id": "evt_PY8H6KWS",
+      "event_id": "evt_VE07CJS2",
       "bookmaker": "crown",
       "market_type": "asian_handicap",
       "line": 0.25,
-      "status": "suspended",
-      "as_of": "2026-10-01T04:21:00Z",
-      "two_sided": false
+      "status": "open",
+      "as_of": "2026-10-02T08:27:31Z",
+      "two_sided": true
     },
     {
-      "event_id": "evt_PY8H6KWS",
-      "bookmaker": "m8bet",
-      "market_type": "asian_handicap",
-      "line": 0.25,
+      "event_id": "evt_VE07CJS2",
+      "bookmaker": "crown",
+      "market_type": "totals",
+      "line": 3.0,
       "status": "open",
-      "as_of": "2026-10-01T08:52:41Z",
+      "as_of": "2026-10-02T07:31:09Z",
+      "two_sided": true
+    },
+    {
+      "event_id": "evt_YT3MTABW",
+      "bookmaker": "crown",
+      "market_type": "1x2",
+      "line": null,
+      "status": "open",
+      "as_of": "2026-10-02T08:26:10Z",
+      "two_sided": true
+    },
+    {
+      "event_id": "evt_YT3MTABW",
+      "bookmaker": "crown",
+      "market_type": "asian_handicap",
+      "line": -1.0,
+      "status": "open",
+      "as_of": "2026-10-02T08:26:10Z",
+      "two_sided": true
+    },
+    {
+      "event_id": "evt_YT3MTABW",
+      "bookmaker": "crown",
+      "market_type": "totals",
+      "line": 3.0,
+      "status": "open",
+      "as_of": "2026-10-02T08:26:10Z",
       "two_sided": true
     }
   ],
