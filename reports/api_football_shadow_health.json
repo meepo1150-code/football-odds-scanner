@@ -1,26 +1,14 @@
 {
   "schema_version": "1.1",
   "provider": "api_football",
-  "generated_at": "2026-10-01T17:29:24.479897+00:00",
+  "generated_at": "2026-10-02T00:02:10.889226+00:00",
   "mode": "GLOBAL_FIXTURE_RESULT_ONLY",
   "promotion_eligible": false,
   "odds_ingested": false,
-  "status": "SHADOW_FAILED",
-  "requests_used": 4,
-  "dates": [
-    "2026-10-01",
-    "2026-10-02",
-    "2026-10-03"
-  ],
-  "fixture_rows_observed": 0,
-  "finished_rows_observed": 0,
-  "persisted_rows": 417,
-  "request_count": null,
-  "request_limit_day": null,
-  "request_remaining": null,
+  "status": "ACCOUNT_SUSPENDED",
+  "retry_after": "2026-10-02T17:29:24.479897+00:00",
+  "requests_used": 0,
   "errors": [
-    "2026-10-01:API_ERRORS:{'access': 'Your account is suspended, check on https://dashboard.api-football.com.'}",
-    "2026-10-02:API_ERRORS:{'access': 'Your account is suspended, check on https://dashboard.api-football.com.'}",
-    "2026-10-03:API_ERRORS:{'plan': 'Free plans do not have access to this date, try from 2026-09-30 to 2026-10-02.'}"
+    "Previously observed account suspension; automatic retry deferred"
   ]
 }
