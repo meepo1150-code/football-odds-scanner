@@ -56,7 +56,7 @@ def _utc(v):
         d=datetime.fromisoformat(str(v).replace("Z","+00:00"))
         return (d if d.tzinfo else d.replace(tzinfo=timezone.utc)).astimezone(timezone.utc)
     except (TypeError,ValueError):return None
-def run(root=Path("."),kickoff_tolerance_seconds=60):
+def run(root=Path("."),kickoff_tolerance_seconds=0):
     snaps=[x for x in _read(root/SNAPSHOTS_PATH) if x.get("provider")=="pinnwire"]; fixtures=_read(root/API_FIXTURES_PATH)
     # Match kickoff first, then require deterministic team aliases. This safely handles\n    # provider decoration such as "Pharco FC" vs "Pharco" without fuzzy guessing.
     latest={}
@@ -68,13 +68,9 @@ def run(root=Path("."),kickoff_tolerance_seconds=60):
         ko=_utc(s.get("kickoff")); exact=[]; kickoff_candidates=[]
         for f in fixtures:
             fk=_utc(f.get("kickoff"))
-            if not (ko and fk and abs((fk-ko).total_seconds())<=kickoff_tolerance_seconds): continue
+            if not (ko and fk and fk == ko): continue
             kickoff_candidates.append(f)
             if _same_team_with_league_context(s.get("home"),f.get("home"),s.get("league")) and _same_team_with_league_context(s.get("away"),f.get("away"),s.get("league")): exact.append(f)
-        if len(exact)==0 and len(kickoff_candidates)==1:
-            # Safe fallback: only accept a sole kickoff candidate when one team is an exact deterministic match.
-            only=kickoff_candidates[0]
-            if _same_team(s.get('home'),only.get('home')) or _same_team(s.get('away'),only.get('away')): exact=[only]
         if len(exact)!=1:
             if len(exact)>1: ambiguous.append(fid)
             else:
@@ -84,7 +80,7 @@ def run(root=Path("."),kickoff_tolerance_seconds=60):
                 if len(unmatched_samples)<12: unmatched_samples.append({'fixture_id':fid,'home':s.get('home'),'away':s.get('away'),'kickoff':s.get('kickoff'),'kickoff_candidate_count':len(kickoff_candidates),'kickoff_candidates':[{'home':x.get('home'),'away':x.get('away')} for x in kickoff_candidates[:5]]})
             continue
         f=exact[0]; matched_total+=1
-        if not f.get("finished"):
+        if not f.get("finished") or f.get("status") != "FT":
             matched_pending+=1;continue
         hg,ag=f.get("ft_home_goals"),f.get("ft_away_goals")
         if not isinstance(hg,int) or not isinstance(ag,int):continue
@@ -95,6 +91,6 @@ def run(root=Path("."),kickoff_tolerance_seconds=60):
         settlements.append({"fixture_id":fid,"football_day":s.get("football_day"),"home":s.get("home"),"away":s.get("away"),"kickoff":s.get("kickoff"),"observed_at":s.get("observed_at"),"side":s.get("favorite_side"),"line":ah.get("selected_side_line"),"odds":ah.get("selected_side_price"),"ft_home_goals":hg,"ft_away_goals":ag,"settlement":b.settlement.value,"profit_units":b.profit_units,"result_source":"API_FOOTBALL_EXACT_NORMALIZED_TEAMS_KICKOFF"})
     added=merge_normalized_results(root/RESULTS_PATH,results)
     p=root/SETTLEMENTS_PATH;p.parent.mkdir(parents=True,exist_ok=True);p.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in settlements),encoding="utf-8")
-    report={"schema_version":"1.2","classification":"PINNWIRE_RESULT_JOIN","generated_at":datetime.now(timezone.utc).isoformat(),"pinnwire_fixtures":len(latest),"api_fixture_rows":len(fixtures),"matched_total":matched_total,"matched_pending":matched_pending,"finished_exact_matches":len(results),"results_added":added,"settlements":len(settlements),"unmatched":len(unmatched),"unmatched_with_kickoff_candidate":unmatched_with_kickoff,"unmatched_no_kickoff_candidate":unmatched_no_kickoff,"unmatched_samples":unmatched_samples,"ambiguous_rejected":len(ambiguous),"join_policy":"DETERMINISTIC_ALIASES_EXACT_KICKOFF_PLUS_SOLE_CANDIDATE_ONE_TEAM_GUARD","kickoff_tolerance_seconds":kickoff_tolerance_seconds,"fuzzy_matching_allowed":False}
+    report={"schema_version":"1.2","classification":"PINNWIRE_RESULT_JOIN","generated_at":datetime.now(timezone.utc).isoformat(),"pinnwire_fixtures":len(latest),"api_fixture_rows":len(fixtures),"matched_total":matched_total,"matched_pending":matched_pending,"finished_exact_matches":len(results),"results_added":added,"settlements":len(settlements),"unmatched":len(unmatched),"unmatched_with_kickoff_candidate":unmatched_with_kickoff,"unmatched_no_kickoff_candidate":unmatched_no_kickoff,"unmatched_samples":unmatched_samples,"ambiguous_rejected":len(ambiguous),"join_policy":"DETERMINISTIC_BOTH_TEAM_ALIASES_EXACT_KICKOFF","kickoff_tolerance_seconds":0,"fuzzy_matching_allowed":False}
     q=root/REPORT_PATH;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8");return report
 if __name__=="__main__":print(json.dumps(run(),ensure_ascii=False))
