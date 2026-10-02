@@ -26,3 +26,16 @@ def test_nonmatching_team_or_kickoff_is_not_bridged():
     assert rows==[] and amb==0
     rows,amb=_pinnwire_bridge_candidates([fixture(kickoff="2026-09-26T10:01:00Z")],[snap()],set(),now=NOW)
     assert rows==[] and amb==0
+
+
+def test_stale_identity_hash_cannot_override_changed_team():
+    s=snap()
+    s['away']='Different'
+    rows,_=_pinnwire_bridge_candidates([fixture()],[s],set(),now=NOW)
+    assert rows==[]
+
+
+def test_exact_fields_can_bridge_without_redundant_hash():
+    s=snap(); s.pop('result_match_key')
+    rows,_=_pinnwire_bridge_candidates([fixture()],[s],set(),now=NOW)
+    assert len(rows)==1
