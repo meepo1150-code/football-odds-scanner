@@ -4,7 +4,8 @@ on:
   schedule:
     # Independent trigger, sharing the collector lock and local attempt gate.
     # If the primary schedule ran, this makes zero provider requests.
-    - cron: '17,37,57 14 * * 1-5'\n    - cron: '17,47 11 * * 1-5'
+    - cron: '17,37,57 14 * * 1-5'
+    - cron: '17,47 11 * * 1-5'
     - cron: '17,47 5,8,11,12,13,14,15 * * 0,6'
   push:
     branches: [main]
