@@ -68,3 +68,34 @@ def test_recent_fixture_keeps_age_gate_and_conflict_is_not_retired(tmp_path):
     conflict=(tmp_path/p.RESULTS).with_suffix('.conflicts.jsonl')
     conflict.write_text(json.dumps({'fixture_id':'x'})+'\n')
     assert p.review(tmp_path,datetime(2026,9,25,tzinfo=timezone.utc))['retired_from_active_queue']==0
+
+
+def test_low_tier_backlog_scope_is_narrow_reversible_and_evidence_based(tmp_path):
+    s=setup(tmp_path);s['league']='Germany - Regionalliga North'
+    (tmp_path/p.SNAP).write_text(json.dumps(s)+'\n');raw=(tmp_path/p.SNAP).read_bytes()
+    for i in range(3):attempt(tmp_path,'fotmob',f'2026-09-20T{16+i}:00:00Z',str(i))
+    now=datetime(2026,9,21,tzinfo=timezone.utc)
+    assert p.review(tmp_path,now)['retired_from_active_queue']==0
+    attempt(tmp_path,'espn','2026-09-20T20:00:00Z','last')
+    assert p.review(tmp_path,now)['low_tier_scope_exclusions']==1
+    assert p.rows(tmp_path/p.RETIRED)[0]['classification_source'].startswith('https://')
+    assert (tmp_path/p.SNAP).read_bytes()==raw
+    conflict=(tmp_path/p.RESULTS).with_suffix('.conflicts.jsonl')
+    conflict.write_text(json.dumps({'fixture_id':'x'})+'\n')
+    assert p.review(tmp_path,now)['retired_from_active_queue']==0
+    conflict.unlink()
+    s['league']='Mongolia - Premier League'
+    (tmp_path/p.SNAP).write_text(json.dumps(s)+'\n')
+    assert p.review(tmp_path,now)['retired_from_active_queue']==0
+    s['league']='Germany - Regionalliga North'
+    (tmp_path/p.SNAP).write_text(json.dumps(s)+'\n')
+    (tmp_path/p.RESULTS).write_text(json.dumps({'fixture_id':'x','ft_home_goals':1,'ft_away_goals':0})+'\n')
+    assert p.review(tmp_path,now)['retired_from_active_queue']==0
+
+
+def test_low_tier_scope_does_not_change_future_fixture_policy(tmp_path,monkeypatch):
+    s=setup(tmp_path);s['league']='Israel - Liga Alef'
+    (tmp_path/p.SNAP).write_text(json.dumps(s)+'\n')
+    for i in range(4):attempt(tmp_path,'fotmob' if i<3 else 'espn',f'2026-09-20T{16+i}:00:00Z',str(i))
+    monkeypatch.setattr(p,'LOW_TIER_REVIEW_CUTOFF','2026-09-19T00:00:00Z')
+    assert p.review(tmp_path,datetime(2026,9,21,tzinfo=timezone.utc))['retired_from_active_queue']==0
