@@ -52,7 +52,7 @@ def _pinnwire_bridge_candidates(fixtures:list[dict],snapshots:list[dict],existin
         by_key.setdefault(key,[]).append(row)
     out=[]; ambiguous=0; seen=set()
     for snap in snapshots:
-        fixture_id=str(snap.get('fixture_id') or '').strip(); key=str(snap.get('result_match_key') or '').strip(); kickoff=_utc(snap.get('kickoff'))
+        fixture_id=str(snap.get('fixture_id') or '').strip(); key=_result_match_key(snap.get('home'),snap.get('away'),snap.get('kickoff')); kickoff=_utc(snap.get('kickoff'))
         if not fixture_id.startswith('pinnwire:') or not key or fixture_id in existing_ids or fixture_id in seen: continue
         if kickoff is None or now < kickoff + RESULT_MATURITY_DELAY: continue
         matches=by_key.get(key,[])
@@ -75,18 +75,29 @@ def select_candidates(fixtures:list[dict],existing_ids:set[str],*,now:datetime,p
     return sorted(by_fixture.values(),key=lambda r:(0 if r['fixture_id'] in priority_ids else 1,str(r.get('kickoff') or ''),str(r.get('fixture_id') or '')))
 
 
-def run_backfill(root:Path=Path('.'),*,now:datetime|None=None,max_requests:int=80,sleep_seconds:float=0.25)->dict:
+def run_backfill(root:Path=Path('.'),*,now:datetime|None=None,max_requests:int=80,sleep_seconds:float=0.25,research_only:bool=True)->dict:
     current=(now or datetime.now(timezone.utc)).astimezone(timezone.utc); fixtures=_load_jsonl(root/FIXTURES_PATH); existing=_load_jsonl(root/RESULTS_PATH); audit=_load_jsonl(root/AUDIT_PATH); snapshots=_load_jsonl(root/SNAPSHOTS_PATH)
     existing_ids={str(r.get('fixture_id')) for r in existing if r.get('fixture_id') is not None} | retired_ids(root); priority_ids={str(r.get('fixture_id')) for r in audit if r.get('fixture_id') is not None} | {str(r.get('fixture_id')) for r in snapshots if r.get('fixture_id') is not None}
+    conflict_path=(root/RESULTS_PATH).with_suffix('.conflicts.jsonl')
+    # Corrupt conflict evidence must stop requests rather than silently unblock identities.
+    conflicts=[json.loads(line) for line in conflict_path.read_text().splitlines() if line.strip()] if conflict_path.exists() else []
+    if any(not isinstance(row,dict) or not row.get('fixture_id') for row in conflicts):
+        raise ValueError('Invalid result conflict ledger')
+    blocked_ids={str(row['fixture_id']) for row in conflicts}
+    existing_ids |= blocked_ids
     direct_candidates=select_candidates(fixtures,existing_ids,now=current,priority_ids=priority_ids); bridged_candidates,bridge_ambiguous=_pinnwire_bridge_candidates(fixtures,snapshots,existing_ids,now=current); bridged_ids={r['fixture_id'] for r in bridged_candidates}; candidates=bridged_candidates+[r for r in direct_candidates if r['fixture_id'] not in bridged_ids]; attempted=0; normalized=[]; failures=[]; priority_attempted=0; bridge_attempted=0; bridge_parsed=0
-    for ref in candidates[:max_requests]:
+    candidates=[r for r in candidates if str(r.get('bridge_source_fixture_id')) not in blocked_ids]
+    unrelated_skipped=sum(not r.get('research_v2_priority') for r in candidates) if research_only else 0
+    if research_only:
+        candidates=[r for r in candidates if r.get('research_v2_priority')]
+    for ref in candidates[:max(0,max_requests)]:
         attempted+=1; priority_attempted+=int(bool(ref.get('research_v2_priority'))); is_bridge=str(ref.get('mapping_source') or '').startswith('PINNWIRE_'); bridge_attempted+=int(is_bridge); result,meta=fetch_exact_result(ref)
         if result:
             result['daily_fixture_result_track']='RESEARCH_V2_DAILY_EXACT_ID'; result['mapping_source']=ref.get('mapping_source'); result['bridge_source_fixture_id']=ref.get('bridge_source_fixture_id'); bridge_parsed+=int(is_bridge); normalized.append(result)
         else: failures.append({'fixture_id':ref.get('fixture_id'),'flashscore_id':(ref.get('external_providers') or {}).get('flashscoreId'),**meta})
         if sleep_seconds>0 and attempted<min(max_requests,len(candidates)): time.sleep(sleep_seconds)
     added=merge_normalized_results(root/RESULTS_PATH,normalized)
-    payload={'schema_version':'1.2','classification':'RESEARCH_V2_DAILY_FIXTURE_EXACT_RESULT_BACKFILL','status':'RESULTS_ADDED' if added else ('REQUESTS_ATTEMPTED_NO_NEW_RESULTS' if attempted else 'NO_MATURE_EXACT_ID_CANDIDATES'),'generated_at':current.isoformat(),'daily_fixture_rows':len(fixtures),'existing_result_rows':len(existing),'eligible_exact_id_fixtures':len(candidates),'research_v2_priority_ids':len(priority_ids),'research_v2_priority_candidates':sum(1 for r in candidates if r.get('research_v2_priority')),'pinnwire_exact_key_bridge_candidates':len(bridged_candidates),'pinnwire_exact_key_bridge_ambiguous_rejected':bridge_ambiguous,'requests_attempted':attempted,'research_v2_priority_attempted':priority_attempted,'pinnwire_exact_key_bridge_attempted':bridge_attempted,'pinnwire_exact_key_bridge_results_parsed':bridge_parsed,'results_parsed':len(normalized),'results_added':added,'maturity_delay_hours':3,'mapping_policy':'PINNWIRE_EXACT_NORMALIZED_TEAMS_AND_KICKOFF_UNIQUE_BRIDGE_TO_ODDSPAPI_FLASHSCORE_ID_OR_DIRECT_EXACT_ID','team_name_or_date_fuzzy_matching_allowed':False,'odds_api_requests':0,'failures':failures[:80],'research_only':True}
+    payload={'schema_version':'1.2','classification':'RESEARCH_V2_DAILY_FIXTURE_EXACT_RESULT_BACKFILL','status':'RESULTS_ADDED' if added else ('REQUESTS_ATTEMPTED_NO_NEW_RESULTS' if attempted else 'NO_MATURE_EXACT_ID_CANDIDATES'),'generated_at':current.isoformat(),'daily_fixture_rows':len(fixtures),'existing_result_rows':len(existing),'eligible_exact_id_fixtures':len(candidates),'request_scope':'RESEARCH_V2_ONLY' if research_only else 'ALL_DAILY_FIXTURES','unrelated_candidates_skipped':unrelated_skipped,'conflicted_identities_excluded':len(blocked_ids),'research_v2_priority_ids':len(priority_ids),'research_v2_priority_candidates':sum(1 for r in candidates if r.get('research_v2_priority')),'pinnwire_exact_key_bridge_candidates':len(bridged_candidates),'pinnwire_exact_key_bridge_ambiguous_rejected':bridge_ambiguous,'requests_attempted':attempted,'research_v2_priority_attempted':priority_attempted,'pinnwire_exact_key_bridge_attempted':bridge_attempted,'pinnwire_exact_key_bridge_results_parsed':bridge_parsed,'results_parsed':len(normalized),'results_added':added,'maturity_delay_hours':3,'mapping_policy':'PINNWIRE_EXACT_NORMALIZED_TEAMS_AND_KICKOFF_UNIQUE_BRIDGE_TO_ODDSPAPI_FLASHSCORE_ID_OR_DIRECT_EXACT_ID','team_name_or_date_fuzzy_matching_allowed':False,'odds_api_requests':0,'failures':failures[:80],'research_only':True}
     path=root/REPORT_PATH; path.parent.mkdir(parents=True,exist_ok=True); path.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8'); return payload
 
 if __name__=='__main__': print(json.dumps(run_backfill(),ensure_ascii=False))
