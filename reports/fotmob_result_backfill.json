@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
   "classification": "FOTMOB_EXACT_RESULT_BACKFILL",
-  "missing_before": 147,
-  "missing_after": 104,
-  "verified_bridge_matches": 43,
+  "missing_before": 104,
+  "missing_after": 102,
+  "verified_bridge_matches": 2,
   "days_requested": [
     "2026-09-23",
     "2026-09-24",
@@ -15,11 +15,11 @@
     "2026-10-02"
   ],
   "events_fetched": 688,
-  "exact_results_added": 43,
+  "exact_results_added": 2,
   "ambiguous_exact_matches_rejected": 0,
   "exact_identity_unfinished": 4,
-  "no_exact_identity": 100,
-  "kickoff_candidate_only": 68,
+  "no_exact_identity": 98,
+  "kickoff_candidate_only": 67,
   "kickoff_candidate_samples": [
     {
       "fixture_id": "api_football:1528862",
@@ -3714,38 +3714,6 @@
       ]
     },
     {
-      "fixture_id": "pinnwire:1637281661",
-      "snapshot": {
-        "home": "Austria Vienna",
-        "away": "Internazionale",
-        "kickoff": "2026-10-01T16:45:00+00:00"
-      },
-      "fotmob_candidates": [
-        {
-          "id": 6148624,
-          "home": "Austria Wien W (W)",
-          "away": "Inter (W)",
-          "finished": true,
-          "score": [
-            1,
-            1
-          ],
-          "league": "Women's Champions League"
-        },
-        {
-          "id": 6148627,
-          "home": "HB Køge (W)",
-          "away": "Servette (W)",
-          "finished": true,
-          "score": [
-            5,
-            1
-          ],
-          "league": "Women's Champions League"
-        }
-      ]
-    },
-    {
       "fixture_id": "pinnwire:1637329077",
       "snapshot": {
         "home": "Slovenia",
@@ -4061,9 +4029,9 @@
   "matching_policy": "EXACT_ALIAS_OR_SAFE_CLUB_TOKEN_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY",
   "fuzzy_matching_used": false,
   "promotion_eligible": false,
-  "generated_at": "2026-10-01T23:12:19.305547+00:00",
-  "requests_used": 4,
-  "cache_hits": 4,
+  "generated_at": "2026-10-02T00:02:09.175001+00:00",
+  "requests_used": 0,
+  "cache_hits": 8,
   "stale_cache_fallbacks": 0,
   "fetch_evidence": [
     {
@@ -4092,30 +4060,30 @@
     },
     {
       "day": "2026-09-29",
-      "source": "NETWORK",
+      "source": "CACHE",
       "fetched_at": "2026-10-01T23:12:18.194766+00:00",
-      "requests": 1
+      "requests": 0
     },
     {
       "day": "2026-09-30",
-      "source": "NETWORK",
+      "source": "CACHE",
       "fetched_at": "2026-10-01T23:12:18.515832+00:00",
-      "requests": 1
+      "requests": 0
     },
     {
       "day": "2026-10-01",
-      "source": "NETWORK",
+      "source": "CACHE",
       "fetched_at": "2026-10-01T23:12:18.778119+00:00",
-      "requests": 1
+      "requests": 0
     },
     {
       "day": "2026-10-02",
-      "source": "NETWORK",
+      "source": "CACHE",
       "fetched_at": "2026-10-01T23:12:18.959227+00:00",
-      "requests": 1
+      "requests": 0
     }
   ],
-  "existing_results_revalidated": 95,
+  "existing_results_revalidated": 138,
   "invalid_ft_results_quarantined": 0,
   "invalid_ft_fixture_ids": []
 }
