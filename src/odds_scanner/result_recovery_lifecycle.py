@@ -10,6 +10,17 @@ RETIRED=Path('data/normalized/research_v2_retired_fixtures.jsonl')
 SNAP=Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl')
 RESULTS=Path('data/normalized/oddspapi_finished_results.jsonl')
 
+# User-authorized triage of the existing backlog, not a future collection ban.
+LOW_TIER_REVIEW_CUTOFF='2026-10-02T07:21:00+00:00'
+LOW_TIER_LEAGUES={
+    'Germany - Regionalliga North': ('REGIONAL_TIER_4', 'https://www.nordfv.de/spielbetrieb/ligen/herren-regionalliga-nord/'),
+    'Slovenia - 3. SNL': ('REGIONAL_TIER_3', 'https://www.nzs.si/klubi/moski/3-slovenska-nogometna-liga-vzhod/vsebine?type=news'),
+    'India - Bangalore Super Division': ('STATE_OR_CITY_LEAGUE', 'https://www.the-aiff.com/'),
+    'India - Mizoram Premier League': ('STATE_LEAGUE', 'https://theawayend.co/mizoram-premier-league/'),
+    'Israel - Liga Alef': ('REGIONAL_TIER_3', 'https://en.wikipedia.org/wiki/Liga_Alef'),
+}
+
+
 
 def rows(path):
     return [json.loads(x) for x in path.read_text().splitlines() if x.strip()] if path.exists() else []
@@ -104,11 +115,20 @@ def review(root=Path('.'),now=None):
             if fp:unique.setdefault(fp,rid)
         ids=list(unique.values());data['fixtures'][fid]=ids
         proofs=[data['rounds'][r] for r in ids];times=[utc(r['recorded_at']) for r in proofs];providers={r['provider'] for r in proofs}
-        eligible=(fid not in blocked and len(ids)>=4 and len(providers)>=2 and now-ko>=timedelta(hours=72)
+        low_tier=LOW_TIER_LEAGUES.get(s.get('league'))
+        scope_excluded=bool(low_tier and ko<=utc(LOW_TIER_REVIEW_CUTOFF)
+                            and s.get('home') and s.get('away') and fid not in blocked
+                            and len(ids)>=4 and len(providers)>=2 and len(identities[fid])==1)
+        eligible=scope_excluded or (fid not in blocked and len(ids)>=4 and len(providers)>=2 and now-ko>=timedelta(hours=72)
                   and max(times)-min(times)>=timedelta(hours=24) and len(identities[fid])==1)
         item={'fixture_id':fid,'home':s.get('home'),'away':s.get('away'),'league':s.get('league'),'kickoff':s.get('kickoff'),'attempt_count':len(ids),'round_ids':ids,'sources':sorted(providers),'reviewed_at':now.isoformat()}
         if eligible:
             item.update(status='RETIRED_UNRESOLVED',reason=('MISSING_TEAM_IDENTITY_AFTER_EXHAUSTED_RECOVERY' if not s.get('home') or not s.get('away') else 'NO_VERIFIED_90_MINUTE_RESULT_AFTER_4_PLUS_DISTINCT_ROUNDS_AND_2_SOURCES'),raw_preserved=True)
+            if scope_excluded:
+                item.update(reason='LOW_TIER_SCOPE_EXCLUSION_AFTER_EXHAUSTED_RECOVERY',
+                            scope_policy='EXISTING_BACKLOG_2026_10_02',
+                            league_classification=low_tier[0], classification_source=low_tier[1],
+                            scope_cutoff=LOW_TIER_REVIEW_CUTOFF)
             retired.append(item)
         else:
             unmet=[]
@@ -123,7 +143,7 @@ def review(root=Path('.'),now=None):
             pending.append(item)
     save(root,data)
     p=root/RETIRED;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(''.join(json.dumps(r,ensure_ascii=False)+'\n' for r in retired))
-    report={'generated_at':now.isoformat(),'matured_unresolved_total':len(retired)+len(pending),'retired_from_active_queue':len(retired),'active_matured_unresolved':len(pending),'raw_deleted':0,'settled_results_deleted':0,'minimum_distinct_rounds':4,'minimum_sources':2,'minimum_age_hours':72,'minimum_attempt_span_hours':24,'pending':pending}
+    report={'generated_at':now.isoformat(),'matured_unresolved_total':len(retired)+len(pending),'retired_from_active_queue':len(retired),'active_matured_unresolved':len(pending),'raw_deleted':0,'settled_results_deleted':0,'low_tier_scope_exclusions':sum(r['reason']=='LOW_TIER_SCOPE_EXCLUSION_AFTER_EXHAUSTED_RECOVERY' for r in retired),'low_tier_scope_cutoff':LOW_TIER_REVIEW_CUTOFF,'minimum_distinct_rounds':4,'minimum_sources':2,'minimum_age_hours':72,'minimum_attempt_span_hours':24,'pending':pending}
     p=root/'reports/result_recovery_review.json';p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n')
     return report
 
