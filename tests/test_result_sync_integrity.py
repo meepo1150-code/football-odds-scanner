@@ -74,3 +74,10 @@ def test_local_reuse_fails_closed_on_corrupt_conflict_ledger(tmp_path):
         ledger.write_text(text)
         with pytest.raises(ValueError):reuse.run(tmp_path)
         assert (tmp_path/reuse.RESULTS_PATH).read_bytes()==before
+
+
+def test_verified_wuxi_alias_preserves_identity_categories():
+    from odds_scanner.fotmob_result_backfill import _team_key
+    assert _team_key('Wuxi Wugou') == _team_key('Wuxi Wugo')
+    assert _team_key('Wuxi Wugou U19') != _team_key('Wuxi Wugo')
+    assert _team_key('Wuxi Wugou Women') != _team_key('Wuxi Wugo')
