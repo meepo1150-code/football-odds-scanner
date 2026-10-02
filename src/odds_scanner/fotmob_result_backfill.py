@@ -10,6 +10,8 @@ RESULTS=Path("data/normalized/oddspapi_finished_results.jsonl")
 REPORT=Path("reports/fotmob_result_backfill.json")
 BASE="https://www.fotmob.com/api/data/matches"
 TEAM_ALIASES={
+    # FotMob player 1200953 uses Wuxi Wugo in its club label and Wuxi Wugou FC in career history.
+    "wuxiwugou":"wuxiwugo",
     "riversunited":"riversunitedfc",
     "unitedarabemirates":"uae",
     "congorepublic":"congo",
