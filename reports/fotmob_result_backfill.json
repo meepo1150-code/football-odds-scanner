@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
   "classification": "FOTMOB_EXACT_RESULT_BACKFILL",
-  "missing_before": 82,
-  "missing_after": 82,
+  "missing_before": 70,
+  "missing_after": 70,
   "verified_bridge_matches": 0,
   "days_requested": [
     "2026-09-28",
@@ -11,12 +11,12 @@
     "2026-10-01",
     "2026-10-02"
   ],
-  "events_fetched": 437,
+  "events_fetched": 433,
   "exact_results_added": 0,
   "ambiguous_exact_matches_rejected": 0,
   "exact_identity_unfinished": 4,
-  "no_exact_identity": 78,
-  "kickoff_candidate_only": 52,
+  "no_exact_identity": 66,
+  "kickoff_candidate_only": 48,
   "kickoff_candidate_samples": [
     {
       "fixture_id": "pinnwire:1637173069",
@@ -535,70 +535,6 @@
             0
           ],
           "league": "China League"
-        }
-      ]
-    },
-    {
-      "fixture_id": "pinnwire:1637190772",
-      "snapshot": {
-        "home": "Podvinci",
-        "away": "Ljutomer",
-        "kickoff": "2026-09-29T14:00:00+00:00"
-      },
-      "fotmob_candidates": [
-        {
-          "id": 6040387,
-          "home": "Madagascar",
-          "away": "Tanzania",
-          "finished": true,
-          "score": [
-            1,
-            1
-          ],
-          "league": "Africa Cup of Nations Qualification Grp. L"
-        },
-        {
-          "id": 4785797,
-          "home": "Slovenia U21",
-          "away": "Israel U21",
-          "finished": true,
-          "score": [
-            2,
-            3
-          ],
-          "league": "EURO U21 Qualification Grp. G"
-        }
-      ]
-    },
-    {
-      "fixture_id": "pinnwire:1637193336",
-      "snapshot": {
-        "home": "Aizawl",
-        "away": "Chanmari",
-        "kickoff": "2026-09-29T13:30:00+00:00"
-      },
-      "fotmob_candidates": [
-        {
-          "id": 6258020,
-          "home": "Mes Rafsanjan",
-          "away": "Beasat Kermanshah",
-          "finished": true,
-          "score": [
-            1,
-            0
-          ],
-          "league": "Azadegan League"
-        },
-        {
-          "id": 6276976,
-          "home": "Inter Bratislava",
-          "away": "Zeleziarne Podbrezová",
-          "finished": true,
-          "score": [
-            0,
-            2
-          ],
-          "league": "FA Cup"
         }
       ]
     },
@@ -1145,27 +1081,6 @@
       ]
     },
     {
-      "fixture_id": "pinnwire:1637225847",
-      "snapshot": {
-        "home": "Maccabi Neve Shaanan",
-        "away": "Tira",
-        "kickoff": "2026-09-30T12:00:00+00:00"
-      },
-      "fotmob_candidates": [
-        {
-          "id": 6233016,
-          "home": "Brunei",
-          "away": "Hong Kong",
-          "finished": true,
-          "score": [
-            0,
-            2
-          ],
-          "league": "FIFA ASEAN Cup Challenge Division Grp. A"
-        }
-      ]
-    },
-    {
       "fixture_id": "pinnwire:1637225849",
       "snapshot": {
         "home": "Denmark",
@@ -1183,27 +1098,6 @@
             2
           ],
           "league": "FIFA ASEAN Cup Challenge Division Grp. A"
-        }
-      ]
-    },
-    {
-      "fixture_id": "pinnwire:1637241197",
-      "snapshot": {
-        "home": "Maccabi Ironi Kiryat Malakhi",
-        "away": "Hapoel Herzliya",
-        "kickoff": "2026-09-30T13:00:00+00:00"
-      },
-      "fotmob_candidates": [
-        {
-          "id": 6280448,
-          "home": "Seychelles",
-          "away": "Sri Lanka",
-          "finished": true,
-          "score": [
-            0,
-            2
-          ],
-          "league": "Friendlies"
         }
       ]
     },
@@ -2688,16 +2582,16 @@
   "matching_policy": "EXACT_ALIAS_OR_SAFE_CLUB_TOKEN_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY",
   "fuzzy_matching_used": false,
   "promotion_eligible": false,
-  "generated_at": "2026-10-02T07:28:43.412505+00:00",
-  "requests_used": 1,
-  "cache_hits": 4,
+  "generated_at": "2026-10-02T13:51:37.855812+00:00",
+  "requests_used": 2,
+  "cache_hits": 3,
   "stale_cache_fallbacks": 0,
   "fetch_evidence": [
     {
       "day": "2026-09-28",
-      "source": "NETWORK",
+      "source": "CACHE",
       "fetched_at": "2026-10-02T07:28:42.877280+00:00",
-      "requests": 1
+      "requests": 0
     },
     {
       "day": "2026-09-29",
@@ -2713,15 +2607,15 @@
     },
     {
       "day": "2026-10-01",
-      "source": "CACHE",
-      "fetched_at": "2026-10-02T06:54:51.037267+00:00",
-      "requests": 0
+      "source": "NETWORK",
+      "fetched_at": "2026-10-02T13:51:37.091348+00:00",
+      "requests": 1
     },
     {
       "day": "2026-10-02",
-      "source": "CACHE",
-      "fetched_at": "2026-10-02T06:54:51.281624+00:00",
-      "requests": 0
+      "source": "NETWORK",
+      "fetched_at": "2026-10-02T13:51:37.368359+00:00",
+      "requests": 1
     }
   ],
   "existing_results_revalidated": 105,
