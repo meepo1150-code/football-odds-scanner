@@ -2,54 +2,23 @@
   "schema_version": "1.0",
   "classification": "FOTMOB_EXACT_RESULT_BACKFILL",
   "missing_before": 27,
-  "missing_after": 27,
-  "verified_bridge_matches": 0,
+  "missing_after": 24,
+  "verified_bridge_matches": 3,
   "days_requested": [
     "2026-09-28",
     "2026-09-29",
     "2026-09-30",
     "2026-10-01",
-    "2026-10-02"
+    "2026-10-02",
+    "2026-10-03"
   ],
-  "events_fetched": 433,
-  "exact_results_added": 0,
+  "events_fetched": 826,
+  "exact_results_added": 3,
   "ambiguous_exact_matches_rejected": 0,
   "exact_identity_unfinished": 3,
-  "no_exact_identity": 24,
-  "kickoff_candidate_only": 14,
+  "no_exact_identity": 21,
+  "kickoff_candidate_only": 13,
   "kickoff_candidate_samples": [
-    {
-      "fixture_id": "pinnwire:1637268782",
-      "snapshot": {
-        "home": "Boston River",
-        "away": "Albion",
-        "kickoff": "2026-09-29T14:00:00+00:00"
-      },
-      "fotmob_candidates": [
-        {
-          "id": 6040387,
-          "home": "Madagascar",
-          "away": "Tanzania",
-          "finished": true,
-          "score": [
-            1,
-            1
-          ],
-          "league": "Africa Cup of Nations Qualification Grp. L"
-        },
-        {
-          "id": 4785797,
-          "home": "Slovenia U21",
-          "away": "Israel U21",
-          "finished": true,
-          "score": [
-            2,
-            3
-          ],
-          "league": "EURO U21 Qualification Grp. G"
-        }
-      ]
-    },
     {
       "fixture_id": "pinnwire:1637297182",
       "snapshot": {
@@ -581,9 +550,9 @@
   "matching_policy": "EXACT_ALIAS_OR_SAFE_CLUB_TOKEN_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY",
   "fuzzy_matching_used": false,
   "promotion_eligible": false,
-  "generated_at": "2026-10-02T14:40:52.830308+00:00",
-  "requests_used": 0,
-  "cache_hits": 5,
+  "generated_at": "2026-10-02T20:00:20.666003+00:00",
+  "requests_used": 3,
+  "cache_hits": 3,
   "stale_cache_fallbacks": 0,
   "fetch_evidence": [
     {
@@ -606,15 +575,21 @@
     },
     {
       "day": "2026-10-01",
-      "source": "CACHE",
-      "fetched_at": "2026-10-02T13:51:37.091348+00:00",
-      "requests": 0
+      "source": "NETWORK",
+      "fetched_at": "2026-10-02T20:00:19.762264+00:00",
+      "requests": 1
     },
     {
       "day": "2026-10-02",
-      "source": "CACHE",
-      "fetched_at": "2026-10-02T13:51:37.368359+00:00",
-      "requests": 0
+      "source": "NETWORK",
+      "fetched_at": "2026-10-02T20:00:20.030515+00:00",
+      "requests": 1
+    },
+    {
+      "day": "2026-10-03",
+      "source": "NETWORK",
+      "fetched_at": "2026-10-02T20:00:20.333978+00:00",
+      "requests": 1
     }
   ],
   "existing_results_revalidated": 105,
