@@ -105,12 +105,20 @@ def review(root=Path('.'),now=None):
         ids=list(unique.values());data['fixtures'][fid]=ids
         proofs=[data['rounds'][r] for r in ids];times=[utc(r['recorded_at']) for r in proofs];providers={r['provider'] for r in proofs}
         eligible=(fid not in blocked and len(ids)>=4 and len(providers)>=2 and now-ko>=timedelta(hours=72)
-                  and max(times)-min(times)>=timedelta(hours=24) and len(identities[fid])==1 and s.get('home') and s.get('away'))
+                  and max(times)-min(times)>=timedelta(hours=24) and len(identities[fid])==1)
         item={'fixture_id':fid,'home':s.get('home'),'away':s.get('away'),'league':s.get('league'),'kickoff':s.get('kickoff'),'attempt_count':len(ids),'round_ids':ids,'sources':sorted(providers),'reviewed_at':now.isoformat()}
         if eligible:
-            item.update(status='RETIRED_UNRESOLVED',reason='NO_VERIFIED_90_MINUTE_RESULT_AFTER_4_PLUS_DISTINCT_ROUNDS_AND_2_SOURCES',raw_preserved=True)
+            item.update(status='RETIRED_UNRESOLVED',reason=('MISSING_TEAM_IDENTITY_AFTER_EXHAUSTED_RECOVERY' if not s.get('home') or not s.get('away') else 'NO_VERIFIED_90_MINUTE_RESULT_AFTER_4_PLUS_DISTINCT_ROUNDS_AND_2_SOURCES'),raw_preserved=True)
             retired.append(item)
         else:
+            unmet=[]
+            if fid in blocked:unmet.append('RESULT_CONFLICT')
+            if len(ids)<4:unmet.append('MINIMUM_DISTINCT_ROUNDS')
+            if len(providers)<2:unmet.append('MINIMUM_SOURCES')
+            if now-ko<timedelta(hours=72):unmet.append('MINIMUM_AGE_72H')
+            if not times or max(times)-min(times)<timedelta(hours=24):unmet.append('MINIMUM_ATTEMPT_SPAN_24H')
+            if len(identities[fid])!=1:unmet.append('INCONSISTENT_IDENTITY')
+            item.update(unmet_gates=unmet,age_eligible_at=(ko+timedelta(hours=72)).isoformat())
             item.update(status='ACTIVE_UNRESOLVED',reason='RESULT_CONFLICT_REQUIRES_REVIEW' if fid in blocked else 'MISSING_IDENTITY' if not s.get('home') or not s.get('away') else 'RETIREMENT_EVIDENCE_OR_AGE_GATE_NOT_MET')
             pending.append(item)
     save(root,data)
