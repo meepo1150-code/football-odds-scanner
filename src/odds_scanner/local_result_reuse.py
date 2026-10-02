@@ -1,5 +1,6 @@
 """Reuse canonical results only through a unique full local identity bridge."""
 from __future__ import annotations
+from .research_population import in_scope, exclusion_reason, POLICY
 import json
 from datetime import datetime, timezone
 from pathlib import Path
@@ -29,6 +30,7 @@ def run(root=Path('.')):
             by_id.setdefault(str(r.get('fixture_id')),[]).append(r)
     fixtures = {}; identities = {}
     for s in snapshots:
+        if not in_scope(s): continue
         fid = str(s.get('fixture_id') or '')
         if fid:
             fixtures[fid] = s

@@ -1,5 +1,6 @@
 """Data-level operational status, independent from successful workflow execution."""
 from __future__ import annotations
+from .research_population import in_scope, exclusion_reason, POLICY
 import json
 from datetime import datetime, timezone
 from pathlib import Path
@@ -34,7 +35,7 @@ def build(root=Path('.'), now=None):
     raw=[json.loads(x) for x in path.read_text().splitlines() if x.strip()] if path.exists() else []
     valid=[x for x in raw if trusted_snapshot(x)]
     today=_football_day_bounds(now)[2]
-    day_scans=[x for x in valid if x.get('football_day')==today]
+    day_scans=[x for x in valid if in_scope(x) and x.get('football_day')==today]
     providers={}
     for name in ('pinnwire','propline'):
         p=load(root,f'{name}_research_v2_status')
@@ -44,6 +45,8 @@ def build(root=Path('.'), now=None):
         providers[name]={'status':p.get('data_source_health') or p.get('status','UNKNOWN'), 'capability':'FALLBACK' if name=='propline' else 'RESEARCH_ONLY', 'usable_recent_output':usable,'generated_at':p.get('generated_at'),'errors':p.get('errors',[]),'execution_ready':False}
     providers['oddspapi']={'status':quota.get('status','UNKNOWN'),'request_limit':quota.get('request_limit'),'request_count':quota.get('request_count'),'request_remaining':quota.get('request_remaining'),'generated_at':quota.get('generated_at'),'capability':'WAITING_EXTERNAL_DATA' if quota.get('quota_exhausted') else 'REQUIRES_CURRENT_VALIDATION'}
     counts={'raw_snapshots':len(raw),'verified_snapshots':len(valid),'quarantined_snapshots':len(raw)-len(valid),'recovered_legacy_snapshots':legacy.get('recovered',0),'unresolved_ft_fixtures':stats.get('raw_unresolved_ft_fixtures'),'settled_statistical_fixtures':stats.get('settled_fixtures'),'core_price_settled_fixtures':stats.get('core_price_settled_fixtures'),'movement_fixtures':move.get('fixtures_with_two_plus_snapshots'),'numeric_movement_deltas':move.get('numeric_delta_fields_built'),'current_day_valid_scans':len(day_scans),'current_day_distinct_scan_times':len({x.get('observed_at') for x in day_scans})}
+    counts['scope_excluded_snapshots']=sum(not in_scope(x) for x in valid)
+    valid = [x for x in valid if in_scope(x)]
     mapping, bridge = build_bridge(valid)
     valid = project(valid, mapping)
     counts['current_day_canonical_fixtures']=len({mapping.get(str(x.get('fixture_id')),str(x.get('fixture_id'))) for x in day_scans})
@@ -60,7 +63,7 @@ def build(root=Path('.'), now=None):
     failures=[]
     if stats.get('raw_snapshot_rows') != len(raw):failures.append('STATISTICS_RAW_COUNT_STALE')
     if stats.get('snapshot_rows') != len(valid):failures.append('STATISTICS_VERIFIED_COUNT_STALE')
-    if stats.get('quarantined_snapshot_rows') != len(raw)-len(valid):failures.append('QUARANTINE_COUNT_MISMATCH')
+    if stats.get('quarantined_snapshot_rows') != counts['quarantined_snapshots']:failures.append('QUARANTINE_COUNT_MISMATCH')
     if move.get('source_snapshot_rows') != len(valid):failures.append('MOVEMENT_INPUT_STALE')
     ready=[{'candidate_id':c.get('candidate_id'),'settled':c.get('settled_entries'),'minimum':150,'status':c.get('status'),'production_promotion_allowed':c.get('production_promotion_allowed',False)} for c in forward.get('candidates',[])]
     result={'schema_version':'1.1','football_day':today,'generated_at':now.isoformat(),'workflow_success_is_not_data_source_health':True,'status':'BROKEN_DATA_ASSERTIONS' if failures else ('COLLECTING_WITH_EXTERNAL_BLOCKERS' if any(p.get('usable_recent_output') for p in providers.values()) else 'WAITING_EXTERNAL_DATA'),'data_assertions_passed':not failures,'assertion_failures':failures,'counts':counts,'providers':providers,'daily_sync_status':sync.get('status','UNKNOWN'),'forward_candidates':ready,'paper_label':'PAPER_RESEARCH_ONLY','production_promotion_allowed':False,'legacy_recovery_status':legacy.get('status','UNKNOWN'),'dashboard_browser_verified':False}

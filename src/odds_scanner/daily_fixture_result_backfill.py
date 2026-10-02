@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from .research_population import in_scope, exclusion_reason, POLICY
 import hashlib
 import json
 import time
@@ -76,7 +77,7 @@ def select_candidates(fixtures:list[dict],existing_ids:set[str],*,now:datetime,p
 
 
 def run_backfill(root:Path=Path('.'),*,now:datetime|None=None,max_requests:int=80,sleep_seconds:float=0.25,research_only:bool=True)->dict:
-    current=(now or datetime.now(timezone.utc)).astimezone(timezone.utc); fixtures=_load_jsonl(root/FIXTURES_PATH); existing=_load_jsonl(root/RESULTS_PATH); audit=_load_jsonl(root/AUDIT_PATH); snapshots=_load_jsonl(root/SNAPSHOTS_PATH)
+    current=(now or datetime.now(timezone.utc)).astimezone(timezone.utc); fixtures=[r for r in _load_jsonl(root/FIXTURES_PATH) if in_scope(r)]; existing=_load_jsonl(root/RESULTS_PATH); audit=_load_jsonl(root/AUDIT_PATH); snapshots=[r for r in _load_jsonl(root/SNAPSHOTS_PATH) if in_scope(r)]
     existing_ids={str(r.get('fixture_id')) for r in existing if r.get('fixture_id') is not None} | retired_ids(root); priority_ids={str(r.get('fixture_id')) for r in audit if r.get('fixture_id') is not None} | {str(r.get('fixture_id')) for r in snapshots if r.get('fixture_id') is not None}
     conflict_path=(root/RESULTS_PATH).with_suffix('.conflicts.jsonl')
     # Corrupt conflict evidence must stop requests rather than silently unblock identities.

@@ -1,4 +1,5 @@
 from __future__ import annotations
+from .research_population import in_scope, exclusion_reason, POLICY
 import json,re,unicodedata
 from datetime import datetime,timezone
 from pathlib import Path
@@ -61,6 +62,7 @@ def run(root=Path("."),kickoff_tolerance_seconds=0):
     # Match kickoff first, then require deterministic team aliases. This safely handles\n    # provider decoration such as "Pharco FC" vs "Pharco" without fuzzy guessing.
     latest={}
     for s in snaps:
+        if not in_scope(s): continue
         fid=str(s.get("fixture_id") or "")
         if fid and (fid not in latest or str(s.get("observed_at"))>str(latest[fid].get("observed_at"))):latest[fid]=s
     results=[];settlements=[];unmatched=[];ambiguous=[];matched_total=0;matched_pending=0;unmatched_with_kickoff=0;unmatched_no_kickoff=0;unmatched_samples=[]

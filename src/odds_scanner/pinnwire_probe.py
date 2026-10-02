@@ -1,4 +1,5 @@
 from __future__ import annotations
+from .research_population import in_scope, exclusion_reason, POLICY
 import json, urllib.parse, urllib.request, urllib.error, hashlib, os, time
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -15,6 +16,7 @@ def probe():
         events=payload.get("events") or payload.get("data") or []
         samples=[]; spreads=0; future=0; core_ah=0; totals25=0
         for ev in events:
+            if not in_scope(ev): continue
             periods=ev.get("periods") or {}
             p0=periods.get("num_0") or periods.get("0") or {}
             sp=p0.get("spreads") or {}
@@ -91,6 +93,7 @@ def collect():
         report["rate_limit_responses"]=rate_limits
         events=payload.get("events") or payload.get("data") or []; snaps=[]
         for ev in events:
+            if not in_scope(ev): continue
             try: ko=datetime.fromisoformat(str(ev.get("starts") or ev.get("start_time")).replace("Z","+00:00")).astimezone(timezone.utc)
             except Exception: continue
             if ko<=now or not ws<=ko<we: continue

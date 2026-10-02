@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from .research_population import in_scope, exclusion_reason, POLICY
 import json
 import math
 import statistics
@@ -133,7 +134,7 @@ def evaluate_entry_clv(entry: dict, snapshots: list[dict]) -> dict:
 
 def build_clv_status(root: Path = Path(".")) -> dict:
     generated_at = datetime.now(timezone.utc)
-    entries = _jsonl(root / ENTRIES_PATH)
+    entries = [r for r in _jsonl(root / ENTRIES_PATH) if in_scope(r)]
     snapshots = _jsonl(root / SNAPSHOTS_PATH)
     evaluations: list[dict] = []
     for entry in entries:

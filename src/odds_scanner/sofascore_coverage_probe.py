@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from .research_population import in_scope, exclusion_reason, POLICY
 import json, urllib.request
 from collections import Counter
 from datetime import datetime, timezone
@@ -44,6 +45,7 @@ def run(root=Path(".")):
     snaps=_rows(root/SNAP); settled={str(x.get("fixture_id")) for x in _rows(root/RESULTS)}
     missing={}
     for s in snaps:
+        if not in_scope(s): continue
         fid=str(s.get("fixture_id") or "")
         ko=_utc(s.get("kickoff"))
         if not fid.startswith("pinnwire:") or fid in settled or not ko: continue
@@ -77,6 +79,7 @@ def backfill(root=Path(".")):
     snaps=_rows(root/SNAP); existing=_rows(root/RESULTS); settled={str(x.get("fixture_id")) for x in existing} | retired_ids(root)
     missing={}
     for s in snaps:
+        if not in_scope(s): continue
         fid=str(s.get("fixture_id") or ""); ko=_utc(s.get("kickoff"))
         if fid.startswith("pinnwire:") and fid not in settled and ko: missing.setdefault(fid,s)
     days=sorted({_utc(s.get("kickoff")).date().isoformat() for s in missing.values()})

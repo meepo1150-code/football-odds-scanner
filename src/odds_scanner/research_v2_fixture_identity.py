@@ -1,4 +1,5 @@
 """Conservative, reproducible cross-feed identities. Never modify raw evidence."""
+from .research_population import in_scope, exclusion_reason, POLICY
 from collections import defaultdict
 from datetime import datetime, timezone
 from .research_v2_integrity import trusted_snapshot
@@ -23,7 +24,7 @@ def identity(row):
 def build_bridge(snapshots):
     by_id = defaultdict(list)
     for row in snapshots:
-        if row.get('fixture_id') and trusted_snapshot(row):
+        if row.get('fixture_id') and (trusted_snapshot(row) and in_scope(row)):
             by_id[str(row['fixture_id'])].append(row)
     candidates = defaultdict(list)
     rejected = []

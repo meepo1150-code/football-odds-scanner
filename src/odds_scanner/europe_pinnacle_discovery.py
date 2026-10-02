@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from .research_population import in_scope, exclusion_reason, POLICY
 import json, os, time
 from datetime import datetime, time as dtime, timedelta, timezone
 from pathlib import Path
@@ -121,7 +122,7 @@ def run(root=Path('.')):
             if k is None or not(ws<=k<we):excluded+=1;continue
             tm={**(meta.get(int(f.get('tournamentId') or -1)) or {}),'universe':'PINNACLE_RESEARCH_V2'};book=(f.get('bookmakerOdds') or {}).get(BOOKMAKER);active=isinstance(book,dict) and book.get('bookmakerIsActive') is True and book.get('suspended') is False;shape=mainline_shape(f,catalog,bookmaker=BOOKMAKER);snap,reason=extract_mainline_snapshot(f,catalog,observed_at=now,tournament_meta=tm,bookmaker=BOOKMAKER)
             diag.append({'country':tm.get('country'),'league':tm.get('tournament_name'),'fixture_id':f.get('fixtureId'),'bookmaker_active':active,'ah_main_count':shape.get('ah_main_count',0),'ou_main_count':shape.get('ou_main_count',0),'strict_snapshot':snap is not None,'reason':reason});audit.append({'football_day':day,'fixture_id':f.get('fixtureId'),'tournament_id':f.get('tournamentId'),'country':tm.get('country'),'league':tm.get('tournament_name'),'home':f.get('participant1Name'),'away':f.get('participant2Name'),'kickoff':f.get('startTime'),'observed_at':now.isoformat(),'scheduled_target_at':target.isoformat() if target else None,'schedule_lag_minutes':lag,'observation_timing':report['observation_timing'],'bookmaker':BOOKMAKER,'eligibility_status':'MATCH' if snap else 'NOT_MATCH','eligibility_reason':reason,'research_population':True})
-            if snap:snap.update(football_day=day,research_only=True,scheduled_target_at=target.isoformat() if target else None,schedule_lag_minutes=lag,observation_timing=report['observation_timing']);strict.append(snap)
+            if snap and in_scope(snap):snap.update(football_day=day,research_only=True,scheduled_target_at=target.isoformat() if target else None,schedule_lag_minutes=lag,observation_timing=report['observation_timing']);strict.append(snap)
     ts=_merge_jsonl(root/SNAPSHOT_PATH,strict,('observed_at','fixture_id'));ta=_merge_jsonl(root/AUDIT_PATH,audit,('observed_at','fixture_id'));report.update(status='RESEARCH_V2_OBSERVED',requests_used=used,rate_limit_retries=retries,api_fixtures_returned=alln,excluded_outside_football_day=excluded,football_day_fixtures=len(audit),strict_snapshots_this_run=len(strict),persisted_snapshot_rows=ts,persisted_audit_rows=ta,**summarize_rows(diag));_record_slot(root/SLOT_LEDGER_PATH,report,'OBSERVED' if len(audit)>0 else 'ZERO_FIXTURES');return _write(report,root)
 
 if __name__=='__main__':print(json.dumps(run(),ensure_ascii=False))

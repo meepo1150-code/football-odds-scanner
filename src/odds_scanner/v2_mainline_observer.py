@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from .research_population import in_scope, exclusion_reason, POLICY
 import json
 import os
 from collections import Counter
@@ -410,6 +411,7 @@ def observe_from_env(root: Path = Path("."), *, horizon_days: int = 7) -> dict:
             continue
         matches = match_candidates(snap, candidates)
         snap["candidate_matches"] = matches
+        if not in_scope(snap): continue
         snapshots.append(snap)
         for pid in matches:
             match_counts[pid] += 1

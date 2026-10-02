@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from .research_population import in_scope, exclusion_reason, POLICY
 import hashlib
 import json
 import math
@@ -200,7 +201,7 @@ def _candidate_metrics(candidate_id: str, rows: list[dict]) -> dict:
 
 def build_forward_performance(root: Path = Path(".")) -> dict:
     generated_at = datetime.now(timezone.utc).isoformat()
-    entries = _jsonl(root / ENTRIES_PATH)
+    entries = [r for r in _jsonl(root / ENTRIES_PATH) if in_scope(r)]
     result_rows = _jsonl(root / RESULTS_PATH)
     results, ambiguous_results = _result_index(result_rows)
 

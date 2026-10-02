@@ -1,4 +1,5 @@
 from __future__ import annotations
+from .research_population import in_scope, exclusion_reason, POLICY
 import json
 from collections import defaultdict
 from pathlib import Path
@@ -40,6 +41,7 @@ def run(root=Path('.')):
     source_all=list(source)
     source=[r for r in source if trusted_snapshot(r)]
     quarantined=len(source_all)-len(source)
+    source=[r for r in source if in_scope(r)]
     mapping, bridge = build_bridge(source)
     source = project(source, mapping)
     for r in source: groups[str(r.get('fixture_id'))].append(r)
