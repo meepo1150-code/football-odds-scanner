@@ -42,3 +42,29 @@ def test_failed_or_premature_fetch_is_not_recovery_evidence(tmp_path):
     evidence=[{'day':d,'source':'NETWORK','fetched_at':'2026-09-20T10:00:00Z'} for d in ['2026-09-19','2026-09-20','2026-09-21']]
     p.record(tmp_path,'espn',{'generated_at':'2026-09-25T00:00:00Z','fetch_evidence':evidence})
     assert not p.state(tmp_path)['fixtures']
+
+
+def test_missing_names_can_retire_only_after_full_evidence(tmp_path):
+    s=setup(tmp_path);s.update(home=None,away=None)
+    (tmp_path/p.SNAP).write_text(json.dumps(s)+'\n');raw=(tmp_path/p.SNAP).read_bytes()
+    for provider,stamp,key in [('fotmob','2026-09-22T01:00:00Z','a'),('fotmob','2026-09-22T10:00:00Z','b'),('fotmob','2026-09-23T01:00:00Z','c')]:attempt(tmp_path,provider,stamp,key)
+    report=p.review(tmp_path,datetime(2026,9,25,tzinfo=timezone.utc))
+    assert report['retired_from_active_queue']==0
+    assert 'MINIMUM_SOURCES' in report['pending'][0]['unmet_gates']
+    attempt(tmp_path,'espn','2026-09-23T10:00:00Z','d')
+    assert p.review(tmp_path,datetime(2026,9,25,tzinfo=timezone.utc))['retired_from_active_queue']==1
+    row=p.rows(tmp_path/p.RETIRED)[0]
+    assert row['reason']=='MISSING_TEAM_IDENTITY_AFTER_EXHAUSTED_RECOVERY'
+    assert (tmp_path/p.SNAP).read_bytes()==raw
+    assert not (tmp_path/p.RESULTS).exists()
+
+
+def test_recent_fixture_keeps_age_gate_and_conflict_is_not_retired(tmp_path):
+    setup(tmp_path)
+    for provider,stamp,key in [('fotmob','2026-09-20T16:00:00Z','a'),('espn','2026-09-20T20:00:00Z','b'),('fotmob','2026-09-21T16:00:00Z','c'),('espn','2026-09-21T20:00:00Z','d')]:attempt(tmp_path,provider,stamp,key)
+    report=p.review(tmp_path,datetime(2026,9,22,tzinfo=timezone.utc))
+    assert 'MINIMUM_AGE_72H' in report['pending'][0]['unmet_gates']
+    assert report['pending'][0]['age_eligible_at']=='2026-09-23T12:00:00+00:00'
+    conflict=(tmp_path/p.RESULTS).with_suffix('.conflicts.jsonl')
+    conflict.write_text(json.dumps({'fixture_id':'x'})+'\n')
+    assert p.review(tmp_path,datetime(2026,9,25,tzinfo=timezone.utc))['retired_from_active_queue']==0
