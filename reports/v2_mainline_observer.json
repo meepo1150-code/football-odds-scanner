@@ -2,8 +2,8 @@
   "schema_version": "1.2",
   "classification": "V2_PROSPECTIVE_MAINLINE_OBSERVER",
   "status": "NO_UNAMBIGUOUS_MAINLINE_SNAPSHOTS",
-  "generated_at": "2026-10-02T05:48:40.908355+00:00",
-  "observed_at": "2026-10-02T05:48:44.638502+00:00",
+  "generated_at": "2026-10-02T17:54:08.953639+00:00",
+  "observed_at": "2026-10-02T17:54:11.944622+00:00",
   "source_semantics": "CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED",
   "historical_mainline_reconstruction_allowed": false,
   "requests_attempted": 2,
@@ -26,9 +26,36 @@
   "snapshots_this_run": 0,
   "snapshots_stored": 274,
   "candidate_matches_this_run": {},
-  "parse_reasons": {},
-  "mainline_shape_counts": {},
-  "mainline_shape_samples": [],
+  "parse_reasons": {
+    "AMBIGUOUS_OR_MISSING_MAIN_AH": 2
+  },
+  "mainline_shape_counts": {
+    "AH0_OU1": 2
+  },
+  "mainline_shape_samples": [
+    {
+      "fixture_id": "id1000005272723244",
+      "universe": "THIRD_UNIVERSE_OU",
+      "league": "Super Lig",
+      "ah_main_count": 0,
+      "ou_main_count": 1,
+      "ah_lines": [],
+      "ou_lines": [
+        2.5
+      ]
+    },
+    {
+      "fixture_id": "id1000023872530958",
+      "universe": "THIRD_UNIVERSE_OU",
+      "league": "Liga Portugal",
+      "ah_main_count": 0,
+      "ou_main_count": 1,
+      "ah_lines": [],
+      "ou_lines": [
+        1.5
+      ]
+    }
+  ],
   "diagnostic_policy": "Cardinality diagnostics only; no alternative line is selected and admissibility remains exactly one main AH plus one main full-time O/U.",
   "promotion_allowed": false,
   "paper_research_only": true,
@@ -38,19 +65,19 @@
   "strict_snapshots_enriched_with_exact_external_ids": 0,
   "external_id_policy": "CURRENT_ODDSPAPI_EXTERNALPROVIDERS_EXACT_IDS_ONLY_NO_NAME_MATCHING",
   "ah_market_marker_signatures": {
-    "H_MISSING__A_MISSING": 103,
-    "H_MISSING__A_TRUE": 3,
-    "H_TRUE__A_MISSING": 4,
-    "H_TRUE__A_TRUE": 48
+    "H_MISSING__A_MISSING": 83,
+    "H_MISSING__A_TRUE": 5,
+    "H_TRUE__A_MISSING": 5,
+    "H_TRUE__A_TRUE": 65
   },
   "ah_fixture_shape_counts": {
     "AH_MARKETS_0__BOTH_TRUE_0": 56,
-    "AH_MARKETS_1__BOTH_TRUE_0": 22,
-    "AH_MARKETS_1__BOTH_TRUE_1": 14,
-    "AH_MARKETS_2__BOTH_TRUE_0": 16,
-    "AH_MARKETS_2__BOTH_TRUE_1": 30,
-    "AH_MARKETS_3__BOTH_TRUE_0": 6,
-    "AH_MARKETS_3__BOTH_TRUE_1": 4
+    "AH_MARKETS_1__BOTH_TRUE_0": 10,
+    "AH_MARKETS_1__BOTH_TRUE_1": 26,
+    "AH_MARKETS_2__BOTH_TRUE_0": 14,
+    "AH_MARKETS_2__BOTH_TRUE_1": 32,
+    "AH_MARKETS_3__BOTH_TRUE_0": 3,
+    "AH_MARKETS_3__BOTH_TRUE_1": 7
   },
   "ah_marker_samples": [
     {
@@ -59,11 +86,9 @@
       "start_time": "2026-10-09T18:30:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_TRUE__A_TRUE": 1
+        "H_MISSING__A_MISSING": 1
       },
-      "both_true_lines": [
-        -1.5
-      ]
+      "both_true_lines": []
     },
     {
       "fixture_id": "id1000003472036204",
@@ -71,9 +96,11 @@
       "start_time": "2026-10-09T18:45:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_MISSING__A_MISSING": 1
+        "H_TRUE__A_TRUE": 1
       },
-      "both_true_lines": []
+      "both_true_lines": [
+        -0.25
+      ]
     },
     {
       "fixture_id": "id1000000872478616",
@@ -163,9 +190,11 @@
       "start_time": "2026-10-10T13:30:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_MISSING__A_MISSING": 1
+        "H_TRUE__A_TRUE": 1
       },
-      "both_true_lines": []
+      "both_true_lines": [
+        -0.25
+      ]
     },
     {
       "fixture_id": "id1000003572513236",
@@ -173,9 +202,11 @@
       "start_time": "2026-10-10T13:30:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_MISSING__A_MISSING": 1
+        "H_TRUE__A_TRUE": 1
       },
-      "both_true_lines": []
+      "both_true_lines": [
+        1.0
+      ]
     },
     {
       "fixture_id": "id1000001772221294",
@@ -183,9 +214,11 @@
       "start_time": "2026-10-10T14:00:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_MISSING__A_MISSING": 1
+        "H_TRUE__A_TRUE": 1
       },
-      "both_true_lines": []
+      "both_true_lines": [
+        0.0
+      ]
     },
     {
       "fixture_id": "id1000001772221296",
@@ -218,12 +251,9 @@
       "start_time": "2026-10-10T14:00:00.000Z",
       "ah_markets": 2,
       "signatures": {
-        "H_MISSING__A_MISSING": 1,
-        "H_TRUE__A_TRUE": 1
+        "H_MISSING__A_MISSING": 2
       },
-      "both_true_lines": [
-        0.25
-      ]
+      "both_true_lines": []
     },
     {
       "fixture_id": "id1000000872478606",
@@ -235,7 +265,7 @@
         "H_TRUE__A_TRUE": 1
       },
       "both_true_lines": [
-        0.5
+        0.75
       ]
     },
     {
@@ -257,7 +287,8 @@
       "start_time": "2026-10-10T16:00:00.000Z",
       "ah_markets": 2,
       "signatures": {
-        "H_MISSING__A_MISSING": 2
+        "H_MISSING__A_MISSING": 1,
+        "H_MISSING__A_TRUE": 1
       },
       "both_true_lines": []
     },
@@ -280,9 +311,12 @@
       "start_time": "2026-10-10T16:30:00.000Z",
       "ah_markets": 2,
       "signatures": {
-        "H_MISSING__A_MISSING": 2
+        "H_MISSING__A_MISSING": 1,
+        "H_TRUE__A_TRUE": 1
       },
-      "both_true_lines": []
+      "both_true_lines": [
+        -0.75
+      ]
     }
   ],
   "ah_marker_diagnostics_policy": "SAME_CURRENT_PAYLOAD_ONLY_DIAGNOSTIC_NO_LINE_SELECTION_NO_ADMISSIBILITY_CHANGE"
