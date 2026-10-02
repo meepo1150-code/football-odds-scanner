@@ -2,8 +2,8 @@
   "schema_version": "1.2",
   "classification": "V2_PROSPECTIVE_MAINLINE_OBSERVER",
   "status": "NO_UNAMBIGUOUS_MAINLINE_SNAPSHOTS",
-  "generated_at": "2026-10-01T18:27:38.876917+00:00",
-  "observed_at": "2026-10-01T18:27:42.314713+00:00",
+  "generated_at": "2026-10-02T05:48:40.908355+00:00",
+  "observed_at": "2026-10-02T05:48:44.638502+00:00",
   "source_semantics": "CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED",
   "historical_mainline_reconstruction_allowed": false,
   "requests_attempted": 2,
@@ -38,19 +38,19 @@
   "strict_snapshots_enriched_with_exact_external_ids": 0,
   "external_id_policy": "CURRENT_ODDSPAPI_EXTERNALPROVIDERS_EXACT_IDS_ONLY_NO_NAME_MATCHING",
   "ah_market_marker_signatures": {
-    "H_MISSING__A_MISSING": 83,
-    "H_MISSING__A_TRUE": 7,
-    "H_TRUE__A_MISSING": 6,
-    "H_TRUE__A_TRUE": 62
+    "H_MISSING__A_MISSING": 103,
+    "H_MISSING__A_TRUE": 3,
+    "H_TRUE__A_MISSING": 4,
+    "H_TRUE__A_TRUE": 48
   },
   "ah_fixture_shape_counts": {
     "AH_MARKETS_0__BOTH_TRUE_0": 56,
-    "AH_MARKETS_1__BOTH_TRUE_0": 15,
-    "AH_MARKETS_1__BOTH_TRUE_1": 21,
-    "AH_MARKETS_2__BOTH_TRUE_0": 11,
-    "AH_MARKETS_2__BOTH_TRUE_1": 35,
-    "AH_MARKETS_3__BOTH_TRUE_0": 4,
-    "AH_MARKETS_3__BOTH_TRUE_1": 6
+    "AH_MARKETS_1__BOTH_TRUE_0": 22,
+    "AH_MARKETS_1__BOTH_TRUE_1": 14,
+    "AH_MARKETS_2__BOTH_TRUE_0": 16,
+    "AH_MARKETS_2__BOTH_TRUE_1": 30,
+    "AH_MARKETS_3__BOTH_TRUE_0": 6,
+    "AH_MARKETS_3__BOTH_TRUE_1": 4
   },
   "ah_marker_samples": [
     {
@@ -71,11 +71,9 @@
       "start_time": "2026-10-09T18:45:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_TRUE__A_TRUE": 1
+        "H_MISSING__A_MISSING": 1
       },
-      "both_true_lines": [
-        -0.25
-      ]
+      "both_true_lines": []
     },
     {
       "fixture_id": "id1000000872478616",
@@ -96,9 +94,12 @@
       "start_time": "2026-10-10T11:30:00.000Z",
       "ah_markets": 3,
       "signatures": {
-        "H_MISSING__A_MISSING": 3
+        "H_MISSING__A_MISSING": 2,
+        "H_TRUE__A_TRUE": 1
       },
-      "both_true_lines": []
+      "both_true_lines": [
+        -1.25
+      ]
     },
     {
       "fixture_id": "id1000000872478620",
@@ -139,8 +140,7 @@
       "start_time": "2026-10-10T13:30:00.000Z",
       "ah_markets": 2,
       "signatures": {
-        "H_MISSING__A_MISSING": 1,
-        "H_TRUE__A_MISSING": 1
+        "H_MISSING__A_MISSING": 2
       },
       "both_true_lines": []
     },
@@ -173,11 +173,9 @@
       "start_time": "2026-10-10T13:30:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_TRUE__A_TRUE": 1
+        "H_MISSING__A_MISSING": 1
       },
-      "both_true_lines": [
-        1.0
-      ]
+      "both_true_lines": []
     },
     {
       "fixture_id": "id1000001772221294",
@@ -185,11 +183,9 @@
       "start_time": "2026-10-10T14:00:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_TRUE__A_TRUE": 1
+        "H_MISSING__A_MISSING": 1
       },
-      "both_true_lines": [
-        0.0
-      ]
+      "both_true_lines": []
     },
     {
       "fixture_id": "id1000001772221296",
@@ -210,9 +206,11 @@
       "start_time": "2026-10-10T14:00:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_MISSING__A_MISSING": 1
+        "H_TRUE__A_TRUE": 1
       },
-      "both_true_lines": []
+      "both_true_lines": [
+        0.0
+      ]
     },
     {
       "fixture_id": "id1000001772221310",
@@ -259,8 +257,7 @@
       "start_time": "2026-10-10T16:00:00.000Z",
       "ah_markets": 2,
       "signatures": {
-        "H_MISSING__A_MISSING": 1,
-        "H_MISSING__A_TRUE": 1
+        "H_MISSING__A_MISSING": 2
       },
       "both_true_lines": []
     },
@@ -283,12 +280,9 @@
       "start_time": "2026-10-10T16:30:00.000Z",
       "ah_markets": 2,
       "signatures": {
-        "H_MISSING__A_MISSING": 1,
-        "H_TRUE__A_TRUE": 1
+        "H_MISSING__A_MISSING": 2
       },
-      "both_true_lines": [
-        -0.75
-      ]
+      "both_true_lines": []
     }
   ],
   "ah_marker_diagnostics_policy": "SAME_CURRENT_PAYLOAD_ONLY_DIAGNOSTIC_NO_LINE_SELECTION_NO_ADMISSIBILITY_CHANGE"
