@@ -42,7 +42,7 @@ jobs:
           python - <<'PY'
           import json,subprocess
           r=json.load(open('reports/pinnwire_research_v2_status.json',encoding='utf-8'))
-          if r.get('status') not in {'RESEARCH_V2_OBSERVED','ZERO_FIXTURES'}:
+          if r.get('status') != 'RESEARCH_V2_OBSERVED' or r.get('strict_snapshots_this_run', 0) <= 0:
               subprocess.run(['python','-m','odds_scanner.propline_research_v2'],check=True)
           PY
       - name: Rebuild movement and statistics from latest snapshots
