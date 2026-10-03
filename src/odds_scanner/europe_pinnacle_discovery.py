@@ -5,6 +5,7 @@ import json, os, time
 from datetime import datetime, time as dtime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
+from email.utils import parsedate_to_datetime
 from .europe_bookmaker_coverage_probe import BOOKMAKER, quota_allows_probe, summarize_rows
 
 # Research V2 is the primary forward data collector. Keep a small emergency reserve,
@@ -17,7 +18,24 @@ from .oddspapi_quota_health import summarize_account
 from .v2_mainline_observer import CATALOG_PATH, _load_json, extract_mainline_snapshot, mainline_shape
 
 TARGET_PATH=Path('reports/europe_discovery_tournaments.json'); SNAPSHOT_PATH=Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'); AUDIT_PATH=Path('data/normalized/europe_pinnacle_research_v2_audit.jsonl'); REPORT_PATH=Path('reports/europe_pinnacle_research_v2_status.json'); SLOT_LEDGER_PATH=Path('data/normalized/research_v2_slot_ledger.jsonl')
-BANGKOK=ZoneInfo('Asia/Bangkok'); FOOTBALL_DAY_START_HOUR=12; FOOTBALL_DAY_END_HOUR=6; BATCH_SIZE=5; LOW_QUOTA_CORE_IDS=(17,23,8,35,34); LOW_QUOTA_THRESHOLD=6; INTER_BATCH_DELAY_SECONDS=2.0; RATE_LIMIT_RETRY_DELAY_SECONDS=5.0; MAX_ATTEMPTS_PER_BATCH=2; RECOVERY_WINDOW_MINUTES=150; WEEKEND_TARGET_HOURS=(12,15,18,19,20,21,22)
+BANGKOK=ZoneInfo('Asia/Bangkok'); FOOTBALL_DAY_START_HOUR=12; FOOTBALL_DAY_END_HOUR=6; BATCH_SIZE=5; LOW_QUOTA_CORE_IDS=(17,23,8,35,34); LOW_QUOTA_THRESHOLD=6; INTER_BATCH_DELAY_SECONDS=2.0; MAX_ATTEMPTS_PER_BATCH=1; RECOVERY_WINDOW_MINUTES=150; WEEKEND_TARGET_HOURS=(12,15,18,19,20,21,22)
+
+def _rate_limit_until(exc, now):
+    """Persist a conservative cooldown; never shorten a provider Retry-After."""
+    until = now + timedelta(hours=1)
+    value = (getattr(exc, 'headers', None) or {}).get('Retry-After')
+    if value:
+        try:
+            requested = now + timedelta(seconds=max(0, int(value)))
+        except (TypeError, ValueError, OverflowError):
+            try:
+                requested = parsedate_to_datetime(value)
+                if requested.tzinfo is None:
+                    requested = requested.replace(tzinfo=timezone.utc)
+            except (TypeError, ValueError, OverflowError):
+                requested = until
+        until = max(until, requested)
+    return until.isoformat()
 
 def _merge_jsonl(path,new_rows,key_fields):
     rows={}
@@ -80,6 +98,13 @@ def run(root=Path('.')):
         if parsed is not None:
             target=parsed.astimezone(BANGKOK); lag=round((now.astimezone(BANGKOK)-target).total_seconds()/60,2)
     report={'schema_version':'2.9','generated_at':now.isoformat(),'classification':'PINNACLE_RESEARCH_V2','bookmaker':BOOKMAKER,'football_day':day,'football_day_timezone':'Asia/Bangkok','football_day_window_start':ws.isoformat(),'football_day_window_end':we.isoformat(),'scheduled_target_at':target.isoformat() if target else None,'actual_observed_at':now.astimezone(BANGKOK).isoformat(),'schedule_lag_minutes':lag,'recovery_window_minutes':RECOVERY_WINDOW_MINUTES,'observation_timing':'ON_TIME' if lag is not None and lag<=30 else ('LATE' if lag is not None and lag<=RECOVERY_WINDOW_MINUTES else 'OUTSIDE_WINDOW'),'force_run':force,'force_target_at':force_target or None,'research_only':True,'production_promotion_allowed':False,'core_quota_reserve':CORE_QUOTA_RESERVE}
+    previous = _load_json(root/REPORT_PATH) or {}
+    cooldown = _parse(previous.get('rate_limit_cooldown_until'))
+    if cooldown is not None and now < cooldown:
+        report.update(status='API_REQUEST_FAILED', data_source_health='RATE_LIMITED_COOLDOWN',
+                      rate_limit_cooldown_until=cooldown.isoformat(), requests_used=0,
+                      planned_requests=0, errors=['Provider cooldown active; no API request sent'])
+        return _write(report, root)
     if _slot_done(root/SLOT_LEDGER_PATH,target) or _slot_done(root/AUDIT_PATH,target): report.update(status='SKIPPED_SLOT_ALREADY_OBSERVED',requests_used=0,planned_requests=0);return _write(report,root)
     if not force and (lag is None or lag>RECOVERY_WINDOW_MINUTES): report.update(status='MISSED_SLOT',requests_used=0,planned_requests=0);_record_slot(root/SLOT_LEDGER_PATH,report,'MISSED');return _write(report,root)
     targets=_load_json(root/TARGET_PATH) or {}; selected=targets.get('tournaments') or [] if isinstance(targets,dict) else []; ids=[x.get('tournament_id') for x in selected if isinstance(x,dict) and x.get('tournament_id') is not None]
@@ -112,7 +137,8 @@ def run(root=Path('.')):
             try:payload=_get('/odds-by-tournaments',key,{'tournamentIds':','.join(str(x) for x in batch),'bookmakers':BOOKMAKER,'language':'en','verbosity':3},90);used+=1;break
             except Exception as e:
                 used+=1
-                if getattr(e,'code',None)==429 and attempt<MAX_ATTEMPTS_PER_BATCH:retries+=1;time.sleep(RATE_LIMIT_RETRY_DELAY_SECONDS);continue
+                if getattr(e,'code',None)==429:
+                    report.update(data_source_health='RATE_LIMITED', rate_limit_cooldown_until=_rate_limit_until(e, now))
                 report.update(status='API_REQUEST_FAILED',requests_used=used,rate_limit_retries=retries,errors=[f'{type(e).__name__}: {e}']);return _write(report,root)
         payloads.append(payload)
     strict=[];diag=[];audit=[];alln=0;excluded=0

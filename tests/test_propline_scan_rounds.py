@@ -1,7 +1,18 @@
 import json
 from datetime import datetime, timedelta, timezone
+import pytest
 
 from odds_scanner import propline_research_v2 as scanner
+
+
+@pytest.fixture(autouse=True)
+def fixed_scan_clock(monkeypatch):
+    class Clock(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            value = cls(2026, 10, 3, 10, tzinfo=timezone.utc)
+            return value.astimezone(tz) if tz else value.replace(tzinfo=None)
+    monkeypatch.setattr(scanner, 'datetime', Clock)
 
 
 def _row(kickoff, *, price=1.9, book="pinnacle"):
@@ -15,7 +26,7 @@ def _row(kickoff, *, price=1.9, book="pinnacle"):
 
 
 def test_verified_pinnacle_core_mainline_is_canonical(tmp_path, monkeypatch):
-    window_start, _, _ = scanner._football_day(datetime.now(timezone.utc))
+    window_start, _, _ = scanner._football_day(scanner.datetime.now(timezone.utc))
     kickoff = (window_start + timedelta(hours=8)).astimezone(timezone.utc)
     monkeypatch.setattr(scanner, "fetch", lambda: ([_row(kickoff)], []))
     report = scanner.run(tmp_path)
@@ -29,7 +40,7 @@ def test_verified_pinnacle_core_mainline_is_canonical(tmp_path, monkeypatch):
 
 
 def test_noncore_or_nonpinnacle_quote_is_quarantined(tmp_path, monkeypatch):
-    window_start, _, _ = scanner._football_day(datetime.now(timezone.utc))
+    window_start, _, _ = scanner._football_day(scanner.datetime.now(timezone.utc))
     kickoff = (window_start + timedelta(hours=8)).astimezone(timezone.utc)
     monkeypatch.setattr(scanner, "fetch", lambda: ([_row(kickoff, price=4.3)], []))
     report=scanner.run(tmp_path)
