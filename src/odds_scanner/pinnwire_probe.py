@@ -44,7 +44,7 @@ class PinnWireCooldown(RuntimeError):
         super().__init__(f"PinnWire cooldown until {until}")
 
 
-def _cooldown_until(exc, now):
+def _cooldown_until(exc, now, failures=1):
     raw = exc.headers.get("Retry-After") if exc.headers else None
     try:
         seconds = max(0, int(raw))
@@ -54,7 +54,7 @@ def _cooldown_until(exc, now):
         except (TypeError, ValueError, OverflowError):
             seconds = 3600
     # Never shorten the provider's advertised cooldown, including HTTP-date.
-    return (now + timedelta(seconds=max(3600, seconds))).isoformat()
+    return (now + timedelta(seconds=max(min(86400, 3600 * 2 ** min(max(0, failures-1), 5)), seconds))).isoformat()
 
 
 def _fetch_payload(max_attempts=1, sleep=time.sleep):
@@ -86,8 +86,15 @@ def collect():
     now=datetime.now(timezone.utc); ws,we,day=_football_day_bounds(now)
     report={"schema_version":"3.2","generated_at":now.isoformat(),"classification":"PINNACLE_RESEARCH_V2","provider":"pinnwire","bookmaker":"pinnacle","football_day":day,"requests_used":0,"workflow_success":True,"data_source_health":"NOT_CHECKED","capability":"RESEARCH_ONLY"}
     try:
+        previous=json.loads(REPORT.read_text()) if REPORT.exists() else {}
+    except (OSError, ValueError):
+        previous={}
+    report["consecutive_rate_limits"]=previous.get("consecutive_rate_limits",0)
+    report["access_mode"]="SHARED_PUBLIC_DEMO"
+    try:
         payload,attempts,rate_limits=_fetch_payload()
         report["data_source_health"]="AVAILABLE"
+        report["consecutive_rate_limits"]=0
         report["requests_used"]=attempts
         report["request_attempts"]=attempts
         report["rate_limit_responses"]=rate_limits
@@ -123,7 +130,9 @@ def collect():
         limited = e.code == 429
         report.update(status="RATE_LIMITED" if limited else "API_REQUEST_FAILED", data_source_health="RATE_LIMITED" if limited else "UNAVAILABLE", requests_used=1, request_attempts=1, rate_limit_responses=int(limited), http_status=e.code, errors=[f"HTTPError: HTTP {e.code}"])
         if limited:
-            report["cooldown_until"] = _cooldown_until(e, now)
+            report["consecutive_rate_limits"]=int(previous.get("consecutive_rate_limits",0))+1
+            report["retry_after"]=e.headers.get("Retry-After") if e.headers else None
+            report["cooldown_until"] = _cooldown_until(e, now, report["consecutive_rate_limits"])
     except Exception as e:
         report.update(status="API_REQUEST_FAILED", data_source_health="UNAVAILABLE", requests_used=1, request_attempts=1, errors=[f"{type(e).__name__}: {e}"])
     REPORT.parent.mkdir(parents=True,exist_ok=True); REPORT.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8"); return report
