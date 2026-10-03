@@ -1,7 +1,7 @@
 import pytest
 from odds_scanner.research_population import exclusion_reason, in_scope
 
-@pytest.mark.parametrize('league', ['Egypt - 2nd Division B', 'Argentina - Liga Pro Reserves', 'Germany - Regionalliga North'])
+@pytest.mark.parametrize('league', ['Egypt - 2nd Division B', 'Argentina - Liga Pro Reserves'])
 def test_reviewed_exact_league_excluded(league):
     assert exclusion_reason({'league':league}) == 'REVIEWED_LEAGUE_OUT_OF_SCOPE'
 

@@ -5,11 +5,6 @@ POLICY = 'REVIEWED_RESEARCH_SCOPE_V2'
 EXCLUDED_LEAGUES = {
     'egypt - 2nd division b',
     'argentina - liga pro reserves',
-    'germany - regionalliga north',
-    'slovenia - 3. snl',
-    'india - bangalore super division',
-    'india - mizoram premier league',
-    'israel - liga alef',
 }
 WOMEN = re.compile(r"\b(?:women(?:s|'s)?|female|ladies|girls|femenin[ao]|feminine|frauen|damallsvenskan|nwsl)\b", re.I)
 YOUTH = re.compile(r'\b(?:u\s*[- ]?\s*(?:1[0-9]|2[0-3])|under\s*[- ]?\s*(?:1[0-9]|2[0-3])|youth|junior|juniors|primavera)\b', re.I)
