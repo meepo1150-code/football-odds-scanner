@@ -1,32 +1,135 @@
 {
   "schema_version": "2.9",
-  "generated_at": "2026-10-03T11:34:03.426978+00:00",
+  "generated_at": "2026-10-03T12:44:38.369211+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "bookmaker": "pinnacle",
   "football_day": "2026-10-03",
   "football_day_timezone": "Asia/Bangkok",
   "football_day_window_start": "2026-10-03T05:00:00+00:00",
   "football_day_window_end": "2026-10-03T23:00:00+00:00",
-  "scheduled_target_at": "2026-10-03T18:00:00+07:00",
-  "actual_observed_at": "2026-10-03T18:34:03.426978+07:00",
-  "schedule_lag_minutes": 34.06,
+  "scheduled_target_at": "2026-10-03T19:00:00+07:00",
+  "actual_observed_at": "2026-10-03T19:44:38.369211+07:00",
+  "schedule_lag_minutes": 44.64,
   "recovery_window_minutes": 150,
   "observation_timing": "LATE",
-  "force_run": false,
-  "force_target_at": null,
+  "force_run": true,
+  "force_target_at": "2026-10-03T19:00:00+07:00",
   "research_only": true,
   "production_promotion_allowed": false,
   "core_quota_reserve": 3,
   "resolved_competitions": 54,
-  "planned_requests": 6,
-  "max_planned_requests_with_retries": 12,
+  "planned_requests": 11,
+  "max_planned_requests_with_retries": 22,
   "coverage_mode": "FULL_RESEARCH_UNIVERSE",
-  "quota_remaining_before": 230,
+  "quota_remaining_before": 229,
   "effective_quota_reserve": 3,
-  "status": "API_REQUEST_FAILED",
-  "requests_used": 1,
+  "status": "RESEARCH_V2_OBSERVED",
+  "requests_used": 11,
   "rate_limit_retries": 0,
-  "errors": [
-    "HTTPError: HTTP Error 400: Bad Request"
+  "api_fixtures_returned": 426,
+  "excluded_outside_football_day": 353,
+  "football_day_fixtures": 73,
+  "strict_snapshots_this_run": 61,
+  "persisted_snapshot_rows": 1411,
+  "persisted_audit_rows": 472,
+  "fixtures_seen": 73,
+  "bookmaker_active_fixtures": 65,
+  "fixtures_with_exactly_one_main_ah": 61,
+  "fixtures_with_exactly_one_main_ou": 61,
+  "fixtures_with_both_exact_mainlines": 61,
+  "strict_snapshots": 61,
+  "rejection_counts": {
+    "KICKOFF_NOT_FUTURE": 1,
+    "NOT_PREMATCH_WITH_ODDS": 11,
+    "OK": 61
+  },
+  "league_coverage": [
+    {
+      "league": "England \u00b7 FA Cup",
+      "fixtures": 37,
+      "bookmaker_active": 37,
+      "ah_main_exactly_one": 36,
+      "ou_main_exactly_one": 36,
+      "both_main_exactly_one": 36,
+      "strict_snapshots": 36,
+      "reason_counts": {
+        "KICKOFF_NOT_FUTURE": 1,
+        "OK": 36
+      }
+    },
+    {
+      "league": "England \u00b7 League One",
+      "fixtures": 11,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "NOT_PREMATCH_WITH_ODDS": 8,
+        "OK": 3
+      }
+    },
+    {
+      "league": "England \u00b7 League Two",
+      "fixtures": 10,
+      "bookmaker_active": 10,
+      "ah_main_exactly_one": 7,
+      "ou_main_exactly_one": 7,
+      "both_main_exactly_one": 7,
+      "strict_snapshots": 7,
+      "reason_counts": {
+        "NOT_PREMATCH_WITH_ODDS": 3,
+        "OK": 7
+      }
+    },
+    {
+      "league": "Netherlands \u00b7 Eerste Divisie",
+      "fixtures": 6,
+      "bookmaker_active": 6,
+      "ah_main_exactly_one": 6,
+      "ou_main_exactly_one": 6,
+      "both_main_exactly_one": 6,
+      "strict_snapshots": 6,
+      "reason_counts": {
+        "OK": 6
+      }
+    },
+    {
+      "league": "Norway \u00b7 1st Division",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Scotland \u00b7 Championship",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Spain \u00b7 LaLiga 2",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    }
   ]
 }
