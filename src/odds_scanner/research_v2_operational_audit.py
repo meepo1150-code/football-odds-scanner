@@ -23,6 +23,16 @@ def utc(value):
     except (ValueError, TypeError): return None
 
 
+def quota_observation(quota, scan):
+    """Do not present an earlier account observation as a current balance."""
+    qtime, stime = utc(quota.get('generated_at')), utc(scan.get('generated_at'))
+    newer_usage = bool(stime and (not qtime or stime > qtime) and scan.get('requests_used', 0) > 0)
+    return {'balance_status': 'STALE_AFTER_RECORDED_USAGE' if newer_usage else 'LAST_ACCOUNT_OBSERVATION',
+            'request_remaining_last_observed': quota.get('request_remaining'),
+            'request_remaining': None if newer_usage else quota.get('request_remaining'),
+            'current_balance_verified': False}
+
+
 def build(root=Path('.'), now=None):
     now=now or datetime.now(timezone.utc)
     stats=load(root,'research_v2_pattern_statistics')
@@ -44,6 +54,7 @@ def build(root=Path('.'), now=None):
         usable=p.get('status')=='RESEARCH_V2_OBSERVED' and not p.get('errors') and fresh
         providers[name]={'status':p.get('data_source_health') or p.get('status','UNKNOWN'), 'capability':'FALLBACK' if name=='propline' else 'RESEARCH_ONLY', 'usable_recent_output':usable,'generated_at':p.get('generated_at'),'errors':p.get('errors',[]),'execution_ready':False}
     providers['oddspapi']={'status':quota.get('status','UNKNOWN'),'request_limit':quota.get('request_limit'),'request_count':quota.get('request_count'),'request_remaining':quota.get('request_remaining'),'generated_at':quota.get('generated_at'),'capability':'WAITING_EXTERNAL_DATA' if quota.get('quota_exhausted') else 'REQUIRES_CURRENT_VALIDATION'}
+    providers['oddspapi'].update(quota_observation(quota, load(root, 'europe_pinnacle_research_v2_status')))
     counts={'raw_snapshots':len(raw),'verified_snapshots':len(valid),'quarantined_snapshots':len(raw)-len(valid),'recovered_legacy_snapshots':legacy.get('recovered',0),'unresolved_ft_fixtures':stats.get('raw_unresolved_ft_fixtures'),'settled_statistical_fixtures':stats.get('settled_fixtures'),'core_price_settled_fixtures':stats.get('core_price_settled_fixtures'),'movement_fixtures':move.get('fixtures_with_two_plus_snapshots'),'numeric_movement_deltas':move.get('numeric_delta_fields_built'),'current_day_valid_scans':len(day_scans),'current_day_distinct_scan_times':len({x.get('observed_at') for x in day_scans})}
     counts['scope_excluded_snapshots']=sum(not in_scope(x) for x in valid)
     valid = [x for x in valid if in_scope(x)]
