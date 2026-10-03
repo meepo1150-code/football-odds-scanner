@@ -1,7 +1,7 @@
 {
   "schema_version": "2.8",
   "population_policy": "REVIEWED_RESEARCH_SCOPE_V2",
-  "scope_excluded_snapshot_rows": 220,
+  "scope_excluded_snapshot_rows": 238,
   "scope_excluded_fixture_ids": [
     "pinnwire:0bf5daff503839ba",
     "pinnwire:14ae614dc594d66a",
@@ -17,6 +17,7 @@
     "pinnwire:1636812503",
     "pinnwire:1636812504",
     "pinnwire:1636812505",
+    "pinnwire:1636866949",
     "pinnwire:1636868566",
     "pinnwire:1636868567",
     "pinnwire:1636872030",
@@ -130,15 +131,27 @@
     "pinnwire:1637260719",
     "pinnwire:1637262755",
     "pinnwire:1637265104",
+    "pinnwire:1637265123",
+    "pinnwire:1637265124",
     "pinnwire:1637265129",
     "pinnwire:1637268778",
     "pinnwire:1637268779",
+    "pinnwire:1637272173",
     "pinnwire:1637272209",
+    "pinnwire:1637272212",
+    "pinnwire:1637277945",
+    "pinnwire:1637277957",
     "pinnwire:1637278025",
+    "pinnwire:1637281593",
+    "pinnwire:1637281606",
+    "pinnwire:1637281607",
+    "pinnwire:1637281613",
+    "pinnwire:1637281614",
     "pinnwire:1637281661",
     "pinnwire:1637281662",
     "pinnwire:1637297112",
     "pinnwire:1637297130",
+    "pinnwire:1637297182",
     "pinnwire:1637312181",
     "pinnwire:1637312194",
     "pinnwire:1637312256",
@@ -172,10 +185,15 @@
     "pinnwire:1637443922",
     "pinnwire:1637444019",
     "pinnwire:1637444029",
+    "pinnwire:1637446234",
     "pinnwire:1637446236",
+    "pinnwire:1637446237",
+    "pinnwire:1637448188",
+    "pinnwire:1637448375",
     "pinnwire:1637472455",
     "pinnwire:1637475762",
     "pinnwire:1637475763",
+    "pinnwire:1637475796",
     "pinnwire:1637487442",
     "pinnwire:1637499557",
     "pinnwire:2123ce4f36efea0c",
@@ -191,10 +209,11 @@
   "scope_exclusion_counts": {
     "YOUTH_OUT_OF_SCOPE": 124,
     "WOMEN_OUT_OF_SCOPE": 93,
+    "USER_REVIEWED_FIXTURE_OUT_OF_SCOPE": 18,
     "REVIEWED_LEAGUE_OUT_OF_SCOPE": 3
   },
-  "provider_fixture_ids": 777,
-  "raw_unresolved_provider_fixture_ids": 407,
+  "provider_fixture_ids": 759,
+  "raw_unresolved_provider_fixture_ids": 389,
   "fixture_identity_bridges": [
     {
       "canonical_fixture_id": "pinnwire:1636867987",
@@ -393,7 +412,7 @@
   "snapshot_selection": "LATEST_VERIFIED_OBSERVATION_THEN_SOURCE_FIXTURE_ID_TIEBREAK",
   "classification": "RESEARCH_V2_AH_MARKET_STATE_STATISTICS",
   "statistical_population_policy": "VERIFIED_FT_ONLY; RAW UNRESOLVED FIXTURES QUARANTINED AND EXCLUDED",
-  "generated_at": "2026-10-03T04:34:41.673821+00:00",
+  "generated_at": "2026-10-03T04:39:30.185039+00:00",
   "research_only": true,
   "recommendation_semantics": false,
   "signal_policy": "N>=30 AND ROI DIRECTION AGREES WITH WILSON95 VS 50%; OTHERWISE INCONCLUSIVE",
@@ -416,16 +435,16 @@
     "NOT_EXACT_2_5": 175,
     "VERIFIED_EXACT_2_5_PREMATCH": 187
   },
-  "snapshot_rows": 1031,
+  "snapshot_rows": 1013,
   "raw_snapshot_rows": 1341,
   "quarantined_snapshot_rows": 90,
   "quarantine_policy": "LEGACY_PROPLINE_EXCLUDED; VERIFIED_PINNACLE_TWO_SIDED_CORE_MAINLINE_ALLOWED",
-  "unique_snapshot_fixtures": 769,
+  "unique_snapshot_fixtures": 751,
   "settled_fixtures": 362,
   "core_price_settled_fixtures": 342,
   "missing_result_fixtures": 0,
-  "raw_unresolved_ft_fixtures": 407,
-  "active_unresolved_ft_fixtures": 27,
+  "raw_unresolved_ft_fixtures": 389,
+  "active_unresolved_ft_fixtures": 9,
   "retired_unresolved_ft_fixtures": 380,
   "retired_unresolved_fixture_ids": [
     "api_football:1511407",
@@ -809,7 +828,7 @@
     "pinnwire:e6ccb4c32417b5ad",
     "pinnwire:ef8eaeb9f711d629"
   ],
-  "excluded_missing_ft_from_statistical_population": 407,
+  "excluded_missing_ft_from_statistical_population": 389,
   "excluded_derivative_markets_from_ft_completeness": 0,
   "eligible_statistical_fixtures": 362,
   "ft_completeness_pct": 100.0,
@@ -817,7 +836,7 @@
   "unique_snapshot_fixtures_by_provider": {
     "UNKNOWN": 109,
     "api_football": 20,
-    "pinnwire": 608,
+    "pinnwire": 590,
     "propline": 32
   },
   "pinnwire_missing_result_fixtures": 0,
@@ -825,10 +844,10 @@
   "raw_unresolved_ft_by_provider": {
     "UNKNOWN": 2,
     "api_football": 20,
-    "pinnwire": 376,
+    "pinnwire": 358,
     "propline": 9
   },
-  "raw_pinnwire_unresolved_ft": 376,
+  "raw_pinnwire_unresolved_ft": 358,
   "raw_non_pinnwire_unresolved_ft": 31,
   "ambiguous_result_fixtures": 0,
   "baseline_by_market_side_line": [
@@ -12560,7 +12579,7 @@
       "sample_label": "VERY_LOW"
     }
   ],
-  "active_overdue_ft_fixtures": 18,
+  "active_overdue_ft_fixtures": 0,
   "active_future_or_recent_ft_fixtures": 9,
   "active_unknown_kickoff_ft_fixtures": 0
 }
