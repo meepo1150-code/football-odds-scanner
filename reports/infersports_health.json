@@ -1,89 +1,21 @@
 {
   "schema_version": "1.1",
   "provider": "infersports_keyless",
-  "status": "MARKETS_OBSERVED",
+  "status": "NO_USABLE_MARKETS",
   "capability": "HEALTH_ONLY",
-  "generated_at": "2026-10-02T08:28:46.427937+00:00",
+  "generated_at": "2026-10-03T08:04:03.278422+00:00",
   "scheduled_events_seen": 6,
-  "events_probed": 4,
+  "events_probed": 0,
   "missing_event_ids": 0,
-  "excluded_nonfuture_events": 2,
-  "successful_events": 4,
+  "excluded_nonfuture_events": 6,
+  "successful_events": 0,
   "stale_blocks": 0,
-  "market_counts": {
-    "1x2": 3,
-    "asian_handicap": 3,
-    "totals": 3
-  },
-  "two_sided_market_counts": {
-    "1x2": 3,
-    "asian_handicap": 3,
-    "totals": 3
-  },
-  "quarter_line_counts": {
-    "asian_handicap": 1,
-    "totals": 1
-  },
-  "bookmaker_counts": {
-    "crown": 9
-  },
+  "market_counts": {},
+  "two_sided_market_counts": {},
+  "quarter_line_counts": {},
+  "bookmaker_counts": {},
   "errors": [],
-  "samples": [
-    {
-      "event_id": "evt_VE07CJS2",
-      "bookmaker": "crown",
-      "market_type": "1x2",
-      "line": null,
-      "status": "open",
-      "as_of": "2026-10-02T08:27:31Z",
-      "two_sided": true
-    },
-    {
-      "event_id": "evt_VE07CJS2",
-      "bookmaker": "crown",
-      "market_type": "asian_handicap",
-      "line": 0.25,
-      "status": "open",
-      "as_of": "2026-10-02T08:27:31Z",
-      "two_sided": true
-    },
-    {
-      "event_id": "evt_VE07CJS2",
-      "bookmaker": "crown",
-      "market_type": "totals",
-      "line": 3.0,
-      "status": "open",
-      "as_of": "2026-10-02T07:31:09Z",
-      "two_sided": true
-    },
-    {
-      "event_id": "evt_YT3MTABW",
-      "bookmaker": "crown",
-      "market_type": "1x2",
-      "line": null,
-      "status": "open",
-      "as_of": "2026-10-02T08:26:10Z",
-      "two_sided": true
-    },
-    {
-      "event_id": "evt_YT3MTABW",
-      "bookmaker": "crown",
-      "market_type": "asian_handicap",
-      "line": -1.0,
-      "status": "open",
-      "as_of": "2026-10-02T08:26:10Z",
-      "two_sided": true
-    },
-    {
-      "event_id": "evt_YT3MTABW",
-      "bookmaker": "crown",
-      "market_type": "totals",
-      "line": 3.0,
-      "status": "open",
-      "as_of": "2026-10-02T08:26:10Z",
-      "two_sided": true
-    }
-  ],
+  "samples": [],
   "execution_candidate": false,
   "qualification_blocker": "SOURCE_TIMESTAMP_AND_MAINLINE_SEMANTICS_NOT_QUALIFIED",
   "note": "Health-only live probe. Provider is not promoted to production until this report demonstrates fresh two-sided pre-match AH and totals coverage on the keyless tier."
