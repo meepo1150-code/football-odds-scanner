@@ -6,6 +6,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 from .europe_pinnacle_discovery import SNAPSHOT_PATH,AUDIT_PATH,_merge_jsonl
 from .propline_provider import fetch
+from .research_v2_integrity import trusted_snapshot
 
 BKK=ZoneInfo("Asia/Bangkok")
 REPORT=Path("reports/propline_research_v2_status.json")
@@ -54,6 +55,10 @@ def run(root=Path(".")):
             snap["source_semantics"]="PROPLINE_PINNACLE_TWO_SIDED_CORE_MAINLINE"
             snap["mainline_verified"]=True
             snap["promotion_eligible"]=True
+            if not trusted_snapshot(snap):
+                snap["promotion_eligible"]=False
+                audits.append({"football_day":day,"fixture_id":fid,"provider":"propline","kickoff":ko.isoformat(),"observed_at":observed,"eligibility_status":"QUARANTINED","eligibility_reason":"PREMATCH_OR_MAINLINE_INTEGRITY_REJECTED","research_population":False,"quarantined":True,"rejected_snapshot":snap})
+                continue
             snaps.append(snap)
             audits.append({"football_day":day,"fixture_id":fid,"provider":"propline","bookmaker":m["bookmaker"],"league":m["sport"],"home":m["home"],"away":m["away"],"kickoff":ko.isoformat(),"observed_at":observed,"scheduled_target_at":snap["scheduled_target_at"],"observation_timing":snap["observation_timing"],"eligibility_status":"ELIGIBLE","eligibility_reason":"PINNACLE_TWO_SIDED_CORE_MAINLINE","research_population":True,"quarantined":False})
         else:
