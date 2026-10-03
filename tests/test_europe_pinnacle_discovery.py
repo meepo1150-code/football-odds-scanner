@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from odds_scanner.europe_pinnacle_discovery import _merge_jsonl
+from odds_scanner.europe_pinnacle_discovery import BATCH_SIZE, _chunks, _merge_jsonl
 
 
 def test_merge_snapshots_deduplicates_fixture_observation(tmp_path: Path):
@@ -13,3 +13,10 @@ def test_merge_snapshots_deduplicates_fixture_observation(tmp_path: Path):
     rows = [json.loads(x) for x in path.read_text(encoding='utf-8').splitlines()]
     assert len(rows) == 2
     assert {x['fixture_id'] for x in rows} == {'1','2'}
+
+
+def test_oddspapi_tournament_batches_never_exceed_provider_safe_limit():
+    assert BATCH_SIZE == 5
+    batches = list(_chunks(list(range(54)), BATCH_SIZE))
+    assert len(batches) == 11
+    assert max(map(len, batches)) <= 5
