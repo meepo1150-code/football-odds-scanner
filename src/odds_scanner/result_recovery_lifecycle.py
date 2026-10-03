@@ -11,6 +11,10 @@ RETIRED=Path('data/normalized/research_v2_retired_fixtures.jsonl')
 SNAP=Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl')
 RESULTS=Path('data/normalized/oddspapi_finished_results.jsonl')
 
+# Explicit user decision 2026-10-03: remove these two unresolved conflicts
+# from active recovery, retaining raw and conflict evidence.
+USER_RETIRED_CONFLICTS={'pinnwire:1637178704', 'pinnwire:1637183976'}
+
 # User-authorized triage of the existing backlog, not a future collection ban.
 LOW_TIER_REVIEW_CUTOFF='2026-10-02T07:21:00+00:00'
 LOW_TIER_LEAGUES={
@@ -123,6 +127,10 @@ def review(root=Path('.'),now=None):
         eligible=scope_excluded or (fid not in blocked and len(ids)>=4 and len(providers)>=2 and now-ko>=timedelta(hours=72)
                   and max(times)-min(times)>=timedelta(hours=24) and len(identities[fid])==1)
         item={'fixture_id':fid,'home':s.get('home'),'away':s.get('away'),'league':s.get('league'),'kickoff':s.get('kickoff'),'attempt_count':len(ids),'round_ids':ids,'sources':sorted(providers),'reviewed_at':now.isoformat()}
+        if fid in USER_RETIRED_CONFLICTS and fid in blocked:
+            item.update(status='RETIRED_UNRESOLVED',reason='USER_AUTHORIZED_CONFLICT_ARCHIVE_2026_10_03',raw_preserved=True)
+            retired.append(item)
+            continue
         if eligible:
             item.update(status='RETIRED_UNRESOLVED',reason=('MISSING_TEAM_IDENTITY_AFTER_EXHAUSTED_RECOVERY' if not s.get('home') or not s.get('away') else 'NO_VERIFIED_90_MINUTE_RESULT_AFTER_4_PLUS_DISTINCT_ROUNDS_AND_2_SOURCES'),raw_preserved=True)
             if scope_excluded:
