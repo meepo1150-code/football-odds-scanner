@@ -82,6 +82,30 @@ def _category(v):
     if re.search(r"women|woman|female|feminin|femenin|kvinner|dam|\(w\)",s): return "women"
     return None
 
+# Explicit club identities, scoped to the observed competition. Never infer a
+# club alias from a shared kickoff, score, substring or edit distance.
+REVIEWED_CLUB_ALIASES = {
+    ('laliga2', 'udalmeria'): 'Almería',
+    ('leaguetwo', 'rochdaleafc'): 'Rochdale',
+    ('leagueone', 'leytonorientlondon'): 'Leyton Orient',
+    ('eerstedivisie', 'vitessearnhem'): 'Vitesse',
+}
+REVIEWED_CLUB_SOURCES = {
+    'udalmeria': 'https://www.udalmeriasad.com/un-club-joven',
+    'rochdaleafc': 'https://rochdaleafc.co.uk/club/',
+    'leytonorientlondon': 'https://shop.leytonorient.com/pages/club-store-info',
+    'vitessearnhem': 'https://vitesse.nl/club/historie',
+}
+
+def _reviewed_identity(snapshot, event):
+    league = _norm(snapshot.get('league'))
+    if not league or league != _norm(event.get('league')):
+        return False
+    def key(name):
+        return _safe_club_key(REVIEWED_CLUB_ALIASES.get((league, _norm(name)), name))
+    return (key(snapshot.get('home')) == key(event.get('home'))
+            and key(snapshot.get('away')) == key(event.get('away')))
+
 def _category_base_key(v, category):
     n=_safe_club_key(v)
     if category=="women":
@@ -189,6 +213,8 @@ def run(root=Path(".")):
         if not ms:
             ms=safe_idx.get((_safe_club_key(s.get("home")),_safe_club_key(s.get("away")),ko.isoformat()),[])
         if not ms:
+            ms=[e for e in kickoff_idx.get(ko.isoformat(), []) if _reviewed_identity(s, e)]
+        if not ms:
             category=_category(s.get("league"))
             if category:
                 contextual=[]
@@ -217,6 +243,10 @@ def run(root=Path(".")):
             continue
         added.append({"fixture_id":fid,"ft_home_goals":e["hg"],"ft_away_goals":e["ag"],"result_source":"FOTMOB_DAILY_MATCH_EXACT_IDENTITY","result_identity":"EXACT_ALIAS_SAFE_TOKEN_OR_LEAGUE_CATEGORY_CONTEXT_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE","provider_event_id":e["id"],"provider_evidence":{"provider":"fotmob","event_id":e["id"],"home":e["home"],"away":e["away"],"kickoff":e["kickoff"].isoformat(),"league":e["league"]},"promotion_eligible":False,"research_only":True})
         added[-1]['provider_evidence'].update(retrieved_at=e.get('retrieved_at'),status=e.get('provider_status'))
+        alias_sources=[REVIEWED_CLUB_SOURCES[_norm(s.get(side))] for side in ('home','away')
+                       if (_norm(s.get('league')), _norm(s.get(side))) in REVIEWED_CLUB_ALIASES]
+        if alias_sources:
+            added[-1]['provider_evidence']['reviewed_club_identity_sources']=alias_sources
     revalidated,revoked=revalidate_existing(root,existing,events)
     added_count=merge_normalized_results(root/RESULTS,added)
     report={"schema_version":"1.0","classification":"FOTMOB_EXACT_RESULT_BACKFILL","missing_before":len(missing),"missing_after":len(missing)-len(added),"verified_bridge_matches":len(added),"days_requested":days,"events_fetched":len(events),"exact_results_added":len(added),"ambiguous_exact_matches_rejected":ambiguous,"exact_identity_unfinished":exact_unfinished,"no_exact_identity":no_exact_identity,"kickoff_candidate_only":kickoff_candidate_only,"kickoff_candidate_samples":candidate_samples,"request_failures":failures,"matching_policy":"EXACT_ALIAS_OR_SAFE_CLUB_TOKEN_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY","fuzzy_matching_used":False,"promotion_eligible":False}
