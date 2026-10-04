@@ -1,21 +1,90 @@
 {
   "schema_version": "1.1",
   "provider": "infersports_keyless",
-  "status": "NO_USABLE_MARKETS",
+  "status": "MARKETS_OBSERVED",
   "capability": "HEALTH_ONLY",
-  "generated_at": "2026-10-03T08:04:03.278422+00:00",
+  "generated_at": "2026-10-04T08:25:13.450462+00:00",
   "scheduled_events_seen": 6,
-  "events_probed": 0,
+  "events_probed": 5,
   "missing_event_ids": 0,
-  "excluded_nonfuture_events": 6,
-  "successful_events": 0,
-  "stale_blocks": 0,
-  "market_counts": {},
-  "two_sided_market_counts": {},
-  "quarter_line_counts": {},
-  "bookmaker_counts": {},
+  "excluded_nonfuture_events": 1,
+  "successful_events": 5,
+  "stale_blocks": 5,
+  "market_counts": {
+    "1x2": 3,
+    "asian_handicap": 4,
+    "totals": 3
+  },
+  "two_sided_market_counts": {
+    "1x2": 3,
+    "asian_handicap": 3,
+    "totals": 3
+  },
+  "quarter_line_counts": {
+    "asian_handicap": 1
+  },
+  "bookmaker_counts": {
+    "macau": 4,
+    "m8bet": 3,
+    "nova88": 3
+  },
   "errors": [],
-  "samples": [],
+  "samples": [
+    {
+      "event_id": "evt_DJ5N2F8P",
+      "bookmaker": "macau",
+      "market_type": "1x2",
+      "line": null,
+      "status": "open",
+      "as_of": "2026-10-02T05:01:37Z",
+      "two_sided": true
+    },
+    {
+      "event_id": "evt_DJ5N2F8P",
+      "bookmaker": "macau",
+      "market_type": "asian_handicap",
+      "line": -1.25,
+      "status": "open",
+      "as_of": "2026-10-02T05:01:37Z",
+      "two_sided": true
+    },
+    {
+      "event_id": "evt_DJ5N2F8P",
+      "bookmaker": "macau",
+      "market_type": "asian_handicap",
+      "line": -1.0,
+      "status": "suspended",
+      "as_of": "2026-09-30T12:00:10Z",
+      "two_sided": false
+    },
+    {
+      "event_id": "evt_DJ5N2F8P",
+      "bookmaker": "macau",
+      "market_type": "totals",
+      "line": 3.0,
+      "status": "open",
+      "as_of": "2026-10-02T05:01:37Z",
+      "two_sided": true
+    },
+    {
+      "event_id": "evt_G5J8Z7Y6",
+      "bookmaker": "m8bet",
+      "market_type": "1x2",
+      "line": null,
+      "status": "open",
+      "as_of": "2026-10-02T17:04:01Z",
+      "two_sided": true
+    },
+    {
+      "event_id": "evt_G5J8Z7Y6",
+      "bookmaker": "nova88",
+      "market_type": "1x2",
+      "line": null,
+      "status": "open",
+      "as_of": "2026-10-02T17:03:05Z",
+      "two_sided": true
+    }
+  ],
   "execution_candidate": false,
   "qualification_blocker": "SOURCE_TIMESTAMP_AND_MAINLINE_SEMANTICS_NOT_QUALIFIED",
   "note": "Health-only live probe. Provider is not promoted to production until this report demonstrates fresh two-sided pre-match AH and totals coverage on the keyless tier."
