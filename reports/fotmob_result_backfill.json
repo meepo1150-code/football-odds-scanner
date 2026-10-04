@@ -1,20 +1,21 @@
 {
   "schema_version": "1.0",
   "classification": "FOTMOB_EXACT_RESULT_BACKFILL",
-  "missing_before": 25,
-  "missing_after": 25,
-  "verified_bridge_matches": 0,
+  "missing_before": 27,
+  "missing_after": 26,
+  "verified_bridge_matches": 1,
   "days_requested": [
     "2026-10-02",
     "2026-10-03",
-    "2026-10-04"
+    "2026-10-04",
+    "2026-10-05"
   ],
-  "events_fetched": 747,
-  "exact_results_added": 0,
+  "events_fetched": 849,
+  "exact_results_added": 1,
   "ambiguous_exact_matches_rejected": 0,
   "exact_identity_unfinished": 0,
-  "no_exact_identity": 25,
-  "kickoff_candidate_only": 25,
+  "no_exact_identity": 26,
+  "kickoff_candidate_only": 26,
   "kickoff_candidate_samples": [
     {
       "fixture_id": "id1000001974975976",
@@ -26709,14 +26710,35 @@
           "league": "Premiere Ligue"
         }
       ]
+    },
+    {
+      "fixture_id": "id1000005472477470",
+      "snapshot": {
+        "home": "Sporting Gijon",
+        "away": "RC Celta Fortuna",
+        "kickoff": "2026-10-04T14:15:00+00:00"
+      },
+      "fotmob_candidates": [
+        {
+          "id": 5868480,
+          "home": "Sporting Gijón",
+          "away": "Celta Fortuna",
+          "finished": true,
+          "score": [
+            3,
+            2
+          ],
+          "league": "LaLiga2"
+        }
+      ]
     }
   ],
   "request_failures": [],
   "matching_policy": "EXACT_ALIAS_OR_SAFE_CLUB_TOKEN_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY",
   "fuzzy_matching_used": false,
   "promotion_eligible": false,
-  "generated_at": "2026-10-04T13:11:45.519607+00:00",
-  "requests_used": 2,
+  "generated_at": "2026-10-04T17:35:47.247870+00:00",
+  "requests_used": 3,
   "cache_hits": 1,
   "stale_cache_fallbacks": 0,
   "fetch_evidence": [
@@ -26729,13 +26751,19 @@
     {
       "day": "2026-10-03",
       "source": "NETWORK",
-      "fetched_at": "2026-10-04T13:11:44.230291+00:00",
+      "fetched_at": "2026-10-04T17:35:46.121777+00:00",
       "requests": 1
     },
     {
       "day": "2026-10-04",
       "source": "NETWORK",
-      "fetched_at": "2026-10-04T13:11:44.914514+00:00",
+      "fetched_at": "2026-10-04T17:35:46.515028+00:00",
+      "requests": 1
+    },
+    {
+      "day": "2026-10-05",
+      "source": "NETWORK",
+      "fetched_at": "2026-10-04T17:35:46.858082+00:00",
       "requests": 1
     }
   ],
