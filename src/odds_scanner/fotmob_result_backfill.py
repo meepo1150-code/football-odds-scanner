@@ -89,17 +89,31 @@ REVIEWED_CLUB_ALIASES = {
     ('leaguetwo', 'rochdaleafc'): 'Rochdale',
     ('leagueone', 'leytonorientlondon'): 'Leyton Orient',
     ('eerstedivisie', 'vitessearnhem'): 'Vitesse',
+    ('1stdivision', 'hoeddil'): 'Hødd',
+    ('1stdivision', 'oddsbk'): 'Odds Ballklubb',
+    ('1stdivision', 'stroemsgodsetif'): 'Strømsgodset',
+    ('1stdivision', 'aasanefotball'): 'Åsane',
 }
 REVIEWED_CLUB_SOURCES = {
     'udalmeria': 'https://www.udalmeriasad.com/un-club-joven',
     'rochdaleafc': 'https://rochdaleafc.co.uk/club/',
     'leytonorientlondon': 'https://shop.leytonorient.com/pages/club-store-info',
     'vitessearnhem': 'https://vitesse.nl/club/historie',
+    'hoeddil': 'https://www.hodd.no/ilhoddfotball',
+    'oddsbk': 'https://www.odd.no/',
+    'stroemsgodsetif': 'https://www.godset.no/',
+    'aasanefotball': 'https://www.asanefotball.no/',
 }
 
 def _reviewed_identity(snapshot, event):
     league = _norm(snapshot.get('league'))
-    if not league or league != _norm(event.get('league')):
+    # Generic "1st Division" is bridged only when BOTH observed club names are
+    # in this reviewed Norwegian set, never for another country's division.
+    norwegian = league == '1stdivision' and all(
+        (league, _norm(snapshot.get(side))) in REVIEWED_CLUB_ALIASES
+        for side in ('home', 'away'))
+    expected_league = '1divisjon' if norwegian else league
+    if not league or expected_league != _norm(event.get('league')):
         return False
     def key(name):
         return _safe_club_key(REVIEWED_CLUB_ALIASES.get((league, _norm(name)), name))

@@ -37,3 +37,15 @@ def test_recovery_keeps_exact_kickoff_unique_ft_gate(tmp_path,monkeypatch,change
         row=json.loads((tmp_path/f.RESULTS).read_text().splitlines()[0])
         assert row['ft_home_goals']==2 and row['ft_away_goals']==1
         assert row['provider_evidence']['reviewed_club_identity_sources']
+
+
+@pytest.mark.parametrize('home,away,source_home,source_away', [
+    ('Hoedd IL','Odds BK','Hødd','Odds Ballklubb'),
+    ('Stroemsgodset IF','Aasane Fotball','Strømsgodset','Åsane'),
+])
+def test_norwegian_competition_bridge_requires_both_reviewed_clubs(home,away,source_home,source_away):
+    s={'home':home,'away':away,'league':'1st Division'}
+    e={'home':source_home,'away':source_away,'league':'1. Divisjon'}
+    assert f._reviewed_identity(s,e)
+    assert not f._reviewed_identity(s,{**e,'league':'1st Division'})
+    assert not f._reviewed_identity({**s,'away':'Other'}, {**e,'away':'Other'})
