@@ -1,30 +1,30 @@
 {
   "schema_version": "1.1",
   "football_day": "2026-10-04",
-  "generated_at": "2026-10-04T12:14:34.452946+00:00",
+  "generated_at": "2026-10-04T12:15:20.120031+00:00",
   "workflow_success_is_not_data_source_health": true,
   "status": "COLLECTING_WITH_EXTERNAL_BLOCKERS",
   "data_assertions_passed": true,
   "assertion_failures": [],
   "counts": {
-    "raw_snapshots": 1482,
-    "verified_snapshots": 1392,
+    "raw_snapshots": 1487,
+    "verified_snapshots": 1397,
     "quarantined_snapshots": 90,
     "recovered_legacy_snapshots": 0,
-    "unresolved_ft_fixtures": 413,
+    "unresolved_ft_fixtures": 417,
     "settled_statistical_fixtures": 407,
     "core_price_settled_fixtures": 384,
     "movement_fixtures": 132,
     "numeric_movement_deltas": 846,
-    "current_day_valid_scans": 8,
-    "current_day_distinct_scan_times": 1,
+    "current_day_valid_scans": 13,
+    "current_day_distinct_scan_times": 2,
     "scope_excluded_snapshots": 238,
-    "current_day_canonical_fixtures": 8,
+    "current_day_canonical_fixtures": 13,
     "collapsed_provider_fixture_ids": 8,
-    "unresolved_matured_3h_fixtures": 405,
-    "unresolved_future_or_recent_fixtures": 8,
+    "unresolved_matured_3h_fixtures": 404,
+    "unresolved_future_or_recent_fixtures": 13,
     "retired_unresolved_ft_fixtures": 380,
-    "active_unresolved_matured_3h_fixtures": 25
+    "active_unresolved_matured_3h_fixtures": 24
   },
   "providers": {
     "pinnwire": {
@@ -49,10 +49,10 @@
       "status": "QUOTA_AVAILABLE",
       "request_limit": 250,
       "request_count": 72,
-      "request_remaining": 178,
+      "request_remaining": null,
       "generated_at": "2026-10-04T12:14:33.008791+00:00",
       "capability": "REQUIRES_CURRENT_VALIDATION",
-      "balance_status": "LAST_ACCOUNT_OBSERVATION",
+      "balance_status": "STALE_AFTER_RECORDED_USAGE",
       "request_remaining_last_observed": 178,
       "current_balance_verified": false
     }
