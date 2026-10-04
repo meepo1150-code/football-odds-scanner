@@ -212,8 +212,8 @@
     "USER_REVIEWED_FIXTURE_OUT_OF_SCOPE": 18,
     "REVIEWED_LEAGUE_OUT_OF_SCOPE": 3
   },
-  "provider_fixture_ids": 820,
-  "raw_unresolved_provider_fixture_ids": 405,
+  "provider_fixture_ids": 828,
+  "raw_unresolved_provider_fixture_ids": 413,
   "fixture_identity_bridges": [
     {
       "canonical_fixture_id": "pinnwire:1636867987",
@@ -412,7 +412,7 @@
   "snapshot_selection": "LATEST_VERIFIED_OBSERVATION_THEN_SOURCE_FIXTURE_ID_TIEBREAK",
   "classification": "RESEARCH_V2_AH_MARKET_STATE_STATISTICS",
   "statistical_population_policy": "VERIFIED_FT_ONLY; RAW UNRESOLVED FIXTURES QUARANTINED AND EXCLUDED",
-  "generated_at": "2026-10-04T11:04:31.814286+00:00",
+  "generated_at": "2026-10-04T11:07:42.835235+00:00",
   "research_only": true,
   "recommendation_semantics": false,
   "signal_policy": "N>=30 AND ROI DIRECTION AGREES WITH WILSON95 VS 50%; OTHERWISE INCONCLUSIVE",
@@ -435,16 +435,16 @@
     "NOT_EXACT_2_5": 212,
     "VERIFIED_EXACT_2_5_PREMATCH": 195
   },
-  "snapshot_rows": 1146,
-  "raw_snapshot_rows": 1474,
+  "snapshot_rows": 1154,
+  "raw_snapshot_rows": 1482,
   "quarantined_snapshot_rows": 90,
   "quarantine_policy": "LEGACY_PROPLINE_EXCLUDED; VERIFIED_PINNACLE_TWO_SIDED_CORE_MAINLINE_ALLOWED",
-  "unique_snapshot_fixtures": 812,
+  "unique_snapshot_fixtures": 820,
   "settled_fixtures": 407,
   "core_price_settled_fixtures": 384,
   "missing_result_fixtures": 0,
-  "raw_unresolved_ft_fixtures": 405,
-  "active_unresolved_ft_fixtures": 25,
+  "raw_unresolved_ft_fixtures": 413,
+  "active_unresolved_ft_fixtures": 33,
   "retired_unresolved_ft_fixtures": 380,
   "retired_unresolved_fixture_ids": [
     "api_football:1511407",
@@ -828,7 +828,7 @@
     "pinnwire:e6ccb4c32417b5ad",
     "pinnwire:ef8eaeb9f711d629"
   ],
-  "excluded_missing_ft_from_statistical_population": 405,
+  "excluded_missing_ft_from_statistical_population": 413,
   "excluded_derivative_markets_from_ft_completeness": 0,
   "eligible_statistical_fixtures": 407,
   "ft_completeness_pct": 100.0,
@@ -837,17 +837,18 @@
     "UNKNOWN": 170,
     "api_football": 20,
     "pinnwire": 590,
-    "propline": 32
+    "propline": 40
   },
   "pinnwire_missing_result_fixtures": 0,
   "non_pinnwire_missing_result_fixtures": 0,
   "raw_unresolved_ft_by_provider": {
     "UNKNOWN": 27,
     "api_football": 20,
-    "pinnwire": 358
+    "pinnwire": 358,
+    "propline": 8
   },
   "raw_pinnwire_unresolved_ft": 358,
-  "raw_non_pinnwire_unresolved_ft": 47,
+  "raw_non_pinnwire_unresolved_ft": 55,
   "ambiguous_result_fixtures": 0,
   "baseline_by_market_side_line": [
     {
@@ -13384,6 +13385,6 @@
     }
   ],
   "active_overdue_ft_fixtures": 25,
-  "active_future_or_recent_ft_fixtures": 0,
+  "active_future_or_recent_ft_fixtures": 8,
   "active_unknown_kickoff_ft_fixtures": 0
 }
