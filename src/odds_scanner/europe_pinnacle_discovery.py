@@ -6,6 +6,7 @@ from datetime import datetime, time as dtime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 from email.utils import parsedate_to_datetime
+from .research_request_budget import allocation
 from .europe_bookmaker_coverage_probe import BOOKMAKER, quota_allows_probe, summarize_rows
 
 # Research V2 is the primary forward data collector. Keep a small emergency reserve,
@@ -75,8 +76,8 @@ def _record_slot(path,report,state,reason=None):
         for line in path.read_text(encoding='utf-8').splitlines():
             try:r=json.loads(line)
             except json.JSONDecodeError:continue
-            if isinstance(r,dict) and r.get('scheduled_target_at'):rows[str(r['scheduled_target_at'])]=r
-    rows[str(row['scheduled_target_at'])]=row
+            if isinstance(r,dict) and r.get('scheduled_target_at'):rows[(str(r['scheduled_target_at']),str(r.get('finalized_at')))]=r
+    rows[(str(row['scheduled_target_at']),str(row['finalized_at']))]=row
     path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text(''.join(json.dumps(x,ensure_ascii=False,separators=(',',':'))+'\n' for _,x in sorted(rows.items())),encoding='utf-8')
 
@@ -110,6 +111,19 @@ def run(root=Path('.')):
     targets=_load_json(root/TARGET_PATH) or {}; selected=targets.get('tournaments') or [] if isinstance(targets,dict) else []; ids=[x.get('tournament_id') for x in selected if isinstance(x,dict) and x.get('tournament_id') is not None]
     if not ids or len(ids)!=len(set(ids)):report.update(status='TARGET_MAP_INVALID',resolved_competitions=len(ids),requests_used=0,planned_requests=0);return _write(report,root)
     normal=(len(ids)+BATCH_SIZE-1)//BATCH_SIZE; maxplan=normal*MAX_ATTEMPTS_PER_BATCH; report.update(resolved_competitions=len(ids),planned_requests=normal,max_planned_requests_with_retries=maxplan,coverage_mode='FULL_RESEARCH_UNIVERSE')
+    try:
+        ids, budget = allocation(root/SLOT_LEDGER_PATH, ids, now, BATCH_SIZE)
+    except (ValueError, KeyError, TypeError, OSError) as exc:
+        report.update(status='TARGET_MAP_INVALID', requests_used=0, errors=['Request budget ledger invalid: '+str(exc)])
+        return _write(report, root)
+    report.update(budget)
+    if not ids:
+        report.update(status='SKIPPED_RESEARCH_REQUEST_BUDGET', requests_used=0, planned_requests=0,
+                      data_source_health='NOT_PROBED_BUDGET_LIMIT', next_action='FREE_COLLECTORS_CONTINUE')
+        return _write(report, root)
+    selected=[x for x in selected if x.get('tournament_id') in ids]
+    normal=(len(ids)+BATCH_SIZE-1)//BATCH_SIZE
+    report.update(resolved_competitions=len(ids), planned_requests=normal, max_planned_requests_with_retries=normal)
     key=os.getenv(ENV_KEY,'').strip()
     if not key:report.update(status='API_KEY_NOT_CONFIGURED',requests_used=0);return _write(report,root)
     try:q=summarize_account(_get('/account',key))
@@ -139,7 +153,7 @@ def run(root=Path('.')):
                 used+=1
                 if getattr(e,'code',None)==429:
                     report.update(data_source_health='RATE_LIMITED', rate_limit_cooldown_until=_rate_limit_until(e, now))
-                report.update(status='API_REQUEST_FAILED',requests_used=used,rate_limit_retries=retries,errors=[f'{type(e).__name__}: {e}']);return _write(report,root)
+                report.update(status='API_REQUEST_FAILED',requests_used=used,rate_limit_retries=retries,errors=[f'{type(e).__name__}: {e}']);_record_slot(root/SLOT_LEDGER_PATH,report,'FAILED');return _write(report,root)
         payloads.append(payload)
     strict=[];diag=[];audit=[];alln=0;excluded=0
     for payload in payloads:
