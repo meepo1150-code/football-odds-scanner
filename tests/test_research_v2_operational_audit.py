@@ -46,7 +46,10 @@ def test_weekend_missing_slots_are_degraded_even_when_files_are_consistent(tmp_p
         'observed_at':'2026-10-04T14:05:00Z','scheduled_target_at':'2026-10-04T21:05:00+07:00',
         'kickoff':'2026-10-04T20:00:00Z','research_only':True,
         'mainline_verified':True,'promotion_eligible':True,
-        'ah':{'selected_side_line':-0.5,'selected_side_price':1.95}
+        'source_semantics':'PROPLINE_PINNACLE_TWO_SIDED_CORE_MAINLINE',
+        'favorite_side':'H',
+        'ah':{'home_line':-0.5,'away_line':0.5,'home_price':1.95,'away_price':1.95,
+              'selected_side_line':-0.5,'selected_side_price':1.95}
     })+'\n')
     r=build(tmp_path,datetime.fromisoformat('2026-10-04T15:30:00+00:00'))
     assert r['status']=='DEGRADED_DATA_COVERAGE'
