@@ -28,3 +28,29 @@ def test_overnight_audit_uses_dashboard_football_day(tmp_path):
     result=build(tmp_path, datetime.fromisoformat('2026-10-01T01:00:00+07:00'))
     assert result['football_day']=='2026-09-30'
     assert result['counts']['current_day_valid_scans']==1
+
+
+def test_weekend_missing_slots_are_degraded_even_when_files_are_consistent(tmp_path):
+    reports=tmp_path/'reports'; reports.mkdir()
+    for n,d in {
+        'research_v2_pattern_statistics':{'raw_snapshot_rows':1,'snapshot_rows':1,'quarantined_snapshot_rows':0},
+        'research_v2_movement_status':{'source_snapshot_rows':1},
+        'propline_research_v2_status':{'status':'RESEARCH_V2_OBSERVED','generated_at':'2026-10-04T14:05:00Z'}
+    }.items():
+        (reports/f'{n}.json').write_text(json.dumps(d))
+    path=tmp_path/'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'
+    path.parent.mkdir(parents=True)
+    path.write_text(json.dumps({
+        'fixture_id':'sample','provider':'propline','source':'propline:pinnacle',
+        'bookmaker':'pinnacle','football_day':'2026-10-04',
+        'observed_at':'2026-10-04T14:05:00Z','scheduled_target_at':'2026-10-04T21:05:00+07:00',
+        'kickoff':'2026-10-04T20:00:00Z','research_only':True,
+        'mainline_verified':True,'promotion_eligible':True,
+        'ah':{'selected_side_line':-0.5,'selected_side_price':1.95}
+    })+'\n')
+    r=build(tmp_path,datetime.fromisoformat('2026-10-04T15:30:00+00:00'))
+    assert r['status']=='DEGRADED_DATA_COVERAGE'
+    assert 'CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE' in r['assertion_failures']
+    assert r['counts']['expected_elapsed_slots']==7
+    assert r['counts']['observed_slots']==1
+    assert r['counts']['missing_elapsed_slots']==6
