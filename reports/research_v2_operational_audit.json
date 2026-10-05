@@ -1,11 +1,45 @@
 {
-  "schema_version": "1.1",
+  "schema_version": "1.2",
   "football_day": "2026-10-05",
-  "generated_at": "2026-10-05T07:02:33.080372+00:00",
+  "generated_at": "2026-10-05T08:29:40.258928+00:00",
   "workflow_success_is_not_data_source_health": true,
-  "status": "COLLECTING_WITH_EXTERNAL_BLOCKERS",
+  "status": "NOT_DUE",
   "data_assertions_passed": true,
   "assertion_failures": [],
+  "collection_health_passed": true,
+  "collection_failures": [],
+  "collection": {
+    "bangkok_now": "2026-10-05T15:29:40.258928+07:00",
+    "canonical_slots": [
+      {
+        "target_time": "2026-10-05T18:00:00+07:00",
+        "state": "UPCOMING",
+        "provider": null,
+        "observed_at": null,
+        "lag_minutes": null,
+        "valid_snapshot_count": 0,
+        "canonical_fixture_count": 0,
+        "recovered": false
+      },
+      {
+        "target_time": "2026-10-05T21:00:00+07:00",
+        "state": "UPCOMING",
+        "provider": null,
+        "observed_at": null,
+        "lag_minutes": null,
+        "valid_snapshot_count": 0,
+        "canonical_fixture_count": 0,
+        "recovered": false
+      }
+    ],
+    "expected_elapsed_slots": 0,
+    "observed_slots": 0,
+    "missing_elapsed_slots": 0,
+    "coverage_fraction": null,
+    "collection_state": "NOT_DUE",
+    "recovered_slots": [],
+    "missed_slots": []
+  },
   "counts": {
     "raw_snapshots": 1495,
     "verified_snapshots": 1405,
@@ -24,7 +58,7 @@
     "expected_elapsed_slots": 0,
     "observed_slots": 0,
     "missing_elapsed_slots": 0,
-    "coverage_fraction": 1.0,
+    "coverage_fraction": null,
     "unresolved_matured_3h_fixtures": 408,
     "unresolved_future_or_recent_fixtures": 0,
     "retired_unresolved_ft_fixtures": 380,
