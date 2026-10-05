@@ -61,17 +61,17 @@ def _schedule_timing(now):
     return (target,round((local-target).total_seconds()/60,2)) if target else (None,None)
 
 def _slot_done(path,target):
-    from .research_v2_slots import valid_completion
+    from .research_v2_slots import completed, read_snapshots
     if target is None or not path.exists(): return False
-    for line in path.read_text(encoding='utf-8').splitlines():
+    rows=[]
+    for line in path.read_text().splitlines():
         try: row=json.loads(line)
-        except json.JSONDecodeError: continue
-        if isinstance(row,dict) and valid_completion(row,target,datetime.now(timezone.utc)):
-            return True
-    return False
+        except ValueError: continue
+        if isinstance(row,dict): rows.append(row)
+    return completed(target, datetime.now(timezone.utc), rows, read_snapshots(path.parents[2]))
 
 def _record_slot(path,report,state,reason=None):
-    row={'scheduled_target_at':report.get('scheduled_target_at'),'provider':report.get('provider','oddspapi'),'football_day':report.get('football_day'),'state':state,'actual_observed_at':report.get('actual_observed_at'),'schedule_lag_minutes':report.get('schedule_lag_minutes'),'observation_timing':report.get('observation_timing'),'requests_used':report.get('requests_used',0),'football_day_fixtures':report.get('football_day_fixtures'),'strict_snapshots':report.get('strict_snapshots_this_run'),'reason':reason or report.get('status'),'finalized_at':report.get('generated_at')}
+    row={'scheduled_target_at':report.get('scheduled_target_at'),'provider':report.get('provider','oddspapi'),'football_day':report.get('football_day'),'state':state,'actual_observed_at':report.get('actual_observed_at'),'schedule_lag_minutes':report.get('schedule_lag_minutes'),'observation_timing':report.get('observation_timing'),'requests_used':report.get('requests_used',0),'football_day_fixtures':report.get('football_day_fixtures'),'strict_snapshots':report.get('strict_snapshots_this_run'),'reason':reason or report.get('status'),'finalized_at':report.get('generated_at'),'collection_succeeded':report.get('status') in {'RESEARCH_V2_OBSERVED','ZERO_USABLE_FIXTURES'} and not report.get('errors')}
     rows={}
     if path.exists():
         for line in path.read_text(encoding='utf-8').splitlines():

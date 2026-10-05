@@ -6,17 +6,18 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 BKK = ZoneInfo('Asia/Bangkok')
-from .research_v2_slots import targets as canonical_targets, read_ledger, valid_completion
+from .research_v2_slots import targets as canonical_targets, read_ledger, read_snapshots, completed
 
 
-def due(now, report, event='schedule', fallback=None, ledger_rows=None):
+def due(now, report, event='schedule', fallback=None, ledger_rows=None, snapshots=None):
     if event != 'schedule':
         return True  # Manual/code-change runs still obey the transport cooldown.
     local = now.astimezone(BKK)
-    targets = [t for t in canonical_targets(local.date())
+    from .europe_pinnacle_discovery import _football_day_bounds
+    targets = [t for t in canonical_targets(_football_day_bounds(now)[2])
                if timedelta(0) <= local-t <= timedelta(minutes=150)]
     if ledger_rows is not None:
-        targets = [t for t in targets if not any(valid_completion(row, t, local) for row in ledger_rows)]
+        targets = [t for t in targets if not completed(t, local, ledger_rows, snapshots or [])]
     if not targets:
         return False
     for output in (() if ledger_rows is not None else (report, fallback or {})):
@@ -47,4 +48,4 @@ if __name__ == '__main__':
         fallback = json.loads(Path('reports/propline_research_v2_status.json').read_text())
     except (OSError, ValueError):
         fallback = {}
-    print('collect=' + str(due(datetime.now(timezone.utc), report, os.getenv('SCAN_EVENT', 'schedule'), fallback, read_ledger())).lower())
+    print('collect=' + str(due(datetime.now(timezone.utc), report, os.getenv('SCAN_EVENT', 'schedule'), fallback, read_ledger(), read_snapshots())).lower())
