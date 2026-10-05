@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
   "football_day": "2026-10-05",
-  "generated_at": "2026-10-05T16:00:47.570793+00:00",
+  "generated_at": "2026-10-05T17:22:12.962563+00:00",
   "workflow_success_is_not_data_source_health": true,
   "status": "DEGRADED_DATA_COVERAGE",
   "data_assertions_passed": true,
@@ -11,7 +11,7 @@
     "CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE"
   ],
   "collection": {
-    "bangkok_now": "2026-10-05T23:00:47.570793+07:00",
+    "bangkok_now": "2026-10-06T00:22:12.962563+07:00",
     "canonical_slots": [
       {
         "target_time": "2026-10-05T18:00:00+07:00",
@@ -25,7 +25,7 @@
       },
       {
         "target_time": "2026-10-05T21:00:00+07:00",
-        "state": "MISSING",
+        "state": "MISSED",
         "provider": null,
         "observed_at": null,
         "lag_minutes": null,
@@ -40,7 +40,9 @@
     "coverage_fraction": 0.5,
     "collection_state": "DEGRADED",
     "recovered_slots": [],
-    "missed_slots": []
+    "missed_slots": [
+      "2026-10-05T21:00:00+07:00"
+    ]
   },
   "counts": {
     "raw_snapshots": 1520,
