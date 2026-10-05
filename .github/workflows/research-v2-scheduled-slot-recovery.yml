@@ -2,8 +2,11 @@ name: Research V2 Scheduled Slot Recovery
 on:
   workflow_dispatch:
   schedule:
-    # Independent trigger, sharing the collector lock and local attempt gate.
-    # If the primary schedule ran, this makes zero provider requests.
+    # Canonical weekday slots in UTC: 18:00/21:00 Asia/Bangkok.
+    # The local evidence gate prevents duplicate provider calls if a slot is already complete.
+    - cron: '0 11,14 * * 1-5'
+    # Independent recovery heartbeats, sharing the collector lock and local attempt gate.
+    # If the canonical trigger ran, these make zero provider requests.
     - cron: '17,37,57 14 * * 1-5'
     - cron: '17,47 11 * * 1-5'
     - cron: '17,47 5,8,11,12,13,14,15 * * 0,6'
