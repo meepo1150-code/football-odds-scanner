@@ -4,7 +4,7 @@ import json
 from datetime import datetime,time as dtime,timedelta,timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
-from .europe_pinnacle_discovery import SNAPSHOT_PATH,AUDIT_PATH,_merge_jsonl
+from .europe_pinnacle_discovery import SNAPSHOT_PATH,AUDIT_PATH,SLOT_LEDGER_PATH,_merge_jsonl,_schedule_timing,_record_slot
 from .propline_provider import fetch
 from .research_v2_integrity import trusted_snapshot
 
@@ -20,8 +20,10 @@ def _dt(v):
 def _devig3(h,d,a):
     if not all(x and x>1 for x in (h,d,a)): return None
     raw=(1/h,1/d,1/a); s=sum(raw); return tuple(x/s for x in raw)
-def run(root=Path(".")):
-    now=datetime.now(timezone.utc); ws,we,day=_football_day(now)
+def run(root=Path("."), target_at=None):
+    now=datetime.now(timezone.utc); ws,we,day=_football_day(now); target,lag=_schedule_timing(now)
+    if target_at is not None:
+        target=target_at.astimezone(BKK); lag=(now.astimezone(BKK)-target).total_seconds()/60
     try: rows,errors=fetch()
     except Exception as e: rows=[]; errors=[f"{type(e).__name__}: {e}"]
     snaps=[]; audits=[]; in_day=0; kickoff_dates={}; kickoff_samples=[]
@@ -47,7 +49,7 @@ def run(root=Path(".")):
         # Observation time identifies the scan round. A bookmaker's last price
         # change can predate several scans and must never deduplicate them.
         observed=now.isoformat()
-        snap={"provider":"propline","source":f"propline:{m['bookmaker']}","bookmaker":m["bookmaker"],"fixture_id":fid,"football_day":day,"observed_at":observed,"price_changed_at":m.get("bookmaker_updated_at"),"scheduled_target_at":now.astimezone(BKK).isoformat(),"observation_timing":"SCHEDULED_FREE_SCAN","research_only":True,"league":m["sport"],"home":m["home"],"away":m["away"],"kickoff":ko.isoformat(),"favorite_side":fav,"favorite_fair_probability":fair[0] if fair and fav=="H" else (fair[2] if fair else None),"one_x_two":{"home":m.get("one_x_two_home"),"draw":m.get("one_x_two_draw"),"away":m.get("one_x_two_away")},"ah":{"selected_side_line":line,"selected_side_price":price,"home_line":hl,"home_price":hp,"away_line":al,"away_price":ap},"ou":{"line":m.get("ou_line"),"over_price":m.get("over_odds"),"under_price":m.get("under_odds")},"quote_timestamp_verified":bool(m.get("bookmaker_updated_at"))}
+        snap={"provider":"propline","source":f"propline:{m['bookmaker']}","bookmaker":m["bookmaker"],"fixture_id":fid,"football_day":day,"observed_at":observed,"price_changed_at":m.get("bookmaker_updated_at"),"scheduled_target_at":target.isoformat() if target and 0<=lag<=150 else None,"observation_timing":"SCHEDULED_FREE_SCAN","research_only":True,"league":m["sport"],"home":m["home"],"away":m["away"],"kickoff":ko.isoformat(),"favorite_side":fav,"favorite_fair_probability":fair[0] if fair and fav=="H" else (fair[2] if fair else None),"one_x_two":{"home":m.get("one_x_two_home"),"draw":m.get("one_x_two_draw"),"away":m.get("one_x_two_away")},"ah":{"selected_side_line":line,"selected_side_price":price,"home_line":hl,"home_price":hp,"away_line":al,"away_price":ap},"ou":{"line":m.get("ou_line"),"over_price":m.get("over_odds"),"under_price":m.get("under_odds")},"quote_timestamp_verified":bool(m.get("bookmaker_updated_at"))}
         # propline_provider has already qualified the quote as a Pinnacle,
         # two-sided opposite AH mainline with both sides in 1.80..2.20.
         core=1.8<=float(price)<=2.2
@@ -66,5 +68,12 @@ def run(root=Path(".")):
     ts=_merge_jsonl(root/SNAPSHOT_PATH,snaps,("observed_at","fixture_id")) if snaps else 0
     ta=_merge_jsonl(root/AUDIT_PATH,audits,("observed_at","fixture_id")) if audits else 0
     report={"schema_version":"1.1","provider":"propline","football_day":day,"generated_at":now.isoformat(),"status":"RESEARCH_V2_OBSERVED" if snaps else ("API_REQUEST_FAILED" if errors else "ZERO_USABLE_FIXTURES"),"workflow_success":True,"data_source_health":("PARTIAL" if rows else "UNAVAILABLE") if errors else "AVAILABLE","source_rows":len(rows),"source_rows_in_football_day":in_day,"strict_snapshots_this_run":len(snaps),"quarantined_observations_this_run":sum(1 for x in audits if x.get("quarantined")),"core_price_snapshots":len(snaps),"persisted_snapshot_rows":ts,"persisted_audit_rows":ta,"kickoff_date_counts":kickoff_dates,"kickoff_samples":kickoff_samples,"errors":errors[:10]}
+    report.update(scheduled_target_at=target.isoformat() if target and 0<=lag<=150 else None,
+                  actual_observed_at=now.astimezone(BKK).isoformat(), schedule_lag_minutes=lag,
+                  observation_timing='LATE' if lag is not None and lag>30 else 'ON_TIME',
+                  football_day_fixtures=in_day)
+    if report['scheduled_target_at']:
+        _record_slot(root/SLOT_LEDGER_PATH, report, 'OBSERVED' if snaps else
+                     'ZERO_FIXTURES' if not errors and in_day==0 else 'FAILED')
     p=root/REPORT;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(report,indent=2),encoding="utf-8");return report
 if __name__=="__main__":print(json.dumps(run()))

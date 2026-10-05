@@ -15,7 +15,7 @@ def test_stale_fallback_does_not_claim_current_health(tmp_path):
     for n,d in {'research_v2_pattern_statistics':{'raw_snapshot_rows':0,'snapshot_rows':0,'quarantined_snapshot_rows':0},'research_v2_movement_status':{'source_snapshot_rows':0},'propline_research_v2_status':{'status':'RESEARCH_V2_OBSERVED','generated_at':'2026-09-01T00:00:00Z'},'oddspapi_quota_health':{'status':'QUOTA_EXHAUSTED','quota_exhausted':True}}.items():
         (reports/f'{n}.json').write_text(json.dumps(d))
     r=build(tmp_path,datetime(2026,9,29,tzinfo=timezone.utc))
-    assert r['status']=='WAITING_EXTERNAL_DATA'
+    assert r['status']=='NOT_DUE'
     assert r['data_assertions_passed']
     assert not r['providers']['propline']['usable_recent_output']
     assert r['providers']['oddspapi']['status']=='QUOTA_EXHAUSTED'
@@ -53,7 +53,7 @@ def test_weekend_missing_slots_are_degraded_even_when_files_are_consistent(tmp_p
     })+'\n')
     r=build(tmp_path,datetime.fromisoformat('2026-10-04T15:30:00+00:00'))
     assert r['status']=='DEGRADED_DATA_COVERAGE'
-    assert 'CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE' in r['assertion_failures']
+    assert 'CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE' in r['collection_failures']
     assert r['counts']['expected_elapsed_slots']==7
     assert r['counts']['observed_slots']==1
     assert r['counts']['missing_elapsed_slots']==6

@@ -20,6 +20,7 @@ on:
       - '.github/workflows/pages.yml'
   workflow_run:
     workflows:
+      - 'Research V2 Independent Slot Watchdog'
       - 'Europe Pinnacle Research V2'
       - 'OddsPapi Quota Health'
       - 'Research V2 Free Result Backfill'
@@ -37,7 +38,6 @@ permissions:
 concurrency: {group: pages, cancel-in-progress: true}
 jobs:
   deploy:
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -55,6 +55,7 @@ jobs:
           PYBUILD
           mkdir -p site/reports site/data/normalized site/discovery
           cp apps/dashboard/index.html site/index.html
+          cp apps/dashboard/collection-health.js site/collection-health.js
           cp apps/dashboard/deployment.json site/deployment.json
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery.html || true
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery/index.html || true

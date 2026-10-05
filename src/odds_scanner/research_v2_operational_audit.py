@@ -35,21 +35,8 @@ def quota_observation(quota, scan):
 
 def slot_coverage(root, now, football_day, day_scans):
     """Measure elapsed canonical slots from persisted data, not workflow success."""
-    label=datetime.fromisoformat(football_day).date()
-    hours=(12,15,18,19,20,21,22) if label.weekday() >= 5 else (21,)
-    from zoneinfo import ZoneInfo
-    bkk=ZoneInfo('Asia/Bangkok')
-    elapsed=[datetime.combine(label,time(h),bkk) for h in hours]
-    elapsed=[x for x in elapsed if x <= now.astimezone(bkk)]
-    observed_times={x.get('observed_at') for x in day_scans if x.get('observed_at')}
-    observed_targets={x.get('scheduled_target_at') for x in day_scans if x.get('scheduled_target_at')}
-    # A fallback collector may not use the exact canonical target timestamp.
-    # Distinct persisted observation times are therefore the provider-neutral floor.
-    observed=min(len(elapsed), max(len(observed_times), len(observed_targets)))
-    expected=len(elapsed)
-    return {'expected_elapsed_slots':expected,'observed_slots':observed,
-            'missing_elapsed_slots':max(0,expected-observed),
-            'coverage_fraction':round(observed/expected,3) if expected else 1.0}
+    from .research_v2_slots import coverage, read_ledger
+    return coverage(now, football_day, read_ledger(root), day_scans)
 
 def build(root=Path('.'), now=None):
     now=now or datetime.now(timezone.utc)
@@ -80,8 +67,8 @@ def build(root=Path('.'), now=None):
     valid = project(valid, mapping)
     counts['current_day_canonical_fixtures']=len({mapping.get(str(x.get('fixture_id')),str(x.get('fixture_id'))) for x in day_scans})
     counts['collapsed_provider_fixture_ids']=bridge['collapsed_provider_ids']
-    coverage=slot_coverage(root, now, today, day_scans)
-    counts.update(coverage)
+    coverage=slot_coverage(root, now, today, project(day_scans, mapping))
+    counts.update({k: coverage[k] for k in ('expected_elapsed_slots', 'observed_slots', 'missing_elapsed_slots', 'coverage_fraction')})
     results, _ = _result_index(project(_rows(root/'data/normalized/oddspapi_finished_results.jsonl'),mapping))
     for row in _rows(root/'data/normalized/oddspapi_finished_results.conflicts.jsonl'):
         results.pop(mapping.get(str(row.get('fixture_id')),str(row.get('fixture_id'))),None)
@@ -96,9 +83,22 @@ def build(root=Path('.'), now=None):
     if stats.get('snapshot_rows') != len(valid):failures.append('STATISTICS_VERIFIED_COUNT_STALE')
     if stats.get('quarantined_snapshot_rows') != counts['quarantined_snapshots']:failures.append('QUARANTINE_COUNT_MISMATCH')
     if move.get('source_snapshot_rows') != len(valid):failures.append('MOVEMENT_INPUT_STALE')
-    if coverage['missing_elapsed_slots'] > 0: failures.append('CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE')
+    collection_failures = ['CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE'] if coverage['missing_elapsed_slots'] > 0 else []
     ready=[{'candidate_id':c.get('candidate_id'),'settled':c.get('settled_entries'),'minimum':150,'status':c.get('status'),'production_promotion_allowed':c.get('production_promotion_allowed',False)} for c in forward.get('candidates',[])]
-    result={'schema_version':'1.1','football_day':today,'generated_at':now.isoformat(),'workflow_success_is_not_data_source_health':True,'status':'DEGRADED_DATA_COVERAGE' if failures == ['CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE'] else ('BROKEN_DATA_ASSERTIONS' if failures else ('COLLECTING_WITH_EXTERNAL_BLOCKERS' if any(p.get('usable_recent_output') for p in providers.values()) else 'WAITING_EXTERNAL_DATA')),'data_assertions_passed':not failures,'assertion_failures':failures,'counts':counts,'providers':providers,'daily_sync_status':sync.get('status','UNKNOWN'),'forward_candidates':ready,'paper_label':'PAPER_RESEARCH_ONLY','production_promotion_allowed':False,'legacy_recovery_status':legacy.get('status','UNKNOWN'),'dashboard_browser_verified':False}
+    status = ('BROKEN_DATA_ASSERTIONS' if failures else
+              'DEGRADED_DATA_COVERAGE' if collection_failures else
+              'NOT_DUE' if coverage['collection_state'] == 'NOT_DUE' else
+              'COLLECTING_WITH_EXTERNAL_BLOCKERS' if any(p.get('usable_recent_output') for p in providers.values()) else
+              'WAITING_EXTERNAL_DATA')
+    result={'schema_version':'1.2','football_day':today,'generated_at':now.isoformat(),
+            'workflow_success_is_not_data_source_health':True,'status':status,
+            'data_assertions_passed':not failures,'assertion_failures':failures,
+            'collection_health_passed':not collection_failures,
+            'collection_failures':collection_failures,'collection':coverage,
+            'counts':counts,'providers':providers,'daily_sync_status':sync.get('status','UNKNOWN'),
+            'forward_candidates':ready,'paper_label':'PAPER_RESEARCH_ONLY',
+            'production_promotion_allowed':False,'legacy_recovery_status':legacy.get('status','UNKNOWN'),
+            'dashboard_browser_verified':False}
     p=root/'reports/research_v2_operational_audit.json';p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(result,indent=2)+'\n')
     return result
 
