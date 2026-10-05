@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
   "football_day": "2026-10-05",
-  "generated_at": "2026-10-05T08:29:53.870266+00:00",
+  "generated_at": "2026-10-05T08:30:36.666546+00:00",
   "workflow_success_is_not_data_source_health": true,
   "status": "NOT_DUE",
   "data_assertions_passed": true,
@@ -9,7 +9,7 @@
   "collection_health_passed": true,
   "collection_failures": [],
   "collection": {
-    "bangkok_now": "2026-10-05T15:29:53.870266+07:00",
+    "bangkok_now": "2026-10-05T15:30:36.666546+07:00",
     "canonical_slots": [
       {
         "target_time": "2026-10-05T18:00:00+07:00",
@@ -41,17 +41,17 @@
     "missed_slots": []
   },
   "counts": {
-    "raw_snapshots": 1503,
-    "verified_snapshots": 1413,
+    "raw_snapshots": 1511,
+    "verified_snapshots": 1421,
     "quarantined_snapshots": 90,
     "recovered_legacy_snapshots": 0,
     "unresolved_ft_fixtures": 416,
     "settled_statistical_fixtures": 417,
     "core_price_settled_fixtures": 394,
-    "movement_fixtures": 139,
-    "numeric_movement_deltas": 902,
-    "current_day_valid_scans": 8,
-    "current_day_distinct_scan_times": 1,
+    "movement_fixtures": 147,
+    "numeric_movement_deltas": 966,
+    "current_day_valid_scans": 16,
+    "current_day_distinct_scan_times": 2,
     "scope_excluded_snapshots": 238,
     "current_day_canonical_fixtures": 8,
     "collapsed_provider_fixture_ids": 8,
@@ -69,15 +69,17 @@
       "status": "RATE_LIMITED",
       "capability": "RESEARCH_ONLY",
       "usable_recent_output": false,
-      "generated_at": "2026-10-04T15:33:44.707801+00:00",
-      "errors": [],
+      "generated_at": "2026-10-05T08:30:15.624361+00:00",
+      "errors": [
+        "HTTPError: HTTP 429"
+      ],
       "execution_ready": false
     },
     "propline": {
       "status": "AVAILABLE",
       "capability": "FALLBACK",
       "usable_recent_output": true,
-      "generated_at": "2026-10-05T08:29:39.992719+00:00",
+      "generated_at": "2026-10-05T08:30:16.303601+00:00",
       "errors": [],
       "execution_ready": false
     },
