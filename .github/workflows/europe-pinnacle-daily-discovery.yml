@@ -16,12 +16,12 @@ on:
     branches: [main]
     paths: ['controls/europe_pinnacle_research_v2_run_token.txt']
   schedule:
-    - cron: '0,20,40 14,15,16 * * 1-5'
+    - cron: '0,20,40 11,12,13,14,15,16 * * 1-5'
     - cron: '0,20,40 17,18,19 * * 1-5'
     - cron: '0,20,40 5,6,7,8,9,10,11,12,13,14,15 * * 6,0'
 permissions: {contents: write}
 concurrency:
-  group: europe-pinnacle-research-v2
+  group: research-v2-collectors
   cancel-in-progress: false
 jobs:
   scan:
@@ -56,7 +56,8 @@ jobs:
       - name: Collect canonical-slot football-day research population
         env:
           ODDSPAPI_KEY: '${{ secrets.ODDSPAPI_KEY }}'
-        run: python -m odds_scanner.europe_pinnacle_discovery
+          PROPLINE_API_KEY: '${{ secrets.PROPLINE_API_KEY }}'
+        run: python -m odds_scanner.research_v2_slot_recovery
       - name: Build current movement features
         run: python -m odds_scanner.research_v2_movement
       - name: Persist raw evidence and rebuild against latest main
@@ -90,11 +91,10 @@ jobs:
           python - <<'PY'
           import json
           from pathlib import Path
-          r=json.loads(Path('reports/europe_pinnacle_research_v2_status.json').read_text())
-          bad={'API_REQUEST_FAILED','API_KEY_NOT_CONFIGURED','TARGET_MAP_INVALID','SKIPPED_QUOTA_HEALTH_UNAVAILABLE'}
-          if r.get('status') in bad:
-              raise SystemExit(f"Research V2 unhealthy: {r.get('status')} {r.get('errors', [])}")
-          print(f"Research V2 business status: {r.get('status')} coverage={r.get('coverage_mode')}")
+          r=json.loads(Path('reports/research_v2_operational_audit.json').read_text())
+          if not r.get('data_assertions_passed'):
+              raise SystemExit(f"Data integrity failed: {r.get('assertion_failures')}")
+          print(f"Collection status: {r.get('status')} missing={r.get('collection_failures')}")
           PY
 # Canonical observations remain 21:00/00:00 weekdays and 12:00/15:00/18:00/19:00/20:00/21:00/22:00 weekends Bangkok.
 # Scheduled heartbeats run every 20 minutes around canonical slots; duplicates are zero-API skips.

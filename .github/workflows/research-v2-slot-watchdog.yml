@@ -5,7 +5,7 @@ on:
     # Independent recovery path. Offset from the primary workflow so one delayed
     # workflow definition does not remain the only trigger source.
     # Weekday 21:00 Bangkok: +10,+30,+50,+70,+90,+110,+130 minutes.
-    - cron: '10,30,50 14,15 * * 1-5'
+    - cron: '10,30,50 11,12,14,15 * * 1-5'
     - cron: '10,30 16 * * 1-5'
     # Tue-Sat 00:00 Bangkok: +10,+30,+50,+70,+90,+110,+130 minutes.
     - cron: '10,30,50 17,18 * * 1-5'
@@ -15,7 +15,7 @@ on:
     - cron: '10,30 6,9,16 * * 6,0'
 permissions: {contents: write}
 concurrency:
-  group: europe-pinnacle-research-v2
+  group: research-v2-collectors
   cancel-in-progress: false
 jobs:
   recover:
@@ -30,8 +30,9 @@ jobs:
       - name: Recover current canonical slot if still unobserved
         env:
           ODDSPAPI_KEY: '${{ secrets.ODDSPAPI_KEY }}'
+          PROPLINE_API_KEY: '${{ secrets.PROPLINE_API_KEY }}'
           RESEARCH_V2_FORCE_RUN: 'false'
-        run: python -m odds_scanner.europe_pinnacle_discovery
+        run: python -m odds_scanner.research_v2_slot_recovery
       - name: Build movement features
         run: python -m odds_scanner.research_v2_movement
       - name: Persist raw evidence and rebuild against latest main

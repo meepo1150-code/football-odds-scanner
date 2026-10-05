@@ -15,7 +15,7 @@ concurrency: {group: research-v2-collectors, cancel-in-progress: false}
 jobs:
   probe:
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
         with: {ref: main}
@@ -30,22 +30,12 @@ jobs:
         with: {python-version: '3.12'}
       - run: python -m pip install -e .
         if: steps.due.outputs.collect == 'true'
-      - name: Collect PinnWire Research V2
+      - name: Recover all elapsed canonical slots with provider fallback
         if: steps.due.outputs.collect == 'true'
         env:
-          PINNWIRE_V2_SCAN: 'true'
-        run: python -m odds_scanner.pinnwire_probe
-      - name: Recover with PropLine when PinnWire is unavailable
-        if: steps.due.outputs.collect == 'true'
-        env:
+          ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
           PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
-        run: |
-          python - <<'PY'
-          import json,subprocess
-          r=json.load(open('reports/pinnwire_research_v2_status.json',encoding='utf-8'))
-          if r.get('status') != 'RESEARCH_V2_OBSERVED' or r.get('strict_snapshots_this_run', 0) <= 0:
-              subprocess.run(['python','-m','odds_scanner.propline_research_v2'],check=True)
-          PY
+        run: python -m odds_scanner.research_v2_slot_recovery
       - name: Rebuild movement and statistics from latest snapshots
         if: steps.due.outputs.collect == 'true'
         run: |

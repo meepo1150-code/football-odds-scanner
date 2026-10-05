@@ -6,18 +6,20 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 BKK = ZoneInfo('Asia/Bangkok')
+from .research_v2_slots import targets as canonical_targets, read_ledger, valid_completion
 
 
-def due(now, report, event='schedule', fallback=None):
+def due(now, report, event='schedule', fallback=None, ledger_rows=None):
     if event != 'schedule':
         return True  # Manual/code-change runs still obey the transport cooldown.
     local = now.astimezone(BKK)
-    hours = (12, 15, 18, 19, 20, 21, 22) if local.weekday() >= 5 else (18, 21)
-    targets = [datetime.combine(local.date(), time(h), BKK) for h in hours]
-    targets = [t for t in targets if timedelta(0) <= local-t <= timedelta(minutes=150)]
+    targets = [t for t in canonical_targets(local.date())
+               if timedelta(0) <= local-t <= timedelta(minutes=150)]
+    if ledger_rows is not None:
+        targets = [t for t in targets if not any(valid_completion(row, t, local) for row in ledger_rows)]
     if not targets:
         return False
-    for output in (report, fallback or {}):
+    for output in (() if ledger_rows is not None else (report, fallback or {})):
         try:
             stamp = datetime.fromisoformat(output['generated_at'].replace('Z', '+00:00'))
             if (output.get('status') == 'RESEARCH_V2_OBSERVED'
@@ -28,7 +30,8 @@ def due(now, report, event='schedule', fallback=None):
             pass
     try:
         attempted = datetime.fromisoformat(report['generated_at'].replace('Z', '+00:00'))
-        if attempted.tzinfo and max(targets) <= attempted <= now:
+        if (attempted.tzinfo and max(targets) <= attempted <= now
+                and (ledger_rows is None or report.get('scheduled_target_at') == max(targets).isoformat())):
             return now-attempted >= timedelta(minutes=60)
     except (ValueError, TypeError, KeyError):
         pass
@@ -44,4 +47,4 @@ if __name__ == '__main__':
         fallback = json.loads(Path('reports/propline_research_v2_status.json').read_text())
     except (OSError, ValueError):
         fallback = {}
-    print('collect=' + str(due(datetime.now(timezone.utc), report, os.getenv('SCAN_EVENT', 'schedule'), fallback)).lower())
+    print('collect=' + str(due(datetime.now(timezone.utc), report, os.getenv('SCAN_EVENT', 'schedule'), fallback, read_ledger())).lower())

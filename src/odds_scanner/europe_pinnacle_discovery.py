@@ -55,22 +55,23 @@ def _schedule_timing(now):
     local=now.astimezone(BANGKOK); candidates=[]
     for delta in (-1,0):
         day=local.date()+timedelta(days=delta)
-        for h in (WEEKEND_TARGET_HOURS if day.weekday()>=5 else (21,)): candidates.append(datetime.combine(day,dtime(h),BANGKOK))
+        for h in (WEEKEND_TARGET_HOURS if day.weekday()>=5 else (18,21)): candidates.append(datetime.combine(day,dtime(h),BANGKOK))
         if day.weekday() in (1,2,3,4,5): candidates.append(datetime.combine(day,dtime(0),BANGKOK))
     eligible=[x for x in candidates if x<=local]; target=max(eligible) if eligible else None
     return (target,round((local-target).total_seconds()/60,2)) if target else (None,None)
 
 def _slot_done(path,target):
+    from .research_v2_slots import valid_completion
     if target is None or not path.exists(): return False
-    key=target.isoformat()
     for line in path.read_text(encoding='utf-8').splitlines():
-        try:r=json.loads(line)
-        except json.JSONDecodeError:continue
-        if isinstance(r,dict) and str(r.get('scheduled_target_at'))==key and (r.get('state') is None or str(r.get('state')) in {'OBSERVED','ZERO_FIXTURES'}):return True
+        try: row=json.loads(line)
+        except json.JSONDecodeError: continue
+        if isinstance(row,dict) and valid_completion(row,target,datetime.now(timezone.utc)):
+            return True
     return False
 
 def _record_slot(path,report,state,reason=None):
-    row={'scheduled_target_at':report.get('scheduled_target_at'),'football_day':report.get('football_day'),'state':state,'actual_observed_at':report.get('actual_observed_at'),'schedule_lag_minutes':report.get('schedule_lag_minutes'),'observation_timing':report.get('observation_timing'),'requests_used':report.get('requests_used',0),'football_day_fixtures':report.get('football_day_fixtures'),'strict_snapshots':report.get('strict_snapshots_this_run'),'reason':reason or report.get('status'),'finalized_at':report.get('generated_at')}
+    row={'scheduled_target_at':report.get('scheduled_target_at'),'provider':report.get('provider','oddspapi'),'football_day':report.get('football_day'),'state':state,'actual_observed_at':report.get('actual_observed_at'),'schedule_lag_minutes':report.get('schedule_lag_minutes'),'observation_timing':report.get('observation_timing'),'requests_used':report.get('requests_used',0),'football_day_fixtures':report.get('football_day_fixtures'),'strict_snapshots':report.get('strict_snapshots_this_run'),'reason':reason or report.get('status'),'finalized_at':report.get('generated_at')}
     rows={}
     if path.exists():
         for line in path.read_text(encoding='utf-8').splitlines():
@@ -106,7 +107,7 @@ def run(root=Path('.')):
                       rate_limit_cooldown_until=cooldown.isoformat(), requests_used=0,
                       planned_requests=0, errors=['Provider cooldown active; no API request sent'])
         return _write(report, root)
-    if _slot_done(root/SLOT_LEDGER_PATH,target) or _slot_done(root/AUDIT_PATH,target): report.update(status='SKIPPED_SLOT_ALREADY_OBSERVED',requests_used=0,planned_requests=0);return _write(report,root)
+    if _slot_done(root/SLOT_LEDGER_PATH,target): report.update(status='SKIPPED_SLOT_ALREADY_OBSERVED',requests_used=0,planned_requests=0);return _write(report,root)
     if not force and (lag is None or lag>RECOVERY_WINDOW_MINUTES): report.update(status='MISSED_SLOT',requests_used=0,planned_requests=0);_record_slot(root/SLOT_LEDGER_PATH,report,'MISSED');return _write(report,root)
     targets=_load_json(root/TARGET_PATH) or {}; selected=targets.get('tournaments') or [] if isinstance(targets,dict) else []; ids=[x.get('tournament_id') for x in selected if isinstance(x,dict) and x.get('tournament_id') is not None]
     if not ids or len(ids)!=len(set(ids)):report.update(status='TARGET_MAP_INVALID',resolved_competitions=len(ids),requests_used=0,planned_requests=0);return _write(report,root)
