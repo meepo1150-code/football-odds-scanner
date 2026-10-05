@@ -46,7 +46,11 @@ def test_independent_evening_checks_share_attempt_gate():
 
 def test_recovery_uses_persisted_slot_ledger_before_provider_status():
     now=datetime.fromisoformat('2026-10-04T21:37:00+07:00')
-    observed=[{'scheduled_target_at':'2026-10-04T21:00:00+07:00','state':'OBSERVED'}]
+    observed=[
+        {'scheduled_target_at':'2026-10-04T19:00:00+07:00','state':'OBSERVED'},
+        {'scheduled_target_at':'2026-10-04T20:00:00+07:00','state':'ZERO_FIXTURES'},
+        {'scheduled_target_at':'2026-10-04T21:00:00+07:00','state':'OBSERVED'},
+    ]
     assert not due(now, {'generated_at':'2026-10-04T20:05:00+07:00'}, ledger_rows=observed)
-    failed=[{'scheduled_target_at':'2026-10-04T21:00:00+07:00','state':'FAILED'}]
-    assert due(now, {'generated_at':'2026-10-04T20:05:00+07:00'}, ledger_rows=failed)
+    missing_middle=[x for x in observed if x['scheduled_target_at']!='2026-10-04T20:00:00+07:00']
+    assert due(now, {'generated_at':'2026-10-04T18:05:00+07:00'}, ledger_rows=missing_middle)
