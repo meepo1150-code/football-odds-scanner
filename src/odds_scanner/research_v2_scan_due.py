@@ -13,7 +13,8 @@ def due(now, report, event='schedule', fallback=None, ledger_rows=None, snapshot
     if event != 'schedule':
         return True  # Manual/code-change runs still obey the transport cooldown.
     local = now.astimezone(BKK)
-    targets = [t for t in canonical_targets(local.date())
+    from .europe_pinnacle_discovery import _football_day_bounds
+    targets = [t for t in canonical_targets(_football_day_bounds(now)[2])
                if timedelta(0) <= local-t <= timedelta(minutes=150)]
     if ledger_rows is not None:
         targets = [t for t in targets if not completed(t, local, ledger_rows, snapshots or [])]

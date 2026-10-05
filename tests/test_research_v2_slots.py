@@ -97,3 +97,19 @@ def test_recovery_rejects_quarantined_or_inplay_snapshots(tmp_path):
                     {'ah':dict(base['ah'], selected_side_line=-.3)}):
         path.write_text(json.dumps(dict(base,**changed))+'\n')
         assert not slot_completed(tmp_path,target,dt('2026-10-05T18:15:00+07:00'))
+
+
+def test_weekend_last_slot_remains_recoverable_after_midnight():
+    assert due(dt('2026-10-05T00:10:00+07:00'),{},ledger_rows=[],snapshots=[])
+    assert not due(dt('2026-10-05T00:31:00+07:00'),{},ledger_rows=[],snapshots=[])
+    ledger=[{'scheduled_target_at':'2026-10-04T22:00:00+07:00',
+             'actual_observed_at':'2026-10-04T22:05:00+07:00',
+             'state':'ZERO_FIXTURES','football_day_fixtures':0,'requests_used':1}]
+    assert not due(dt('2026-10-05T00:10:00+07:00'),{},ledger_rows=ledger,snapshots=[])
+
+
+def test_watchdog_has_last_weekend_recovery_heartbeats():
+    from pathlib import Path
+    workflow=Path('.github/workflows/research-v2-slot-watchdog.yml').read_text()
+    assert "'10,30,50 16 * * 6,0'" in workflow
+    assert "'10,30 17 * * 6,0'" in workflow
