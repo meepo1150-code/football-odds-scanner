@@ -2,8 +2,8 @@
   "schema_version": "1.2",
   "classification": "V2_PROSPECTIVE_MAINLINE_OBSERVER",
   "status": "NO_UNAMBIGUOUS_MAINLINE_SNAPSHOTS",
-  "generated_at": "2026-10-06T06:29:39.160929+00:00",
-  "observed_at": "2026-10-06T06:29:42.849498+00:00",
+  "generated_at": "2026-10-06T18:27:24.172289+00:00",
+  "observed_at": "2026-10-06T18:27:28.380711+00:00",
   "source_semantics": "CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED",
   "historical_mainline_reconstruction_allowed": false,
   "requests_attempted": 2,
@@ -31,10 +31,10 @@
     "AMBIGUOUS_OR_MISSING_MAIN_AH": 21
   },
   "mainline_shape_counts": {
-    "AH0_OU0": 49,
+    "AH0_OU0": 53,
     "AH0_OU1": 29,
-    "AH1_OU0": 2,
-    "AH1_OU1": 10
+    "AH1_OU0": 3,
+    "AH1_OU1": 5
   },
   "mainline_shape_samples": [
     {
@@ -59,14 +59,10 @@
       "fixture_id": "id1000000872478616",
       "universe": "BIG5_AH",
       "league": "LaLiga",
-      "ah_main_count": 1,
-      "ou_main_count": 1,
-      "ah_lines": [
-        0.0
-      ],
-      "ou_lines": [
-        2.25
-      ]
+      "ah_main_count": 0,
+      "ou_main_count": 0,
+      "ah_lines": [],
+      "ou_lines": []
     },
     {
       "fixture_id": "id1000001772221292",
@@ -165,14 +161,15 @@
   "strict_snapshots_enriched_with_exact_external_ids": 0,
   "external_id_policy": "CURRENT_ODDSPAPI_EXTERNALPROVIDERS_EXACT_IDS_ONLY_NO_NAME_MATCHING",
   "ah_market_marker_signatures": {
-    "H_MISSING__A_MISSING": 8,
+    "H_FALSE__A_FALSE": 1,
+    "H_MISSING__A_MISSING": 14,
     "H_TRUE__A_MISSING": 3,
-    "H_TRUE__A_TRUE": 26
+    "H_TRUE__A_TRUE": 20
   },
   "ah_fixture_shape_counts": {
-    "AH_MARKETS_0__BOTH_TRUE_0": 117,
-    "AH_MARKETS_1__BOTH_TRUE_0": 10,
-    "AH_MARKETS_1__BOTH_TRUE_1": 25,
+    "AH_MARKETS_0__BOTH_TRUE_0": 116,
+    "AH_MARKETS_1__BOTH_TRUE_0": 17,
+    "AH_MARKETS_1__BOTH_TRUE_1": 19,
     "AH_MARKETS_2__BOTH_TRUE_1": 1
   },
   "ah_marker_samples": [
@@ -182,11 +179,9 @@
       "start_time": "2026-10-09T19:00:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_TRUE__A_TRUE": 1
+        "H_MISSING__A_MISSING": 1
       },
-      "both_true_lines": [
-        0.0
-      ]
+      "both_true_lines": []
     },
     {
       "fixture_id": "id1000001772221292",
@@ -195,6 +190,16 @@
       "ah_markets": 1,
       "signatures": {
         "H_MISSING__A_MISSING": 1
+      },
+      "both_true_lines": []
+    },
+    {
+      "fixture_id": "id1000000872478620",
+      "tournament_id": 8,
+      "start_time": "2026-10-10T12:00:00.000Z",
+      "ah_markets": 1,
+      "signatures": {
+        "H_FALSE__A_FALSE": 1
       },
       "both_true_lines": []
     },
@@ -226,11 +231,9 @@
       "start_time": "2026-10-10T14:00:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_TRUE__A_TRUE": 1
+        "H_MISSING__A_MISSING": 1
       },
-      "both_true_lines": [
-        0.0
-      ]
+      "both_true_lines": []
     },
     {
       "fixture_id": "id1000000872478606",
@@ -248,11 +251,9 @@
       "start_time": "2026-10-10T16:30:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_TRUE__A_TRUE": 1
+        "H_MISSING__A_MISSING": 1
       },
-      "both_true_lines": [
-        -3.0
-      ]
+      "both_true_lines": []
     },
     {
       "fixture_id": "id1000003472036202",
@@ -260,11 +261,9 @@
       "start_time": "2026-10-10T18:45:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_TRUE__A_TRUE": 1
+        "H_MISSING__A_MISSING": 1
       },
-      "both_true_lines": [
-        -0.5
-      ]
+      "both_true_lines": []
     },
     {
       "fixture_id": "id1000003472036210",
@@ -285,11 +284,9 @@
       "start_time": "2026-10-11T12:00:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_TRUE__A_TRUE": 1
+        "H_MISSING__A_MISSING": 1
       },
-      "both_true_lines": [
-        0.0
-      ]
+      "both_true_lines": []
     },
     {
       "fixture_id": "id1000001772221300",
@@ -345,9 +342,11 @@
       "start_time": "2026-10-11T16:30:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_MISSING__A_MISSING": 1
+        "H_TRUE__A_TRUE": 1
       },
-      "both_true_lines": []
+      "both_true_lines": [
+        -1.0
+      ]
     },
     {
       "fixture_id": "id1000002371945288",
@@ -391,18 +390,6 @@
       },
       "both_true_lines": [
         -0.5
-      ]
-    },
-    {
-      "fixture_id": "id1000002371945310",
-      "tournament_id": 23,
-      "start_time": "2026-10-16T18:45:00.000Z",
-      "ah_markets": 1,
-      "signatures": {
-        "H_TRUE__A_TRUE": 1
-      },
-      "both_true_lines": [
-        0.0
       ]
     }
   ],
