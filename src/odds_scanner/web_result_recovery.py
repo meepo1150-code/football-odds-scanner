@@ -3,7 +3,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import quote_plus
-from .pinnwire_result_join import _read, _utc, _name, SNAPSHOTS_PATH
+from .pinnwire_result_join import _read, _utc, SNAPSHOTS_PATH
 from .research_population import in_scope
 
 RESULTS_PATH=Path("data/normalized/oddspapi_finished_results.jsonl")
@@ -39,7 +39,8 @@ def validate_evidence(item):
     if any(item.get(k) in (None,"") for k in required): return False,"MISSING_REQUIRED_FIELD"
     if type(item["ft_home_goals"]) is not int or type(item["ft_away_goals"]) is not int or min(item["ft_home_goals"],item["ft_away_goals"])<0:
         return False,"INVALID_FT_SCORE"
-    if not str(item["source_url"]).startswith(("https://","http://")): return False,"INVALID_SOURCE_URL"
+    if not str(item["source_url"]).startswith("https://"): return False,"INVALID_SOURCE_URL"
+    if str(item.get("status") or "").upper() != "FT": return False,"RESULT_NOT_FINAL"
     return True,"VALID"
 
 if __name__=="__main__": print(json.dumps(build_queue(),ensure_ascii=False))
