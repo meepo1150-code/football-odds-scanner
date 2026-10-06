@@ -58,7 +58,8 @@ def _utc(v):
         return (d if d.tzinfo else d.replace(tzinfo=timezone.utc)).astimezone(timezone.utc)
     except (TypeError,ValueError):return None
 def run(root=Path("."),kickoff_tolerance_seconds=0):
-    snaps=[x for x in _read(root/SNAPSHOTS_PATH) if x.get("provider")=="pinnwire"]; fixtures=_read(root/API_FIXTURES_PATH)\n    web_results={str(x.get("fixture_id")):x for x in _read(root/RESULTS_PATH) if str(x.get("result_source") or "").startswith("WEB_EVIDENCE")}
+    snaps=[x for x in _read(root/SNAPSHOTS_PATH) if x.get("provider")=="pinnwire"]; fixtures=_read(root/API_FIXTURES_PATH)
+    web_results={str(x.get("fixture_id")):x for x in _read(root/RESULTS_PATH) if str(x.get("result_source") or "").startswith("WEB_EVIDENCE")}
     # Match kickoff first, then require deterministic team aliases. This safely handles\n    # provider decoration such as "Pharco FC" vs "Pharco" without fuzzy guessing.
     latest={}
     for s in snaps:
