@@ -26,7 +26,7 @@ def test_weak_single_source_and_identity_mismatch_are_quarantined(tmp_path):
     assert import_evidence(tmp_path)["quarantine"][0]["reason"]=="IDENTITY_MISMATCH_OR_UNKNOWN_FIXTURE"
 
 
-def test_evidence_expands_to_exact_duplicate_provider_ids(tmp_path):
+# Exact identity expansion must never cross a changed opponent or kickoff.\ndef test_evidence_expands_to_exact_duplicate_provider_ids(tmp_path):
     snaps=[
       {"provider":"pinnwire","fixture_id":"pinnwire:a","home":"Alpha","away":"Beta","kickoff":"2026-09-24T12:00:00Z"},
       {"provider":"pinnwire","fixture_id":"pinnwire:b","home":"Alpha","away":"Beta","kickoff":"2026-09-24T12:00:00Z"},
