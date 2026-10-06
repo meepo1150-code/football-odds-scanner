@@ -4,7 +4,7 @@ from odds_scanner.pinnwire_result_join import SNAPSHOTS_PATH
 
 def test_web_recovery_queue_uses_zero_api_requests(tmp_path):
     p=tmp_path/SNAPSHOTS_PATH;p.parent.mkdir(parents=True,exist_ok=True)
-    p.write_text(json.dumps({"provider":"pinnwire","fixture_id":"pinnwire:x","home":"Alpha FC","away":"Beta FC","kickoff":"2026-09-24T13:30:00Z","football_day":"2026-09-24","observed_at":"2026-09-24T10:00:00Z"})+"\n")
+    p.write_text(json.dumps({"provider":"pinnwire","fixture_id":"pinnwire:x","home":"Alpha FC","away":"Beta FC","league":"Premier League","country":"England","kickoff":"2026-09-24T13:30:00Z","football_day":"2026-09-24","observed_at":"2026-09-24T10:00:00Z","bookmaker":"pinnacle","ah":{"home_line":-0.5,"home_price":1.95,"away_line":0.5,"away_price":1.95},"promotion_eligible":false,"research_only":true})+"\n")
     out=build_queue(tmp_path)
     assert out["api_requests_used"] == 0
     assert out["queued"] == 1
