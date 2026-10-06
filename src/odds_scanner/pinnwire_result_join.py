@@ -59,14 +59,28 @@ def _utc(v):
     except (TypeError,ValueError):return None
 def run(root=Path("."),kickoff_tolerance_seconds=0):
     snaps=[x for x in _read(root/SNAPSHOTS_PATH) if x.get("provider")=="pinnwire"]; fixtures=_read(root/API_FIXTURES_PATH)
+    web_results={str(x.get("fixture_id")):x for x in _read(root/RESULTS_PATH) if str(x.get("result_source") or "").startswith("WEB_EVIDENCE")}
     # Match kickoff first, then require deterministic team aliases. This safely handles\n    # provider decoration such as "Pharco FC" vs "Pharco" without fuzzy guessing.
     latest={}
     for s in snaps:
         if not in_scope(s): continue
         fid=str(s.get("fixture_id") or "")
         if fid and (fid not in latest or str(s.get("observed_at"))>str(latest[fid].get("observed_at"))):latest[fid]=s
-    results=[];settlements=[];unmatched=[];ambiguous=[];matched_total=0;matched_pending=0;unmatched_with_kickoff=0;unmatched_no_kickoff=0;unmatched_samples=[]
+    results=[];settlements=[];unmatched=[];ambiguous=[];matched_total=0;matched_pending=0;web_result_matches=0;unmatched_with_kickoff=0;unmatched_no_kickoff=0;unmatched_samples=[]
     for fid,s in latest.items():
+        wr=web_results.get(fid)
+        if wr is not None:
+            hg,ag=wr.get("ft_home_goals"),wr.get("ft_away_goals")
+            if type(hg) is int and type(ag) is int:
+                ah=s.get("ah") or {}
+                try:
+                    b=settle_asian_handicap(hg,ag,float(ah.get("selected_side_line")),float(ah.get("selected_side_price")),str(s.get("favorite_side")))
+                except (TypeError,ValueError):
+                    pass
+                else:
+                    settlements.append({"fixture_id":fid,"football_day":s.get("football_day"),"home":s.get("home"),"away":s.get("away"),"kickoff":s.get("kickoff"),"observed_at":s.get("observed_at"),"side":s.get("favorite_side"),"line":ah.get("selected_side_line"),"odds":ah.get("selected_side_price"),"ft_home_goals":hg,"ft_away_goals":ag,"settlement":b.settlement.value,"profit_units":b.profit_units,"result_source":wr.get("result_source"),"source_urls":wr.get("source_urls")})
+                    web_result_matches+=1
+                    continue
         ko=_utc(s.get("kickoff")); exact=[]; kickoff_candidates=[]
         for f in fixtures:
             fk=_utc(f.get("kickoff"))
@@ -93,6 +107,6 @@ def run(root=Path("."),kickoff_tolerance_seconds=0):
         settlements.append({"fixture_id":fid,"football_day":s.get("football_day"),"home":s.get("home"),"away":s.get("away"),"kickoff":s.get("kickoff"),"observed_at":s.get("observed_at"),"side":s.get("favorite_side"),"line":ah.get("selected_side_line"),"odds":ah.get("selected_side_price"),"ft_home_goals":hg,"ft_away_goals":ag,"settlement":b.settlement.value,"profit_units":b.profit_units,"result_source":"API_FOOTBALL_EXACT_NORMALIZED_TEAMS_KICKOFF"})
     added=merge_normalized_results(root/RESULTS_PATH,results)
     p=root/SETTLEMENTS_PATH;p.parent.mkdir(parents=True,exist_ok=True);p.write_text("".join(json.dumps(x,ensure_ascii=False,separators=(",",":"))+"\n" for x in settlements),encoding="utf-8")
-    report={"schema_version":"1.2","classification":"PINNWIRE_RESULT_JOIN","generated_at":datetime.now(timezone.utc).isoformat(),"pinnwire_fixtures":len(latest),"api_fixture_rows":len(fixtures),"matched_total":matched_total,"matched_pending":matched_pending,"finished_exact_matches":len(results),"results_added":added,"settlements":len(settlements),"unmatched":len(unmatched),"unmatched_with_kickoff_candidate":unmatched_with_kickoff,"unmatched_no_kickoff_candidate":unmatched_no_kickoff,"unmatched_samples":unmatched_samples,"ambiguous_rejected":len(ambiguous),"join_policy":"DETERMINISTIC_BOTH_TEAM_ALIASES_EXACT_KICKOFF","kickoff_tolerance_seconds":0,"fuzzy_matching_allowed":False}
+    report={"schema_version":"1.2","classification":"PINNWIRE_RESULT_JOIN","generated_at":datetime.now(timezone.utc).isoformat(),"pinnwire_fixtures":len(latest),"api_fixture_rows":len(fixtures),"matched_total":matched_total,"matched_pending":matched_pending,"web_result_matches":web_result_matches,"finished_exact_matches":len(results),"results_added":added,"settlements":len(settlements),"unmatched":len(unmatched),"unmatched_with_kickoff_candidate":unmatched_with_kickoff,"unmatched_no_kickoff_candidate":unmatched_no_kickoff,"unmatched_samples":unmatched_samples,"ambiguous_rejected":len(ambiguous),"join_policy":"DETERMINISTIC_BOTH_TEAM_ALIASES_EXACT_KICKOFF","kickoff_tolerance_seconds":0,"fuzzy_matching_allowed":False}
     q=root/REPORT_PATH;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8");return report
 if __name__=="__main__":print(json.dumps(run(),ensure_ascii=False))

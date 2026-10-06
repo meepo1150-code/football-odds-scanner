@@ -10,6 +10,9 @@ on:
       - 'src/odds_scanner/api_football_provider.py'
       - 'src/odds_scanner/pinnwire_result_join.py'
       - 'src/odds_scanner/web_result_recovery.py'
+      - 'src/odds_scanner/web_result_evidence.py'
+      - 'data/research/web_result_evidence.jsonl'
+      - 'tests/test_web_result_evidence.py'
       - 'tests/test_web_result_recovery.py'
       - 'tests/test_api_football_provider.py'
       - '.github/workflows/api-football-shadow.yml'
@@ -29,7 +32,7 @@ jobs:
         with: {python-version: '3.12'}
       - run: python -m pip install -e '.[dev]'
       - name: Test API-Football adapter
-        run: pytest -q tests/test_api_football_provider.py tests/test_web_result_recovery.py
+        run: pytest -q tests/test_api_football_provider.py tests/test_web_result_recovery.py tests/test_web_result_evidence.py tests/test_pinnwire_exact_result_bridge.py
       - name: Collect global fixture and FT result data
         env:
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
