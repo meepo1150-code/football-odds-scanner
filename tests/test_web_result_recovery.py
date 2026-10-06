@@ -36,7 +36,7 @@ def test_web_queue_collapses_duplicate_match_ids_and_skips_corners(tmp_path):
       {**base,"fixture_id":"pinnwire:b","home":"Alpha","away":"Beta","kickoff":"2026-09-24T12:00:00Z"},
       {**base,"fixture_id":"pinnwire:c","home":"China (Corners)","away":"Maldives (Corners)","kickoff":"2026-09-24T13:00:00Z"},
     ]
-    p.write_text("".join(json.dumps(x)+"\\n" for x in rows))
+    p.write_text("".join(json.dumps(x)+"\n" for x in rows))
     out=build_queue(tmp_path)
     assert out["queued"]==1
     assert out["duplicate_fixture_ids_collapsed"]==1
