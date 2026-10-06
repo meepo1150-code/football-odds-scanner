@@ -45,7 +45,7 @@ def test_join_settles_prevalidated_web_evidence_by_exact_pinnwire_id(tmp_path):
     import json
     from odds_scanner.pinnwire_result_join import run, SNAPSHOTS_PATH, SETTLEMENTS_PATH
     from odds_scanner.oddspapi_result_cache import RESULTS_PATH
-    snap={"provider":"pinnwire","fixture_id":"pinnwire:web1","home":"Alpha","away":"Beta","kickoff":"2026-09-24T12:00:00Z","football_day":"2026-09-24","observed_at":"2026-09-24T10:00:00Z","favorite_side":"home","ah":{"selected_side_line":-0.5,"selected_side_price":1.95}}
+    snap={"provider":"pinnwire","fixture_id":"pinnwire:web1","home":"Alpha","away":"Beta","kickoff":"2026-09-24T12:00:00Z","football_day":"2026-09-24","observed_at":"2026-09-24T10:00:00Z","favorite_side":"H","ah":{"selected_side_line":-0.5,"selected_side_price":1.95}}
     p=tmp_path/SNAPSHOTS_PATH;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(snap)+"\n")
     r=tmp_path/RESULTS_PATH;r.parent.mkdir(parents=True,exist_ok=True);r.write_text(json.dumps({"fixture_id":"pinnwire:web1","ft_home_goals":2,"ft_away_goals":0,"result_source":"WEB_EVIDENCE_TIER_A_OFFICIAL","source_urls":["https://club.example/m"]})+"\n")
     report=run(tmp_path)
