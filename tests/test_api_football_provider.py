@@ -137,4 +137,4 @@ def test_missing_pinnwire_backfill_stops_after_suspension_response(tmp_path):
     report=collect_missing_pinnwire_days(tmp_path,key="secret",get_fn=suspended,max_days=3)
     assert calls == ["2026-09-20"]
     assert report["status"] == "FAILED"
-    assert report["requests_used"] == 3  # planned/capped request count is reported conservatively
+    assert report["requests_used"] == 1
