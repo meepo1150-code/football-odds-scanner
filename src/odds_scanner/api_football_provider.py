@@ -207,7 +207,7 @@ def collect_missing_pinnwire_days(root: Path = Path("."), *, key: str | None = N
         except (TypeError, ValueError):
             continue
     uncovered_days=[day for day in missing_days if day not in covered_days]
-    limit=max(0, max_days if max_days is not None else int(os.getenv("API_FOOTBALL_PINNWIRE_BACKFILL_MAX_DAYS","2")))
+    limit=max(0, max_days if max_days is not None else int(os.getenv("API_FOOTBALL_PINNWIRE_BACKFILL_MAX_DAYS","0")))
     days=uncovered_days[:limit]
     cooldown = _suspension_cooldown(root, now)
     if cooldown:
