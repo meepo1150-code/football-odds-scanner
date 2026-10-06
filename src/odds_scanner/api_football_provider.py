@@ -213,10 +213,11 @@ def collect_missing_pinnwire_days(root: Path = Path("."), *, key: str | None = N
     if cooldown:
         report={"schema_version":"1.1","classification":"API_FOOTBALL_TARGETED_PINNWIRE_MISSING_DAYS","generated_at":now.isoformat(),"status":"ACCOUNT_SUSPENDED","retry_after":cooldown,"requests_used":0,"missing_pinnwire_snapshots":len({str(x.get("fixture_id")) for x in missing}),"missing_days_total":len(missing_days),"covered_days_skipped":len(set(missing_days)&covered_days),"uncovered_days_remaining":len(uncovered_days),"dates_requested":[],"results_added":0,"persisted_rows":len(existing),"research_only":True}
         q=root/Path("reports/api_football_pinnwire_backfill.json"); q.parent.mkdir(parents=True,exist_ok=True); q.write_text(json.dumps(report,indent=2)); return report
-    successful_days=[]
+    successful_days=[]; requests_used=0
     if api_key:
         for day in days:
             try:
+                requests_used += 1
                 payload=get_fn("/fixtures",api_key,{"date":day,"timezone":"Asia/Bangkok"})
                 api_errors=payload.get("errors")
                 if api_errors:
@@ -231,7 +232,7 @@ def collect_missing_pinnwire_days(root: Path = Path("."), *, key: str | None = N
             except Exception as exc: errors.append(f"{day}:{type(exc).__name__}:{exc}")
         _write(root/FIXTURES_PATH,existing)
     status="OK" if api_key and not errors else ("PARTIAL" if successful_days or observed else ("API_KEY_NOT_CONFIGURED" if not api_key else "FAILED"))
-    report={"schema_version":"1.1","classification":"API_FOOTBALL_TARGETED_PINNWIRE_MISSING_DAYS","generated_at":now.isoformat(),"missing_pinnwire_snapshots":len({str(x.get("fixture_id")) for x in missing}),"missing_days_total":len(missing_days),"covered_days_skipped":len(set(missing_days)&covered_days),"uncovered_days_remaining":max(0,len(uncovered_days)-len(successful_days)),"dates_requested":days,"successful_dates":successful_days,"request_cap_days":limit,"requests_used":len(days) if api_key else 0,"fixture_rows_observed":len(observed),"finished_rows_observed":sum(1 for x in observed if x.get("finished")),"persisted_rows":len(existing),"errors":errors,"status":status,"research_only":True}
+    report={"schema_version":"1.1","classification":"API_FOOTBALL_TARGETED_PINNWIRE_MISSING_DAYS","generated_at":now.isoformat(),"missing_pinnwire_snapshots":len({str(x.get("fixture_id")) for x in missing}),"missing_days_total":len(missing_days),"covered_days_skipped":len(set(missing_days)&covered_days),"uncovered_days_remaining":max(0,len(uncovered_days)-len(successful_days)),"dates_requested":days,"successful_dates":successful_days,"request_cap_days":limit,"requests_used":requests_used,"fixture_rows_observed":len(observed),"finished_rows_observed":sum(1 for x in observed if x.get("finished")),"persisted_rows":len(existing),"errors":errors,"status":status,"research_only":True}
     q=root/Path("reports/api_football_pinnwire_backfill.json"); q.parent.mkdir(parents=True,exist_ok=True); q.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8"); return report
 
 def _utc_day_bangkok(value: str) -> str:
