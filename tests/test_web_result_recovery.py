@@ -11,7 +11,7 @@ def test_web_recovery_queue_uses_zero_api_requests(tmp_path):
     assert "Alpha FC" in out["rows"][0]["search_query"]
 
 def test_web_evidence_requires_source_and_integer_ft():
-    base={"fixture_id":"pinnwire:x","home":"A","away":"B","kickoff":"2026-09-24T13:30:00Z","ft_home_goals":2,"ft_away_goals":1,"source_url":"https://example.com/match","retrieved_at":"2026-10-06T00:00:00Z"}
+    base={"fixture_id":"pinnwire:x","home":"A","away":"B","kickoff":"2026-09-24T13:30:00Z","ft_home_goals":2,"ft_away_goals":1,"source_url":"https://example.com/match","retrieved_at":"2026-10-06T00:00:00Z","status":"FT"}
     assert validate_evidence(base)[0] is True
     assert validate_evidence({**base,"source_url":""})[0] is False
     assert validate_evidence({**base,"ft_home_goals":"2"})[0] is False
