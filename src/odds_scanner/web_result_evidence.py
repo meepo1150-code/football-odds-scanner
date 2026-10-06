@@ -36,6 +36,10 @@ def import_evidence(root=Path(".")):
     for e in _read(root/EVIDENCE_PATH):
         ids=e.get("fixture_ids") or [e.get("fixture_id")]
         ids=[str(x) for x in ids if x]
+        # Expand only across the exact deterministic match identity.
+        for candidate_id,s in by_id.items():
+            if _same_identity(e,s) and candidate_id not in ids:
+                ids.append(candidate_id)
         ok,reason=validate_evidence(e)
         if not ok:
             quarantine.append({"fixture_id":e.get("fixture_id"),"reason":reason}); continue
