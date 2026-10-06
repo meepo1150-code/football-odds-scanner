@@ -17,13 +17,26 @@ def build_queue(root=Path("."), limit=100):
         fid=str(s.get("fixture_id") or "")
         if fid and fid not in settled and (fid not in latest or str(s.get("observed_at"))>str(latest[fid].get("observed_at"))):
             latest[fid]=s
+    # One web lookup per deterministic match identity. PinnWire can expose the same
+    # match under multiple provider fixture IDs; recovery evidence is match-level.
+    identities={}
+    skipped_non_match_market=0
+    for fid,s in latest.items():
+        label=" ".join(str(s.get(k) or "") for k in ("home","away","league","competition","sport")).casefold()
+        if "(corners)" in label or " corner" in label:
+            skipped_non_match_market+=1
+            continue
+        key=(str(s.get("home") or "").strip().casefold(),str(s.get("away") or "").strip().casefold(),str(s.get("kickoff") or ""))
+        identities.setdefault(key,[]).append((fid,s))
     rows=[]
-    for fid,s in sorted(latest.items(), key=lambda kv:(str(kv[1].get("kickoff") or ""),kv[0]))[:limit]:
+    for _,group in sorted(identities.items(), key=lambda kv:(str(kv[1][0][1].get("kickoff") or ""),kv[0]))[:limit]:
+        fid,s=group[0]
+        fixture_ids=sorted(x[0] for x in group)
         ko=_utc(s.get("kickoff"))
         day=ko.date().isoformat() if ko else str(s.get("football_day") or "")
         query=f'"{s.get("home","")}" "{s.get("away","")}" {day} football result'
         rows.append({
-            "fixture_id":fid,"home":s.get("home"),"away":s.get("away"),"kickoff":s.get("kickoff"),
+            "fixture_id":fid,"fixture_ids":fixture_ids,"duplicate_fixture_ids":fixture_ids[1:],"home":s.get("home"),"away":s.get("away"),"kickoff":s.get("kickoff"),
             "football_day":s.get("football_day"),"search_query":query,
             "search_url":"https://www.google.com/search?q="+quote_plus(query),
             "required_identity":["home_team","away_team","match_date"],
@@ -31,7 +44,7 @@ def build_queue(root=Path("."), limit=100):
             "acceptance_policy":"DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
             "status":"WEB_EVIDENCE_REQUIRED"
         })
-    payload={"schema_version":"1.0","classification":"PINNWIRE_WEB_RESULT_RECOVERY_QUEUE","generated_at":datetime.now(timezone.utc).isoformat(),"unresolved_total":len(latest),"queued":len(rows),"api_requests_used":0,"validation_relaxed":False,"rows":rows}
+    payload={"schema_version":"1.0","classification":"PINNWIRE_WEB_RESULT_RECOVERY_QUEUE","generated_at":datetime.now(timezone.utc).isoformat(),"unresolved_total":len(latest),"unique_match_identities":len(identities),"duplicate_fixture_ids_collapsed":sum(max(0,len(v)-1) for v in identities.values()),"skipped_non_match_market":skipped_non_match_market,"queued":len(rows),"api_requests_used":0,"validation_relaxed":False,"rows":rows}
     p=root/QUEUE_PATH;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8");return payload
 
 def validate_evidence(item):
