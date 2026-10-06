@@ -102,10 +102,10 @@ def test_missing_pinnwire_backfill_is_bounded_and_skips_cached_days(tmp_path):
     snap_path = tmp_path / V2_SNAPSHOT_PATH
     snap_path.parent.mkdir(parents=True, exist_ok=True)
     rows = [
-        {"provider":"pinnwire","fixture_id":"pinnwire:a","football_day":"2026-09-20"},
-        {"provider":"pinnwire","fixture_id":"pinnwire:b","football_day":"2026-09-21"},
-        {"provider":"pinnwire","fixture_id":"pinnwire:c","football_day":"2026-09-22"},
-        {"provider":"pinnwire","fixture_id":"pinnwire:d","football_day":"2026-09-23"},
+        {"provider":"pinnwire","fixture_id":"pinnwire:a","football_day":"2026-09-20","home":"A","away":"B","kickoff":"2026-09-20T12:00:00Z"},
+        {"provider":"pinnwire","fixture_id":"pinnwire:b","football_day":"2026-09-21","home":"C","away":"D","kickoff":"2026-09-21T12:00:00Z"},
+        {"provider":"pinnwire","fixture_id":"pinnwire:c","football_day":"2026-09-22","home":"E","away":"F","kickoff":"2026-09-22T12:00:00Z"},
+        {"provider":"pinnwire","fixture_id":"pinnwire:d","football_day":"2026-09-23","home":"G","away":"H","kickoff":"2026-09-23T12:00:00Z"},
     ]
     snap_path.write_text("".join(json.dumps(x)+"\\n" for x in rows))
     _write(tmp_path / FIXTURES_PATH, {"cached": {
@@ -129,7 +129,7 @@ def test_missing_pinnwire_backfill_stops_after_suspension_response(tmp_path):
     from odds_scanner.api_football_provider import collect_missing_pinnwire_days, V2_SNAPSHOT_PATH
     snap_path=tmp_path / V2_SNAPSHOT_PATH
     snap_path.parent.mkdir(parents=True,exist_ok=True)
-    snap_path.write_text("".join(json.dumps({"provider":"pinnwire","fixture_id":f"pinnwire:{i}","football_day":f"2026-09-{20+i:02d}"})+"\\n" for i in range(3)))
+    snap_path.write_text("".join(json.dumps({"provider":"pinnwire","fixture_id":f"pinnwire:{i}","football_day":f"2026-09-{20+i:02d}","home":f"H{i}","away":f"A{i}","kickoff":f"2026-09-{20+i:02d}T12:00:00Z"})+"\\n" for i in range(3)))
     calls=[]
     def suspended(path,key,params=None):
         calls.append(params["date"])
