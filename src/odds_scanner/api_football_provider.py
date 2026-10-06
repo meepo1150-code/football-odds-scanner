@@ -171,7 +171,13 @@ def collect(root: Path = Path("."), *, key: str | None = None, today: date | Non
     return report
 
 
-def collect_missing_pinnwire_days(root: Path = Path("."), *, key: str | None = None, get_fn=_get) -> dict:
+def collect_missing_pinnwire_days(root: Path = Path("."), *, key: str | None = None, get_fn=_get, max_days: int | None = None) -> dict:
+    """Progressively fill missing PinnWire result dates without exhausting the provider.
+
+    A successful /fixtures?date response is complete for that date, so dates already
+    represented in the local API-Football cache are not requested again. Remaining
+    uncovered dates are processed oldest-first with a small per-run cap.
+    """
     api_key=(key or os.getenv(ENV_KEY,"")).strip(); now=datetime.now(timezone.utc)
     snaps=[]
     p=root/V2_SNAPSHOT_PATH
@@ -188,24 +194,51 @@ def collect_missing_pinnwire_days(root: Path = Path("."), *, key: str | None = N
             except json.JSONDecodeError: continue
             if row.get("fixture_id"): existing_results.add(str(row["fixture_id"]))
     missing=[s for s in snaps if str(s.get("fixture_id") or "") not in existing_results]
-    days=sorted({str(s.get("football_day") or "") for s in missing if s.get("football_day")})
+    missing_days=sorted({str(s.get("football_day") or "") for s in missing if s.get("football_day")})
     existing=_read(root/FIXTURES_PATH); observed=[]; errors=[]
+    # A prior successful date fetch leaves fixture rows in this cache. Do not spend
+    # quota fetching the same historical day again merely because some PinnWire
+    # leagues are absent from API-Football.
+    covered_days=set()
+    for row in existing.values():
+        ko=row.get("kickoff")
+        try:
+            covered_days.add(_utc_day_bangkok(ko))
+        except (TypeError, ValueError):
+            continue
+    uncovered_days=[day for day in missing_days if day not in covered_days]
+    limit=max(0, max_days if max_days is not None else int(os.getenv("API_FOOTBALL_PINNWIRE_BACKFILL_MAX_DAYS","0")))
+    days=uncovered_days[:limit]
     cooldown = _suspension_cooldown(root, now)
     if cooldown:
-        report={"generated_at":now.isoformat(),"status":"ACCOUNT_SUSPENDED","retry_after":cooldown,"requests_used":0,"results_added":0,"persisted_rows":len(existing),"research_only":True}
+        report={"schema_version":"1.1","classification":"API_FOOTBALL_TARGETED_PINNWIRE_MISSING_DAYS","generated_at":now.isoformat(),"status":"ACCOUNT_SUSPENDED","retry_after":cooldown,"requests_used":0,"missing_pinnwire_snapshots":len({str(x.get("fixture_id")) for x in missing}),"missing_days_total":len(missing_days),"covered_days_skipped":len(set(missing_days)&covered_days),"uncovered_days_remaining":len(uncovered_days),"dates_requested":[],"results_added":0,"persisted_rows":len(existing),"research_only":True}
         q=root/Path("reports/api_football_pinnwire_backfill.json"); q.parent.mkdir(parents=True,exist_ok=True); q.write_text(json.dumps(report,indent=2)); return report
+    successful_days=[]; requests_used=0
     if api_key:
         for day in days:
             try:
+                requests_used += 1
                 payload=get_fn("/fixtures",api_key,{"date":day,"timezone":"Asia/Bangkok"})
-                if payload.get("errors"): errors.append(f"{day}:API_ERRORS:{payload.get('errors')}")
+                api_errors=payload.get("errors")
+                if api_errors:
+                    errors.append(f"{day}:API_ERRORS:{api_errors}")
+                    if "suspended" in str(api_errors).lower():
+                        break
+                    continue
+                successful_days.append(day)
                 for item in payload.get("response") or []:
                     row=normalize_fixture(item,now.isoformat())
                     if row: observed.append(row); existing[row["provider_fixture_id"]]=row
             except Exception as exc: errors.append(f"{day}:{type(exc).__name__}:{exc}")
         _write(root/FIXTURES_PATH,existing)
-    report={"schema_version":"1.0","classification":"API_FOOTBALL_TARGETED_PINNWIRE_MISSING_DAYS","generated_at":now.isoformat(),"missing_pinnwire_snapshots":len({str(x.get("fixture_id")) for x in missing}),"dates_requested":days,"requests_used":len(days) if api_key else 0,"fixture_rows_observed":len(observed),"finished_rows_observed":sum(1 for x in observed if x.get("finished")),"persisted_rows":len(existing),"errors":errors,"status":"OK" if api_key and not errors else ("PARTIAL" if observed else "FAILED"),"research_only":True}
+    status="OK" if api_key and not errors else ("PARTIAL" if successful_days or observed else ("API_KEY_NOT_CONFIGURED" if not api_key else "FAILED"))
+    report={"schema_version":"1.1","classification":"API_FOOTBALL_TARGETED_PINNWIRE_MISSING_DAYS","generated_at":now.isoformat(),"missing_pinnwire_snapshots":len({str(x.get("fixture_id")) for x in missing}),"missing_days_total":len(missing_days),"covered_days_skipped":len(set(missing_days)&covered_days),"uncovered_days_remaining":max(0,len(uncovered_days)-len(successful_days)),"dates_requested":days,"successful_dates":successful_days,"request_cap_days":limit,"requests_used":requests_used,"fixture_rows_observed":len(observed),"finished_rows_observed":sum(1 for x in observed if x.get("finished")),"persisted_rows":len(existing),"errors":errors,"status":status,"research_only":True}
     q=root/Path("reports/api_football_pinnwire_backfill.json"); q.parent.mkdir(parents=True,exist_ok=True); q.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8"); return report
+
+def _utc_day_bangkok(value: str) -> str:
+    dt=datetime.fromisoformat(str(value).replace("Z","+00:00"))
+    if not dt.tzinfo: dt=dt.replace(tzinfo=timezone.utc)
+    return dt.astimezone(BANGKOK).date().isoformat()
 
 def probe_odds(root: Path = Path("."), *, key: str | None = None, get_fn=_get) -> dict:
     """Validate API-Football Pinnacle Asian Handicap semantics before provider promotion."""

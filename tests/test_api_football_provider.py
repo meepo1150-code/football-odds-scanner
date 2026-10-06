@@ -93,3 +93,5 @@ def test_join_rejects_one_team_time_nearby_and_legacy_extra_time(tmp_path):
         assert run(tmp_path)['finished_exact_matches'] == 0
     put(API_FIXTURES_PATH, fixture)
     assert run(tmp_path)['finished_exact_matches'] == 1
+
+

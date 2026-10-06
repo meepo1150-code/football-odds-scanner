@@ -38,7 +38,10 @@ jobs:
       - name: Fetch fixture results for PinnWire missing dates
         env:
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          API_FOOTBALL_PINNWIRE_BACKFILL_MAX_DAYS: '0'
         run: python -c "from odds_scanner.api_football_provider import collect_missing_pinnwire_days; import json; print(json.dumps(collect_missing_pinnwire_days(), ensure_ascii=False))"
+      - name: Build zero-quota web result recovery queue
+        run: python -m odds_scanner.web_result_recovery
       - name: Join finished API-Football results to PinnWire and settle AH
         run: python -m odds_scanner.pinnwire_result_join
       - name: Rebuild AH and O-U statistics
@@ -51,6 +54,7 @@ jobs:
           mkdir -p /tmp/api-football-shadow/reports /tmp/api-football-shadow/data/normalized
           test -f reports/api_football_shadow_health.json && cp reports/api_football_shadow_health.json /tmp/api-football-shadow/reports/ || true
           test -f reports/api_football_pinnwire_backfill.json && cp reports/api_football_pinnwire_backfill.json /tmp/api-football-shadow/reports/ || true
+          test -f reports/pinnwire_web_result_recovery_queue.json && cp reports/pinnwire_web_result_recovery_queue.json /tmp/api-football-shadow/reports/ || true
           cp data/normalized/api_football_fixtures.jsonl /tmp/api-football-shadow/data/normalized/
           test -f data/normalized/pinnwire_research_v2_settlements.jsonl && cp data/normalized/pinnwire_research_v2_settlements.jsonl /tmp/api-football-shadow/data/normalized/ || true
           test -f data/normalized/oddspapi_finished_results.jsonl && cp data/normalized/oddspapi_finished_results.jsonl /tmp/api-football-shadow/data/normalized/ || true
@@ -64,11 +68,12 @@ jobs:
             mkdir -p reports data/normalized
             test -f /tmp/api-football-shadow/reports/api_football_shadow_health.json && cp /tmp/api-football-shadow/reports/api_football_shadow_health.json reports/ || true
             test -f /tmp/api-football-shadow/reports/api_football_pinnwire_backfill.json && cp /tmp/api-football-shadow/reports/api_football_pinnwire_backfill.json reports/ || true
+            test -f /tmp/api-football-shadow/reports/pinnwire_web_result_recovery_queue.json && cp /tmp/api-football-shadow/reports/pinnwire_web_result_recovery_queue.json reports/ || true
             cp /tmp/api-football-shadow/data/normalized/api_football_fixtures.jsonl data/normalized/
             python -m odds_scanner.result_artifact_merge /tmp/api-football-shadow
             python -m odds_scanner.pinnwire_result_join
             python -m odds_scanner.research_v2_pattern_stats
-            git add -f -- reports/api_football_shadow_health.json reports/api_football_pinnwire_backfill.json reports/pinnwire_result_join_status.json data/normalized/api_football_fixtures.jsonl data/normalized/pinnwire_research_v2_settlements.jsonl data/normalized/oddspapi_finished_results.jsonl reports/research_v2_pattern_statistics.json data/normalized/research_v2_pattern_outcomes.jsonl
+            git add -f -- reports/api_football_shadow_health.json reports/api_football_pinnwire_backfill.json reports/pinnwire_web_result_recovery_queue.json reports/pinnwire_result_join_status.json data/normalized/api_football_fixtures.jsonl data/normalized/pinnwire_research_v2_settlements.jsonl data/normalized/oddspapi_finished_results.jsonl reports/research_v2_pattern_statistics.json data/normalized/research_v2_pattern_outcomes.jsonl
             test ! -f data/normalized/oddspapi_finished_results.conflicts.jsonl || git add -f data/normalized/oddspapi_finished_results.conflicts.jsonl
             git diff --cached --quiet && exit 0
             git commit -m 'data: update API-Football results and PinnWire settlements'
