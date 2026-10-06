@@ -24,3 +24,18 @@ def test_weak_single_source_and_identity_mismatch_are_quarantined(tmp_path):
     weak["sources"].append({"url":"https://other.example/m","tier":"B_REPUTABLE"}); weak["home"]="Wrong"
     _write(tmp_path/EVIDENCE_PATH,[weak])
     assert import_evidence(tmp_path)["quarantine"][0]["reason"]=="IDENTITY_MISMATCH_OR_UNKNOWN_FIXTURE"
+
+
+def test_evidence_expands_to_exact_duplicate_provider_ids(tmp_path):
+    snaps=[
+      {"provider":"pinnwire","fixture_id":"pinnwire:a","home":"Alpha","away":"Beta","kickoff":"2026-09-24T12:00:00Z"},
+      {"provider":"pinnwire","fixture_id":"pinnwire:b","home":"Alpha","away":"Beta","kickoff":"2026-09-24T12:00:00Z"},
+      {"provider":"pinnwire","fixture_id":"pinnwire:c","home":"Alpha","away":"Other","kickoff":"2026-09-24T12:00:00Z"},
+    ]
+    _write(tmp_path/SNAPSHOTS_PATH,snaps)
+    ev={"fixture_id":"pinnwire:a","home":"Alpha","away":"Beta","kickoff":"2026-09-24T12:00:00Z","ft_home_goals":2,"ft_away_goals":1,"status":"FT","source_url":"https://club.example/m","retrieved_at":"2026-09-25T00:00:00Z","sources":[{"url":"https://club.example/m","tier":"A_OFFICIAL"}]}
+    _write(tmp_path/EVIDENCE_PATH,[ev])
+    r=import_evidence(tmp_path)
+    assert r["accepted_rows"]==2 and r["results_added"]==2
+    ids={json.loads(x)["fixture_id"] for x in (tmp_path/RESULTS_PATH).read_text().splitlines()}
+    assert ids=={"pinnwire:a","pinnwire:b"}
