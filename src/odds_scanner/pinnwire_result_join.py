@@ -68,6 +68,19 @@ def run(root=Path("."),kickoff_tolerance_seconds=0):
         if fid and (fid not in latest or str(s.get("observed_at"))>str(latest[fid].get("observed_at"))):latest[fid]=s
     results=[];settlements=[];unmatched=[];ambiguous=[];matched_total=0;matched_pending=0;web_result_matches=0;unmatched_with_kickoff=0;unmatched_no_kickoff=0;unmatched_samples=[]
     for fid,s in latest.items():
+        wr=web_results.get(fid)
+        if wr is not None:
+            hg,ag=wr.get("ft_home_goals"),wr.get("ft_away_goals")
+            if type(hg) is int and type(ag) is int:
+                ah=s.get("ah") or {}
+                try:
+                    b=settle_asian_handicap(hg,ag,float(ah.get("selected_side_line")),float(ah.get("selected_side_price")),str(s.get("favorite_side")))
+                except (TypeError,ValueError):
+                    pass
+                else:
+                    settlements.append({"fixture_id":fid,"football_day":s.get("football_day"),"home":s.get("home"),"away":s.get("away"),"kickoff":s.get("kickoff"),"observed_at":s.get("observed_at"),"side":s.get("favorite_side"),"line":ah.get("selected_side_line"),"odds":ah.get("selected_side_price"),"ft_home_goals":hg,"ft_away_goals":ag,"settlement":b.settlement.value,"profit_units":b.profit_units,"result_source":wr.get("result_source"),"source_urls":wr.get("source_urls")})
+                    web_result_matches+=1
+                    continue
         ko=_utc(s.get("kickoff")); exact=[]; kickoff_candidates=[]
         for f in fixtures:
             fk=_utc(f.get("kickoff"))
