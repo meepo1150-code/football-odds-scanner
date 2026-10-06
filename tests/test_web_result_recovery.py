@@ -25,6 +25,7 @@ def test_web_evidence_rejects_non_final_or_insecure_source():
     assert validate_evidence(base)[1]=="INVALID_SOURCE_URL"
 
 
+# Regression: provider IDs are not match identities; corner pseudo-markets are not FT football matches.
 def test_web_queue_collapses_duplicate_match_ids_and_skips_corners(tmp_path):
     import json
     from odds_scanner.web_result_recovery import build_queue
