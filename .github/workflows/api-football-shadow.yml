@@ -38,6 +38,7 @@ jobs:
       - name: Fetch fixture results for PinnWire missing dates
         env:
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          API_FOOTBALL_PINNWIRE_BACKFILL_MAX_DAYS: '0'
         run: python -c "from odds_scanner.api_football_provider import collect_missing_pinnwire_days; import json; print(json.dumps(collect_missing_pinnwire_days(), ensure_ascii=False))"
       - name: Join finished API-Football results to PinnWire and settle AH
         run: python -m odds_scanner.pinnwire_result_join
