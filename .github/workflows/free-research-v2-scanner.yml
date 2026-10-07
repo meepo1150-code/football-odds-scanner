@@ -1,6 +1,10 @@
 name: Free Research V2 Scanner
 on:
   workflow_dispatch:
+  schedule:
+    # Canonical Research V2 observations: 18:00 and 21:00 Asia/Bangkok (UTC+7).
+    - cron: '0 11 * * *'
+    - cron: '0 14 * * *'
   push:
     branches: [main]
     paths: ['src/odds_scanner/propline_research_v2.py', 'src/odds_scanner/propline_provider.py', '.github/workflows/free-research-v2-scanner.yml', 'controls/free_research_v2_scan_token.txt']
