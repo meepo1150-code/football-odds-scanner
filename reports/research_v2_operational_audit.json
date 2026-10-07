@@ -1,15 +1,17 @@
 {
   "schema_version": "1.2",
   "football_day": "2026-10-07",
-  "generated_at": "2026-10-07T13:32:27.209701+00:00",
+  "generated_at": "2026-10-07T14:34:35.424363+00:00",
   "workflow_success_is_not_data_source_health": true,
-  "status": "COLLECTING_WITH_EXTERNAL_BLOCKERS",
+  "status": "DEGRADED_DATA_COVERAGE",
   "data_assertions_passed": true,
   "assertion_failures": [],
-  "collection_health_passed": true,
-  "collection_failures": [],
+  "collection_health_passed": false,
+  "collection_failures": [
+    "CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE"
+  ],
   "collection": {
-    "bangkok_now": "2026-10-07T20:32:27.209701+07:00",
+    "bangkok_now": "2026-10-07T21:34:35.424363+07:00",
     "canonical_slots": [
       {
         "target_time": "2026-10-07T18:00:00+07:00",
@@ -23,7 +25,7 @@
       },
       {
         "target_time": "2026-10-07T21:00:00+07:00",
-        "state": "UPCOMING",
+        "state": "MISSING",
         "provider": null,
         "observed_at": null,
         "lag_minutes": null,
@@ -32,11 +34,11 @@
         "recovered": false
       }
     ],
-    "expected_elapsed_slots": 1,
+    "expected_elapsed_slots": 2,
     "observed_slots": 1,
-    "missing_elapsed_slots": 0,
-    "coverage_fraction": 1.0,
-    "collection_state": "COMPLETE",
+    "missing_elapsed_slots": 1,
+    "coverage_fraction": 0.5,
+    "collection_state": "DEGRADED",
     "recovered_slots": [
       "2026-10-07T18:00:00+07:00"
     ],
@@ -57,10 +59,10 @@
     "scope_excluded_snapshots": 238,
     "current_day_canonical_fixtures": 2,
     "collapsed_provider_fixture_ids": 8,
-    "expected_elapsed_slots": 1,
+    "expected_elapsed_slots": 2,
     "observed_slots": 1,
-    "missing_elapsed_slots": 0,
-    "coverage_fraction": 1.0,
+    "missing_elapsed_slots": 1,
+    "coverage_fraction": 0.5,
     "unresolved_matured_3h_fixtures": 269,
     "unresolved_future_or_recent_fixtures": 2,
     "retired_unresolved_ft_fixtures": 263,
@@ -95,7 +97,7 @@
       "current_balance_verified": false
     }
   },
-  "daily_sync_status": "WAITING_EXTERNAL_DATA",
+  "daily_sync_status": "LOCAL_FIXTURE_COVERAGE_SYNCED",
   "forward_candidates": [
     {
       "candidate_id": "FD_AH_4E30F9F2EC34",
