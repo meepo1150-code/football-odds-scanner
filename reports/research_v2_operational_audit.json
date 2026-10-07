@@ -1,19 +1,21 @@
 {
   "schema_version": "1.2",
   "football_day": "2026-10-07",
-  "generated_at": "2026-10-07T07:14:27.879064+00:00",
+  "generated_at": "2026-10-07T13:11:45.166014+00:00",
   "workflow_success_is_not_data_source_health": true,
-  "status": "NOT_DUE",
+  "status": "DEGRADED_DATA_COVERAGE",
   "data_assertions_passed": true,
   "assertion_failures": [],
-  "collection_health_passed": true,
-  "collection_failures": [],
+  "collection_health_passed": false,
+  "collection_failures": [
+    "CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE"
+  ],
   "collection": {
-    "bangkok_now": "2026-10-07T14:14:27.879064+07:00",
+    "bangkok_now": "2026-10-07T20:11:45.166014+07:00",
     "canonical_slots": [
       {
         "target_time": "2026-10-07T18:00:00+07:00",
-        "state": "UPCOMING",
+        "state": "MISSING",
         "provider": null,
         "observed_at": null,
         "lag_minutes": null,
@@ -32,11 +34,11 @@
         "recovered": false
       }
     ],
-    "expected_elapsed_slots": 0,
+    "expected_elapsed_slots": 1,
     "observed_slots": 0,
-    "missing_elapsed_slots": 0,
-    "coverage_fraction": null,
-    "collection_state": "NOT_DUE",
+    "missing_elapsed_slots": 1,
+    "coverage_fraction": 0.0,
+    "collection_state": "DEGRADED",
     "recovered_slots": [],
     "missed_slots": []
   },
@@ -45,9 +47,9 @@
     "verified_snapshots": 1430,
     "quarantined_snapshots": 90,
     "recovered_legacy_snapshots": 0,
-    "unresolved_ft_fixtures": 284,
-    "settled_statistical_fixtures": 550,
-    "core_price_settled_fixtures": 510,
+    "unresolved_ft_fixtures": 269,
+    "settled_statistical_fixtures": 565,
+    "core_price_settled_fixtures": 524,
     "movement_fixtures": 147,
     "numeric_movement_deltas": 966,
     "current_day_valid_scans": 0,
@@ -55,13 +57,13 @@
     "scope_excluded_snapshots": 238,
     "current_day_canonical_fixtures": 0,
     "collapsed_provider_fixture_ids": 8,
-    "expected_elapsed_slots": 0,
+    "expected_elapsed_slots": 1,
     "observed_slots": 0,
-    "missing_elapsed_slots": 0,
-    "coverage_fraction": null,
-    "unresolved_matured_3h_fixtures": 284,
+    "missing_elapsed_slots": 1,
+    "coverage_fraction": 0.0,
+    "unresolved_matured_3h_fixtures": 269,
     "unresolved_future_or_recent_fixtures": 0,
-    "retired_unresolved_ft_fixtures": 278,
+    "retired_unresolved_ft_fixtures": 263,
     "active_unresolved_matured_3h_fixtures": 6
   },
   "providers": {
@@ -84,12 +86,12 @@
     "oddspapi": {
       "status": "QUOTA_AVAILABLE",
       "request_limit": 250,
-      "request_count": 92,
-      "request_remaining": 158,
-      "generated_at": "2026-10-07T06:08:33.583743+00:00",
+      "request_count": 93,
+      "request_remaining": 157,
+      "generated_at": "2026-10-07T13:11:43.871665+00:00",
       "capability": "REQUIRES_CURRENT_VALIDATION",
       "balance_status": "LAST_ACCOUNT_OBSERVATION",
-      "request_remaining_last_observed": 158,
+      "request_remaining_last_observed": 157,
       "current_balance_verified": false
     }
   },
