@@ -1,17 +1,15 @@
 {
   "schema_version": "1.2",
   "football_day": "2026-10-07",
-  "generated_at": "2026-10-07T14:34:35.424363+00:00",
+  "generated_at": "2026-10-07T15:23:04.617280+00:00",
   "workflow_success_is_not_data_source_health": true,
-  "status": "DEGRADED_DATA_COVERAGE",
+  "status": "COLLECTING_WITH_EXTERNAL_BLOCKERS",
   "data_assertions_passed": true,
   "assertion_failures": [],
-  "collection_health_passed": false,
-  "collection_failures": [
-    "CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE"
-  ],
+  "collection_health_passed": true,
+  "collection_failures": [],
   "collection": {
-    "bangkok_now": "2026-10-07T21:34:35.424363+07:00",
+    "bangkok_now": "2026-10-07T22:23:04.617280+07:00",
     "canonical_slots": [
       {
         "target_time": "2026-10-07T18:00:00+07:00",
@@ -25,22 +23,23 @@
       },
       {
         "target_time": "2026-10-07T21:00:00+07:00",
-        "state": "MISSING",
-        "provider": null,
-        "observed_at": null,
-        "lag_minutes": null,
+        "state": "ZERO_FIXTURES",
+        "provider": "oddspapi",
+        "observed_at": "2026-10-07T22:22:57.516209+07:00",
+        "lag_minutes": 82.96,
         "valid_snapshot_count": 0,
         "canonical_fixture_count": 0,
-        "recovered": false
+        "recovered": true
       }
     ],
     "expected_elapsed_slots": 2,
-    "observed_slots": 1,
-    "missing_elapsed_slots": 1,
-    "coverage_fraction": 0.5,
-    "collection_state": "DEGRADED",
+    "observed_slots": 2,
+    "missing_elapsed_slots": 0,
+    "coverage_fraction": 1.0,
+    "collection_state": "COMPLETE",
     "recovered_slots": [
-      "2026-10-07T18:00:00+07:00"
+      "2026-10-07T18:00:00+07:00",
+      "2026-10-07T21:00:00+07:00"
     ],
     "missed_slots": []
   },
@@ -60,9 +59,9 @@
     "current_day_canonical_fixtures": 2,
     "collapsed_provider_fixture_ids": 8,
     "expected_elapsed_slots": 2,
-    "observed_slots": 1,
-    "missing_elapsed_slots": 1,
-    "coverage_fraction": 0.5,
+    "observed_slots": 2,
+    "missing_elapsed_slots": 0,
+    "coverage_fraction": 1.0,
     "unresolved_matured_3h_fixtures": 269,
     "unresolved_future_or_recent_fixtures": 2,
     "retired_unresolved_ft_fixtures": 263,
@@ -89,10 +88,10 @@
       "status": "QUOTA_AVAILABLE",
       "request_limit": 250,
       "request_count": 93,
-      "request_remaining": 157,
+      "request_remaining": null,
       "generated_at": "2026-10-07T13:11:43.871665+00:00",
       "capability": "REQUIRES_CURRENT_VALIDATION",
-      "balance_status": "LAST_ACCOUNT_OBSERVATION",
+      "balance_status": "STALE_AFTER_RECORDED_USAGE",
       "request_remaining_last_observed": 157,
       "current_balance_verified": false
     }
