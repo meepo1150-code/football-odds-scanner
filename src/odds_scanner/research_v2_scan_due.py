@@ -10,8 +10,10 @@ from .research_v2_slots import targets as canonical_targets, read_ledger, read_s
 
 
 def due(now, report, event='schedule', fallback=None, ledger_rows=None, snapshots=None):
-    if event != 'schedule':
-        return True  # Manual/code-change runs still obey the transport cooldown.
+    if event == 'workflow_dispatch':
+        return True  # Explicit manual probes still obey the transport cooldown.
+    # Pushes and automatic workflow triggers must obey the same slot/evidence
+    # gate as cron; a code change is not permission to collect another quote.
     local = now.astimezone(BKK)
     from .europe_pinnacle_discovery import _football_day_bounds
     targets = [t for t in canonical_targets(_football_day_bounds(now)[2])
