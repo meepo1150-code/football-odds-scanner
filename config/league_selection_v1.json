@@ -1,0 +1,184 @@
+{
+  "schema_version": "1.0",
+  "policy": "ADULT_MENS_COMPETITIVE_ONLY",
+  "default_action": "REVIEW",
+  "tiers": {
+    "CORE": "archive_and_research",
+    "CONDITIONAL": "archive_only_if_market_coverage_verified",
+    "EXCLUDE": "never_discover"
+  },
+  "domestic_leagues": {
+    "England": {
+      "core": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "conditional": [
+        5,
+        6
+      ]
+    },
+    "Spain": {
+      "core": [
+        1,
+        2
+      ]
+    },
+    "Italy": {
+      "core": [
+        1,
+        2
+      ]
+    },
+    "Germany": {
+      "core": [
+        1,
+        2,
+        3
+      ]
+    },
+    "France": {
+      "core": [
+        1,
+        2
+      ],
+      "conditional": [
+        3
+      ]
+    },
+    "Netherlands": {
+      "core": [
+        1,
+        2
+      ]
+    },
+    "Portugal": {
+      "core": [
+        1,
+        2
+      ]
+    },
+    "Belgium": {
+      "core": [
+        1,
+        2
+      ]
+    },
+    "Scotland": {
+      "core": [
+        1,
+        2
+      ]
+    },
+    "Turkey": {
+      "core": [
+        1,
+        2
+      ]
+    },
+    "Austria": {
+      "core": [
+        1,
+        2
+      ]
+    },
+    "Switzerland": {
+      "core": [
+        1,
+        2
+      ]
+    },
+    "Denmark": {
+      "core": [
+        1,
+        2
+      ]
+    },
+    "Sweden": {
+      "core": [
+        1,
+        2
+      ]
+    },
+    "Norway": {
+      "core": [
+        1,
+        2
+      ]
+    },
+    "Poland": {
+      "core": [
+        1,
+        2
+      ]
+    },
+    "Czechia": {
+      "core": [
+        1,
+        2
+      ]
+    },
+    "Greece": {
+      "core": [
+        1,
+        2
+      ]
+    },
+    "Brazil": {
+      "core": [
+        1
+      ],
+      "conditional": [
+        2
+      ]
+    },
+    "Japan": {
+      "core": [
+        1
+      ],
+      "conditional": [
+        2
+      ]
+    },
+    "South_Korea": {
+      "core": [
+        1
+      ],
+      "conditional": [
+        2
+      ]
+    },
+    "other_europe": {
+      "conditional": [
+        1
+      ]
+    },
+    "other_world": {
+      "conditional": [
+        1
+      ]
+    }
+  },
+  "cups": {
+    "domestic_major": "CONDITIONAL",
+    "continental_major": "CORE",
+    "senior_national_competitive": "CORE"
+  },
+  "excluded_categories": [
+    "friendly",
+    "women",
+    "youth",
+    "reserve",
+    "amateur_unverified"
+  ],
+  "safety": {
+    "preserve_existing_archive": true,
+    "do_not_guess_tournament_ids": true,
+    "require_provider_id_mapping": true,
+    "require_real_ah_ou_1x2_coverage": true,
+    "do_not_change_frozen_promotion_gates": true
+  },
+  "status": "POLICY_DRAFT_NOT_WIRED"
+}
