@@ -42,7 +42,25 @@ def inventory():
                     unknown[(str(raw_id), str(label))] += 1
                 if fid:
                     seen.add(fid)
-    return {"schema_version": "1.0", "mode": "READ_ONLY_NO_DELETION",
+    result_path = ROOT / "data/normalized/oddspapi_finished_results.jsonl"
+    result_ids = set()
+    if result_path.exists():
+        with result_path.open(encoding="utf-8") as stream:
+            for lineno, line in enumerate(stream, 1):
+                if not line.strip():
+                    continue
+                try:
+                    result = json.loads(line)
+                except json.JSONDecodeError:
+                    errors.append(f"{result_path.relative_to(ROOT)}:{lineno}:invalid_json")
+                    continue
+                if isinstance(result, dict) and result.get("fixture_id") is not None:
+                    result_ids.add(str(result["fixture_id"]))
+    return {"schema_version": "1.1", "mode": "READ_ONLY_NO_DELETION",
+            "results_total_unique": len(result_ids),
+            "results_joinable_to_archive": len(result_ids & seen),
+            "results_not_in_archive": len(result_ids - seen),
+            "warning": "Results outside archived fixtures have no tournament ID in this cache; do not delete without a verified fixture-to-tournament mapping.",
             "total_rows": sum(counts.values()), "unique_fixture_ids": len(seen),
             "league_breakdown": [{"decision": k[0], "tournament_id": k[1], "league": k[2], "rows": n}
                                  for k, n in sorted(counts.items())],
