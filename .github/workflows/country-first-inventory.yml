@@ -17,7 +17,19 @@ jobs:
           import json,csv,collections
           from pathlib import Path
           paths=[Path('data/normalized/research_v2_daily_fixtures.jsonl'),Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'),Path('data/normalized/v2_mainline_snapshots.jsonl'),Path('data/normalized/five_dollar_snapshots.jsonl'),Path('data/normalized/api_football_fixtures.jsonl')]
-          counts=collections.Counter(); sources=collections.Counter(); missing=collections.Counter(); seen=set()
+          team_countries=collections.defaultdict(collections.Counter)
+          for ep in paths:
+              if not ep.exists():continue
+              for raw in ep.open():
+                  try:ev=json.loads(raw)
+                  except (ValueError,TypeError):continue
+                  if not isinstance(ev,dict):continue
+                  ec=str(ev.get('country') or ev.get('country_name') or ev.get('league_country') or '').strip()
+                  if not ec or ec.lower() in ('world','international clubs','international'):continue
+                  for field in ('home','away','home_team','away_team'):
+                      team=ev.get(field)
+                      if isinstance(team,str) and team.strip():team_countries[team.strip().casefold()][ec]+=1
+          inferred=collections.Counter(); counts=collections.Counter(); sources=collections.Counter(); missing=collections.Counter(); seen=set()
           for p in paths:
               if not p.exists():continue
               with p.open() as f:
@@ -35,7 +47,13 @@ jobs:
                       key=(str(p),fid or (home,away,str(r.get('kickoff') or '')))
                       if key in seen:continue
                       seen.add(key)
-                      if not country:country='UNKNOWN_REQUIRES_PROVIDER_MAPPING';missing[str(p)]+=1
+                      if not country:
+                          hc=team_countries.get(home.casefold(),{})
+                          ac=team_countries.get(away.casefold(),{})
+                          if len(hc)==1 and len(ac)==1 and next(iter(hc))==next(iter(ac)):
+                              country=next(iter(hc));inferred[str(p)]+=1
+                          else:
+                              country='UNKNOWN_REQUIRES_PROVIDER_MAPPING';missing[str(p)]+=1
                       counts[(country,league,league_id,str(p))]+=1
                       sources[str(p)]+=1
           Path('reports').mkdir(exist_ok=True)
@@ -49,7 +67,7 @@ jobs:
               for country,n in totals.most_common():w.writerow([country,n,len({league for (c,league,lid,src) in counts if c==country}),'REVIEW'])
           print('TOTAL_COUNTRIES',len(totals),'TOTAL_SOURCE_FIXTURES',sum(totals.values()))
           for c,n in totals.most_common():print('COUNTRY',repr(c),n,'LEAGUES',len({league for (cc,league,lid,src) in counts if cc==c}))
-          for src,n in sources.items():print('SOURCE',src,n,'MISSING_COUNTRY',missing[src])
+          for src,n in sources.items():print('SOURCE',src,n,'TEAM_INFERRED',inferred[src],'MISSING_COUNTRY',missing[src])
           PY
       - uses: actions/upload-artifact@v4
         with:
