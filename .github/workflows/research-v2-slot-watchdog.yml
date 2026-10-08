@@ -1,6 +1,14 @@
 name: Research V2 Independent Slot Watchdog
 on:
   workflow_dispatch:
+  # Additional wake-up sources; the local gate and collector lock prevent
+  # duplicate quotes. Never download or execute upstream run artifacts.
+  workflow_run:
+    workflows:
+      - 'Live Odds Scan'
+      - 'Validation v2 Pipeline Health'
+    branches: [main]
+    types: [completed]
   schedule:
     # Independent recovery path. Offset from the primary workflow so one delayed
     # workflow definition does not remain the only trigger source.
@@ -22,6 +30,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   recover:
+    if: ${{ github.event_name != 'workflow_run' || (github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.event != 'pull_request') }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
