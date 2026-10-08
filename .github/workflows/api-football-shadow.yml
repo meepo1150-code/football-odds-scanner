@@ -81,6 +81,7 @@ jobs:
             cp /tmp/api-football-shadow/data/normalized/api_football_fixtures.jsonl data/normalized/
             python -m odds_scanner.result_artifact_merge /tmp/api-football-shadow
             python -m odds_scanner.pinnwire_result_join
+            python -m odds_scanner.web_result_recovery
             python -m odds_scanner.research_v2_pattern_stats
             git add -f -- reports/api_football_shadow_health.json reports/api_football_pinnwire_backfill.json reports/web_result_evidence_import.json reports/pinnwire_web_result_recovery_queue.json reports/pinnwire_result_join_status.json data/normalized/api_football_fixtures.jsonl data/normalized/pinnwire_research_v2_settlements.jsonl data/normalized/oddspapi_finished_results.jsonl reports/research_v2_pattern_statistics.json data/normalized/research_v2_pattern_outcomes.jsonl
             test ! -f data/normalized/oddspapi_finished_results.conflicts.jsonl || git add -f data/normalized/oddspapi_finished_results.conflicts.jsonl
