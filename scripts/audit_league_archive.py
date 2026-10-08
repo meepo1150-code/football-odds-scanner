@@ -15,6 +15,7 @@ FILES += sorted((ROOT / "data/normalized/oddspapi_history_ticks").rglob("*.jsonl
 def inventory():
     counts = Counter()
     unknown = Counter()
+    review_fixtures = []
     seen = set()
     errors = []
     for path in FILES:
