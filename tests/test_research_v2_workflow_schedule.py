@@ -31,3 +31,10 @@ def test_primary_scanner_gates_provider_and_rebuild_work_when_not_due():
     assert "python -m odds_scanner.research_v2_scan_due" in text
     assert "id: due" in text
     assert text.count("if: steps.due.outputs.collect == 'true'") >= 4
+
+
+def test_watchdog_gates_expensive_steps_but_keeps_missed_slot_finalization():
+    text = Path('.github/workflows/research-v2-slot-watchdog.yml').read_text()
+    assert "SCAN_FINALIZE_MISSED: 'true'" in text
+    assert text.count("if: steps.due.outputs.collect == 'true'") == 5
+    assert text.index('id: due') < text.index('actions/setup-python')

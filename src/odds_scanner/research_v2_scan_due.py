@@ -41,6 +41,21 @@ def due(now, report, event='schedule', fallback=None, ledger_rows=None, snapshot
     return True
 
 
+def needs_finalization(now, ledger_rows, snapshots):
+    """Allow one local-only pass to record expired slots as MISSED."""
+    from .europe_pinnacle_discovery import _football_day_bounds
+    from .research_v2_slots import RECOVERY_MINUTES, stamp
+    for target in canonical_targets(_football_day_bounds(now)[2]):
+        if now <= target + timedelta(minutes=RECOVERY_MINUTES):
+            continue
+        if completed(target, now, ledger_rows, snapshots):
+            continue
+        if not any(stamp(r.get('scheduled_target_at')) == target and
+                   r.get('state') == 'MISSED' for r in ledger_rows):
+            return True
+    return False
+
+
 if __name__ == '__main__':
     try:
         report = json.loads(Path('reports/pinnwire_research_v2_status.json').read_text())
@@ -50,4 +65,9 @@ if __name__ == '__main__':
         fallback = json.loads(Path('reports/propline_research_v2_status.json').read_text())
     except (OSError, ValueError):
         fallback = {}
-    print('collect=' + str(due(datetime.now(timezone.utc), report, os.getenv('SCAN_EVENT', 'schedule'), fallback, read_ledger(), read_snapshots())).lower())
+    now = datetime.now(timezone.utc)
+    ledger, snapshots = read_ledger(), read_snapshots()
+    collect = due(now, report, os.getenv('SCAN_EVENT', 'schedule'), fallback, ledger, snapshots)
+    if os.getenv('SCAN_FINALIZE_MISSED') == 'true':
+        collect = collect or needs_finalization(now, ledger, snapshots)
+    print('collect=' + str(collect).lower())
