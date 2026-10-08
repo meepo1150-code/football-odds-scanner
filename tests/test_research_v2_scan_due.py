@@ -65,3 +65,18 @@ def test_independent_evening_checks_share_attempt_gate():
         now=datetime.fromisoformat(f'2026-10-01T18:{minute}:00+07:00')
         assert due(now, {'generated_at':'2026-10-01T17:49:38+07:00'})
         assert not due(now, {'generated_at':'2026-10-01T18:10:00+07:00','status':'RATE_LIMIT_COOLDOWN'})
+
+
+def test_watchdog_finalizes_expired_slots_once_including_after_midnight():
+    from odds_scanner.research_v2_scan_due import needs_finalization
+    now = datetime.fromisoformat('2026-10-08T20:31:00+07:00')
+    assert needs_finalization(now, [], [])
+    missed = {'scheduled_target_at': '2026-10-08T18:00:00+07:00', 'state': 'MISSED'}
+    assert not needs_finalization(now, [missed], [])
+    assert not needs_finalization(datetime.fromisoformat('2026-10-08T18:10:00+07:00'), [], [])
+    receipt = {**missed, 'state': 'ZERO_FIXTURES', 'actual_observed_at': '2026-10-08T18:05:00+07:00',
+               'football_day_fixtures': 0, 'collection_succeeded': True}
+    assert not needs_finalization(now, [receipt], [])
+    midnight = datetime.fromisoformat('2026-10-09T00:05:00+07:00')
+    assert needs_finalization(midnight, [missed], [])
+    assert not needs_finalization(midnight, [missed, {**missed, 'scheduled_target_at': '2026-10-08T21:00:00+07:00'}], [])
