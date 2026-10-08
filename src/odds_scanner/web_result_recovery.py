@@ -5,6 +5,7 @@ from pathlib import Path
 from urllib.parse import quote_plus
 from .pinnwire_result_join import _read, _utc, SNAPSHOTS_PATH
 from .research_population import in_scope
+from .result_recovery_lifecycle import retired_ids
 
 RESULTS_PATH=Path("data/normalized/oddspapi_finished_results.jsonl")
 QUEUE_PATH=Path("reports/pinnwire_web_result_recovery_queue.json")
@@ -17,6 +18,10 @@ def build_queue(root=Path("."), limit=100):
         fid=str(s.get("fixture_id") or "")
         if fid and fid not in settled and (fid not in latest or str(s.get("observed_at"))>str(latest[fid].get("observed_at"))):
             latest[fid]=s
+    unresolved_total = len(latest)
+    retired = retired_ids(root)
+    skipped_retired = sum(fid in retired for fid in latest)
+    latest = {fid: s for fid, s in latest.items() if fid not in retired}
     # One web lookup per deterministic match identity. PinnWire can expose the same
     # match under multiple provider fixture IDs; recovery evidence is match-level.
     identities={}
@@ -44,7 +49,7 @@ def build_queue(root=Path("."), limit=100):
             "acceptance_policy":"DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
             "status":"WEB_EVIDENCE_REQUIRED"
         })
-    payload={"schema_version":"1.0","classification":"PINNWIRE_WEB_RESULT_RECOVERY_QUEUE","generated_at":datetime.now(timezone.utc).isoformat(),"unresolved_total":len(latest),"unique_match_identities":len(identities),"duplicate_fixture_ids_collapsed":sum(max(0,len(v)-1) for v in identities.values()),"skipped_non_match_market":skipped_non_match_market,"queued":len(rows),"api_requests_used":0,"validation_relaxed":False,"rows":rows}
+    payload={"schema_version":"1.0","classification":"PINNWIRE_WEB_RESULT_RECOVERY_QUEUE","generated_at":datetime.now(timezone.utc).isoformat(),"unresolved_total":unresolved_total,"active_unresolved_total":len(latest),"skipped_retired":skipped_retired,"unique_match_identities":len(identities),"duplicate_fixture_ids_collapsed":sum(max(0,len(v)-1) for v in identities.values()),"skipped_non_match_market":skipped_non_match_market,"queued":len(rows),"api_requests_used":0,"validation_relaxed":False,"rows":rows}
     p=root/QUEUE_PATH;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8");return payload
 
 def validate_evidence(item):
