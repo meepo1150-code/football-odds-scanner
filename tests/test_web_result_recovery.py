@@ -43,3 +43,29 @@ def test_web_queue_collapses_duplicate_match_ids_and_skips_corners(tmp_path):
     assert out["duplicate_fixture_ids_collapsed"]==1
     assert out["skipped_non_match_market"]==1
     assert out["rows"][0]["fixture_ids"]==["pinnwire:a","pinnwire:b"]
+
+
+def test_retired_fixtures_do_not_consume_queue_limit_or_delete_raw(tmp_path):
+    from odds_scanner.result_recovery_lifecycle import RETIRED
+    p = tmp_path / SNAPSHOTS_PATH
+    p.parent.mkdir(parents=True, exist_ok=True)
+    base = {"provider": "pinnwire", "home": "Alpha", "away": "Beta",
+            "league": "Cup", "kickoff": "2026-09-24T12:00:00Z",
+            "observed_at": "2026-09-24T10:00:00Z"}
+    original = "".join(json.dumps({**base, "fixture_id": fid}) + "\n"
+                       for fid in ("pinnwire:a", "pinnwire:b"))
+    p.write_text(original)
+    archive = tmp_path / RETIRED
+    archive.write_text(json.dumps({"fixture_id": "pinnwire:a"}) + "\n")
+    out = build_queue(tmp_path, limit=1)
+    assert out["unresolved_total"] == 2
+    assert out["active_unresolved_total"] == 1
+    assert out["skipped_retired"] == 1
+    assert out["rows"][0]["fixture_ids"] == ["pinnwire:b"]
+    assert p.read_text() == original
+    archive.write_text(archive.read_text() + json.dumps({"fixture_id": "pinnwire:b"}) + "\n")
+    out = build_queue(tmp_path)
+    assert out["queued"] == out["active_unresolved_total"] == 0
+    assert out["skipped_retired"] == out["unresolved_total"] == 2
+    assert out["api_requests_used"] == 0
+    assert p.read_text() == original
