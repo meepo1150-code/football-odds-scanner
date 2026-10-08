@@ -40,6 +40,7 @@ def inventory():
                 counts[(bucket, str(raw_id), str(label))] += 1
                 if bucket != "KEEP_BIG5":
                     unknown[(str(raw_id), str(label))] += 1
+                    review_fixtures.append({"fixture_id": fid, "tournament_id": raw_id, "league": label, "kickoff": row.get("kickoff"), "home": row.get("home"), "away": row.get("away"), "source": str(path.relative_to(ROOT))})
                 if fid:
                     seen.add(fid)
     result_path = ROOT / "data/normalized/oddspapi_finished_results.jsonl"
@@ -64,7 +65,8 @@ def inventory():
             "total_rows": sum(counts.values()), "unique_fixture_ids": len(seen),
             "league_breakdown": [{"decision": k[0], "tournament_id": k[1], "league": k[2], "rows": n}
                                  for k, n in sorted(counts.items())],
-            "unclassified_rows": sum(unknown.values()), "errors": errors}
+            "unclassified_rows": sum(unknown.values()),
+            "review_fixtures": review_fixtures, "errors": errors}
 
 if __name__ == "__main__":
     print(json.dumps(inventory(), indent=2, ensure_ascii=False))
