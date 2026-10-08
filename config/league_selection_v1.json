@@ -181,8 +181,20 @@
     "require_real_ah_ou_1x2_coverage": true,
     "do_not_change_frozen_promotion_gates": true,
     "permanent_purge_requires_verified_exclusion": true,
-    "preserve_ambiguous_leagues": true
+    "preserve_ambiguous_leagues": true,
+    "require_country_and_provider_league_id_for_permanent_purge": true
   },
-  "status": "EXCLUDE_PERMANENT_DELETE_APPROVED_PENDING_SAFE_PURGE",
-  "exclusion_action": "PERMANENT_DELETE_CONFIRMED_ONLY"
+  "status": "COUNTRY_FIRST_REVIEW_PENDING",
+  "exclusion_action": "PERMANENT_DELETE_CONFIRMED_ONLY",
+  "selection_hierarchy": [
+    "country_id",
+    "competition_id",
+    "category"
+  ],
+  "country_policy": {
+    "default_action": "REVIEW",
+    "exclude_country_requires_explicit_approval": true,
+    "international_competitions_separate": true,
+    "never_match_league_name_alone": true
+  }
 }
