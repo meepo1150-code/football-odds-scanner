@@ -1,21 +1,24 @@
 {
   "schema_version": "1.0",
   "classification": "FOTMOB_EXACT_RESULT_BACKFILL",
-  "missing_before": 3,
-  "missing_after": 3,
+  "missing_before": 4,
+  "missing_after": 4,
   "verified_bridge_matches": 0,
   "days_requested": [
     "2026-10-03",
     "2026-10-04",
     "2026-10-05",
-    "2026-10-06"
+    "2026-10-06",
+    "2026-10-07",
+    "2026-10-08",
+    "2026-10-09"
   ],
-  "events_fetched": 842,
+  "events_fetched": 1142,
   "exact_results_added": 0,
   "ambiguous_exact_matches_rejected": 0,
   "exact_identity_unfinished": 0,
-  "no_exact_identity": 3,
-  "kickoff_candidate_only": 3,
+  "no_exact_identity": 4,
+  "kickoff_candidate_only": 4,
   "kickoff_candidate_samples": [
     {
       "fixture_id": "id1000005472477468",
@@ -211,14 +214,57 @@
           "league": "Primera B"
         }
       ]
+    },
+    {
+      "fixture_id": "id1000056273086638",
+      "snapshot": {
+        "home": "Stinta Poli Timisoara",
+        "away": "Csa Steaua Bucuresti",
+        "kickoff": "2026-10-08T15:00:00+00:00"
+      },
+      "fotmob_candidates": [
+        {
+          "id": 5976914,
+          "home": "ASU Politehnica Timișoara",
+          "away": "Steaua București",
+          "finished": true,
+          "score": [
+            1,
+            1
+          ],
+          "league": "Liga II"
+        },
+        {
+          "id": 6028574,
+          "home": "Duhok",
+          "away": "Al Zawraa",
+          "finished": true,
+          "score": [
+            3,
+            0
+          ],
+          "league": "Stars League"
+        },
+        {
+          "id": 6145876,
+          "home": "HJK",
+          "away": "VPS",
+          "finished": true,
+          "score": [
+            6,
+            0
+          ],
+          "league": "Veikkausliiga Championship Group"
+        }
+      ]
     }
   ],
   "request_failures": [],
   "matching_policy": "EXACT_ALIAS_OR_SAFE_CLUB_TOKEN_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY",
   "fuzzy_matching_used": false,
   "promotion_eligible": false,
-  "generated_at": "2026-10-08T12:42:20.816806+00:00",
-  "requests_used": 0,
+  "generated_at": "2026-10-08T19:16:54.966550+00:00",
+  "requests_used": 3,
   "cache_hits": 4,
   "stale_cache_fallbacks": 0,
   "fetch_evidence": [
@@ -245,9 +291,27 @@
       "source": "CACHE",
       "fetched_at": "2026-10-07T23:35:14.668770+00:00",
       "requests": 0
+    },
+    {
+      "day": "2026-10-07",
+      "source": "NETWORK",
+      "fetched_at": "2026-10-08T19:16:54.029202+00:00",
+      "requests": 1
+    },
+    {
+      "day": "2026-10-08",
+      "source": "NETWORK",
+      "fetched_at": "2026-10-08T19:16:54.349586+00:00",
+      "requests": 1
+    },
+    {
+      "day": "2026-10-09",
+      "source": "NETWORK",
+      "fetched_at": "2026-10-08T19:16:54.598573+00:00",
+      "requests": 1
     }
   ],
-  "existing_results_revalidated": 55,
+  "existing_results_revalidated": 57,
   "invalid_ft_results_quarantined": 0,
   "invalid_ft_fixture_ids": []
 }
