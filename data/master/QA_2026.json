@@ -1,0 +1,41 @@
+{
+  "structural_status": "PASS",
+  "associations": 54,
+  "divisions": 87,
+  "memberships": 1286,
+  "active_club_ids": 1286,
+  "canonical_rows": 1374,
+  "existing_ids_preserved": 666,
+  "new_ids": 708,
+  "source_status_counts": {
+    "VERIFIED_SECONDARY": 66,
+    "VERIFIED_OFFICIAL": 21
+  },
+  "blocked_divisions": 0,
+  "errors": [],
+  "limitations": [
+    "Source-verified means the named source supplied a season-specific roster; secondary sources are not official certification.",
+    "Counts compare extracted source rosters to linked memberships, not an independent licensing audit.",
+    "Offline QA does not re-fetch sources or certify future roster changes.",
+    "Legacy numeric teams.csv is preserved and is not the authoritative current club table."
+  ],
+  "input_sha256": {
+    "competitions.csv": "c4b13beca29dd4bbe516e1e3733229a277fb3981dcf307445f2bda53e2212e47",
+    "countries.csv": "9b3f441252ee007d45a330601c2922b2e373d116ac9352eba95a6c4dae5fe900",
+    "country_scope.csv": "b58af8344dd35878983c6075a80a7e1f150285e86793ae12724a99ffd4ce7669",
+    "legacy_team_code_migration_proposals.csv": "a1ac79bce2708a749d900827796330c87f4a9030265275efb32ccb89ef89c989",
+    "memberships.csv": "cf27435da10f8b069438477098eac44dfe43ec8f8ad6dcc6a537e36a19892fbc",
+    "provider_mappings.csv": "ba8e5b32ed57bce712d5e4c94042c9eac6be61cb388ac41a3e15c97d3a742277",
+    "research/club_assignments.csv": "e07274718759cf04f612d76c099a9c00fbebdd5a202e18d9ffeae0478739eaae",
+    "research/existing_club_ids.csv": "683926981f10b630e78c33e838e95a855746ec2a200c9c213f73b7589cd0ebeb",
+    "teams.csv": "e0851983df58a7068fb63b8c2a37d774bff43b286a3b64cf7d092fe46402c279",
+    "uefa_55_club_coverage.csv": "b8cd8b0c1f7adbe3648378dff81c12bb905f1425098c71fd9a57b17e736d9e9f",
+    "uefa_55_division_scope.csv": "8a7068a64390f8e7277e70d5d80bca72b4bb9bddeaee76b6c59acd9e8cb66f65",
+    "uefa_club_legacy_aliases.csv": "b16d422a541458e5b2db11f6be7bf24af263004ff60441bd4af42c8038dae703",
+    "uefa_clubs_canonical.csv": "ff00385eb83256dce06a92fc9363967fc77ea3cdd4f5acae6406d0a69448824c",
+    "uefa_domestic_league_catalog.csv": "93aa71ee41d20873f6ef80075925b8b8524b3e848aeff8eaa308155a41317238",
+    "uefa_league_coverage_2026.csv": "08534f4c2cd29274b1f494443090db1fdaf9fd4dd046b63be9c42088cf1f762c",
+    "uefa_verified_memberships_2026.csv": "50cee26f7357413aca8ba00ca4bda777671f73a67c479a683377dc41dd879851",
+    "research/rosters.json": "7e3759f0b00c31e42ab02048a7b8ed55aa6b98c60d62e6299260d246a8b3b168"
+  }
+}

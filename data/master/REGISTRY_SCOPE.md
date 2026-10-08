@@ -1,24 +1,27 @@
-# Football Master Registry — scope v1
-This is our OWN registry. No provider/API IDs belong here.
+# Football Master Registry — scope 2026-10-08
 
-## Scope
-21 specifically named European domestic football countries in `country_scope.csv`. International (INT) is a competition scope, **not** a country. Other European countries remain optional expansion candidates. Non-European leagues are out of scope. Existing `countries.csv` contains other starter countries (ROU, ISR, EGY, THA, BRA, JPN, KOR) that are not yet in the explicitly named domestic selection and should not be claimed as selected.
+## Authority
 
-## IDs
-Country: three uppercase letters (ENG, ESP, ...).
-Competition: COUNTRY-4-digit sequence (ENG-0001). Cups receive their own unique competition ID.
-Team: COUNTRY-3 uppercase letters (ENG-LFC, ESP-RMA). Check uniqueness *within country*; reserve codes once issued. Team ID does not change with league or season. A team in a foreign league retains its home country code. Where all three-letter combinations are occupied, flag for manual resolution, never overwrite.
-Membership: (season, competition_id, team_id), separate from permanent team identity.
+`uefa_55_division_scope.csv` is the latest user-approved scope: **54 associations and 87 domestic divisions**. The historical filename contains 55; do not infer row count from it. Liechtenstein has no domestic league in this scope; retain its club identities for cross-border membership. Earlier 21/28-country selections and England tiers 5–6 are superseded for this task. Existing out-of-scope IDs/data remain reserved, not deleted.
+
+This snapshot covers domestic league membership only. The `domestic_cup` flags in the scope remain future policy metadata; cup draws and international competitions are not part of the 87-division deliverable. Russia's domestic inclusion is not a statement about UEFA competition eligibility.
+
+## Permanent IDs
+
+- Country: three uppercase letters, following this registry (including ENG/SCO/WAL/NIR and KOS; not strictly ISO).
+- Competition: COUNTRY-4-digit sequence. Existing IDs are reused; tiers 1–4 use the existing country sequences. IDs remain stable when league sponsors change.
+- Club: COUNTRY-3 uppercase letters, unique within registry country. Existing codes are never reassigned. New codes are reserved in `research/club_assignments.csv`.
+- Membership: season + competition_id + club_id. League changes never change club ID.
+- INT is a competition grouping, not a country.
+
+## Cross-border and legacy exceptions
+
+Vaduz reuses **LIE-VAD** in the Swiss association. FC Andorra receives an **AND-** ID for Spanish league membership. Existing English-affiliated Welsh clubs retain their issued ENG- codes (Cardiff, Swansea, Wrexham, Newport), Monaco retains FRA-MON, Derry retains IRL-DER, and The New Saints retains WAL-TNS. Those inherited registry prefixes must not be interpreted as proof of physical location. This is an explicit compatibility exception to the home-country rule; silently changing them would break the user's ID-reuse requirement.
+
+The `country_id` of a club means its historical registry namespace; the membership `country_id` means league association. They may differ. A future geographical field should be separate, not a renumbering migration.
+
+GIB-BRU (Bruno's Magpies) is retained as a reserved duplicate identity redirect to GIB-FCB (FCB Magpies). Only GIB-FCB receives current membership. Both historical codes remain available. AFC Wimbledon is ENG-WIM, not the separate historical Wimbledon FC code ENG-WAA. Reserve sides admitted to senior divisions have separate IDs from their first teams.
 
 ## Integrity
-`teams.csv` is an early **unverified** seed, NOT a completed roster for 2026-27. It currently contains legacy numeric team IDs, which require explicit migration/collision review before being replaced by three-letter IDs. Never infer active membership from this seed. Do not fabricate teams to reach a target count.
 
-## Order
-1. Collect real current clubs for selected leagues from public sources.
-2. Assign and check permanent 3-letter team codes; preserve a migration crosswalk for legacy IDs.
-3. Record seasonal league memberships and cups.
-4. Only after the master is completed, create separate provider/API mapping tables.
-No odds-scanner integration in this stage.
-
-## October 2026 scope adjustment
-Europe-only: add Finland (FIN), Russia (RUS), Ukraine (UKR); remove Brazil (BRA), Japan (JPN), South Korea (KOR) from active research scope. Preserve any existing historical rows and IDs; removal from scope is not data deletion. Russia/Ukraine coverage and match availability must be verified later, not assumed.
+No provider IDs are embedded in permanent IDs. Do not infer membership from the historical seed. Unknown future rosters must be marked BLOCKED after fallback attempts, with reason/source attempts recorded; never invent clubs to satisfy a target count. The present snapshot has a retrieved source roster for all 87 divisions, with evidence quality separated in coverage.
