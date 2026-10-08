@@ -24,3 +24,10 @@ def test_primary_scanner_uses_guarded_provider_fallback_collector():
     assert "ODDSPAPI_KEY:" in text
     assert "PROPLINE_API_KEY:" in text
     assert "python -m odds_scanner.propline_research_v2" not in text
+
+
+def test_primary_scanner_gates_provider_and_rebuild_work_when_not_due():
+    text = Path(".github/workflows/free-research-v2-scanner.yml").read_text()
+    assert "python -m odds_scanner.research_v2_scan_due" in text
+    assert "id: due" in text
+    assert text.count("if: steps.due.outputs.collect == 'true'") >= 4

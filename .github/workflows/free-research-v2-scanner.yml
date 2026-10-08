@@ -19,17 +19,28 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with: {ref: main}
+      - name: Check whether a canonical slot needs collection
+        id: due
+        env:
+          SCAN_EVENT: ${{ github.event_name }}
+          PYTHONPATH: src
+        run: python -m odds_scanner.research_v2_scan_due >> "$GITHUB_OUTPUT"
       - uses: actions/setup-python@v6
+        if: steps.due.outputs.collect == 'true'
         with: {python-version: '3.12'}
       - run: python -m pip install -e '.[dev]'
+        if: steps.due.outputs.collect == 'true'
       - name: Collect canonical slot with provider fallback
+        if: steps.due.outputs.collect == 'true'
         env:
           ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
           PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
         run: python -m odds_scanner.research_v2_slot_recovery
       - name: Build movement features
+        if: steps.due.outputs.collect == 'true'
         run: python -m odds_scanner.research_v2_movement
       - name: Persist raw evidence and rebuild against latest main
+        if: steps.due.outputs.collect == 'true'
         run: |
           set -euo pipefail
           git config user.name github-actions[bot]

@@ -3,6 +3,29 @@ from odds_scanner.research_v2_scan_due import due
 from odds_scanner import pinnwire_probe as pinn
 
 
+def test_push_gate_skips_outside_window_and_completed_slot():
+    assert not due(datetime.fromisoformat('2026-10-08T10:00:00+07:00'), {}, 'push', ledger_rows=[])
+    now = datetime.fromisoformat('2026-10-08T18:20:00+07:00')
+    assert due(now, {}, 'push', ledger_rows=[])
+    receipt = {'scheduled_target_at': '2026-10-08T18:00:00+07:00',
+               'actual_observed_at': '2026-10-08T18:10:00+07:00',
+               'state': 'ZERO_FIXTURES', 'football_day_fixtures': 0,
+               'strict_snapshots': 0, 'collection_succeeded': True}
+    assert not due(now, {}, 'push', ledger_rows=[receipt])
+    assert not due(now, {}, 'workflow_run', ledger_rows=[receipt])
+    # The evening slot still runs; completion only covers its exact target.
+    assert due(datetime.fromisoformat('2026-10-08T21:05:00+07:00'), {},
+               'push', ledger_rows=[receipt])
+
+
+def test_push_gate_keeps_attempt_cooldown():
+    now = datetime.fromisoformat('2026-10-08T18:20:00+07:00')
+    report = {'generated_at': '2026-10-08T18:10:00+07:00',
+              'scheduled_target_at': '2026-10-08T18:00:00+07:00',
+              'status': 'RATE_LIMITED'}
+    assert not due(now, report, 'push', ledger_rows=[])
+
+
 def test_watchdog_recovers_missed_slot_without_duplicate_attempt():
     now=datetime.fromisoformat('2026-09-30T21:37:00+07:00')
     assert due(now, {'generated_at':'2026-09-30T18:05:00+07:00'})
