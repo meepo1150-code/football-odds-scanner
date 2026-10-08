@@ -171,14 +171,18 @@
     "women",
     "youth",
     "reserve",
+    "simulated_srl",
     "amateur_unverified"
   ],
   "safety": {
-    "preserve_existing_archive": true,
+    "preserve_existing_archive": false,
     "do_not_guess_tournament_ids": true,
     "require_provider_id_mapping": true,
     "require_real_ah_ou_1x2_coverage": true,
-    "do_not_change_frozen_promotion_gates": true
+    "do_not_change_frozen_promotion_gates": true,
+    "permanent_purge_requires_verified_exclusion": true,
+    "preserve_ambiguous_leagues": true
   },
-  "status": "POLICY_DRAFT_NOT_WIRED"
+  "status": "EXCLUDE_PERMANENT_DELETE_APPROVED_PENDING_SAFE_PURGE",
+  "exclusion_action": "PERMANENT_DELETE_CONFIRMED_ONLY"
 }
