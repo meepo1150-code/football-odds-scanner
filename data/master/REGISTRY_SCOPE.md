@@ -2,7 +2,7 @@
 This is our OWN registry. No provider/API IDs belong here.
 
 ## Scope
-21 specifically named domestic football countries in `country_scope.csv`. International (INT) is a competition scope, **not** a country. Other Europe/world are conditional discovery categories, not additional named countries. Existing `countries.csv` contains other starter countries (ROU, ISR, EGY, THA) that are not yet in the explicitly named domestic selection and should not be claimed as selected.
+21 specifically named European domestic football countries in `country_scope.csv`. International (INT) is a competition scope, **not** a country. Other European countries remain optional expansion candidates. Non-European leagues are out of scope. Existing `countries.csv` contains other starter countries (ROU, ISR, EGY, THA, BRA, JPN, KOR) that are not yet in the explicitly named domestic selection and should not be claimed as selected.
 
 ## IDs
 Country: three uppercase letters (ENG, ESP, ...).
@@ -19,3 +19,6 @@ Membership: (season, competition_id, team_id), separate from permanent team iden
 3. Record seasonal league memberships and cups.
 4. Only after the master is completed, create separate provider/API mapping tables.
 No odds-scanner integration in this stage.
+
+## October 2026 scope adjustment
+Europe-only: add Finland (FIN), Russia (RUS), Ukraine (UKR); remove Brazil (BRA), Japan (JPN), South Korea (KOR) from active research scope. Preserve any existing historical rows and IDs; removal from scope is not data deletion. Russia/Ukraine coverage and match availability must be verified later, not assumed.
