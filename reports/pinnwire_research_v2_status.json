@@ -1,18 +1,23 @@
 {
   "schema_version": "3.2",
-  "generated_at": "2026-10-05T09:07:10.240911+00:00",
+  "generated_at": "2026-10-08T15:15:56.828224+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "provider": "pinnwire",
   "bookmaker": "pinnacle",
-  "football_day": "2026-10-05",
-  "requests_used": 0,
+  "football_day": "2026-10-08",
+  "requests_used": 1,
   "workflow_success": true,
   "data_source_health": "RATE_LIMITED",
   "capability": "RESEARCH_ONLY",
-  "consecutive_rate_limits": 2,
+  "consecutive_rate_limits": 3,
   "access_mode": "SHARED_PUBLIC_DEMO",
-  "status": "RATE_LIMIT_COOLDOWN",
-  "cooldown_until": "2026-10-05T23:59:59.624361+00:00",
-  "request_attempts": 0,
-  "rate_limit_responses": 0
+  "status": "RATE_LIMITED",
+  "request_attempts": 1,
+  "rate_limit_responses": 1,
+  "http_status": 429,
+  "errors": [
+    "HTTPError: HTTP 429"
+  ],
+  "retry_after": "31443",
+  "cooldown_until": "2026-10-08T23:59:59.828224+00:00"
 }
