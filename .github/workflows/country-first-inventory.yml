@@ -1,0 +1,60 @@
+name: Country-first league inventory
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/country-first-inventory.yml'
+permissions:
+  contents: read
+jobs:
+  country-inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inventory countries and leagues from fixture archives without deletion
+        run: |
+          python - <<'PY'
+          import json,csv,collections
+          from pathlib import Path
+          paths=[Path('data/normalized/research_v2_daily_fixtures.jsonl'),Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'),Path('data/normalized/v2_mainline_snapshots.jsonl'),Path('data/normalized/five_dollar_snapshots.jsonl'),Path('data/normalized/api_football_fixtures.jsonl')]
+          counts=collections.Counter(); sources=collections.Counter(); missing=collections.Counter(); seen=set()
+          for p in paths:
+              if not p.exists():continue
+              with p.open() as f:
+                  for line in f:
+                      try:r=json.loads(line)
+                      except (ValueError,TypeError):continue
+                      if not isinstance(r,dict):continue
+                      country=str(r.get('country') or r.get('country_name') or r.get('league_country') or '').strip()
+                      league=str(r.get('league') or r.get('league_name') or '').strip()
+                      league_id=str(r.get('tournament_id') or r.get('league_id') or '').strip()
+                      fid=str(r.get('fixture_id') or r.get('provider_fixture_id') or '').strip()
+                      home=str(r.get('home') or r.get('home_team') or '').strip()
+                      away=str(r.get('away') or r.get('away_team') or '').strip()
+                      if not (fid or home and away):continue
+                      key=(str(p),fid or (home,away,str(r.get('kickoff') or '')))
+                      if key in seen:continue
+                      seen.add(key)
+                      if not country:country='UNKNOWN_REQUIRES_PROVIDER_MAPPING';missing[str(p)]+=1
+                      counts[(country,league,league_id,str(p))]+=1
+                      sources[str(p)]+=1
+          Path('reports').mkdir(exist_ok=True)
+          with open('reports/country_league_review.csv','w',newline='') as f:
+              w=csv.writer(f);w.writerow(['country','league','provider_league_id','source','unique_fixtures_in_source','decision'])
+              for (country,league,lid,src),n in sorted(counts.items()):w.writerow([country,league,lid,src,n,'REVIEW'])
+          totals=collections.Counter()
+          for (country,league,lid,src),n in counts.items():totals[country]+=n
+          with open('reports/country_summary.csv','w',newline='') as f:
+              w=csv.writer(f);w.writerow(['country','source_fixture_count','distinct_league_labels','decision'])
+              for country,n in totals.most_common():w.writerow([country,n,len({league for (c,league,lid,src) in counts if c==country}),'REVIEW'])
+          print('TOTAL_COUNTRIES',len(totals),'TOTAL_SOURCE_FIXTURES',sum(totals.values()))
+          for c,n in totals.most_common():print('COUNTRY',repr(c),n,'LEAGUES',len({league for (cc,league,lid,src) in counts if cc==c}))
+          for src,n in sources.items():print('SOURCE',src,n,'MISSING_COUNTRY',missing[src])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: country-first-league-review
+          path: |
+            reports/country_summary.csv
+            reports/country_league_review.csv
+          retention-days: 14
