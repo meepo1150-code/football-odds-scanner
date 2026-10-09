@@ -104,7 +104,8 @@ def main():
     write("uefa_verified_memberships_2026.csv", memberships, list(memberships[0]))
     # Keep the legacy three-column projection, with canonical (not numeric) IDs.
     scoped_keys = {(r["season"], r["competition_id"]) for r in memberships}
-    old = [r for r in read("memberships.csv") if (r["season"], r["competition_id"]) not in scoped_keys]
+    exclusions = json.loads((ROOT / "research/user_excluded_divisions_2026_10_09.json").read_text())["excluded_competition_ids"]
+    old = [r for r in read("memberships.csv") if (r["season"], r["competition_id"]) not in scoped_keys and not (r["season"] in {"2026", "2026-27"} and r["competition_id"] in exclusions)]
     projection = [dict(season=r["season"], competition_id=r["competition_id"], team_id=r["club_id"]) for r in memberships]
     write("memberships.csv", old + projection, ["season", "competition_id", "team_id"])
     coverage.sort(key=lambda r: (r["country_id"], r["division"]))

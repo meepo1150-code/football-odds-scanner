@@ -38,3 +38,12 @@ def test_cup_competitions_remain_separate_from_domestic_memberships():
 
 def test_no_unverified_provider_ids_are_fabricated():
     assert rows('provider_mappings.csv') == []
+
+def test_user_excluded_leagues_are_filtered_by_exact_identity_only():
+    from odds_scanner.research_population import exclusion_reason
+    import json
+    policy = json.loads((ROOT.parents[1] / 'config/league_selection_v1.json').read_text())
+    for cid in policy['user_excluded_competition_ids']:
+        assert exclusion_reason({'canonical_competition_id': cid}) == 'USER_REVIEWED_COMPETITION_OUT_OF_SCOPE'
+    assert exclusion_reason({'competition_id': 'POL-0001'}) is None
+    assert exclusion_reason({'competition_id': '123', 'home_club_id': 'AND-AND'}) is None

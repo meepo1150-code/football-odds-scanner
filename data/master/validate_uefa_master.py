@@ -40,7 +40,13 @@ def audit(root=ROOT):
     comp_map = {r["competition_id"]: r for r in comps}
     country_ids = {r["country_id"] for r in countries}
     expected = {(r["country_id"], d) for r in scope for d in r["division_levels"].split("|")}
-    check(len(scope) == 54 and len(expected) == 87, "Scope must be 54 associations / 87 divisions")
+    exclusions = json.loads((root / "research/user_excluded_divisions_2026_10_09.json").read_text())
+    excluded_ids = set(exclusions["excluded_competition_ids"])
+    excluded_keys = {(r["country_id"], str(r["division"])) for r in exclusions["excluded_rosters"]}
+    check(excluded_ids == {"AND-0001", "AZE-0001", "AZE-0002", "BLR-0001", "POL-0002", "RUS-0001"}, "User exclusion scope mismatch")
+    check(len(scope) == 50 and len(expected) == 81, "Scope must be 50 associations / 81 divisions")
+    check(not expected & excluded_keys, "User-excluded division restored to active scope")
+    check(all(comp_map.get(cid, {}).get("status") == "EXCLUDED_USER" for cid in excluded_ids), "Excluded competition identity not reserved")
     unique(scope, ["country_id"], "Scope")
     unique(clubs, ["club_id"], "Clubs")
     unique(countries, ["country_id"], "Countries")
@@ -69,7 +75,7 @@ def audit(root=ROOT):
         check(row["country_id"] in country_ids or row["country_id"] == "INT", "Unknown competition country")
     check({(r["country_id"], r["division"]) for r in coverage} == expected, "Coverage scope mismatch")
     check({(r["country_id"], r["league_level"]) for r in catalog} == expected, "Catalog scope mismatch")
-    check(len(rosters) == 87 and {(r["country_id"], str(r["division"])) for r in rosters} == expected, "Source roster scope mismatch")
+    check(len(rosters) == 81 and {(r["country_id"], str(r["division"])) for r in rosters} == expected, "Source roster scope mismatch")
     ledger = {(r["association_id"], r["source_name"]): r["club_id"] for r in assignments}
     grouped = defaultdict(list)
     allowed = {"VERIFIED_OFFICIAL", "VERIFIED_SECONDARY", "BLOCKED"}
@@ -88,7 +94,7 @@ def audit(root=ROOT):
     cv_map = {(r["country_id"], r["division"]): r for r in coverage}
     review_map = {r["competition_id"]: r for r in reviews}
     check(len(reviews) == 66, "Official review scope must contain all 66 baseline secondary divisions")
-    check(all((r["country_id"], str(r["division"])) in expected for r in reviews), "Official review outside scope")
+    check(all((r["country_id"], str(r["division"])) in expected | excluded_keys for r in reviews), "Official review outside scope")
     for roster in rosters:
         key = (roster["country_id"], str(roster["division"]))
         actual = grouped[key]
@@ -154,10 +160,10 @@ def audit(root=ROOT):
     summary = dict(structural_status="PASS" if not errors else "FAIL", associations=len(scope), divisions=len(coverage), memberships=len(members), active_club_ids=len(active), canonical_rows=len(clubs), existing_ids_preserved=len(old), new_ids=len(clubs) - len(old), source_status_counts=statuses, blocked_divisions=statuses.get("BLOCKED", 0), errors=errors, limitations=["Source-verified means the named source supplied a season-specific roster; secondary sources are not official certification.", "Counts compare extracted source rosters to linked memberships, not an independent licensing audit.", "Offline QA does not re-fetch sources or certify future roster changes.", "Legacy numeric teams.csv is preserved and is not the authoritative current club table."])
     summary["input_sha256"] = {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(root.rglob("*.csv"))}
     summary["input_sha256"]["research/rosters.json"] = hashlib.sha256((root / "research/rosters.json").read_bytes()).hexdigest()
-    summary["official_review"] = dict(baseline_secondary=len(reviews), completed=sum(r["review_status"] == "OFFICIAL_ROSTER_MATCH" for r in reviews), blocked=sum(r["review_status"] != "OFFICIAL_ROSTER_MATCH" for r in reviews))
+    summary["official_review"] = dict(baseline_secondary=len(reviews), completed=sum(r["review_status"] == "OFFICIAL_ROSTER_MATCH" for r in reviews), blocked=sum(r["review_status"] != "OFFICIAL_ROSTER_MATCH" and r["competition_id"] not in excluded_ids for r in reviews), excluded_by_user=len(excluded_ids))
     summary["cup_registry"] = dict(competitions=len(cups), participants_imported=0, blocked_seasons=sum(r["season_status"] == "BLOCKED" for r in cups))
     summary["provider_mapping_rows"] = len(mappings)
-    summary["limitations"][1] = f"{summary['official_review']['completed']} baseline-secondary divisions were crosschecked against independent official season rosters. Remaining divisions retain secondary status. Promotion/relegation legal history is not independently certified for every club."
+    summary["limitations"][1] = f"{summary['official_review']['completed']} baseline-secondary divisions were crosschecked against independent official season rosters; six remaining divisions were excluded by the user. Promotion/relegation legal history is not independently certified for every club."
     summary["input_sha256"]["research/official_roster_audit_2026_10_09.json"] = hashlib.sha256((root / "research/official_roster_audit_2026_10_09.json").read_bytes()).hexdigest()
     return summary
 

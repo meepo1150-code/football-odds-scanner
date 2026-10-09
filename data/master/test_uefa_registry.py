@@ -40,7 +40,7 @@ class MasterTests(unittest.TestCase):
     def test_complete_master(self):
         result = audit(self.root)
         self.assertEqual(result["errors"], [])
-        self.assertEqual((result["associations"], result["divisions"], result["memberships"]), (54, 87, 1285))
+        self.assertEqual((result["associations"], result["divisions"], result["memberships"]), (50, 81, 1203))
 
     def test_duplicate_membership_rejected(self):
         self.edit_csv("uefa_verified_memberships_2026.csv", lambda rows: rows.append(dict(rows[0])))
@@ -93,7 +93,7 @@ class MasterTests(unittest.TestCase):
         p.write_text(json.dumps(data))
 
     def test_official_upgrade_requires_complete_evidence(self):
-        self.edit_csv("uefa_league_coverage_2026.csv", lambda rows: next(r for r in rows if r["verification_status"] == "VERIFIED_SECONDARY").update(verification_status="VERIFIED_OFFICIAL"))
+        self.edit_csv("uefa_league_coverage_2026.csv", lambda rows: rows[0].update(verification_status="VERIFIED_SECONDARY"))
         self.assert_rejected("Coverage metadata mismatch")
 
     def test_official_evidence_wrong_id_rejected(self):
@@ -147,6 +147,21 @@ class MasterTests(unittest.TestCase):
         with (self.root / "research/club_assignments.csv").open() as f:
             self.assertTrue(any(r["club_id"] == removed["club_id"] for r in csv.DictReader(f)))
         self.assertIn("earlier", removed["reason"])
+
+    def test_excluded_competition_cannot_be_readmitted(self):
+        self.edit_csv("competitions.csv", lambda rows: next(r for r in rows if r['competition_id'] == 'POL-0002').update(status='VERIFIED_SECONDARY'))
+        self.assert_rejected("Excluded competition identity not reserved")
+
+    def test_excluded_current_memberships_absent_and_clubs_preserved(self):
+        excluded = json.loads((self.root / 'research/user_excluded_divisions_2026_10_09.json').read_text())
+        with (self.root / 'uefa_verified_memberships_2026.csv').open() as handle:
+            members = list(csv.DictReader(handle))
+        self.assertFalse(set(excluded['excluded_competition_ids']) & {r['competition_id'] for r in members})
+        with (self.root / 'uefa_clubs_canonical.csv').open() as handle:
+            clubs = {r['club_id'] for r in csv.DictReader(handle)}
+        with (self.root / 'research/club_assignments.csv').open() as handle:
+            assignments = list(csv.DictReader(handle))
+        self.assertTrue(all(r['club_id'] in clubs for r in assignments))
 
 
 if __name__ == "__main__":

@@ -1,3 +1,17 @@
+# Active-scope revision — 2026-10-09
+
+User removed the six unconfirmed leagues: AND-0001, AZE-0001, AZE-0002, BLR-0001, POL-0002 and RUS-0001. Active result: **50 associations / 81 divisions / 1,203 memberships / 1,374 reserved canonical clubs; 81 VERIFIED_OFFICIAL / 0 VERIFIED_SECONDARY / 0 active league BLOCKED**. No league research backlog remains in the revised scope. This supersedes the previous 54/87 scope and 1,285-member snapshot below.
+
+Permanent club/competition IDs, assignment ledger and historical scanner records are retained. Competition identities are EXCLUDED_USER, not reassigned; current excluded memberships are removed. The original excluded roster facts are kept in research/user_excluded_divisions_2026_10_09.json. The research population filter rejects exact canonical excluded competition IDs; Poland tier 1 and cross-border clubs in retained leagues remain permitted. No country/name-only provider-ID guesses are introduced.
+
+Validation for this revision: 473 pytest tests PASS; 23 master unittest tests PASS; deterministic rebuild, structural QA and git diff --check PASS. CI status is recorded in Issue #310 and PR #309 after the new run completes.
+
+Remaining separate limitations: Portugal cup season confirmation (FPF 403) and verified live provider mapping coverage. Neither is an excluded domestic league. No API credentials, scan schedule, production deployment or PR merge changed.
+
+---
+
+## Previous audit snapshot (historical, superseded by revised active scope)
+
 # Football Master Database — completion audit
 
 Date: 2026-10-09. Branch: `feature/league-selection-v1-20261008`. PR #309. Issue #310.
