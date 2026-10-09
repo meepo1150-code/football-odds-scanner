@@ -1,23 +1,24 @@
 {
   "schema_version": "1.0",
   "classification": "FOTMOB_EXACT_RESULT_BACKFILL",
-  "missing_before": 2,
-  "missing_after": 2,
-  "verified_bridge_matches": 0,
+  "missing_before": 5,
+  "missing_after": 4,
+  "verified_bridge_matches": 1,
   "days_requested": [
     "2026-10-03",
     "2026-10-04",
     "2026-10-05",
     "2026-10-07",
     "2026-10-08",
-    "2026-10-09"
+    "2026-10-09",
+    "2026-10-10"
   ],
-  "events_fetched": 1082,
-  "exact_results_added": 0,
+  "events_fetched": 1739,
+  "exact_results_added": 1,
   "ambiguous_exact_matches_rejected": 0,
   "exact_identity_unfinished": 0,
-  "no_exact_identity": 2,
-  "kickoff_candidate_only": 2,
+  "no_exact_identity": 4,
+  "kickoff_candidate_only": 4,
   "kickoff_candidate_samples": [
     {
       "fixture_id": "id1000005472477468",
@@ -170,22 +171,174 @@
           "league": "Veikkausliiga Championship Group"
         }
       ]
+    },
+    {
+      "fixture_id": "id1000000872478616",
+      "snapshot": {
+        "home": "Malaga CF",
+        "away": "Espanyol Barcelona",
+        "kickoff": "2026-10-09T19:00:00+00:00"
+      },
+      "fotmob_candidates": [
+        {
+          "id": 5868086,
+          "home": "Málaga",
+          "away": "Espanyol",
+          "finished": true,
+          "score": [
+            1,
+            1
+          ],
+          "league": "LaLiga"
+        },
+        {
+          "id": 5989837,
+          "home": "MC Alger",
+          "away": "CR Temouchent",
+          "finished": true,
+          "score": [
+            1,
+            0
+          ],
+          "league": "Ligue 1"
+        },
+        {
+          "id": 5883687,
+          "home": "UD Ibiza",
+          "away": "Real Madrid Castilla",
+          "finished": true,
+          "score": [
+            1,
+            1
+          ],
+          "league": "Primera Federacion - Group 2"
+        },
+        {
+          "id": 5836861,
+          "home": "West Ham United",
+          "away": "Queens Park Rangers",
+          "finished": true,
+          "score": [
+            1,
+            1
+          ],
+          "league": "Championship"
+        },
+        {
+          "id": 1000019056,
+          "home": "San Antonio Bulo Bulo",
+          "away": "Real Tomayapo",
+          "finished": true,
+          "score": [
+            0,
+            0
+          ],
+          "league": "Primera División"
+        }
+      ]
+    },
+    {
+      "fixture_id": "id1000005373092954",
+      "snapshot": {
+        "home": "US Avellino",
+        "away": "Sampdoria Genoa",
+        "kickoff": "2026-10-09T18:30:00+00:00"
+      },
+      "fotmob_candidates": [
+        {
+          "id": 5881180,
+          "home": "Borussia Dortmund",
+          "away": "Werder Bremen",
+          "finished": true,
+          "score": [
+            2,
+            2
+          ],
+          "league": "Bundesliga"
+        },
+        {
+          "id": 5874984,
+          "home": "First Vienna FC",
+          "away": "SKN St. Pölten",
+          "finished": true,
+          "score": [
+            3,
+            1
+          ],
+          "league": "2. Liga"
+        },
+        {
+          "id": 5804001,
+          "home": "Raków Częstochowa",
+          "away": "GKS Katowice",
+          "finished": true,
+          "score": [
+            1,
+            4
+          ],
+          "league": "Ekstraklasa"
+        },
+        {
+          "id": 6058534,
+          "home": "Germany (W)",
+          "away": "Australia (W)",
+          "finished": true,
+          "score": [
+            4,
+            2
+          ],
+          "league": "Friendlies"
+        },
+        {
+          "id": 5861944,
+          "home": "TS Podbeskidzie Bielsko-Biała",
+          "away": "Pogoń Siedlce",
+          "finished": true,
+          "score": [
+            1,
+            0
+          ],
+          "league": "I Liga"
+        },
+        {
+          "id": 5967090,
+          "home": "Avellino",
+          "away": "Sampdoria",
+          "finished": true,
+          "score": [
+            4,
+            1
+          ],
+          "league": "Serie B"
+        },
+        {
+          "id": 5990498,
+          "home": "Union Brescia",
+          "away": "Pro Vercelli",
+          "finished": true,
+          "score": [
+            2,
+            0
+          ],
+          "league": "Serie C Grp. A"
+        }
+      ]
     }
   ],
   "request_failures": [],
   "matching_policy": "EXACT_ALIAS_OR_SAFE_CLUB_TOKEN_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY",
   "fuzzy_matching_used": false,
   "promotion_eligible": false,
-  "generated_at": "2026-10-09T18:49:03.801189+00:00",
-  "requests_used": 3,
+  "generated_at": "2026-10-09T23:15:49.511768+00:00",
+  "requests_used": 4,
   "cache_hits": 3,
   "stale_cache_fallbacks": 0,
   "fetch_evidence": [
     {
       "day": "2026-10-03",
-      "source": "NETWORK",
+      "source": "CACHE",
       "fetched_at": "2026-10-09T18:49:02.612217+00:00",
-      "requests": 1
+      "requests": 0
     },
     {
       "day": "2026-10-04",
@@ -201,20 +354,26 @@
     },
     {
       "day": "2026-10-07",
-      "source": "CACHE",
-      "fetched_at": "2026-10-08T19:16:54.029202+00:00",
-      "requests": 0
+      "source": "NETWORK",
+      "fetched_at": "2026-10-09T23:15:47.632188+00:00",
+      "requests": 1
     },
     {
       "day": "2026-10-08",
       "source": "NETWORK",
-      "fetched_at": "2026-10-09T18:49:03.069140+00:00",
+      "fetched_at": "2026-10-09T23:15:47.953723+00:00",
       "requests": 1
     },
     {
       "day": "2026-10-09",
       "source": "NETWORK",
-      "fetched_at": "2026-10-09T18:49:03.356854+00:00",
+      "fetched_at": "2026-10-09T23:15:48.553017+00:00",
+      "requests": 1
+    },
+    {
+      "day": "2026-10-10",
+      "source": "NETWORK",
+      "fetched_at": "2026-10-09T23:15:48.810496+00:00",
       "requests": 1
     }
   ],
