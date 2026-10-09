@@ -2,6 +2,7 @@
 import re
 
 POLICY = 'REVIEWED_RESEARCH_SCOPE_V2'
+USER_EXCLUDED_COMPETITION_IDS = frozenset({'AND-0001', 'AZE-0001', 'AZE-0002', 'BLR-0001', 'POL-0002', 'RUS-0001'})
 EXCLUDED_LEAGUES = {
     'egypt - 2nd division b',
     'argentina - liga pro reserves',
@@ -14,6 +15,8 @@ EXCLUDED_FIXTURE_IDS = ["pinnwire:1637297182","pinnwire:1636866949","pinnwire:16
 
 
 def exclusion_reason(row):
+    if any(str(row.get(k) or '') in USER_EXCLUDED_COMPETITION_IDS for k in ('competition_id', 'canonical_competition_id')):
+        return 'USER_REVIEWED_COMPETITION_OUT_OF_SCOPE'
     if str(row.get('fixture_id') or '') in EXCLUDED_FIXTURE_IDS:
         return 'USER_REVIEWED_FIXTURE_OUT_OF_SCOPE'
 
