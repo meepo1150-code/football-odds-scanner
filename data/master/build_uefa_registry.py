@@ -91,7 +91,7 @@ def main():
             if cid not in original:
                 raise ValueError("Unknown club ID in assignment ledger: " + cid)
             memberships.append(dict(season=roster["season"], country_id=country, division=level, competition_id=competition, competition_name=cat["competition_name"], club_id=cid, source_name=name, source_url=roster["source_url"], verification_status=roster["verification_status"], checked_at=roster["checked_at"]))
-        coverage.append(dict(country_id=country, division=level, competition_id=competition, competition_name=cat["competition_name"], season=roster["season"], expected_teams=len(roster["names"]), recorded_teams=len(roster["names"]), verification_status=roster["verification_status"], source_url=roster["source_url"], checked_at=roster["checked_at"], blocked_reason="", notes=roster.get("notes", "")))
+        coverage.append(dict(country_id=country, division=level, competition_id=competition, competition_name=cat["competition_name"], season=roster["season"], expected_teams=roster.get("expected_teams", len(roster["names"])), recorded_teams=len(roster["names"]), verification_status=roster["verification_status"], source_url=roster["source_url"], checked_at=roster["checked_at"], blocked_reason=roster.get("official_confirmation_blocker", ""), notes=roster.get("notes", "")))
     active = {r["club_id"] for r in memberships}
     for row in clubs:
         row["season_membership_status"] = "SOURCE_VERIFIED_CURRENT" if row["club_id"] in active else "NOT_IN_CURRENT_SCOPED_ROSTERS"

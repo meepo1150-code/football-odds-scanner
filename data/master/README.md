@@ -7,7 +7,7 @@ Scope: **54 UEFA associations / 87 domestic divisions**, taken from `uefa_55_div
 - `uefa_clubs_canonical.csv`: permanent club IDs, registry country, canonical name, current scoped membership status, and canonical redirect. **Use this instead of the historical `teams.csv` seed.**
 - `competitions.csv`: permanent competition IDs; earlier out-of-scope IDs remain reserved.
 - `countries.csv`: country registry; IN_SCOPE rows are the 54 associations. Liechtenstein is CROSS_BORDER_ONLY. Other historical countries are retained.
-- `uefa_verified_memberships_2026.csv`: 1,286 memberships with competition ID, source name, season, source URL, evidence status and retrieval date. Here `country_id` is the **league association**, not necessarily the club's registry country.
+- `uefa_verified_memberships_2026.csv`: 1,285 memberships with competition ID, source name, season, source URL, evidence status and retrieval date. Here `country_id` is the **league association**, not necessarily the club's registry country.
 - `memberships.csv`: compatible three-column projection; `team_id` references `uefa_clubs_canonical.club_id`.
 - `uefa_league_coverage_2026.csv`: one row per scoped division, expected/recorded source roster counts and BLOCKED reason field.
 - `research/rosters.json`: factual extracted source rosters, URLs and notes, not copied articles.
@@ -17,9 +17,13 @@ Scope: **54 UEFA associations / 87 domestic divisions**, taken from `uefa_55_div
 
 ## Evidence semantics and limitations
 
-`VERIFIED_OFFICIAL` (21 divisions) means the recorded source is the league/federation. `VERIFIED_SECONDARY` (66 divisions) means a season-specific roster was retrieved from the recorded secondary source. It is **not equivalent to independent official certification**. Secondary rosters are usable as sourced master data, but consumers can filter to official evidence if they require a stricter admission rule.
+`VERIFIED_OFFICIAL` (81 divisions) means the recorded source is the league/federation. `VERIFIED_SECONDARY` (6 divisions) means a season-specific roster was retrieved from the recorded secondary source. It is **not equivalent to independent official certification**. Secondary rosters are usable as sourced master data, but consumers can filter to official evidence if they require a stricter admission rule.
 
 `NOT_IN_CURRENT_SCOPED_ROSTERS` does not mean defunct or inactive: a club may play outside this research scope. Historical `teams.csv`, numeric-ID aliases and migration proposals are preserved; they do not establish current membership. Consult `QA_2026.md` for exceptions and limitations.
+
+The 2026-10-09 official audit attempted all 66 baseline secondary divisions and completed 60 independent team-by-team comparisons. The other 6 retain secondary status with explicit blockers. See `research/official_roster_audit_2026_10_09.json` and `FINAL_COMPLETION_AUDIT_2026_10_09.md`. The earlier 21 official divisions retain their existing evidence.
+
+`cup_competition_registry_2026.csv` records eleven separate cup/UEFA competition identities; no cup entrants are inferred from league membership.
 
 ## Offline verification and rebuild
 

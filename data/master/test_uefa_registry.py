@@ -40,7 +40,7 @@ class MasterTests(unittest.TestCase):
     def test_complete_master(self):
         result = audit(self.root)
         self.assertEqual(result["errors"], [])
-        self.assertEqual((result["associations"], result["divisions"], result["memberships"]), (54, 87, 1286))
+        self.assertEqual((result["associations"], result["divisions"], result["memberships"]), (54, 87, 1285))
 
     def test_duplicate_membership_rejected(self):
         self.edit_csv("uefa_verified_memberships_2026.csv", lambda rows: rows.append(dict(rows[0])))
@@ -85,6 +85,68 @@ class MasterTests(unittest.TestCase):
         before = hashes()
         subprocess.run([sys.executable, str(self.root / "build_uefa_registry.py")], check=True, capture_output=True)
         self.assertEqual(before, hashes())
+
+    def edit_review(self, edit):
+        p = self.root / "research/official_roster_audit_2026_10_09.json"
+        data = json.loads(p.read_text())
+        edit(data["reviews"])
+        p.write_text(json.dumps(data))
+
+    def test_official_upgrade_requires_complete_evidence(self):
+        self.edit_csv("uefa_league_coverage_2026.csv", lambda rows: next(r for r in rows if r["verification_status"] == "VERIFIED_SECONDARY").update(verification_status="VERIFIED_OFFICIAL"))
+        self.assert_rejected("Coverage metadata mismatch")
+
+    def test_official_evidence_wrong_id_rejected(self):
+        self.edit_review(lambda rows: next(r for r in rows if r["review_status"] == "OFFICIAL_ROSTER_MATCH")["comparisons"][0].update(club_id="ENG-XXX"))
+        self.assert_rejected("Official evidence club ID mismatch")
+
+    def test_official_evidence_missing_team_rejected(self):
+        self.edit_review(lambda rows: next(r for r in rows if r["review_status"] == "OFFICIAL_ROSTER_MATCH")["comparisons"].pop())
+        self.assert_rejected("Official evidence roster mismatch")
+
+    def test_independent_expected_count_rejected(self):
+        p = self.root / "research/rosters.json"
+        data = json.loads(p.read_text())
+        next(r for r in data if "evidence_id" in r)["expected_teams"] = 999
+        p.write_text(json.dumps(data))
+        self.assert_rejected("Independent official team count mismatch")
+
+    def test_all_secondary_divisions_have_review_or_blocker(self):
+        self.edit_review(lambda rows: rows.pop())
+        self.assert_rejected("Official review scope")
+
+    def test_cup_duplicate_id_rejected(self):
+        self.edit_csv("cup_competition_registry_2026.csv", lambda rows: rows.append(dict(rows[0])))
+        self.assert_rejected("Cup registry: duplicate key")
+
+    def test_inferred_cup_entrants_rejected(self):
+        self.edit_csv("cup_competition_registry_2026.csv", lambda rows: rows[0].update(participant_status="FROM_LEAGUE_MEMBERS"))
+        self.assert_rejected("Cup entrants require separate reviewed source")
+
+    def test_wrong_provider_foreign_key_rejected(self):
+        self.edit_csv("provider_mappings.csv", lambda rows: rows.append(dict(entity_type="club", internal_id="ZZZ-XXX", provider="fixture_provider", provider_id="123", verification_status="VERIFIED_OFFICIAL")))
+        self.assert_rejected("Provider mapping foreign key mismatch")
+
+    def test_fixture_provider_mapping_accepts_known_ids(self):
+        self.edit_csv("provider_mappings.csv", lambda rows: rows.extend([
+            dict(entity_type="club", internal_id="ENG-ARS", provider="mock_only", provider_id="fixture-club-1", verification_status="VERIFIED_OFFICIAL"),
+            dict(entity_type="competition", internal_id="ENG-0001", provider="mock_only", provider_id="fixture-league-1", verification_status="VERIFIED_OFFICIAL"),
+        ]))
+        self.assertEqual(audit(self.root)["errors"], [])
+
+    def test_legacy_projection_cannot_keep_withdrawn_membership(self):
+        self.edit_csv("memberships.csv", lambda rows: rows.append(dict(season="2026", competition_id="LTU-0001", team_id="LTU-RIT")))
+        self.assert_rejected("contains stale rows")
+
+    def test_withdrawn_club_id_and_history_are_preserved(self):
+        review = json.loads((self.root / "research/official_roster_audit_2026_10_09.json").read_text())
+        removed = next(r for r in review["reviews"] if r["competition_id"] == "LTU-0001")["removed_current_memberships"][0]
+        with (self.root / "uefa_clubs_canonical.csv").open() as f:
+            club = next(r for r in csv.DictReader(f) if r["club_id"] == removed["club_id"])
+        self.assertEqual(club["season_membership_status"], "NOT_IN_CURRENT_SCOPED_ROSTERS")
+        with (self.root / "research/club_assignments.csv").open() as f:
+            self.assertTrue(any(r["club_id"] == removed["club_id"] for r in csv.DictReader(f)))
+        self.assertIn("earlier", removed["reason"])
 
 
 if __name__ == "__main__":

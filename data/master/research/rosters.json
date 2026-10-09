@@ -29,10 +29,12 @@
       "Wolverhampton Wanderers",
       "Wrexham"
     ],
-    "source_url": "https://www.sportsmole.co.uk/football/championship/table.html",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "Official EFL page opened but dynamic table unavailable; roster agrees with Footiehound list.",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.efl.com/competitions/efl-championship/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Official EFL page LeagueTableWidget competitionID10 seasonID2026 points to unauthenticated publicleague-tables endpoint; fetched24fullteams. seasonID2026 means2026/27.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "ENG-0002",
+    "expected_teams": 24
   },
   {
     "country_id": "ENG",
@@ -64,10 +66,12 @@
       "Peterborough United",
       "Wigan Athletic"
     ],
-    "source_url": "https://www.sportsmole.co.uk/football/league-one/table.html",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "Official EFL table unavailable in retrieved page; season-specific secondary table used.",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.efl.com/competitions/efl-league-one/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Official EFL page LeagueTableWidget competitionID11 seasonID2026 points to unauthenticated publicleague-tables endpoint; fetched24fullteams. seasonID2026 means2026/27.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "ENG-0003",
+    "expected_teams": 24
   },
   {
     "country_id": "ENG",
@@ -99,10 +103,12 @@
       "Port Vale",
       "Crawley Town"
     ],
-    "source_url": "https://www.sportsmole.co.uk/football/league-two/table.html",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "Official EFL table unavailable; complete secondary season table retrieved via search.",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.efl.com/competitions/efl-league-two/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Official EFL page LeagueTableWidget competitionID12 seasonID2026 points to unauthenticated publicleague-tables endpoint; fetched24fullteams. seasonID2026 means2026/27.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "ENG-0004",
+    "expected_teams": 24
   },
   {
     "country_id": "ENG",
@@ -403,10 +409,12 @@
       "De Graafschap",
       "Jong FC Utrecht"
     ],
-    "source_url": "https://www.vi.nl/competities/eerste-divisie/stand",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "All 20 also listed in official KKD opening fixtures; includes reserve teams actually admitted to senior second tier.",
-    "checked_at": "2026-10-08"
+    "source_url": "https://keukenkampioendivisie.nl/teams",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Official 2026/27 competition programme publication and current teams page",
+    "checked_at": "2026-10-09",
+    "evidence_id": "NLD-0002",
+    "expected_teams": 20
   },
   {
     "country_id": "FRA",
@@ -461,10 +469,12 @@
       "Casa Pia",
       "Estoril Praia"
     ],
-    "source_url": "https://www.sportsmole.co.uk/football/primeira-liga/table.html",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "Official licensing article opened but body unavailable; used full season standings.",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.ligaportugal.pt/competition/911/liga-portugal-betclic/round/20262027?tab=standings",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Official indexed standings explicitly 2026-2027; crosscheck recorded in OFFICIAL_ROSTER_CROSSCHECK_2026_10_09.md",
+    "checked_at": "2026-10-09",
+    "evidence_id": "PRT-0001",
+    "expected_teams": 18
   },
   {
     "country_id": "PRT",
@@ -490,10 +500,12 @@
       "Porto B",
       "Feirense"
     ],
-    "source_url": "https://sportalic.com/tables/portugal/liga-portugal-2",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "Official licensing article body unavailable; secondary season standings; reserve teams kept separate.",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.ligaportugal.pt/api/v2/competition/standings?competition=ligaportugalmeusuper&season=20262027",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Official Liga Portugal competition 912 identifies Liga Portugal Meu Super and current seasonCode=20262027; /api/v3/seasons independently labels 2026-2027 current. The official frontend requests standings with its explicit externalId=ligaportugalmeusuper (numeric 912 is not the standings key). Its public season endpoint supplies all eighteen teams, including Benfica B, Sporting CP B and FC Porto B as separate reserve identities. Names and permanent IDs are individually reconciled.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "PRT-0002",
+    "expected_teams": 18
   },
   {
     "country_id": "BEL",
@@ -659,10 +671,12 @@
       "Slovacko",
       "Zlin"
     ],
-    "source_url": "https://czechleague.com/",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "Official clubs endpoint failed; full season secondary table retrieved.",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.chanceliga.cz/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. First standings table image alt labels; current season selector/statistics 2026/2027",
+    "checked_at": "2026-10-09",
+    "evidence_id": "CZE-0001",
+    "expected_teams": 16
   },
   {
     "country_id": "CZE",
@@ -686,10 +700,12 @@
       "Trinec",
       "Hanacka Slavia Kromeriz"
     ],
-    "source_url": "https://czechleague.com/",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "Reconciled on 2026-10-09: current official CHNL table at https://www.chnliga.cz/tabulka/2026?id_type=1&order_direction=1 lists the same 16 clubs including Karvina and excluding Artis. Retained secondary classification because the retrieved official page does not expose the selected season label. The earlier fixture-release headline is superseded by current standings.",
-    "checked_at": "2026-10-08"
+    "source_url": "https://fnliga.cz/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Official current table and dated October 2026 fixtures; page links season2027",
+    "checked_at": "2026-10-09",
+    "evidence_id": "CZE-0002",
+    "expected_teams": 16
   },
   {
     "country_id": "GRC",
@@ -711,10 +727,12 @@
       "Levadiakos",
       "Volos NFC"
     ],
-    "source_url": "https://greekleague.net/super-league",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "Official slgr.gr teams returned 403; complete secondary current-season table used.",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.slgr.gr/el/statistics/tables/teams/25/158/teams%20SUM_perfect_passes/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete independent official season roster comparison; permanent IDs retained.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "GRC-0001",
+    "expected_teams": 14
   },
   {
     "country_id": "NOR",
@@ -817,10 +835,12 @@
       "AGF Aarhus",
       "Sonderjyske"
     ],
-    "source_url": "https://www.soccerassociation.com/11/",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "Matches 12 official superliga.dk club abbreviations.",
-    "checked_at": "2026-10-08"
+    "source_url": "https://superliga.dk/klubber",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. League2026/27 media manual complete twelve club-info sections",
+    "checked_at": "2026-10-09",
+    "evidence_id": "DNK-0001",
+    "expected_teams": 12
   },
   {
     "country_id": "DNK",
@@ -840,10 +860,12 @@
       "HB Koge",
       "Esbjerg"
     ],
-    "source_url": "https://www.soccerassociation.com/11/",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.dbu.dk/resultater/pulje/507530/stilling",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. DBU Betinia LIGA - Grundspil2026/27; rejected pulje508656 because tier3",
+    "checked_at": "2026-10-09",
+    "evidence_id": "DNK-0002",
+    "expected_teams": 12
   },
   {
     "country_id": "SCO",
@@ -916,7 +938,8 @@
     "source_url": "https://www.soccerassociation.com/28/index.htm",
     "verification_status": "VERIFIED_SECONDARY",
     "notes": "",
-    "checked_at": "2026-10-08"
+    "checked_at": "2026-10-08",
+    "official_confirmation_blocker": "Official 1liga homepage/table return HTTP 403. A PZPN season calendar cannot establish all 18 participants. Alternate official season fixture PDF returns 403; indexed fragment is not a complete eighteen-club comparison."
   },
   {
     "country_id": "CHE",
@@ -936,10 +959,12 @@
       "Vaduz",
       "Lausanne"
     ],
-    "source_url": "https://www.soccerassociation.com/18/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://matchcenter-sfl.football.ch/default.aspx?lng=1&oid=2",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Selected season2026/2027 first Brack Super League table",
+    "checked_at": "2026-10-09",
+    "evidence_id": "CHE-0001",
+    "expected_teams": 12
   },
   {
     "country_id": "CHE",
@@ -957,10 +982,12 @@
       "Wil",
       "Stade Nyonnais"
     ],
-    "source_url": "https://www.soccerassociation.com/18/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://matchcenter-sfl.football.ch/default.aspx?ln=11016&lng=3&oid=2&s=2027",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Selected season2026/2027 dieci Challenge League table and fixture club full names",
+    "checked_at": "2026-10-09",
+    "evidence_id": "CHE-0002",
+    "expected_teams": 10
   },
   {
     "country_id": "AUT",
@@ -980,10 +1007,12 @@
       "Wolfsberger AC",
       "SCR Altach"
     ],
-    "source_url": "https://www.soccerassociation.com/27/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.bundesliga.at/de/tabelle/saison-2026-2027",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Bundesliga official2026/2027 overall standings12clubs",
+    "checked_at": "2026-10-09",
+    "evidence_id": "AUT-0001",
+    "expected_teams": 12
   },
   {
     "country_id": "AUT",
@@ -1007,10 +1036,12 @@
       "Hertha Wels",
       "Kapfenberg"
     ],
-    "source_url": "https://www.soccerassociation.com/27/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.2liga.at/de/tabelle/saison-2026-2027",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Official Bundesliga-operated site season2026/2027 overall table; reserve teams explicitly separate",
+    "checked_at": "2026-10-09",
+    "evidence_id": "AUT-0002",
+    "expected_teams": 16
   },
   {
     "country_id": "SWE",
@@ -1034,10 +1065,12 @@
       "Örgryte",
       "Halmstad"
     ],
-    "source_url": "https://www.soccerassociation.com/22/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://allsvenskan.se/tabell",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Official league page declares season 2026 and its gql.sportomedia.se endpoint. An anonymous read-only StandingsForLeague query with configLeagueName=allsvenskan, configSeasonStartYear=2026 and type=total supplies all sixteen names. Club abbreviations/full names are explicitly reconciled with stable IDs.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "SWE-0001",
+    "expected_teams": 16
   },
   {
     "country_id": "SWE",
@@ -1061,10 +1094,12 @@
       "Brage",
       "GIF Sundsvall"
     ],
-    "source_url": "https://www.soccerassociation.com/22/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://superettan.se/tabell",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Official league page declares season 2026 and its gql.sportomedia.se endpoint. An anonymous read-only StandingsForLeague query with configLeagueName=superettan, configSeasonStartYear=2026 and type=total supplies all sixteen names. Club abbreviations/full names are explicitly reconciled with stable IDs.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "SWE-0002",
+    "expected_teams": 16
   },
   {
     "country_id": "HRV",
@@ -1082,10 +1117,12 @@
       "Gorica",
       "Rudeš"
     ],
-    "source_url": "https://www.soccerassociation.com/7/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://semafor.hns.family/natjecanja/114137140/supersport-hrvatska-nogometna-liga-20262027/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. HNSseason2026/2027 complete first-round5matches10clubs",
+    "checked_at": "2026-10-09",
+    "evidence_id": "HRV-0001",
+    "expected_teams": 10
   },
   {
     "country_id": "HRV",
@@ -1109,10 +1146,12 @@
       "Kustošija",
       "Opatija"
     ],
-    "source_url": "https://www.soccerassociation.com/7/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://semafor.hns.family/natjecanja/114348034/supersport-prva-nl/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. HNS2026/2027 firstleague opening round8matches16distinctteams; DinamoII maintained",
+    "checked_at": "2026-10-09",
+    "evidence_id": "HRV-0002",
+    "expected_teams": 16
   },
   {
     "country_id": "SRB",
@@ -1134,10 +1173,12 @@
       "Radnički Niš",
       "Zemun"
     ],
-    "source_url": "https://www.soccerassociation.com/94/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.superliga.rs/en/sezona/tabela-takmicenja/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. League current2026/27 table; federation season26/27 competition corroboration",
+    "checked_at": "2026-10-09",
+    "evidence_id": "SRB-0001",
+    "expected_teams": 14
   },
   {
     "country_id": "SRB",
@@ -1161,10 +1202,12 @@
       "Jedinstvo Ub",
       "Teleoptik"
     ],
-    "source_url": "https://www.soccerassociation.com/94/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://fss.rs/takmicenje/mozzart-bet-prva-liga-srbije-26-27/?script=lat",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Federation named season26/27 sixteen-club table and first-round matches",
+    "checked_at": "2026-10-09",
+    "evidence_id": "SRB-0002",
+    "expected_teams": 16
   },
   {
     "country_id": "UKR",
@@ -1188,10 +1231,12 @@
       "Obolon",
       "Kudrivka"
     ],
-    "source_url": "https://www.soccerassociation.com/36/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://upl.ua/ua/tournaments/championship?id=432&tab=table",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Official UPL tournament432 title2026/27 current table",
+    "checked_at": "2026-10-09",
+    "evidence_id": "UKR-0001",
+    "expected_teams": 16
   },
   {
     "country_id": "UKR",
@@ -1215,10 +1260,12 @@
       "Polissya-2",
       "Probiy Horodenka"
     ],
-    "source_url": "https://www.soccerassociation.com/36/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://pfl.ua/standing-json/1353",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. PFL public API documentation explicitly identifies1353 as current2026/27 first division",
+    "checked_at": "2026-10-09",
+    "evidence_id": "UKR-0002",
+    "expected_teams": 16
   },
   {
     "country_id": "CYP",
@@ -1240,10 +1287,12 @@
       "Nea Salamina",
       "Ypsonas"
     ],
-    "source_url": "https://www.soccerassociation.com/39/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.cfa.com.cy/En/competitions/68124755",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "CFA explicitly labels Cyprus League by Stoiximan 2026/27 and lists all fourteen clubs in its current first-phase table. The official CFA 2023/24 youth competition regulations explicitly identify F.C. KRASAVA E.N.Y Digenis Ypsonas; the official club history documents the 2022 acquisition of the second-division Ypsonas license. Together these establish the existing Ypsonas identity correspondence to current KRASAVA E.N.Y., preserving the permanent ID and historical canonical name. The historical youth regulation is identity evidence only, not the 2026/27 senior roster source.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "CYP-0001",
+    "expected_teams": 14
   },
   {
     "country_id": "CYP",
@@ -1267,10 +1316,12 @@
       "Chalkanoras",
       "Anagennisi Derynia"
     ],
-    "source_url": "https://www.soccerassociation.com/39/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.cfa.com.cy/En/competitions/68156043",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. CFA Bdivision2026/27 sixteen clubs; Greek names reviewed against stable English ledger",
+    "checked_at": "2026-10-09",
+    "evidence_id": "CYP-0002",
+    "expected_teams": 16
   },
   {
     "country_id": "ISR",
@@ -1292,10 +1343,12 @@
       "Ironi Tiberias",
       "Bnei Sakhnin"
     ],
-    "source_url": "https://www.soccerassociation.com/78/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.football.org.il/Components.asmx/LeagueTable?league_id=40&season_id=28&box=20&round_id=5&componentTitle=Table",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "IFA current season selector explicitly maps season_id=28 to 2026/27. The official frontend uses the public LeagueTable component with league_id=40, box=20. All 14 Hebrew team labels are individually reconciled with the existing English identities, including geographic abbreviations; official team links preserve distinguishing IDs. No provider mapping is inferred.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "ISR-0001",
+    "expected_teams": 14
   },
   {
     "country_id": "ISR",
@@ -1319,10 +1372,12 @@
       "Maccabi Jaffa",
       "Hapoel Akko"
     ],
-    "source_url": "https://www.soccerassociation.com/78/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.football.org.il/Components.asmx/LeagueTable?league_id=45&season_id=28&box=40&round_id=8&componentTitle=Table",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "IFA current season selector explicitly maps season_id=28 to 2026/27. The official frontend uses the public LeagueTable component with league_id=45, box=40. All 16 Hebrew team labels are individually reconciled with the existing English identities, including geographic abbreviations; official team links preserve distinguishing IDs. No provider mapping is inferred.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "ISR-0002",
+    "expected_teams": 16
   },
   {
     "country_id": "HUN",
@@ -1342,10 +1397,12 @@
       "Zalaegerszeg",
       "Budapest-Honvéd"
     ],
-    "source_url": "https://www.soccerassociation.com/30/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://adatbank.mlsz.hu/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. MLSZ official current season2026/2027 selector andOTPBankLiga12club table",
+    "checked_at": "2026-10-09",
+    "evidence_id": "HUN-0001",
+    "expected_teams": 12
   },
   {
     "country_id": "HUN",
@@ -1369,10 +1426,12 @@
       "Csákvár",
       "Kozármisleny"
     ],
-    "source_url": "https://www.soccerassociation.com/30/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://adatbank.mlsz.hu/league/67/0/33587/2.html",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. MLSZ season2026/2027 MerkantilBankLiga full16 table at round2; roster independent ofcurrent standings rank",
+    "checked_at": "2026-10-09",
+    "evidence_id": "HUN-0002",
+    "expected_teams": 16
   },
   {
     "country_id": "ROU",
@@ -1396,10 +1455,12 @@
       "FC Voluntari",
       "Csíkszereda"
     ],
-    "source_url": "https://www.soccerassociation.com/19/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://lpf.ro/liga-1",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. LPF SEZONUL2026–2027 current16-club Superliga table",
+    "checked_at": "2026-10-09",
+    "evidence_id": "ROU-0001",
+    "expected_teams": 16
   },
   {
     "country_id": "ROU",
@@ -1429,10 +1490,12 @@
       "CS Dinamo",
       "CSA Steaua"
     ],
-    "source_url": "https://www.soccerassociation.com/19/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.frf.ro/recomandate/avancronica-etapa-9-liga-2-casa-pariurilor-runda-cu-meciuri-tari-la-reluarea-sezonului/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official roster crosscheck with preserved IDs. FRF explicitly labels season 2026-2027 and lists all eleven round-9 fixtures, confirming 22 current teams. The July composition included Hermannstadt; October current fixtures instead confirm Olimpia. No assumption about the legal replacement decision is made.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "ROU-0002",
+    "expected_teams": 22
   },
   {
     "country_id": "SVK",
@@ -1452,10 +1515,12 @@
       "KFK Komárno",
       "Ružomberok"
     ],
-    "source_url": "https://www.soccerassociation.com/98/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.nikeliga.sk/tabulka",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Official UniaLigovychKlubov table selected2026/2027 all12clubfullname labels; KFKlegacyspelling preserved forKomarno.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "SVK-0001",
+    "expected_teams": 12
   },
   {
     "country_id": "SVK",
@@ -1479,10 +1544,12 @@
       "MFK Bytča",
       "Lokomotíva Zvolen"
     ],
-    "source_url": "https://www.soccerassociation.com/98/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.monacobetliga.sk/tabulka",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Official MONACObet liga titleTabuľka2026/27; reserves ŽilinaB andSlovanU21 included",
+    "checked_at": "2026-10-09",
+    "evidence_id": "SVK-0002",
+    "expected_teams": 16
   },
   {
     "country_id": "SVN",
@@ -1500,10 +1567,12 @@
       "Brinje-Grosuplje",
       "Radomlje"
     ],
-    "source_url": "https://www.soccerassociation.com/46/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.nzs.si/podrocja/novinarji/novice/io-nzs-potrdil-sestavo-clanskih-lig-za-sezono-202627-377793",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. NZS executive approved licensed firstdivision2026/27 composition18June2026",
+    "checked_at": "2026-10-09",
+    "evidence_id": "SVN-0001",
+    "expected_teams": 10
   },
   {
     "country_id": "SVN",
@@ -1527,10 +1596,12 @@
       "Dravinja",
       "Brežice"
     ],
-    "source_url": "https://www.soccerassociation.com/46/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.nzs.si/podrocja/novinarji/novice/io-nzs-potrdil-sestavo-clanskih-lig-za-sezono-202627-377793",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official roster crosscheck with preserved IDs. NZS approved licensed 2026/27 composition lists all16; current NZS club directory agrees. Official NK Vrhnika history explicitly states NK Dren Vrhnika was renamed NK Vrhnika in spring2023, resolving the legacy name without replacing its ID.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "SVN-0002",
+    "expected_teams": 16
   },
   {
     "country_id": "BGR",
@@ -1552,10 +1623,12 @@
       "Lokomotiv Sofia",
       "Dunav Ruse"
     ],
-    "source_url": "https://www.soccerassociation.com/43/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://efbetleague.com/standings",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Season2026/2027 officialleague table14; federationhomepage links efbetЛИГА tothisdomain",
+    "checked_at": "2026-10-09",
+    "evidence_id": "BGR-0001",
+    "expected_teams": 14
   },
   {
     "country_id": "BGR",
@@ -1581,10 +1654,12 @@
       "Dobrudzha",
       "Pirin Blagoevgrad"
     ],
-    "source_url": "https://www.soccerassociation.com/43/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://bfu-tournaments.com/leagues/second",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. BFUtournaments officialseconddivision18currenttable; federationhomepage directlink; season2026/27",
+    "checked_at": "2026-10-09",
+    "evidence_id": "BGR-0002",
+    "expected_teams": 18
   },
   {
     "country_id": "AZE",
@@ -1607,7 +1682,8 @@
     "source_url": "https://www.soccerassociation.com/95/index.htm",
     "verification_status": "VERIFIED_SECONDARY",
     "notes": "",
-    "checked_at": "2026-10-08"
+    "checked_at": "2026-10-08",
+    "official_confirmation_blocker": "PFL returns an application shell. The accessible AFFA table contains historical Inter, Simurg and AZAL and cannot certify 2026/27. The current 12/10 clubs remain unconfirmed. Official indexed selector establishes 2026-2027, but open supplies no roster text."
   },
   {
     "country_id": "IRL",
@@ -1625,10 +1701,12 @@
       "Drogheda United",
       "Sligo Rovers"
     ],
-    "source_url": "https://www.soccerassociation.com/16/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://d33kuhj6eu7i5b.cloudfront.net/6217/7029/1505/MEDIA_GUIDE_2026_-_FINAL_-_03.pdf",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "League-authored media guide explicitly labels the 2026 season. Pages 6,8,10,12,14,16,18,20,22,24 independently supply all ten current Premier Division club profiles. The director explains Dundalk promotion. Historical 2025 statistics and honours pages are excluded.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "IRL-0001",
+    "expected_teams": 10
   },
   {
     "country_id": "IRL",
@@ -1646,10 +1724,12 @@
       "Treaty United",
       "Finn Harps"
     ],
-    "source_url": "https://www.soccerassociation.com/16/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://d33kuhj6eu7i5b.cloudfront.net/8417/6587/7668/SSE_Airtricity_Mens_First_Division_-_2026_Fixtures_-_Final_release.pdf",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Official League of Ireland 2026 First Division fixture release lists five opening-round fixtures and all ten clubs, repeated across the full 36-round season. The document was issued 16 December 2025 for the 2026 season; publication year is not treated as the season.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "IRL-0002",
+    "expected_teams": 10
   },
   {
     "country_id": "FIN",
@@ -1669,10 +1749,12 @@
       "IFK Mariehamn",
       "FF Jaro"
     ],
-    "source_url": "https://www.soccerassociation.com/21/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.veikkausliiga.com/tilastot/2026/veikkausliiga/joukkueet/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete independent official season roster comparison; permanent IDs retained.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "FIN-0001",
+    "expected_teams": 12
   },
   {
     "country_id": "FIN",
@@ -1690,10 +1772,12 @@
       "Klubi-04",
       "SJK Akatemia"
     ],
-    "source_url": "https://www.soccerassociation.com/21/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www-assets.palloliitto.fi/62562/1774195903-ykkosliiga2026.pdf",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Palloliitto2026 seasoninfoPDF pages4-13 oneprofile perclub; page2 specifies10teams; reserves identified",
+    "checked_at": "2026-10-09",
+    "evidence_id": "FIN-0002",
+    "expected_teams": 10
   },
   {
     "country_id": "ISL",
@@ -1713,10 +1797,12 @@
       "KA",
       "ÍBV"
     ],
-    "source_url": "https://www.soccerassociation.com/34/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.ksi.is/oll-mot/mot?id=7025510",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete independent official season roster comparison; permanent IDs retained.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "ISL-0001",
+    "expected_teams": 12
   },
   {
     "country_id": "BIH",
@@ -1734,10 +1820,12 @@
       "Velež",
       "Radnik Bijeljina"
     ],
-    "source_url": "https://www.soccerassociation.com/51/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.nfsbih.ba/en/competitions/football-men/wwin-league-bh?id%5B0%5D=54152223&view=standings",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Federation WWINligaBiH26/27 first standings table",
+    "checked_at": "2026-10-09",
+    "evidence_id": "BIH-0001",
+    "expected_teams": 10
   },
   {
     "country_id": "KAZ",
@@ -1761,10 +1849,12 @@
       "Altai",
       "Zhetysu"
     ],
-    "source_url": "https://www.soccerassociation.com/111/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://kffleague.kz/ru",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete independent official season roster comparison; permanent IDs retained.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "KAZ-0001",
+    "expected_teams": 16
   },
   {
     "country_id": "MDA",
@@ -1780,10 +1870,12 @@
       "Real Sireți",
       "FC Bălți"
     ],
-    "source_url": "https://www.soccerassociation.com/90/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://fmf.md/noutate/17425/real-sireti-va-juca-in-liga-7777-editia-202627?lang=ru",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete independent official season roster comparison; permanent IDs retained.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "MDA-0001",
+    "expected_teams": 8
   },
   {
     "country_id": "ARM",
@@ -1803,10 +1895,12 @@
       "Syunik",
       "Van"
     ],
-    "source_url": "https://www.soccerassociation.com/109/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://premierleague.ffa.am/en/games",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. FFA2026/27 fixtures6matches12teams; complete league club links",
+    "checked_at": "2026-10-09",
+    "evidence_id": "ARM-0001",
+    "expected_teams": 12
   },
   {
     "country_id": "GEO",
@@ -1824,10 +1918,12 @@
       "Spaeri",
       "Meshakhte"
     ],
-    "source_url": "https://www.soccerassociation.com/55/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.erovnuliliga.ge/en/clubs",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Official GFF-operated club directory selected2026, first ErovnuliLiga section only",
+    "checked_at": "2026-10-09",
+    "evidence_id": "GEO-0001",
+    "expected_teams": 10
   },
   {
     "country_id": "LVA",
@@ -1845,10 +1941,12 @@
       "Tukums 2000",
       "Ogre United"
     ],
-    "source_url": "https://www.soccerassociation.com/93/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://lff.lv/sacensibas/viriesi/virsliga/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. LFF selected2026 table10teams and upcoming complete round32fixtures; HTMLdecodedUTF8",
+    "checked_at": "2026-10-09",
+    "evidence_id": "LVA-0001",
+    "expected_teams": 10
   },
   {
     "country_id": "LTU",
@@ -1863,13 +1961,14 @@
       "Džiugas",
       "Panevėžys",
       "Hegelmann",
-      "FA Šiauliai",
-      "Riteriai"
+      "FA Šiauliai"
     ],
-    "source_url": "https://www.soccerassociation.com/59/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.lff.lt/lygos/a-lyga-kuri-remia-topsport-2026/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. First current TOPLYGA2026 table9; licence revocation explicitly excludesRiteriai",
+    "checked_at": "2026-10-09",
+    "evidence_id": "LTU-0001",
+    "expected_teams": 9
   },
   {
     "country_id": "EST",
@@ -1887,10 +1986,12 @@
       "Nõmme United",
       "Trans Narva"
     ],
-    "source_url": "https://www.soccerassociation.com/60/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.jalgpall.ee/voistlused/52/premium-liiga",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. EJL2026 PremiumLiiga complete table; allteam links explicitly season=2026",
+    "checked_at": "2026-10-09",
+    "evidence_id": "EST-0001",
+    "expected_teams": 10
   },
   {
     "country_id": "ALB",
@@ -1908,10 +2009,12 @@
       "Partizani",
       "Tirana"
     ],
-    "source_url": "https://www.soccerassociation.com/72/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://fshf.org/sq/abissnet-superiore-2026-2027-percaktohen-datat-dhe-oraret-e-5-javeve-te-para-te-sezonit-te-ri/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete independent official season roster comparison; permanent IDs retained.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "ALB-0001",
+    "expected_teams": 10
   },
   {
     "country_id": "MNE",
@@ -1929,10 +2032,12 @@
       "Jezero",
       "Arsenal"
     ],
-    "source_url": "https://www.soccerassociation.com/210/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://fscg.me/takmicenja/meridianbet-1-cfl/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Native FSCGcurrent2026/27 competition table10 andfirst-roundAugust2026fixtures; rejected EnglishTelekom2018archive.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "MNE-0001",
+    "expected_teams": 10
   },
   {
     "country_id": "MKD",
@@ -1950,10 +2055,12 @@
       "Skopje",
       "Bashkimi"
     ],
-    "source_url": "https://www.soccerassociation.com/74/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.ffm.mk/en/natprevaruvanje/prva-mfl27/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. FFM named ПрваМФЛ26/27 table all10; two Shkendija entities distinct",
+    "checked_at": "2026-10-09",
+    "evidence_id": "MKD-0001",
+    "expected_teams": 10
   },
   {
     "country_id": "BLR",
@@ -1980,7 +2087,8 @@
     "source_url": "https://www.soccerassociation.com/56/index.htm",
     "verification_status": "VERIFIED_SECONDARY",
     "notes": "",
-    "checked_at": "2026-10-08"
+    "checked_at": "2026-10-08",
+    "official_confirmation_blocker": "ABFF championship endpoints return HTTP 502. An indexed season-54 table is not sufficient to establish the 2026 season. Fallback official page still returns 502; search index supplies only first three clubs, insufficient for all sixteen."
   },
   {
     "country_id": "MLT",
@@ -2000,10 +2108,12 @@
       "Gżira United",
       "Birżebbuġa St. Peter's"
     ],
-    "source_url": "https://www.soccerassociation.com/40/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.maltapremierleague.mt/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. Opening2026-27 table12 + August2026 opening round all12; ignore stale2025 fixture table",
+    "checked_at": "2026-10-09",
+    "evidence_id": "MLT-0001",
+    "expected_teams": 12
   },
   {
     "country_id": "NIR",
@@ -2023,10 +2133,12 @@
       "Bangor",
       "Portadown"
     ],
-    "source_url": "https://www.soccerassociation.com/15/index.htm",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.nifootballleague.com/news/2026/june/back-for-the-boyle-sports-premiership/",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete independent official season roster comparison; permanent IDs retained.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "NIR-0001",
+    "expected_teams": 12
   },
   {
     "country_id": "RUS",
@@ -2053,7 +2165,8 @@
     "source_url": "https://www.soccerassociation.com/31/index.htm",
     "verification_status": "VERIFIED_SECONDARY",
     "notes": "",
-    "checked_at": "2026-10-08"
+    "checked_at": "2026-10-08",
+    "official_confirmation_blocker": "The official Premierliga table presents a robot challenge; search results do not establish all 16 clubs. Official indexed table labels 2025/26; cannot substitute it for 2026/27 roster confirmation."
   },
   {
     "country_id": "AZE",
@@ -2074,7 +2187,8 @@
     "source_url": "https://footystats.org/azerbaijan/first-division",
     "verification_status": "VERIFIED_SECONDARY",
     "notes": "",
-    "checked_at": "2026-10-08"
+    "checked_at": "2026-10-08",
+    "official_confirmation_blocker": "PFL returns an application shell. The accessible AFFA table contains historical Inter, Simurg and AZAL and cannot certify 2026/27. The current 12/10 clubs remain unconfirmed. Official indexed selector establishes 2026-2027, but open supplies no second-tier roster text."
   },
   {
     "country_id": "GIB",
@@ -2117,7 +2231,8 @@
     "source_url": "https://primatips.com/tables/andorra",
     "verification_status": "VERIFIED_SECONDARY",
     "notes": "",
-    "checked_at": "2026-10-08"
+    "checked_at": "2026-10-08",
+    "official_confirmation_blocker": "FAF returns an application shell; the complete 2026/27 ten-club roster was not retrieved. Alternate official directory redirects to login; youth rules do not establish senior participants."
   },
   {
     "country_id": "SMR",
@@ -2141,10 +2256,12 @@
       "San Marino Academy U22",
       "SC Faetano"
     ],
-    "source_url": "https://www.eurofotbal.cz/souteze/san-marino/campionato/tabulky/",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.fsgc.sm/en/single-news/league-two-leaders-bookend-weekend-action/2395",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. FSGC7October2026 fullmatchday5 fixturelist8matches16clubs; season corroborated current championship",
+    "checked_at": "2026-10-09",
+    "evidence_id": "SMR-0001",
+    "expected_teams": 16
   },
   {
     "country_id": "WAL",
@@ -2168,10 +2285,12 @@
       "Trefelin BGC",
       "Holywell Town"
     ],
-    "source_url": "https://www.footballwebpages.co.uk/cymru-premier/league-table",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://d3ltsdzld9nilp.cloudfront.net/20260601165508/Mens-composition.pdf",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. FAW official2026-27 compositionPDF page1 Tier1 left column; visually checked promotions/relegations",
+    "checked_at": "2026-10-09",
+    "evidence_id": "WAL-0001",
+    "expected_teams": 16
   },
   {
     "country_id": "LUX",
@@ -2195,10 +2314,12 @@
       "Victoria Rosport",
       "Swift Hesperange"
     ],
-    "source_url": "https://primatips.com/tables/luxembourg",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://clubee-websites-prod.s3.eu-central-1.amazonaws.com/4880/files/application/5D0832QNX49PKB7YMQ9DMWXNXC.pdf",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Complete official current-roster crosscheck; reviewed club-by-club aliases and stable IDs in research/official_roster_audit_2026_10_09.json. FLF BGL Ligue programme détaillé2026-2027, published30June2026; first-round8matches all16teams; explicitly rejectedPromotionHonneurleague11.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "LUX-0001",
+    "expected_teams": 16
   },
   {
     "country_id": "KOS",
@@ -2216,10 +2337,12 @@
       "Llapi",
       "Vushtrria"
     ],
-    "source_url": "https://kosovascore.com/tabelat?liga=superliga-kosoves&sporti=football",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://api.ffk-kosova.com/api/v1/standings/league/2c4745a2-d0f2-495f-aa42-18aad5b20735",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "FFK official competition frontend maps Albi Mall Superliga to league ID 2c4745a2-d0f2-495f-aa42-18aad5b20735. Its anonymous standings endpoint supplies all ten current clubs. UEFA official national-association page explicitly labels the current Kosovan Superliga 2026/27; this supplies the independent season label, not the club comparison. Current FFK completed rounds are 1–7. The FFK API does not carry an explicit season field, so season alignment rests on the current official UEFA season label and current FFK league table.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "KOS-0001",
+    "expected_teams": 10
   },
   {
     "country_id": "FRO",
@@ -2237,9 +2360,11 @@
       "07 Vestur",
       "B68 Toftir"
     ],
-    "source_url": "https://primatips.com/tables/faroe-islands",
-    "verification_status": "VERIFIED_SECONDARY",
-    "notes": "",
-    "checked_at": "2026-10-08"
+    "source_url": "https://www.fsf.fo/wp-json/comet-api/v2/standings?competitionId=6654857",
+    "verification_status": "VERIFIED_OFFICIAL",
+    "notes": "Official FSF page explicitly maps MeistaraDeildin menn 2026 to competition 6654857. Its public comet-api/v2 standings endpoint independently supplies all ten teams and their places. This excludes the adjacent 2025 competition.",
+    "checked_at": "2026-10-09",
+    "evidence_id": "FRO-0001",
+    "expected_teams": 10
   }
 ]
