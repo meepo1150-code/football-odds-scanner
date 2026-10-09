@@ -38,7 +38,7 @@ Date: 2026-10-09. Branch: `feature/league-selection-v1-20261008`. PR #309. Issue
 - `python -m unittest discover -s data/master -p test_uefa_registry.py -v`: 21 tests PASS, including byte-identical rebuild test.
 - `python -m pytest -q`: 470 tests PASS (full offline scanner/provider/dashboard/master suite).
 - `git diff --check`: PASS.
-- GitHub Actions: PENDING until the pushed commit is checked; local tests do not imply remote CI PASS.
+- GitHub Actions Football Master Offline QA: **PASS** for implementation commit `88bdde714d1b9ca740591a133e2258d72fe9376e`. [PR run 37886585103](https://github.com/meepo1150-code/football-odds-scanner/actions/runs/37886585103) and [push run 37886579164](https://github.com/meepo1150-code/football-odds-scanner/actions/runs/37886579164) both succeeded. Verified job steps: dependency installation, clean deterministic rebuild/validation, master regression tests and full scanner suite. Other repository workflow outcomes are tracked in Issue #310; this evidence is tied to that exact implementation commit.
 
 ## Scanner integration safety and limits
 
