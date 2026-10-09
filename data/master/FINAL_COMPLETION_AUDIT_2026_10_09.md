@@ -4,9 +4,13 @@ User removed the six unconfirmed leagues: AND-0001, AZE-0001, AZE-0002, BLR-0001
 
 Permanent club/competition IDs, assignment ledger and historical scanner records are retained. Competition identities are EXCLUDED_USER, not reassigned; current excluded memberships are removed. The original excluded roster facts are kept in research/user_excluded_divisions_2026_10_09.json. The research population filter rejects exact canonical excluded competition IDs; Poland tier 1 and cross-border clubs in retained leagues remain permitted. No country/name-only provider-ID guesses are introduced.
 
-Validation for this revision: 473 pytest tests PASS; 23 master unittest tests PASS; deterministic rebuild, structural QA and git diff --check PASS. CI status is recorded in Issue #310 and PR #309 after the new run completes.
+Validation for this revision: 477 pytest tests PASS; 25 master unittest tests PASS; deterministic rebuild, structural QA and git diff --check PASS. CI status is recorded in Issue #310 and PR #309 after the new run completes.
 
-Remaining separate limitations: Portugal cup season confirmation (FPF 403) and verified live provider mapping coverage. Neither is an excluded domestic league. No API credentials, scan schedule, production deployment or PR merge changed.
+Portugal cup season confirmation is resolved using an official AF Aveiro publication, with direct FPF access failures recorded. All eleven requested cup/UEFA identities and seasons are registered; entrant lists remain NOT_IMPORTED and are not inferred from league rosters.
+
+Provider integration: 45 competition IDs were explicitly reviewed against the saved Oddspapi catalog of 2026-09-14. The evidence ledger includes exact country/name/ID facts and the catalog SHA256. Tier hints were not used as identity keys. Offline enrichment preserves provider fixture IDs and all existing payload fields, rejects conflicting/duplicate identities and makes no requests. No production expansion is enabled. Structural QA verifies the evidence, foreign keys, uniqueness and complete mapped/unmapped accounting.
+
+Remaining external blockers: 47 of the 92 scoped league/cup competition identities are absent from this saved provider catalog; verified provider participant IDs are also unavailable in saved normalized fixtures. The latest saved provider health reports QUOTA_BLOCKED with zero requests sent. Resolution requires an authorized unblocked provider catalog and participant-ID response/export, followed by exact identity review and fixture tests. No synthetic IDs or name-only club joins are accepted. The master league data is complete in the revised scope; full live provider coverage is PARTIAL/BLOCKED. No API credentials, scan schedule, production deployment or PR merge changed.
 
 ---
 

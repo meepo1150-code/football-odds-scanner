@@ -6,7 +6,7 @@ Scope: **50 UEFA associations / 81 domestic divisions**, taken from `uefa_55_div
 
 - `uefa_clubs_canonical.csv`: permanent club IDs, registry country, canonical name, current scoped membership status, and canonical redirect. **Use this instead of the historical `teams.csv` seed.**
 - `competitions.csv`: permanent competition IDs; earlier out-of-scope IDs remain reserved.
-- `countries.csv`: country registry; IN_SCOPE rows are the 54 associations. Liechtenstein is CROSS_BORDER_ONLY. Other historical countries are retained.
+- `countries.csv`: country registry; IN_SCOPE rows are the 50 associations. Liechtenstein is CROSS_BORDER_ONLY. Other historical countries are retained.
 - `uefa_verified_memberships_2026.csv`: 1,203 memberships with competition ID, source name, season, source URL, evidence status and retrieval date. Here `country_id` is the **league association**, not necessarily the club's registry country.
 - `memberships.csv`: compatible three-column projection; `team_id` references `uefa_clubs_canonical.club_id`.
 - `uefa_league_coverage_2026.csv`: one row per scoped division, expected/recorded source roster counts and BLOCKED reason field.
@@ -36,8 +36,8 @@ python data/master/validate_uefa_master.py --write-report
 
 The rebuild uses the checked-in rosters and assignment ledger; it does not browse or refresh season facts. QA checks referential integrity, duplicates, code syntax, original ID preservation, scope completeness, source-to-membership equality and roster counts. It cannot certify future changes or independently validate licensing decisions.
 
-No provider mappings, scanner, API, dashboard or deployment is changed by this data snapshot. No PR merge is authorized.
+45 reviewed Oddspapi competition IDs are available in `provider_mappings.csv`, backed by `research/provider_mapping_audit_2026_10_09.json`. These are verified against a saved provider catalog, not a fresh live response. `odds_scanner.master_mapping` provides opt-in offline enrichment while preserving fixture IDs and existing API/dashboard fields. No API quota, schedule, deployment or PR merge is changed.
 
 ## User scope revision — 2026-10-09
 
-Excluded AND-0001, AZE-0001, AZE-0002, BLR-0001, POL-0002 and RUS-0001. All 81 remaining divisions are VERIFIED_OFFICIAL, with zero active league blockers. The 1,374 canonical clubs and permanent IDs remain reserved; a club such as FC Andorra may still appear in a retained cross-border league. The exclusion ledger preserves retired roster facts separately. Poland tier 1 remains in scope. Exact canonical competition IDs are filtered at the research population boundary; unresolved provider IDs are never guessed from team country or league name. Provider mapping remains a separate limitation. Portugal cup season confirmation remains outside this six-league removal.
+Excluded AND-0001, AZE-0001, AZE-0002, BLR-0001, POL-0002 and RUS-0001. All 81 remaining divisions are VERIFIED_OFFICIAL, with zero active league blockers. The 1,374 canonical clubs and permanent IDs remain reserved; a club such as FC Andorra may still appear in a retained cross-border league. The exclusion ledger preserves retired roster facts separately. Poland tier 1 remains in scope. Exact canonical competition IDs are filtered at the research population boundary; unresolved provider IDs are never guessed from team country or league name. All eleven cup/UEFA seasons are confirmed; Portugal uses official AF Aveiro evidence after direct FPF access failed. Forty-seven competition mappings and all provider club mappings remain blocked by absent exact provider identities and the recorded provider quota block. Missing IDs remain unresolved; no automatic scans are enabled.

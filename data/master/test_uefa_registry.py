@@ -37,6 +37,17 @@ class MasterTests(unittest.TestCase):
         self.assertEqual(result["structural_status"], "FAIL")
         self.assertTrue(any(text in x for x in result["errors"]), result["errors"])
 
+    def test_provider_snapshot_evidence_hash_rejected(self):
+        p = self.root / "research/provider_mapping_audit_2026_10_09.json"
+        evidence = json.loads(p.read_text())
+        evidence["source_sha256"] = "0" * 64
+        p.write_text(json.dumps(evidence))
+        self.assert_rejected("Provider evidence hash mismatch")
+
+    def test_provider_snapshot_identity_rejected(self):
+        self.edit_csv("provider_mappings.csv", lambda rows: rows[0].update(provider_id="999999"))
+        self.assert_rejected("Provider identity evidence mismatch")
+
     def test_complete_master(self):
         result = audit(self.root)
         self.assertEqual(result["errors"], [])

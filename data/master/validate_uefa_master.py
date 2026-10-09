@@ -157,12 +157,30 @@ def audit(root=ROOT):
         target = {"club": club_map, "competition": comp_map}.get(mapping["entity_type"], {})
         check(mapping["internal_id"] in target, "Provider mapping foreign key mismatch")
         check(bool(mapping["provider_id"]) and bool(mapping["provider"]), "Empty provider mapping")
+    provider_audit_path = root / "research/provider_mapping_audit_2026_10_09.json"
+    provider_audit = json.loads(provider_audit_path.read_text())
+    provider_source = ROOT.parents[1] / provider_audit["source_path"]
+    check(hashlib.sha256(provider_source.read_bytes()).hexdigest() == provider_audit["source_sha256"], "Provider evidence hash mismatch")
+    provider_catalog = {str(r["tournament_id"]): r for r in json.loads(provider_source.read_text())["candidates"]}
+    provider_proofs = {r["internal_id"]: r for r in provider_audit["mappings"]}
+    snapshot_mappings = [r for r in mappings if r["provider"] == "oddspapi"]
+    check({r["internal_id"] for r in snapshot_mappings} == set(provider_proofs), "Provider evidence coverage mismatch")
+    for mapping in snapshot_mappings:
+        proof = provider_proofs.get(mapping["internal_id"], {})
+        candidate = provider_catalog.get(mapping["provider_id"], {})
+        check(mapping["verification_status"] == "VERIFIED_PROVIDER_SNAPSHOT", "Provider snapshot status mismatch")
+        check(proof.get("provider_id") == mapping["provider_id"] and bool(candidate.get("provider_verified")), "Provider identity evidence mismatch")
+        check(proof.get("provider_name") == candidate.get("tournament_name") and proof.get("provider_country") == candidate.get("country"), "Provider catalog identity mismatch")
+    mapping_scope = {r["competition_id"] for r in coverage} | {r["competition_id"] for r in cups}
+    check(set(provider_proofs) | set(provider_audit["unmapped_competition_ids"]) == mapping_scope, "Provider scope coverage mismatch")
+    check(not set(provider_proofs) & set(provider_audit["unmapped_competition_ids"]), "Mapped competition incorrectly blocked")
     summary = dict(structural_status="PASS" if not errors else "FAIL", associations=len(scope), divisions=len(coverage), memberships=len(members), active_club_ids=len(active), canonical_rows=len(clubs), existing_ids_preserved=len(old), new_ids=len(clubs) - len(old), source_status_counts=statuses, blocked_divisions=statuses.get("BLOCKED", 0), errors=errors, limitations=["Source-verified means the named source supplied a season-specific roster; secondary sources are not official certification.", "Counts compare extracted source rosters to linked memberships, not an independent licensing audit.", "Offline QA does not re-fetch sources or certify future roster changes.", "Legacy numeric teams.csv is preserved and is not the authoritative current club table."])
     summary["input_sha256"] = {str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(root.rglob("*.csv"))}
     summary["input_sha256"]["research/rosters.json"] = hashlib.sha256((root / "research/rosters.json").read_bytes()).hexdigest()
     summary["official_review"] = dict(baseline_secondary=len(reviews), completed=sum(r["review_status"] == "OFFICIAL_ROSTER_MATCH" for r in reviews), blocked=sum(r["review_status"] != "OFFICIAL_ROSTER_MATCH" and r["competition_id"] not in excluded_ids for r in reviews), excluded_by_user=len(excluded_ids))
     summary["cup_registry"] = dict(competitions=len(cups), participants_imported=0, blocked_seasons=sum(r["season_status"] == "BLOCKED" for r in cups))
     summary["provider_mapping_rows"] = len(mappings)
+    summary["provider_mapping_coverage"] = dict(mapped_competitions=len(provider_proofs), unmapped_competitions=len(provider_audit["unmapped_competition_ids"]), club_mapping_status=provider_audit["club_mapping_status"], live_verified=False)
     summary["limitations"][1] = f"{summary['official_review']['completed']} baseline-secondary divisions were crosschecked against independent official season rosters; six remaining divisions were excluded by the user. Promotion/relegation legal history is not independently certified for every club."
     summary["input_sha256"]["research/official_roster_audit_2026_10_09.json"] = hashlib.sha256((root / "research/official_roster_audit_2026_10_09.json").read_bytes()).hexdigest()
     return summary
