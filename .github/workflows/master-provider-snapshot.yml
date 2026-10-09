@@ -21,7 +21,7 @@ jobs:
       - name: Read account and collect at most three identity requests
         env:
           ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
-        run: python -m odds_scanner.master_provider_snapshot
+        run: python -m odds_scanner.master_provider_snapshot --lookback
       - name: Save evidence to the feature branch only
         run: |
           set -euo pipefail
