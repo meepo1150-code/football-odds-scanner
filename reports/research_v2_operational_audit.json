@@ -1,15 +1,17 @@
 {
   "schema_version": "1.2",
   "football_day": "2026-10-09",
-  "generated_at": "2026-10-09T13:06:38.243887+00:00",
+  "generated_at": "2026-10-09T16:54:57.666444+00:00",
   "workflow_success_is_not_data_source_health": true,
-  "status": "WAITING_EXTERNAL_DATA",
+  "status": "DEGRADED_DATA_COVERAGE",
   "data_assertions_passed": true,
   "assertion_failures": [],
-  "collection_health_passed": true,
-  "collection_failures": [],
+  "collection_health_passed": false,
+  "collection_failures": [
+    "CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE"
+  ],
   "collection": {
-    "bangkok_now": "2026-10-09T20:06:38.243887+07:00",
+    "bangkok_now": "2026-10-09T23:54:57.666444+07:00",
     "canonical_slots": [
       {
         "target_time": "2026-10-09T18:00:00+07:00",
@@ -23,7 +25,7 @@
       },
       {
         "target_time": "2026-10-09T21:00:00+07:00",
-        "state": "UPCOMING",
+        "state": "MISSED",
         "provider": null,
         "observed_at": null,
         "lag_minutes": null,
@@ -32,15 +34,17 @@
         "recovered": false
       }
     ],
-    "expected_elapsed_slots": 1,
+    "expected_elapsed_slots": 2,
     "observed_slots": 1,
-    "missing_elapsed_slots": 0,
-    "coverage_fraction": 1.0,
-    "collection_state": "COMPLETE",
+    "missing_elapsed_slots": 1,
+    "coverage_fraction": 0.5,
+    "collection_state": "DEGRADED",
     "recovered_slots": [
       "2026-10-09T18:00:00+07:00"
     ],
-    "missed_slots": []
+    "missed_slots": [
+      "2026-10-09T21:00:00+07:00"
+    ]
   },
   "counts": {
     "raw_snapshots": 1529,
@@ -57,10 +61,10 @@
     "scope_excluded_snapshots": 238,
     "current_day_canonical_fixtures": 3,
     "collapsed_provider_fixture_ids": 8,
-    "expected_elapsed_slots": 1,
+    "expected_elapsed_slots": 2,
     "observed_slots": 1,
-    "missing_elapsed_slots": 0,
-    "coverage_fraction": 1.0,
+    "missing_elapsed_slots": 1,
+    "coverage_fraction": 0.5,
     "unresolved_matured_3h_fixtures": 250,
     "unresolved_future_or_recent_fixtures": 3,
     "retired_unresolved_ft_fixtures": 248,
