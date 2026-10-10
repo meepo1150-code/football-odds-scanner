@@ -1,19 +1,21 @@
 {
   "schema_version": "1.2",
   "football_day": "2026-10-10",
-  "generated_at": "2026-10-09T23:16:06.215014+00:00",
+  "generated_at": "2026-10-10T05:40:51.389419+00:00",
   "workflow_success_is_not_data_source_health": true,
-  "status": "NOT_DUE",
+  "status": "DEGRADED_DATA_COVERAGE",
   "data_assertions_passed": true,
   "assertion_failures": [],
-  "collection_health_passed": true,
-  "collection_failures": [],
+  "collection_health_passed": false,
+  "collection_failures": [
+    "CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE"
+  ],
   "collection": {
-    "bangkok_now": "2026-10-10T06:16:06.215014+07:00",
+    "bangkok_now": "2026-10-10T12:40:51.389419+07:00",
     "canonical_slots": [
       {
         "target_time": "2026-10-10T12:00:00+07:00",
-        "state": "UPCOMING",
+        "state": "MISSING",
         "provider": null,
         "observed_at": null,
         "lag_minutes": null,
@@ -82,11 +84,11 @@
         "recovered": false
       }
     ],
-    "expected_elapsed_slots": 0,
+    "expected_elapsed_slots": 1,
     "observed_slots": 0,
-    "missing_elapsed_slots": 0,
-    "coverage_fraction": null,
-    "collection_state": "NOT_DUE",
+    "missing_elapsed_slots": 1,
+    "coverage_fraction": 0.0,
+    "collection_state": "DEGRADED",
     "recovered_slots": [],
     "missed_slots": []
   },
@@ -105,10 +107,10 @@
     "scope_excluded_snapshots": 238,
     "current_day_canonical_fixtures": 0,
     "collapsed_provider_fixture_ids": 8,
-    "expected_elapsed_slots": 0,
+    "expected_elapsed_slots": 1,
     "observed_slots": 0,
-    "missing_elapsed_slots": 0,
-    "coverage_fraction": null,
+    "missing_elapsed_slots": 1,
+    "coverage_fraction": 0.0,
     "unresolved_matured_3h_fixtures": 252,
     "unresolved_future_or_recent_fixtures": 0,
     "retired_unresolved_ft_fixtures": 248,
@@ -138,7 +140,7 @@
       "request_limit": 250,
       "request_count": 116,
       "request_remaining": 134,
-      "generated_at": "2026-10-09T22:33:46.863662+00:00",
+      "generated_at": "2026-10-10T05:40:49.491710+00:00",
       "capability": "REQUIRES_CURRENT_VALIDATION",
       "balance_status": "LAST_ACCOUNT_OBSERVATION",
       "request_remaining_last_observed": 134,
