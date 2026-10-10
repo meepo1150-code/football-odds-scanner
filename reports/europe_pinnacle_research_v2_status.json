@@ -1,19 +1,19 @@
 {
   "schema_version": "2.9",
-  "generated_at": "2026-10-10T08:48:24.233122+00:00",
+  "generated_at": "2026-10-10T11:06:27.698598+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "bookmaker": "pinnacle",
   "football_day": "2026-10-10",
   "football_day_timezone": "Asia/Bangkok",
   "football_day_window_start": "2026-10-10T05:00:00+00:00",
   "football_day_window_end": "2026-10-10T23:00:00+00:00",
-  "scheduled_target_at": "2026-10-10T15:00:00+07:00",
-  "actual_observed_at": "2026-10-10T15:48:24.233122+07:00",
-  "schedule_lag_minutes": 48.4,
+  "scheduled_target_at": "2026-10-10T18:00:00+07:00",
+  "actual_observed_at": "2026-10-10T18:06:27.698598+07:00",
+  "schedule_lag_minutes": 6.46,
   "recovery_window_minutes": 150,
-  "observation_timing": "LATE",
+  "observation_timing": "ON_TIME",
   "force_run": true,
-  "force_target_at": "2026-10-10T15:00:00+07:00",
+  "force_target_at": "2026-10-10T18:00:00+07:00",
   "research_only": true,
   "production_promotion_allowed": false,
   "core_quota_reserve": 3,
@@ -22,48 +22,60 @@
   "max_planned_requests_with_retries": 2,
   "coverage_mode": "BUDGETED_ROTATING_UNIVERSE",
   "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
-  "research_requests_used_today": 2,
-  "research_requests_used_month": 60,
+  "research_requests_used_today": 4,
+  "research_requests_used_month": 62,
   "research_daily_limit": 6,
   "research_monthly_limit": 180,
   "research_run_limit": 2,
   "budget_scope": "ODDSPAPI_RESEARCH_COLLECTOR_ONLY",
   "coverage_complete": false,
   "coverage_tournament_ids": [
-    336,
-    38,
-    52,
-    36,
-    45,
-    172,
-    39,
-    185,
-    20,
-    202
+    152,
+    40,
+    215,
+    239,
+    9,
+    186,
+    135,
+    22,
+    29,
+    47
   ],
-  "quota_remaining_before": 129,
+  "quota_remaining_before": 127,
   "effective_quota_reserve": 3,
   "status": "RESEARCH_V2_OBSERVED",
   "requests_used": 2,
   "rate_limit_retries": 0,
-  "api_fixtures_returned": 64,
-  "excluded_outside_football_day": 38,
-  "football_day_fixtures": 26,
-  "strict_snapshots_this_run": 26,
-  "persisted_snapshot_rows": 1580,
-  "persisted_audit_rows": 745,
-  "fixtures_seen": 26,
-  "bookmaker_active_fixtures": 26,
-  "fixtures_with_exactly_one_main_ah": 26,
-  "fixtures_with_exactly_one_main_ou": 26,
-  "fixtures_with_both_exact_mainlines": 26,
-  "strict_snapshots": 26,
+  "api_fixtures_returned": 50,
+  "excluded_outside_football_day": 28,
+  "football_day_fixtures": 22,
+  "strict_snapshots_this_run": 22,
+  "persisted_snapshot_rows": 1602,
+  "persisted_audit_rows": 767,
+  "fixtures_seen": 22,
+  "bookmaker_active_fixtures": 22,
+  "fixtures_with_exactly_one_main_ah": 22,
+  "fixtures_with_exactly_one_main_ou": 22,
+  "fixtures_with_both_exact_mainlines": 22,
+  "strict_snapshots": 22,
   "rejection_counts": {
-    "OK": 26
+    "OK": 22
   },
   "league_coverage": [
     {
-      "league": "Austria \u00b7 Bundesliga",
+      "league": "Austria \u00b7 2. Liga",
+      "fixtures": 4,
+      "bookmaker_active": 4,
+      "ah_main_exactly_one": 4,
+      "ou_main_exactly_one": 4,
+      "both_main_exactly_one": 4,
+      "strict_snapshots": 4,
+      "reason_counts": {
+        "OK": 4
+      }
+    },
+    {
+      "league": "Belgium \u00b7 Challenger Pro League",
       "fixtures": 3,
       "bookmaker_active": 3,
       "ah_main_exactly_one": 3,
@@ -75,31 +87,7 @@
       }
     },
     {
-      "league": "Belgium \u00b7 Pro League",
-      "fixtures": 4,
-      "bookmaker_active": 4,
-      "ah_main_exactly_one": 4,
-      "ou_main_exactly_one": 4,
-      "both_main_exactly_one": 4,
-      "strict_snapshots": 4,
-      "reason_counts": {
-        "OK": 4
-      }
-    },
-    {
-      "league": "Czech Republic \u00b7 1. Liga",
-      "fixtures": 4,
-      "bookmaker_active": 4,
-      "ah_main_exactly_one": 4,
-      "ou_main_exactly_one": 4,
-      "both_main_exactly_one": 4,
-      "strict_snapshots": 4,
-      "reason_counts": {
-        "OK": 4
-      }
-    },
-    {
-      "league": "Greece \u00b7 Super League",
+      "league": "Denmark \u00b7 1. Division",
       "fixtures": 2,
       "bookmaker_active": 2,
       "ah_main_exactly_one": 2,
@@ -111,7 +99,7 @@
       }
     },
     {
-      "league": "Norway \u00b7 Eliteserien",
+      "league": "Greece \u00b7 Super League 2",
       "fixtures": 2,
       "bookmaker_active": 2,
       "ah_main_exactly_one": 2,
@@ -123,7 +111,7 @@
       }
     },
     {
-      "league": "Poland \u00b7 Ekstraklasa",
+      "league": "Portugal \u00b7 Liga Portugal 2",
       "fixtures": 3,
       "bookmaker_active": 3,
       "ah_main_exactly_one": 3,
@@ -135,27 +123,39 @@
       }
     },
     {
-      "league": "Scotland \u00b7 Premiership",
-      "fixtures": 4,
-      "bookmaker_active": 4,
-      "ah_main_exactly_one": 4,
-      "ou_main_exactly_one": 4,
-      "both_main_exactly_one": 4,
-      "strict_snapshots": 4,
+      "league": "Romania \u00b7 Superliga",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
       "reason_counts": {
-        "OK": 4
+        "OK": 2
       }
     },
     {
-      "league": "Turkey \u00b7 Super Lig",
-      "fixtures": 4,
-      "bookmaker_active": 4,
-      "ah_main_exactly_one": 4,
-      "ou_main_exactly_one": 4,
-      "both_main_exactly_one": 4,
-      "strict_snapshots": 4,
+      "league": "Sweden \u00b7 Allsvenskan",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
       "reason_counts": {
-        "OK": 4
+        "OK": 3
+      }
+    },
+    {
+      "league": "Switzerland \u00b7 Super League",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
       }
     }
   ]
