@@ -1,21 +1,92 @@
 {
   "schema_version": "1.1",
   "provider": "infersports_keyless",
-  "status": "NO_USABLE_MARKETS",
+  "status": "MARKETS_OBSERVED",
   "capability": "HEALTH_ONLY",
-  "generated_at": "2026-10-09T08:59:32.684902+00:00",
+  "generated_at": "2026-10-10T08:28:02.177315+00:00",
   "scheduled_events_seen": 6,
-  "events_probed": 1,
+  "events_probed": 6,
   "missing_event_ids": 0,
-  "excluded_nonfuture_events": 5,
-  "successful_events": 1,
-  "stale_blocks": 1,
-  "market_counts": {},
-  "two_sided_market_counts": {},
-  "quarter_line_counts": {},
-  "bookmaker_counts": {},
+  "excluded_nonfuture_events": 0,
+  "successful_events": 6,
+  "stale_blocks": 6,
+  "market_counts": {
+    "1x2": 19,
+    "asian_handicap": 30,
+    "totals": 29
+  },
+  "two_sided_market_counts": {
+    "1x2": 19,
+    "asian_handicap": 29,
+    "totals": 29
+  },
+  "quarter_line_counts": {
+    "asian_handicap": 14,
+    "totals": 16
+  },
+  "bookmaker_counts": {
+    "crown": 39,
+    "sbobet": 15,
+    "m8bet": 12,
+    "nova88": 12
+  },
   "errors": [],
-  "samples": [],
+  "samples": [
+    {
+      "event_id": "evt_B61AMMVP",
+      "bookmaker": "crown",
+      "market_type": "1x2",
+      "line": null,
+      "status": "open",
+      "as_of": "2026-10-02T05:01:37Z",
+      "two_sided": true
+    },
+    {
+      "event_id": "evt_B61AMMVP",
+      "bookmaker": "sbobet",
+      "market_type": "1x2",
+      "line": null,
+      "status": "open",
+      "as_of": "2026-10-02T05:01:39Z",
+      "two_sided": true
+    },
+    {
+      "event_id": "evt_B61AMMVP",
+      "bookmaker": "crown",
+      "market_type": "asian_handicap",
+      "line": -1.0,
+      "status": "open",
+      "as_of": "2026-10-02T05:01:37Z",
+      "two_sided": true
+    },
+    {
+      "event_id": "evt_B61AMMVP",
+      "bookmaker": "crown",
+      "market_type": "asian_handicap",
+      "line": -0.75,
+      "status": "open",
+      "as_of": "2026-10-02T05:01:37Z",
+      "two_sided": true
+    },
+    {
+      "event_id": "evt_B61AMMVP",
+      "bookmaker": "crown",
+      "market_type": "asian_handicap",
+      "line": -0.5,
+      "status": "open",
+      "as_of": "2026-10-02T05:01:37Z",
+      "two_sided": true
+    },
+    {
+      "event_id": "evt_B61AMMVP",
+      "bookmaker": "sbobet",
+      "market_type": "asian_handicap",
+      "line": -0.75,
+      "status": "open",
+      "as_of": "2026-10-02T05:01:39Z",
+      "two_sided": true
+    }
+  ],
   "execution_candidate": false,
   "qualification_blocker": "SOURCE_TIMESTAMP_AND_MAINLINE_SEMANTICS_NOT_QUALIFIED",
   "note": "Health-only live probe. Provider is not promoted to production until this report demonstrates fresh two-sided pre-match AH and totals coverage on the keyless tier."
