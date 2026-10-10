@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
   "classification": "FOTMOB_EXACT_RESULT_BACKFILL",
-  "missing_before": 4,
-  "missing_after": 4,
+  "missing_before": 5,
+  "missing_after": 5,
   "verified_bridge_matches": 0,
   "days_requested": [
     "2026-10-03",
@@ -11,14 +11,15 @@
     "2026-10-07",
     "2026-10-08",
     "2026-10-09",
-    "2026-10-10"
+    "2026-10-10",
+    "2026-10-11"
   ],
-  "events_fetched": 1739,
+  "events_fetched": 2210,
   "exact_results_added": 0,
   "ambiguous_exact_matches_rejected": 0,
   "exact_identity_unfinished": 0,
-  "no_exact_identity": 4,
-  "kickoff_candidate_only": 4,
+  "no_exact_identity": 5,
+  "kickoff_candidate_only": 5,
   "kickoff_candidate_samples": [
     {
       "fixture_id": "id1000005472477468",
@@ -323,15 +324,58 @@
           "league": "Serie C Grp. A"
         }
       ]
+    },
+    {
+      "fixture_id": "id1000005272723240",
+      "snapshot": {
+        "home": "Genclerbirligi SK",
+        "away": "Amed Sportif Faaliyetler",
+        "kickoff": "2026-10-10T10:30:00+00:00"
+      },
+      "fotmob_candidates": [
+        {
+          "id": 5884197,
+          "home": "Eibar B",
+          "away": "CD Basconia",
+          "finished": true,
+          "score": [
+            1,
+            1
+          ],
+          "league": "Segunda Federacion - Group 1"
+        },
+        {
+          "id": 5904762,
+          "home": "Gençlerbirliği",
+          "away": "Amed Sportif",
+          "finished": true,
+          "score": [
+            2,
+            2
+          ],
+          "league": "Super Lig"
+        },
+        {
+          "id": 5908650,
+          "home": "Boluspor",
+          "away": "Antalyaspor",
+          "finished": true,
+          "score": [
+            0,
+            1
+          ],
+          "league": "1. Lig"
+        }
+      ]
     }
   ],
   "request_failures": [],
   "matching_policy": "EXACT_ALIAS_OR_SAFE_CLUB_TOKEN_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY",
   "fuzzy_matching_used": false,
   "promotion_eligible": false,
-  "generated_at": "2026-10-10T07:06:23.165362+00:00",
-  "requests_used": 2,
-  "cache_hits": 5,
+  "generated_at": "2026-10-10T13:41:07.097029+00:00",
+  "requests_used": 5,
+  "cache_hits": 3,
   "stale_cache_fallbacks": 0,
   "fetch_evidence": [
     {
@@ -342,15 +386,15 @@
     },
     {
       "day": "2026-10-04",
-      "source": "CACHE",
-      "fetched_at": "2026-10-09T07:23:21.405535+00:00",
-      "requests": 0
+      "source": "NETWORK",
+      "fetched_at": "2026-10-10T13:41:04.359070+00:00",
+      "requests": 1
     },
     {
       "day": "2026-10-05",
-      "source": "CACHE",
-      "fetched_at": "2026-10-09T07:23:21.850106+00:00",
-      "requests": 0
+      "source": "NETWORK",
+      "fetched_at": "2026-10-10T13:41:04.870482+00:00",
+      "requests": 1
     },
     {
       "day": "2026-10-07",
@@ -367,13 +411,19 @@
     {
       "day": "2026-10-09",
       "source": "NETWORK",
-      "fetched_at": "2026-10-10T07:06:22.206296+00:00",
+      "fetched_at": "2026-10-10T13:41:05.294615+00:00",
       "requests": 1
     },
     {
       "day": "2026-10-10",
       "source": "NETWORK",
-      "fetched_at": "2026-10-10T07:06:22.552899+00:00",
+      "fetched_at": "2026-10-10T13:41:05.662747+00:00",
+      "requests": 1
+    },
+    {
+      "day": "2026-10-11",
+      "source": "NETWORK",
+      "fetched_at": "2026-10-10T13:41:06.276920+00:00",
       "requests": 1
     }
   ],
