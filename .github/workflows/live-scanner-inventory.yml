@@ -1,0 +1,71 @@
+name: Live scanner fixture inventory (read only)
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/live-scanner-inventory.yml'
+permissions:
+  contents: read
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Locate live scan sources and inventory fixture identifiers
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os,json,csv,re,collections
+          from pathlib import Path
+          root=Path('.')
+          excluded=('oddspapi_history','oddspapi_finished_results','football_data','backtest','prematch_joined','market_catalog','node_modules','.git/')
+          candidates=[]
+          for p in root.rglob('*'):
+              if not p.is_file() or p.suffix.lower() not in ('.json','.jsonl','.csv','.sqlite','.db'):
+                  continue
+              s=str(p).lower()
+              if any(e in s for e in excluded): continue
+              if not any(x in s for x in ('scan','fixture','match','round','dashboard','snapshot','live','state','odds')): continue
+              if p.stat().st_size>30_000_000: continue
+              candidates.append(p)
+          print('CANDIDATE_SOURCE_FILES',len(candidates))
+          for p in candidates[:100]:print('SOURCE',p,p.stat().st_size)
+          records=[]
+          def walk(o,src):
+              if isinstance(o,dict):
+                  keys=set(o)
+                  home=next((o.get(k) for k in ('home','home_team','homeTeam','home_name','homeName') if isinstance(o.get(k),str)),None)
+                  away=next((o.get(k) for k in ('away','away_team','awayTeam','away_name','awayName') if isinstance(o.get(k),str)),None)
+                  if home and away:
+                      records.append({'source':src,'home':home,'away':away,'league':str(next((o.get(k) for k in ('league','league_name','competition','tournament') if o.get(k)),'')),'date':str(next((o.get(k) for k in ('kickoff','date','match_date','start_time') if o.get(k)),'')),'fixture_id':str(next((o.get(k) for k in ('fixture_id','fixtureId','match_id','id') if o.get(k)),''))})
+                  for v in o.values():
+                      if isinstance(v,(dict,list)):walk(v,src)
+              elif isinstance(o,list):
+                  for v in o:walk(v,src)
+          for p in candidates:
+              try:
+                  if p.suffix=='.json':walk(json.loads(p.read_text()),str(p))
+                  elif p.suffix=='.jsonl':
+                      with p.open() as f:
+                          for line in f:
+                              if line.strip():walk(json.loads(line),str(p))
+                  elif p.suffix=='.csv':
+                      with p.open(newline='') as f:
+                          for row in csv.DictReader(f):walk(row,str(p))
+              except Exception as e:print('READ_ERROR',p,type(e).__name__,str(e)[:120])
+          unique={}
+          for x in records:
+              key=(x['fixture_id'],x['home'],x['away'],x['date']) if x['fixture_id'] else (x['home'],x['away'],x['date'])
+              unique.setdefault(key,x)
+          Path('reports').mkdir(exist_ok=True)
+          with open('reports/live_scanner_fixture_inventory.csv','w',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=['source','date','league','home','away','fixture_id']);w.writeheader();w.writerows(unique.values())
+          print('CANDIDATE_MATCH_RECORDS',len(records),'UNIQUE_MATCHES',len(unique))
+          for k,n in collections.Counter(x['source'] for x in unique.values()).most_common():print('MATCH_SOURCE',k,n)
+          for k,n in collections.Counter(x['league'] for x in unique.values()).most_common():print('LEAGUE',repr(k),n)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: live-scanner-fixture-inventory
+          path: reports/live_scanner_fixture_inventory.csv
+          retention-days: 14

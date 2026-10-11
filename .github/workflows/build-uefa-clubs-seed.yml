@@ -1,0 +1,21 @@
+name: Build UEFA club master seed
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/build_uefa_clubs_seed.py'
+      - 'data/master/teams.csv'
+      - 'data/master/uefa_55_division_scope.csv'
+permissions:
+  contents: read
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python scripts/build_uefa_clubs_seed.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: uefa-club-master-seed
+          path: data/master/uefa_clubs_seed.csv
+          retention-days: 30

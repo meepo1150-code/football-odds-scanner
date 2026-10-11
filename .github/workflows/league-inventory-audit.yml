@@ -1,0 +1,36 @@
+name: League inventory audit (read only)
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/audit_league_archive.py'
+      - '.github/workflows/league-inventory-audit.yml'
+permissions:
+  contents: read
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: true
+      - name: Generate fixture and league inventory without provider API
+        run: |
+          mkdir -p reports
+          python scripts/audit_league_archive.py > reports/league_inventory_review.json
+          python - <<'PY'
+          import json
+          p='reports/league_inventory_review.json'
+          d=json.load(open(p))
+          print('Archived rows:',d['total_rows'])
+          print('Unique fixtures:',d['unique_fixture_ids'])
+          print('Unclassified rows:',d['unclassified_rows'])
+          print('FT results:',d['results_total_unique'])
+          for x in d['league_breakdown']:
+              print(x['decision'],x['tournament_id'],x['league'],x['rows'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: league-inventory-review
+          path: reports/league_inventory_review.json
+          retention-days: 14

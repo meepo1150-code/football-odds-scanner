@@ -30,6 +30,9 @@ def run(root=Path(".")):
     for fx in fixtures:
         fid=str(fx.get("id") or "")
         if not fid: continue
+        # Check scope before the per-fixture odds request, not just persistence.
+        if exclusion_reason({'provider': '5dollarfootballapi_free', 'league': fx.get('league') or {}, 'country': fx.get('country') or None}):
+            continue
         try:
             time.sleep(3.2); op=_get(f"/fixtures/{fid}/odds",key); report["requests_used"]+=1
             books=(op.get("data") or {}).get("bookmakers") or []; book=next((b for b in books if str(b.get("slug","")).lower()==BOOKMAKER),None)

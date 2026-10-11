@@ -192,7 +192,7 @@ def normalize_historical_fixture(fixture: dict, payload: dict, markets_catalog: 
 
     if not one_x_two and not ah and not ou:
         return None
-    return {
+    result = {
         "schema_version": "1.0",
         "fixture_id": str(fixture.get("fixtureId")),
         "tournament_id": fixture.get("tournamentId"),
@@ -209,11 +209,19 @@ def normalize_historical_fixture(fixture: dict, payload: dict, markets_catalog: 
         "promotion_eligible": False,
     }
 
+    for source, target in (("participant1Id", "home_participant_id"), ("participant2Id", "away_participant_id")):
+        if source in fixture:
+            result[target] = fixture[source]
+    from .master_mapping import DEFAULT_MAPPING_PATH, enrich_fixture, load_mappings
+    if DEFAULT_MAPPING_PATH.exists():
+        result = enrich_fixture(result, provider="oddspapi", mappings=load_mappings())
+    return result
+
 
 def _compact_fixture(fixture: dict) -> dict:
     tid = fixture.get("tournamentId")
     info = BIG5_TOURNAMENTS.get(int(tid)) if isinstance(tid, (int, float)) or str(tid).isdigit() else None
-    return {
+    result = {
         "fixtureId": fixture.get("fixtureId"),
         "tournamentId": tid,
         "tournamentName": fixture.get("tournamentName") or (info or {}).get("name"),
@@ -223,6 +231,11 @@ def _compact_fixture(fixture: dict) -> dict:
         "participant2Name": fixture.get("participant2Name"),
         "archive_country": (info or {}).get("country"),
     }
+
+    for field in ("participant1Id", "participant2Id"):
+        if field in fixture:
+            result[field] = fixture[field]
+    return result
 
 
 def _discover_window(key: str, start: datetime, end: datetime) -> list[dict]:

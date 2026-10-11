@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .research_population import in_scope, exclusion_reason, POLICY
+from .master_scan_scope import filter_scan_targets
 import json, os, time
 from datetime import datetime, time as dtime, timedelta, timezone
 from pathlib import Path
@@ -109,7 +110,14 @@ def run(root=Path('.')):
         return _write(report, root)
     if _slot_done(root/SLOT_LEDGER_PATH,target): report.update(status='SKIPPED_SLOT_ALREADY_OBSERVED',requests_used=0,planned_requests=0);return _write(report,root)
     if not force and (lag is None or lag>RECOVERY_WINDOW_MINUTES): report.update(status='MISSED_SLOT',requests_used=0,planned_requests=0);_record_slot(root/SLOT_LEDGER_PATH,report,'MISSED');return _write(report,root)
-    targets=_load_json(root/TARGET_PATH) or {}; selected=targets.get('tournaments') or [] if isinstance(targets,dict) else []; ids=[x.get('tournament_id') for x in selected if isinstance(x,dict) and x.get('tournament_id') is not None]
+    targets=_load_json(root/TARGET_PATH) or {}; selected=targets.get('tournaments') or [] if isinstance(targets,dict) else []
+    original_count = len(selected)
+    selected = filter_scan_targets(selected)
+    report['master_scope_excluded_targets'] = original_count - len(selected)
+    ids=[x.get('tournament_id') for x in selected if isinstance(x,dict) and x.get('tournament_id') is not None]
+    if original_count and not selected:
+        report.update(status='SKIPPED_USER_EXCLUDED_COMPETITIONS',resolved_competitions=0,requests_used=0,planned_requests=0)
+        return _write(report,root)
     if not ids or len(ids)!=len(set(ids)):report.update(status='TARGET_MAP_INVALID',resolved_competitions=len(ids),requests_used=0,planned_requests=0);return _write(report,root)
     normal=(len(ids)+BATCH_SIZE-1)//BATCH_SIZE; maxplan=normal*MAX_ATTEMPTS_PER_BATCH; report.update(resolved_competitions=len(ids),planned_requests=normal,max_planned_requests_with_retries=maxplan,coverage_mode='FULL_RESEARCH_UNIVERSE')
     try:

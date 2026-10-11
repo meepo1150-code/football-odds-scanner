@@ -1,0 +1,21 @@
+name: Football master candidates from archives
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/build_master_candidates.py'
+      - '.github/workflows/master-candidates.yml'
+permissions:
+  contents: read
+jobs:
+  candidates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Extract country league and team candidates
+        run: python scripts/build_master_candidates.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: football-master-candidates
+          path: reports/master_candidates/
+          retention-days: 14

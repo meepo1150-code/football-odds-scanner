@@ -11,8 +11,10 @@ def active_soccer_sports(key):
     try:
         payload=_get("/sports",key)
         items=payload.get("data") or payload.get("sports") or [] if isinstance(payload,dict) else payload
-        keys=[str(x.get("key")) for x in (items or []) if isinstance(x,dict) and x.get("active") is not False and str(x.get("key","")).startswith("soccer")]
-        return tuple(dict.fromkeys(keys)) or SPORTS
+        from .research_population import exclusion_reason
+        keys=[str(x.get("key")) for x in (items or []) if isinstance(x,dict) and x.get("active") is not False and str(x.get("key","")).startswith("soccer") and exclusion_reason({'provider':'propline', 'country':x.get('country'), 'league':x.get('title') or x.get('name') or x.get('key')}) is None]
+        # A real catalog whose entries are all excluded must not re-enable fallback.
+        return tuple(dict.fromkeys(keys)) if items else SPORTS
     except Exception:
         return SPORTS
 PREFERRED=("pinnacle",)
