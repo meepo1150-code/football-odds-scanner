@@ -34,14 +34,14 @@ def allocation(path, ids, now, batch_size=5):
     daily = sum(v for (_, t), v in attempts.items() if t.date()==now.date())
     remaining = max(0, min(RUN_LIMIT, DAILY_LIMIT-daily, MONTHLY_LIMIT-monthly))
     batches = [ids[i:i+batch_size] for i in range(0,len(ids),batch_size)]
-    chosen = [batches[(monthly+i)%len(batches)] for i in range(min(remaining,len(batches)))] if batches else []
+    chosen = [batches[(now.date().toordinal()+i)%len(batches)] for i in range(min(remaining,len(batches)))] if batches else []
     return [x for b in chosen for x in b], {
         'request_budget_policy':'RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH',
         'research_requests_used_today':daily, 'research_requests_used_month':monthly,
         'research_daily_limit':DAILY_LIMIT, 'research_monthly_limit':MONTHLY_LIMIT,
         'research_run_limit':RUN_LIMIT,
         'budget_scope':'ODDSPAPI_RESEARCH_COLLECTOR_ONLY',
-        'coverage_mode':'BUDGETED_ROTATING_UNIVERSE',
+        'coverage_mode':'DAILY_STABLE_COHORT_WITH_REPEAT_OBSERVATIONS',
         'coverage_complete':len(chosen)==len(batches),
         'coverage_tournament_ids':[x for b in chosen for x in b],
     }

@@ -21,6 +21,7 @@ on:
       - '.github/workflows/pages.yml'
   workflow_run:
     workflows:
+      - 'Research V2 Offline Evidence Audit'
       - 'Research V2 Independent Slot Watchdog'
       - 'Europe Pinnacle Research V2'
       - 'OddsPapi Quota Health'
@@ -55,6 +56,12 @@ jobs:
           from pathlib import Path
           Path("apps/dashboard/deployment.json").write_text(json.dumps({"source_sha": subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(), "run_id": os.environ["GITHUB_RUN_ID"]}))
           PYBUILD
+          PYTHONPATH=src python -m odds_scanner.research_v2_movement > /dev/null
+          PYTHONPATH=src python -m odds_scanner.research_v2_pattern_stats > /dev/null
+          PYTHONPATH=src python -m odds_scanner.research_v2_operational_audit > /dev/null
+          PYTHONPATH=src python -m odds_scanner.research_v2_end_to_end_audit > /dev/null
+          PYTHONPATH=src python -m odds_scanner.oddspapi_history_audit > /dev/null
+          PYTHONPATH=src python -m odds_scanner.dashboard_scope > /dev/null
           mkdir -p site/reports site/data/normalized site/discovery
           cp apps/dashboard/index.html site/index.html
           cp apps/dashboard/collection-health.js site/collection-health.js
@@ -62,7 +69,7 @@ jobs:
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery.html || true
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery/index.html || true
           test -f apps/dashboard/404.html && cp apps/dashboard/404.html site/404.html || true
-          for f in research_v2_operational_audit.json legacy_propline_recovery.json research_v2_daily_sync_status.json research_v2_movement_status.json propline_research_v2_status.json europe_pinnacle_research_v2_status.json oddspapi_quota_health.json research_v2_pattern_statistics.json pinnwire_result_join_status.json pinnwire_research_v2_status.json; do
+          for f in dashboard_scope.json research_v2_end_to_end_audit.json oddspapi_history_audit.json research_v2_operational_audit.json legacy_propline_recovery.json research_v2_daily_sync_status.json research_v2_movement_status.json propline_research_v2_status.json europe_pinnacle_research_v2_status.json oddspapi_quota_health.json research_v2_pattern_statistics.json pinnwire_result_join_status.json pinnwire_research_v2_status.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
           for f in europe_pinnacle_research_v2_snapshots.jsonl europe_pinnacle_research_v2_audit.jsonl research_v2_slot_ledger.jsonl oddspapi_finished_results.conflicts.jsonl oddspapi_finished_results.jsonl dashboard_verified_results.jsonl; do

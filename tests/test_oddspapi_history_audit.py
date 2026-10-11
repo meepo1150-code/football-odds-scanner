@@ -25,3 +25,17 @@ def test_audit_flags_non_quarter_line_without_promoting():
     out=audit_rows([{"fixture_id":"f","league":"L","asian_handicap":[{"line":-0.6,"home":[tick],"away":[tick]}]}])
     assert out["coverage"]["invalid_non_quarter_lines"]==1
     assert out["promotion_allowed"] is False
+
+
+def test_audit_reads_legacy_and_shards_and_stamps_time(tmp_path):
+    import json
+    from odds_scanner.oddspapi_history_audit import write_audit
+    from odds_scanner.oddspapi_history_store import LEGACY_TICKS_PATH as LEGACY
+    legacy=tmp_path/LEGACY;legacy.parent.mkdir(parents=True)
+    legacy.write_text(json.dumps({'fixture_id':'legacy'})+'\n')
+    shard=legacy.with_suffix('')/'2026-10-11.jsonl';shard.parent.mkdir()
+    shard.write_text(json.dumps({'fixture_id':'shard'})+'\n')
+    r=write_audit(tmp_path)
+    assert r['fixture_rows']==2 and r['source_archive_rows']==2
+    assert r['unique_fixture_ids']==2 and r['generated_at']
+    assert len(r['source_paths'])==2

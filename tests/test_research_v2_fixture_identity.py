@@ -46,7 +46,8 @@ def test_unique_settlement_and_cross_feed_movement(tmp_path):
     assert stats['market_state_by_side_line_price'][0]['half_win']==1
     assert stats['over_under_2_5_by_ah_line_price'][0]['n']==1
     assert stats['provider_fixture_ids']==2
-    assert movement['fixtures_with_two_plus_snapshots']==1
+    assert movement['fixtures_with_two_plus_snapshots']==0
+    assert movement['classification_counts']=={'SOURCE_SWITCH__INSUFFICIENT_OBSERVATIONS':1}
     assert (tmp_path/SNAPSHOTS).read_bytes()==before
 
 

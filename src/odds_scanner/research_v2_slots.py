@@ -132,18 +132,23 @@ def coverage(now, day, ledger, snapshots):
         state = ('OBSERVED' if matched else row.get('state')) if completed else (
             'UPCOMING' if target > local else 'MISSED' if local > target + timedelta(minutes=RECOVERY_MINUTES) else 'MISSING')
         details.append({'target_time': target.isoformat(), 'state': state,
-                        'provider': matched[-1].get('provider') if matched else row.get('provider'),
+                        'provider': (matched[-1].get('provider') or ('oddspapi' if str(matched[-1].get('source_semantics','')).startswith('CURRENT_ODDSPAPI_') else 'UNRESOLVED_PROVIDER')) if matched else row.get('provider'),
                         'observed_at': observed.isoformat() if observed else None,
                         'lag_minutes': round((observed-target).total_seconds()/60, 2) if observed else None,
                         'valid_snapshot_count': len(matched),
                         'canonical_fixture_count': len({r.get('fixture_id') for r in matched}),
+                        'observation_timing': ('ON_TIME' if observed and observed <= target + timedelta(minutes=30) else 'LATE' if observed else state),
                         'recovered': bool(completed and observed and observed > target + timedelta(minutes=30))})
     elapsed = [r for r in details if r['state'] != 'UPCOMING']
     done = [r for r in elapsed if r['state'] in {'OBSERVED', 'ZERO_FIXTURES'}]
+    on_time = [r for r in done if r['observation_timing']=='ON_TIME']
+    late = [r for r in done if r['observation_timing']=='LATE']
     return {'bangkok_now': local.isoformat(), 'canonical_slots': details,
+            'on_time_slots':len(on_time),'late_slots':len(late),
+            'on_time_coverage_fraction':round(len(on_time)/len(elapsed),3) if elapsed else None,
             'expected_elapsed_slots': len(elapsed), 'observed_slots': len(done),
             'missing_elapsed_slots': len(elapsed)-len(done),
             'coverage_fraction': round(len(done)/len(elapsed), 3) if elapsed else None,
-            'collection_state': 'NOT_DUE' if not elapsed else 'COMPLETE' if len(done) == len(elapsed) else 'DEGRADED',
+            'collection_state': 'NOT_DUE' if not elapsed else 'COMPLETE' if len(on_time) == len(elapsed) else 'DEGRADED_TIMING' if len(done)==len(elapsed) else 'DEGRADED',
             'recovered_slots': [r['target_time'] for r in details if r['recovered']],
             'missed_slots': [r['target_time'] for r in details if r['state'] == 'MISSED']}

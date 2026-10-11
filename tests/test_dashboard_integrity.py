@@ -89,3 +89,21 @@ assert.equal(observationLabel({provider:'other'},null),'ยังไม่มี
     assert r.returncode==0,r.stderr
     assert 'data-f="OVERDUE"' in html and 'data-f="SCHEDULED"' in html
     assert "'UNCLASSIFIED'" not in html
+
+
+def test_shared_scope_receipt_matches_backend_real_offline_data(tmp_path):
+    from odds_scanner.dashboard_scope import build
+    from odds_scanner.research_v2_pattern_stats import _rows, SNAPSHOTS
+    from odds_scanner.research_v2_integrity import trusted_snapshot
+    from odds_scanner.research_population import in_scope
+    node=shutil.which('node')
+    if not node:pytest.skip('Node unavailable')
+    rows=_rows(SNAPSHOTS)
+    target=tmp_path/SNAPSHOTS;target.parent.mkdir(parents=True);target.write_text(SNAPSHOTS.read_text())
+    receipt=build(tmp_path)
+    expected=sorted((str(r['fixture_id']),str(r['observed_at'])) for r in rows if trusted_snapshot(r) and in_scope(r))
+    script=Path('apps/dashboard/index.html').read_text().split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
+    checks='scopeReceipt='+json.dumps(receipt)+';const rows='+json.dumps(rows)+';const got=rows.filter(r=>trustedSnapshot(r)&&inScope(r)).map(r=>[String(r.fixture_id),String(r.observed_at)]).sort();require("assert").deepEqual(got,'+json.dumps(expected)+');'
+    check=tmp_path/'check.js';check.write_text(script+checks)
+    result=subprocess.run([node,str(check)],capture_output=True,text=True)
+    assert result.returncode==0,result.stderr

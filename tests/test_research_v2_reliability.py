@@ -13,6 +13,7 @@ def test_movement_reads_nested_canonical_market_fields(tmp_path: Path):
         {'fixture_id':'f1','football_day':'2026-09-18','observed_at':'2026-09-18T12:00:00+00:00','ah':{'selected_side_line':-0.5,'selected_side_price':1.95},'ou':{'line':2.5,'over_price':1.90,'under_price':2.00},'one_x_two':{'home':1.80,'draw':3.5,'away':4.5}},
         {'fixture_id':'f1','football_day':'2026-09-18','observed_at':'2026-09-18T15:00:00+00:00','ah':{'selected_side_line':-0.75,'selected_side_price':1.90},'ou':{'line':2.75,'over_price':1.95,'under_price':1.95},'one_x_two':{'home':1.75,'draw':3.6,'away':4.7}},
     ]
+    for row in rows:row.update(kickoff='2026-09-18T18:00:00+00:00',provider='pinnwire',bookmaker='pinnacle',source_semantics='PINNWIRE_PREMATCH_FULL_SNAPSHOT',favorite_side='H')
     p.write_text(''.join(json.dumps(x)+'\n' for x in rows),encoding='utf-8')
     report=build_movement(tmp_path)
     feature=json.loads((tmp_path/'data/normalized/research_v2_movement_features.jsonl').read_text().strip())

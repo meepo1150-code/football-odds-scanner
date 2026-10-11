@@ -18,13 +18,13 @@ def test_budget_rotation_caps_and_deduplicates(tmp_path):
     assert first==ids[:10] and not report['coverage_complete']
     path.write_text('\n'.join(json.dumps(x) for x in [row(),row()]))
     second, report=allocation(path,ids,NOW)
-    assert second==ids[10:20] and report['research_requests_used_today']==2
+    assert second==first and report['research_requests_used_today']==2
     path.write_text(json.dumps(row(used=6)))
     assert allocation(path,ids,NOW)[0]==[]
     assert len(allocation(path,ids,NOW+timedelta(days=1))[0])<=10
     path.write_text(json.dumps(row(NOW-timedelta(days=1),180)))
     assert allocation(path,ids,NOW)[0]==[]
-    assert allocation(path,ids,datetime(2026,11,1,tzinfo=timezone.utc))[0]==first
+    assert len(allocation(path,ids,datetime(2026,11,1,tzinfo=timezone.utc))[0])==10
 
 
 def test_exhausted_daily_budget_calls_no_provider_even_when_forced(tmp_path,monkeypatch):

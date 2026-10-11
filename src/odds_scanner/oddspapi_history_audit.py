@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 from collections import Counter
 from pathlib import Path
+from .oddspapi_history_store import iter_rows, iter_tick_paths
 
 ARCHIVE = Path("data/normalized/oddspapi_history_ticks.jsonl")
 REPORT = Path("reports/oddspapi_history_audit.json")
@@ -100,7 +102,13 @@ def audit_rows(rows: list[dict]) -> dict:
 
 
 def write_audit(root: Path=Path(".")) -> dict:
-    report=audit_rows(_read_rows(root/ARCHIVE))
+    rows=list(iter_rows(root))
+    report=audit_rows(rows)
+    report["generated_at"]=datetime.now(timezone.utc).isoformat()
+    report["source_archive_rows"]=len(rows)
+    report["history_storage"]="LEGACY_PLUS_DAILY_SHARDS"
+    report["source_paths"]=[str(p.relative_to(root)) for p in iter_tick_paths(root)]
+    report["result_join_status"]="SEE_CURRENT_EXACT_RESULT_JOIN_REPORT"
     path=root/REPORT
     path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")
