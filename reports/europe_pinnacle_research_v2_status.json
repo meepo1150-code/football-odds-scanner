@@ -1,150 +1,37 @@
 {
   "schema_version": "2.9",
-  "generated_at": "2026-10-11T11:04:10.013769+00:00",
+  "generated_at": "2026-10-11T12:40:01.620936+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "bookmaker": "pinnacle",
   "football_day": "2026-10-11",
   "football_day_timezone": "Asia/Bangkok",
   "football_day_window_start": "2026-10-11T05:00:00+00:00",
   "football_day_window_end": "2026-10-11T23:00:00+00:00",
-  "scheduled_target_at": "2026-10-11T18:00:00+07:00",
-  "actual_observed_at": "2026-10-11T18:04:10.013769+07:00",
-  "schedule_lag_minutes": 4.17,
+  "scheduled_target_at": "2026-10-11T19:00:00+07:00",
+  "actual_observed_at": "2026-10-11T19:40:01.620936+07:00",
+  "schedule_lag_minutes": 40.03,
   "recovery_window_minutes": 150,
-  "observation_timing": "ON_TIME",
+  "observation_timing": "LATE",
   "force_run": true,
-  "force_target_at": "2026-10-11T18:00:00+07:00",
+  "force_target_at": "2026-10-11T19:00:00+07:00",
   "research_only": true,
   "production_promotion_allowed": false,
   "core_quota_reserve": 3,
-  "resolved_competitions": 10,
-  "planned_requests": 2,
-  "max_planned_requests_with_retries": 2,
+  "resolved_competitions": 54,
+  "planned_requests": 0,
+  "max_planned_requests_with_retries": 11,
   "coverage_mode": "BUDGETED_ROTATING_UNIVERSE",
   "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
-  "research_requests_used_today": 4,
-  "research_requests_used_month": 68,
+  "research_requests_used_today": 6,
+  "research_requests_used_month": 70,
   "research_daily_limit": 6,
   "research_monthly_limit": 180,
   "research_run_limit": 2,
   "budget_scope": "ODDSPAPI_RESEARCH_COLLECTOR_ONLY",
   "coverage_complete": false,
-  "coverage_tournament_ids": [
-    53,
-    328,
-    8,
-    54,
-    35,
-    44,
-    491,
-    217,
-    34,
-    182
-  ],
-  "quota_remaining_before": 116,
-  "effective_quota_reserve": 3,
-  "status": "RESEARCH_V2_OBSERVED",
-  "requests_used": 2,
-  "rate_limit_retries": 0,
-  "api_fixtures_returned": 86,
-  "excluded_outside_football_day": 64,
-  "football_day_fixtures": 22,
-  "strict_snapshots_this_run": 22,
-  "persisted_snapshot_rows": 1774,
-  "persisted_audit_rows": 1000,
-  "fixtures_seen": 22,
-  "bookmaker_active_fixtures": 22,
-  "fixtures_with_exactly_one_main_ah": 22,
-  "fixtures_with_exactly_one_main_ou": 22,
-  "fixtures_with_both_exact_mainlines": 22,
-  "strict_snapshots": 22,
-  "rejection_counts": {
-    "OK": 22
-  },
-  "league_coverage": [
-    {
-      "league": "France \u00b7 Ligue 1",
-      "fixtures": 3,
-      "bookmaker_active": 3,
-      "ah_main_exactly_one": 3,
-      "ou_main_exactly_one": 3,
-      "both_main_exactly_one": 3,
-      "strict_snapshots": 3,
-      "reason_counts": {
-        "OK": 3
-      }
-    },
-    {
-      "league": "Germany \u00b7 2. Bundesliga",
-      "fixtures": 3,
-      "bookmaker_active": 3,
-      "ah_main_exactly_one": 3,
-      "ou_main_exactly_one": 3,
-      "both_main_exactly_one": 3,
-      "strict_snapshots": 3,
-      "reason_counts": {
-        "OK": 3
-      }
-    },
-    {
-      "league": "Germany \u00b7 3. Liga",
-      "fixtures": 3,
-      "bookmaker_active": 3,
-      "ah_main_exactly_one": 3,
-      "ou_main_exactly_one": 3,
-      "both_main_exactly_one": 3,
-      "strict_snapshots": 3,
-      "reason_counts": {
-        "OK": 3
-      }
-    },
-    {
-      "league": "Germany \u00b7 Bundesliga",
-      "fixtures": 2,
-      "bookmaker_active": 2,
-      "ah_main_exactly_one": 2,
-      "ou_main_exactly_one": 2,
-      "both_main_exactly_one": 2,
-      "strict_snapshots": 2,
-      "reason_counts": {
-        "OK": 2
-      }
-    },
-    {
-      "league": "Italy \u00b7 Serie B",
-      "fixtures": 3,
-      "bookmaker_active": 3,
-      "ah_main_exactly_one": 3,
-      "ou_main_exactly_one": 3,
-      "both_main_exactly_one": 3,
-      "strict_snapshots": 3,
-      "reason_counts": {
-        "OK": 3
-      }
-    },
-    {
-      "league": "Spain \u00b7 LaLiga",
-      "fixtures": 4,
-      "bookmaker_active": 4,
-      "ah_main_exactly_one": 4,
-      "ou_main_exactly_one": 4,
-      "both_main_exactly_one": 4,
-      "strict_snapshots": 4,
-      "reason_counts": {
-        "OK": 4
-      }
-    },
-    {
-      "league": "Spain \u00b7 LaLiga 2",
-      "fixtures": 4,
-      "bookmaker_active": 4,
-      "ah_main_exactly_one": 4,
-      "ou_main_exactly_one": 4,
-      "both_main_exactly_one": 4,
-      "strict_snapshots": 4,
-      "reason_counts": {
-        "OK": 4
-      }
-    }
-  ]
+  "coverage_tournament_ids": [],
+  "status": "SKIPPED_RESEARCH_REQUEST_BUDGET",
+  "requests_used": 0,
+  "data_source_health": "NOT_PROBED_BUDGET_LIMIT",
+  "next_action": "FREE_COLLECTORS_CONTINUE"
 }

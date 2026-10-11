@@ -1,17 +1,15 @@
 {
   "schema_version": "1.2",
   "football_day": "2026-10-11",
-  "generated_at": "2026-10-11T12:39:23.435060+00:00",
+  "generated_at": "2026-10-11T12:40:50.331710+00:00",
   "workflow_success_is_not_data_source_health": true,
-  "status": "DEGRADED_DATA_COVERAGE",
+  "status": "COLLECTING_WITH_EXTERNAL_BLOCKERS",
   "data_assertions_passed": true,
   "assertion_failures": [],
-  "collection_health_passed": false,
-  "collection_failures": [
-    "CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE"
-  ],
+  "collection_health_passed": true,
+  "collection_failures": [],
   "collection": {
-    "bangkok_now": "2026-10-11T19:39:23.435060+07:00",
+    "bangkok_now": "2026-10-11T19:40:50.331710+07:00",
     "canonical_slots": [
       {
         "target_time": "2026-10-11T12:00:00+07:00",
@@ -45,13 +43,13 @@
       },
       {
         "target_time": "2026-10-11T19:00:00+07:00",
-        "state": "MISSING",
-        "provider": null,
-        "observed_at": null,
-        "lag_minutes": null,
-        "valid_snapshot_count": 0,
-        "canonical_fixture_count": 0,
-        "recovered": false
+        "state": "OBSERVED",
+        "provider": "propline",
+        "observed_at": "2026-10-11T19:40:01.691574+07:00",
+        "lag_minutes": 40.03,
+        "valid_snapshot_count": 30,
+        "canonical_fixture_count": 30,
+        "recovered": true
       },
       {
         "target_time": "2026-10-11T20:00:00+07:00",
@@ -85,37 +83,38 @@
       }
     ],
     "expected_elapsed_slots": 4,
-    "observed_slots": 3,
-    "missing_elapsed_slots": 1,
-    "coverage_fraction": 0.75,
-    "collection_state": "DEGRADED",
+    "observed_slots": 4,
+    "missing_elapsed_slots": 0,
+    "coverage_fraction": 1.0,
+    "collection_state": "COMPLETE",
     "recovered_slots": [
       "2026-10-11T12:00:00+07:00",
-      "2026-10-11T15:00:00+07:00"
+      "2026-10-11T15:00:00+07:00",
+      "2026-10-11T19:00:00+07:00"
     ],
     "missed_slots": []
   },
   "counts": {
-    "raw_snapshots": 1774,
-    "verified_snapshots": 1684,
+    "raw_snapshots": 1804,
+    "verified_snapshots": 1714,
     "quarantined_snapshots": 90,
     "recovered_legacy_snapshots": 0,
-    "unresolved_ft_fixtures": 339,
+    "unresolved_ft_fixtures": 369,
     "settled_statistical_fixtures": 666,
     "core_price_settled_fixtures": 621,
     "movement_fixtures": 177,
     "numeric_movement_deltas": 1206,
-    "current_day_valid_scans": 40,
-    "current_day_distinct_scan_times": 3,
+    "current_day_valid_scans": 70,
+    "current_day_distinct_scan_times": 4,
     "scope_excluded_snapshots": 238,
-    "current_day_canonical_fixtures": 40,
+    "current_day_canonical_fixtures": 70,
     "collapsed_provider_fixture_ids": 8,
     "expected_elapsed_slots": 4,
-    "observed_slots": 3,
-    "missing_elapsed_slots": 1,
-    "coverage_fraction": 0.75,
+    "observed_slots": 4,
+    "missing_elapsed_slots": 0,
+    "coverage_fraction": 1.0,
     "unresolved_matured_3h_fixtures": 300,
-    "unresolved_future_or_recent_fixtures": 39,
+    "unresolved_future_or_recent_fixtures": 69,
     "retired_unresolved_ft_fixtures": 248,
     "active_unresolved_matured_3h_fixtures": 52
   },
@@ -133,8 +132,8 @@
     "propline": {
       "status": "AVAILABLE",
       "capability": "FALLBACK",
-      "usable_recent_output": false,
-      "generated_at": "2026-10-10T15:48:19.897022+00:00",
+      "usable_recent_output": true,
+      "generated_at": "2026-10-11T12:40:01.691574+00:00",
       "errors": [],
       "execution_ready": false
     },
