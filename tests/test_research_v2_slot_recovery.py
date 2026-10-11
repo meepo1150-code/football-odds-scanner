@@ -16,7 +16,7 @@ def persist(root, target, observed):
     with path.open('a') as stream: stream.write(json.dumps(row)+'\n')
 
 
-def test_recovers_every_missing_target_and_preserves_late_time(tmp_path,monkeypatch):
+def test_does_not_recreate_old_targets_after_newest_target_completed(tmp_path,monkeypatch):
     now=datetime.fromisoformat('2026-10-04T21:37:00+07:00')
     calls=[]
     def primary(root):
@@ -36,10 +36,10 @@ def test_recovers_every_missing_target_and_preserves_late_time(tmp_path,monkeypa
                  'strict_snapshots_this_run':1},'OBSERVED')
     persist(tmp_path,'2026-10-04T21:00:00+07:00','2026-10-04T21:05:00+07:00')
     recovery.run(tmp_path,now)
-    assert calls==['2026-10-04T20:00:00+07:00']
-    assert sum(r['state']=='MISSED' for r in read_ledger(tmp_path))==4
+    assert calls==[]
+    assert sum(r['state']=='MISSED' for r in read_ledger(tmp_path))==5
     recovery.run(tmp_path,now)
-    assert len(calls)==1
+    assert len(calls)==0
 
 
 def test_expired_slots_do_not_request_or_fabricate_prices(tmp_path,monkeypatch):

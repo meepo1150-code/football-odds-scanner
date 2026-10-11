@@ -5,7 +5,7 @@ from datetime import datetime,time as dtime,timedelta,timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 from .europe_pinnacle_discovery import SNAPSHOT_PATH,AUDIT_PATH,SLOT_LEDGER_PATH,_merge_jsonl,_schedule_timing,_record_slot
-from .propline_provider import fetch
+from .propline_provider import fetch, LAST_FETCH_DIAGNOSTICS
 from .research_v2_integrity import trusted_snapshot
 
 BKK=ZoneInfo("Asia/Bangkok")
@@ -24,8 +24,16 @@ def run(root=Path("."), target_at=None):
     now=datetime.now(timezone.utc); ws,we,day=_football_day(now); target,lag=_schedule_timing(now)
     if target_at is not None:
         target=target_at.astimezone(BKK); lag=(now.astimezone(BKK)-target).total_seconds()/60
+    previous=json.loads((root/REPORT).read_text()) if (root/REPORT).exists() else {}
+    cooldown=_dt(previous.get('cooldown_until'))
+    if cooldown and now<cooldown:
+        return {**previous,'status':'PROVIDER_COOLDOWN','data_source_health':'RATE_LIMITED','http_requests_attempted':0,'checked_at':now.isoformat()}
+    fetch_started_at=now.isoformat()
     try: rows,errors=fetch()
     except Exception as e: rows=[]; errors=[f"{type(e).__name__}: {e}"]
+    now=datetime.now(timezone.utc)
+    ws,we,day=_football_day(now)
+    if target is not None:lag=(now.astimezone(BKK)-target).total_seconds()/60
     snaps=[]; audits=[]; in_day=0; kickoff_dates={}; kickoff_samples=[]
     for m in rows:
         if not in_scope(m): continue
@@ -56,7 +64,7 @@ def run(root=Path("."), target_at=None):
         if m.get("bookmaker")=="pinnacle" and core:
             snap["source_semantics"]="PROPLINE_PINNACLE_TWO_SIDED_CORE_MAINLINE"
             snap["mainline_verified"]=True
-            snap["promotion_eligible"]=True
+            snap["promotion_eligible"]=False
             if not trusted_snapshot(snap):
                 snap["promotion_eligible"]=False
                 audits.append({"football_day":day,"fixture_id":fid,"provider":"propline","kickoff":ko.isoformat(),"observed_at":observed,"eligibility_status":"QUARANTINED","eligibility_reason":"PREMATCH_OR_MAINLINE_INTEGRITY_REJECTED","research_population":False,"quarantined":True,"rejected_snapshot":snap})
@@ -68,6 +76,9 @@ def run(root=Path("."), target_at=None):
     ts=_merge_jsonl(root/SNAPSHOT_PATH,snaps,("observed_at","fixture_id")) if snaps else 0
     ta=_merge_jsonl(root/AUDIT_PATH,audits,("observed_at","fixture_id")) if audits else 0
     report={"schema_version":"1.1","provider":"propline","football_day":day,"generated_at":now.isoformat(),"status":"RESEARCH_V2_OBSERVED" if snaps else ("API_REQUEST_FAILED" if errors else "ZERO_USABLE_FIXTURES"),"workflow_success":True,"data_source_health":("PARTIAL" if rows else "UNAVAILABLE") if errors else "AVAILABLE","source_rows":len(rows),"source_rows_in_football_day":in_day,"strict_snapshots_this_run":len(snaps),"quarantined_observations_this_run":sum(1 for x in audits if x.get("quarantined")),"core_price_snapshots":len(snaps),"persisted_snapshot_rows":ts,"persisted_audit_rows":ta,"kickoff_date_counts":kickoff_dates,"kickoff_samples":kickoff_samples,"errors":errors[:10]}
+    report.update(LAST_FETCH_DIAGNOSTICS)
+    if LAST_FETCH_DIAGNOSTICS.get('failure_class'):report['data_source_health']=LAST_FETCH_DIAGNOSTICS['failure_class']
+    report['fetch_started_at']=fetch_started_at
     report.update(scheduled_target_at=target.isoformat() if target and 0<=lag<=150 else None,
                   actual_observed_at=now.astimezone(BKK).isoformat(), schedule_lag_minutes=lag,
                   observation_timing='LATE' if lag is not None and lag>30 else 'ON_TIME',

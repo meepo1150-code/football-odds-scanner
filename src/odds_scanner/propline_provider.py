@@ -1,11 +1,22 @@
 from __future__ import annotations
-import json, os, urllib.parse, urllib.request
+import json, os, urllib.parse, urllib.request, urllib.error
+from datetime import timedelta
+LAST_FETCH_DIAGNOSTICS = {}
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
 BASE="https://api.prop-line.com/v1"
 ENV_KEY="PROPLINE_API_KEY"
 SPORTS=("soccer_epl","soccer_uefa_champs_league","soccer_uefa_europa_league","soccer_uefa_conference_league","soccer_efl_champ","soccer_germany_bundesliga","soccer_spain_la_liga","soccer_italy_serie_a","soccer_france_ligue_one","soccer_netherlands_eredivisie","soccer_japan_j_league","soccer_usa_mls","soccer_sweden_allsvenskan","soccer_turkey_super_lig")
+
+def retry_seconds(exc):
+    value=exc.headers.get('Retry-After','3600') if exc.headers else '3600'
+    try:return max(3600,float(value))
+    except (TypeError,ValueError):
+        try:
+            from email.utils import parsedate_to_datetime
+            return max(3600,(parsedate_to_datetime(value)-datetime.now(timezone.utc)).total_seconds())
+        except (ValueError,TypeError):return 3600
 
 def active_soccer_sports(key):
     try:
@@ -15,6 +26,9 @@ def active_soccer_sports(key):
         keys=[str(x.get("key")) for x in (items or []) if isinstance(x,dict) and x.get("active") is not False and str(x.get("key","")).startswith("soccer") and exclusion_reason({'provider':'propline', 'country':x.get('country'), 'league':x.get('title') or x.get('name') or x.get('key')}) is None]
         # A real catalog whose entries are all excluded must not re-enable fallback.
         return tuple(dict.fromkeys(keys)) if items else SPORTS
+    except urllib.error.HTTPError as exc:
+        if exc.code in (401,403,429):raise
+        return SPORTS
     except Exception:
         return SPORTS
 PREFERRED=("pinnacle",)
@@ -40,10 +54,24 @@ def fetch(key=None):
     key=key or os.getenv(ENV_KEY)
     if not key: raise RuntimeError(f"{ENV_KEY} is not configured")
     rows=[]; errors=[]
-    sports=active_soccer_sports(key)
+    LAST_FETCH_DIAGNOSTICS.clear()
+    LAST_FETCH_DIAGNOSTICS.update(http_requests_attempted=1,retry_cap=0,timeout_seconds=20)
+    try:sports=active_soccer_sports(key)
+    except urllib.error.HTTPError as exc:
+        LAST_FETCH_DIAGNOSTICS.update(cooldown_until=(datetime.now(timezone.utc)+timedelta(seconds=retry_seconds(exc))).isoformat(),failure_class='RATE_LIMITED' if exc.code==429 else 'ACCOUNT_OR_AUTH_BLOCKED')
+        return [],[f'catalog:HTTPError:{exc.code}']
     for sport in sports:
+        LAST_FETCH_DIAGNOSTICS["http_requests_attempted"]+=1
         try: events=_get(f"/sports/{sport}/odds",key,{"markets":"h2h,spreads,totals"})
-        except Exception as e: errors.append(f"{sport}:{type(e).__name__}:{e}"); continue
+        except Exception as e:
+            message=str(e).replace(key,"[REDACTED]")
+            errors.append(f"{sport}:{type(e).__name__}:{message}")
+            if isinstance(e,urllib.error.HTTPError) and e.code in (429,401,403):
+                # Stop the catalog fan-out immediately on account/rate-limit failures.
+                seconds=retry_seconds(e)
+                LAST_FETCH_DIAGNOSTICS.update(cooldown_until=(datetime.now(timezone.utc)+timedelta(seconds=seconds)).isoformat(),failure_class='RATE_LIMITED' if e.code==429 else 'ACCOUNT_OR_AUTH_BLOCKED')
+                break
+            continue
         if isinstance(events,dict): events=events.get("data") or events.get("events") or []
         for ev in events or []:
             books=ev.get("bookmakers") or []

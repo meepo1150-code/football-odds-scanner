@@ -36,7 +36,7 @@ def test_watchdog_recovers_missed_slot_without_duplicate_attempt():
 def test_no_background_provider_probe_outside_slots():
     assert not due(datetime.fromisoformat('2026-09-30T07:37:00+07:00'), {})
     assert due(datetime.fromisoformat('2026-10-03T19:37:00+07:00'), {})
-    assert due(datetime.fromisoformat('2026-09-30T07:37:00+07:00'), {}, 'workflow_dispatch')
+    assert not due(datetime.fromisoformat('2026-09-30T07:37:00+07:00'), {}, 'workflow_dispatch')
 
 
 def test_pinnwire_includes_after_midnight_in_previous_football_day(tmp_path, monkeypatch):

@@ -10,15 +10,17 @@ from .research_v2_slots import targets as canonical_targets, read_ledger, read_s
 
 
 def due(now, report, event='schedule', fallback=None, ledger_rows=None, snapshots=None):
-    if event == 'workflow_dispatch':
-        return True  # Explicit manual probes still obey the transport cooldown.
     # Pushes and automatic workflow triggers must obey the same slot/evidence
     # gate as cron; a code change is not permission to collect another quote.
     local = now.astimezone(BKK)
     from .europe_pinnacle_discovery import _football_day_bounds
     targets = [t for t in canonical_targets(_football_day_bounds(now)[2])
                if timedelta(0) <= local-t <= timedelta(minutes=150)]
+    targets = [max(targets)] if targets else []
     if ledger_rows is not None:
+        from .research_v2_slots import stamp
+        recent=[stamp(r.get("actual_observed_at")) for r in ledger_rows if stamp(r.get("actual_observed_at"))]
+        if recent and timedelta(0)<=now-max(recent)<timedelta(minutes=15):return False
         targets = [t for t in targets if not completed(t, local, ledger_rows, snapshots or [])]
     if not targets:
         return False

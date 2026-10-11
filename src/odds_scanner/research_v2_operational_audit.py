@@ -57,9 +57,11 @@ def build(root=Path('.'), now=None):
         when=utc(p.get('generated_at'))
         fresh=when is not None and 0<=(now-when).total_seconds()<=18*3600
         usable=p.get('status')=='RESEARCH_V2_OBSERVED' and not p.get('errors') and fresh
-        providers[name]={'status':p.get('data_source_health') or p.get('status','UNKNOWN'), 'capability':'FALLBACK' if name=='propline' else 'RESEARCH_ONLY', 'usable_recent_output':usable,'generated_at':p.get('generated_at'),'errors':p.get('errors',[]),'execution_ready':False}
+        providers[name]={'status':p.get('data_source_health') or p.get('status','UNKNOWN'), 'capability':'FALLBACK' if name=='propline' else 'RESEARCH_ONLY', 'usable_recent_output':usable,'fresh':fresh,'report_age_hours':round((now-when).total_seconds()/3600,2) if when else None,'partial_rows_usable':fresh and p.get('strict_snapshots_this_run',0)>0,'generated_at':p.get('generated_at'),'errors':p.get('errors',[]),'execution_ready':False}
     providers['oddspapi']={'status':quota.get('status','UNKNOWN'),'request_limit':quota.get('request_limit'),'request_count':quota.get('request_count'),'request_remaining':quota.get('request_remaining'),'generated_at':quota.get('generated_at'),'capability':'WAITING_EXTERNAL_DATA' if quota.get('quota_exhausted') else 'REQUIRES_CURRENT_VALIDATION'}
     providers['oddspapi'].update(quota_observation(quota, load(root, 'europe_pinnacle_research_v2_status')))
+    api=load(root,'api_football_shadow_health')
+    providers['api_football']={'status':api.get('status','UNKNOWN'),'generated_at':api.get('generated_at'),'execution_ready':False,'external_account_action_required':api.get('status')=='ACCOUNT_SUSPENDED'}
     counts={'raw_snapshots':len(raw),'verified_snapshots':len(valid),'quarantined_snapshots':len(raw)-len(valid),'recovered_legacy_snapshots':legacy.get('recovered',0),'unresolved_ft_fixtures':stats.get('raw_unresolved_ft_fixtures'),'settled_statistical_fixtures':stats.get('settled_fixtures'),'core_price_settled_fixtures':stats.get('core_price_settled_fixtures'),'movement_fixtures':move.get('fixtures_with_two_plus_snapshots'),'numeric_movement_deltas':move.get('numeric_delta_fields_built'),'current_day_valid_scans':len(day_scans),'current_day_distinct_scan_times':len({x.get('observed_at') for x in day_scans})}
     counts['scope_excluded_snapshots']=sum(not in_scope(x) for x in valid)
     valid = [x for x in valid if in_scope(x)]
@@ -83,7 +85,7 @@ def build(root=Path('.'), now=None):
     if stats.get('snapshot_rows') != len(valid):failures.append('STATISTICS_VERIFIED_COUNT_STALE')
     if stats.get('quarantined_snapshot_rows') != counts['quarantined_snapshots']:failures.append('QUARANTINE_COUNT_MISMATCH')
     if move.get('source_snapshot_rows') != len(valid):failures.append('MOVEMENT_INPUT_STALE')
-    collection_failures = ['CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE'] if coverage['missing_elapsed_slots'] > 0 else []
+    collection_failures = ['CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE'] if coverage['missing_elapsed_slots'] > 0 or coverage['late_slots'] > 0 else []
     ready=[{'candidate_id':c.get('candidate_id'),'settled':c.get('settled_entries'),'minimum':150,'status':c.get('status'),'production_promotion_allowed':c.get('production_promotion_allowed',False)} for c in forward.get('candidates',[])]
     status = ('BROKEN_DATA_ASSERTIONS' if failures else
               'DEGRADED_DATA_COVERAGE' if collection_failures else

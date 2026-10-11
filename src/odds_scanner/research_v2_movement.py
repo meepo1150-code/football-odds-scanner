@@ -1,4 +1,5 @@
 from __future__ import annotations
+from .observation_movement import describe, contract, utc
 from .research_population import in_scope, exclusion_reason, POLICY
 import json
 from collections import defaultdict
@@ -49,18 +50,21 @@ def run(root=Path('.')):
     numeric_delta_count=0
     for fid,rs in groups.items():
         rs.sort(key=lambda x:(str(x.get('observed_at') or ''),str(x.get('source_fixture_id') or x.get('fixture_id') or '')))
-        if len(rs)<2:continue
+        info=describe(rs)
+        comparable=[r for r in rs if contract(r)==contract(rs[-1]) and utc(r.get("observed_at")) and utc(r.get("kickoff")) and utc(r["observed_at"])<utc(r["kickoff"])]
+        comparable.sort(key=lambda r:utc(r["observed_at"]))
+        if info["observation_gap_minutes"] is not None:rs=comparable
         a,b=rs[0],rs[-1]
-        row={'fixture_id':fid,'source_fixture_ids':sorted({str(r.get('source_fixture_id')) for r in rs}),'cross_provider':len({r.get('provider') for r in rs})>1,'football_day':b.get('football_day'),'league':b.get('league'),'country':b.get('country'),'competition_type':b.get('competition_type'),'observations':len(rs),'first_observed_at':a.get('observed_at'),'last_observed_at':b.get('observed_at')}
+        row={'fixture_id':fid,'source_fixture_ids':sorted({str(r.get('source_fixture_id')) for r in rs}),'cross_provider':len({r.get('provider') for r in rs})>1,'football_day':b.get('football_day'),'league':b.get('league'),'country':b.get('country'),'competition_type':b.get('competition_type'),**info,'observations':len(rs),'first_observed_at':a.get('observed_at'),'last_observed_at':b.get('observed_at')}
         for key in ('ah_line','favorite_price','ou_line','over_price','under_price','home_price','draw_price','away_price'):
             av,bv=finite_number(_get(a,key)),finite_number(_get(b,key))
             row['first_'+key]=av; row['last_'+key]=bv
-            row['delta_'+key]=None if av is None or bv is None else round(bv-av,4)
+            row['delta_'+key]=None if info['observation_gap_minutes'] is None or info['favorite_switch'] or av is None or bv is None else round(bv-av,4)
             if row['delta_'+key] is not None:numeric_delta_count+=1
         features.append(row)
     features.sort(key=lambda x:(str(x.get('football_day')),x['fixture_id']))
     p=root/OUT;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(''.join(json.dumps(x,separators=(',',':'))+'\n' for x in features),encoding='utf-8')
-    report={'schema_version':'1.1','status':'MOVEMENT_BUILT','fixtures_with_two_plus_snapshots':len(features),'source_snapshot_rows':len(source),'quarantined_snapshot_rows':quarantined,'raw_source_snapshot_rows':len(source_all),'numeric_delta_fields_built':numeric_delta_count}
+    report={'schema_version':'1.1','status':'MOVEMENT_BUILT','fixtures_with_two_plus_snapshots':sum(x['observation_gap_minutes'] is not None for x in features),'classification_counts':dict(__import__('collections').Counter(x['movement'] for x in features)),'generated_at':__import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat(),'source_snapshot_rows':len(source),'quarantined_snapshot_rows':quarantined,'raw_source_snapshot_rows':len(source_all),'numeric_delta_fields_built':numeric_delta_count}
     q=root/REPORT;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(report,indent=2),encoding='utf-8');return report
 
 if __name__=='__main__':print(json.dumps(run()))

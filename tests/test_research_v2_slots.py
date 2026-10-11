@@ -68,7 +68,8 @@ def test_observed_ledger_without_snapshot_is_not_completed():
              'actual_observed_at':'2026-10-05T18:05:00+07:00',
              'state':'OBSERVED','strict_snapshots':8}]
     assert coverage(now,'2026-10-05',ledger,[])['observed_slots']==0
-    assert due(now,{},ledger_rows=ledger,snapshots=[])
+    assert not due(now,{},ledger_rows=ledger,snapshots=[])
+    assert due(dt('2026-10-05T18:21:00+07:00'),{},ledger_rows=ledger,snapshots=[])
 
 
 def test_zero_fixture_without_success_receipt_is_unverified():

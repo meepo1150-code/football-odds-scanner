@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 from collections import Counter
 from pathlib import Path
 
@@ -101,6 +102,9 @@ def audit_rows(rows: list[dict]) -> dict:
 
 def write_audit(root: Path=Path(".")) -> dict:
     report=audit_rows(_read_rows(root/ARCHIVE))
+    report["generated_at"]=datetime.now(timezone.utc).isoformat()
+    report["source_archive_rows"]=len(_read_rows(root/ARCHIVE))
+    report["result_join_status"]="SEE_CURRENT_EXACT_RESULT_JOIN_REPORT"
     path=root/REPORT
     path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8")

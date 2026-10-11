@@ -97,7 +97,8 @@ def run(root: Path = Path('.')) -> dict:
         report.update(status='ALREADY_SYNCED', fixture_requests_used=0, football_day_fixtures=len(existing), previous_day_fixtures=len(existing_prev), persisted_fixture_rows=sum(1 for line in fixtures_path.read_text(encoding='utf-8').splitlines() if line.strip()) if fixtures_path.exists() else 0, required_research_fixture_ids=len(required_research_ids), missing_research_fixture_ids=0, completion_marker=True)
     else:
         key = os.getenv(ENV_KEY, '').strip()
-        if not key: report.update(status='API_KEY_NOT_CONFIGURED', fixture_requests_used=0, missing_research_fixture_ids=len(missing_research_ids), completion_marker=False)
+        if os.getenv('FIXTURE_SYNC_MODE')=='LOCAL_ONLY': report.update(status='LOCAL_ONLY_NOT_REQUESTED',fixture_requests_used=0,missing_research_fixture_ids=len(missing_research_ids),completion_marker=False)
+        elif not key: report.update(status='API_KEY_NOT_CONFIGURED', fixture_requests_used=0, missing_research_fixture_ids=len(missing_research_ids), completion_marker=False)
         else:
             try:
                 payload = _get('/fixtures', key, {'sportId':SPORT_ID,'from':prev_start_local.date().isoformat(),'to':end_local.date().isoformat()}, 60); api_rows = _rows(payload); selected = []
