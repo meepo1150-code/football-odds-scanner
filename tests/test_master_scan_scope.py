@@ -28,6 +28,9 @@ def test_provider_namespaces_and_same_named_leagues():
     assert in_scope({'league':'Premier League'})
     assert not in_scope({'country':'Russia','league':'Premier League'})
     assert not in_scope({'league':'Poland - 1. Liga'})
+    assert not in_scope({'country':'Poland','league':'I liga'})
+    assert not in_scope({'country':'Russia','league':'Russian Premier League'})
+    assert in_scope({'country':'Poland','league':'Ekstraklasa'})
 
 
 def test_target_filter_preserves_input_and_unreviewed_competitions():

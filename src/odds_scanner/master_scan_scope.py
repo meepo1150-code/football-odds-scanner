@@ -3,6 +3,7 @@
 Provider IDs are namespaced. Unmapped competitions are not silently removed;
 only the six explicitly cancelled divisions are excluded.
 """
+import csv
 import json
 from functools import lru_cache
 from pathlib import Path
@@ -14,7 +15,9 @@ COUNTRY_CODES = {'AND': 'Andorra', 'AZE': 'Azerbaijan', 'BLR': 'Belarus', 'POL':
 
 @lru_cache(maxsize=1)
 def bindings():
-    return tuple(json.loads(PATH.read_text()))
+    with (PATH.parents[1] / 'competitions.csv').open() as handle:
+        canonical = {r['competition_id']: r for r in csv.DictReader(handle)}
+    return tuple({**r, 'canonical_name': canonical[r['competition_id']]['competition_name']} for r in json.loads(PATH.read_text()))
 
 
 def excluded_competition_reason(row, *, provider=None):
@@ -37,7 +40,7 @@ def excluded_competition_reason(row, *, provider=None):
     for binding in bindings():
         if provider == binding['provider'] and tid is not None and str(tid) == binding['provider_id']:
             return REASON
-        if country == binding['provider_country'] and str(league).strip().casefold() == binding['provider_name'].casefold():
+        if str(country).casefold() == binding['provider_country'].casefold() and str(league).strip().casefold() in {binding['provider_name'].casefold(), binding['canonical_name'].casefold()}:
             return REASON
     return None
 
