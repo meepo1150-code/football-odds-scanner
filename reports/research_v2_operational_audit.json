@@ -1,17 +1,15 @@
 {
   "schema_version": "1.2",
   "football_day": "2026-10-11",
-  "generated_at": "2026-10-11T15:03:52.508753+00:00",
+  "generated_at": "2026-10-11T15:07:26.434963+00:00",
   "workflow_success_is_not_data_source_health": true,
-  "status": "DEGRADED_DATA_COVERAGE",
+  "status": "WAITING_EXTERNAL_DATA",
   "data_assertions_passed": true,
   "assertion_failures": [],
-  "collection_health_passed": false,
-  "collection_failures": [
-    "CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE"
-  ],
+  "collection_health_passed": true,
+  "collection_failures": [],
   "collection": {
-    "bangkok_now": "2026-10-11T22:03:52.508753+07:00",
+    "bangkok_now": "2026-10-11T22:07:26.434963+07:00",
     "canonical_slots": [
       {
         "target_time": "2026-10-11T12:00:00+07:00",
@@ -55,66 +53,68 @@
       },
       {
         "target_time": "2026-10-11T20:00:00+07:00",
-        "state": "MISSING",
-        "provider": null,
-        "observed_at": null,
-        "lag_minutes": null,
-        "valid_snapshot_count": 0,
-        "canonical_fixture_count": 0,
-        "recovered": false
+        "state": "OBSERVED",
+        "provider": "propline",
+        "observed_at": "2026-10-11T22:03:37.057502+07:00",
+        "lag_minutes": 123.62,
+        "valid_snapshot_count": 19,
+        "canonical_fixture_count": 19,
+        "recovered": true
       },
       {
         "target_time": "2026-10-11T21:00:00+07:00",
-        "state": "MISSING",
-        "provider": null,
-        "observed_at": null,
-        "lag_minutes": null,
-        "valid_snapshot_count": 0,
-        "canonical_fixture_count": 0,
-        "recovered": false
+        "state": "OBSERVED",
+        "provider": "propline",
+        "observed_at": "2026-10-11T22:04:48.099849+07:00",
+        "lag_minutes": 64.8,
+        "valid_snapshot_count": 19,
+        "canonical_fixture_count": 19,
+        "recovered": true
       },
       {
         "target_time": "2026-10-11T22:00:00+07:00",
-        "state": "MISSING",
-        "provider": null,
-        "observed_at": null,
-        "lag_minutes": null,
-        "valid_snapshot_count": 0,
-        "canonical_fixture_count": 0,
+        "state": "OBSERVED",
+        "provider": "propline",
+        "observed_at": "2026-10-11T22:06:18.843020+07:00",
+        "lag_minutes": 6.31,
+        "valid_snapshot_count": 19,
+        "canonical_fixture_count": 19,
         "recovered": false
       }
     ],
     "expected_elapsed_slots": 7,
-    "observed_slots": 4,
-    "missing_elapsed_slots": 3,
-    "coverage_fraction": 0.571,
-    "collection_state": "DEGRADED",
+    "observed_slots": 7,
+    "missing_elapsed_slots": 0,
+    "coverage_fraction": 1.0,
+    "collection_state": "COMPLETE",
     "recovered_slots": [
       "2026-10-11T12:00:00+07:00",
       "2026-10-11T15:00:00+07:00",
-      "2026-10-11T19:00:00+07:00"
+      "2026-10-11T19:00:00+07:00",
+      "2026-10-11T20:00:00+07:00",
+      "2026-10-11T21:00:00+07:00"
     ],
     "missed_slots": []
   },
   "counts": {
-    "raw_snapshots": 1804,
-    "verified_snapshots": 1714,
+    "raw_snapshots": 1861,
+    "verified_snapshots": 1771,
     "quarantined_snapshots": 90,
     "recovered_legacy_snapshots": 0,
     "unresolved_ft_fixtures": 359,
     "settled_statistical_fixtures": 672,
     "core_price_settled_fixtures": 627,
-    "movement_fixtures": 177,
-    "numeric_movement_deltas": 1206,
-    "current_day_valid_scans": 66,
-    "current_day_distinct_scan_times": 4,
+    "movement_fixtures": 196,
+    "numeric_movement_deltas": 1358,
+    "current_day_valid_scans": 123,
+    "current_day_distinct_scan_times": 7,
     "scope_excluded_snapshots": 242,
     "current_day_canonical_fixtures": 66,
     "collapsed_provider_fixture_ids": 8,
     "expected_elapsed_slots": 7,
-    "observed_slots": 4,
-    "missing_elapsed_slots": 3,
-    "coverage_fraction": 0.571,
+    "observed_slots": 7,
+    "missing_elapsed_slots": 0,
+    "coverage_fraction": 1.0,
     "unresolved_matured_3h_fixtures": 303,
     "unresolved_future_or_recent_fixtures": 56,
     "retired_unresolved_ft_fixtures": 249,
@@ -132,11 +132,13 @@
       "execution_ready": false
     },
     "propline": {
-      "status": "AVAILABLE",
+      "status": "PARTIAL",
       "capability": "FALLBACK",
-      "usable_recent_output": true,
-      "generated_at": "2026-10-11T12:40:01.691574+00:00",
-      "errors": [],
+      "usable_recent_output": false,
+      "generated_at": "2026-10-11T15:06:18.843020+00:00",
+      "errors": [
+        "soccer_uefa_nations_league:TimeoutError:The read operation timed out"
+      ],
       "execution_ready": false
     },
     "oddspapi": {

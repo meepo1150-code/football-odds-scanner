@@ -2,29 +2,28 @@
   "schema_version": "1.1",
   "provider": "propline",
   "football_day": "2026-10-11",
-  "generated_at": "2026-10-11T12:40:01.691574+00:00",
+  "generated_at": "2026-10-11T15:06:18.843020+00:00",
   "status": "RESEARCH_V2_OBSERVED",
   "workflow_success": true,
-  "data_source_health": "AVAILABLE",
-  "source_rows": 128,
-  "source_rows_in_football_day": 37,
-  "strict_snapshots_this_run": 30,
-  "quarantined_observations_this_run": 7,
-  "core_price_snapshots": 30,
-  "persisted_snapshot_rows": 1804,
-  "persisted_audit_rows": 1037,
+  "data_source_health": "PARTIAL",
+  "source_rows": 116,
+  "source_rows_in_football_day": 27,
+  "strict_snapshots_this_run": 19,
+  "quarantined_observations_this_run": 8,
+  "core_price_snapshots": 19,
+  "persisted_snapshot_rows": 1861,
+  "persisted_audit_rows": 1118,
   "kickoff_date_counts": {
-    "2026-10-17": 23,
-    "2026-10-18": 12,
+    "2026-10-17": 22,
+    "2026-10-18": 13,
     "2026-10-20": 2,
-    "2026-10-11": 24,
+    "2026-10-11": 14,
     "2026-10-12": 17,
     "2026-10-13": 9,
     "2026-10-19": 3,
     "2026-10-15": 16,
     "2026-10-14": 12,
-    "2026-10-16": 8,
-    "2026-10-21": 2
+    "2026-10-16": 8
   },
   "kickoff_samples": [
     {
@@ -181,17 +180,19 @@
     },
     {
       "sport": "soccer_serie_a",
-      "home": "Lecce",
-      "away": "Bologna",
-      "kickoff": "2026-10-11T13:00:00Z",
-      "local": "2026-10-11T20:00:00+07:00",
+      "home": "Sassuolo",
+      "away": "AC Milan",
+      "kickoff": "2026-10-11T16:00:00Z",
+      "local": "2026-10-11T23:00:00+07:00",
       "bookmaker": "pinnacle"
     }
   ],
-  "errors": [],
-  "scheduled_target_at": "2026-10-11T19:00:00+07:00",
-  "actual_observed_at": "2026-10-11T19:40:01.691574+07:00",
-  "schedule_lag_minutes": 40.0281929,
-  "observation_timing": "LATE",
-  "football_day_fixtures": 37
+  "errors": [
+    "soccer_uefa_nations_league:TimeoutError:The read operation timed out"
+  ],
+  "scheduled_target_at": "2026-10-11T22:00:00+07:00",
+  "actual_observed_at": "2026-10-11T22:06:18.843020+07:00",
+  "schedule_lag_minutes": 6.314050333333333,
+  "observation_timing": "ON_TIME",
+  "football_day_fixtures": 27
 }
