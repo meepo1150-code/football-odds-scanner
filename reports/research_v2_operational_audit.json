@@ -1,44 +1,49 @@
 {
   "schema_version": "1.2",
   "football_day": "2026-10-11",
-  "generated_at": "2026-10-11T15:07:26.434963+00:00",
+  "generated_at": "2026-10-11T15:56:35.302287+00:00",
   "workflow_success_is_not_data_source_health": true,
-  "status": "WAITING_EXTERNAL_DATA",
+  "status": "DEGRADED_DATA_COVERAGE",
   "data_assertions_passed": true,
   "assertion_failures": [],
-  "collection_health_passed": true,
-  "collection_failures": [],
+  "collection_health_passed": false,
+  "collection_failures": [
+    "CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE"
+  ],
   "collection": {
-    "bangkok_now": "2026-10-11T22:07:26.434963+07:00",
+    "bangkok_now": "2026-10-11T22:56:35.302287+07:00",
     "canonical_slots": [
       {
         "target_time": "2026-10-11T12:00:00+07:00",
         "state": "OBSERVED",
-        "provider": null,
+        "provider": "oddspapi",
         "observed_at": "2026-10-11T12:36:41.830510+07:00",
         "lag_minutes": 36.7,
         "valid_snapshot_count": 5,
         "canonical_fixture_count": 5,
+        "observation_timing": "LATE",
         "recovered": true
       },
       {
         "target_time": "2026-10-11T15:00:00+07:00",
         "state": "OBSERVED",
-        "provider": null,
+        "provider": "oddspapi",
         "observed_at": "2026-10-11T16:10:12.157564+07:00",
         "lag_minutes": 70.2,
         "valid_snapshot_count": 9,
         "canonical_fixture_count": 9,
+        "observation_timing": "LATE",
         "recovered": true
       },
       {
         "target_time": "2026-10-11T18:00:00+07:00",
         "state": "OBSERVED",
-        "provider": null,
+        "provider": "oddspapi",
         "observed_at": "2026-10-11T18:04:10.013769+07:00",
         "lag_minutes": 4.17,
         "valid_snapshot_count": 22,
         "canonical_fixture_count": 22,
+        "observation_timing": "ON_TIME",
         "recovered": false
       },
       {
@@ -49,6 +54,7 @@
         "lag_minutes": 40.03,
         "valid_snapshot_count": 30,
         "canonical_fixture_count": 30,
+        "observation_timing": "LATE",
         "recovered": true
       },
       {
@@ -59,6 +65,7 @@
         "lag_minutes": 123.62,
         "valid_snapshot_count": 19,
         "canonical_fixture_count": 19,
+        "observation_timing": "LATE",
         "recovered": true
       },
       {
@@ -69,6 +76,7 @@
         "lag_minutes": 64.8,
         "valid_snapshot_count": 19,
         "canonical_fixture_count": 19,
+        "observation_timing": "LATE",
         "recovered": true
       },
       {
@@ -79,14 +87,18 @@
         "lag_minutes": 6.31,
         "valid_snapshot_count": 19,
         "canonical_fixture_count": 19,
+        "observation_timing": "ON_TIME",
         "recovered": false
       }
     ],
+    "on_time_slots": 2,
+    "late_slots": 5,
+    "on_time_coverage_fraction": 0.286,
     "expected_elapsed_slots": 7,
     "observed_slots": 7,
     "missing_elapsed_slots": 0,
     "coverage_fraction": 1.0,
-    "collection_state": "COMPLETE",
+    "collection_state": "DEGRADED_TIMING",
     "recovered_slots": [
       "2026-10-11T12:00:00+07:00",
       "2026-10-11T15:00:00+07:00",
@@ -115,16 +127,19 @@
     "observed_slots": 7,
     "missing_elapsed_slots": 0,
     "coverage_fraction": 1.0,
-    "unresolved_matured_3h_fixtures": 303,
-    "unresolved_future_or_recent_fixtures": 56,
+    "unresolved_matured_3h_fixtures": 304,
+    "unresolved_future_or_recent_fixtures": 55,
     "retired_unresolved_ft_fixtures": 249,
-    "active_unresolved_matured_3h_fixtures": 54
+    "active_unresolved_matured_3h_fixtures": 55
   },
   "providers": {
     "pinnwire": {
       "status": "RATE_LIMITED",
       "capability": "RESEARCH_ONLY",
       "usable_recent_output": false,
+      "fresh": false,
+      "report_age_hours": 72.68,
+      "partial_rows_usable": false,
       "generated_at": "2026-10-08T15:15:56.828224+00:00",
       "errors": [
         "HTTPError: HTTP 429"
@@ -135,6 +150,9 @@
       "status": "PARTIAL",
       "capability": "FALLBACK",
       "usable_recent_output": false,
+      "fresh": true,
+      "report_age_hours": 0.84,
+      "partial_rows_usable": true,
       "generated_at": "2026-10-11T15:06:18.843020+00:00",
       "errors": [
         "soccer_uefa_nations_league:TimeoutError:The read operation timed out"
@@ -144,13 +162,19 @@
     "oddspapi": {
       "status": "QUOTA_AVAILABLE",
       "request_limit": 250,
-      "request_count": 136,
-      "request_remaining": 114,
-      "generated_at": "2026-10-11T12:39:22.041464+00:00",
+      "request_count": 144,
+      "request_remaining": 106,
+      "generated_at": "2026-10-11T15:56:33.524218+00:00",
       "capability": "REQUIRES_CURRENT_VALIDATION",
       "balance_status": "LAST_ACCOUNT_OBSERVATION",
-      "request_remaining_last_observed": 114,
+      "request_remaining_last_observed": 106,
       "current_balance_verified": false
+    },
+    "api_football": {
+      "status": "ACCOUNT_SUSPENDED",
+      "generated_at": "2026-10-11T02:10:18.986479+00:00",
+      "execution_ready": false,
+      "external_account_action_required": true
     }
   },
   "daily_sync_status": "LOCAL_FIXTURE_COVERAGE_SYNCED",
