@@ -58,3 +58,13 @@ def test_provider_429_stops_catalog_fanout(monkeypatch):
     assert rows==[] and len(errors)==1 and calls==['/sports']
     assert pp.LAST_FETCH_DIAGNOSTICS['failure_class']=='RATE_LIMITED'
     assert pp.retry_seconds(urllib.error.HTTPError('x',429,'rate limit',{'Retry-After':'7200'},None))==7200
+
+
+def test_provider_time_budget_defers_without_request_storm(monkeypatch):
+    from odds_scanner import propline_provider as pp
+    ticks=iter([0,230])
+    monkeypatch.setattr(pp.time,'monotonic',lambda:next(ticks))
+    monkeypatch.setattr(pp,'active_soccer_sports',lambda key:('sport',))
+    monkeypatch.setattr(pp,'_get',lambda *a:(_ for _ in ()).throw(AssertionError('request after budget')))
+    rows,errors=pp.fetch('test')
+    assert rows==[] and errors and pp.LAST_FETCH_DIAGNOSTICS['bounded_runtime_partial']

@@ -1,5 +1,5 @@
 from __future__ import annotations
-import json, os, urllib.parse, urllib.request, urllib.error
+import json, os, time, urllib.parse, urllib.request, urllib.error
 from datetime import timedelta
 LAST_FETCH_DIAGNOSTICS = {}
 from dataclasses import dataclass
@@ -54,6 +54,7 @@ def fetch(key=None):
     key=key or os.getenv(ENV_KEY)
     if not key: raise RuntimeError(f"{ENV_KEY} is not configured")
     rows=[]; errors=[]
+    deadline=time.monotonic()+240
     LAST_FETCH_DIAGNOSTICS.clear()
     LAST_FETCH_DIAGNOSTICS.update(http_requests_attempted=1,retry_cap=0,timeout_seconds=20)
     try:sports=active_soccer_sports(key)
@@ -61,6 +62,10 @@ def fetch(key=None):
         LAST_FETCH_DIAGNOSTICS.update(cooldown_until=(datetime.now(timezone.utc)+timedelta(seconds=retry_seconds(exc))).isoformat(),failure_class='RATE_LIMITED' if exc.code==429 else 'ACCOUNT_OR_AUTH_BLOCKED')
         return [],[f'catalog:HTTPError:{exc.code}']
     for sport in sports:
+        if time.monotonic()+20>deadline:
+            LAST_FETCH_DIAGNOSTICS['bounded_runtime_partial']=True
+            errors.append('TRANSPORT_TIME_BUDGET_REACHED; remaining sports deferred')
+            break
         LAST_FETCH_DIAGNOSTICS["http_requests_attempted"]+=1
         try: events=_get(f"/sports/{sport}/odds",key,{"markets":"h2h,spreads,totals"})
         except Exception as e:

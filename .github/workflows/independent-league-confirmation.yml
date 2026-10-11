@@ -11,7 +11,7 @@ on:
       - '.github/workflows/independent-league-confirmation.yml'
   workflow_dispatch:
 concurrency:
-  group: odds-scanner-output-writer
+  group: ${{ github.event_name == 'pull_request' && format('ci-{0}-{1}', github.workflow, github.event.pull_request.number) || 'odds-scanner-output-writer' }}
   cancel-in-progress: false
 permissions:
   contents: write
