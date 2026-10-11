@@ -238,7 +238,14 @@ def audit(root=ROOT):
     summary["provider_mapping_coverage"] = dict(mapped_competitions=len(provider_proofs), unmapped_competitions=len(provider_audit["unmapped_competition_ids"]), club_mapping_status=provider_audit["club_mapping_status"], mapped_clubs=len(club_proofs), unmapped_active_clubs=len(provider_audit["unmapped_active_club_ids"]), live_verified=provider_audit["live_verification"])
     summary["limitations"][1] = f"{summary['official_review']['completed']} baseline-secondary divisions were crosschecked against independent official season rosters; six remaining divisions were excluded by the user. Promotion/relegation legal history is not independently certified for every club."
     summary["input_sha256"]["research/official_roster_audit_2026_10_09.json"] = hashlib.sha256((root / "research/official_roster_audit_2026_10_09.json").read_bytes()).hexdigest()
-    for filename in ("research/provider_competition_bindings.json", "research/provider_club_alias_reviews_2026_10_09.json", "research/provider_mapping_audit_2026_10_09.json"):
+    excluded_provider = json.loads((root / 'research/user_excluded_provider_bindings_2026_10_11.json').read_text())
+    check({r['competition_id'] for r in excluded_provider} == excluded_ids, 'Excluded provider scope mismatch')
+    check(len(excluded_provider) == len(excluded_ids), 'Duplicate excluded provider binding')
+    for binding in excluded_provider:
+        item = raw_tournaments.get(binding['provider_id'], {})
+        check(item.get('categoryName') == binding['provider_country'] and item.get('tournamentName') == binding['provider_name'], 'Excluded provider catalog identity mismatch')
+        check(binding['provider'] == 'oddspapi', 'Unsupported excluded provider namespace')
+    for filename in ("research/provider_competition_bindings.json", "research/provider_club_alias_reviews_2026_10_09.json", "research/provider_mapping_audit_2026_10_09.json", "research/user_excluded_provider_bindings_2026_10_11.json"):
         summary["input_sha256"][filename] = hashlib.sha256((root / filename).read_bytes()).hexdigest()
     return summary
 

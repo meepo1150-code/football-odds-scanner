@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .oddspapi_discovery import _rows
+from .master_scan_scope import filter_scan_targets
 from .oddspapi_provider import ENV_KEY, _catalog, _get, _outcome_lookup, _player
 from .oddspapi_quota_health import summarize_account
 from .v2_mainline_observer import CATALOG_PATH, CANDIDATE_PATH, _load_json, extract_mainline_snapshot, mainline_shape, _in_band
@@ -133,6 +134,7 @@ def run():
   TARGET_PATH.parent.mkdir(parents=True,exist_ok=True); TARGET_PATH.write_text(json.dumps({'schema_version':'1.0','resolved_at':now.isoformat(),'tournaments':selected},ensure_ascii=False,indent=2),encoding='utf-8')
  if len(selected)!=EXPECTED:
   report.update(status='TARGET_RESOLUTION_INCOMPLETE',resolved_leagues=len(selected),requests_used=requests); return write_report(report)
+ selected=filter_scan_targets(selected)
  catalog=_load_json(CATALOG_PATH) or []; candidates=(_load_json(CANDIDATE_PATH) or {}).get('candidates',[])
  strict=[]; fixture_count=0; reasons={}; diagnostic_rows=[]; last_finished=None
  for batch in [selected[i:i+5] for i in range(0,len(selected),5)]:

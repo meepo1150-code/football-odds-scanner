@@ -174,7 +174,7 @@
     "amateur_unverified"
   ],
   "safety": {
-    "preserve_existing_archive": false,
+    "preserve_existing_archive": true,
     "do_not_guess_tournament_ids": true,
     "require_provider_id_mapping": true,
     "require_real_ah_ou_1x2_coverage": true,
@@ -184,7 +184,7 @@
     "require_country_and_provider_league_id_for_permanent_purge": true
   },
   "status": "COUNTRY_FIRST_REVIEW_PENDING",
-  "exclusion_action": "PERMANENT_DELETE_CONFIRMED_ONLY",
+  "exclusion_action": "SKIP_FUTURE_SCANS_PRESERVE_ARCHIVE",
   "selection_hierarchy": [
     "country_id",
     "competition_id",

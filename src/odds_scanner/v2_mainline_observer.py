@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from .research_population import in_scope, exclusion_reason, POLICY
+from .master_scan_scope import filter_scan_targets
 import json
 import os
 from collections import Counter
@@ -236,7 +237,9 @@ def extract_mainline_snapshot(
     selected_ah_opposite_price = float(ah["away"]["price"]) if favorite_side == "H" else float(ah["home"]["price"])
 
     tmeta = tournament_meta or {}
-    return {
+    if exclusion_reason({**fixture, 'country': tmeta.get('country') or fixture.get('categoryName')}, provider='oddspapi'):
+        return None, 'USER_REVIEWED_COMPETITION_OUT_OF_SCOPE'
+    snapshot = {
         "fixture_id": fixture.get("fixtureId"),
         "tournament_id": fixture.get("tournamentId"),
         "universe": tmeta.get("universe"),
@@ -263,7 +266,12 @@ def extract_mainline_snapshot(
         },
         "ou": {"line": float(ou["line"]), "over_price": float(ou["over"]["price"]), "under_price": float(ou["under"]["price"])},
         "promotion_eligible": False,
-    }, "OK"
+    }
+    for source, target in (("participant1Id", "home_participant_id"), ("participant2Id", "away_participant_id")):
+        if source in fixture:
+            snapshot[target] = fixture[source]
+    from .master_mapping import enrich_fixture, load_mappings
+    return enrich_fixture(snapshot, provider='oddspapi', mappings=load_mappings()), "OK"
 
 
 def _in_band(value: float, band) -> bool:
@@ -348,7 +356,7 @@ def observe_from_env(root: Path = Path("."), *, horizon_days: int = 7) -> dict:
         return {"schema_version": "1.2", "status": "TARGET_TOURNAMENTS_INCOMPLETE", "generated_at": generated_at.isoformat(), "requests_attempted": requests_attempted, "targets_found": len(selected), "targets_expected": sum(len(v) for v in TARGETS.values()), "promotion_allowed": False}
 
     try:
-        batches = split_target_batches(selected)
+        batches = split_target_batches(filter_scan_targets(selected))
     except ValueError as exc:
         return {"schema_version": "1.2", "status": "TARGET_BATCH_LAYOUT_INVALID", "generated_at": generated_at.isoformat(), "requests_attempted": requests_attempted, "errors": [str(exc)], "promotion_allowed": False}
 
