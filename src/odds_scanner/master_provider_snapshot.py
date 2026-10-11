@@ -12,7 +12,7 @@ OUT = Path('reports/master_provider_snapshot.json')
 RESERVE = 50
 
 
-def collect(key, *, get=_get, now=None, root=Path('.'), previous=None, window_end=None):
+def collect(key, *, get=_get, now=None, root=Path('.'), previous=None, window_end=None, targeted=False):
     now = now or datetime.now(timezone.utc)
     result = dict(schema_version='1.0', provider='oddspapi', generated_at=now.isoformat(), metered_requests_attempted=0, max_metered_requests=3, production_enabled=False)
     try:
@@ -39,10 +39,26 @@ def collect(key, *, get=_get, now=None, root=Path('.'), previous=None, window_en
         if not isinstance(participants, dict):
             raise ValueError('Invalid participant catalog shape')
         result['participant_catalog_count'] = len(participants)
-        result['metered_requests_attempted'] += 1
         end = window_end or (now + timedelta(days=9) if previous is None else now)
         start = now if previous is None else end - timedelta(days=9)
-        fixtures = get('/fixtures', key, {**params, 'from': start.isoformat(), 'to': end.isoformat(), 'limit': 1000}, timeout=45)
+        if targeted:
+            fixtures = []
+            result['identity_targets'] = []
+            for aliases in ({'FA Siauliai'}, {'Hegelmann Litauen', 'FC Hegelmann', 'Hegelmann'}):
+                selected = [(pid, name) for pid, name in participants.items() if name in aliases]
+                if len(selected) != 1:
+                    result['identity_targets'].append({'status': 'AMBIGUOUS_OR_ABSENT_PARTICIPANT'})
+                    continue
+                pid, name = selected[0]
+                result['metered_requests_attempted'] += 1
+                found = get('/fixtures', key, {**params, 'participantId': pid, 'from': '2026-01-01T00:00:00+00:00'}, timeout=45)
+                if not isinstance(found, list):
+                    raise ValueError('Invalid targeted fixtures shape')
+                fixtures.extend(found)
+                result['identity_targets'].append({'participant_id': str(pid), 'provider_name': name, 'fixtures_returned': len(found)})
+        else:
+            result['metered_requests_attempted'] += 1
+            fixtures = get('/fixtures', key, {**params, 'from': start.isoformat(), 'to': end.isoformat(), 'limit': 1000}, timeout=45)
         if not isinstance(fixtures, list):
             raise ValueError('Invalid fixtures shape')
         fields = ('fixtureId', 'tournamentId', 'tournamentName', 'seasonId', 'startTime', 'statusId', 'participant1Id', 'participant1Name', 'participant2Id', 'participant2Name')
@@ -75,9 +91,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--lookback', action='store_true')
     parser.add_argument('--window-end', type=datetime.fromisoformat)
+    parser.add_argument('--targeted', action='store_true')
     args = parser.parse_args()
     previous = json.loads(OUT.read_text()) if args.lookback else None
-    report = collect(key, previous=previous, window_end=args.window_end)
+    report = collect(key, previous=previous, window_end=args.window_end, targeted=args.targeted)
     OUT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
     print(json.dumps({k: report[k] for k in ('status', 'metered_requests_attempted', 'generated_at')}))
 
