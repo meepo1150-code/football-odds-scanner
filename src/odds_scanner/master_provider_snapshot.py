@@ -44,10 +44,10 @@ def collect(key, *, get=_get, now=None, root=Path('.'), previous=None, window_en
         if targeted:
             fixtures = []
             result['identity_targets'] = []
-            for aliases in ({'FA Siauliai'}, {'Hegelmann Litauen', 'FC Hegelmann', 'Hegelmann'}):
+            for aliases in ({'Hegelmann Litauen', 'FC Hegelmann', 'Hegelmann', 'FC Hegelmann Litauen'},):
                 selected = [(pid, name) for pid, name in participants.items() if name in aliases]
                 if len(selected) != 1:
-                    result['identity_targets'].append({'status': 'AMBIGUOUS_OR_ABSENT_PARTICIPANT'})
+                    result['identity_targets'].append({'status': 'AMBIGUOUS_OR_ABSENT_PARTICIPANT', 'candidates': [{'participant_id': str(pid), 'provider_name': name} for pid, name in participants.items() if isinstance(name, str) and 'hegelmann' in name.casefold()]})
                     continue
                 pid, name = selected[0]
                 result['metered_requests_attempted'] += 1
