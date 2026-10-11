@@ -12,7 +12,7 @@ OUT = Path('reports/master_provider_snapshot.json')
 RESERVE = 50
 
 
-def collect(key, *, get=_get, now=None, root=Path('.'), previous=None):
+def collect(key, *, get=_get, now=None, root=Path('.'), previous=None, window_end=None):
     now = now or datetime.now(timezone.utc)
     result = dict(schema_version='1.0', provider='oddspapi', generated_at=now.isoformat(), metered_requests_attempted=0, max_metered_requests=3, production_enabled=False)
     try:
@@ -40,8 +40,8 @@ def collect(key, *, get=_get, now=None, root=Path('.'), previous=None):
             raise ValueError('Invalid participant catalog shape')
         result['participant_catalog_count'] = len(participants)
         result['metered_requests_attempted'] += 1
-        start = now if previous is None else now - timedelta(days=9)
-        end = now + timedelta(days=9) if previous is None else now
+        end = window_end or (now + timedelta(days=9) if previous is None else now)
+        start = now if previous is None else end - timedelta(days=9)
         fixtures = get('/fixtures', key, {**params, 'from': start.isoformat(), 'to': end.isoformat(), 'limit': 1000}, timeout=45)
         if not isinstance(fixtures, list):
             raise ValueError('Invalid fixtures shape')
@@ -49,7 +49,7 @@ def collect(key, *, get=_get, now=None, root=Path('.'), previous=None):
         combined = {r['fixtureId']: r for r in (previous or {}).get('fixtures', [])}
         combined.update({r['fixtureId']: {k: r[k] for k in fields if k in r} for r in fixtures})
         result['fixtures'] = list(combined.values())
-        result['fixture_window'] = {'from': start.isoformat(), 'to': end.isoformat(), 'limit': 1000, 'complete_rosters': False}
+        result['fixture_window'] = {'from': start.isoformat(), 'to': end.isoformat(), 'limit_requested': 1000, 'returned_count': len(fixtures), 'complete_rosters': False}
         names = set()
         for filename, field in [('uefa_clubs_canonical.csv', 'canonical_name'), ('research/club_assignments.csv', 'source_name')]:
             with (root / 'data/master' / filename).open() as handle:
@@ -74,9 +74,10 @@ def main():
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--lookback', action='store_true')
+    parser.add_argument('--window-end', type=datetime.fromisoformat)
     args = parser.parse_args()
     previous = json.loads(OUT.read_text()) if args.lookback else None
-    report = collect(key, previous=previous)
+    report = collect(key, previous=previous, window_end=args.window_end)
     OUT.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
     print(json.dumps({k: report[k] for k in ('status', 'metered_requests_attempted', 'generated_at')}))
 
