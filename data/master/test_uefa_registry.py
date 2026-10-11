@@ -48,6 +48,17 @@ class MasterTests(unittest.TestCase):
         self.edit_csv("provider_mappings.csv", lambda rows: rows[0].update(provider_id="999999"))
         self.assert_rejected("Provider identity evidence mismatch")
 
+    def test_club_provider_participant_identity_rejected(self):
+        self.edit_csv("provider_mappings.csv", lambda rows: next(r for r in rows if r["entity_type"] == "club").update(provider_id="999999999"))
+        self.assert_rejected("Club provider catalog identity mismatch")
+
+    def test_club_provider_fixture_requires_correct_competition(self):
+        p = self.root / "research/provider_mapping_audit_2026_10_09.json"
+        evidence = json.loads(p.read_text())
+        evidence["club_mappings"][0]["observations"][0]["competition_id"] = "ENG-0008"
+        p.write_text(json.dumps(evidence))
+        self.assert_rejected("Club fixture membership mismatch")
+
     def test_complete_master(self):
         result = audit(self.root)
         self.assertEqual(result["errors"], [])

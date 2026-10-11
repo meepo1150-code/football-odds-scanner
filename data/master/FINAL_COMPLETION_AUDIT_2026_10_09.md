@@ -1,4 +1,20 @@
-# Active-scope revision — 2026-10-09
+# Final provider completion — 2026-10-11
+
+Current active scope: **50 associations / 81 divisions / 1,203 memberships / 1,374 reserved canonical clubs**. Evidence: **81 VERIFIED_OFFICIAL / 0 VERIFIED_SECONDARY / 0 BLOCKED**. All 92 scoped competition identities (81 leagues and 11 domestic/UEFA cups) and all 1,203 active clubs now have reviewed Oddspapi mappings. No unresolved active club or competition identity remains. Cup entrants remain NOT_IMPORTED intentionally, separate from league memberships.
+
+The former 47 competition-mapping blockers were resolved against the full live provider catalog of 1,983 tournaments. Fresh account checks confirmed available quota: the earlier quota-block diagnosis was stale. Bounded identity research used 12 metered requests across six batches, with a 50-request reserve, no odds requests and no retries. Raw participant/fixture evidence is sanitized in reports/master_provider_snapshot.json. Exact catalog bindings, explicit alias reviews and fixture observations are retained with SHA256 provenance. Evidence describes identity coverage, not current odds availability or future roster certification.
+
+Corrections in this completion batch concern provider identities only; official roster source-of-truth and stable canonical IDs are unchanged. Reviewed variants include San Marino Academy's senior team, Domagnano/Virtus legal names, NK Vrhnika, Balzan's historical name, Feronikeli 74, Feniks-Mariupol, SSU/Stiinta Politehnica Timisoara, KSC Lokeren-Temse, Montenegro geographical qualifiers and Lithuania's FA Siauliai / FC Hegelmann Kaunas. Official identity URLs are in the alias ledger where a substantial name difference required additional corroboration. Hegelmann's first team (provider participant 171484) is distinct from reserve participant 784444; its final targeted response supplied 43 exact fixtures. No predecessor ID was reassigned, reserve/age/numeric qualifiers are preserved, and ambiguous matches fail closed.
+
+Offline provider rebuild uses research/provider_competition_bindings.json, research/provider_club_alias_reviews_2026_10_09.json and the saved raw snapshot. Competition IDs require exact country/name/ID agreement. Club IDs require participant dictionary agreement, an exact observed fixture and a unique reviewed current-roster identity. Registered cup observations retain their true competition ID and separate league membership context. Other senior domestic-cup observations require official alias evidence and the exact same provider association; they create no new cup IDs or entrants.
+
+Scanner normalization retains provider team IDs and enriches copies with canonical IDs. Provider fixture IDs, prices, source times, result joins, promotion flags and dashboard payload fields remain intact. Legacy histories and all 666 original canonical IDs/names are preserved. No API keys, scan schedules, production deployment or PR merge changed. Historical/reserved clubs outside active membership scope do not receive guessed provider IDs.
+
+Final local verification: structural QA PASS with zero errors; 27 Master unittest tests PASS; 486 full-suite pytest tests PASS; deterministic UEFA/provider rebuild PASS; git diff --check PASS. CI for the delivered commit is recorded in Issue #310 / PR #309 after actual completion; prior green runs are not substituted for final-commit checks. The dated snapshots below are historical and superseded by this section.
+
+---
+
+# Historical active-scope revision — 2026-10-09
 
 User removed the six unconfirmed leagues: AND-0001, AZE-0001, AZE-0002, BLR-0001, POL-0002 and RUS-0001. Active result: **50 associations / 81 divisions / 1,203 memberships / 1,374 reserved canonical clubs; 81 VERIFIED_OFFICIAL / 0 VERIFIED_SECONDARY / 0 active league BLOCKED**. No league research backlog remains in the revised scope. This supersedes the previous 54/87 scope and 1,285-member snapshot below.
 

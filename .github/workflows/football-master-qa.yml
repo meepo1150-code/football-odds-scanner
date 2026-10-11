@@ -33,8 +33,9 @@ jobs:
       - name: Rebuild and validate reviewed source data
         run: |
           python data/master/build_uefa_registry.py
+          python data/master/build_provider_registry.py
           python data/master/validate_uefa_master.py --write-report
-          git diff --exit-code -- data/master
+          git diff --exit-code -- data/master reports/master_provider_tournaments.json
       - name: Master integrity and evidence regression tests
         run: python -m unittest discover -s data/master -p 'test_uefa_registry.py' -v
       - name: Scanner fixture regression tests

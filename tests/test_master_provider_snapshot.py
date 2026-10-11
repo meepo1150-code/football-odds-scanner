@@ -46,3 +46,40 @@ def test_successful_snapshot_has_exact_ids_without_claiming_complete_rosters(mon
     assert 'secretField' not in report['fixtures'][0]
     assert report['fixture_window']['complete_rosters'] is False
     assert report['production_enabled'] is False
+
+
+def test_targeted_alias_is_exact_and_reserve_is_not_selected(monkeypatch, tmp_path):
+    monkeypatch.setattr('odds_scanner.master_provider_snapshot.summarize_account', lambda _: dict(status='QUOTA_AVAILABLE', request_remaining=146, soccer_sport_id_10_allowed=True))
+    root = tmp_path / 'data/master'
+    (root / 'research').mkdir(parents=True)
+    (root / 'uefa_clubs_canonical.csv').write_text('canonical_name\nHegelmann\n')
+    (root / 'research/club_assignments.csv').write_text('source_name\nHegelmann\n')
+    calls = []
+    def get(path, key, params=None, **kwargs):
+        calls.append((path, params))
+        if path == '/account': return {}
+        if path == '/participants': return {'11': 'FC Hegelmann Kaunas', '12': 'Hegelmann Litauen B'}
+        assert params['participantId'] == '11'
+        return []
+    report = collect('secret', get=get, root=tmp_path, previous={'generated_at': '2026-10-09', 'tournaments': [], 'fixtures': []}, targeted=True)
+    assert report['metered_requests_attempted'] == 2
+    assert report['identity_targets'][0]['participant_id'] == '11'
+    assert report['fixture_window']['participant_targeted']
+    assert report['production_enabled'] is False
+
+
+def test_targeted_ambiguity_does_not_guess_or_request_fixtures(monkeypatch, tmp_path):
+    monkeypatch.setattr('odds_scanner.master_provider_snapshot.summarize_account', lambda _: dict(status='QUOTA_AVAILABLE', request_remaining=146, soccer_sport_id_10_allowed=True))
+    root = tmp_path / 'data/master'
+    (root / 'research').mkdir(parents=True)
+    (root / 'uefa_clubs_canonical.csv').write_text('canonical_name\nHegelmann\n')
+    (root / 'research/club_assignments.csv').write_text('source_name\nHegelmann\n')
+    calls = []
+    def get(path, key, *args, **kwargs):
+        calls.append(path)
+        return {} if path == '/account' else {'11': 'FC Hegelmann Kaunas', '12': 'FC Hegelmann Kaunas'}
+    report = collect('secret', get=get, root=tmp_path, previous={'generated_at': '2026-10-09', 'tournaments': [], 'fixtures': []}, targeted=True)
+    assert calls == ['/account', '/participants']
+    assert report['metered_requests_attempted'] == 1
+    assert report['identity_targets'][0]['status'] == 'AMBIGUOUS_OR_ABSENT_PARTICIPANT'
+    assert len(report['identity_targets'][0]['candidates']) == 2

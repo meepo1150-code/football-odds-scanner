@@ -45,7 +45,8 @@ def test_provider_mappings_are_backed_by_exact_saved_catalog_records():
     candidates = {str(r['tournament_id']): r for r in json.loads(source.read_text())['candidates']}
     evidence = {r['internal_id']: r for r in audit['mappings']}
     actual = rows('provider_mappings.csv')
-    assert len(actual) == 45
+    assert len([r for r in actual if r['entity_type'] == 'competition']) == 92
+    actual = [r for r in actual if r['entity_type'] == 'competition']
     for mapping in actual:
         candidate = candidates[mapping['provider_id']]
         proof = evidence[mapping['internal_id']]
@@ -88,3 +89,23 @@ def test_user_excluded_leagues_are_filtered_by_exact_identity_only():
         assert exclusion_reason({'canonical_competition_id': cid}) == 'USER_REVIEWED_COMPETITION_OUT_OF_SCOPE'
     assert exclusion_reason({'competition_id': 'POL-0001'}) is None
     assert exclusion_reason({'competition_id': '123', 'home_club_id': 'AND-AND'}) is None
+
+
+def test_club_spelling_preserves_reserves_age_and_numeric_identity():
+    from odds_scanner.master_identity import club_spelling
+    assert club_spelling('FC Zürich', designators=True) == club_spelling('Zurich', designators=True)
+    assert club_spelling('Porto B', designators=True) != club_spelling('FC Porto', designators=True)
+    assert club_spelling('Ajax U19', designators=True) != club_spelling('Ajax', designators=True)
+    assert club_spelling('1860 Munich', designators=True) != club_spelling('Munich', designators=True)
+    assert club_spelling('Rapid Wien', designators=True) != club_spelling('Rapid Bucuresti', designators=True)
+
+
+def test_live_fixture_team_ids_enrich_using_real_master_evidence():
+    import json
+    from odds_scanner.master_mapping import load_mappings, enrich_fixture
+    audit = json.loads((ROOT / 'research/provider_mapping_audit_2026_10_09.json').read_text())
+    proof = audit['club_mappings'][0]
+    row = {'fixture_id': proof['observations'][0]['fixture_id'], 'home_participant_id': proof['provider_id']}
+    enriched = enrich_fixture(row, provider='oddspapi', mappings=load_mappings())
+    assert enriched['home_club_id'] == proof['internal_id']
+    assert enriched['fixture_id'] == row['fixture_id']
