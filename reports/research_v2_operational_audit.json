@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
   "football_day": "2026-10-11",
-  "generated_at": "2026-10-11T07:12:06.792381+00:00",
+  "generated_at": "2026-10-11T09:10:18.940916+00:00",
   "workflow_success_is_not_data_source_health": true,
   "status": "COLLECTING_WITH_EXTERNAL_BLOCKERS",
   "data_assertions_passed": true,
@@ -9,7 +9,7 @@
   "collection_health_passed": true,
   "collection_failures": [],
   "collection": {
-    "bangkok_now": "2026-10-11T14:12:06.792381+07:00",
+    "bangkok_now": "2026-10-11T16:10:18.940916+07:00",
     "canonical_slots": [
       {
         "target_time": "2026-10-11T12:00:00+07:00",
@@ -23,13 +23,13 @@
       },
       {
         "target_time": "2026-10-11T15:00:00+07:00",
-        "state": "UPCOMING",
+        "state": "OBSERVED",
         "provider": null,
-        "observed_at": null,
-        "lag_minutes": null,
-        "valid_snapshot_count": 0,
-        "canonical_fixture_count": 0,
-        "recovered": false
+        "observed_at": "2026-10-11T16:10:12.157564+07:00",
+        "lag_minutes": 70.2,
+        "valid_snapshot_count": 9,
+        "canonical_fixture_count": 9,
+        "recovered": true
       },
       {
         "target_time": "2026-10-11T18:00:00+07:00",
@@ -82,37 +82,38 @@
         "recovered": false
       }
     ],
-    "expected_elapsed_slots": 1,
-    "observed_slots": 1,
+    "expected_elapsed_slots": 2,
+    "observed_slots": 2,
     "missing_elapsed_slots": 0,
     "coverage_fraction": 1.0,
     "collection_state": "COMPLETE",
     "recovered_slots": [
-      "2026-10-11T12:00:00+07:00"
+      "2026-10-11T12:00:00+07:00",
+      "2026-10-11T15:00:00+07:00"
     ],
     "missed_slots": []
   },
   "counts": {
-    "raw_snapshots": 1743,
-    "verified_snapshots": 1653,
+    "raw_snapshots": 1752,
+    "verified_snapshots": 1662,
     "quarantined_snapshots": 90,
     "recovered_legacy_snapshots": 0,
-    "unresolved_ft_fixtures": 308,
+    "unresolved_ft_fixtures": 317,
     "settled_statistical_fixtures": 666,
     "core_price_settled_fixtures": 621,
     "movement_fixtures": 177,
     "numeric_movement_deltas": 1206,
-    "current_day_valid_scans": 9,
-    "current_day_distinct_scan_times": 1,
+    "current_day_valid_scans": 18,
+    "current_day_distinct_scan_times": 2,
     "scope_excluded_snapshots": 238,
-    "current_day_canonical_fixtures": 9,
+    "current_day_canonical_fixtures": 18,
     "collapsed_provider_fixture_ids": 8,
-    "expected_elapsed_slots": 1,
-    "observed_slots": 1,
+    "expected_elapsed_slots": 2,
+    "observed_slots": 2,
     "missing_elapsed_slots": 0,
     "coverage_fraction": 1.0,
     "unresolved_matured_3h_fixtures": 299,
-    "unresolved_future_or_recent_fixtures": 9,
+    "unresolved_future_or_recent_fixtures": 18,
     "retired_unresolved_ft_fixtures": 248,
     "active_unresolved_matured_3h_fixtures": 51
   },
@@ -139,10 +140,10 @@
       "status": "QUOTA_AVAILABLE",
       "request_limit": 250,
       "request_count": 131,
-      "request_remaining": 119,
+      "request_remaining": null,
       "generated_at": "2026-10-11T05:57:10.170374+00:00",
       "capability": "REQUIRES_CURRENT_VALIDATION",
-      "balance_status": "LAST_ACCOUNT_OBSERVATION",
+      "balance_status": "STALE_AFTER_RECORDED_USAGE",
       "request_remaining_last_observed": 119,
       "current_balance_verified": false
     }
