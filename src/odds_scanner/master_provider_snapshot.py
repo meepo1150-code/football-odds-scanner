@@ -44,7 +44,7 @@ def collect(key, *, get=_get, now=None, root=Path('.'), previous=None, window_en
         if targeted:
             fixtures = []
             result['identity_targets'] = []
-            for aliases in ({'Hegelmann Litauen', 'FC Hegelmann', 'Hegelmann', 'FC Hegelmann Litauen'},):
+            for aliases in ({'FC Hegelmann Kaunas'},):
                 selected = [(pid, name) for pid, name in participants.items() if name in aliases]
                 if len(selected) != 1:
                     result['identity_targets'].append({'status': 'AMBIGUOUS_OR_ABSENT_PARTICIPANT', 'candidates': [{'participant_id': str(pid), 'provider_name': name} for pid, name in participants.items() if isinstance(name, str) and 'hegelmann' in name.casefold()]})
@@ -66,6 +66,8 @@ def collect(key, *, get=_get, now=None, root=Path('.'), previous=None, window_en
         combined.update({r['fixtureId']: {k: r[k] for k in fields if k in r} for r in fixtures})
         result['fixtures'] = list(combined.values())
         result['fixture_window'] = {'from': start.isoformat(), 'to': end.isoformat(), 'limit_requested': 1000, 'returned_count': len(fixtures), 'complete_rosters': False}
+        if targeted:
+            result['fixture_window'] = {'from': '2026-01-01T00:00:00+00:00', 'participant_targeted': True, 'returned_count': len(fixtures), 'complete_rosters': False}
         names = set()
         for filename, field in [('uefa_clubs_canonical.csv', 'canonical_name'), ('research/club_assignments.csv', 'source_name')]:
             with (root / 'data/master' / filename).open() as handle:
