@@ -48,3 +48,32 @@ def excluded_competition_reason(row, *, provider=None):
 def filter_scan_targets(rows, *, provider='oddspapi'):
     from .research_population import exclusion_reason
     return [r for r in rows if exclusion_reason(r, provider=provider) is None]
+
+
+@lru_cache(maxsize=1)
+def active_oddspapi_tournament_ids():
+    """Exact verified provider IDs for active 81 leagues plus 11 registered cups.
+
+    This only authorizes Oddspapi identity; never apply IDs to another provider.
+    """
+    from .master_mapping import load_mappings
+    root = Path(__file__).resolve().parents[2] / 'data/master'
+    with (root / 'uefa_league_coverage_2026.csv').open(newline='', encoding='utf-8') as handle:
+        leagues = {r['competition_id'] for r in csv.DictReader(handle)}
+    with (root / 'cup_competition_registry_2026.csv').open(newline='', encoding='utf-8') as handle:
+        cups = {r['competition_id'] for r in csv.DictReader(handle)}
+    approved = leagues | cups
+    mapped = load_mappings()
+    ids = {provider_id for (provider, entity, provider_id), canonical in mapped.items()
+           if provider == 'oddspapi' and entity == 'competition' and canonical in approved}
+    if len(leagues) != 81 or len(cups) != 11 or len(ids) != 92:
+        raise ValueError('Master allowlist mapping is incomplete; refusing to broaden scope')
+    return frozenset(ids)
+
+
+def filter_master_oddspapi_targets(rows):
+    """Fail closed for future OddsPAPI calls; never mutate old archived rows."""
+    approved = active_oddspapi_tournament_ids()
+    return [row for row in rows if isinstance(row, dict)
+            and str(row.get('tournament_id', row.get('tournamentId', ''))) in approved
+            and excluded_competition_reason(row, provider='oddspapi') is None]
