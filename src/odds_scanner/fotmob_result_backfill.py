@@ -199,11 +199,11 @@ def revalidate_existing(root, existing, events):
         conflict_path.write_text(''.join(json.dumps(r,ensure_ascii=False)+'\n' for r in conflicts))
     return checked,revoked
 
-def run(root=Path(".")):
+def run(root=Path("."), *, include_retired=False, max_requests=12, day_filter=None):
     snaps=_read(root/SNAP)
     # Re-review this archived identity after adding its verified club alias.
     # Still requires both teams, exact kickoff, unique source event and normal FT.
-    existing=_read(root/RESULTS); existing_ids={str(x.get("fixture_id")) for x in existing} | (retired_ids(root)-{'pinnwire:1637183975'})
+    existing=_read(root/RESULTS); existing_ids={str(x.get("fixture_id")) for x in existing} | (set() if include_retired else retired_ids(root)-{'pinnwire:1637183975'})
     missing={}
     for s in snaps:
         if not in_scope(s): continue
@@ -215,9 +215,12 @@ def run(root=Path(".")):
         if ko:
             for delta in (-1,0,1): day_set.add((ko+timedelta(days=delta)).date().isoformat())
         elif s.get("football_day"): day_set.add(str(s.get("football_day")))
-    days=sorted(day_set)
+    days=sorted(day_set if day_filter is None else day_set & set(day_filter))
     events=[];failures=[];fetch_evidence=[];requests_used=0
+    deferred=[]
     for day in days:
+        if requests_used>=max_requests:
+            deferred.append(day);continue
         try:
             payload, evidence=fetch_day(root,day,_fetch)
             fetch_evidence.append({'day':day,**evidence});requests_used+=evidence['requests']
@@ -285,6 +288,6 @@ def run(root=Path(".")):
     revalidated,revoked=revalidate_existing(root,existing,events)
     added_count=merge_normalized_results(root/RESULTS,added)
     report={"schema_version":"1.0","classification":"FOTMOB_EXACT_RESULT_BACKFILL","missing_before":len(missing),"missing_after":len(missing)-len(added),"verified_bridge_matches":len(added),"days_requested":days,"events_fetched":len(events),"exact_results_added":len(added),"ambiguous_exact_matches_rejected":ambiguous,"exact_identity_unfinished":exact_unfinished,"no_exact_identity":no_exact_identity,"kickoff_candidate_only":kickoff_candidate_only,"kickoff_candidate_samples":candidate_samples,"request_failures":failures,"matching_policy":"EXACT_ALIAS_OR_SAFE_CLUB_TOKEN_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY","fuzzy_matching_used":False,"promotion_eligible":False}
-    report.update(generated_at=datetime.now(timezone.utc).isoformat(),requests_used=requests_used,cache_hits=sum(x['source']=='CACHE' for x in fetch_evidence),stale_cache_fallbacks=sum(x['source'].startswith('STALE') for x in fetch_evidence),fetch_evidence=fetch_evidence,exact_results_added=added_count,verified_bridge_matches=added_count,missing_after=len(missing)-added_count+len(revoked),existing_results_revalidated=revalidated,invalid_ft_results_quarantined=len(revoked),invalid_ft_fixture_ids=revoked)
+    report.update(retired_included=include_retired,deferred_days=deferred,generated_at=datetime.now(timezone.utc).isoformat(),requests_used=requests_used,cache_hits=sum(x['source']=='CACHE' for x in fetch_evidence),stale_cache_fallbacks=sum(x['source'].startswith('STALE') for x in fetch_evidence),fetch_evidence=fetch_evidence,exact_results_added=added_count,verified_bridge_matches=added_count,missing_after=len(missing)-added_count+len(revoked),existing_results_revalidated=revalidated,invalid_ft_results_quarantined=len(revoked),invalid_ft_fixture_ids=revoked)
     p=root/REPORT;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8");return report
 if __name__=="__main__":print(json.dumps(run(),ensure_ascii=False))

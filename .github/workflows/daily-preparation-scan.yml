@@ -1,0 +1,110 @@
+name: Daily Preparation Scan
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 8 * * *' # 15:00 Asia/Bangkok every day, effective 2026-10-13.
+  push:
+    branches: [main]
+    paths: ['controls/daily_preparation_token.txt']
+permissions: {contents: write}
+jobs:
+  previous-day-results:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    concurrency: {group: research-v2-result-sync, cancel-in-progress: false}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: main}
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - run: python -m pip install -e .
+      - name: Recover previous-day FT and rotating retired backlog using public sources only
+        run: python -m odds_scanner.daily_preparation
+      - name: Persist result evidence and reports safely
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          mkdir -p /tmp/free-result-backfill
+          paths=(reports/daily_preparation_status.json reports/pinnwire_web_result_recovery_queue.json reports/web_result_evidence_import.json data/normalized/result_recovery_attempts.json data/normalized/research_v2_retired_fixtures.jsonl reports/result_recovery_review.json reports/espn_result_backfill.json data/normalized/espn_result_recovery_staged.jsonl reports/research_v2_local_result_reuse.json reports/research_v2_daily_sync_status.json data/normalized/research_v2_daily_fixtures.jsonl data/normalized/oddspapi_finished_results.conflicts.jsonl reports/sofascore_pinnwire_result_backfill.json reports/fotmob_result_backfill.json reports/openligadb_result_backfill.json reports/pinnwire_identity_diagnostics.json reports/research_v2_daily_result_backfill.json data/normalized/oddspapi_finished_results.jsonl data/normalized/v2_forward_settlements.jsonl reports/v2_forward_result_backfill.json reports/v2_forward_performance.json reports/v2_forward_readiness.json data/normalized/research_v2_pattern_outcomes.jsonl reports/research_v2_pattern_statistics.json reports/research_v2_missing_ft_ledger.json)
+          for path in "${paths[@]}"; do if test -e "$path"; then mkdir -p "/tmp/free-result-backfill/$(dirname "$path")"; cp "$path" "/tmp/free-result-backfill/$path"; fi; done
+          for provider in fotmob espn; do if test -d data/cache/$provider; then mkdir -p /tmp/free-result-backfill/data/cache; cp -a data/cache/$provider /tmp/free-result-backfill/data/cache/; fi; done
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            for path in "${paths[@]}"; do
+              case "$path" in data/normalized/result_recovery_attempts.json|data/normalized/research_v2_retired_fixtures.jsonl|reports/result_recovery_review.json|data/normalized/oddspapi_finished_results*|data/normalized/research_v2_daily_fixtures.jsonl) continue;; esac
+              if test -e "/tmp/free-result-backfill/$path"; then mkdir -p "$(dirname "$path")"; cp "/tmp/free-result-backfill/$path" "$path"; fi
+            done
+            python -m odds_scanner.result_artifact_merge /tmp/free-result-backfill
+            for provider in fotmob espn; do test ! -d data/cache/$provider || git add -f data/cache/$provider; done
+            python -m odds_scanner.result_recovery_lifecycle
+            python -m odds_scanner.web_result_recovery > /dev/null
+            python -m odds_scanner.v2_forward_performance
+            python -m odds_scanner.research_v2_pattern_stats
+            python -m odds_scanner.v2_forward_readiness
+            python -m odds_scanner.research_v2_movement
+            python -m odds_scanner.legacy_propline_recovery
+            python -m odds_scanner.research_v2_evidence
+            git add -f reports/dashboard_scope.json reports/research_v2_end_to_end_audit.json reports/oddspapi_history_audit.json reports/research_v2_pattern_statistics.json reports/research_v2_operational_audit.json reports/research_v2_movement_status.json reports/research_v2_missing_ft_ledger.json reports/research_v2_fixture_identity.json data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
+            git add -f reports/research_v2_operational_audit.json reports/research_v2_movement_status.json data/normalized/research_v2_movement_features.jsonl reports/legacy_propline_recovery.json data/normalized/legacy_propline_recovery_staged.jsonl
+            for path in "${paths[@]}"; do if test -e "$path"; then git add -f -- "$path"; fi; done
+            git diff --cached --quiet && exit 0
+            git commit -m 'data: free Research V2 result backfill [skip ci]'
+            git push origin HEAD:main && exit 0
+            sleep 3
+          done
+          exit 1
+  first-odds-snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    concurrency: {group: research-v2-collectors, cancel-in-progress: false}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: main}
+      - name: Check whether a canonical slot needs collection
+        id: due
+        env:
+          SCAN_EVENT: ${{ github.event_name }}
+          PYTHONPATH: src
+        run: python -m odds_scanner.research_v2_scan_due >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-python@v6
+        if: steps.due.outputs.collect == 'true'
+        with: {python-version: '3.12'}
+      - run: python -m pip install -e '.[dev]'
+        if: steps.due.outputs.collect == 'true'
+      - name: Collect canonical slot with provider fallback
+        if: steps.due.outputs.collect == 'true'
+        env:
+          ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
+          PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
+        run: python -m odds_scanner.research_v2_slot_recovery
+      - name: Build movement features
+        if: steps.due.outputs.collect == 'true'
+        run: python -m odds_scanner.research_v2_movement
+      - name: Persist raw evidence and rebuild against latest main
+        if: steps.due.outputs.collect == 'true'
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          stage=$(mktemp -d)
+          paths=(data/normalized/research_v2_provider_responses.jsonl data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/research_v2_slot_ledger.jsonl reports/pinnwire_research_v2_status.json reports/propline_research_v2_status.json reports/europe_pinnacle_research_v2_status.json)
+          for f in "${paths[@]}"; do if test -f "$f"; then mkdir -p "$stage/$(dirname "$f")"; cp "$f" "$stage/$f"; fi; done
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            python -m odds_scanner.research_v2_persistence "$stage"
+            python -m odds_scanner.research_v2_movement
+            python -m odds_scanner.research_v2_pattern_stats
+            python -m odds_scanner.legacy_propline_recovery
+            python -m odds_scanner.research_v2_evidence
+            git add -f reports/dashboard_scope.json reports/research_v2_end_to_end_audit.json reports/oddspapi_history_audit.json reports/research_v2_pattern_statistics.json reports/research_v2_operational_audit.json reports/research_v2_movement_status.json reports/research_v2_missing_ft_ledger.json reports/research_v2_fixture_identity.json data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
+            git add -f data/normalized reports
+            git diff --cached --quiet && exit 0
+            git commit -m 'data: merge Research V2 evidence and rebuild [skip ci]'
+            git push origin HEAD:main && exit 0
+            sleep 3
+          done
+          echo 'Failed to persist Research V2 output' >&2
+          exit 1

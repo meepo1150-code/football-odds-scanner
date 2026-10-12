@@ -93,3 +93,26 @@ def test_czech_reviewed_country_alias_passes_scope():
     from odds_scanner.master_scan_scope import scan_scope_reason
     assert scan_scope_reason({'tournamentId':172,'categoryName':'Czech Republic'},provider='oddspapi') is None
     assert scan_scope_reason({'tournamentId':172,'categoryName':'Norway'},provider='oddspapi')=='MASTER_COUNTRY_CONFLICT'
+
+
+def test_uncovered_fixture_and_oldest_market_request_priority(tmp_path):
+    _,report=planner.plan([fixture(t,str(t)) for t in (17,23,8)],START,END,NOW,complete=True)
+    report['football_day']='2026-10-12'
+    candidates=[r for r in report['competition_coverage'] if r['remaining_prematch_fixtures']]
+    p=tmp_path/'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl';p.parent.mkdir(parents=True)
+    p.write_text(json.dumps({'fixture_id':'17','football_day':'2026-10-12'})+'\n')
+    planner.retain(tmp_path,'/odds-by-tournaments',{'tournamentIds':'8'},[],NOW)
+    ordered=planner.prioritize(tmp_path,candidates,report,NOW)
+    assert [r['tournament_id'] for r in ordered]==[23,8,17]
+    assert report['fixtures_captured_today']==1 and report['scheduled_fixtures_without_snapshot']==2
+    assert report['market_requests_required_all_remaining_competitions']==1
+
+
+def test_past_unseen_fixtures_do_not_starve_collectable_unseen_matches(tmp_path):
+    _,report=planner.plan([fixture(17,'past','2026-10-12T13:00:00Z'),fixture(17,'future'),fixture(23,'unseen')],START,END,NOW,complete=True)
+    report['football_day']='2026-10-12'
+    p=tmp_path/'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl';p.parent.mkdir(parents=True);p.write_text(json.dumps({'fixture_id':'future','football_day':'2026-10-12'})+'\n')
+    candidates=[r for r in report['competition_coverage'] if r['remaining_prematch_fixtures']]
+    ordered=planner.prioritize(tmp_path,candidates,report,NOW)
+    assert ordered[0]['tournament_id']==23
+    assert next(r for r in ordered if r['tournament_id']==17)['uncaptured_remaining_prematch_fixtures']==0

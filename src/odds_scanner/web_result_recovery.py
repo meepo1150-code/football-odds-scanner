@@ -10,9 +10,10 @@ from .result_recovery_lifecycle import retired_ids
 RESULTS_PATH=Path("data/normalized/oddspapi_finished_results.jsonl")
 QUEUE_PATH=Path("reports/pinnwire_web_result_recovery_queue.json")
 
-def build_queue(root=Path("."), limit=100):
-    snaps=[x for x in _read(root/SNAPSHOTS_PATH) if x.get("provider")=="pinnwire" and in_scope(x)]
-    settled={str(x.get("fixture_id") or "") for x in _read(root/RESULTS_PATH)}
+def build_queue(root=Path("."), limit=10000, *, include_retired=True, providers=None):
+    snaps=[x for x in _read(root/SNAPSHOTS_PATH) if (providers is None or x.get("provider") in providers) and in_scope(x)]
+    conflicted={str(x.get("fixture_id") or "") for x in _read((root/RESULTS_PATH).with_suffix(".conflicts.jsonl"))}
+    settled={str(x.get("fixture_id") or "") for x in _read(root/RESULTS_PATH)} - conflicted
     latest={}
     for s in snaps:
         fid=str(s.get("fixture_id") or "")
@@ -20,8 +21,9 @@ def build_queue(root=Path("."), limit=100):
             latest[fid]=s
     unresolved_total = len(latest)
     retired = retired_ids(root)
-    skipped_retired = sum(fid in retired for fid in latest)
-    latest = {fid: s for fid, s in latest.items() if fid not in retired}
+    retired_unresolved = sum(fid in retired for fid in latest)
+    skipped_retired = 0 if include_retired else retired_unresolved
+    latest = {fid: s for fid, s in latest.items() if include_retired or fid not in retired}
     # One web lookup per deterministic match identity. PinnWire can expose the same
     # match under multiple provider fixture IDs; recovery evidence is match-level.
     identities={}
@@ -31,7 +33,7 @@ def build_queue(root=Path("."), limit=100):
         if "(corners)" in label or " corner" in label:
             skipped_non_match_market+=1
             continue
-        key=(str(s.get("home") or "").strip().casefold(),str(s.get("away") or "").strip().casefold(),str(s.get("kickoff") or ""))
+        key=(str(s.get("home") or "").strip().casefold(),str(s.get("away") or "").strip().casefold(),str(s.get("kickoff") or ""),str(s.get("league") or ""), fid if not s.get("home") or not s.get("away") else "")
         identities.setdefault(key,[]).append((fid,s))
     rows=[]
     for _,group in sorted(identities.items(), key=lambda kv:(str(kv[1][0][1].get("kickoff") or ""),kv[0]))[:limit]:
@@ -47,9 +49,11 @@ def build_queue(root=Path("."), limit=100):
             "required_identity":["home_team","away_team","match_date"],
             "required_result":["ft_home_goals","ft_away_goals"],
             "acceptance_policy":"DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-            "status":"WEB_EVIDENCE_REQUIRED"
+            "provider":s.get("provider"),"league":s.get("league"),"country":s.get("country"),
+            "retired_fixture_ids":[i for i in fixture_ids if i in retired],
+            "status":"MISSING_TEAM_IDENTITY" if not s.get("home") or not s.get("away") else "WEB_EVIDENCE_REQUIRED"
         })
-    payload={"schema_version":"1.0","classification":"PINNWIRE_WEB_RESULT_RECOVERY_QUEUE","generated_at":datetime.now(timezone.utc).isoformat(),"unresolved_total":unresolved_total,"active_unresolved_total":len(latest),"skipped_retired":skipped_retired,"unique_match_identities":len(identities),"duplicate_fixture_ids_collapsed":sum(max(0,len(v)-1) for v in identities.values()),"skipped_non_match_market":skipped_non_match_market,"queued":len(rows),"api_requests_used":0,"validation_relaxed":False,"rows":rows}
+    payload={"schema_version":"1.0","classification":"ALL_PROVIDER_WEB_RESULT_RECOVERY_QUEUE","generated_at":datetime.now(timezone.utc).isoformat(),"unresolved_total":unresolved_total,"active_unresolved_total":unresolved_total-retired_unresolved,"retired_unresolved_total":retired_unresolved,"retired_included":include_retired,"skipped_retired":skipped_retired,"unique_match_identities":len(identities),"duplicate_fixture_ids_collapsed":sum(max(0,len(v)-1) for v in identities.values()),"skipped_non_match_market":skipped_non_match_market,"queued":len(rows),"api_requests_used":0,"validation_relaxed":False,"rows":rows}
     p=root/QUEUE_PATH;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding="utf-8");return payload
 
 def validate_evidence(item):

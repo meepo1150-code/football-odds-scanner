@@ -55,10 +55,10 @@ def _score(match):
     return next(iter(scores)) if len(scores)==1 else None
 
 
-def run(root=Path("."), season=None):
+def run(root=Path("."), season=None, *, include_retired=False):
     season=str(season or datetime.now(timezone.utc).year)
     snaps=_load_jsonl(root/SNAPSHOTS_PATH); existing=_load_jsonl(root/RESULTS_PATH)
-    existing_ids={str(x.get("fixture_id")) for x in existing} | retired_ids(root)
+    existing_ids={str(x.get("fixture_id")) for x in existing} | (set() if include_retired else retired_ids(root))
     index={}
     api_rows=0; requests=0
     for league in LEAGUES:

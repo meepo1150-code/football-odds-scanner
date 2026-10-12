@@ -11,14 +11,16 @@ def dt(value):
     return datetime.fromisoformat(value)
 
 
-def test_exactly_18_weekly_slots_and_legacy_cutover():
+def test_versioned_preparation_slots_and_legacy_cutover():
     week = date(2026, 10, 12)
-    assert sum(len(targets(week + timedelta(days=i))) for i in range(7)) == 18
+    assert sum(len(targets(week + timedelta(days=i))) for i in range(7)) == 22
     assert [t.hour for t in targets('2026-10-17')] == [15,18,21,0]
     assert targets('2026-10-17')[-1].date() == date(2026,10,18)
     assert [t.hour for t in targets('2026-10-11')] == [12,15,18,19,20,21,22]
     assert schedule_version('2026-10-11') == 'BKK_LEGACY_V1'
     assert schedule_version('2026-10-12') == 'BKK_18_SLOTS_V2'
+    assert schedule_version('2026-10-13') == 'BKK_23_SLOTS_V3'
+    assert sum(len(targets(date(2026,10,19)+timedelta(days=i))) for i in range(7))==23
 
 
 def test_both_weekend_midnights_and_utc_conversion():
@@ -63,7 +65,7 @@ def test_missing_midnight_is_finalized_after_150_minutes_without_fetch(tmp_path,
     recovery.run(tmp_path,now)
     rows=recovery.read_ledger(tmp_path)
     assert len(rows)==4 and all(r['state']=='MISSED' and r['requests_used']==0 for r in rows)
-    assert all(r['football_day']=='2026-10-18' and r['schedule_version']=='BKK_18_SLOTS_V2' for r in rows)
+    assert all(r['football_day']=='2026-10-18' and r['schedule_version']=='BKK_23_SLOTS_V3' for r in rows)
 
 
 def test_partial_cohort_empty_receipt_blocks_duplicates_but_never_certifies_full_scope(tmp_path):

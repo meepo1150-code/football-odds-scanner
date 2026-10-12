@@ -64,7 +64,7 @@ def registry():
 
 def plan(rows, start, end, now, *, complete=False):
     targets=registry(); by_id={str(t['tournament_id']):t for t in targets}; counts=Counter(); future=Counter(); rejected=Counter()
-    seen=set()
+    seen=set(); fixture_ids={}; future_ids={}; kickoffs={}
     for f in rows:
         tid=str(f.get('tournamentId')); ko=stamp(f.get('startTime')); fid=f.get('fixtureId')
         if tid not in by_id or not ko or not start<=ko<end or not fid: continue
@@ -72,12 +72,16 @@ def plan(rows, start, end, now, *, complete=False):
         if reason: rejected[reason]+=1;continue
         if str(fid) in seen: continue
         seen.add(str(fid)); counts[tid]+=1
-        if ko>now and f.get('statusId')==0: future[tid]+=1
+        fixture_ids.setdefault(tid,[]).append(str(fid))
+        kickoffs.setdefault(tid,[]).append(ko)
+        if ko>now and f.get('statusId')==0:
+            future[tid]+=1;future_ids.setdefault(tid,[]).append(str(fid))
     coverage=[]
     for t in targets:
         tid=str(t['tournament_id']); n=counts[tid]; remaining=future[tid]
         reason='AWAITING_ODDS' if remaining else 'KICKOFF_PASSED_OR_NOT_PREMATCH' if n else 'NO_MATCHES' if complete else 'NO_SCHEDULE_EVIDENCE'
-        coverage.append({**t,'scheduled_fixtures':n,'remaining_prematch_fixtures':remaining,'reason':reason})
+        coverage.append({**t,'scheduled_fixtures':n,'remaining_prematch_fixtures':remaining,'scheduled_fixture_ids':sorted(fixture_ids.get(tid,[])),'remaining_prematch_fixture_ids':sorted(future_ids.get(tid,[])),
+                         'next_kickoff':min((k for k in kickoffs.get(tid,[]) if k>now),default=now).isoformat() if remaining else None,'reason':reason})
     # Fixture volume is observed, not a league-strength assumption. Stable ID tiebreak.
     candidates=sorted([t for t in coverage if t['remaining_prematch_fixtures']],key=lambda t:(-t['remaining_prematch_fixtures'],t['tournament_id']))
     return candidates, {'master_competitions_considered':len(targets),
@@ -99,3 +103,33 @@ def finish_coverage(report, requested, audits, errors=False):
         row['market_reason_counts']=dict(Counter(x.get('eligibility_reason') for x in evidence))
         row['reason']='OBSERVED' if row['strict_snapshots'] else 'PROVIDER_ERROR' if errors else 'UNMAPPED' if any('UNMAPPED' in str(x.get('eligibility_reason')) or 'CONFLICT' in str(x.get('eligibility_reason')) for x in evidence) else 'NO_MARKET' if evidence else 'NO_MARKET_RESPONSE'
     report['competition_reason_counts']=dict(Counter(x['reason'] for x in report.get('competition_coverage',[])))
+
+
+def prioritize(root, candidates, report, now):
+    """Unseen fixtures first, then least recently queried competitions; exact IDs only."""
+    path=root/'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'
+    captured=set()
+    if path.exists():
+        for line in path.read_text().splitlines():
+            row=json.loads(line)
+            if row.get('football_day')==report.get('football_day'):
+                captured.add(str(row.get('fixture_id')))
+    last={}
+    raw=root/RAW_PATH
+    if raw.exists():
+        for line in raw.read_text().splitlines():
+            row=json.loads(line); observed=stamp(row.get('observed_at'))
+            if row.get('endpoint')!='/odds-by-tournaments' or not observed or observed>now:continue
+            for tid in str(row.get('params',{}).get('tournamentIds','')).split(','):
+                last[tid]=max(observed,last.get(tid,observed))
+    for row in report.get('competition_coverage',[]):
+        expected=set(row.get('scheduled_fixture_ids',[]))
+        row['fixtures_captured_today']=len(expected & captured)
+        row['scheduled_fixtures_without_snapshot']=len(expected-captured)
+        row['uncaptured_remaining_prematch_fixtures']=len(set(row.get('remaining_prematch_fixture_ids',[]))-captured)
+        row['last_market_request_at']=last[str(row['tournament_id'])].isoformat() if str(row['tournament_id']) in last else None
+    report['fixtures_captured_today']=sum(r['fixtures_captured_today'] for r in report.get('competition_coverage',[]))
+    report['scheduled_fixtures_without_snapshot']=sum(r['scheduled_fixtures_without_snapshot'] for r in report.get('competition_coverage',[]))
+    report['market_requests_required_all_remaining_competitions']=(sum(bool(r["remaining_prematch_fixtures"]) for r in report.get("competition_coverage",[]))+4)//5
+    return sorted(candidates,key=lambda r:(-r['uncaptured_remaining_prematch_fixtures'],
+        r.get('last_market_request_at') or '',r.get('next_kickoff') or '',r['tournament_id']))

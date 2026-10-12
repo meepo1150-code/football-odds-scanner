@@ -15,7 +15,8 @@ def _host(url):
 def _same_identity(e,s):
     return (_name(e.get("home"))==_name(s.get("home"))
             and _name(e.get("away"))==_name(s.get("away"))
-            and _utc(e.get("kickoff"))==_utc(s.get("kickoff")))
+            and _utc(e.get("kickoff"))==_utc(s.get("kickoff"))
+            and (not e.get('competition') or _name(e['competition'])==_name(s.get('league'))))
 
 def _quality(e):
     """Validate recorded manual assertions; this does not fetch source pages."""
@@ -71,6 +72,9 @@ def import_evidence(root=Path(".")):
     snaps=_read(root/SNAPSHOTS_PATH)
     by_id={str(s.get("fixture_id")):s for s in snaps if s.get("fixture_id")}
     existing={str(r.get("fixture_id")):r for r in _read(root/RESULTS_PATH) if r.get("fixture_id")}
+    identities={}
+    for s in snaps:
+        identities.setdefault(str(s.get("fixture_id")),set()).add((_name(s.get("home")),_name(s.get("away")),_utc(s.get("kickoff")),_name(s.get("league"))))
     accepted=[]; quarantine=[]; skipped_trusted=[]
     for e in _read(root/EVIDENCE_PATH):
         ids=e.get("fixture_ids") or [e.get("fixture_id")]
@@ -88,6 +92,8 @@ def import_evidence(root=Path(".")):
         valid_ids=[]
         for fid in ids:
             s=by_id.get(fid)
+            if len(identities.get(fid,set()))>1:
+                quarantine.append({"fixture_id":fid,"reason":"CONFLICTING_SOURCE_FIXTURE_IDENTITY"});continue
             if not s or not _same_identity(e,s):
                 quarantine.append({"fixture_id":fid,"reason":"IDENTITY_MISMATCH_OR_UNKNOWN_FIXTURE"}); continue
             old=existing.get(fid)
@@ -100,7 +106,12 @@ def import_evidence(root=Path(".")):
             accepted.append({"fixture_id":fid,"ft_home_goals":e["ft_home_goals"],"ft_away_goals":e["ft_away_goals"],
                 "result_source":"WEB_EVIDENCE_"+qreason,"source_urls":[x.get("url") for x in (e.get("sources") or [])],
                 "retrieved_at":e.get("retrieved_at"),"evidence_status":"FT",
-                "source_assertions":e["sources"],"verification_method":"MANUAL_WEB_REVIEW"})
+                "source_assertions":e["sources"],"verification_method":"MANUAL_WEB_REVIEW",
+                "provider":s.get("provider"), "provider_fixture_id":fid,
+                "canonical_competition_id":s.get("canonical_competition_id"),
+                "home_club_id":s.get("home_club_id"),"away_club_id":s.get("away_club_id"),
+                "evidence_status":"FT", "recovery_batch_id":e.get("recovery_batch_id") or "LEGACY_MANUAL_WEB_REVIEW",
+                "source_names":[x["assertion"]["source_title"] for x in e["sources"]]})
     added=merge_normalized_results(root/RESULTS_PATH,accepted)
     report={"classification":"WEB_RESULT_EVIDENCE_IMPORT","evidence_rows":len(_read(root/EVIDENCE_PATH)),
       "accepted_rows":len(accepted),"results_added":added,"skipped_trusted":sorted(set(skipped_trusted)),

@@ -201,6 +201,7 @@ def run(root=Path('.')):
             complete=len(schedule_rows)<schedule.SCHEDULE_LIMIT and isinstance(cached['payload'],list)
             selected,scope=schedule.plan(schedule_rows,ws,we,datetime.now(timezone.utc),complete=complete)
             report.update(scope,schedule_response_id=cached['response_id'],schedule_observed_at=cached['observed_at'],schedule_requests_used=used)
+            selected=schedule.prioritize(root,selected,report,datetime.now(timezone.utc))
             ids,budget=allocation(root/SLOT_LEDGER_PATH,[x['tournament_id'] for x in selected],now,BATCH_SIZE,prioritized=True,overhead=used,manual=manual)
             report.update(budget)
             selected=[x for x in selected if x['tournament_id'] in ids]
@@ -270,7 +271,10 @@ def run(root=Path('.')):
             diag.append({'country':tm.get('country'),'league':tm.get('tournament_name'),'fixture_id':f.get('fixtureId'),'bookmaker_active':active,'ah_main_count':shape.get('ah_main_count',0),'ou_main_count':shape.get('ou_main_count',0),'strict_snapshot':snap is not None,'reason':reason});audit.append({'football_day':day,'fixture_id':f.get('fixtureId'),'tournament_id':f.get('tournamentId'),'country':tm.get('country'),'league':tm.get('tournament_name'),'home':f.get('participant1Name'),'away':f.get('participant2Name'),'kickoff':f.get('startTime'),'observed_at':observed_at.isoformat(),'scheduled_target_at':target.isoformat() if target else None,'schedule_lag_minutes':batch_lag,'observation_timing':timing,'bookmaker':BOOKMAKER,'eligibility_status':'MATCH' if snap else 'NOT_MATCH','eligibility_reason':reason,'research_population':True})
             if snap and in_scope(snap):snap.update(football_day=day,research_only=True,scheduled_target_at=target.isoformat() if 0<=batch_lag<=RECOVERY_WINDOW_MINUTES else None,attempted_target_at=target.isoformat(),schedule_lag_minutes=batch_lag,observation_timing=timing);strict.append(snap)
     ts=_merge_jsonl(root/SNAPSHOT_PATH,strict,('observed_at','fixture_id'));ta=_merge_jsonl(root/AUDIT_PATH,audit,('observed_at','fixture_id'));report.update(status='RESEARCH_V2_OBSERVED',requests_used=used,rate_limit_retries=retries,api_fixtures_returned=alln,excluded_outside_football_day=excluded,football_day_fixtures=len(audit),strict_snapshots_this_run=len(strict),persisted_snapshot_rows=ts,persisted_audit_rows=ta,**summarize_rows(diag))
-    if master_mode:schedule.finish_coverage(report,ids,audit,request_failed)
+    if master_mode:
+        schedule.finish_coverage(report,ids,audit,request_failed)
+        schedule.prioritize(root,[],report,datetime.now(timezone.utc))
+        report['additional_market_requests_required']= (sum(r['reason']=='QUOTA_SKIPPED' for r in report['competition_coverage'])+BATCH_SIZE-1)//BATCH_SIZE
     invalid=report['invalid_payload_batches'] or report['excluded_unrequested_scope_fixtures']
     if invalid:
         report.setdefault('errors',[]).append('PROVIDER_PAYLOAD_OR_REQUESTED_SCOPE_REJECTED')
