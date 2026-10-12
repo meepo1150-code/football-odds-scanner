@@ -112,5 +112,5 @@ def test_weekend_last_slot_remains_recoverable_after_midnight():
 def test_watchdog_has_last_weekend_recovery_heartbeats():
     from pathlib import Path
     workflow=Path('.github/workflows/research-v2-slot-watchdog.yml').read_text()
-    assert "'10,30,50 16 * * 6,0'" in workflow
-    assert "'10,30 17 * * 6,0'" in workflow
+    assert "'10,30,50 8,9,11,12,14,15,17,18 * * 0,6'" in workflow
+    assert "'10,30 10,13,16,19 * * 0,6'" in workflow

@@ -28,6 +28,21 @@ def _score(r):
     h,a=r.get('ft_home_goals'),r.get('ft_away_goals')
     if type(h) is not int or type(a) is not int:return None
     return (h,a) if h>=0 and a>=0 else None
+def _prematch_order(row):
+    """Timestamp ordering is chronological across UTC offsets; missing is unsafe."""
+    from .research_v2_slots import stamp
+    observed, kickoff = stamp(row.get('observed_at')), stamp(row.get('kickoff'))
+    if observed is None or kickoff is None or observed >= kickoff:
+        return None
+    ah = row.get('ah') or {}
+    if not isinstance(ah, dict):return None
+    side = row.get('favorite_side')
+    hl,al,hp,ap,sl,sp = (_num(ah.get(k)) for k in
+        ('home_line','away_line','home_price','away_price','selected_side_line','selected_side_price'))
+    if any(x is None for x in (hl,al,hp,ap,sl,sp)) or side not in ('H','A'):return None
+    if abs(hl+al)>1e-9 or abs(sl*4-round(sl*4))>1e-9 or min(hp,ap)<=1:return None
+    if abs(sl-(hl if side=='H' else al))>1e-9 or abs(sp-(hp if side=='H' else ap))>1e-9:return None
+    return (observed, str(row.get('provider') or ''), str(row.get('source_fixture_id') or row.get('fixture_id') or ''))
 def _prob_bucket(v):
     p=_num(v)
     if p is None:return 'UNKNOWN'
@@ -95,7 +110,7 @@ def _signal(n,roi,ci):
 def pending_age_counts(rows, now):
     counts={'active_overdue_ft_fixtures':0,'active_future_or_recent_ft_fixtures':0,'active_unknown_kickoff_ft_fixtures':0}
     for row in rows:
-        if row.get('status')=='RETIRED_UNRESOLVED':continue
+        if row.get('status') in {'RETIRED_UNRESOLVED','POSTPONED','CANCELLED','ABANDONED'} or row.get('retired_from_active_queue'):continue
         try:
             kickoff=datetime.fromisoformat(str(row.get('kickoff')).replace('Z','+00:00'))
             if kickoff.tzinfo is None:raise ValueError('timezone required')
@@ -117,6 +132,8 @@ def build(root=Path('.')):
     mapping, identity_report = build_bridge(snaps)
     provider_fixture_ids = len({str(s.get('fixture_id')) for s in snaps})
     snaps = project(snaps, mapping)
+    from .verified_fixture_lifecycle import verified_statuses
+    lifecycle = {mapping.get(fid,fid):r for fid,r in verified_statuses(root,raw_snaps).items()}
     # Map exact source IDs only through the verified bridge. A conflict under
     # either source ID blocks the whole canonical match.
     results, ambiguous = _result_index(project(_rows(root/RESULTS), mapping))
@@ -125,25 +142,28 @@ def build(root=Path('.')):
     ip = root/'reports/research_v2_fixture_identity.json'
     ip.parent.mkdir(parents=True,exist_ok=True)
     ip.write_text(json.dumps(identity_report,ensure_ascii=False,indent=2)+'\n')
+    invalid_selection = [s for s in snaps if _prematch_order(s) is None]
     for s in snaps:
-        if s.get('fixture_id'):grouped[str(s['fixture_id'])].append(s)
-    for ss in grouped.values():ss.sort(key=lambda x:(str(x.get('observed_at') or ''),str(x.get('source_fixture_id') or x.get('fixture_id') or '')))
+        if s.get('fixture_id') and _prematch_order(s) is not None:grouped[str(s['fixture_id'])].append(s)
+    for ss in grouped.values():ss.sort(key=_prematch_order)
     retired={mapping.get(fid,fid) for fid in retired_ids(root)}
     outcomes=[];missing=0;missing_by_provider=Counter();unique_by_provider=Counter();excluded_derivative=0;missing_rows=[]
     for fid,ss in sorted(grouped.items()):
         provider=str(ss[-1].get('provider') or ('oddspapi' if str(ss[-1].get('source_semantics','')).startswith('CURRENT_ODDSPAPI_') else 'UNRESOLVED_PROVIDER'))
         unique_by_provider[provider]+=1
-        if fid in ambiguous:continue
         last=ss[-1]
         derivative=bool(__import__('re').search(r'\\((?:corners?|bookings?|cards?)\\)',str(last.get('home') or '')+' '+str(last.get('away') or ''),__import__('re').I))
         if derivative:
             excluded_derivative+=1
             continue
-        r=results.get(fid)
+        r=results.get(fid) if fid not in ambiguous else None
         if not r:
             missing+=1
             missing_by_provider[provider]+=1
-            missing_rows.append({'fixture_id':fid,'provider':provider,'football_day':last.get('football_day'),'league':last.get('league'),'kickoff':last.get('kickoff'),'home':last.get('home'),'away':last.get('away'),'status':'RETIRED_UNRESOLVED' if fid in retired else 'MISSING_FT','country':last.get('country'),'canonical_competition_id':last.get('canonical_competition_id'),'required_identity':'EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF'})
+            missing_rows.append({'fixture_id':fid,'provider':provider,'football_day':last.get('football_day'),'league':last.get('league'),'kickoff':last.get('kickoff'),'home':last.get('home'),'away':last.get('away'),'status':'IDENTITY_CONFLICT' if fid in ambiguous or fid in blocked_results else 'RETIRED_UNRESOLVED' if fid in retired else 'MISSING_FT','country':last.get('country'),'canonical_competition_id':last.get('canonical_competition_id'),'required_identity':'EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF'})
+            missing_rows[-1]['retired_from_active_queue']=fid in retired
+            if fid in lifecycle and fid not in ambiguous and fid not in blocked_results:
+                missing_rows[-1].update(status=lifecycle[fid]['status'],lifecycle_source_url=lifecycle[fid]['source']['url'])
             continue
         s=ss[-1];h,a=_score(r);fav=str(s.get('favorite_side') or '').upper();ah=s.get('ah') or {};one=s.get('one_x_two') or {};au=ag.get((str(s.get('source_fixture_id') or fid),str(s.get('observed_at'))),{});settle=None;profit_units=None;dog_profit_units=None
         try:
@@ -185,6 +205,16 @@ def build(root=Path('.')):
         b=bmap.get((x['market_side'],x['ah_line']));x['baseline_favorite_price_win_pct']=b;x['difference_vs_line_baseline_pp']=round(x['favorite_price_win_pct']-b,2) if b is not None and x['favorite_price_win_pct'] is not None else None
     payload={'schema_version':'2.9','population_policy':POLICY,'scope_excluded_snapshot_rows':len(scope_excluded),'scope_excluded_fixture_ids':sorted({str(x.get('fixture_id')) for x in scope_excluded}),'scope_exclusion_counts':dict(Counter(exclusion_reason(x) for x in scope_excluded)),'provider_fixture_ids':provider_fixture_ids,'raw_unresolved_provider_fixture_ids':raw_provider_unresolved,'fixture_identity_bridges':identity_report['bridges'],'collapsed_provider_fixture_ids':identity_report['collapsed_provider_ids'],'snapshot_selection':'LATEST_VERIFIED_OBSERVATION_THEN_SOURCE_FIXTURE_ID_TIEBREAK','classification':'RESEARCH_V2_AH_MARKET_STATE_STATISTICS','statistical_population_policy':'VERIFIED_FT_ONLY; RAW UNRESOLVED FIXTURES QUARANTINED AND EXCLUDED','generated_at':datetime.now(timezone.utc).isoformat(),'research_only':True,'recommendation_semantics':False,'signal_policy':'DESCRIPTIVE_ONLY; NO EDGE TEST FROM WIN RATE; FROZEN PROMOTION GATES UNCHANGED','primary_market':'ASIAN_HANDICAP','core_ah_decimal_odds_range':[1.80,2.20],'price_buckets':['1.80-1.89','1.90-1.99','2.00-2.09','2.10-2.20'],'one_x_two_role':'CONTEXT_FAIR_PROBABILITY_ONLY','price_win_definition':'ASIAN_HANDICAP_SETTLEMENT_ONLY','ou25_source':'EXACT_2_5_TWO_SIDED_PREMATCH_WITH_PROVENANCE_ONLY','ou25_frequency_population':'VERIFIED_FT_GROUPED_BY_AH_STATE; PRICED_RETURNS_USE_SEPARATE_VERIFIED_QUOTE_N','ou25_quote_status_counts':dict(Counter(x['ou25_quote_status'] for x in outcomes)),'snapshot_rows':len(snaps),'raw_snapshot_rows':len(raw_snaps),'quarantined_snapshot_rows':quarantined_snapshots,'quarantine_policy':'LEGACY_PROPLINE_EXCLUDED; VERIFIED_PINNACLE_TWO_SIDED_CORE_MAINLINE_ALLOWED','unique_snapshot_fixtures':len(grouped),'settled_fixtures':len(outcomes),'core_price_settled_fixtures':sum(x['ah_core_price'] for x in outcomes),'missing_result_fixtures':0,'raw_unresolved_ft_fixtures':missing,'active_unresolved_ft_fixtures':missing-len(retired_missing),'retired_unresolved_ft_fixtures':len(retired_missing),'retired_unresolved_fixture_ids':retired_missing,'excluded_missing_ft_from_statistical_population':missing,'excluded_derivative_markets_from_ft_completeness':excluded_derivative,'eligible_statistical_fixtures':len(outcomes),'ft_completeness_pct':100.0,'missing_result_fixtures_by_provider':{},'unique_snapshot_fixtures_by_provider':dict(sorted(unique_by_provider.items())),'pinnwire_missing_result_fixtures':0,'non_pinnwire_missing_result_fixtures':0,'raw_unresolved_ft_by_provider':dict(sorted(missing_by_provider.items())),'raw_pinnwire_unresolved_ft':missing_by_provider.get('pinnwire',0),'raw_non_pinnwire_unresolved_ft':missing-missing_by_provider.get('pinnwire',0),'ambiguous_result_fixtures':len(ambiguous),'baseline_by_market_side_line':baseline,'market_state_by_side_line_price':by_state,'market_state_by_side_line_price_probability':aggregate(['market_side','ah_line','ah_price_bucket','favorite_probability_bucket'],True),'market_state_by_side_line_price_movement':aggregate(['market_side','ah_line','ah_price_bucket','movement'],True),'all_by_movement':aggregate(['movement']),'over_under_2_5_by_ah_line':aggregate_ou(['market_side','ah_line'],True),'over_under_2_5_by_ah_line_price':aggregate_ou(['market_side','ah_line','ah_price_bucket'],True)}
     payload['identity_group_semantics']='PROVIDER_LOCAL_FIXTURE_IDS_PLUS_VERIFIED_BRIDGES; UNLINKED_PROVIDER_IDS_MAY_REFER_TO_SAME_REAL_MATCH'
+    payload['snapshot_selection']='LATEST_VALID_STRICT_PREMATCH_OBSERVATION_UTC_THEN_PROVIDER_SOURCE_ID_TIEBREAK'
+    payload['invalid_statistical_snapshot_rows']=len(invalid_selection)
+    payload['wr_definition']='(FULL_WIN + HALF_WIN) / ALL_SETTLED_INCLUDING_PUSH; HALF_WIN_IS_POSITIVE_RETURN_EVENT; SEE_SEPARATE_HALF_COUNTS_AND_ROI'
+    payload['ft_completeness_denominator']=len(outcomes)+missing
+    payload['ft_completeness_pct']=round(100*len(outcomes)/(len(outcomes)+missing),2) if len(outcomes)+missing else None
+    payload['ft_completeness_population']='ALL_ELIGIBLE_IDENTITY_GROUPS_INCLUDING_RETIRED_AND_CONFLICTED; NOT_VERIFIED_SUBSET_ONLY'
+    payload['statistical_subset_ft_completeness_pct']=100.0 if outcomes else None
+    payload['identity_conflict_ft_fixtures']=sum(r['status']=='IDENTITY_CONFLICT' for r in missing_rows)
+    payload['verified_non_ft_lifecycles']={fid:{'status':r['status'],'source_url':r['source']['url']} for fid,r in lifecycle.items()}
+    payload['postponed_cancelled_abandoned_fixtures']=sum(r['status'] in {'POSTPONED','CANCELLED','ABANDONED'} for r in missing_rows)
     payload['verified_cross_provider_canonical_fixtures']=identity_report['bridged_matches']
     payload['unlinked_provider_fixture_groups']=len(grouped)-identity_report['bridged_matches']
     payload['movement_classification_counts']=dict(Counter(x['movement'] for x in outcomes))

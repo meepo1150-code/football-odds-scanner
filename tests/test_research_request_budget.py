@@ -24,7 +24,20 @@ def test_budget_rotation_caps_and_deduplicates(tmp_path):
     assert len(allocation(path,ids,NOW+timedelta(days=1))[0])<=10
     path.write_text(json.dumps(row(NOW-timedelta(days=1),180)))
     assert allocation(path,ids,NOW)[0]==[]
-    assert len(allocation(path,ids,datetime(2026,11,1,tzinfo=timezone.utc))[0])==10
+    assert len(allocation(path,ids,datetime(2026,11,1,tzinfo=timezone.utc))[0])==5
+
+
+def test_four_weekend_slots_have_primary_budget_and_same_cohort(tmp_path):
+    path=tmp_path/'ledger';ids=list(range(54));cohorts=[];receipts=[]
+    for hour in (8,11,14,17):
+        now=datetime(2026,10,17,hour,tzinfo=timezone.utc)
+        chosen,report=allocation(path,ids,now)
+        assert len(chosen)==5 and report['research_run_limit']==1
+        cohorts.append(chosen)
+        receipts.append(row(now,1,str(hour)))
+        path.write_text('\n'.join(json.dumps(x) for x in receipts))
+    assert all(x==cohorts[0] for x in cohorts)
+    assert report['research_requests_used_today']==3
 
 
 def test_exhausted_daily_budget_calls_no_provider_even_when_forced(tmp_path,monkeypatch):

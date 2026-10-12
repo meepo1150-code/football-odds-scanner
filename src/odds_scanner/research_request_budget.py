@@ -32,14 +32,21 @@ def allocation(path, ids, now, batch_size=5):
             attempts[key] = max(used, attempts.get(key, 0))
     monthly = sum(v for (_, t), v in attempts.items() if (t.year,t.month)==(now.year,now.month))
     daily = sum(v for (_, t), v in attempts.items() if t.date()==now.date())
-    remaining = max(0, min(RUN_LIMIT, DAILY_LIMIT-daily, MONTHLY_LIMIT-monthly))
+    from .research_v2_slots import targets, target_football_day
+    slot_count = len(targets(target_football_day(now)))
+    # Reserve capacity for every canonical slot, including weekend midnight.
+    # Four slots cannot each consume two requests under the six/day ceiling.
+    run_limit = min(RUN_LIMIT, max(1, DAILY_LIMIT // slot_count)) if slot_count == 4 else RUN_LIMIT
+    remaining = max(0, min(run_limit, DAILY_LIMIT-daily, MONTHLY_LIMIT-monthly))
     batches = [ids[i:i+batch_size] for i in range(0,len(ids),batch_size)]
     chosen = [batches[(now.date().toordinal()+i)%len(batches)] for i in range(min(remaining,len(batches)))] if batches else []
     return [x for b in chosen for x in b], {
         'request_budget_policy':'RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH',
         'research_requests_used_today':daily, 'research_requests_used_month':monthly,
         'research_daily_limit':DAILY_LIMIT, 'research_monthly_limit':MONTHLY_LIMIT,
-        'research_run_limit':RUN_LIMIT,
+        'research_run_limit':run_limit,
+        'canonical_slots_in_football_day':slot_count,
+        'canonical_request_reservation':'ONE_BATCH_PER_WEEKEND_SLOT; TWO_PER_WEEKDAY_SLOT; FAILED_ATTEMPTS_COUNT',
         'budget_scope':'ODDSPAPI_RESEARCH_COLLECTOR_ONLY',
         'coverage_mode':'DAILY_STABLE_COHORT_WITH_REPEAT_OBSERVATIONS',
         'coverage_complete':len(chosen)==len(batches),

@@ -24,7 +24,7 @@ def test_scope_rebuild_preserves_raw_results_and_quarantine(tmp_path):
     from datetime import datetime, timezone
     snapshots=[]
     for fid,league in [('senior','Premier League'),('women','Women League'),('youth','U21 League')]:
-        snapshots.append({'fixture_id':fid,'provider':'pinnwire','league':league,'home':'Home','away':'Away','kickoff':'2026-09-20T12:00:00Z','observed_at':'2026-09-20T10:00:00Z','favorite_side':'H','ah':{'selected_side_line':-.5,'selected_side_price':1.9}})
+        snapshots.append({'fixture_id':fid,'provider':'pinnwire','league':league,'home':'Home','away':'Away','kickoff':'2026-09-20T12:00:00Z','observed_at':'2026-09-20T10:00:00Z','favorite_side':'H','ah':{'home_line':-.5,'away_line':.5,'home_price':1.9,'away_price':2.0,'selected_side_line':-.5,'selected_side_price':1.9}})
     (tmp_path/SNAPSHOTS).parent.mkdir(parents=True)
     (tmp_path/SNAPSHOTS).write_text(''.join(json.dumps(r)+'\n' for r in snapshots))
     (tmp_path/RESULTS).write_text(''.join(json.dumps({'fixture_id':s['fixture_id'],'ft_home_goals':1,'ft_away_goals':0})+'\n' for s in snapshots))
