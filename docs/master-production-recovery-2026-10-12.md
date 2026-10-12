@@ -27,3 +27,7 @@ The targeted scheduling, coverage, web provenance, quarter settlement, WR and de
 On October 12 the collector ledger records **6/6** research requests used, 76/180 for the month. No additional manual odds scan may be fired today under that budget. Existing sixteen observations and twelve provider fixture IDs remain real evidence, but do not imply all forty-four scheduled matches were captured. GitHub scheduling can lag; missed pre-kickoff prices cannot be recovered from current quotes.
 
 **Not production certified:** retired FT backlog is still unresolved, first real weekday 15:00 observation is future, all-league market coverage remains quota/market limited, API-Football account is suspended, and old provider-local identities cannot all be canonically linked from the retained data. New 15:00 scheduled runtime and upcoming weekend confirmations are explicitly pending; passing CI or merge is insufficient.
+
+## Offline raw response replay
+
+`master_response_replay` reuses original response receipt times and exact requested tournament/fixture identities. Missing canonical clubs and invalid/in-play quotes remain quarantined; new records append without changing previous snapshot bytes. Repeated replay is idempotent and makes zero HTTP calls. Actual saved-response replay checked two original responses and added zero quotes: all recoverable current responses were already persisted. Older missing prices cannot be reconstructed because those older full responses were not retained.
