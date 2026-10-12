@@ -41,11 +41,18 @@ def test_four_weekend_slots_have_primary_budget_and_same_cohort(tmp_path):
 
 
 def test_exhausted_daily_budget_calls_no_provider_even_when_forced(tmp_path,monkeypatch):
+    now=datetime(2026,10,12,14,tzinfo=timezone.utc)
+    class Clock(datetime):
+        @classmethod
+        def now(cls,tz=None):
+            return now.astimezone(tz) if tz else now.replace(tzinfo=None)
+    monkeypatch.setattr(collector,'datetime',Clock)
+    monkeypatch.delenv('RESEARCH_V2_FORCE_TARGET_AT',raising=False)
     monkeypatch.setenv('RESEARCH_V2_FORCE_RUN','true')
     target=tmp_path/collector.TARGET_PATH;target.parent.mkdir(parents=True)
     target.write_text(json.dumps({'tournaments':[{'tournament_id':n} for n in range(54)]}))
     ledger=tmp_path/collector.SLOT_LEDGER_PATH;ledger.parent.mkdir(parents=True)
-    ledger.write_text(json.dumps(row(datetime.now(timezone.utc),6)))
+    ledger.write_text(json.dumps(row(now,6)))
     monkeypatch.setattr(collector,'_get',lambda *a:pytest.fail('budget blocked before API call'))
     result=collector.run(tmp_path)
     assert result['status']=='SKIPPED_RESEARCH_REQUEST_BUDGET'

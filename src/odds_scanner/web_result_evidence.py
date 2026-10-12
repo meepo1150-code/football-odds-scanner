@@ -69,6 +69,8 @@ def _quality(e):
     return False,"INSUFFICIENT_SOURCE_CORROBORATION"
 
 def import_evidence(root=Path(".")):
+    evidence_files=[root/EVIDENCE_PATH]+sorted((root/EVIDENCE_PATH.parent).glob('web_result_evidence_*.jsonl'))
+    evidence=[row for path in evidence_files for row in _read(path)]
     snaps=_read(root/SNAPSHOTS_PATH)
     by_id={str(s.get("fixture_id")):s for s in snaps if s.get("fixture_id")}
     existing={str(r.get("fixture_id")):r for r in _read(root/RESULTS_PATH) if r.get("fixture_id")}
@@ -76,7 +78,7 @@ def import_evidence(root=Path(".")):
     for s in snaps:
         identities.setdefault(str(s.get("fixture_id")),set()).add((_name(s.get("home")),_name(s.get("away")),_utc(s.get("kickoff")),_name(s.get("league"))))
     accepted=[]; quarantine=[]; skipped_trusted=[]
-    for e in _read(root/EVIDENCE_PATH):
+    for e in evidence:
         ids=e.get("fixture_ids") or [e.get("fixture_id")]
         ids=[str(x) for x in ids if x]
         # Expand only across the exact deterministic match identity.
@@ -113,7 +115,8 @@ def import_evidence(root=Path(".")):
                 "evidence_status":"FT", "recovery_batch_id":e.get("recovery_batch_id") or "LEGACY_MANUAL_WEB_REVIEW",
                 "source_names":[x["assertion"]["source_title"] for x in e["sources"]]})
     added=merge_normalized_results(root/RESULTS_PATH,accepted)
-    report={"classification":"WEB_RESULT_EVIDENCE_IMPORT","evidence_rows":len(_read(root/EVIDENCE_PATH)),
+    report={"classification":"WEB_RESULT_EVIDENCE_IMPORT","evidence_rows":len(evidence),
+      "evidence_files":[str(p.relative_to(root)) for p in evidence_files if p.exists()],
       "accepted_rows":len(accepted),"results_added":added,"skipped_trusted":sorted(set(skipped_trusted)),
       "quarantine":quarantine,"api_requests_used":0,"validation_relaxed":False,
       "provenance_policy":"PER_SOURCE_MANUAL_ASSERTIONS_REQUIRED",

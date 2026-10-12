@@ -15,6 +15,14 @@ def test_retry_after_respects_provider_and_minimum():
 
 
 def test_rate_limit_stops_batches_and_next_run_without_touching_raw(tmp_path, monkeypatch):
+    # Exercise 429 handling inside a known valid slot, independently of CI time.
+    class Clock(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            value = datetime(2026, 10, 12, 14, tzinfo=timezone.utc)
+            return value.astimezone(tz) if tz else value.replace(tzinfo=None)
+    monkeypatch.setattr(collector, 'datetime', Clock)
+    monkeypatch.delenv('RESEARCH_V2_FORCE_TARGET_AT', raising=False)
     monkeypatch.setenv(collector.ENV_KEY, 'test-only')
     monkeypatch.setenv('RESEARCH_V2_FORCE_RUN', 'true')
     target = tmp_path / collector.TARGET_PATH
