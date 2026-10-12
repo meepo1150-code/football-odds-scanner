@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-12T21:44:40.834415+00:00",
+  "generated_at": "2026-10-12T22:52:18.849447+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 818,
+  "settled_fixtures": 823,
   "movement_classification_counts": {
-    "AH_LINE_UNCHANGED__PRICE_DOWN": 65,
-    "SINGLE_OBSERVATION": 627,
-    "AH_LINE_UNCHANGED__PRICE_UP": 47,
+    "AH_LINE_UNCHANGED__PRICE_DOWN": 66,
+    "SINGLE_OBSERVATION": 630,
+    "AH_LINE_UNCHANGED__PRICE_UP": 48,
     "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 12,
     "FAVORITE_SWITCH": 4,
     "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 8,
@@ -21,7 +21,7 @@
     "evaluation": "RETROSPECTIVE_VIEWED_DATA_CHRONOLOGICAL_WALK_FORWARD_BY_FOOTBALL_DAY",
     "untouched_holdout": false,
     "promotion_allowed": false,
-    "unique_eligible_fixtures": 190,
+    "unique_eligible_fixtures": 192,
     "unique_evaluated_fixtures": 23,
     "metric": "BASELINE_MSE_MINUS_MOVEMENT_MSE; POSITIVE_IS_BETTER",
     "mean_squared_error_improvement": -0.008124026271913358,
@@ -33,19 +33,19 @@
     "movement_model": "SAME_BASELINE + MOVEMENT; SHRINKAGE_10_BASELINE_OBSERVATIONS",
     "multiple_testing_policy": "ONE_PREDEFINED_INCREMENTAL_COMPARISON; SUBGROUPS_DESCRIPTIVE_ONLY; NO_PROMOTION_OR_EDGE_CLAIMS; NEW_UNVIEWED_PERIOD_REQUIRED",
     "observation_gap_minutes": {
-      "n": 190,
+      "n": 192,
       "min": 0.713,
       "median": 202.761,
       "max": 649.593
     },
     "first_minutes_before_kickoff": {
-      "n": 190,
+      "n": 192,
       "min": 43.721,
-      "median": 359.552,
+      "median": 354.132,
       "max": 940.905
     },
     "last_minutes_before_kickoff": {
-      "n": 190,
+      "n": 192,
       "min": 0.501,
       "median": 172.291,
       "max": 577.827
@@ -121,18 +121,18 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_DOWN",
-        "unique_fixture_n": 65,
-        "roi_pct": 7.67,
+        "unique_fixture_n": 66,
+        "roi_pct": 7.553,
         "profit_mean_bootstrap95": [
-          -0.136307,
-          0.281065
+          -0.129892,
+          0.276756
         ],
         "settlements": {
           "FULL_LOSS": 22,
           "FULL_WIN": 29,
           "HALF_LOSS": 3,
           "HALF_WIN": 5,
-          "PUSH": 6
+          "PUSH": 7
         }
       },
       {
@@ -153,14 +153,14 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_UP",
-        "unique_fixture_n": 47,
-        "roi_pct": 8.262,
+        "unique_fixture_n": 48,
+        "roi_pct": 10.506,
         "profit_mean_bootstrap95": [
-          -0.197383,
-          0.347059
+          -0.176062,
+          0.38879
         ],
         "settlements": {
-          "FULL_WIN": 23,
+          "FULL_WIN": 24,
           "FULL_LOSS": 18,
           "PUSH": 2,
           "HALF_LOSS": 3,
@@ -423,36 +423,11 @@
     ]
   },
   "ft_triage_counts": {
-    "RETIRED_UNRESOLVED": 218,
+    "RETIRED_UNRESOLVED": 216,
     "POSTPONED": 1,
-    "FUTURE_OR_RECENT": 3,
     "IDENTITY_CONFLICT": 2
   },
   "ft_triage_groups": [
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Italy",
-      "canonical_competition_id": "ITA-0001",
-      "league": "Serie A",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0001",
-      "league": "LaLiga",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0002",
-      "league": "LaLiga 2",
-      "n": 1
-    },
     {
       "lifecycle": "IDENTITY_CONFLICT",
       "provider": "pinnwire",
@@ -668,14 +643,6 @@
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "league": "England - National League North",
       "n": 1
-    },
-    {
-      "lifecycle": "RETIRED_UNRESOLVED",
-      "provider": "pinnwire",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "league": "England - National League South",
-      "n": 2
     },
     {
       "lifecycle": "RETIRED_UNRESOLVED",
@@ -1523,60 +1490,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000000872478614",
-      "provider": "oddspapi",
-      "football_day": "2026-10-12",
-      "league": "LaLiga",
-      "kickoff": "2026-10-12T19:00:00+00:00",
-      "home": "Levante UD",
-      "away": "Sevilla FC",
-      "status": "MISSING_FT",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000002371945304",
-      "provider": "oddspapi",
-      "football_day": "2026-10-12",
-      "league": "Serie A",
-      "kickoff": "2026-10-12T18:45:00+00:00",
-      "home": "Torino FC",
-      "away": "Udinese Calcio",
-      "status": "MISSING_FT",
-      "country": "Italy",
-      "canonical_competition_id": "ITA-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000005472477490",
-      "provider": "oddspapi",
-      "football_day": "2026-10-12",
-      "league": "LaLiga 2",
-      "kickoff": "2026-10-12T19:00:00+00:00",
-      "home": "Tenerife CD",
-      "away": "Girona FC",
-      "status": "MISSING_FT",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000056273086638",
       "provider": "oddspapi",
       "football_day": "2026-10-08",
@@ -1919,24 +1832,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "pinnwire:1637067860",
-      "provider": "pinnwire",
-      "football_day": "2026-09-26",
-      "league": "England - National League South",
-      "kickoff": "2026-09-26T14:00:00+00:00",
-      "home": "Dagenham and Redbridge",
-      "away": "Hampton and Richmond Borough",
-      "status": "RETIRED_UNRESOLVED",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": true,
-      "lifecycle": "RETIRED_UNRESOLVED",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "pinnwire:1637069464",
       "provider": "pinnwire",
       "football_day": "2026-09-26",
@@ -2178,24 +2073,6 @@
       "kickoff": "2026-09-26T14:00:00+00:00",
       "home": "Tallinna JK Legion",
       "away": "Narva Trans II",
-      "status": "RETIRED_UNRESOLVED",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": true,
-      "lifecycle": "RETIRED_UNRESOLVED",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "pinnwire:1637076101",
-      "provider": "pinnwire",
-      "football_day": "2026-09-26",
-      "league": "England - National League South",
-      "kickoff": "2026-09-26T14:00:00+00:00",
-      "home": "Dover Athletic",
-      "away": "Totton",
       "status": "RETIRED_UNRESOLVED",
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
