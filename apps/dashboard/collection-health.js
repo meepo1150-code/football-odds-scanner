@@ -31,6 +31,19 @@
     const [e2e,hist]=await Promise.all(['research_v2_end_to_end_audit','oddspapi_history_audit'].map(async name=>{let r=await fetch('reports/'+name+'.json',{cache:'no-store'});return r.ok?r.json():null;}));
     if(e2e){const m=e2e.movement_evaluation;line('p','Movement: '+JSON.stringify(e2e.movement_classification_counts));line('p','Chronological viewed-data evaluation: '+m.unique_evaluated_fixtures+' groups / '+m.unique_eligible_fixtures+' comparable groups · '+m.status+' · research only');line('p','FT lifecycle: '+JSON.stringify(e2e.ft_triage_counts)+' · no raw deletion');const d=document.createElement('details');card.append(d);const summary=document.createElement('summary');summary.textContent='FT ค้าง แยก provider / country / canonical competition';d.append(summary);const pre=document.createElement('pre');pre.style.whiteSpace='pre-wrap';pre.textContent=JSON.stringify(e2e.ft_triage_groups.filter(r=>r.lifecycle==='ACTIVE_OVERDUE'),null,2);d.append(pre);}
     if(hist)line('p','Historical archive audit '+hist.source_archive_rows+' source rows · '+hist.generated_at+' · exploratory only');
+    const get=async name=>{const response=await fetch('reports/'+name+'.json?t='+Date.now(),{cache:'no-store'});return response.ok?response.json():null;};
+    const [scan,prep]=await Promise.all([get('europe_pinnacle_research_v2_status'),get('daily_preparation_status')]);
+    line('h2','Coverage และการกู้ผล');
+    line('p','Code health: offline assertions '+(report.data_assertions_passed?'PASS':'FAIL')+' · Collection health: '+collection.collection_state+' · Data quality: '+report.status+' · Workflow success ต้องตรวจแยกจาก data coverage');
+    if(scan){
+      line('p','Last scan status '+scan.status+' · Target '+scan.scheduled_target_at+' · Actual '+scan.actual_observed_at+' · Lag '+scan.schedule_lag_minutes+' นาที');
+      line('p','พิจารณา '+(scan.master_competitions_considered??'—')+' ลีก · โปรแกรม '+(scan.scheduled_approved_fixtures??'—')+' คู่ · เก็บสะสม '+(scan.fixtures_captured_today??'—')+' คู่ · ยังไม่มีราคา '+(scan.scheduled_fixtures_without_snapshot??'—')+' คู่ · requests เพิ่มสำหรับลีกที่ถูกข้าม '+(scan.additional_market_requests_required??'—'));
+      line('p','Quota ล่าสุดก่อนยิง '+(scan.quota_remaining_before??'UNKNOWN')+' · รอบนี้ใช้ '+(scan.requests_used??0)+' · '+(scan.coverage_complete?'พิจารณา scope ตาม receipt แล้ว':'COVERAGE GAPS REMAIN'));
+      const detail=document.createElement('details');card.append(detail);const summary=document.createElement('summary');summary.textContent='Coverage report ทุกลีกที่อนุมัติ';detail.append(summary);
+      const pre=document.createElement('pre');pre.style.whiteSpace='pre-wrap';pre.textContent=JSON.stringify(scan.competition_coverage||[],null,2);detail.append(pre);
+    }
+    if(prep){line('p','Daily preparation '+prep.status+' · '+prep.generated_at+' · Previous football day '+prep.previous_football_day+' · FT recovered '+prep.ft_recovered+' · unresolved '+prep.ft_unresolved+' · retired '+prep.retired_unresolved+' · Odds API สำหรับกู้ FT '+prep.odds_api_requests_used);}
+    line('p','15:00 ทุกวันเริ่ม 13 ต.ค. 2026 · 18:00/21:00 คงเดิม · เสาร์อาทิตย์มี 00:00 หลัง football day · รอบใหม่รอหลักฐาน runtime ตามเวลาจริง');
     line('p','ราคาที่กู้ช้าใช้เวลาที่เก็บจริง ไม่ใช่ราคาย้อนหลัง ณ เวลาเป้าหมาย · PAPER RESEARCH ONLY');
   }catch(error){line('p','UNVERIFIED — '+error.message).style.color='var(--r)';}
 })();

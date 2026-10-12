@@ -8,6 +8,8 @@ BKK = ZoneInfo('Asia/Bangkok')
 RECOVERY_MINUTES = 150
 SCHEDULE_EFFECTIVE_DAY = '2026-10-12'
 SCHEDULE_VERSION = 'BKK_18_SLOTS_V2'
+PREPARATION_EFFECTIVE_DAY = '2026-10-13'
+PREPARATION_VERSION = 'BKK_23_SLOTS_V3'
 LEDGER = Path('data/normalized/research_v2_slot_ledger.jsonl')
 
 
@@ -25,7 +27,7 @@ def targets(day):
     if day.isoformat() < SCHEDULE_EFFECTIVE_DAY:
         hours = (12, 15, 18, 19, 20, 21, 22) if day.weekday() >= 5 else (18, 21)
         return [datetime.combine(day, time(hour), BKK) for hour in hours]
-    hours = (15, 18, 21) if day.weekday() >= 5 else (18, 21)
+    hours = (15, 18, 21) if day.weekday() >= 5 or day.isoformat() >= PREPARATION_EFFECTIVE_DAY else (18, 21)
     slots = [datetime.combine(day, time(hour), BKK) for hour in hours]
     if day.weekday() >= 5:
         slots.append(datetime.combine(day + timedelta(days=1), time(0), BKK))
@@ -33,7 +35,7 @@ def targets(day):
 
 
 def schedule_version(day):
-    return SCHEDULE_VERSION if str(day) >= SCHEDULE_EFFECTIVE_DAY else 'BKK_LEGACY_V1'
+    return PREPARATION_VERSION if str(day) >= PREPARATION_EFFECTIVE_DAY else SCHEDULE_VERSION if str(day) >= SCHEDULE_EFFECTIVE_DAY else 'BKK_LEGACY_V1'
 
 
 def target_football_day(target):

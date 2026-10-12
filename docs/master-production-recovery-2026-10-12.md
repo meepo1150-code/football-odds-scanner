@@ -1,0 +1,29 @@
+# Master recovery: daily preparation, retired FT and coverage fairness
+
+Base main: `3af1e287954a1e6460db03e84bed011ce03a8946`. PRs #326–#330 are merged. No AGENTS.md is present. The September handoff is historical; frozen production gates and empty pattern registry remain unchanged.
+
+## Changes
+
+- Add **Daily Preparation Scan**, UTC `0 8 * * *` = 15:00 Bangkok every day. Its FT job uses public sources with zero OddsPapi credentials or calls; the odds job independently holds the existing collector lock. A slow result source cannot delay the quote job. Existing weekday 18/21 and weekend 15/18/21/00 slots remain. Version `BKK_23_SLOTS_V3` starts on football day **2026-10-13**, so October 12's nonexistent weekday 15:00 slot is not retroactively declared missed. The transition week has 22 slots; complete following weeks have 23.
+- FT preparation explicitly reopens retired fixtures for bounded FotMob and ESPN review: previous-day neighbor dates plus three rotating historical dates, up to six public requests per provider and twenty exact Flashscore requests. Failures are recorded independently. Hourly active recovery remains bounded. The complete web review queue now covers every provider, including retired/conflicted/missing-name identities; missing names cannot collapse into one fake match.
+- Whole-Master collector now prioritizes uncovered scheduled fixture IDs and least recently requested competitions. This preserves recurring movement observations while broadening coverage; six/day, 180/month research ceilings and account reserves remain. Monitor exposes scheduled/captured/missing counts and additional market batches needed for quota-skipped leagues. Response time remains the actual observation time.
+- Persist provider fixture namespace, canonical bindings when available, source names and recovery batch metadata for new reviewed FT. New competition-scoped manual evidence cannot expand into another competition or conflicting provider fixture identity. Existing evidence is preserved.
+- Monitor shows daily preparation outcome and retired backlog. Outside-band AH prices are explicitly labelled outside 1.80–2.20 on the dashboard; raw research quotes remain visible for audit.
+
+## Evidence and recovery
+
+The FA qualifying-round webpage loads results through its documented page AJAX request: POST `/Competitions/Results/FulltimeRoundMatches`, form `roundId=849757726&page=0`. The received HTML explicitly lists **Saturday 3 October 2026**, the home/away clubs, local kickoff, and all forty third-round qualifying scores. Its original response is stored append-only in `data/research/web_result_source_receipts.jsonl` with source URL, request body, retrieval time and SHA-256.
+
+All **23** missing OddsPapi FA Cup fixtures for that date were manually reconciled to the table using explicit reviewed display-name equivalents, both teams, competition, season and Europe/London 15:00 = UTC 14:00. Normal-time drawn ties retain their October 3 score, never the replay score. Assertions and recovery batch `MASTER_FA_3Q_20261012` are appended to `data/research/web_result_evidence.jsonl`. Import added 23 exact provider IDs; repeating import added zero. Official club reports independently confirm Guiseley 1–0 Bradford, Morecambe 3–0 Darlington, Buxton 0–2 South Shields, Bury 2–1 Bromsgrove, and Spennymoor 4–1 Chester.
+
+Offline statistics changed from **783 settled / 259 missing / 248 retired unresolved** to **806 settled / 236 missing / 224 retired unresolved** before subsequent public-source runs. Three further official results (Girona–Mallorca 0–0, Las Palmas–Valladolid 2–2, Sturm Graz–Rennes 0–0) bring this release to **26 recovered / 809 settled / 233 missing / 221 retired unresolved**. LaLiga pages explicitly mark Full Time and UTC kickoffs; UEFA confirms the September 16 Europa League matchday result. Counts are provider identity groups, not guaranteed globally unique real matches. Existing missing-team identities, source identity conflicts and postponed statuses remain disclosed and excluded from settled statistics. A separate no-odds-quota ESPN retired review used 12 public requests and added zero scores; FotMob retired review used twelve and added zero. Lack of an exact bridge is a genuine data gap, never permission to infer a result from kickoff alone.
+
+All 1,203 club and 92 competition bindings replay against the saved provider/canonical catalogs without absent IDs. Sixteen present-day snapshot rows have complete canonical bindings; 1,861 old rows lack sufficient participant IDs and remain provider-local. No unobserved participant or fixture ID was invented.
+
+## Validation and remaining gates
+
+The targeted scheduling, coverage, web provenance, quarter settlement, WR and dedup regressions pass; full test count and release CI/runtime evidence are recorded after the final changes. Original normalized price/audit bytes and the frozen registry hash are unchanged by this release. Results and derived reports are regenerated through the existing conflict-preserving merger.
+
+On October 12 the collector ledger records **6/6** research requests used, 76/180 for the month. No additional manual odds scan may be fired today under that budget. Existing sixteen observations and twelve provider fixture IDs remain real evidence, but do not imply all forty-four scheduled matches were captured. GitHub scheduling can lag; missed pre-kickoff prices cannot be recovered from current quotes.
+
+**Not production certified:** retired FT backlog is still unresolved, first real weekday 15:00 observation is future, all-league market coverage remains quota/market limited, API-Football account is suspended, and old provider-local identities cannot all be canonically linked from the retained data. New 15:00 scheduled runtime and upcoming weekend confirmations are explicitly pending; passing CI or merge is insufficient.

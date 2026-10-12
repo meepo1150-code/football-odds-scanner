@@ -99,3 +99,10 @@ def test_idempotency_and_legacy_missing_provenance_preserves_cache(tmp_path):
     assert (tmp_path/RESULTS_PATH).read_bytes()==before
     assert report["existing_results_revalidated"] is False
     assert report["api_requests_used"]==0 and report["validation_relaxed"] is False
+
+
+def test_competition_context_prevents_cross_competition_identity_expansion():
+    from odds_scanner.web_result_evidence import _same_identity
+    e={'home':'Alpha','away':'Beta','kickoff':'2026-10-03T14:00:00Z','competition':'FA Cup'}
+    assert _same_identity(e,{**e,'league':'FA Cup'})
+    assert not _same_identity(e,{**e,'league':'League Cup'})

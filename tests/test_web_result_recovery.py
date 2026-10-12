@@ -57,14 +57,14 @@ def test_retired_fixtures_do_not_consume_queue_limit_or_delete_raw(tmp_path):
     p.write_text(original)
     archive = tmp_path / RETIRED
     archive.write_text(json.dumps({"fixture_id": "pinnwire:a"}) + "\n")
-    out = build_queue(tmp_path, limit=1)
+    out = build_queue(tmp_path, limit=1, include_retired=False)
     assert out["unresolved_total"] == 2
     assert out["active_unresolved_total"] == 1
     assert out["skipped_retired"] == 1
     assert out["rows"][0]["fixture_ids"] == ["pinnwire:b"]
     assert p.read_text() == original
     archive.write_text(archive.read_text() + json.dumps({"fixture_id": "pinnwire:b"}) + "\n")
-    out = build_queue(tmp_path)
+    out = build_queue(tmp_path, include_retired=False)
     assert out["queued"] == out["active_unresolved_total"] == 0
     assert out["skipped_retired"] == out["unresolved_total"] == 2
     assert out["api_requests_used"] == 0

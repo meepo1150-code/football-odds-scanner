@@ -54,9 +54,9 @@ def fetch(day):
     return payload
 
 
-def run(root=Path('.'),max_requests=12,now=None):
+def run(root=Path('.'),max_requests=12,now=None,*,include_retired=False,day_filter=None):
     now=now or datetime.now(timezone.utc)
-    existing=_read(root/RESULTS); known={str(r.get('fixture_id')) for r in existing} | retired_ids(root)
+    existing=_read(root/RESULTS); known={str(r.get('fixture_id')) for r in existing} | (set() if include_retired else retired_ids(root))
     blocked={str(r.get('fixture_id')) for r in _read((root/RESULTS).with_suffix('.conflicts.jsonl'))}
     missing={};days=set()
     for s in _read(root/'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'):
@@ -68,7 +68,7 @@ def run(root=Path('.'),max_requests=12,now=None):
             day=ko.date()+timedelta(days=delta)
             if day<=now.date():days.add(day.isoformat())
     index={};evidence=[];errors=[];used=0;deferred=[]
-    for day in sorted(days,reverse=True):
+    for day in sorted(days if day_filter is None else days & set(day_filter),reverse=True):
         if used>=max_requests:deferred.append(day);continue
         try:
             payload,proof=fetch_day(root,day,fetch,now,provider='espn');used+=proof['requests'];evidence.append({'day':day,**proof})
@@ -89,7 +89,7 @@ def run(root=Path('.'),max_requests=12,now=None):
     stage=root/'data/normalized/espn_result_recovery_staged.jsonl';stage.parent.mkdir(parents=True,exist_ok=True)
     stage.write_text(''.join(json.dumps(r,ensure_ascii=False)+'\n' for r in staged))
     added=merge_normalized_results(root/RESULTS,staged)
-    report={'generated_at':now.isoformat(),'capability':'RESULTS_ONLY','status':'PARTIAL_SOURCE_FAILURE' if errors else 'VERIFIED_RESULT_BACKFILL_COMPLETED','missing_before':len(missing),'results_added':added,'missing_after':len(missing)-added,'exact_matches':0,'verified_bridge_matches':added,'ambiguous':ambiguous,'not_found':not_found,'quarantined_results_excluded':len(blocked),'requests_used':used,'stale_cache_fallbacks':sum(e['source']=='STALE_CACHE_AFTER_REQUEST_FAILURE' for e in evidence),'cache_hits':sum(e['source']=='CACHE' for e in evidence),'fetch_evidence':evidence,'errors':errors,'deferred_days':deferred,'fuzzy_matching_used':False,'production_promotion_allowed':False}
+    report={'retired_included':include_retired,'generated_at':now.isoformat(),'capability':'RESULTS_ONLY','status':'PARTIAL_SOURCE_FAILURE' if errors else 'VERIFIED_RESULT_BACKFILL_COMPLETED','missing_before':len(missing),'results_added':added,'missing_after':len(missing)-added,'exact_matches':0,'verified_bridge_matches':added,'ambiguous':ambiguous,'not_found':not_found,'quarantined_results_excluded':len(blocked),'requests_used':used,'stale_cache_fallbacks':sum(e['source']=='STALE_CACHE_AFTER_REQUEST_FAILURE' for e in evidence),'cache_hits':sum(e['source']=='CACHE' for e in evidence),'fetch_evidence':evidence,'errors':errors,'deferred_days':deferred,'fuzzy_matching_used':False,'production_promotion_allowed':False}
     p=root/'reports/espn_result_backfill.json';p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(report,indent=2)+'\n')
     return report
 
