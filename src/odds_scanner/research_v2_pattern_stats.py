@@ -24,6 +24,15 @@ def _num(v):
         x=float(v)
         return x if math.isfinite(x) else None
     except (TypeError,ValueError):return None
+def _group_key(key,value):
+    # Valid quarter-grid lines are numerically identical across JSON int/float/string.
+    # This only formats a validated line; it never rounds an invalid market line.
+    if key=='ah_line':
+        number=_num(value)
+        if number is not None and abs(number*4-round(number*4))<=1e-9:
+            return '0' if number==0 else format(number,'.15g')
+    return str(value)
+
 def _score(r):
     h,a=r.get('ft_home_goals'),r.get('ft_away_goals')
     if type(h) is not int or type(a) is not int:return None
@@ -183,7 +192,7 @@ def build(root=Path('.')):
         groups=defaultdict(list)
         for x in outcomes:
             if core_only and not x['ah_core_price']:continue
-            groups[tuple(str(x.get(k,'UNKNOWN')) for k in keys)].append(x)
+            groups[tuple(_group_key(k,x.get(k,'UNKNOWN')) for k in keys)].append(x)
         out=[]
         for vals,rs in groups.items():
             pc=Counter(x['price_result'] for x in rs);n=sum(pc[x] for x in ('WIN','HALF_WIN','PUSH','HALF_LOSS','LOSS'));favwin=pc['WIN']+pc['HALF_WIN'];dogwin=pc['LOSS']+pc['HALF_LOSS'];ci=_wilson(favwin,n);profits=[_num(x.get('favorite_profit_units')) for x in rs];profits=[x for x in profits if x is not None];profit=sum(profits);roi=(100*profit/len(profits)) if profits else None;dogprofits=[_num(x.get('underdog_profit_units')) for x in rs];dogprofits=[x for x in dogprofits if x is not None];dogprofit=sum(dogprofits);dogroi=(100*dogprofit/len(dogprofits)) if dogprofits else None
@@ -193,7 +202,7 @@ def build(root=Path('.')):
         groups=defaultdict(list)
         for x in outcomes:
             if core_only and not x['ah_core_price']:continue
-            groups[tuple(str(x.get(k,'UNKNOWN')) for k in keys)].append(x)
+            groups[tuple(_group_key(k,x.get(k,'UNKNOWN')) for k in keys)].append(x)
         out=[]
         for vals,rs in groups.items():
             n=len(rs);over=sum(x.get('ou25_result')=='OVER' for x in rs);under=sum(x.get('ou25_result')=='UNDER' for x in rs);priced=[x for x in rs if x.get('ou25_over_price') is not None and x.get('ou25_under_price') is not None]
@@ -218,6 +227,7 @@ def build(root=Path('.')):
     payload['verified_cross_provider_canonical_fixtures']=identity_report['bridged_matches']
     payload['unlinked_provider_fixture_groups']=len(grouped)-identity_report['bridged_matches']
     payload['movement_classification_counts']=dict(Counter(x['movement'] for x in outcomes))
+    payload['line_grouping_semantics']='EXACT_NUMERIC_QUARTER_LINE; INT_FLOAT_STRING_AND_SIGNED_ZERO_EQUIVALENT; NO_INVALID_LINE_ROUNDING'
     payload['price_bucket_intervals']=['[1.80,1.90)','[1.90,2.00)','[2.00,2.10)','[2.10,2.20]']
     payload.update(pending_age_counts(missing_rows,datetime.now(timezone.utc)))
     q=root/REPORT;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8');return payload
