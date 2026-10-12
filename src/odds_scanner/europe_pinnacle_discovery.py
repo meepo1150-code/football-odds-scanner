@@ -118,6 +118,12 @@ def run(root=Path('.')):
     if not force and (lag is None or lag>RECOVERY_WINDOW_MINUTES): report.update(status='MISSED_SLOT',requests_used=0,planned_requests=0);_record_slot(root/SLOT_LEDGER_PATH,report,'MISSED');return _write(report,root)
     targets=_load_json(root/TARGET_PATH) or {}; selected=targets.get('tournaments') or [] if isinstance(targets,dict) else []
     original_count = len(selected)
+    from .master_scan_scope import scan_scope_reason
+    report['forward_scope_policy']='VERIFIED_ACTIVE_MASTER_81_DIVISIONS_PLUS_8_DOMESTIC_CUPS_AND_3_UEFA_CLUB_COMPETITIONS'
+    report['master_scope_rejections']=[{'provider':'oddspapi','tournament_id':r.get('tournament_id'),
+        'country':r.get('country'),'league':r.get('tournament_name'),
+        'reason':exclusion_reason(r,provider='oddspapi') or scan_scope_reason(r,provider='oddspapi')}
+        for r in selected if exclusion_reason(r,provider='oddspapi') or scan_scope_reason(r,provider='oddspapi')]
     selected = filter_scan_targets(selected)
     report['master_scope_excluded_targets'] = original_count - len(selected)
     ids=[x.get('tournament_id') for x in selected if isinstance(x,dict) and x.get('tournament_id') is not None]

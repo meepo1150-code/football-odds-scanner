@@ -33,10 +33,10 @@ def test_provider_namespaces_and_same_named_leagues():
     assert in_scope({'country':'Poland','league':'Ekstraklasa'})
 
 
-def test_target_filter_preserves_input_and_unreviewed_competitions():
+def test_forward_filter_preserves_input_but_rejects_unreviewed_competitions():
     targets = [{'tournament_id':229}, {'tournament_id':202}, {'tournament_id':491}]
     original = json.dumps(targets)
-    assert filter_scan_targets(targets) == targets[1:]
+    assert filter_scan_targets(targets) == [targets[1]]
     assert json.dumps(targets) == original
 
 

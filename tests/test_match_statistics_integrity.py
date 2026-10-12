@@ -46,3 +46,15 @@ def test_retired_and_conflict_remain_in_ft_denominator(tmp_path):
 
 def test_every_requested_water_boundary():
     assert [_price_bucket(x) for x in [1.89,1.9,1.99,2,2.09,2.1,2.2]] == ['1.80-1.89','1.90-1.99','1.90-1.99','2.00-2.09','2.00-2.09','2.10-2.20','2.10-2.20']
+
+
+def test_derivative_corner_booking_card_fixtures_cannot_use_football_ft(tmp_path):
+    rows=[]
+    for suffix in ['Corners','Bookings','Cards']:
+        rows.append(dict(snapshot(suffix,'2026-10-17T21:00:00+07:00'),home='Alpha ('+suffix+')'))
+    write(tmp_path,SNAPSHOTS,rows)
+    write(tmp_path,RESULTS,[{'fixture_id':s['fixture_id'],'ft_home_goals':1,'ft_away_goals':0} for s in rows])
+    report=build(tmp_path)
+    assert report['settled_fixtures']==0
+    assert report['excluded_derivative_markets_from_ft_completeness']==3
+    assert report['ft_completeness_denominator']==0
