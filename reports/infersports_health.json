@@ -3,37 +3,37 @@
   "provider": "infersports_keyless",
   "status": "MARKETS_OBSERVED",
   "capability": "HEALTH_ONLY",
-  "generated_at": "2026-10-11T08:46:27.150020+00:00",
+  "generated_at": "2026-10-12T09:09:19.997955+00:00",
   "scheduled_events_seen": 6,
-  "events_probed": 5,
+  "events_probed": 6,
   "missing_event_ids": 0,
-  "excluded_nonfuture_events": 1,
-  "successful_events": 5,
-  "stale_blocks": 5,
+  "excluded_nonfuture_events": 0,
+  "successful_events": 6,
+  "stale_blocks": 6,
   "market_counts": {
-    "1x2": 18,
-    "asian_handicap": 29,
-    "totals": 30
+    "1x2": 6,
+    "asian_handicap": 12,
+    "totals": 13
   },
   "two_sided_market_counts": {
-    "1x2": 18,
-    "asian_handicap": 28,
-    "totals": 28
+    "1x2": 6,
+    "asian_handicap": 12,
+    "totals": 12
   },
   "quarter_line_counts": {
-    "asian_handicap": 12,
-    "totals": 17
+    "asian_handicap": 5,
+    "totals": 5
   },
   "bookmaker_counts": {
-    "crown": 31,
-    "sbobet": 18,
-    "m8bet": 14,
-    "nova88": 14
+    "crown": 13,
+    "sbobet": 8,
+    "m8bet": 5,
+    "nova88": 5
   },
   "errors": [],
   "samples": [
     {
-      "event_id": "evt_WBM6AVR6",
+      "event_id": "evt_YT3903BW",
       "bookmaker": "crown",
       "market_type": "1x2",
       "line": null,
@@ -42,25 +42,7 @@
       "two_sided": true
     },
     {
-      "event_id": "evt_WBM6AVR6",
-      "bookmaker": "m8bet",
-      "market_type": "1x2",
-      "line": null,
-      "status": "open",
-      "as_of": "2026-10-02T10:21:55Z",
-      "two_sided": true
-    },
-    {
-      "event_id": "evt_WBM6AVR6",
-      "bookmaker": "nova88",
-      "market_type": "1x2",
-      "line": null,
-      "status": "open",
-      "as_of": "2026-10-02T10:21:33Z",
-      "two_sided": true
-    },
-    {
-      "event_id": "evt_WBM6AVR6",
+      "event_id": "evt_YT3903BW",
       "bookmaker": "sbobet",
       "market_type": "1x2",
       "line": null,
@@ -69,21 +51,39 @@
       "two_sided": true
     },
     {
-      "event_id": "evt_WBM6AVR6",
+      "event_id": "evt_YT3903BW",
       "bookmaker": "crown",
       "market_type": "asian_handicap",
-      "line": -1.5,
+      "line": -2.0,
       "status": "open",
       "as_of": "2026-10-02T05:01:37Z",
       "two_sided": true
     },
     {
-      "event_id": "evt_WBM6AVR6",
-      "bookmaker": "crown",
+      "event_id": "evt_YT3903BW",
+      "bookmaker": "sbobet",
       "market_type": "asian_handicap",
-      "line": -1.25,
+      "line": -2.0,
+      "status": "open",
+      "as_of": "2026-10-02T05:01:39Z",
+      "two_sided": true
+    },
+    {
+      "event_id": "evt_YT3903BW",
+      "bookmaker": "crown",
+      "market_type": "totals",
+      "line": 3.0,
       "status": "open",
       "as_of": "2026-10-02T05:01:37Z",
+      "two_sided": true
+    },
+    {
+      "event_id": "evt_YT3903BW",
+      "bookmaker": "sbobet",
+      "market_type": "totals",
+      "line": 3.0,
+      "status": "open",
+      "as_of": "2026-10-02T05:01:39Z",
       "two_sided": true
     }
   ],
