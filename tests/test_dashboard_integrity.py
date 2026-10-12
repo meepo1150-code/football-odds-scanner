@@ -124,3 +124,18 @@ assert(ah.includes('FW / HW / P / HL / FL')&&ah.includes('0/1/0/0/0'));
 '''
     result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
+
+
+def test_archive_quote_is_not_presented_as_current_scope_statistics():
+    node=shutil.which('node')
+    if not node:pytest.skip('Node unavailable')
+    script=Path('apps/dashboard/index.html').read_text().split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
+    checks='''
+const assert=require('assert');
+scopeReceipt={excluded_fixture_reasons:{cancelled:'USER_REVIEWED_COMPETITION_OUT_OF_SCOPE'},untrusted_observations:[]};
+const quote={fixture_id:'cancelled',provider:'pinnwire',favorite_side:'H',ah:{selected_side_line:-.75,selected_side_price:1.95}};
+assert(wrBox(quote,{}).includes('out of scope'));
+assert.equal(providerLabel({source_semantics:'CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED'}),'oddspapi');
+'''
+    result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
+    assert result.returncode==0,result.stderr
