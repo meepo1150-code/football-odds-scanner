@@ -64,6 +64,7 @@ jobs:
           PYTHONPATH=src python -m odds_scanner.dashboard_scope > /dev/null
           mkdir -p site/reports site/data/normalized site/discovery
           cp apps/dashboard/index.html site/index.html
+          cp apps/dashboard/monitor.html site/monitor.html
           cp apps/dashboard/collection-health.js site/collection-health.js
           cp apps/dashboard/deployment.json site/deployment.json
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery.html || true
