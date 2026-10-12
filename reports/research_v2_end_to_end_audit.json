@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-10-12T16:22:49.825499+00:00",
+  "generated_at": "2026-10-12T19:03:03.854135+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 809,
+  "settled_fixtures": 813,
   "movement_classification_counts": {
     "AH_LINE_UNCHANGED__PRICE_DOWN": 64,
-    "SINGLE_OBSERVATION": 620,
+    "SINGLE_OBSERVATION": 624,
     "AH_LINE_UNCHANGED__PRICE_UP": 47,
     "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 11,
     "FAVORITE_SWITCH": 4,
@@ -425,18 +425,10 @@
   "ft_triage_counts": {
     "RETIRED_UNRESOLVED": 218,
     "POSTPONED": 1,
-    "FUTURE_OR_RECENT": 12,
+    "FUTURE_OR_RECENT": 8,
     "IDENTITY_CONFLICT": 2
   },
   "ft_triage_groups": [
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Israel",
-      "canonical_competition_id": "ISR-0002",
-      "league": "Liga Leumit",
-      "n": 3
-    },
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
@@ -451,7 +443,7 @@
       "country": "Poland",
       "canonical_competition_id": "POL-0001",
       "league": "Ekstraklasa",
-      "n": 2
+      "n": 1
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -1673,24 +1665,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000020272043184",
-      "provider": "oddspapi",
-      "football_day": "2026-10-12",
-      "league": "Ekstraklasa",
-      "kickoff": "2026-10-12T16:00:00+00:00",
-      "home": "RKS Radomiak Radom",
-      "away": "LKP Motor Lublin",
-      "status": "MISSING_FT",
-      "country": "Poland",
-      "canonical_competition_id": "POL-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000020274128332",
       "provider": "oddspapi",
       "football_day": "2026-10-12",
@@ -1722,60 +1696,6 @@
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": true,
       "lifecycle": "RETIRED_UNRESOLVED",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000072774341678",
-      "provider": "oddspapi",
-      "football_day": "2026-10-12",
-      "league": "Liga Leumit",
-      "kickoff": "2026-10-12T16:00:00+00:00",
-      "home": "Hapoel Kfar Saba FC",
-      "away": "MS Ashdod",
-      "status": "MISSING_FT",
-      "country": "Israel",
-      "canonical_competition_id": "ISR-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000072774341680",
-      "provider": "oddspapi",
-      "football_day": "2026-10-12",
-      "league": "Liga Leumit",
-      "kickoff": "2026-10-12T16:00:00+00:00",
-      "home": "Hapoel Kfar Shalem FC",
-      "away": "Hapoel Ra`anana FC",
-      "status": "MISSING_FT",
-      "country": "Israel",
-      "canonical_competition_id": "ISR-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000072774341682",
-      "provider": "oddspapi",
-      "football_day": "2026-10-12",
-      "league": "Liga Leumit",
-      "kickoff": "2026-10-12T16:00:00+00:00",
-      "home": "Hapoel Rishon Lezion FC",
-      "away": "Maccabi Kabilio Jaffa",
-      "status": "MISSING_FT",
-      "country": "Israel",
-      "canonical_competition_id": "ISR-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
