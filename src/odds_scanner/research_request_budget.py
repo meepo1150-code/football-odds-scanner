@@ -7,7 +7,7 @@ MONTHLY_LIMIT = 180
 RUN_LIMIT = 2
 
 
-def allocation(path, ids, now, batch_size=5):
+def allocation(path, ids, now, batch_size=5, *, prioritized=False, overhead=0, manual=False):
     # Count unique attempts, including failures. Concurrent persistence may repeat
     # a record; divergent copies conservatively retain the largest request count.
     attempts = {}
@@ -37,9 +37,11 @@ def allocation(path, ids, now, batch_size=5):
     # Reserve capacity for every canonical slot, including weekend midnight.
     # Four slots cannot each consume two requests under the six/day ceiling.
     run_limit = min(RUN_LIMIT, max(1, DAILY_LIMIT // slot_count)) if slot_count == 4 else RUN_LIMIT
-    remaining = max(0, min(run_limit, DAILY_LIMIT-daily, MONTHLY_LIMIT-monthly))
+    run_limit = max(run_limit, 2) if overhead else run_limit
+    if manual: run_limit = DAILY_LIMIT-daily
+    remaining = max(0, min(run_limit, DAILY_LIMIT-daily, MONTHLY_LIMIT-monthly)-overhead)
     batches = [ids[i:i+batch_size] for i in range(0,len(ids),batch_size)]
-    chosen = [batches[(now.date().toordinal()+i)%len(batches)] for i in range(min(remaining,len(batches)))] if batches else []
+    chosen = [batches[i if prioritized else (now.date().toordinal()+i)%len(batches)] for i in range(min(remaining,len(batches)))] if batches else []
     return [x for b in chosen for x in b], {
         'request_budget_policy':'RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH',
         'research_requests_used_today':daily, 'research_requests_used_month':monthly,
@@ -48,7 +50,8 @@ def allocation(path, ids, now, batch_size=5):
         'canonical_slots_in_football_day':slot_count,
         'canonical_request_reservation':'ONE_BATCH_PER_WEEKEND_SLOT; TWO_PER_WEEKDAY_SLOT; FAILED_ATTEMPTS_COUNT',
         'budget_scope':'ODDSPAPI_RESEARCH_COLLECTOR_ONLY',
-        'coverage_mode':'DAILY_STABLE_COHORT_WITH_REPEAT_OBSERVATIONS',
+        'coverage_mode':'MASTER_SCHEDULE_PRIORITIZED' if prioritized else 'DAILY_STABLE_COHORT_WITH_REPEAT_OBSERVATIONS',
+        'schedule_requests_reserved':overhead,
         'coverage_complete':len(chosen)==len(batches),
         'coverage_tournament_ids':[x for b in chosen for x in b],
     }
