@@ -58,7 +58,7 @@ jobs:
           PYBUILD
           PYTHONPATH=src python -m odds_scanner.research_v2_movement > /dev/null
           PYTHONPATH=src python -m odds_scanner.research_v2_pattern_stats > /dev/null
-          PYTHONPATH=src python -m odds_scanner.research_v2_operational_audit > /dev/null
+          PYTHONPATH=src python -m odds_scanner.research_v2_evidence > /dev/null
           PYTHONPATH=src python -m odds_scanner.research_v2_end_to_end_audit > /dev/null
           PYTHONPATH=src python -m odds_scanner.oddspapi_history_audit > /dev/null
           PYTHONPATH=src python -m odds_scanner.dashboard_scope > /dev/null

@@ -121,6 +121,6 @@ def probe():
     now=datetime.now(timezone.utc).isoformat()
     try: rows,errors=fetch()
     except Exception as e: return {"provider":"propline","generated_at":now,"status":"UNAVAILABLE","rows":0,"errors":[f"{type(e).__name__}: {e}"]}
-    return {"provider":"propline","generated_at":now,"status":"OK" if rows else "NO_ROWS","rows":len(rows),"books":sorted(set(r["bookmaker"] for r in rows)),"sports":sorted(set(r["sport"] for r in rows)),"quarter_ah":sum(1 for r in rows if r["ah_home_line"] is not None and abs(float(r["ah_home_line"])*2-round(float(r["ah_home_line"])*2))>1e-8),"errors":errors[:10],"samples":rows[:3]}
+    return {"provider":"propline","generated_at":now,"status":("PARTIAL" if errors else "OK") if rows else "NO_ROWS",**LAST_FETCH_DIAGNOSTICS,"rows":len(rows),"books":sorted(set(r["bookmaker"] for r in rows)),"sports":sorted(set(r["sport"] for r in rows)),"quarter_ah":sum(1 for r in rows if r["ah_home_line"] is not None and abs(float(r["ah_home_line"])*2-round(float(r["ah_home_line"])*2))>1e-8),"errors":errors[:10],"samples":rows[:3]}
 
 if __name__=="__main__": print(json.dumps(probe(),ensure_ascii=False))

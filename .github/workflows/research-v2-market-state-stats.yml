@@ -32,7 +32,8 @@ jobs:
             python -m odds_scanner.research_v2_movement
             python -m odds_scanner.research_v2_pattern_stats
             python -m odds_scanner.legacy_propline_recovery
-            python -m odds_scanner.research_v2_operational_audit
+            python -m odds_scanner.research_v2_evidence
+            git add -f reports/dashboard_scope.json reports/research_v2_end_to_end_audit.json reports/oddspapi_history_audit.json reports/research_v2_pattern_statistics.json reports/research_v2_operational_audit.json reports/research_v2_movement_status.json reports/research_v2_missing_ft_ledger.json reports/research_v2_fixture_identity.json data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
             git add -f data/normalized reports
             git diff --cached --quiet && exit 0
             git commit -m 'data: rebuild Research V2 verified statistics [skip ci]'

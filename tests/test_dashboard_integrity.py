@@ -107,3 +107,20 @@ def test_shared_scope_receipt_matches_backend_real_offline_data(tmp_path):
     check=tmp_path/'check.js';check.write_text(script+checks)
     result=subprocess.run([node,str(check)],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
+
+
+def test_ou_table_uses_frequency_and_priced_returns_without_ah_columns():
+    node=shutil.which('node')
+    if not node:pytest.skip('Node unavailable')
+    script=Path('apps/dashboard/index.html').read_text().split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
+    checks='''
+const assert=require('assert');
+const rendered=ouTable([{market_side:'HOME_FAVORITE',ah_line:-.75,ah_price_bucket:'1.90-1.99',n:10,over_2_5_n:6,under_2_5_n:4,over_2_5_pct:60,under_2_5_pct:40,ou25_priced_n:3,over_2_5_roi_pct:23.5,under_2_5_roi_pct:-30,sample_label:'VERY_LOW'}]);
+assert(!rendered.includes('undefined'));
+assert(!rendered.includes('FW / HW'));
+assert(rendered.includes('O/U priced N')&&rendered.includes('6/10')&&rendered.includes('23.5%'));
+const ah=statsTable([{settled_n:1,full_win:0,half_win:1,push:0,half_loss:0,full_loss:0}]);
+assert(ah.includes('FW / HW / P / HL / FL')&&ah.includes('0/1/0/0/0'));
+'''
+    result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
+    assert result.returncode==0,result.stderr
