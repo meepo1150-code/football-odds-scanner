@@ -105,3 +105,18 @@ def test_propline_never_discovers_non_master_sports(monkeypatch):
     assert provider.active_soccer_sports('test-key') == ('soccer_epl',)
     monkeypatch.setattr(provider, '_get', lambda path, key: (_ for _ in ()).throw(TimeoutError('catalog unavailable')))
     assert provider.active_soccer_sports('test-key') == provider.SPORTS
+
+
+def test_verified_master_allowlist_rejects_outside_leagues_and_unknown_ids():
+    from odds_scanner.master_scan_scope import active_oddspapi_tournament_ids, filter_master_oddspapi_targets
+    ids = active_oddspapi_tournament_ids()
+    assert len(ids) == 92
+    candidates = [
+        {'tournament_id': 17, 'country':'England','tournament_name':'Premier League'},
+        {'tournament_id': 229, 'country':'Poland','tournament_name':'1. Liga'},
+        {'tournament_id': 999999, 'country':'England','tournament_name':'Premier League'},
+        {'tournament_id': 491, 'country':'Germany','tournament_name':'3. Liga'},
+    ]
+    kept = filter_master_oddspapi_targets(candidates)
+    assert kept == candidates[:1]
+    assert len(candidates) == 4
