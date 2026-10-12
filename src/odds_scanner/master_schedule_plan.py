@@ -64,7 +64,7 @@ def registry():
 
 def plan(rows, start, end, now, *, complete=False):
     targets=registry(); by_id={str(t['tournament_id']):t for t in targets}; counts=Counter(); future=Counter(); rejected=Counter()
-    seen=set(); fixture_ids={}; kickoffs={}
+    seen=set(); fixture_ids={}; future_ids={}; kickoffs={}
     for f in rows:
         tid=str(f.get('tournamentId')); ko=stamp(f.get('startTime')); fid=f.get('fixtureId')
         if tid not in by_id or not ko or not start<=ko<end or not fid: continue
@@ -74,12 +74,13 @@ def plan(rows, start, end, now, *, complete=False):
         seen.add(str(fid)); counts[tid]+=1
         fixture_ids.setdefault(tid,[]).append(str(fid))
         kickoffs.setdefault(tid,[]).append(ko)
-        if ko>now and f.get('statusId')==0: future[tid]+=1
+        if ko>now and f.get('statusId')==0:
+            future[tid]+=1;future_ids.setdefault(tid,[]).append(str(fid))
     coverage=[]
     for t in targets:
         tid=str(t['tournament_id']); n=counts[tid]; remaining=future[tid]
         reason='AWAITING_ODDS' if remaining else 'KICKOFF_PASSED_OR_NOT_PREMATCH' if n else 'NO_MATCHES' if complete else 'NO_SCHEDULE_EVIDENCE'
-        coverage.append({**t,'scheduled_fixtures':n,'remaining_prematch_fixtures':remaining,'scheduled_fixture_ids':sorted(fixture_ids.get(tid,[])),
+        coverage.append({**t,'scheduled_fixtures':n,'remaining_prematch_fixtures':remaining,'scheduled_fixture_ids':sorted(fixture_ids.get(tid,[])),'remaining_prematch_fixture_ids':sorted(future_ids.get(tid,[])),
                          'next_kickoff':min((k for k in kickoffs.get(tid,[]) if k>now),default=now).isoformat() if remaining else None,'reason':reason})
     # Fixture volume is observed, not a league-strength assumption. Stable ID tiebreak.
     candidates=sorted([t for t in coverage if t['remaining_prematch_fixtures']],key=lambda t:(-t['remaining_prematch_fixtures'],t['tournament_id']))
@@ -125,9 +126,10 @@ def prioritize(root, candidates, report, now):
         expected=set(row.get('scheduled_fixture_ids',[]))
         row['fixtures_captured_today']=len(expected & captured)
         row['scheduled_fixtures_without_snapshot']=len(expected-captured)
+        row['uncaptured_remaining_prematch_fixtures']=len(set(row.get('remaining_prematch_fixture_ids',[]))-captured)
         row['last_market_request_at']=last[str(row['tournament_id'])].isoformat() if str(row['tournament_id']) in last else None
     report['fixtures_captured_today']=sum(r['fixtures_captured_today'] for r in report.get('competition_coverage',[]))
     report['scheduled_fixtures_without_snapshot']=sum(r['scheduled_fixtures_without_snapshot'] for r in report.get('competition_coverage',[]))
     report['market_requests_required_all_remaining_competitions']=(sum(bool(r["remaining_prematch_fixtures"]) for r in report.get("competition_coverage",[]))+4)//5
-    return sorted(candidates,key=lambda r:(-r['scheduled_fixtures_without_snapshot'],
+    return sorted(candidates,key=lambda r:(-r['uncaptured_remaining_prematch_fixtures'],
         r.get('last_market_request_at') or '',r.get('next_kickoff') or '',r['tournament_id']))

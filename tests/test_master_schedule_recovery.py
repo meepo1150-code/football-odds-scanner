@@ -106,3 +106,13 @@ def test_uncovered_fixture_and_oldest_market_request_priority(tmp_path):
     assert [r['tournament_id'] for r in ordered]==[23,8,17]
     assert report['fixtures_captured_today']==1 and report['scheduled_fixtures_without_snapshot']==2
     assert report['market_requests_required_all_remaining_competitions']==1
+
+
+def test_past_unseen_fixtures_do_not_starve_collectable_unseen_matches(tmp_path):
+    _,report=planner.plan([fixture(17,'past','2026-10-12T13:00:00Z'),fixture(17,'future'),fixture(23,'unseen')],START,END,NOW,complete=True)
+    report['football_day']='2026-10-12'
+    p=tmp_path/'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl';p.parent.mkdir(parents=True);p.write_text(json.dumps({'fixture_id':'future','football_day':'2026-10-12'})+'\n')
+    candidates=[r for r in report['competition_coverage'] if r['remaining_prematch_fixtures']]
+    ordered=planner.prioritize(tmp_path,candidates,report,NOW)
+    assert ordered[0]['tournament_id']==23
+    assert next(r for r in ordered if r['tournament_id']==17)['uncaptured_remaining_prematch_fixtures']==0
