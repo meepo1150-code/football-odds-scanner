@@ -11,6 +11,9 @@ BASE="https://pinnwire.com/kit/v1/prematch/fixtures"
 
 def probe():
     now=datetime.now(timezone.utc).isoformat()
+    from .master_scan_scope import provider_has_verified_scope
+    if not provider_has_verified_scope('pinnwire'):
+        return {'provider':'pinnwire_demo','generated_at':now,'status':'MASTER_PROVIDER_MAPPING_UNAVAILABLE','events':0,'requests_used':0}
     try:
         payload, _, _ = _fetch_payload()
         events=payload.get("events") or payload.get("data") or []
@@ -85,6 +88,10 @@ def _balanced(spreads):
 def collect():
     now=datetime.now(timezone.utc); ws,we,day=_football_day_bounds(now)
     report={"schema_version":"3.2","generated_at":now.isoformat(),"classification":"PINNACLE_RESEARCH_V2","provider":"pinnwire","bookmaker":"pinnacle","football_day":day,"requests_used":0,"workflow_success":True,"data_source_health":"NOT_CHECKED","capability":"RESEARCH_ONLY"}
+    from .master_scan_scope import provider_has_verified_scope,scan_scope_reason
+    if not provider_has_verified_scope('pinnwire'):
+        report.update(status='MASTER_PROVIDER_MAPPING_UNAVAILABLE',data_source_health='MASTER_SCOPE_BLOCKED',request_attempts=0)
+        REPORT.parent.mkdir(parents=True,exist_ok=True);REPORT.write_text(json.dumps(report,indent=2)+'\n');return report
     try:
         previous=json.loads(REPORT.read_text()) if REPORT.exists() else {}
     except (OSError, ValueError):
@@ -101,6 +108,8 @@ def collect():
         events=payload.get("events") or payload.get("data") or []; snaps=[]
         for ev in events:
             if not in_scope(ev): continue
+            if scan_scope_reason({'provider_competition_id':ev.get('league_id'),'country':ev.get('country')},provider='pinnwire'):
+                continue
             try: ko=datetime.fromisoformat(str(ev.get("starts") or ev.get("start_time")).replace("Z","+00:00")).astimezone(timezone.utc)
             except Exception: continue
             if ko<=now or not ws<=ko<we: continue

@@ -35,8 +35,11 @@ def run(root=Path("."), target_at=None):
     ws,we,day=_football_day(now)
     if target is not None:lag=(now.astimezone(BKK)-target).total_seconds()/60
     snaps=[]; audits=[]; in_day=0; kickoff_dates={}; kickoff_samples=[]
+    from .master_scan_scope import scan_scope_reason
     for m in rows:
         if not in_scope(m): continue
+        if scan_scope_reason({'provider_competition_id':m.get('sport'),'country':m.get('country')},provider='propline'):
+            continue
         ko=_dt(m.get("kickoff"))
         if ko:
             local_date=ko.astimezone(BKK).date().isoformat()

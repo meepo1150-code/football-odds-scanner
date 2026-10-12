@@ -7,6 +7,8 @@ from odds_scanner import propline_research_v2 as scanner
 
 @pytest.fixture(autouse=True)
 def fixed_scan_clock(monkeypatch):
+    from odds_scanner import master_scan_scope as scope
+    monkeypatch.setattr(scope,'forward_mappings',lambda:{('propline','soccer_epl'):'ENG-0001'})
     class Clock(datetime):
         @classmethod
         def now(cls, tz=None):

@@ -80,3 +80,14 @@ def test_partial_cohort_empty_receipt_blocks_duplicates_but_never_certifies_full
     report=coverage(now,'2026-10-17',ledger,[])
     assert report['observed_slots']==1 and report['partial_scope_slots']==1
     assert report['collection_state']=='DEGRADED_SCOPE'
+
+
+def test_old_empty_receipt_after_cutover_is_scope_unknown_not_full_scope_pass():
+    target=targets('2026-10-17')[0];now=target+timedelta(minutes=20)
+    ledger=[{'state':'ZERO_FIXTURES','scheduled_target_at':target.isoformat(),
+        'actual_observed_at':(target+timedelta(minutes=5)).isoformat(),
+        'football_day_fixtures':0,'requests_used':1,'collection_succeeded':True}]
+    assert not due(now,{},ledger_rows=ledger,snapshots=[])
+    report=coverage(now,'2026-10-17',ledger,[])
+    assert report['collection_state']=='DEGRADED_SCOPE' and report['partial_scope_slots']==1
+    assert ledger[0]['state']=='ZERO_FIXTURES'

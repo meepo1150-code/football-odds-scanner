@@ -40,6 +40,8 @@ def test_no_background_provider_probe_outside_slots():
 
 
 def test_pinnwire_includes_after_midnight_in_previous_football_day(tmp_path, monkeypatch):
+    from odds_scanner import master_scan_scope as scope
+    monkeypatch.setattr(scope,'forward_mappings',lambda:{('pinnwire','1001'):'ENG-0001'})
     class Clock(datetime):
         @classmethod
         def now(cls, tz=None):
@@ -48,7 +50,7 @@ def test_pinnwire_includes_after_midnight_in_previous_football_day(tmp_path, mon
     monkeypatch.setattr(pinn,'SNAP',tmp_path/'snap.jsonl')
     monkeypatch.setattr(pinn,'REPORT',tmp_path/'report.json')
     def ev(i,start):
-        return {'id':i,'home':'Home','away':'Away','starts':start,'periods':{'num_0':{'spreads':{'main':{'hdp':-.5,'home':1.9,'away':1.95}}}}}
+        return {'id':i,'league_id':1001,'country':'England','home':'Home','away':'Away','starts':start,'periods':{'num_0':{'spreads':{'main':{'hdp':-.5,'home':1.9,'away':1.95}}}}}
     events=[ev('after-midnight','2026-09-30T19:00:00Z'),ev('at-end','2026-09-30T23:00:00Z'),ev('started','2026-09-30T15:00:00Z')]
     monkeypatch.setattr(pinn,'_fetch_payload',lambda:({'events':events},1,0))
     report=pinn.collect()

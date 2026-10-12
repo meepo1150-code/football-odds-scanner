@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from .research_population import in_scope, exclusion_reason, POLICY
-import json, math
+import json, math, re
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -152,7 +152,7 @@ def build(root=Path('.')):
         provider=str(ss[-1].get('provider') or ('oddspapi' if str(ss[-1].get('source_semantics','')).startswith('CURRENT_ODDSPAPI_') else 'UNRESOLVED_PROVIDER'))
         unique_by_provider[provider]+=1
         last=ss[-1]
-        derivative=bool(__import__('re').search(r'\\((?:corners?|bookings?|cards?)\\)',str(last.get('home') or '')+' '+str(last.get('away') or ''),__import__('re').I))
+        derivative=bool(re.search(r'\((?:corners?|bookings?|cards?)\)',str(last.get('home') or '')+' '+str(last.get('away') or ''),re.I))
         if derivative:
             excluded_derivative+=1
             continue

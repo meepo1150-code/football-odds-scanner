@@ -33,6 +33,8 @@ def test_retry_after_never_shortened():
     assert datetime.fromisoformat(pinn._cooldown_until(exc,now)) == now+timedelta(hours=2)
 
 def test_429_not_retried_and_cooldown_persists(tmp_path,monkeypatch):
+    from odds_scanner import master_scan_scope as scope
+    monkeypatch.setattr(scope,'forward_mappings',lambda:{('pinnwire','1001'):'ENG-0001'})
     monkeypatch.setattr(pinn,'REPORT',tmp_path/'report.json')
     calls=[]
     def fail(*args,**kwargs):

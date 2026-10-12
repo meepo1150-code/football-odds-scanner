@@ -23,6 +23,9 @@ def _write(root,r):
 def run(root=Path(".")):
     key=os.getenv(ENV_KEY,"").strip(); now=datetime.now(timezone.utc); ws,we,day=_football_day_bounds(now)
     report={"schema_version":"1.0","provider":"5dollarfootballapi_free","bookmaker":BOOKMAKER,"football_day":day,"generated_at":now.isoformat(),"observed_at":now.isoformat(),"research_only":True,"snapshot_semantics":"LATEST_PREMATCH_OBSERVED_BY_SCANNER_QUOTE_TIMESTAMP_UNVERIFIED","requests_used":0}
+    from .master_scan_scope import provider_has_verified_scope,scan_scope_reason
+    if not provider_has_verified_scope('5dollarfootballapi_free'):
+        report['status']='MASTER_PROVIDER_MAPPING_UNAVAILABLE';return _write(root,report)
     if not key: report["status"]="API_KEY_NOT_CONFIGURED"; return _write(root,report)
     try: payload=_get("/fixtures",key,{"status":"scheduled","start_time":int(ws.timestamp()),"end_time":int(we.timestamp()),"per_page":50}); report["requests_used"]+=1
     except Exception as e: report.update(status="API_REQUEST_FAILED",errors=[f"{type(e).__name__}: {e}"]); return _write(root,report)
@@ -30,6 +33,9 @@ def run(root=Path(".")):
     for fx in fixtures:
         fid=str(fx.get("id") or "")
         if not fid: continue
+        league=fx.get('league') or {}
+        if scan_scope_reason({'provider_competition_id':league.get('id'),'country':fx.get('country')},provider='5dollarfootballapi_free'):
+            continue
         # Check scope before the per-fixture odds request, not just persistence.
         if exclusion_reason({'provider': '5dollarfootballapi_free', 'league': fx.get('league') or {}, 'country': fx.get('country') or None}):
             continue

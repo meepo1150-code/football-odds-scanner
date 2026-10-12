@@ -1,0 +1,367 @@
+{
+  "generated_at": "2026-10-12T14:03:01.698879+00:00",
+  "classification": "MASTER_FORWARD_ALLOWLIST_PREFLIGHT",
+  "verdict": "OFFLINE_GATES_PASS; LIVE_OBSERVATION_PENDING; FALLBACK_COVERAGE_REDUCED",
+  "api_requests_used": 0,
+  "raw_deleted": 0,
+  "approved_competitions": 92,
+  "verified_provider_competition_mappings": 92,
+  "policies": {
+    "approved_divisions": 81,
+    "domestic_cups": 8,
+    "uefa_club_competitions": 3,
+    "senior_national_competitions": "NOT_ALLOWLISTED",
+    "outside_master": "REJECT_NEW_QUOTES",
+    "unmapped_provider": "BLOCK_BEFORE_HTTP_ODDS_CALLS",
+    "historical_statistics": "REVIEWED_RESEARCH_SCOPE_UNCHANGED"
+  },
+  "old_target_count": 54,
+  "old_after_reviewed_exclusions": 53,
+  "verified_existing_discovery_targets": 46,
+  "blocked_targets": [
+    {
+      "country": "Germany",
+      "uefa_rank": 4,
+      "tournament_id": 491,
+      "tournament_name": "3. Liga",
+      "tournament_slug": "3-liga",
+      "competition_type": "LEAGUE",
+      "tier": 3,
+      "reason": "MASTER_PROVIDER_COMPETITION_UNMAPPED"
+    },
+    {
+      "country": "Czech Republic",
+      "uefa_rank": null,
+      "tournament_id": 172,
+      "tournament_name": "1. Liga",
+      "tournament_slug": "1-liga",
+      "competition_type": "LEAGUE",
+      "tier": 1,
+      "reason": "MASTER_COUNTRY_CONFLICT"
+    },
+    {
+      "country": "Norway",
+      "uefa_rank": 13,
+      "tournament_id": 29,
+      "tournament_name": "NM Cup",
+      "tournament_slug": "nm-cup",
+      "competition_type": "DOMESTIC_CUP",
+      "tier": null,
+      "reason": "MASTER_PROVIDER_COMPETITION_UNMAPPED"
+    },
+    {
+      "country": "Denmark",
+      "uefa_rank": 14,
+      "tournament_id": 76,
+      "tournament_name": "DBU Pokalen",
+      "tournament_slug": "dbu-pokalen",
+      "competition_type": "DOMESTIC_CUP",
+      "tier": null,
+      "reason": "MASTER_PROVIDER_COMPETITION_UNMAPPED"
+    },
+    {
+      "country": "Switzerland",
+      "uefa_rank": 15,
+      "tournament_id": 399,
+      "tournament_name": "Schweizer Cup",
+      "tournament_slug": "schweizer-cup",
+      "competition_type": "DOMESTIC_CUP",
+      "tier": null,
+      "reason": "MASTER_PROVIDER_COMPETITION_UNMAPPED"
+    },
+    {
+      "country": "Scotland",
+      "uefa_rank": null,
+      "tournament_id": 331,
+      "tournament_name": "Challenge Cup",
+      "tournament_slug": "challenge-cup",
+      "competition_type": "DOMESTIC_CUP",
+      "tier": null,
+      "reason": "MASTER_PROVIDER_COMPETITION_UNMAPPED"
+    },
+    {
+      "country": "Romania",
+      "uefa_rank": null,
+      "tournament_id": 355,
+      "tournament_name": "Romania Cup",
+      "tournament_slug": "romania-cup",
+      "competition_type": "DOMESTIC_CUP",
+      "tier": null,
+      "reason": "MASTER_PROVIDER_COMPETITION_UNMAPPED"
+    }
+  ],
+  "producer_enforcement": {
+    "europe_discovery": "FILTER_BEFORE_ODDS_BATCHES",
+    "europe_pinnacle_discovery": "FILTER_BEFORE_ACCOUNT_OR_ODDS",
+    "v2_mainline_observer": "FILTER_BEFORE_ODDS_BATCHES",
+    "propline": "NO_VERIFIED_SPORT_KEYS; CATALOG_AND_STATIC_FALLBACK_BLOCKED; ROWS_RECHECKED",
+    "pinnwire": "NO_VERIFIED_LEAGUE_IDS; GLOBAL_PREMATCH_FETCH_BLOCKED",
+    "five_dollar_live": "NO_VERIFIED_LEAGUE_IDS; FIXTURE_AND_ODDS_FETCH_BLOCKED",
+    "sgodds_live": "NO_VERIFIED_COMPETITION_IDS; MARKET_FETCH_BLOCKED",
+    "daily_fixture_result_sync": "LOCAL_ONLY_METADATA_FROM_EXISTING_RAW; NO_NEW_ODDS",
+    "historical_archives_and_ft_recovery": "HISTORICAL_IDENTITIES_RETAINED; NO_RETROACTIVE_ALLOWLIST"
+  },
+  "replay_by_day_provider": [
+    {
+      "football_day": "2026-09-14",
+      "provider": "oddspapi",
+      "snapshot_counts": {
+        "ALLOWLISTED": 24
+      }
+    },
+    {
+      "football_day": "2026-09-15",
+      "provider": "oddspapi",
+      "snapshot_counts": {
+        "ALLOWLISTED": 32,
+        "MASTER_PROVIDER_COMPETITION_UNMAPPED": 5
+      }
+    },
+    {
+      "football_day": "2026-09-16",
+      "provider": "oddspapi",
+      "snapshot_counts": {
+        "ALLOWLISTED": 13
+      }
+    },
+    {
+      "football_day": "2026-09-17",
+      "provider": "oddspapi",
+      "snapshot_counts": {
+        "ALLOWLISTED": 13
+      }
+    },
+    {
+      "football_day": "2026-09-19",
+      "provider": "oddspapi",
+      "snapshot_counts": {
+        "ALLOWLISTED": 19
+      }
+    },
+    {
+      "football_day": "2026-09-20",
+      "provider": "oddspapi",
+      "snapshot_counts": {
+        "ALLOWLISTED": 80
+      }
+    },
+    {
+      "football_day": "2026-09-24",
+      "provider": "api_football",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_UNMAPPED": 20
+      }
+    },
+    {
+      "football_day": "2026-09-24",
+      "provider": "pinnwire",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 249,
+        "YOUTH_OUT_OF_SCOPE": 36,
+        "WOMEN_OUT_OF_SCOPE": 18
+      }
+    },
+    {
+      "football_day": "2026-09-24",
+      "provider": "propline",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 8
+      }
+    },
+    {
+      "football_day": "2026-09-25",
+      "provider": "propline",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 6
+      }
+    },
+    {
+      "football_day": "2026-09-26",
+      "provider": "pinnwire",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 407,
+        "YOUTH_OUT_OF_SCOPE": 36,
+        "WOMEN_OUT_OF_SCOPE": 66
+      }
+    },
+    {
+      "football_day": "2026-09-26",
+      "provider": "propline",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 35
+      }
+    },
+    {
+      "football_day": "2026-09-27",
+      "provider": "propline",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 13
+      }
+    },
+    {
+      "football_day": "2026-09-28",
+      "provider": "propline",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 4
+      }
+    },
+    {
+      "football_day": "2026-09-29",
+      "provider": "pinnwire",
+      "snapshot_counts": {
+        "YOUTH_OUT_OF_SCOPE": 17,
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 41,
+        "WOMEN_OUT_OF_SCOPE": 1
+      }
+    },
+    {
+      "football_day": "2026-09-29",
+      "provider": "propline",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 43
+      }
+    },
+    {
+      "football_day": "2026-09-30",
+      "provider": "pinnwire",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 12,
+        "YOUTH_OUT_OF_SCOPE": 19,
+        "WOMEN_OUT_OF_SCOPE": 4,
+        "USER_REVIEWED_FIXTURE_OUT_OF_SCOPE": 1
+      }
+    },
+    {
+      "football_day": "2026-10-01",
+      "provider": "pinnwire",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 36,
+        "USER_REVIEWED_FIXTURE_OUT_OF_SCOPE": 17,
+        "YOUTH_OUT_OF_SCOPE": 16,
+        "WOMEN_OUT_OF_SCOPE": 4,
+        "REVIEWED_LEAGUE_OUT_OF_SCOPE": 3
+      }
+    },
+    {
+      "football_day": "2026-10-01",
+      "provider": "propline",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 14
+      }
+    },
+    {
+      "football_day": "2026-10-02",
+      "provider": "propline",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 20
+      }
+    },
+    {
+      "football_day": "2026-10-03",
+      "provider": "oddspapi",
+      "snapshot_counts": {
+        "ALLOWLISTED": 82
+      }
+    },
+    {
+      "football_day": "2026-10-03",
+      "provider": "propline",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 60
+      }
+    },
+    {
+      "football_day": "2026-10-04",
+      "provider": "oddspapi",
+      "snapshot_counts": {
+        "ALLOWLISTED": 5
+      }
+    },
+    {
+      "football_day": "2026-10-04",
+      "provider": "propline",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 16
+      }
+    },
+    {
+      "football_day": "2026-10-05",
+      "provider": "propline",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 25
+      }
+    },
+    {
+      "football_day": "2026-10-07",
+      "provider": "propline",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 4
+      }
+    },
+    {
+      "football_day": "2026-10-08",
+      "provider": "oddspapi",
+      "snapshot_counts": {
+        "ALLOWLISTED": 1
+      }
+    },
+    {
+      "football_day": "2026-10-08",
+      "provider": "propline",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 1
+      }
+    },
+    {
+      "football_day": "2026-10-09",
+      "provider": "oddspapi",
+      "snapshot_counts": {
+        "ALLOWLISTED": 3
+      }
+    },
+    {
+      "football_day": "2026-10-10",
+      "provider": "oddspapi",
+      "snapshot_counts": {
+        "ALLOWLISTED": 63,
+        "MASTER_PROVIDER_COMPETITION_UNMAPPED": 6,
+        "MASTER_COUNTRY_CONFLICT": 4
+      }
+    },
+    {
+      "football_day": "2026-10-10",
+      "provider": "propline",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 132
+      }
+    },
+    {
+      "football_day": "2026-10-11",
+      "provider": "oddspapi",
+      "snapshot_counts": {
+        "ALLOWLISTED": 33,
+        "USER_REVIEWED_COMPETITION_OUT_OF_SCOPE": 4,
+        "MASTER_PROVIDER_COMPETITION_UNMAPPED": 3
+      }
+    },
+    {
+      "football_day": "2026-10-11",
+      "provider": "propline",
+      "snapshot_counts": {
+        "MASTER_PROVIDER_COMPETITION_ID_MISSING": 87
+      }
+    }
+  ],
+  "preserved_artifact_sha256": {
+    "data/normalized/europe_pinnacle_research_v2_snapshots.jsonl": "93adb33381914310a066983c9c06886a6da123930940ec2a189cf2dcd8f1ca30",
+    "data/normalized/europe_pinnacle_research_v2_audit.jsonl": "e6980d4ef0ab83f27019c96915366677aa0c2a71df2f027cf20380aadb1dcfca",
+    "data/normalized/oddspapi_finished_results.jsonl": "aa3e899b4f2e13587dc8c7e640cb8b0b46690c702a3a390ef28cbe802335cf25",
+    "reports/pattern_registry.json": "4563a70433ab31dad8557d54b892b16480c5dfbf6ba51d02cd3e84c7b7b66bcd"
+  },
+  "coverage_limitations": [
+    "The 47 verified targets in the current discovery file are a subset of the 92 registered mappings.",
+    "Primary rotating cohorts remain limited to five tournaments per weekend slot and ten per weekday slot.",
+    "Unsupported providers intentionally contribute no new quotes until verified mappings are recorded.",
+    "Historical country/name labels do not authorize new provider-ID mappings."
+  ]
+}

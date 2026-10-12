@@ -47,6 +47,8 @@ def test_recovery_only_fetches_latest_elapsed_target(tmp_path,monkeypatch):
 
 
 def test_provider_429_stops_catalog_fanout(monkeypatch):
+    from odds_scanner import master_scan_scope as scope
+    monkeypatch.setattr(scope,'forward_mappings',lambda:{('propline','soccer_test'):'ENG-0001'})
     import urllib.error
     from odds_scanner import propline_provider as pp
     calls=[]

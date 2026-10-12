@@ -61,6 +61,10 @@ def run(root: Path = Path(".")) -> dict:
         "quota_required": False,
         "source_semantics": "CURRENT_OPEN_MARKET_SNAPSHOT",
     }
+    from .master_scan_scope import provider_has_verified_scope
+    if not provider_has_verified_scope('sgodds_singapore_pools_open'):
+        report.update(status='MASTER_PROVIDER_MAPPING_UNAVAILABLE')
+        return _write(root,report)
     try:
         markets = fetch_current_markets()
     except Exception as exc:

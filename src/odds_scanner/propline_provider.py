@@ -19,18 +19,22 @@ def retry_seconds(exc):
         except (ValueError,TypeError):return 3600
 
 def active_soccer_sports(key):
+    from .master_scan_scope import provider_has_verified_scope,scan_scope_reason
+    if not provider_has_verified_scope('propline'):
+        LAST_FETCH_DIAGNOSTICS.update(http_requests_attempted=0,failure_class='MASTER_PROVIDER_MAPPING_UNAVAILABLE')
+        return ()
     try:
         payload=_get("/sports",key)
         items=payload.get("data") or payload.get("sports") or [] if isinstance(payload,dict) else payload
         from .research_population import exclusion_reason
-        keys=[str(x.get("key")) for x in (items or []) if isinstance(x,dict) and x.get("active") is not False and str(x.get("key","")).startswith("soccer") and exclusion_reason({'provider':'propline', 'country':x.get('country'), 'league':x.get('title') or x.get('name') or x.get('key')}) is None]
+        keys=[str(x.get("key")) for x in (items or []) if isinstance(x,dict) and x.get("active") is not False and str(x.get("key","")).startswith("soccer") and scan_scope_reason({'provider_competition_id':x.get('key'),'country':x.get('country')},provider='propline') is None and exclusion_reason({'provider':'propline', 'country':x.get('country'), 'league':x.get('title') or x.get('name') or x.get('key')}) is None]
         # A real catalog whose entries are all excluded must not re-enable fallback.
-        return tuple(dict.fromkeys(keys)) if items else SPORTS
+        return tuple(dict.fromkeys(keys))
     except urllib.error.HTTPError as exc:
         if exc.code in (401,403,429):raise
-        return SPORTS
+        return ()
     except Exception:
-        return SPORTS
+        return ()
 PREFERRED=("pinnacle",)
 
 def _get(path,key,params=None):
@@ -61,6 +65,8 @@ def fetch(key=None):
     except urllib.error.HTTPError as exc:
         LAST_FETCH_DIAGNOSTICS.update(cooldown_until=(datetime.now(timezone.utc)+timedelta(seconds=retry_seconds(exc))).isoformat(),failure_class='RATE_LIMITED' if exc.code==429 else 'ACCOUNT_OR_AUTH_BLOCKED')
         return [],[f'catalog:HTTPError:{exc.code}']
+    if not sports:
+        return [],[LAST_FETCH_DIAGNOSTICS.get('failure_class') or 'MASTER_SCOPED_CATALOG_UNAVAILABLE; NO_FALLBACK_SPORT_KEYS']
     for sport in sports:
         if time.monotonic()+20>deadline:
             LAST_FETCH_DIAGNOSTICS['bounded_runtime_partial']=True
