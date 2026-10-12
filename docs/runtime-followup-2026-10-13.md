@@ -1,0 +1,11 @@
+# Runtime follow-up, 13 October 2026 (Bangkok)
+
+Base main: bf0ceeaf7180ea367df722edac6d1276b729f400. PR #331 is merged. Its Daily Preparation Scan run 38276817908 succeeded: actual preparation report records 26 FT imports, six public-result requests and zero OddsPapi requests. Latest published audit before this follow-up reports 818 settled identity groups and 224 unresolved. This does not certify complete coverage.
+
+Live Odds Scan run 38313629847 failed at pytest before the production scanner. Two tests used datetime.now() while expecting a valid slot. At 04:56 Bangkok, the collector correctly returned MISSED_SLOT; the tests incorrectly expected a rate-limit/budget branch. Pin their mocked collector clocks to October 12 21:00 Bangkok and align the test ledger. Production slot expiry, cooldown and quota gates are unchanged. Tests are not production validation-threshold gates.
+
+Add separately stored, previously reviewed official FT evidence for Dover Athletic–Totton 2–0 and Dagenham and Redbridge–Hampton and Richmond Borough 1–0 (National League South, September 26). Batch import reads immutable dated evidence files alongside the original file, retains identity/conflict gates and is idempotent. The original historical evidence file remains byte-for-byte untouched. The free-result workflow subscribes to dated evidence files.
+
+Current Football Day October 12 still had three pending provider IDs at 04:44 Bangkok: Torino–Udinese, Levante–Sevilla, Tenerife–Girona. A fresh public-source local run at 05:44–05:49 Bangkok recovered Tenerife–Girona 1–1 through exact FotMob identity, then Torino–Udinese 2–1 and Levante–Sevilla 3–3 through provider-supplied exact Flashscore IDs. All three use explicit final scores, zero OddsPapi calls and the existing conservative merger. These local outputs are not committed as a wholesale overwrite of a live result cache; the live free-result workflow must recover/merge against fresh main, and its actual output and deployed statistics must be verified.
+
+First real weekday 15:00 preparation collection remains future (13 October); weekend runtime is also pending. Old retired identities and missing-team records remain unresolved, not deleted or assigned guessed scores. No production readiness claim is made.

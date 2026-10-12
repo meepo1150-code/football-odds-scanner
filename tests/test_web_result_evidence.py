@@ -52,6 +52,18 @@ def _evidence():
     return _assert_sources({"fixture_id":"pinnwire:a","home":"Alpha","away":"Beta","kickoff":"2026-09-24T12:00:00Z","ft_home_goals":2,"ft_away_goals":1,"status":"FT","source_url":"https://club.example/match","retrieved_at":"2026-09-25T00:00:00Z","sources":[{"url":"https://club.example/match","tier":"A_OFFICIAL"}]})
 
 
+def test_reviewed_batches_import_without_rewriting_old_evidence(tmp_path):
+    _write(tmp_path/SNAPSHOTS_PATH,[{"provider":"pinnwire","fixture_id":"pinnwire:a","home":"Alpha","away":"Beta","kickoff":"2026-09-24T12:00:00Z"}])
+    _write(tmp_path/EVIDENCE_PATH,[])
+    original=(tmp_path/EVIDENCE_PATH).read_bytes()
+    batch=tmp_path/EVIDENCE_PATH.parent/'web_result_evidence_20261013.jsonl'
+    _write(batch,[_evidence()])
+    first=import_evidence(tmp_path)
+    assert first['results_added']==1 and len(first['evidence_files'])==2
+    assert import_evidence(tmp_path)['results_added']==0
+    assert (tmp_path/EVIDENCE_PATH).read_bytes()==original
+
+
 def test_source_assertion_rejections():
     from odds_scanner.web_result_evidence import _quality
     mutations=[
