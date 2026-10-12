@@ -1,0 +1,104 @@
+{
+  "generated_at": "2026-10-12T13:46:57.440198+00:00",
+  "baseline_commit": "91220d8ae6da793dace59ac58c54f7903c21d24d",
+  "verdict": "PARTIAL",
+  "production_certified": false,
+  "offline_tests": {
+    "passed": 520,
+    "failed": 0
+  },
+  "protected_artifacts": {
+    "reports/pattern_registry.json": {
+      "unchanged": true,
+      "sha256": "4563a70433ab31dad8557d54b892b16480c5dfbf6ba51d02cd3e84c7b7b66bcd"
+    },
+    "data/normalized/europe_pinnacle_research_v2_snapshots.jsonl": {
+      "unchanged": true,
+      "sha256": "93adb33381914310a066983c9c06886a6da123930940ec2a189cf2dcd8f1ca30"
+    },
+    "data/normalized/europe_pinnacle_research_v2_audit.jsonl": {
+      "unchanged": true,
+      "sha256": "e6980d4ef0ab83f27019c96915366677aa0c2a71df2f027cf20380aadb1dcfca"
+    }
+  },
+  "gates": {
+    "schedule_offline": "PASS",
+    "canonical_weekly_slots": 18,
+    "recovery_minutes": 150,
+    "quarter_settlement_regression": "PASS",
+    "one_fixture_four_scans_regression": "PASS",
+    "strict_prematch_and_utc_ordering": "PASS",
+    "ft_total_completeness": 75.95,
+    "ft_settled": 783,
+    "ft_denominator": 1031,
+    "ft_without_verified_result": 248,
+    "postponed_verified": 1,
+    "identity_conflicts": 2,
+    "master_allowlist_cutover": "BLOCKED_PROVIDER_MAPPING_AND_ALL_PRODUCER_PREFLIGHT",
+    "weekday_live_observation": "DEGRADED_TIMING; ZERO_FIXTURES_IN_ROTATING_COHORT; NO_PERSISTED_QUOTES",
+    "weekend_new_schedule": "PENDING_LIVE_OBSERVATION",
+    "live_browser": "BLOCKED_REMOTE_BROWSER_TIMEOUT_AND_PAGES_NETWORK_ACCESS",
+    "movement_edge": "NO_VALIDATED_INCREMENTAL_MOVEMENT_EDGE",
+    "ci": "PENDING",
+    "merge": "PENDING",
+    "deployment": "PENDING"
+  },
+  "real_collection_evidence": {
+    "bangkok_now": "2026-10-12T20:43:36.297436+07:00",
+    "canonical_slots": [
+      {
+        "target_time": "2026-10-12T18:00:00+07:00",
+        "state": "ZERO_FIXTURES",
+        "provider": "oddspapi",
+        "observed_at": "2026-10-12T19:35:55.509800+07:00",
+        "lag_minutes": 95.93,
+        "valid_snapshot_count": 0,
+        "canonical_fixture_count": 0,
+        "observation_timing": "LATE",
+        "recovered": true
+      },
+      {
+        "target_time": "2026-10-12T21:00:00+07:00",
+        "state": "UPCOMING",
+        "provider": null,
+        "observed_at": null,
+        "lag_minutes": null,
+        "valid_snapshot_count": 0,
+        "canonical_fixture_count": 0,
+        "observation_timing": "UPCOMING",
+        "recovered": false
+      }
+    ],
+    "schedule_version": "BKK_18_SLOTS_V2",
+    "schedule_effective_day": "2026-10-12",
+    "on_time_slots": 0,
+    "late_slots": 1,
+    "partial_scope_slots": 0,
+    "on_time_coverage_fraction": 0.0,
+    "expected_elapsed_slots": 1,
+    "observed_slots": 1,
+    "missing_elapsed_slots": 0,
+    "coverage_fraction": 1.0,
+    "collection_state": "DEGRADED_TIMING",
+    "recovered_slots": [
+      "2026-10-12T18:00:00+07:00"
+    ],
+    "missed_slots": []
+  },
+  "new_verified_result": {
+    "fixture_id": "id1000001974975976",
+    "home": "Marine FC",
+    "away": "Warrington Town",
+    "ft": [
+      2,
+      0
+    ],
+    "source_url": "https://www.warringtontownfc.co.uk/posts/report-marine-2-0-warrington-town/2272"
+  },
+  "limitations": [
+    "Remaining named historical fixtures require additional source-by-source verification; retirement is not a final result.",
+    "20 historical API-Football fixtures have no home/away identity in snapshots.",
+    "Only OddsPapi has the 92 verified competition mappings; PropLine has no accepted master competition mapping.",
+    "Cohort collection does not prove whole-market fixture coverage."
+  ]
+}

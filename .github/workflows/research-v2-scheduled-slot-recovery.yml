@@ -2,15 +2,13 @@ name: Research V2 Scheduled Slot Recovery
 on:
   workflow_dispatch:
   schedule:
-    # Canonical weekday slots in UTC: 18:00/21:00 Asia/Bangkok.
-    # The local evidence gate prevents duplicate provider calls if a slot is already complete.
+    # BKK_18_SLOTS_V2, effective football day 2026-10-12.
+    # Weekdays 18/21; weekends 15/18/21/00 after that football day.
+    # Recovery heartbeats share the evidence gate and collector lock.
     - cron: '0 11,14 * * 1-5'
-    # Independent recovery heartbeats, sharing the collector lock and local attempt gate.
-    # If the canonical trigger ran, these make zero provider requests.
-    - cron: '17,37,57 14 * * 1-5'
-    - cron: '17,37,57 15,16 * * 1-5'
-    - cron: '17,47 11,12,13 * * 1-5'
-    - cron: '17,47 5,8,11,12,13,14,15 * * 0,6'
+    - cron: '0 8,11,14,17 * * 0,6'
+    - cron: '17,47 11,12,13,14,15,16 * * 1-5'
+    - cron: '17,47 8,9,10,11,12,13,14,15,16,17,18,19 * * 0,6'
   push:
     branches: [main]
     paths: ['.github/workflows/research-v2-scheduled-slot-recovery.yml', 'controls/research_v2_recovery_token.txt']

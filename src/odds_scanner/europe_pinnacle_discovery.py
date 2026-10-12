@@ -53,11 +53,11 @@ def _football_day_bounds(now):
     local=now.astimezone(BANGKOK); label=local.date()-timedelta(days=1) if local.time()<dtime(FOOTBALL_DAY_END_HOUR) else local.date(); start=datetime.combine(label,dtime(12),BANGKOK); end=datetime.combine(label+timedelta(days=1),dtime(6),BANGKOK); return start.astimezone(timezone.utc),end.astimezone(timezone.utc),label.isoformat()
 
 def _schedule_timing(now):
+    from .research_v2_slots import targets
     local=now.astimezone(BANGKOK); candidates=[]
     for delta in (-1,0):
         day=local.date()+timedelta(days=delta)
-        for h in (WEEKEND_TARGET_HOURS if day.weekday()>=5 else (18,21)): candidates.append(datetime.combine(day,dtime(h),BANGKOK))
-        if day.weekday() in (1,2,3,4,5): candidates.append(datetime.combine(day,dtime(0),BANGKOK))
+        candidates.extend(targets(day))
     eligible=[x for x in candidates if x<=local]; target=max(eligible) if eligible else None
     return (target,round((local-target).total_seconds()/60,2)) if target else (None,None)
 
@@ -72,7 +72,13 @@ def _slot_done(path,target):
     return completed(target, datetime.now(timezone.utc), rows, read_snapshots(path.parents[2]))
 
 def _record_slot(path,report,state,reason=None):
+    from .research_v2_slots import schedule_version
+    if state == 'ZERO_FIXTURES' and report.get('coverage_complete') is False:
+        state = 'ZERO_COHORT'
     row={'scheduled_target_at':report.get('scheduled_target_at'),'provider':report.get('provider','oddspapi'),'football_day':report.get('football_day'),'state':state,'actual_observed_at':report.get('actual_observed_at'),'schedule_lag_minutes':report.get('schedule_lag_minutes'),'observation_timing':report.get('observation_timing'),'requests_used':report.get('requests_used',0),'football_day_fixtures':report.get('football_day_fixtures'),'strict_snapshots':report.get('strict_snapshots_this_run'),'reason':reason or report.get('status'),'finalized_at':report.get('generated_at'),'collection_succeeded':report.get('status') in {'RESEARCH_V2_OBSERVED','ZERO_USABLE_FIXTURES'} and not report.get('errors')}
+    row['schedule_version'] = schedule_version(row.get('football_day') or '')
+    row['coverage_complete'] = report.get('coverage_complete')
+    row['coverage_tournament_ids'] = report.get('coverage_tournament_ids')
     rows={}
     if path.exists():
         for line in path.read_text(encoding='utf-8').splitlines():

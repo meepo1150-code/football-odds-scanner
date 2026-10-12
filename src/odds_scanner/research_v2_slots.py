@@ -6,6 +6,8 @@ from zoneinfo import ZoneInfo
 
 BKK = ZoneInfo('Asia/Bangkok')
 RECOVERY_MINUTES = 150
+SCHEDULE_EFFECTIVE_DAY = '2026-10-12'
+SCHEDULE_VERSION = 'BKK_18_SLOTS_V2'
 LEDGER = Path('data/normalized/research_v2_slot_ledger.jsonl')
 
 
@@ -20,8 +22,23 @@ def stamp(value):
 def targets(day):
     if isinstance(day, str):
         day = datetime.fromisoformat(day).date()
-    hours = (12, 15, 18, 19, 20, 21, 22) if day.weekday() >= 5 else (18, 21)
-    return [datetime.combine(day, time(hour), BKK) for hour in hours]
+    if day.isoformat() < SCHEDULE_EFFECTIVE_DAY:
+        hours = (12, 15, 18, 19, 20, 21, 22) if day.weekday() >= 5 else (18, 21)
+        return [datetime.combine(day, time(hour), BKK) for hour in hours]
+    hours = (15, 18, 21) if day.weekday() >= 5 else (18, 21)
+    slots = [datetime.combine(day, time(hour), BKK) for hour in hours]
+    if day.weekday() >= 5:
+        slots.append(datetime.combine(day + timedelta(days=1), time(0), BKK))
+    return slots
+
+
+def schedule_version(day):
+    return SCHEDULE_VERSION if str(day) >= SCHEDULE_EFFECTIVE_DAY else 'BKK_LEGACY_V1'
+
+
+def target_football_day(target):
+    local = target.astimezone(BKK)
+    return (local.date() - timedelta(days=1) if local.hour < 6 else local.date()).isoformat()
 
 
 def read_ledger(root=Path('.')):
@@ -51,7 +68,7 @@ def valid_completion(row, target, now):
     used = row.get('requests_used', 0)
     receipt = (row['collection_succeeded'] is True if 'collection_succeeded' in row
                else isinstance(used, int) and used > 0)
-    return (state == 'ZERO_FIXTURES' and row.get('football_day_fixtures') == 0
+    return (state in {'ZERO_FIXTURES','ZERO_COHORT'} and row.get('football_day_fixtures') == 0
             and not row.get('strict_snapshots') and receipt)
 
 
@@ -85,7 +102,7 @@ def matched_snapshots(target, now, snapshots):
         observed = stamp(snap.get('observed_at'))
         explicit = stamp(snap.get('scheduled_target_at'))
         if snap.get('provider') in {'propline', 'pinnwire'} and explicit == observed:
-            prior = [t for t in targets(target.date()) if observed and t <= observed]
+            prior = [t for t in targets(target_football_day(target)) if observed and t <= observed]
             explicit = max(prior) if prior else None
         if explicit == target and observed and target <= observed <= min(now, target + timedelta(minutes=RECOVERY_MINUTES)):
             matched.append(snap)
@@ -110,7 +127,7 @@ def read_snapshots(root=Path('.')):
 
 def completed(target, now, ledger, snapshots):
     return bool(matched_snapshots(target, now, snapshots) or any(
-        row.get('state') == 'ZERO_FIXTURES' and valid_completion(row, target, now)
+        row.get('state') in {'ZERO_FIXTURES','ZERO_COHORT'} and valid_completion(row, target, now)
         for row in ledger))
 
 
@@ -124,7 +141,7 @@ def coverage(now, day, ledger, snapshots):
     for target in targets(day):
         matched = matched_snapshots(target, local, snapshots)
         evidence = [r for r in ledger if valid_completion(r, target, local)
-                    and (r.get('state') == 'ZERO_FIXTURES' or matched)]
+                    and (r.get('state') in {'ZERO_FIXTURES','ZERO_COHORT'} or matched)]
         completed = bool(matched or evidence)
         latest = max((stamp(r.get('observed_at')) for r in matched), default=None)
         row = evidence[-1] if evidence else {}
@@ -140,15 +157,17 @@ def coverage(now, day, ledger, snapshots):
                         'observation_timing': ('ON_TIME' if observed and observed <= target + timedelta(minutes=30) else 'LATE' if observed else state),
                         'recovered': bool(completed and observed and observed > target + timedelta(minutes=30))})
     elapsed = [r for r in details if r['state'] != 'UPCOMING']
-    done = [r for r in elapsed if r['state'] in {'OBSERVED', 'ZERO_FIXTURES'}]
+    done = [r for r in elapsed if r['state'] in {'OBSERVED', 'ZERO_FIXTURES','ZERO_COHORT'}]
+    partial = [r for r in done if r['state']=='ZERO_COHORT']
     on_time = [r for r in done if r['observation_timing']=='ON_TIME']
     late = [r for r in done if r['observation_timing']=='LATE']
     return {'bangkok_now': local.isoformat(), 'canonical_slots': details,
-            'on_time_slots':len(on_time),'late_slots':len(late),
+            'schedule_version': schedule_version(day), 'schedule_effective_day': SCHEDULE_EFFECTIVE_DAY,
+            'on_time_slots':len(on_time),'late_slots':len(late),'partial_scope_slots':len(partial),
             'on_time_coverage_fraction':round(len(on_time)/len(elapsed),3) if elapsed else None,
             'expected_elapsed_slots': len(elapsed), 'observed_slots': len(done),
             'missing_elapsed_slots': len(elapsed)-len(done),
             'coverage_fraction': round(len(done)/len(elapsed), 3) if elapsed else None,
-            'collection_state': 'NOT_DUE' if not elapsed else 'COMPLETE' if len(on_time) == len(elapsed) else 'DEGRADED_TIMING' if len(done)==len(elapsed) else 'DEGRADED',
+            'collection_state': 'NOT_DUE' if not elapsed else 'DEGRADED_SCOPE' if partial else 'COMPLETE' if len(on_time) == len(elapsed) else 'DEGRADED_TIMING' if len(done)==len(elapsed) else 'DEGRADED',
             'recovered_slots': [r['target_time'] for r in details if r['recovered']],
             'missed_slots': [r['target_time'] for r in details if r['state'] == 'MISSED']}

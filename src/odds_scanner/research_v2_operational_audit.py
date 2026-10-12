@@ -86,6 +86,8 @@ def build(root=Path('.'), now=None):
     if stats.get('quarantined_snapshot_rows') != counts['quarantined_snapshots']:failures.append('QUARANTINE_COUNT_MISMATCH')
     if move.get('source_snapshot_rows') != len(valid):failures.append('MOVEMENT_INPUT_STALE')
     collection_failures = ['CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE'] if coverage['missing_elapsed_slots'] > 0 or coverage['late_slots'] > 0 else []
+    if coverage['partial_scope_slots']:
+        collection_failures.append('ZERO_FIXTURES_ONLY_WITHIN_PARTIAL_COHORT')
     ready=[{'candidate_id':c.get('candidate_id'),'settled':c.get('settled_entries'),'minimum':150,'status':c.get('status'),'production_promotion_allowed':c.get('production_promotion_allowed',False)} for c in forward.get('candidates',[])]
     status = ('BROKEN_DATA_ASSERTIONS' if failures else
               'DEGRADED_DATA_COVERAGE' if collection_failures else

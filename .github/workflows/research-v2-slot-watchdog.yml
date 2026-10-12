@@ -10,20 +10,13 @@ on:
     branches: [main]
     types: [completed]
   schedule:
-    # Independent recovery path. Offset from the primary workflow so one delayed
-    # workflow definition does not remain the only trigger source.
-    # Weekday 21:00 Bangkok: +10,+30,+50,+70,+90,+110,+130 minutes.
+    # BKK_18_SLOTS_V2, effective football day 2026-10-12.
+    # Weekdays 18/21; weekends 15/18/21/00 after that football day.
+    # Recovery heartbeats share the evidence gate and collector lock.
     - cron: '10,30,50 11,12,14,15 * * 1-5'
-    - cron: '10,30 16 * * 1-5'
-    # Tue-Sat 00:00 Bangkok: +10,+30,+50,+70,+90,+110,+130 minutes.
-    - cron: '10,30,50 17,18 * * 1-5'
-    - cron: '10,30 19 * * 1-5'
-    # Weekend hourly 18-22 Bangkok plus 12/15 recovery heartbeats.
-    - cron: '10,30,50 5,8,11,12,13,14,15 * * 6,0'
-    - cron: '10,30 6,9 * * 6,0'
-    # Retain the weekend football day across midnight through the 22:00 slot's 150-minute window.
-    - cron: '10,30,50 16 * * 6,0'
-    - cron: '10,30 17 * * 6,0'
+    - cron: '10,30 13,16 * * 1-5'
+    - cron: '10,30,50 8,9,11,12,14,15,17,18 * * 0,6'
+    - cron: '10,30 10,13,16,19 * * 0,6'
 permissions: {contents: write}
 concurrency:
   group: research-v2-collectors
