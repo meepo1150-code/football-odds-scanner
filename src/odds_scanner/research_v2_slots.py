@@ -148,6 +148,10 @@ def coverage(now, day, ledger, snapshots):
         observed = latest or stamp(row.get('actual_observed_at') or row.get('observed_at'))
         state = ('OBSERVED' if matched else row.get('state')) if completed else (
             'UPCOMING' if target > local else 'MISSED' if local > target + timedelta(minutes=RECOVERY_MINUTES) else 'MISSING')
+        if (state=='ZERO_FIXTURES' and str(day)>=SCHEDULE_EFFECTIVE_DAY
+                and row.get('coverage_complete') is not True):
+            # Preserve the old receipt for dedupe without asserting whole-scope emptiness.
+            state='ZERO_COHORT'
         details.append({'target_time': target.isoformat(), 'state': state,
                         'provider': (matched[-1].get('provider') or ('oddspapi' if str(matched[-1].get('source_semantics','')).startswith('CURRENT_ODDSPAPI_') else 'UNRESOLVED_PROVIDER')) if matched else row.get('provider'),
                         'observed_at': observed.isoformat() if observed else None,
