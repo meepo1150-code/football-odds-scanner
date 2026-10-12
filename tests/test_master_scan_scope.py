@@ -90,3 +90,18 @@ def test_all_excluded_targets_make_no_provider_request(monkeypatch, tmp_path):
     assert report['master_scope_excluded_targets'] == 6
     assert report['requests_used'] == 0
     assert report['status'] == 'SKIPPED_USER_EXCLUDED_COMPETITIONS'
+
+
+def test_propline_never_discovers_non_master_sports(monkeypatch):
+    from odds_scanner import propline_provider as provider
+    assert 'soccer_japan_j_league' not in provider.SPORTS
+    assert 'soccer_usa_mls' not in provider.SPORTS
+    monkeypatch.setattr(provider, '_get', lambda path, key: [
+        {'key':'soccer_epl','title':'Premier League','country':'England','active':True},
+        {'key':'soccer_japan_j_league','title':'J1 League','country':'Japan','active':True},
+        {'key':'soccer_usa_mls','title':'MLS','country':'USA','active':True},
+        {'key':'soccer_unknown','title':'Premier League','country':'England','active':True},
+    ])
+    assert provider.active_soccer_sports('test-key') == ('soccer_epl',)
+    monkeypatch.setattr(provider, '_get', lambda path, key: (_ for _ in ()).throw(TimeoutError('catalog unavailable')))
+    assert provider.active_soccer_sports('test-key') == provider.SPORTS
