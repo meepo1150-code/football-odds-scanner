@@ -1,5 +1,6 @@
 from __future__ import annotations
 import json
+from datetime import datetime,timezone
 from pathlib import Path
 from urllib.parse import urlparse
 from .oddspapi_result_cache import RESULTS_PATH, merge_normalized_results
@@ -8,6 +9,7 @@ from .web_result_recovery import validate_evidence
 
 EVIDENCE_PATH=Path("data/research/web_result_evidence.jsonl")
 REPORT_PATH=Path("reports/web_result_evidence_import.json")
+PROVENANCE_CORRECTIONS_PATH=Path("data/normalized/web_result_provenance_corrections.jsonl")
 
 def _host(url):
     return (urlparse(str(url)).hostname or "").casefold().removeprefix("www.")
@@ -105,17 +107,43 @@ def import_evidence(root=Path(".")):
                 quarantine.append({"fixture_id":fid,"reason":"CONFLICT_WITH_EXISTING_WEB_EVIDENCE"}); continue
             valid_ids.append(fid)
         for fid in valid_ids:
+            s=by_id[fid]
             accepted.append({"fixture_id":fid,"ft_home_goals":e["ft_home_goals"],"ft_away_goals":e["ft_away_goals"],
                 "result_source":"WEB_EVIDENCE_"+qreason,"source_urls":[x.get("url") for x in (e.get("sources") or [])],
                 "retrieved_at":e.get("retrieved_at"),"evidence_status":"FT",
                 "source_assertions":e["sources"],"verification_method":"MANUAL_WEB_REVIEW",
-                "provider":s.get("provider"), "provider_fixture_id":fid,
+                "provider":s.get("provider"), "provider_fixture_id":s.get("provider_fixture_id") or fid,
                 "canonical_competition_id":s.get("canonical_competition_id"),
                 "home_club_id":s.get("home_club_id"),"away_club_id":s.get("away_club_id"),
                 "evidence_status":"FT", "recovery_batch_id":e.get("recovery_batch_id") or "LEGACY_MANUAL_WEB_REVIEW",
                 "source_names":[x["assertion"]["source_title"] for x in e["sources"]]})
     added=merge_normalized_results(root/RESULTS_PATH,accepted)
+    # Repair verified metadata only, preserving complete prior rows in a durable
+    # audit trail before changing the derived cache. Never alter scores or raw evidence.
+    rows=_read(root/RESULTS_PATH)
+    verified={r['fixture_id']:r for r in accepted}
+    corrections=[]
+    for row in rows:
+        reviewed=verified.get(str(row.get('fixture_id')))
+        if not reviewed or not str(row.get('result_source') or '').startswith('WEB_EVIDENCE'):
+            continue
+        if (row.get('ft_home_goals'),row.get('ft_away_goals')) != (reviewed['ft_home_goals'],reviewed['ft_away_goals']):
+            continue
+        updates={k:reviewed[k] for k in ('provider','provider_fixture_id','canonical_competition_id','home_club_id','away_club_id')
+                 if reviewed.get(k) is not None and row.get(k)!=reviewed[k]}
+        if updates:
+            corrections.append({'fixture_id':row['fixture_id'],'reason':'VERIFIED_PER_FIXTURE_PROVENANCE_CORRECTION',
+                                'corrected_at':datetime.now(timezone.utc).isoformat(),
+                                'previous_row':dict(row),'updates':updates,'recovery_batch_id':reviewed['recovery_batch_id']})
+            row.update(updates)
+    if corrections:
+        audit=root/PROVENANCE_CORRECTIONS_PATH
+        audit.parent.mkdir(parents=True,exist_ok=True)
+        with audit.open('a',encoding='utf-8') as f:
+            for correction in corrections: f.write(json.dumps(correction,ensure_ascii=False)+'\n')
+        (root/RESULTS_PATH).write_text(''.join(json.dumps(r,separators=(',',':'))+'\n' for r in rows),encoding='utf-8')
     report={"classification":"WEB_RESULT_EVIDENCE_IMPORT","evidence_rows":len(evidence),
+      "provenance_rows_corrected":len(corrections),"provenance_corrections_path":str(PROVENANCE_CORRECTIONS_PATH),
       "evidence_files":[str(p.relative_to(root)) for p in evidence_files if p.exists()],
       "accepted_rows":len(accepted),"results_added":added,"skipped_trusted":sorted(set(skipped_trusted)),
       "quarantine":quarantine,"api_requests_used":0,"validation_relaxed":False,
