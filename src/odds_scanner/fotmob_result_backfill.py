@@ -105,6 +105,27 @@ REVIEWED_CLUB_SOURCES = {
     'aasanefotball': 'https://www.asanefotball.no/',
 }
 
+# Reviewed against the corresponding official match reports on 2026-10-12.
+# Competition scoping is mandatory; kickoff matching remains exact.
+_RECOVERY_ALIASES = [
+    ('LaLiga', 'Real Betis Seville', 'Real Betis', 'https://www.osasuna.es/en/match-recap-realbetisosasuna-2026/27'),
+    ('LaLiga', 'Espanyol Barcelona', 'Espanyol', 'https://www.laliga.com/en-GB/match/temporada-2026-2027-laliga-ea-sports-malaga-cf-rcd-espanyol-de-barcelona-8'),
+    ('LaLiga', 'Real Sociedad San Sebastian', 'Real Sociedad', 'https://www.laliga.com/en-BR/match/temporada-2026-2027-laliga-ea-sports-real-sociedad-rc-deportivo-8'),
+    ('LaLiga', 'RC Deportivo de A Coruna', 'Deportivo La Coruna', 'https://www.laliga.com/en-BR/match/temporada-2026-2027-laliga-ea-sports-real-sociedad-rc-deportivo-8'),
+    ('LaLiga2', 'CE Sabadell FC', 'Sabadell', 'https://www.laliga.com/es-FR/partido/temporada-2026-2027-laliga-hypermotion-ce-sabadell-fc-andorra-8'),
+    ('Serie A', 'Como 1907', 'Como', 'https://www.comofootball.com/como-1907-roma-0-0-match-report-serie-a/'),
+    ('Serie B', 'US Avellino', 'Avellino', 'https://www.sampdoria.it/en/serie-bkt/'),
+    ('Serie B', 'Sampdoria Genoa', 'Sampdoria', 'https://www.sampdoria.it/en/serie-bkt/'),
+    ('Ligue 1', 'AS Monaco', 'Monaco', 'https://www.asmonaco.com/fr/pros/resultats'),
+    ('Eredivisie', 'FC Twente Enschede', 'FC Twente', 'https://fctwente.nl/teams/eerste-selectie/uitslagen'),
+    ('2. Bundesliga', '1 FC Nuremberg', '1. FC Nurnberg', 'https://datencenter.dfb.de/datencenter/2-bundesliga/2026-2027/7'),
+    ('2. Bundesliga', 'VFL Wolfsburg', 'Wolfsburg', 'https://datencenter.dfb.de/datencenter/2-bundesliga/2026-2027/7'),
+    ('2. Bundesliga', 'VfL 1899 Osnabruck', 'VfL Osnabruck', 'https://datencenter.dfb.de/datencenter/2-bundesliga/2026-2027/7'),
+]
+for _league, _name, _canonical, _source in _RECOVERY_ALIASES:
+    REVIEWED_CLUB_ALIASES[(_norm(_league), _norm(_name))] = _canonical
+    REVIEWED_CLUB_SOURCES[_norm(_name)] = _source
+
 def _reviewed_identity(snapshot, event):
     league = _norm(snapshot.get('league'))
     # Generic "1st Division" is bridged only when BOTH observed club names are

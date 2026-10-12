@@ -72,6 +72,7 @@ def run(root=Path('.'),max_requests=12,now=None):
         if used>=max_requests:deferred.append(day);continue
         try:
             payload,proof=fetch_day(root,day,fetch,now,provider='espn');used+=proof['requests'];evidence.append({'day':day,**proof})
+            if proof.get('error'): errors.append({'day':day,'error':proof['error'],'stale_cache_used':True})
             for e in events(payload):
                 e['retrieved_at']=proof['fetched_at'];key=identity(e['home'],e['away'],e['kickoff'])
                 signature=(e['id'],e['uid'],e['hg'],e['ag'])
@@ -88,7 +89,7 @@ def run(root=Path('.'),max_requests=12,now=None):
     stage=root/'data/normalized/espn_result_recovery_staged.jsonl';stage.parent.mkdir(parents=True,exist_ok=True)
     stage.write_text(''.join(json.dumps(r,ensure_ascii=False)+'\n' for r in staged))
     added=merge_normalized_results(root/RESULTS,staged)
-    report={'generated_at':now.isoformat(),'capability':'RESULTS_ONLY','status':'PARTIAL_SOURCE_FAILURE' if errors else 'VERIFIED_RESULT_BACKFILL_COMPLETED','missing_before':len(missing),'results_added':added,'missing_after':len(missing)-added,'exact_matches':0,'verified_bridge_matches':added,'ambiguous':ambiguous,'not_found':not_found,'quarantined_results_excluded':len(blocked),'requests_used':used,'cache_hits':sum(e['source']=='CACHE' for e in evidence),'fetch_evidence':evidence,'errors':errors,'deferred_days':deferred,'fuzzy_matching_used':False,'production_promotion_allowed':False}
+    report={'generated_at':now.isoformat(),'capability':'RESULTS_ONLY','status':'PARTIAL_SOURCE_FAILURE' if errors else 'VERIFIED_RESULT_BACKFILL_COMPLETED','missing_before':len(missing),'results_added':added,'missing_after':len(missing)-added,'exact_matches':0,'verified_bridge_matches':added,'ambiguous':ambiguous,'not_found':not_found,'quarantined_results_excluded':len(blocked),'requests_used':used,'stale_cache_fallbacks':sum(e['source']=='STALE_CACHE_AFTER_REQUEST_FAILURE' for e in evidence),'cache_hits':sum(e['source']=='CACHE' for e in evidence),'fetch_evidence':evidence,'errors':errors,'deferred_days':deferred,'fuzzy_matching_used':False,'production_promotion_allowed':False}
     p=root/'reports/espn_result_backfill.json';p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(report,indent=2)+'\n')
     return report
 

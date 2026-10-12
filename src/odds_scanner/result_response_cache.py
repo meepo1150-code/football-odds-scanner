@@ -22,13 +22,16 @@ def fetch_day(root, day, fetch, now=None, provider="fotmob"):
     parsed=date.fromisoformat(day)  # Reject path-like input before touching disk.
     path=root/'data/cache'/provider/f'{parsed.isoformat()}.json'
     cached=read(path)
+    field = "events" if provider == "espn" else "leagues"
+    if cached and not isinstance(cached[0]["payload"].get(field), list):
+        cached = None  # Never reuse an envelope from another provider.
     ttl=86400 if (now.date()-parsed).days >= 2 else 3600
     if cached and 0 <= (now-cached[1]).total_seconds() < ttl:
         return cached[0]['payload'], {'source':'CACHE','fetched_at':cached[0]['fetched_at'],'requests':0}
     try:
         payload=fetch(day)
-        if not isinstance(payload,dict) or not isinstance(payload.get('leagues'),list):
-            raise ValueError('Result response has no leagues list; existing cache preserved')
+        if not isinstance(payload,dict) or not isinstance(payload.get(field),list):
+            raise ValueError(f'Result response has no {field} list; existing cache preserved')
     except Exception as exc:
         # Final historical scores remain usable evidence during a provider outage.
         # Caller records this as stale fallback, never as a live successful request.
