@@ -79,6 +79,8 @@ def _record_slot(path,report,state,reason=None):
     row['schedule_version'] = schedule_version(row.get('football_day') or '')
     row['coverage_complete'] = report.get('coverage_complete')
     row['coverage_tournament_ids'] = report.get('coverage_tournament_ids')
+    row['http_requests_attempted'] = report.get('http_requests_attempted',report.get('requests_used',0))
+    row['request_completed_at'] = report.get('request_completed_at')
     rows={}
     if path.exists():
         for line in path.read_text(encoding='utf-8').splitlines():
@@ -115,7 +117,7 @@ def run(root=Path('.')):
                       planned_requests=0, errors=['Provider cooldown active; no API request sent'])
         return _write(report, root)
     if _slot_done(root/SLOT_LEDGER_PATH,target): report.update(status='SKIPPED_SLOT_ALREADY_OBSERVED',requests_used=0,planned_requests=0);return _write(report,root)
-    if not force and (lag is None or lag>RECOVERY_WINDOW_MINUTES): report.update(status='MISSED_SLOT',requests_used=0,planned_requests=0);_record_slot(root/SLOT_LEDGER_PATH,report,'MISSED');return _write(report,root)
+    if lag is None or lag<0 or lag>RECOVERY_WINDOW_MINUTES: report.update(status='MISSED_SLOT',requests_used=0,planned_requests=0);_record_slot(root/SLOT_LEDGER_PATH,report,'MISSED');return _write(report,root)
     targets=_load_json(root/TARGET_PATH) or {}; selected=targets.get('tournaments') or [] if isinstance(targets,dict) else []
     original_count = len(selected)
     from .master_scan_scope import scan_scope_reason
@@ -165,25 +167,64 @@ def run(root=Path('.')):
     report['effective_quota_reserve']=effective_reserve
     if not ids or remaining-normal < effective_reserve:report.update(status='SKIPPED_TO_PROTECT_CORE_QUOTA',requests_used=0);return _write(report,root)
     catalog=_load_json(root/CATALOG_PATH) or []; meta={int(x['tournament_id']):x for x in selected}; payloads=[]; used=0; retries=0
+    request_failed=False
     for bn,batch in enumerate(_chunks(ids,BATCH_SIZE),1):
         if bn>1:time.sleep(INTER_BATCH_DELAY_SECONDS)
+        if datetime.now(timezone.utc)>target+timedelta(minutes=RECOVERY_WINDOW_MINUTES):
+            report['recovery_window_expired_during_collection']=True
+            break
         payload=None
         for attempt in range(1,MAX_ATTEMPTS_PER_BATCH+1):
             try:payload=_get('/odds-by-tournaments',key,{'tournamentIds':','.join(str(x) for x in batch),'bookmakers':BOOKMAKER,'language':'en','verbosity':3},90);used+=1;break
             except Exception as e:
                 used+=1
+                failed_at=datetime.now(timezone.utc)
+                report.update(generated_at=failed_at.isoformat(),actual_observed_at=failed_at.astimezone(BANGKOK).isoformat(),request_completed_at=failed_at.isoformat())
                 if getattr(e,'code',None)==429:
-                    report.update(data_source_health='RATE_LIMITED', rate_limit_cooldown_until=_rate_limit_until(e, now))
-                report.update(status='API_REQUEST_FAILED',requests_used=used,rate_limit_retries=retries,errors=[f'{type(e).__name__}: {e}']);_record_slot(root/SLOT_LEDGER_PATH,report,'FAILED');return _write(report,root)
-        payloads.append(payload)
+                    report.update(data_source_health='RATE_LIMITED', rate_limit_cooldown_until=_rate_limit_until(e, failed_at))
+                report.update(status='API_REQUEST_FAILED',requests_used=used,rate_limit_retries=retries,errors=[f'{type(e).__name__}: {e}'])
+                request_failed=True
+                break
+        if request_failed:break
+        response_at=datetime.now(timezone.utc)
+        report['request_completed_at']=response_at.isoformat()
+        payloads.append((payload,response_at,set(map(str,batch))))
+    if not payloads:
+        if request_failed:
+            _record_slot(root/SLOT_LEDGER_PATH,report,'FAILED');return _write(report,root)
+        report.update(status='RECOVERY_WINDOW_EXPIRED_BEFORE_ODDS',requests_used=used,actual_observed_at=None,generated_at=datetime.now(timezone.utc).isoformat())
+        _record_slot(root/SLOT_LEDGER_PATH,report,'MISSED');return _write(report,root)
+    observed_at=payloads[-1][1]
+    lag=round((observed_at-target).total_seconds()/60,2)
+    report.update(generated_at=datetime.now(timezone.utc).isoformat(),actual_observed_at=observed_at.astimezone(BANGKOK).isoformat(),
+        schedule_lag_minutes=lag,observation_timing='ON_TIME' if lag<=30 else 'LATE' if lag<=RECOVERY_WINDOW_MINUTES else 'OUTSIDE_WINDOW',
+        collection_started_at=now.isoformat(),excluded_unrequested_scope_fixtures=0,invalid_payload_batches=0)
     strict=[];diag=[];audit=[];alln=0;excluded=0
-    for payload in payloads:
+    for payload,observed_at,requested_ids in payloads:
+        batch_lag=round((observed_at-target).total_seconds()/60,2)
+        timing='ON_TIME' if batch_lag<=30 else 'LATE' if batch_lag<=RECOVERY_WINDOW_MINUTES else 'OUTSIDE_WINDOW'
+        items=payload if isinstance(payload,list) else next((payload.get(k) for k in ('data','fixtures','results') if isinstance(payload.get(k),list)),None) if isinstance(payload,dict) else None
+        if items is None or any(not isinstance(r,dict) for r in items):
+            report['invalid_payload_batches']+=1
+            continue
         for f in _rows(payload):
             alln+=1;k=_parse(f.get('startTime'))
+            if str(f.get('tournamentId')) not in requested_ids or scan_scope_reason(f,provider='oddspapi'):
+                report['excluded_unrequested_scope_fixtures']+=1
+                continue
             if k is None or not(ws<=k<we):excluded+=1;continue
-            tm={**(meta.get(int(f.get('tournamentId') or -1)) or {}),'universe':'PINNACLE_RESEARCH_V2'};book=(f.get('bookmakerOdds') or {}).get(BOOKMAKER);active=isinstance(book,dict) and book.get('bookmakerIsActive') is True and book.get('suspended') is False;shape=mainline_shape(f,catalog,bookmaker=BOOKMAKER);snap,reason=extract_mainline_snapshot(f,catalog,observed_at=now,tournament_meta=tm,bookmaker=BOOKMAKER)
-            diag.append({'country':tm.get('country'),'league':tm.get('tournament_name'),'fixture_id':f.get('fixtureId'),'bookmaker_active':active,'ah_main_count':shape.get('ah_main_count',0),'ou_main_count':shape.get('ou_main_count',0),'strict_snapshot':snap is not None,'reason':reason});audit.append({'football_day':day,'fixture_id':f.get('fixtureId'),'tournament_id':f.get('tournamentId'),'country':tm.get('country'),'league':tm.get('tournament_name'),'home':f.get('participant1Name'),'away':f.get('participant2Name'),'kickoff':f.get('startTime'),'observed_at':now.isoformat(),'scheduled_target_at':target.isoformat() if target else None,'schedule_lag_minutes':lag,'observation_timing':report['observation_timing'],'bookmaker':BOOKMAKER,'eligibility_status':'MATCH' if snap else 'NOT_MATCH','eligibility_reason':reason,'research_population':True})
-            if snap and in_scope(snap):snap.update(football_day=day,research_only=True,scheduled_target_at=target.isoformat() if target else None,schedule_lag_minutes=lag,observation_timing=report['observation_timing']);strict.append(snap)
-    ts=_merge_jsonl(root/SNAPSHOT_PATH,strict,('observed_at','fixture_id'));ta=_merge_jsonl(root/AUDIT_PATH,audit,('observed_at','fixture_id'));report.update(status='RESEARCH_V2_OBSERVED',requests_used=used,rate_limit_retries=retries,api_fixtures_returned=alln,excluded_outside_football_day=excluded,football_day_fixtures=len(audit),strict_snapshots_this_run=len(strict),persisted_snapshot_rows=ts,persisted_audit_rows=ta,**summarize_rows(diag));_record_slot(root/SLOT_LEDGER_PATH,report,'OBSERVED' if len(audit)>0 else 'ZERO_FIXTURES');return _write(report,root)
+            tm={**(meta.get(int(f.get('tournamentId') or -1)) or {}),'universe':'PINNACLE_RESEARCH_V2'};book=(f.get('bookmakerOdds') or {}).get(BOOKMAKER);active=isinstance(book,dict) and book.get('bookmakerIsActive') is True and book.get('suspended') is False;shape=mainline_shape(f,catalog,bookmaker=BOOKMAKER);snap,reason=extract_mainline_snapshot(f,catalog,observed_at=observed_at,tournament_meta=tm,bookmaker=BOOKMAKER)
+            diag.append({'country':tm.get('country'),'league':tm.get('tournament_name'),'fixture_id':f.get('fixtureId'),'bookmaker_active':active,'ah_main_count':shape.get('ah_main_count',0),'ou_main_count':shape.get('ou_main_count',0),'strict_snapshot':snap is not None,'reason':reason});audit.append({'football_day':day,'fixture_id':f.get('fixtureId'),'tournament_id':f.get('tournamentId'),'country':tm.get('country'),'league':tm.get('tournament_name'),'home':f.get('participant1Name'),'away':f.get('participant2Name'),'kickoff':f.get('startTime'),'observed_at':observed_at.isoformat(),'scheduled_target_at':target.isoformat() if target else None,'schedule_lag_minutes':batch_lag,'observation_timing':timing,'bookmaker':BOOKMAKER,'eligibility_status':'MATCH' if snap else 'NOT_MATCH','eligibility_reason':reason,'research_population':True})
+            if snap and in_scope(snap):snap.update(football_day=day,research_only=True,scheduled_target_at=target.isoformat() if 0<=batch_lag<=RECOVERY_WINDOW_MINUTES else None,attempted_target_at=target.isoformat(),schedule_lag_minutes=batch_lag,observation_timing=timing);strict.append(snap)
+    ts=_merge_jsonl(root/SNAPSHOT_PATH,strict,('observed_at','fixture_id'));ta=_merge_jsonl(root/AUDIT_PATH,audit,('observed_at','fixture_id'));report.update(status='RESEARCH_V2_OBSERVED',requests_used=used,rate_limit_retries=retries,api_fixtures_returned=alln,excluded_outside_football_day=excluded,football_day_fixtures=len(audit),strict_snapshots_this_run=len(strict),persisted_snapshot_rows=ts,persisted_audit_rows=ta,**summarize_rows(diag))
+    invalid=report['invalid_payload_batches'] or report['excluded_unrequested_scope_fixtures']
+    if invalid:
+        report.setdefault('errors',[]).append('PROVIDER_PAYLOAD_OR_REQUESTED_SCOPE_REJECTED')
+    if request_failed or invalid or report.get('recovery_window_expired_during_collection'):
+        report['coverage_complete']=False
+        report['data_source_health']=report.get('data_source_health','PARTIAL')
+    state='OBSERVED' if strict else 'FAILED' if report.get('errors') or audit else 'ZERO_FIXTURES'
+    if state=='FAILED':report['status']='PROVIDER_RESPONSE_REJECTED' if invalid else 'API_REQUEST_FAILED' if request_failed else 'NO_VERIFIED_PREMATCH_QUOTES'
+    _record_slot(root/SLOT_LEDGER_PATH,report,state);return _write(report,root)
 
 if __name__=='__main__':print(json.dumps(run(),ensure_ascii=False))

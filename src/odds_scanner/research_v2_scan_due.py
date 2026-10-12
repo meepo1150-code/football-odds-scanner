@@ -18,8 +18,9 @@ def due(now, report, event='schedule', fallback=None, ledger_rows=None, snapshot
                if timedelta(0) <= local-t <= timedelta(minutes=150)]
     targets = [max(targets)] if targets else []
     if ledger_rows is not None:
-        from .research_v2_slots import stamp
-        recent=[stamp(r.get("actual_observed_at")) for r in ledger_rows if stamp(r.get("actual_observed_at"))]
+        from .research_v2_slots import stamp,provider_attempt_receipt
+        recent=[stamp(r.get("request_completed_at") or r.get("actual_observed_at")) for r in ledger_rows
+                if provider_attempt_receipt(r) and stamp(r.get("request_completed_at") or r.get("actual_observed_at"))]
         if recent and timedelta(0)<=now-max(recent)<timedelta(minutes=15):return False
         targets = [t for t in targets if not completed(t, local, ledger_rows, snapshots or [])]
     if not targets:
@@ -36,6 +37,7 @@ def due(now, report, event='schedule', fallback=None, ledger_rows=None, snapshot
     try:
         attempted = datetime.fromisoformat(report['generated_at'].replace('Z', '+00:00'))
         if (attempted.tzinfo and max(targets) <= attempted <= now
+                and (ledger_rows is None or provider_attempt_receipt(report))
                 and (ledger_rows is None or report.get('scheduled_target_at') == max(targets).isoformat())):
             return now-attempted >= timedelta(minutes=60)
     except (ValueError, TypeError, KeyError):

@@ -40,7 +40,7 @@ jobs:
         if: github.event_name != 'schedule' || github.event.schedule == '15 1,7,13,19 * * *'
         run: python -c "from odds_scanner.sofascore_coverage_probe import backfill; import json; print(json.dumps(backfill(), ensure_ascii=False))"
       - name: Backfill matured Research V2 results without OddsPapi requests
-        if: github.event_name != 'schedule' || github.event.schedule == '15 1,7,13,19 * * *'
+        # Exact-ID checks run hourly after maturity; six-hour gating delayed FT unnecessarily.
         run: python -c "from odds_scanner.daily_fixture_result_backfill import run_backfill; import json; print(json.dumps(run_backfill(max_requests=20), ensure_ascii=False))"
       - name: Backfill matured forward results
         if: github.event_name != 'schedule' || github.event.schedule == '15 1,7,13,19 * * *'
