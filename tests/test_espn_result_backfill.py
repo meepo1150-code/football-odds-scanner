@@ -5,7 +5,7 @@ from odds_scanner import espn_result_backfill as p
 
 
 def payload():
-    return {'leagues':[],'events':[{'id':'123','uid':'soccer:league:123','competitions':[{'date':'2026-09-29T16:00Z','status':{'period':2,'type':{'name':'STATUS_FULL_TIME','completed':True}},'competitors':[{'homeAway':'home','team':{'displayName':'Home'},'score':'2'},{'homeAway':'away','team':{'displayName':'Away'},'score':'1'}]}]}]}
+    return {'events':[{'id':'123','uid':'soccer:league:123','competitions':[{'date':'2026-09-29T16:00Z','status':{'period':2,'type':{'name':'STATUS_FULL_TIME','completed':True}},'competitors':[{'homeAway':'home','team':{'displayName':'Home'},'score':'2'},{'homeAway':'away','team':{'displayName':'Away'},'score':'1'}]}]}]}
 
 
 def test_normal_ft_only():

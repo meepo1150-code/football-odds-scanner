@@ -59,3 +59,30 @@ def test_previously_stored_aet_is_quarantined_with_original_evidence(tmp_path):
     assert not p.read_text()
     proof=json.loads(p.with_suffix('.conflicts.jsonl').read_text())
     assert proof['existing']==row and proof['source_status']['reason']['short']=='AET'
+
+
+def test_espn_events_envelope_is_cached_and_reused(tmp_path):
+    payload = {'events': []}
+    result, proof = fetch_day(tmp_path, '2026-09-30', lambda day: payload, NOW, provider='espn')
+    assert result == payload and proof['source'] == 'NETWORK'
+    def fail(day):
+        raise AssertionError('fresh cache must avoid network')
+    assert fetch_day(tmp_path, '2026-09-30', fail, NOW, provider='espn')[1]['source'] == 'CACHE'
+    result, proof = fetch_day(tmp_path, '2026-09-30', lambda day: {'leagues': []}, NOW+timedelta(hours=2), provider='espn')
+    assert result == payload and proof['source'] == 'STALE_CACHE_AFTER_REQUEST_FAILURE'
+    assert 'events' in proof['error']
+
+def test_wrong_provider_cache_cannot_be_reused(tmp_path):
+    path = tmp_path/'data/cache/espn/2026-09-30.json'
+    path.parent.mkdir(parents=True)
+    path.write_text(json.dumps({'fetched_at': NOW.isoformat(), 'payload': {'leagues': []}}))
+    payload, proof = fetch_day(tmp_path, '2026-09-30', lambda day: {'events': []}, NOW, provider='espn')
+    assert payload == {'events': []} and proof['source'] == 'NETWORK'
+
+
+def test_reviewed_aliases_are_scoped_to_competition():
+    from odds_scanner.fotmob_result_backfill import _reviewed_identity
+    snapshot = {'home':'Como 1907','away':'AS Roma','league':'Serie A'}
+    assert _reviewed_identity(snapshot, {'home':'Como','away':'AS Roma','league':'Serie A'})
+    assert not _reviewed_identity(snapshot, {'home':'Como','away':'AS Roma','league':'Serie B'})
+    assert not _reviewed_identity(snapshot, {'home':'Como Women','away':'AS Roma','league':'Serie A'})
