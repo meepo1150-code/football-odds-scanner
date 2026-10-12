@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from .research_population import in_scope, exclusion_reason, POLICY
-from .master_scan_scope import filter_scan_targets
+from .master_scan_scope import filter_master_oddspapi_targets
 import json, os, time
 from datetime import datetime, time as dtime, timedelta, timezone
 from pathlib import Path
@@ -112,7 +112,7 @@ def run(root=Path('.')):
     if not force and (lag is None or lag>RECOVERY_WINDOW_MINUTES): report.update(status='MISSED_SLOT',requests_used=0,planned_requests=0);_record_slot(root/SLOT_LEDGER_PATH,report,'MISSED');return _write(report,root)
     targets=_load_json(root/TARGET_PATH) or {}; selected=targets.get('tournaments') or [] if isinstance(targets,dict) else []
     original_count = len(selected)
-    selected = filter_scan_targets(selected)
+    selected = filter_master_oddspapi_targets(selected)
     report['master_scope_excluded_targets'] = original_count - len(selected)
     ids=[x.get('tournament_id') for x in selected if isinstance(x,dict) and x.get('tournament_id') is not None]
     if original_count and not selected:
