@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-10-11T15:57:13.846940+00:00",
+  "generated_at": "2026-10-12T02:04:44.557107+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 672,
+  "settled_fixtures": 699,
   "movement_classification_counts": {
-    "AH_LINE_UNCHANGED__PRICE_DOWN": 55,
-    "SINGLE_OBSERVATION": 505,
-    "AH_LINE_UNCHANGED__PRICE_UP": 43,
+    "AH_LINE_UNCHANGED__PRICE_DOWN": 60,
+    "SINGLE_OBSERVATION": 522,
+    "AH_LINE_UNCHANGED__PRICE_UP": 46,
     "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 10,
     "FAVORITE_SWITCH": 3,
     "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 8,
     "AH_FAVORITE_LINE_WEAKER__PRICE_UP": 3,
-    "AH_LINE_UNCHANGED__PRICE_FLAT": 42,
+    "AH_LINE_UNCHANGED__PRICE_FLAT": 44,
     "AH_FAVORITE_LINE_STRONGER__PRICE_DOWN": 2,
     "AH_FAVORITE_LINE_STRONGER__PRICE_FLAT": 1
   },
@@ -20,31 +20,31 @@
     "evaluation": "RETROSPECTIVE_VIEWED_DATA_CHRONOLOGICAL_WALK_FORWARD_BY_FOOTBALL_DAY",
     "untouched_holdout": false,
     "promotion_allowed": false,
-    "unique_eligible_fixtures": 167,
-    "unique_evaluated_fixtures": 15,
+    "unique_eligible_fixtures": 177,
+    "unique_evaluated_fixtures": 18,
     "metric": "BASELINE_MSE_MINUS_MOVEMENT_MSE; POSITIVE_IS_BETTER",
-    "mean_squared_error_improvement": -0.03055244658191952,
+    "mean_squared_error_improvement": -0.014960142594883406,
     "improvement_bootstrap95": [
-      -0.074803,
-      0.006939
+      -0.055096,
+      0.022474
     ],
     "baseline": "MARKET_SIDE + AH_LINE + PRICE_BUCKET; TRAIN_MIN_5; PRIOR_DAYS_MIN_20",
     "movement_model": "SAME_BASELINE + MOVEMENT; SHRINKAGE_10_BASELINE_OBSERVATIONS",
     "multiple_testing_policy": "ONE_PREDEFINED_INCREMENTAL_COMPARISON; SUBGROUPS_DESCRIPTIVE_ONLY; NO_PROMOTION_OR_EDGE_CLAIMS; NEW_UNVIEWED_PERIOD_REQUIRED",
     "observation_gap_minutes": {
-      "n": 167,
+      "n": 177,
       "min": 0.713,
       "median": 202.761,
       "max": 649.593
     },
     "first_minutes_before_kickoff": {
-      "n": 167,
+      "n": 177,
       "min": 43.721,
       "median": 354.132,
       "max": 940.905
     },
     "last_minutes_before_kickoff": {
-      "n": 167,
+      "n": 177,
       "min": 0.501,
       "median": 172.291,
       "max": 577.827
@@ -120,49 +120,49 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_DOWN",
-        "unique_fixture_n": 55,
-        "roi_pct": 2.725,
+        "unique_fixture_n": 60,
+        "roi_pct": 4.72,
         "profit_mean_bootstrap95": [
-          -0.204895,
-          0.260605
+          -0.181794,
+          0.278935
         ],
         "settlements": {
-          "FULL_LOSS": 21,
-          "FULL_WIN": 25,
+          "FULL_LOSS": 22,
+          "FULL_WIN": 27,
           "HALF_LOSS": 3,
-          "HALF_WIN": 3,
-          "PUSH": 3
+          "HALF_WIN": 4,
+          "PUSH": 4
         }
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_FLAT",
-        "unique_fixture_n": 42,
-        "roi_pct": -2.359,
+        "unique_fixture_n": 44,
+        "roi_pct": -2.42,
         "profit_mean_bootstrap95": [
-          -0.279893,
-          0.245781
+          -0.265587,
+          0.222616
         ],
         "settlements": {
           "HALF_LOSS": 5,
           "PUSH": 2,
-          "FULL_WIN": 16,
+          "FULL_WIN": 17,
           "HALF_WIN": 4,
-          "FULL_LOSS": 15
+          "FULL_LOSS": 16
         }
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_UP",
-        "unique_fixture_n": 43,
-        "roi_pct": 10.404,
+        "unique_fixture_n": 46,
+        "roi_pct": 8.441,
         "profit_mean_bootstrap95": [
-          -0.174677,
-          0.378158
+          -0.191413,
+          0.353519
         ],
         "settlements": {
-          "FULL_WIN": 22,
-          "FULL_LOSS": 17,
+          "FULL_WIN": 23,
+          "FULL_LOSS": 18,
           "PUSH": 1,
-          "HALF_LOSS": 2,
+          "HALF_LOSS": 3,
           "HALF_WIN": 1
         }
       },
@@ -330,6 +330,36 @@
         "movement_return_prediction": 0.4412726081258191,
         "realized_profit_units": 0.9803921568627452,
         "squared_error_improvement": 0.06534566010017345
+      },
+      {
+        "fixture_id": "propline:soccer_bundesliga:222073",
+        "football_day": "2026-10-11",
+        "baseline_train_n": 9,
+        "movement_train_n": 5,
+        "baseline_return_prediction": 0.3545404267798306,
+        "movement_return_prediction": 0.4959193488473725,
+        "realized_profit_units": 0.4201680672268908,
+        "squared_error_improvement": -0.0014312694764969111
+      },
+      {
+        "fixture_id": "propline:soccer_la_liga:223479",
+        "football_day": "2026-10-11",
+        "baseline_train_n": 9,
+        "movement_train_n": 5,
+        "baseline_return_prediction": 0.811111111111111,
+        "movement_return_prediction": 0.7514074074074074,
+        "realized_profit_units": -0.5,
+        "squared_error_improvement": 0.15299184636488317
+      },
+      {
+        "fixture_id": "propline:soccer_primeira_liga:240512",
+        "football_day": "2026-10-11",
+        "baseline_train_n": 7,
+        "movement_train_n": 1,
+        "baseline_return_prediction": 0.4689747642176137,
+        "movement_return_prediction": 0.5137952401978306,
+        "realized_profit_units": 0.9090909090909092,
+        "squared_error_improvement": 0.03744355513250522
       }
     ],
     "limitations": [
@@ -342,8 +372,7 @@
   },
   "ft_triage_counts": {
     "RETIRED_UNRESOLVED": 249,
-    "FUTURE_OR_RECENT": 55,
-    "ACTIVE_OVERDUE": 55
+    "ACTIVE_OVERDUE": 83
   },
   "ft_triage_groups": [
     {
@@ -400,7 +429,7 @@
       "country": "France",
       "canonical_competition_id": "FRA-0001",
       "league": "Ligue 1",
-      "n": 1
+      "n": 3
     },
     {
       "lifecycle": "ACTIVE_OVERDUE",
@@ -409,6 +438,14 @@
       "canonical_competition_id": "FRA-0002",
       "league": "Ligue 2",
       "n": 3
+    },
+    {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "oddspapi",
+      "country": "Germany",
+      "canonical_competition_id": "DEU-0001",
+      "league": "Bundesliga",
+      "n": 1
     },
     {
       "lifecycle": "ACTIVE_OVERDUE",
@@ -424,7 +461,7 @@
       "country": "Germany",
       "canonical_competition_id": "DEU-0003",
       "league": "3. Liga",
-      "n": 5
+      "n": 6
     },
     {
       "lifecycle": "ACTIVE_OVERDUE",
@@ -448,7 +485,7 @@
       "country": "Italy",
       "canonical_competition_id": "ITA-0001",
       "league": "Serie A",
-      "n": 1
+      "n": 5
     },
     {
       "lifecycle": "ACTIVE_OVERDUE",
@@ -456,7 +493,7 @@
       "country": "Italy",
       "canonical_competition_id": "ITA-0002",
       "league": "Serie B",
-      "n": 1
+      "n": 3
     },
     {
       "lifecycle": "ACTIVE_OVERDUE",
@@ -528,7 +565,7 @@
       "country": "Spain",
       "canonical_competition_id": "ESP-0001",
       "league": "LaLiga",
-      "n": 2
+      "n": 4
     },
     {
       "lifecycle": "ACTIVE_OVERDUE",
@@ -536,6 +573,14 @@
       "country": "Spain",
       "canonical_competition_id": "ESP-0002",
       "league": "LaLiga 2",
+      "n": 2
+    },
+    {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "oddspapi",
+      "country": "Sweden",
+      "canonical_competition_id": "SWE-0002",
+      "league": "Superettan",
       "n": 1
     },
     {
@@ -560,7 +605,15 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "league": "soccer_argentina_primera",
-      "n": 1
+      "n": 3
+    },
+    {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "propline",
+      "country": "UNRESOLVED_COUNTRY",
+      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
+      "league": "soccer_brasileirao",
+      "n": 4
     },
     {
       "lifecycle": "ACTIVE_OVERDUE",
@@ -568,7 +621,15 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "league": "soccer_bundesliga",
-      "n": 2
+      "n": 3
+    },
+    {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "propline",
+      "country": "UNRESOLVED_COUNTRY",
+      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
+      "league": "soccer_eliteserien",
+      "n": 1
     },
     {
       "lifecycle": "ACTIVE_OVERDUE",
@@ -591,155 +652,27 @@
       "provider": "propline",
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "league": "soccer_scottish_premiership",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "England",
-      "canonical_competition_id": "ENG-0001",
-      "league": "Premier League",
-      "n": 3
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "France",
-      "canonical_competition_id": "FRA-0001",
-      "league": "Ligue 1",
-      "n": 3
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Germany",
-      "canonical_competition_id": "DEU-0001",
-      "league": "Bundesliga",
-      "n": 2
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Germany",
-      "canonical_competition_id": "DEU-0003",
-      "league": "3. Liga",
-      "n": 2
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Italy",
-      "canonical_competition_id": "ITA-0001",
-      "league": "Serie A",
-      "n": 4
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Italy",
-      "canonical_competition_id": "ITA-0002",
-      "league": "Serie B",
-      "n": 3
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0001",
-      "league": "LaLiga",
-      "n": 3
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0002",
-      "league": "LaLiga 2",
-      "n": 3
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Sweden",
-      "canonical_competition_id": "SWE-0002",
-      "league": "Superettan",
-      "n": 2
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "propline",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "league": "soccer_argentina_primera",
-      "n": 2
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "propline",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "league": "soccer_brasileirao",
-      "n": 4
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "propline",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "league": "soccer_bundesliga",
-      "n": 2
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "propline",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "league": "soccer_eliteserien",
-      "n": 2
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "propline",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "league": "soccer_eredivisie",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "propline",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "league": "soccer_greek_super_league",
       "n": 2
     },
     {
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "provider": "propline",
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "league": "soccer_la_liga",
-      "n": 3
+      "n": 1
     },
     {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "propline",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "league": "soccer_ligue_1",
-      "n": 3
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "provider": "propline",
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "league": "soccer_primeira_liga",
-      "n": 3
+      "n": 2
     },
     {
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "provider": "propline",
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
@@ -747,35 +680,11 @@
       "n": 1
     },
     {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "propline",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "league": "soccer_serie_a",
-      "n": 4
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "propline",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "league": "soccer_sweden_allsvenskan",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "provider": "propline",
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "league": "soccer_swiss_super_league",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "propline",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "league": "soccer_turkey_super_lig",
       "n": 1
     },
     {
@@ -1869,7 +1778,7 @@
       "country": "Spain",
       "canonical_competition_id": "ESP-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -1909,23 +1818,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000000872478618",
-      "provider": "oddspapi",
-      "football_day": "2026-10-11",
-      "league": "LaLiga",
-      "kickoff": "2026-10-11T19:00:00+00:00",
-      "home": "Racing Santander",
-      "away": "Valencia CF",
-      "status": "MISSING_FT",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000000872478624",
       "provider": "oddspapi",
       "football_day": "2026-10-11",
@@ -1937,7 +1829,7 @@
       "country": "Spain",
       "canonical_competition_id": "ESP-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -1989,57 +1881,6 @@
       "canonical_competition_id": "BEL-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "lifecycle": "ACTIVE_OVERDUE",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000001772221300",
-      "provider": "oddspapi",
-      "football_day": "2026-10-11",
-      "league": "Premier League",
-      "kickoff": "2026-10-11T13:00:00+00:00",
-      "home": "Crystal Palace",
-      "away": "Nottingham Forest",
-      "status": "MISSING_FT",
-      "country": "England",
-      "canonical_competition_id": "ENG-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000001772221302",
-      "provider": "oddspapi",
-      "football_day": "2026-10-11",
-      "league": "Premier League",
-      "kickoff": "2026-10-11T13:00:00+00:00",
-      "home": "Hull City",
-      "away": "Everton FC",
-      "status": "MISSING_FT",
-      "country": "England",
-      "canonical_competition_id": "ENG-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000001772221306",
-      "provider": "oddspapi",
-      "football_day": "2026-10-11",
-      "league": "Premier League",
-      "kickoff": "2026-10-11T15:30:00+00:00",
-      "home": "Liverpool FC",
-      "away": "Manchester City",
-      "status": "MISSING_FT",
-      "country": "England",
-      "canonical_competition_id": "ENG-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -2498,7 +2339,7 @@
       "country": "Italy",
       "canonical_competition_id": "ITA-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -2532,7 +2373,7 @@
       "country": "Italy",
       "canonical_competition_id": "ITA-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -2549,7 +2390,7 @@
       "country": "Italy",
       "canonical_competition_id": "ITA-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -2566,7 +2407,7 @@
       "country": "Italy",
       "canonical_competition_id": "ITA-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -2600,24 +2441,7 @@
       "country": "France",
       "canonical_competition_id": "FRA-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000003472036216",
-      "provider": "oddspapi",
-      "football_day": "2026-10-11",
-      "league": "Ligue 1",
-      "kickoff": "2026-10-11T15:15:00+00:00",
-      "home": "Stade Rennais FC",
-      "away": "AJ Auxerre",
-      "status": "MISSING_FT",
-      "country": "France",
-      "canonical_competition_id": "FRA-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -2634,24 +2458,7 @@
       "country": "France",
       "canonical_competition_id": "FRA-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000003572513226",
-      "provider": "oddspapi",
-      "football_day": "2026-10-11",
-      "league": "Bundesliga",
-      "kickoff": "2026-10-11T15:30:00+00:00",
-      "home": "SC Freiburg",
-      "away": "Schalke 04",
-      "status": "MISSING_FT",
-      "country": "Germany",
-      "canonical_competition_id": "DEU-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -2668,7 +2475,7 @@
       "country": "Germany",
       "canonical_competition_id": "DEU-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -2827,23 +2634,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000004667126392",
-      "provider": "oddspapi",
-      "football_day": "2026-10-11",
-      "league": "Superettan",
-      "kickoff": "2026-10-11T13:00:00+00:00",
-      "home": "IFK Varnamo",
-      "away": "Falkenbergs FF",
-      "status": "MISSING_FT",
-      "country": "Sweden",
-      "canonical_competition_id": "SWE-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000004667126402",
       "provider": "oddspapi",
       "football_day": "2026-10-11",
@@ -2855,7 +2645,7 @@
       "country": "Sweden",
       "canonical_competition_id": "SWE-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -2957,24 +2747,7 @@
       "country": "Italy",
       "canonical_competition_id": "ITA-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000005373092966",
-      "provider": "oddspapi",
-      "football_day": "2026-10-11",
-      "league": "Serie B",
-      "kickoff": "2026-10-11T17:30:00+00:00",
-      "home": "Modena FC",
-      "away": "Hellas Verona",
-      "status": "MISSING_FT",
-      "country": "Italy",
-      "canonical_competition_id": "ITA-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -2991,7 +2764,7 @@
       "country": "Italy",
       "canonical_competition_id": "ITA-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -3048,40 +2821,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000005472477472",
-      "provider": "oddspapi",
-      "football_day": "2026-10-11",
-      "league": "LaLiga 2",
-      "kickoff": "2026-10-11T14:15:00+00:00",
-      "home": "UD Almeria",
-      "away": "CD Leganes",
-      "status": "MISSING_FT",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000005472477478",
-      "provider": "oddspapi",
-      "football_day": "2026-10-11",
-      "league": "LaLiga 2",
-      "kickoff": "2026-10-11T19:00:00+00:00",
-      "home": "Cadiz CF",
-      "away": "Sporting Gijon",
-      "status": "MISSING_FT",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000005472477486",
       "provider": "oddspapi",
       "football_day": "2026-10-11",
@@ -3093,7 +2832,7 @@
       "country": "Spain",
       "canonical_competition_id": "ESP-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -3416,7 +3155,7 @@
       "country": "Germany",
       "canonical_competition_id": "DEU-0003",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -3485,23 +3224,6 @@
       "canonical_competition_id": "DEU-0003",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "lifecycle": "ACTIVE_OVERDUE",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000049172680184",
-      "provider": "oddspapi",
-      "football_day": "2026-10-11",
-      "league": "3. Liga",
-      "kickoff": "2026-10-11T17:30:00+00:00",
-      "home": "Fortuna Dusseldorf",
-      "away": "SC Verl",
-      "status": "MISSING_FT",
-      "country": "Germany",
-      "canonical_competition_id": "DEU-0003",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -7003,7 +6725,7 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "UNRESOLVED_IDENTITY",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -7020,7 +6742,7 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "UNRESOLVED_IDENTITY",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -7037,7 +6759,7 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "UNRESOLVED_IDENTITY",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -7054,7 +6776,7 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "UNRESOLVED_IDENTITY",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -7071,7 +6793,7 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "UNRESOLVED_IDENTITY",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -7088,7 +6810,7 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "UNRESOLVED_IDENTITY",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -7122,24 +6844,7 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "propline:soccer_bundesliga:222073",
-      "provider": "propline",
-      "football_day": "2026-10-11",
-      "league": "soccer_bundesliga",
-      "kickoff": "2026-10-11T15:30:00+00:00",
-      "home": "Freiburg",
-      "away": "Schalke 04",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "UNRESOLVED_IDENTITY",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -7173,24 +6878,7 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "propline:soccer_eliteserien:238809",
-      "provider": "propline",
-      "football_day": "2026-10-11",
-      "league": "soccer_eliteserien",
-      "kickoff": "2026-10-11T17:15:00+00:00",
-      "home": "Lillestrom",
-      "away": "Molde",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "UNRESOLVED_IDENTITY",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -7230,23 +6918,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "propline:soccer_eredivisie:223598",
-      "provider": "propline",
-      "football_day": "2026-10-11",
-      "league": "soccer_eredivisie",
-      "kickoff": "2026-10-11T14:45:00+00:00",
-      "home": "Excelsior",
-      "away": "Groningen",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "propline:soccer_germany_bundesliga2:240556",
       "provider": "propline",
       "football_day": "2026-10-10",
@@ -7275,7 +6946,7 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "UNRESOLVED_IDENTITY",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -7292,41 +6963,7 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "propline:soccer_la_liga:223477",
-      "provider": "propline",
-      "football_day": "2026-10-11",
-      "league": "soccer_la_liga",
-      "kickoff": "2026-10-11T16:30:00+00:00",
-      "home": "Real Betis",
-      "away": "Osasuna",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "propline:soccer_la_liga:223479",
-      "provider": "propline",
-      "football_day": "2026-10-11",
-      "league": "soccer_la_liga",
-      "kickoff": "2026-10-11T19:00:00+00:00",
-      "home": "Racing Santander",
-      "away": "Valencia",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "UNRESOLVED_IDENTITY",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -7343,58 +6980,7 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "propline:soccer_ligue_1:222083",
-      "provider": "propline",
-      "football_day": "2026-10-11",
-      "league": "soccer_ligue_1",
-      "kickoff": "2026-10-11T15:15:00+00:00",
-      "home": "Rennes",
-      "away": "Auxerre",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "propline:soccer_ligue_1:222085",
-      "provider": "propline",
-      "football_day": "2026-10-11",
-      "league": "soccer_ligue_1",
-      "kickoff": "2026-10-11T18:45:00+00:00",
-      "home": "Troyes",
-      "away": "Marseille",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "propline:soccer_ligue_1:222086",
-      "provider": "propline",
-      "football_day": "2026-10-11",
-      "league": "soccer_ligue_1",
-      "kickoff": "2026-10-11T13:00:00+00:00",
-      "home": "Nice",
-      "away": "Strasbourg",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "UNRESOLVED_IDENTITY",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -7411,7 +6997,7 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "UNRESOLVED_IDENTITY",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -7428,24 +7014,7 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "propline:soccer_primeira_liga:240512",
-      "provider": "propline",
-      "football_day": "2026-10-11",
-      "league": "soccer_primeira_liga",
-      "kickoff": "2026-10-11T19:30:00+00:00",
-      "home": "Arouca",
-      "away": "Estrela da Amadora",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "UNRESOLVED_IDENTITY",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -7468,108 +7037,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "propline:soccer_scottish_premiership:223356",
-      "provider": "propline",
-      "football_day": "2026-10-11",
-      "league": "soccer_scottish_premiership",
-      "kickoff": "2026-10-11T13:00:00+00:00",
-      "home": "Aberdeen",
-      "away": "St Johnstone",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "propline:soccer_serie_a:221900",
-      "provider": "propline",
-      "football_day": "2026-10-11",
-      "league": "soccer_serie_a",
-      "kickoff": "2026-10-11T16:00:00+00:00",
-      "home": "Sassuolo",
-      "away": "AC Milan",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "propline:soccer_serie_a:222065",
-      "provider": "propline",
-      "football_day": "2026-10-11",
-      "league": "soccer_serie_a",
-      "kickoff": "2026-10-11T18:45:00+00:00",
-      "home": "Cagliari",
-      "away": "Juventus",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "propline:soccer_serie_a:222066",
-      "provider": "propline",
-      "football_day": "2026-10-11",
-      "league": "soccer_serie_a",
-      "kickoff": "2026-10-11T13:00:00+00:00",
-      "home": "Lecce",
-      "away": "Bologna",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "propline:soccer_serie_a:222067",
-      "provider": "propline",
-      "football_day": "2026-10-11",
-      "league": "soccer_serie_a",
-      "kickoff": "2026-10-11T13:00:00+00:00",
-      "home": "Lazio",
-      "away": "Monza",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "propline:soccer_sweden_allsvenskan:240503",
-      "provider": "propline",
-      "football_day": "2026-10-11",
-      "league": "soccer_sweden_allsvenskan",
-      "kickoff": "2026-10-11T14:30:00+00:00",
-      "home": "Hacken",
-      "away": "Orgryte",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "propline:soccer_swiss_super_league:240494",
       "provider": "propline",
       "football_day": "2026-10-11",
@@ -7581,24 +7048,7 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "propline:soccer_turkey_super_lig:240485",
-      "provider": "propline",
-      "football_day": "2026-10-11",
-      "league": "soccer_turkey_super_lig",
-      "kickoff": "2026-10-11T16:00:00+00:00",
-      "home": "Besiktas",
-      "away": "Kocaelispor",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "UNRESOLVED_IDENTITY",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
