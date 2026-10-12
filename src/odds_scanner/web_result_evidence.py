@@ -112,7 +112,7 @@ def import_evidence(root=Path(".")):
                 "result_source":"WEB_EVIDENCE_"+qreason,"source_urls":[x.get("url") for x in (e.get("sources") or [])],
                 "retrieved_at":e.get("retrieved_at"),"evidence_status":"FT",
                 "source_assertions":e["sources"],"verification_method":"MANUAL_WEB_REVIEW",
-                "provider":s.get("provider"), "provider_fixture_id":fid,
+                "provider":s.get("provider"), "provider_fixture_id":s.get("provider_fixture_id") or fid,
                 "canonical_competition_id":s.get("canonical_competition_id"),
                 "home_club_id":s.get("home_club_id"),"away_club_id":s.get("away_club_id"),
                 "evidence_status":"FT", "recovery_batch_id":e.get("recovery_batch_id") or "LEGACY_MANUAL_WEB_REVIEW",
