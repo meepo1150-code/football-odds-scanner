@@ -55,6 +55,16 @@ def read_ledger(root=Path('.')):
     return rows
 
 
+def provider_attempt_receipt(row):
+    """Zero-request mapping/auth skips must not masquerade as quote/API attempts."""
+    requests=(row.get('requests_used',0),row.get('http_requests_attempted',0))
+    if any(type(n) is int and n>0 for n in requests):return True
+    if 'requests_used' not in row and row.get('status')=='RATE_LIMITED':return True
+    count=row.get('strict_snapshots') or row.get('valid_snapshot_count') or 0
+    return (row.get('state')=='OBSERVED' and type(count) is int and count>0) or (
+        row.get('state') in {'ZERO_FIXTURES','ZERO_COHORT'} and row.get('collection_succeeded') is True)
+
+
 def valid_completion(row, target, now):
     observed = stamp(row.get('actual_observed_at') or row.get('observed_at'))
     if stamp(row.get('scheduled_target_at')) != target or observed is None:

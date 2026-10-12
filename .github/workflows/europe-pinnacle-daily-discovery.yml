@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       force_run:
-        description: 'Force a missed canonical slot recovery outside the normal recovery window'
+        description: 'Recover an explicit canonical slot within the 150-minute window'
         required: false
         default: 'false'
         type: choice

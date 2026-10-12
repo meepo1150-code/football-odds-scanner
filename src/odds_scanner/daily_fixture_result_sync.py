@@ -129,7 +129,7 @@ def run(root: Path = Path('.')) -> dict:
                 except json.JSONDecodeError: continue
                 if not isinstance(snapshot,dict) or str(snapshot.get('football_day')) not in coverage_days: continue
                 if not snapshot.get('fixture_id') or not _parse(snapshot.get('kickoff')): continue
-                local_rows.append({k:snapshot.get(k) for k in ('football_day','fixture_id','league','home','away','kickoff')})
+                local_rows.append({k:snapshot.get(k) for k in ('football_day','fixture_id','league','home','away','kickoff','tournament_id','flashscore_id')})
         # Add local observations without overwriting richer external-ID mappings.
         known = {(str(r.get('football_day')),str(r.get('fixture_id'))) for day_value in coverage_days for r in _existing_day_rows(fixtures_path,day_value)}
         additions = [{**r,'source':'LOCAL_RESEARCH_SNAPSHOT','discovered_at':now.isoformat()} for r in local_rows if (str(r['football_day']),str(r['fixture_id'])) not in known]

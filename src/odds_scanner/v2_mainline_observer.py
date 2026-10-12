@@ -270,6 +270,13 @@ def extract_mainline_snapshot(
     for source, target in (("participant1Id", "home_participant_id"), ("participant2Id", "away_participant_id")):
         if source in fixture:
             snapshot[target] = fixture[source]
+    external=fixture.get('externalProviders')
+    external=external if isinstance(external,dict) else {}
+    direct,linked=fixture.get('flashscoreId'),external.get('flashscoreId')
+    if direct and linked and str(direct)!=str(linked):
+        snapshot['flashscore_identity_conflict']=True
+    elif isinstance(direct or linked,str) and (direct or linked).strip():
+        snapshot['flashscore_id']=(direct or linked).strip()
     from .master_mapping import enrich_fixture, load_mappings
     return enrich_fixture(snapshot, provider='oddspapi', mappings=load_mappings()), "OK"
 

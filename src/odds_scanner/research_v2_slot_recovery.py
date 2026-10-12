@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch
 
-from .research_v2_slots import RECOVERY_MINUTES, read_ledger, targets, slot_completed, stamp
+from .research_v2_slots import RECOVERY_MINUTES, read_ledger, targets, slot_completed, stamp,provider_attempt_receipt
 from .europe_pinnacle_discovery import run as primary, _football_day_bounds, _record_slot, SLOT_LEDGER_PATH
 from .propline_research_v2 import run as fallback
 
@@ -19,7 +19,7 @@ def run(root=Path('.'), now=None, clock=None):
     results = []
     elapsed=[t for t in targets(day) if t<=now]
     latest=max(elapsed) if elapsed else None
-    receipts=[stamp(r.get("actual_observed_at")) for r in read_ledger(root)]
+    receipts=[stamp(r.get("request_completed_at") or r.get("actual_observed_at")) for r in read_ledger(root) if provider_attempt_receipt(r)]
     last_fetch=max((t for t in receipts if t is not None),default=None)
     for target in targets(day):
         if target > now:
