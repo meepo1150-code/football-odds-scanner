@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-10-12T20:10:45.895734+00:00",
+  "generated_at": "2026-10-12T21:44:40.834415+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 813,
+  "settled_fixtures": 818,
   "movement_classification_counts": {
-    "AH_LINE_UNCHANGED__PRICE_DOWN": 64,
-    "SINGLE_OBSERVATION": 624,
+    "AH_LINE_UNCHANGED__PRICE_DOWN": 65,
+    "SINGLE_OBSERVATION": 627,
     "AH_LINE_UNCHANGED__PRICE_UP": 47,
-    "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 11,
+    "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 12,
     "FAVORITE_SWITCH": 4,
     "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 8,
     "AH_FAVORITE_LINE_WEAKER__PRICE_UP": 3,
@@ -21,7 +21,7 @@
     "evaluation": "RETROSPECTIVE_VIEWED_DATA_CHRONOLOGICAL_WALK_FORWARD_BY_FOOTBALL_DAY",
     "untouched_holdout": false,
     "promotion_allowed": false,
-    "unique_eligible_fixtures": 188,
+    "unique_eligible_fixtures": 190,
     "unique_evaluated_fixtures": 23,
     "metric": "BASELINE_MSE_MINUS_MOVEMENT_MSE; POSITIVE_IS_BETTER",
     "mean_squared_error_improvement": -0.008124026271913358,
@@ -33,19 +33,19 @@
     "movement_model": "SAME_BASELINE + MOVEMENT; SHRINKAGE_10_BASELINE_OBSERVATIONS",
     "multiple_testing_policy": "ONE_PREDEFINED_INCREMENTAL_COMPARISON; SUBGROUPS_DESCRIPTIVE_ONLY; NO_PROMOTION_OR_EDGE_CLAIMS; NEW_UNVIEWED_PERIOD_REQUIRED",
     "observation_gap_minutes": {
-      "n": 188,
+      "n": 190,
       "min": 0.713,
       "median": 202.761,
       "max": 649.593
     },
     "first_minutes_before_kickoff": {
-      "n": 188,
+      "n": 190,
       "min": 43.721,
-      "median": 364.972,
+      "median": 359.552,
       "max": 940.905
     },
     "last_minutes_before_kickoff": {
-      "n": 188,
+      "n": 190,
       "min": 0.501,
       "median": 172.291,
       "max": 577.827
@@ -91,14 +91,14 @@
       },
       {
         "movement": "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN",
-        "unique_fixture_n": 11,
-        "roi_pct": 20.607,
+        "unique_fixture_n": 12,
+        "roi_pct": 25.665,
         "profit_mean_bootstrap95": [
-          -0.25926,
-          0.595238
+          -0.186698,
+          0.641901
         ],
         "settlements": {
-          "FULL_WIN": 5,
+          "FULL_WIN": 6,
           "FULL_LOSS": 2,
           "HALF_LOSS": 1,
           "PUSH": 2,
@@ -121,15 +121,15 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_DOWN",
-        "unique_fixture_n": 64,
-        "roi_pct": 6.466,
+        "unique_fixture_n": 65,
+        "roi_pct": 7.67,
         "profit_mean_bootstrap95": [
-          -0.142931,
-          0.272201
+          -0.136307,
+          0.281065
         ],
         "settlements": {
           "FULL_LOSS": 22,
-          "FULL_WIN": 28,
+          "FULL_WIN": 29,
           "HALF_LOSS": 3,
           "HALF_WIN": 5,
           "PUSH": 6
@@ -425,49 +425,16 @@
   "ft_triage_counts": {
     "RETIRED_UNRESOLVED": 218,
     "POSTPONED": 1,
-    "FUTURE_OR_RECENT": 4,
-    "ACTIVE_OVERDUE": 4,
+    "FUTURE_OR_RECENT": 3,
     "IDENTITY_CONFLICT": 2
   },
   "ft_triage_groups": [
     {
-      "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "Italy",
-      "canonical_competition_id": "ITA-0001",
-      "league": "Serie A",
-      "n": 1
-    },
-    {
-      "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0002",
-      "league": "LaLiga 2",
-      "n": 1
-    },
-    {
-      "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "Sweden",
-      "canonical_competition_id": "SWE-0001",
-      "league": "Allsvenskan",
-      "n": 2
-    },
-    {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
       "country": "Italy",
       "canonical_competition_id": "ITA-0001",
       "league": "Serie A",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Poland",
-      "canonical_competition_id": "POL-0001",
-      "league": "Ekstraklasa",
       "n": 1
     },
     {
@@ -1574,24 +1541,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000002371945286",
-      "provider": "oddspapi",
-      "football_day": "2026-10-12",
-      "league": "Serie A",
-      "kickoff": "2026-10-12T16:30:00+00:00",
-      "home": "Atalanta BC",
-      "away": "Venezia FC",
-      "status": "MISSING_FT",
-      "country": "Italy",
-      "canonical_competition_id": "ITA-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000002371945304",
       "provider": "oddspapi",
       "football_day": "2026-10-12",
@@ -1610,60 +1559,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000004067126802",
-      "provider": "oddspapi",
-      "football_day": "2026-10-12",
-      "league": "Allsvenskan",
-      "kickoff": "2026-10-12T17:00:00+00:00",
-      "home": "Malmo FF",
-      "away": "Kalmar FF",
-      "status": "MISSING_FT",
-      "country": "Sweden",
-      "canonical_competition_id": "SWE-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000004067126804",
-      "provider": "oddspapi",
-      "football_day": "2026-10-12",
-      "league": "Allsvenskan",
-      "kickoff": "2026-10-12T17:00:00+00:00",
-      "home": "IF Elfsborg",
-      "away": "Halmstads BK",
-      "status": "MISSING_FT",
-      "country": "Sweden",
-      "canonical_competition_id": "SWE-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000005472477488",
-      "provider": "oddspapi",
-      "football_day": "2026-10-12",
-      "league": "LaLiga 2",
-      "kickoff": "2026-10-12T16:30:00+00:00",
-      "home": "Real Oviedo",
-      "away": "SD Eibar",
-      "status": "MISSING_FT",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000005472477490",
       "provider": "oddspapi",
       "football_day": "2026-10-12",
@@ -1674,24 +1569,6 @@
       "status": "MISSING_FT",
       "country": "Spain",
       "canonical_competition_id": "ESP-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000020274128332",
-      "provider": "oddspapi",
-      "football_day": "2026-10-12",
-      "league": "Ekstraklasa",
-      "kickoff": "2026-10-12T18:30:00+00:00",
-      "home": "GKS Katowice",
-      "away": "Wieczysta Krakow",
-      "status": "MISSING_FT",
-      "country": "Poland",
-      "canonical_competition_id": "POL-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "FUTURE_OR_RECENT",
