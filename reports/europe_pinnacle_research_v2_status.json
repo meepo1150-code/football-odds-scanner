@@ -1,6 +1,6 @@
 {
   "schema_version": "2.9",
-  "generated_at": "2026-10-12T14:55:15.305173+00:00",
+  "generated_at": "2026-10-12T15:31:05.002634+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "bookmaker": "pinnacle",
   "football_day": "2026-10-12",
@@ -8,126 +8,942 @@
   "football_day_window_start": "2026-10-12T05:00:00+00:00",
   "football_day_window_end": "2026-10-12T23:00:00+00:00",
   "scheduled_target_at": "2026-10-12T21:00:00+07:00",
-  "actual_observed_at": "2026-10-12T21:55:15.305131+07:00",
-  "schedule_lag_minutes": 55.26,
+  "actual_observed_at": "2026-10-12T22:31:04.951721+07:00",
+  "schedule_lag_minutes": 91.08,
   "recovery_window_minutes": 150,
   "observation_timing": "LATE",
-  "force_run": true,
-  "force_target_at": "2026-10-12T21:00:00+07:00",
+  "force_run": false,
+  "force_target_at": null,
   "research_only": true,
   "production_promotion_allowed": false,
   "core_quota_reserve": 3,
-  "forward_scope_policy": "VERIFIED_ACTIVE_MASTER_81_DIVISIONS_PLUS_8_DOMESTIC_CUPS_AND_3_UEFA_CLUB_COMPETITIONS",
-  "master_scope_rejections": [
+  "manual_supplementary_scan": true,
+  "master_competitions_considered": 92,
+  "schedule_response_complete": true,
+  "scheduled_approved_fixtures": 44,
+  "scheduled_approved_competitions": 32,
+  "remaining_prematch_competitions": 23,
+  "schedule_scope_rejections": {},
+  "competition_coverage": [
     {
-      "provider": "oddspapi",
-      "tournament_id": 491,
-      "country": "Germany",
-      "league": "3. Liga",
-      "reason": "MASTER_PROVIDER_COMPETITION_UNMAPPED"
+      "canonical_competition_id": "BGR-0002",
+      "tournament_id": 1135,
+      "tournament_name": "Bulgarian Second League",
+      "country": "Bulgaria",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
     },
     {
-      "provider": "oddspapi",
-      "tournament_id": 172,
-      "country": "Czech Republic",
-      "league": "1. Liga",
-      "reason": "MASTER_COUNTRY_CONFLICT"
+      "canonical_competition_id": "NLD-0002",
+      "tournament_id": 131,
+      "tournament_name": "Eerste Divisie",
+      "country": "Netherlands",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
     },
     {
-      "provider": "oddspapi",
-      "tournament_id": 29,
-      "country": "Norway",
-      "league": "NM Cup",
-      "reason": "MASTER_PROVIDER_COMPETITION_UNMAPPED"
+      "canonical_competition_id": "HUN-0002",
+      "tournament_id": 1339,
+      "tournament_name": "Nemzeti Bajnoksag II",
+      "country": "Hungary",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
     },
     {
-      "provider": "oddspapi",
-      "tournament_id": 76,
-      "country": "Denmark",
-      "league": "DBU Pokalen",
-      "reason": "MASTER_PROVIDER_COMPETITION_UNMAPPED"
+      "canonical_competition_id": "AUT-0002",
+      "tournament_id": 135,
+      "tournament_name": "Austrian 2 Liga",
+      "country": "Austria",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
     },
     {
-      "provider": "oddspapi",
-      "tournament_id": 399,
-      "country": "Switzerland",
-      "league": "Schweizer Cup",
-      "reason": "MASTER_PROVIDER_COMPETITION_UNMAPPED"
+      "canonical_competition_id": "KOS-0001",
+      "tournament_id": 14189,
+      "tournament_name": "Football Superleague of Kosovo",
+      "country": "Kosovo",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
     },
     {
-      "provider": "oddspapi",
-      "tournament_id": 331,
-      "country": "Scotland",
-      "league": "Challenge Cup",
-      "reason": "MASTER_PROVIDER_COMPETITION_UNMAPPED"
-    },
-    {
-      "provider": "oddspapi",
-      "tournament_id": 229,
-      "country": "Poland",
-      "league": "1. Liga",
-      "reason": "USER_REVIEWED_COMPETITION_OUT_OF_SCOPE"
-    },
-    {
-      "provider": "oddspapi",
-      "tournament_id": 355,
+      "canonical_competition_id": "ROU-0001",
+      "tournament_id": 152,
+      "tournament_name": "Liga I",
       "country": "Romania",
-      "league": "Romania Cup",
-      "reason": "MASTER_PROVIDER_COMPETITION_UNMAPPED"
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "MNE-0001",
+      "tournament_id": 154,
+      "tournament_name": "Montenegrin First League",
+      "country": "Montenegro",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "GIB-0001",
+      "tournament_id": 1542,
+      "tournament_name": "Gibraltar Football League",
+      "country": "Gibraltar",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "ENG-0001",
+      "tournament_id": 17,
+      "tournament_name": "Premier League",
+      "country": "England",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "HRV-0001",
+      "tournament_id": 170,
+      "tournament_name": "HNL",
+      "country": "Croatia",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "CYP-0001",
+      "tournament_id": 171,
+      "tournament_name": "Cypriot First Division",
+      "country": "Cyprus",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "CZE-0001",
+      "tournament_id": 172,
+      "tournament_name": "Czech First League",
+      "country": "Czechia",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "EST-0001",
+      "tournament_id": 178,
+      "tournament_name": "Meistriliiga",
+      "country": "Estonia",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "ENG-0002",
+      "tournament_id": 18,
+      "tournament_name": "Championship",
+      "country": "England",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "FRA-0002",
+      "tournament_id": 182,
+      "tournament_name": "Ligue 2",
+      "country": "France",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "GRC-0001",
+      "tournament_id": 185,
+      "tournament_name": "Super League Greece",
+      "country": "Greece",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 0,
+      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH"
+    },
+    {
+      "canonical_competition_id": "GRC-0002",
+      "tournament_id": 186,
+      "tournament_name": "Super League Greece 2",
+      "country": "Greece",
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 0,
+      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH"
+    },
+    {
+      "canonical_competition_id": "HUN-0001",
+      "tournament_id": 187,
+      "tournament_name": "Nemzeti Bajnoksag I",
+      "country": "Hungary",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "ISL-0001",
+      "tournament_id": 188,
+      "tournament_name": "Besta deild karla",
+      "country": "Iceland",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "ENG-0008",
+      "tournament_id": 19,
+      "tournament_name": "FA Cup",
+      "country": "England",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "IRL-0001",
+      "tournament_id": 192,
+      "tournament_name": "League of Ireland Premier Division",
+      "country": "Ireland",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "IRL-0002",
+      "tournament_id": 193,
+      "tournament_name": "League of Ireland First Division",
+      "country": "Ireland",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "LVA-0001",
+      "tournament_id": 197,
+      "tournament_name": "Latvian Higher League",
+      "country": "Latvia",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 0,
+      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH"
+    },
+    {
+      "canonical_competition_id": "LTU-0001",
+      "tournament_id": 198,
+      "tournament_name": "A Lyga",
+      "country": "Lithuania",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "MKD-0001",
+      "tournament_id": 199,
+      "tournament_name": "Macedonian First Football League",
+      "country": "North Macedonia",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 0,
+      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH"
+    },
+    {
+      "canonical_competition_id": "NOR-0001",
+      "tournament_id": 20,
+      "tournament_name": "Eliteserien",
+      "country": "Norway",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "NIR-0001",
+      "tournament_id": 200,
+      "tournament_name": "NIFL Premiership",
+      "country": "Northern Ireland",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "POL-0001",
+      "tournament_id": 202,
+      "tournament_name": "Ekstraklasa",
+      "country": "Poland",
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 2,
+      "reason": "OBSERVED",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "canonical_competition_id": "CZE-0002",
+      "tournament_id": 205,
+      "tournament_name": "Czech National Football League",
+      "country": "Czechia",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 0,
+      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH"
+    },
+    {
+      "canonical_competition_id": "SCO-0002",
+      "tournament_id": 206,
+      "tournament_name": "Scottish Championship",
+      "country": "Scotland",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "ENG-0009",
+      "tournament_id": 21,
+      "tournament_name": "EFL Cup",
+      "country": "England",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "SRB-0001",
+      "tournament_id": 210,
+      "tournament_name": "Serbian SuperLiga",
+      "country": "Serbia",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "SVK-0001",
+      "tournament_id": 211,
+      "tournament_name": "Slovak Super Liga",
+      "country": "Slovakia",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "SVN-0001",
+      "tournament_id": 212,
+      "tournament_name": "Slovenian PrvaLiga",
+      "country": "Slovenia",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "CHE-0001",
+      "tournament_id": 215,
+      "tournament_name": "Swiss Super League",
+      "country": "Switzerland",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "CHE-0002",
+      "tournament_id": 216,
+      "tournament_name": "Swiss Challenge League",
+      "country": "Switzerland",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "DEU-0004",
+      "tournament_id": 217,
+      "tournament_name": "DFB-Pokal",
+      "country": "Germany",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "UKR-0001",
+      "tournament_id": 218,
+      "tournament_name": "Ukrainian Premier League",
+      "country": "Ukraine",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 0,
+      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH"
+    },
+    {
+      "canonical_competition_id": "NOR-0002",
+      "tournament_id": 22,
+      "tournament_name": "Norwegian First Division",
+      "country": "Norway",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "BIH-0001",
+      "tournament_id": 222,
+      "tournament_name": "Premier League of Bosnia and Herzegovina",
+      "country": "Bosnia and Herzegovina",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "SVK-0002",
+      "tournament_id": 224,
+      "tournament_name": "2 Liga",
+      "country": "Slovakia",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 0,
+      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH"
+    },
+    {
+      "canonical_competition_id": "ITA-0001",
+      "tournament_id": 23,
+      "tournament_name": "Serie A",
+      "country": "Italy",
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 2,
+      "reason": "OBSERVED",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "canonical_competition_id": "PRT-0001",
+      "tournament_id": 238,
+      "tournament_name": "Primeira Liga",
+      "country": "Portugal",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "PRT-0002",
+      "tournament_id": 239,
+      "tournament_name": "Liga Portugal 2",
+      "country": "Portugal",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "ENG-0003",
+      "tournament_id": 24,
+      "tournament_name": "League One",
+      "country": "England",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "BGR-0001",
+      "tournament_id": 247,
+      "tournament_name": "Bulgarian First League",
+      "country": "Bulgaria",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "ENG-0004",
+      "tournament_id": 25,
+      "tournament_name": "League Two",
+      "country": "England",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "WAL-0001",
+      "tournament_id": 254,
+      "tournament_name": "Cymru Premier",
+      "country": "Wales",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "ISR-0001",
+      "tournament_id": 266,
+      "tournament_name": "Israeli Premier League",
+      "country": "Israel",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "ITA-0003",
+      "tournament_id": 328,
+      "tournament_name": "Coppa Italia",
+      "country": "Italy",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "ESP-0003",
+      "tournament_id": 329,
+      "tournament_name": "Copa del Rey",
+      "country": "Spain",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "NLD-0003",
+      "tournament_id": 330,
+      "tournament_name": "KNVB Beker",
+      "country": "Netherlands",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "FRA-0003",
+      "tournament_id": 335,
+      "tournament_name": "Coupe de France",
+      "country": "France",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "PRT-0003",
+      "tournament_id": 336,
+      "tournament_name": "Ta\u00e7a de Portugal",
+      "country": "Portugal",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "FRA-0001",
+      "tournament_id": 34,
+      "tournament_name": "Ligue 1",
+      "country": "France",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "INT-0004",
+      "tournament_id": 34480,
+      "tournament_name": "UEFA Conference League",
+      "country": "International",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "DEU-0001",
+      "tournament_id": 35,
+      "tournament_name": "Bundesliga",
+      "country": "Germany",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "SCO-0001",
+      "tournament_id": 36,
+      "tournament_name": "Scottish Premiership",
+      "country": "Scotland",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "NLD-0001",
+      "tournament_id": 37,
+      "tournament_name": "Eredivisie",
+      "country": "Netherlands",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "BEL-0001",
+      "tournament_id": 38,
+      "tournament_name": "Belgian Pro League",
+      "country": "Belgium",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "DNK-0001",
+      "tournament_id": 39,
+      "tournament_name": "Danish Superliga",
+      "country": "Denmark",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "SWE-0001",
+      "tournament_id": 40,
+      "tournament_name": "Allsvenskan",
+      "country": "Sweden",
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 2,
+      "reason": "OBSERVED",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "canonical_competition_id": "FIN-0001",
+      "tournament_id": 41,
+      "tournament_name": "Veikkausliiga",
+      "country": "Finland",
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "DEU-0002",
+      "tournament_id": 44,
+      "tournament_name": "2. Bundesliga",
+      "country": "Germany",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "AUT-0001",
+      "tournament_id": 45,
+      "tournament_name": "Austrian Bundesliga",
+      "country": "Austria",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "SWE-0002",
+      "tournament_id": 46,
+      "tournament_name": "Superettan",
+      "country": "Sweden",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "DNK-0002",
+      "tournament_id": 47,
+      "tournament_name": "Danish 1st Division",
+      "country": "Denmark",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "TUR-0001",
+      "tournament_id": 52,
+      "tournament_name": "Super Lig",
+      "country": "Turkey",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "ITA-0002",
+      "tournament_id": 53,
+      "tournament_name": "Serie B",
+      "country": "Italy",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "SVN-0002",
+      "tournament_id": 532,
+      "tournament_name": "Slovenian Second League",
+      "country": "Slovenia",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "ESP-0002",
+      "tournament_id": 54,
+      "tournament_name": "LaLiga 2",
+      "country": "Spain",
+      "scheduled_fixtures": 4,
+      "remaining_prematch_fixtures": 2,
+      "reason": "OBSERVED",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "canonical_competition_id": "FIN-0002",
+      "tournament_id": 55,
+      "tournament_name": "Ykkosliiga",
+      "country": "Finland",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "ROU-0002",
+      "tournament_id": 562,
+      "tournament_name": "Liga II",
+      "country": "Romania",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "MLT-0001",
+      "tournament_id": 629,
+      "tournament_name": "Maltese Premier League",
+      "country": "Malta",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "ARM-0001",
+      "tournament_id": 671,
+      "tournament_name": "Armenian Premier League",
+      "country": "Armenia",
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 0,
+      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH"
+    },
+    {
+      "canonical_competition_id": "FRO-0001",
+      "tournament_id": 673,
+      "tournament_name": "Faroe Islands Premier League",
+      "country": "Faroe Islands",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "INT-0002",
+      "tournament_id": 679,
+      "tournament_name": "UEFA Europa League",
+      "country": "International",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "KAZ-0001",
+      "tournament_id": 682,
+      "tournament_name": "Kazakhstan Premier League",
+      "country": "Kazakhstan",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "MDA-0001",
+      "tournament_id": 685,
+      "tournament_name": "Moldovan Super Liga",
+      "country": "Moldova",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "LUX-0001",
+      "tournament_id": 690,
+      "tournament_name": "Luxembourg National Division",
+      "country": "Luxembourg",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "UKR-0002",
+      "tournament_id": 691,
+      "tournament_name": "Ukrainian First League",
+      "country": "Ukraine",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 0,
+      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH"
+    },
+    {
+      "canonical_competition_id": "CYP-0002",
+      "tournament_id": 692,
+      "tournament_name": "Cypriot Second Division",
+      "country": "Cyprus",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "INT-0001",
+      "tournament_id": 7,
+      "tournament_name": "UEFA Champions League",
+      "country": "International",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "GEO-0001",
+      "tournament_id": 704,
+      "tournament_name": "Erovnuli Liga",
+      "country": "Georgia",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "ALB-0001",
+      "tournament_id": 720,
+      "tournament_name": "Kategoria Superiore",
+      "country": "Albania",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "SRB-0002",
+      "tournament_id": 721,
+      "tournament_name": "Serbian First League",
+      "country": "Serbia",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "HRV-0002",
+      "tournament_id": 724,
+      "tournament_name": "Prva NL",
+      "country": "Croatia",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "ISR-0002",
+      "tournament_id": 727,
+      "tournament_name": "Liga Leumit",
+      "country": "Israel",
+      "scheduled_fixtures": 3,
+      "remaining_prematch_fixtures": 3,
+      "reason": "OBSERVED",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
+      "market_reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "canonical_competition_id": "SMR-0001",
+      "tournament_id": 738,
+      "tournament_name": "Campionato Sammarinese di Calcio",
+      "country": "San Marino",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "ESP-0001",
+      "tournament_id": 8,
+      "tournament_name": "LaLiga",
+      "country": "Spain",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "reason": "QUOTA_SKIPPED"
+    },
+    {
+      "canonical_competition_id": "BEL-0002",
+      "tournament_id": 9,
+      "tournament_name": "Challenger Pro League",
+      "country": "Belgium",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
+    },
+    {
+      "canonical_competition_id": "TUR-0002",
+      "tournament_id": 98,
+      "tournament_name": "TFF 1 Lig",
+      "country": "Turkey",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "reason": "NO_MATCHES"
     }
   ],
-  "master_scope_excluded_targets": 8,
-  "resolved_competitions": 10,
+  "forward_scope_policy": "VERIFIED_ACTIVE_MASTER_81_DIVISIONS_PLUS_8_DOMESTIC_CUPS_AND_3_UEFA_CLUB_COMPETITIONS",
+  "master_scope_rejections": [],
+  "master_scope_excluded_targets": 0,
+  "resolved_competitions": 5,
   "planned_requests": 2,
-  "max_planned_requests_with_retries": 2,
-  "coverage_mode": "DAILY_STABLE_COHORT_WITH_REPEAT_OBSERVATIONS",
+  "max_planned_requests_with_retries": 1,
+  "coverage_mode": "MASTER_SCHEDULE_PRIORITIZED",
   "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
-  "research_requests_used_today": 2,
-  "research_requests_used_month": 72,
+  "research_requests_used_today": 4,
+  "research_requests_used_month": 74,
   "research_daily_limit": 6,
   "research_monthly_limit": 180,
   "research_run_limit": 2,
   "canonical_slots_in_football_day": 2,
   "canonical_request_reservation": "ONE_BATCH_PER_WEEKEND_SLOT; TWO_PER_WEEKDAY_SLOT; FAILED_ATTEMPTS_COUNT",
   "budget_scope": "ODDSPAPI_RESEARCH_COLLECTOR_ONLY",
+  "schedule_requests_reserved": 1,
   "coverage_complete": false,
   "coverage_tournament_ids": [
-    24,
-    25,
-    19,
-    21,
+    727,
     23,
-    53,
-    328,
-    8,
+    40,
     54,
-    35
+    202
   ],
-  "quota_remaining_before": 99,
+  "quota_remaining_before": 97,
   "effective_quota_reserve": 3,
-  "request_completed_at": "2026-10-12T14:55:15.305131+00:00",
-  "collection_started_at": "2026-10-12T14:55:10.674298+00:00",
+  "request_completed_at": "2026-10-12T15:31:04.951721+00:00",
+  "schedule_response_id": "1b1c687a700c60859836da3618b28e3e7a061595da6417b554fbdf43e5759c6e",
+  "schedule_observed_at": "2026-10-12T15:31:03.398202+00:00",
+  "schedule_requests_used": 1,
+  "collection_started_at": "2026-10-12T15:31:00.650669+00:00",
   "excluded_unrequested_scope_fixtures": 0,
   "invalid_payload_batches": 0,
   "status": "RESEARCH_V2_OBSERVED",
   "requests_used": 2,
   "rate_limit_retries": 0,
-  "api_fixtures_returned": 111,
-  "excluded_outside_football_day": 106,
-  "football_day_fixtures": 5,
-  "strict_snapshots_this_run": 5,
-  "persisted_snapshot_rows": 1866,
-  "persisted_audit_rows": 1123,
-  "fixtures_seen": 5,
-  "bookmaker_active_fixtures": 5,
-  "fixtures_with_exactly_one_main_ah": 5,
-  "fixtures_with_exactly_one_main_ou": 5,
-  "fixtures_with_both_exact_mainlines": 5,
-  "strict_snapshots": 5,
+  "api_fixtures_returned": 48,
+  "excluded_outside_football_day": 37,
+  "football_day_fixtures": 11,
+  "strict_snapshots_this_run": 11,
+  "persisted_snapshot_rows": 1877,
+  "persisted_audit_rows": 1134,
+  "fixtures_seen": 11,
+  "bookmaker_active_fixtures": 11,
+  "fixtures_with_exactly_one_main_ah": 11,
+  "fixtures_with_exactly_one_main_ou": 11,
+  "fixtures_with_both_exact_mainlines": 11,
+  "strict_snapshots": 11,
   "rejection_counts": {
-    "OK": 5
+    "OK": 11
   },
   "league_coverage": [
+    {
+      "league": "Israel \u00b7 Liga Leumit",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
     {
       "league": "Italy \u00b7 Serie A",
       "fixtures": 2,
@@ -141,15 +957,15 @@
       }
     },
     {
-      "league": "Spain \u00b7 LaLiga",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
+      "league": "Poland \u00b7 Ekstraklasa",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
       "reason_counts": {
-        "OK": 1
+        "OK": 2
       }
     },
     {
@@ -163,6 +979,24 @@
       "reason_counts": {
         "OK": 2
       }
+    },
+    {
+      "league": "Sweden \u00b7 Allsvenskan",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
+      "reason_counts": {
+        "OK": 2
+      }
     }
-  ]
+  ],
+  "competition_reason_counts": {
+    "NO_MATCHES": 60,
+    "QUOTA_SKIPPED": 18,
+    "KICKOFF_PASSED_OR_NOT_PREMATCH": 9,
+    "OBSERVED": 5
+  }
 }
