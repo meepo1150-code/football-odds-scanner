@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 
 APPEND_PATHS = (
+    'data/normalized/research_v2_provider_responses.jsonl',
     'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl',
     'data/normalized/europe_pinnacle_research_v2_audit.jsonl',
     'data/normalized/research_v2_slot_ledger.jsonl',

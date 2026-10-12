@@ -91,6 +91,11 @@ def scan_scope_reason(row, *, provider):
     if isinstance(country,dict):country=country.get('name')
     accepted_countries={c['country_id'].casefold(),c['country_name'].casefold(),
                         observed_provider_countries().get((provider,str(tid)))}
+    if provider=='oddspapi':
+        audit=json.loads((PATH.parents[1]/'research/provider_mapping_audit_2026_10_09.json').read_text())
+        accepted_countries.update(str(r.get('provider_country','')).casefold() for r in audit.get('mappings',[]) if str(r.get('provider_id'))==str(tid) and r.get('internal_id')==cid)
+    # The existing reviewed Czech resolver explicitly records both country labels.
+    if c['country_id']=='CZE':accepted_countries.update({'czech republic','czechia'})
     if country and str(country).casefold() not in accepted_countries:
         return 'MASTER_COUNTRY_CONFLICT'
     return None

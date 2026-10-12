@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from .research_population import in_scope, exclusion_reason, POLICY
 from .master_scan_scope import filter_scan_targets
+from . import master_schedule_plan as schedule
 import json, os, time
 from datetime import datetime, time as dtime, timedelta, timezone
 from pathlib import Path
@@ -116,9 +117,25 @@ def run(root=Path('.')):
                       rate_limit_cooldown_until=cooldown.isoformat(), requests_used=0,
                       planned_requests=0, errors=['Provider cooldown active; no API request sent'])
         return _write(report, root)
-    if _slot_done(root/SLOT_LEDGER_PATH,target): report.update(status='SKIPPED_SLOT_ALREADY_OBSERVED',requests_used=0,planned_requests=0);return _write(report,root)
+    manual=os.getenv('RESEARCH_V2_MANUAL_BREADTH','').lower()=='true'
+    report['manual_supplementary_scan']=manual
+    if manual:
+        from .research_v2_slots import read_ledger,provider_attempt_receipt,stamp
+        recent=[stamp(r.get('request_completed_at') or r.get('actual_observed_at')) for r in read_ledger(root) if provider_attempt_receipt(r)]
+        recent=[x for x in recent if x]
+        if recent and now-max(recent)<timedelta(minutes=15):
+            report.update(status='SKIPPED_MINIMUM_OBSERVATION_SPACING',requests_used=0);return _write(report,root)
+    if not manual and _slot_done(root/SLOT_LEDGER_PATH,target): report.update(status='SKIPPED_SLOT_ALREADY_OBSERVED',requests_used=0,planned_requests=0);return _write(report,root)
     if lag is None or lag<0 or lag>RECOVERY_WINDOW_MINUTES: report.update(status='MISSED_SLOT',requests_used=0,planned_requests=0);_record_slot(root/SLOT_LEDGER_PATH,report,'MISSED');return _write(report,root)
+    master_mode=(root/'data/master/provider_mappings.csv').exists()
+    cached=schedule.cached_schedule(root,ws,we,now) if master_mode else None
+    overhead=1 if master_mode and cached is None else 0
     targets=_load_json(root/TARGET_PATH) or {}; selected=targets.get('tournaments') or [] if isinstance(targets,dict) else []
+    if master_mode:
+        selected=schedule.registry()
+        saved=_load_json(root/'reports/master_provider_snapshot.json') or {}
+        _,scope=schedule.plan(saved.get('fixtures',[]),ws,we,now,complete=False)
+        report.update(scope)
     original_count = len(selected)
     from .master_scan_scope import scan_scope_reason
     report['forward_scope_policy']='VERIFIED_ACTIVE_MASTER_81_DIVISIONS_PLUS_8_DOMESTIC_CUPS_AND_3_UEFA_CLUB_COMPETITIONS'
@@ -135,12 +152,13 @@ def run(root=Path('.')):
     if not ids or len(ids)!=len(set(ids)):report.update(status='TARGET_MAP_INVALID',resolved_competitions=len(ids),requests_used=0,planned_requests=0);return _write(report,root)
     normal=(len(ids)+BATCH_SIZE-1)//BATCH_SIZE; maxplan=normal*MAX_ATTEMPTS_PER_BATCH; report.update(resolved_competitions=len(ids),planned_requests=normal,max_planned_requests_with_retries=maxplan,coverage_mode='FULL_RESEARCH_UNIVERSE')
     try:
-        ids, budget = allocation(root/SLOT_LEDGER_PATH, ids, now, BATCH_SIZE)
+        ids, budget = allocation(root/SLOT_LEDGER_PATH, ids, now, BATCH_SIZE, prioritized=master_mode, overhead=overhead, manual=manual)
     except (ValueError, KeyError, TypeError, OSError) as exc:
         report.update(status='TARGET_MAP_INVALID', requests_used=0, errors=['Request budget ledger invalid: '+str(exc)])
         return _write(report, root)
     report.update(budget)
     if not ids:
+        if master_mode:schedule.finish_coverage(report,[],[])
         report.update(status='SKIPPED_RESEARCH_REQUEST_BUDGET', requests_used=0, planned_requests=0,
                       data_source_health='NOT_PROBED_BUDGET_LIMIT', next_action='FREE_COLLECTORS_CONTINUE')
         return _write(report, root)
@@ -154,7 +172,7 @@ def run(root=Path('.')):
     report['quota_remaining_before']=q.get('request_remaining')
     try: remaining=int(q.get('request_remaining'))
     except (TypeError,ValueError): remaining=-1
-    if 0 <= remaining <= LOW_QUOTA_THRESHOLD:
+    if not master_mode and 0 <= remaining <= LOW_QUOTA_THRESHOLD:
         selected=[x for x in selected if int(x.get('tournament_id') or -1) in LOW_QUOTA_CORE_IDS]
         ids=[x.get('tournament_id') for x in selected]
         normal=(len(ids)+BATCH_SIZE-1)//BATCH_SIZE
@@ -165,8 +183,38 @@ def run(root=Path('.')):
     # canonical slot; background/history workflows remain responsible for yielding.
     effective_reserve = 0 if report.get('coverage_mode') == 'LOW_QUOTA_BIG5_TOP_FLIGHT' else CORE_QUOTA_RESERVE
     report['effective_quota_reserve']=effective_reserve
-    if not ids or remaining-normal < effective_reserve:report.update(status='SKIPPED_TO_PROTECT_CORE_QUOTA',requests_used=0);return _write(report,root)
-    catalog=_load_json(root/CATALOG_PATH) or []; meta={int(x['tournament_id']):x for x in selected}; payloads=[]; used=0; retries=0
+    if not ids or remaining-normal-overhead < effective_reserve:report.update(status='SKIPPED_TO_PROTECT_CORE_QUOTA',requests_used=0);return _write(report,root)
+    used=0;retries=0
+    if master_mode:
+        try:
+            if cached is None:
+                if datetime.now(timezone.utc)>target+timedelta(minutes=RECOVERY_WINDOW_MINUTES):
+                    report.update(status='RECOVERY_WINDOW_EXPIRED_BEFORE_ODDS',requests_used=0);return _write(report,root)
+                params={'sportId':10,'from':ws.isoformat(),'to':we.isoformat(),'limit':schedule.SCHEDULE_LIMIT,'language':'en'}
+                used+=1
+                payload=_get('/fixtures',key,params,60)
+                response_at=datetime.now(timezone.utc)
+                cached=schedule.retain(root,'/fixtures',params,payload,response_at)
+                report['request_completed_at']=response_at.isoformat()
+            schedule_rows=schedule.items(cached['payload'])
+            # A limit-sized or explicitly paginated response cannot prove absence.
+            complete=len(schedule_rows)<schedule.SCHEDULE_LIMIT and isinstance(cached['payload'],list)
+            selected,scope=schedule.plan(schedule_rows,ws,we,datetime.now(timezone.utc),complete=complete)
+            report.update(scope,schedule_response_id=cached['response_id'],schedule_observed_at=cached['observed_at'],schedule_requests_used=used)
+            ids,budget=allocation(root/SLOT_LEDGER_PATH,[x['tournament_id'] for x in selected],now,BATCH_SIZE,prioritized=True,overhead=used,manual=manual)
+            report.update(budget)
+            selected=[x for x in selected if x['tournament_id'] in ids]
+            report.update(resolved_competitions=len(ids),planned_requests=used+(len(ids)+BATCH_SIZE-1)//BATCH_SIZE,coverage_tournament_ids=ids)
+            if not ids:
+                schedule.finish_coverage(report,[],[])
+                report.update(status='ZERO_USABLE_FIXTURES',requests_used=used,strict_snapshots_this_run=0,football_day_fixtures=0,coverage_complete=complete and not scope['remaining_prematch_competitions'])
+                _record_slot(root/SLOT_LEDGER_PATH,report,'ZERO_FIXTURES');return _write(report,root)
+        except Exception as exc:
+            failed_at=datetime.now(timezone.utc)
+            report.update(status='SCHEDULE_REQUEST_FAILED',requests_used=used,errors=[type(exc).__name__],request_completed_at=failed_at.isoformat())
+            if getattr(exc,'code',None)==429:report['rate_limit_cooldown_until']=_rate_limit_until(exc,failed_at)
+            _record_slot(root/SLOT_LEDGER_PATH,report,'FAILED');return _write(report,root)
+    catalog=_load_json(root/CATALOG_PATH) or []; meta={int(x['tournament_id']):x for x in selected}; payloads=[]
     request_failed=False
     for bn,batch in enumerate(_chunks(ids,BATCH_SIZE),1):
         if bn>1:time.sleep(INTER_BATCH_DELAY_SECONDS)
@@ -188,6 +236,7 @@ def run(root=Path('.')):
         if request_failed:break
         response_at=datetime.now(timezone.utc)
         report['request_completed_at']=response_at.isoformat()
+        schedule.retain(root,'/odds-by-tournaments',{'tournamentIds':','.join(map(str,batch)),'bookmakers':BOOKMAKER,'language':'en','verbosity':3},payload,response_at)
         payloads.append((payload,response_at,set(map(str,batch))))
     if not payloads:
         if request_failed:
@@ -213,10 +262,15 @@ def run(root=Path('.')):
                 report['excluded_unrequested_scope_fixtures']+=1
                 continue
             if k is None or not(ws<=k<we):excluded+=1;continue
-            tm={**(meta.get(int(f.get('tournamentId') or -1)) or {}),'universe':'PINNACLE_RESEARCH_V2'};book=(f.get('bookmakerOdds') or {}).get(BOOKMAKER);active=isinstance(book,dict) and book.get('bookmakerIsActive') is True and book.get('suspended') is False;shape=mainline_shape(f,catalog,bookmaker=BOOKMAKER);snap,reason=extract_mainline_snapshot(f,catalog,observed_at=observed_at,tournament_meta=tm,bookmaker=BOOKMAKER)
+            tm={**(meta.get(int(f.get('tournamentId') or -1)) or {}),'universe':'PINNACLE_RESEARCH_V2'};book=(f.get('bookmakerOdds') or {}).get(BOOKMAKER);active=isinstance(book,dict) and book.get('bookmakerIsActive') is True and book.get('suspended') is False;shape=mainline_shape(f,catalog,bookmaker=BOOKMAKER)
+            try:snap,reason=extract_mainline_snapshot(f,catalog,observed_at=observed_at,tournament_meta=tm,bookmaker=BOOKMAKER)
+            except ValueError:snap=None;reason='MASTER_CANONICAL_ID_CONFLICT'
+            if master_mode and snap and not all(snap.get(k) for k in ('canonical_competition_id','home_club_id','away_club_id')):
+                snap=None;reason='MASTER_CLUB_UNMAPPED'
             diag.append({'country':tm.get('country'),'league':tm.get('tournament_name'),'fixture_id':f.get('fixtureId'),'bookmaker_active':active,'ah_main_count':shape.get('ah_main_count',0),'ou_main_count':shape.get('ou_main_count',0),'strict_snapshot':snap is not None,'reason':reason});audit.append({'football_day':day,'fixture_id':f.get('fixtureId'),'tournament_id':f.get('tournamentId'),'country':tm.get('country'),'league':tm.get('tournament_name'),'home':f.get('participant1Name'),'away':f.get('participant2Name'),'kickoff':f.get('startTime'),'observed_at':observed_at.isoformat(),'scheduled_target_at':target.isoformat() if target else None,'schedule_lag_minutes':batch_lag,'observation_timing':timing,'bookmaker':BOOKMAKER,'eligibility_status':'MATCH' if snap else 'NOT_MATCH','eligibility_reason':reason,'research_population':True})
             if snap and in_scope(snap):snap.update(football_day=day,research_only=True,scheduled_target_at=target.isoformat() if 0<=batch_lag<=RECOVERY_WINDOW_MINUTES else None,attempted_target_at=target.isoformat(),schedule_lag_minutes=batch_lag,observation_timing=timing);strict.append(snap)
     ts=_merge_jsonl(root/SNAPSHOT_PATH,strict,('observed_at','fixture_id'));ta=_merge_jsonl(root/AUDIT_PATH,audit,('observed_at','fixture_id'));report.update(status='RESEARCH_V2_OBSERVED',requests_used=used,rate_limit_retries=retries,api_fixtures_returned=alln,excluded_outside_football_day=excluded,football_day_fixtures=len(audit),strict_snapshots_this_run=len(strict),persisted_snapshot_rows=ts,persisted_audit_rows=ta,**summarize_rows(diag))
+    if master_mode:schedule.finish_coverage(report,ids,audit,request_failed)
     invalid=report['invalid_payload_batches'] or report['excluded_unrequested_scope_fixtures']
     if invalid:
         report.setdefault('errors',[]).append('PROVIDER_PAYLOAD_OR_REQUESTED_SCOPE_REJECTED')
@@ -224,6 +278,7 @@ def run(root=Path('.')):
         report['coverage_complete']=False
         report['data_source_health']=report.get('data_source_health','PARTIAL')
     state='OBSERVED' if strict else 'FAILED' if report.get('errors') or audit else 'ZERO_FIXTURES'
+    if master_mode:report['coverage_complete']=not (request_failed or invalid or report.get('recovery_window_expired_during_collection')) and report.get('schedule_response_complete',False) and not any(x['reason'] in {'QUOTA_SKIPPED','PROVIDER_ERROR','AWAITING_ODDS','NO_SCHEDULE_EVIDENCE'} for x in report.get('competition_coverage',[]))
     if state=='FAILED':report['status']='PROVIDER_RESPONSE_REJECTED' if invalid else 'API_REQUEST_FAILED' if request_failed else 'NO_VERIFIED_PREMATCH_QUOTES'
     _record_slot(root/SLOT_LEDGER_PATH,report,state);return _write(report,root)
 
