@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12T19:03:03.854135+00:00",
+  "generated_at": "2026-10-12T20:10:45.895734+00:00",
   "research_only": true,
   "raw_deleted": 0,
   "settled_fixtures": 813,
@@ -425,17 +425,42 @@
   "ft_triage_counts": {
     "RETIRED_UNRESOLVED": 218,
     "POSTPONED": 1,
-    "FUTURE_OR_RECENT": 8,
+    "FUTURE_OR_RECENT": 4,
+    "ACTIVE_OVERDUE": 4,
     "IDENTITY_CONFLICT": 2
   },
   "ft_triage_groups": [
+    {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "oddspapi",
+      "country": "Italy",
+      "canonical_competition_id": "ITA-0001",
+      "league": "Serie A",
+      "n": 1
+    },
+    {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "oddspapi",
+      "country": "Spain",
+      "canonical_competition_id": "ESP-0002",
+      "league": "LaLiga 2",
+      "n": 1
+    },
+    {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "oddspapi",
+      "country": "Sweden",
+      "canonical_competition_id": "SWE-0001",
+      "league": "Allsvenskan",
+      "n": 2
+    },
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
       "country": "Italy",
       "canonical_competition_id": "ITA-0001",
       "league": "Serie A",
-      "n": 2
+      "n": 1
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -459,15 +484,7 @@
       "country": "Spain",
       "canonical_competition_id": "ESP-0002",
       "league": "LaLiga 2",
-      "n": 2
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Sweden",
-      "canonical_competition_id": "SWE-0001",
-      "league": "Allsvenskan",
-      "n": 2
+      "n": 1
     },
     {
       "lifecycle": "IDENTITY_CONFLICT",
@@ -1569,7 +1586,7 @@
       "canonical_competition_id": "ITA-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -1605,7 +1622,7 @@
       "canonical_competition_id": "SWE-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -1623,7 +1640,7 @@
       "canonical_competition_id": "SWE-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -1641,7 +1658,7 @@
       "canonical_competition_id": "ESP-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
