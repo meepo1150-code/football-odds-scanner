@@ -217,8 +217,8 @@
     "REVIEWED_LEAGUE_OUT_OF_SCOPE": 3,
     "USER_REVIEWED_COMPETITION_OUT_OF_SCOPE": 4
   },
-  "provider_fixture_ids": 1039,
-  "raw_unresolved_provider_fixture_ids": 248,
+  "provider_fixture_ids": 1044,
+  "raw_unresolved_provider_fixture_ids": 253,
   "fixture_identity_bridges": [
     {
       "canonical_fixture_id": "pinnwire:1636867987",
@@ -417,7 +417,7 @@
   "snapshot_selection": "LATEST_VALID_STRICT_PREMATCH_OBSERVATION_UTC_THEN_PROVIDER_SOURCE_ID_TIEBREAK",
   "classification": "RESEARCH_V2_AH_MARKET_STATE_STATISTICS",
   "statistical_population_policy": "VERIFIED_FT_ONLY; RAW UNRESOLVED FIXTURES QUARANTINED AND EXCLUDED",
-  "generated_at": "2026-10-12T14:55:25.670559+00:00",
+  "generated_at": "2026-10-12T14:55:36.675963+00:00",
   "research_only": true,
   "recommendation_semantics": false,
   "signal_policy": "DESCRIPTIVE_ONLY; NO EDGE TEST FROM WIN RATE; FROZEN PROMOTION GATES UNCHANGED",
@@ -440,16 +440,16 @@
     "NOT_EXACT_2_5": 409,
     "VERIFIED_EXACT_2_5_PREMATCH": 374
   },
-  "snapshot_rows": 1529,
-  "raw_snapshot_rows": 1861,
+  "snapshot_rows": 1534,
+  "raw_snapshot_rows": 1866,
   "quarantined_snapshot_rows": 90,
   "quarantine_policy": "LEGACY_PROPLINE_EXCLUDED; VERIFIED_PINNACLE_TWO_SIDED_CORE_MAINLINE_ALLOWED",
-  "unique_snapshot_fixtures": 1031,
+  "unique_snapshot_fixtures": 1036,
   "settled_fixtures": 783,
   "core_price_settled_fixtures": 737,
   "missing_result_fixtures": 0,
-  "raw_unresolved_ft_fixtures": 247,
-  "active_unresolved_ft_fixtures": 0,
+  "raw_unresolved_ft_fixtures": 252,
+  "active_unresolved_ft_fixtures": 5,
   "retired_unresolved_ft_fixtures": 247,
   "retired_unresolved_fixture_ids": [
     "api_football:1511407",
@@ -700,14 +700,14 @@
     "propline:soccer_argentina_primera:217277",
     "propline:soccer_argentina_primera:217378"
   ],
-  "excluded_missing_ft_from_statistical_population": 247,
+  "excluded_missing_ft_from_statistical_population": 252,
   "excluded_derivative_markets_from_ft_completeness": 1,
   "eligible_statistical_fixtures": 783,
-  "ft_completeness_pct": 76.02,
+  "ft_completeness_pct": 75.65,
   "missing_result_fixtures_by_provider": {},
   "unique_snapshot_fixtures_by_provider": {
     "api_football": 20,
-    "oddspapi": 287,
+    "oddspapi": 292,
     "pinnwire": 590,
     "propline": 134
   },
@@ -715,12 +715,12 @@
   "non_pinnwire_missing_result_fixtures": 0,
   "raw_unresolved_ft_by_provider": {
     "api_football": 20,
-    "oddspapi": 28,
+    "oddspapi": 33,
     "pinnwire": 196,
     "propline": 3
   },
   "raw_pinnwire_unresolved_ft": 196,
-  "raw_non_pinnwire_unresolved_ft": 51,
+  "raw_non_pinnwire_unresolved_ft": 56,
   "ambiguous_result_fixtures": 0,
   "baseline_by_market_side_line": [
     {
@@ -16517,7 +16517,7 @@
   "identity_group_semantics": "PROVIDER_LOCAL_FIXTURE_IDS_PLUS_VERIFIED_BRIDGES; UNLINKED_PROVIDER_IDS_MAY_REFER_TO_SAME_REAL_MATCH",
   "invalid_statistical_snapshot_rows": 0,
   "wr_definition": "(FULL_WIN + HALF_WIN) / ALL_SETTLED_INCLUDING_PUSH; HALF_WIN_IS_POSITIVE_RETURN_EVENT; SEE_SEPARATE_HALF_COUNTS_AND_ROI",
-  "ft_completeness_denominator": 1030,
+  "ft_completeness_denominator": 1035,
   "ft_completeness_population": "ALL_ELIGIBLE_IDENTITY_GROUPS_INCLUDING_RETIRED_AND_CONFLICTED; NOT_VERIFIED_SUBSET_ONLY",
   "statistical_subset_ft_completeness_pct": 100.0,
   "identity_conflict_ft_fixtures": 2,
@@ -16529,7 +16529,7 @@
   },
   "postponed_cancelled_abandoned_fixtures": 1,
   "verified_cross_provider_canonical_fixtures": 8,
-  "unlinked_provider_fixture_groups": 1023,
+  "unlinked_provider_fixture_groups": 1028,
   "movement_classification_counts": {
     "AH_LINE_UNCHANGED__PRICE_DOWN": 64,
     "SINGLE_OBSERVATION": 594,
@@ -16550,6 +16550,6 @@
     "[2.10,2.20]"
   ],
   "active_overdue_ft_fixtures": 0,
-  "active_future_or_recent_ft_fixtures": 0,
+  "active_future_or_recent_ft_fixtures": 5,
   "active_unknown_kickoff_ft_fixtures": 0
 }

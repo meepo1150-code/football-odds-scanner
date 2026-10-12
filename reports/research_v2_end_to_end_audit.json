@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12T14:55:25.881446+00:00",
+  "generated_at": "2026-10-12T14:55:36.896099+00:00",
   "research_only": true,
   "raw_deleted": 0,
   "settled_fixtures": 783,
@@ -425,9 +425,34 @@
   "ft_triage_counts": {
     "RETIRED_UNRESOLVED": 244,
     "POSTPONED": 1,
+    "FUTURE_OR_RECENT": 5,
     "IDENTITY_CONFLICT": 2
   },
   "ft_triage_groups": [
+    {
+      "lifecycle": "FUTURE_OR_RECENT",
+      "provider": "oddspapi",
+      "country": "Italy",
+      "canonical_competition_id": "ITA-0001",
+      "league": "Serie A",
+      "n": 2
+    },
+    {
+      "lifecycle": "FUTURE_OR_RECENT",
+      "provider": "oddspapi",
+      "country": "Spain",
+      "canonical_competition_id": "ESP-0001",
+      "league": "LaLiga",
+      "n": 1
+    },
+    {
+      "lifecycle": "FUTURE_OR_RECENT",
+      "provider": "oddspapi",
+      "country": "Spain",
+      "canonical_competition_id": "ESP-0002",
+      "league": "LaLiga 2",
+      "n": 2
+    },
     {
       "lifecycle": "IDENTITY_CONFLICT",
       "provider": "pinnwire",
@@ -1522,6 +1547,24 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
+      "fixture_id": "id1000000872478614",
+      "provider": "oddspapi",
+      "football_day": "2026-10-12",
+      "league": "LaLiga",
+      "kickoff": "2026-10-12T19:00:00+00:00",
+      "home": "Levante UD",
+      "away": "Sevilla FC",
+      "status": "MISSING_FT",
+      "country": "Spain",
+      "canonical_competition_id": "ESP-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
       "fixture_id": "id1000001974975978",
       "provider": "oddspapi",
       "football_day": "2026-10-03",
@@ -1936,6 +1979,42 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
+      "fixture_id": "id1000002371945286",
+      "provider": "oddspapi",
+      "football_day": "2026-10-12",
+      "league": "Serie A",
+      "kickoff": "2026-10-12T16:30:00+00:00",
+      "home": "Atalanta BC",
+      "away": "Venezia FC",
+      "status": "MISSING_FT",
+      "country": "Italy",
+      "canonical_competition_id": "ITA-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
+      "fixture_id": "id1000002371945304",
+      "provider": "oddspapi",
+      "football_day": "2026-10-12",
+      "league": "Serie A",
+      "kickoff": "2026-10-12T18:45:00+00:00",
+      "home": "Torino FC",
+      "away": "Udinese Calcio",
+      "status": "MISSING_FT",
+      "country": "Italy",
+      "canonical_competition_id": "ITA-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
       "fixture_id": "id1000005472477462",
       "provider": "oddspapi",
       "football_day": "2026-10-04",
@@ -1967,6 +2046,42 @@
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": true,
       "lifecycle": "RETIRED_UNRESOLVED",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
+      "fixture_id": "id1000005472477488",
+      "provider": "oddspapi",
+      "football_day": "2026-10-12",
+      "league": "LaLiga 2",
+      "kickoff": "2026-10-12T16:30:00+00:00",
+      "home": "Real Oviedo",
+      "away": "SD Eibar",
+      "status": "MISSING_FT",
+      "country": "Spain",
+      "canonical_competition_id": "ESP-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
+      "fixture_id": "id1000005472477490",
+      "provider": "oddspapi",
+      "football_day": "2026-10-12",
+      "league": "LaLiga 2",
+      "kickoff": "2026-10-12T19:00:00+00:00",
+      "home": "Tenerife CD",
+      "away": "Girona FC",
+      "status": "MISSING_FT",
+      "country": "Spain",
+      "canonical_competition_id": "ESP-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
