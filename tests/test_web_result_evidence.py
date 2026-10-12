@@ -135,3 +135,22 @@ def test_provenance_comes_from_each_matched_fixture_not_last_snapshot(tmp_path):
     assert rows['other:b']['provider']=='other'
     assert rows['other:b']['home_club_id']=='home-b'
     assert all(r['canonical_competition_id']=='league-a' for r in rows.values())
+
+
+def test_existing_verified_web_provenance_repair_is_audited_and_idempotent(tmp_path):
+    from odds_scanner.web_result_evidence import PROVENANCE_CORRECTIONS_PATH
+    e=_evidence()
+    _write(tmp_path/SNAPSHOTS_PATH,[dict(e,provider='pinnwire',home_club_id='verified-home')])
+    _write(tmp_path/EVIDENCE_PATH,[e])
+    old={'fixture_id':'pinnwire:a','provider':'wrong','home_club_id':'wrong','ft_home_goals':2,'ft_away_goals':1,'result_source':'WEB_EVIDENCE_TIER_A_OFFICIAL','retrieved_at':'original-time'}
+    _write(tmp_path/RESULTS_PATH,[old])
+    assert import_evidence(tmp_path)['provenance_rows_corrected']==1
+    audit=tmp_path/PROVENANCE_CORRECTIONS_PATH
+    correction=json.loads(audit.read_text())
+    assert correction['previous_row']==old
+    corrected=json.loads((tmp_path/RESULTS_PATH).read_text())
+    assert corrected['provider']=='pinnwire' and corrected['home_club_id']=='verified-home'
+    assert corrected['retrieved_at']=='original-time' and corrected['ft_home_goals']==2
+    before=audit.read_bytes()
+    assert import_evidence(tmp_path)['provenance_rows_corrected']==0
+    assert audit.read_bytes()==before

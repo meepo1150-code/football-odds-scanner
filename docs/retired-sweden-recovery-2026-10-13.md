@@ -17,3 +17,5 @@ Stockholm Internazionale is FC Stockholm: the official club information at https
 Historical recovery does not reapprove these competitions for future odds collection. Original evidence and snapshots are untouched. The existing fail-closed importer and exact fixture identity validator apply. After merge, the free-result workflow must demonstrate five additions, statistics recomputation and deployed dashboard consistency; merge alone is not runtime verification.
 
 Review also found a provenance loop bug: provider/canonical metadata came from the last validated snapshot when expanding duplicate fixture identities. The importer now resolves metadata per accepted fixture ID; a regression covers two namespaces plus an unrelated last snapshot. Scores and raw evidence are not rewritten.
+
+Existing WEB_EVIDENCE rows with the same reverified score can have only known provider/canonical/team metadata corrected. Each complete previous row and actual correction timestamp is appended to web_result_provenance_corrections.jsonl before derived-cache changes. Unknown IDs are not filled, trusted other providers are not changed, and repeat imports add no duplicate corrections.
