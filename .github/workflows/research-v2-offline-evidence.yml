@@ -22,7 +22,7 @@ jobs:
         run: |
           python -m odds_scanner.research_v2_movement > /dev/null
           python -m odds_scanner.research_v2_pattern_stats > /dev/null
-          python -m odds_scanner.research_v2_operational_audit > /dev/null
+          python -m odds_scanner.research_v2_evidence > /dev/null
           python -m odds_scanner.research_v2_end_to_end_audit > /dev/null
           python -m odds_scanner.dashboard_scope > /dev/null
           python -m odds_scanner.oddspapi_history_audit > /dev/null
@@ -38,7 +38,8 @@ jobs:
             git reset --hard origin/main
             python -m odds_scanner.research_v2_movement > /dev/null
             python -m odds_scanner.research_v2_pattern_stats > /dev/null
-            python -m odds_scanner.research_v2_operational_audit > /dev/null
+            python -m odds_scanner.research_v2_evidence > /dev/null
+            git add -f reports/dashboard_scope.json reports/research_v2_end_to_end_audit.json reports/oddspapi_history_audit.json reports/research_v2_pattern_statistics.json reports/research_v2_operational_audit.json reports/research_v2_movement_status.json reports/research_v2_missing_ft_ledger.json reports/research_v2_fixture_identity.json data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
             python -m odds_scanner.research_v2_end_to_end_audit > /dev/null
             python -m odds_scanner.dashboard_scope > /dev/null
             python -m odds_scanner.oddspapi_history_audit > /dev/null

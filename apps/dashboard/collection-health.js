@@ -14,7 +14,7 @@
     title.style.color=stale||!report.collection_health_passed?'var(--r)':'var(--y)';
     line('p','Football day '+report.football_day+' · เวลารายงาน '+collection.bangkok_now);
     line('p','มีข้อมูล '+collection.observed_slots+'/'+collection.expected_elapsed_slots+' รอบที่ถึงเวลา · Observed coverage '+(collection.coverage_fraction===null?'ยังไม่ถึงรอบ':(collection.coverage_fraction*100).toFixed(1)+'%'));
-    line('p','ON_TIME '+collection.on_time_slots+' · LATE '+collection.late_slots+' · On-time coverage '+((collection.on_time_coverage_fraction||0)*100).toFixed(1)+'%');
+    line('p','ON_TIME '+collection.on_time_slots+' · LATE '+collection.late_slots+' · On-time coverage '+(collection.on_time_coverage_fraction==null?'ยังไม่ถึงรอบ':(collection.on_time_coverage_fraction*100).toFixed(1)+'%'));
     line('p','Data integrity: '+(report.data_assertions_passed?'PASS':'FAIL')+' · Collection: '+collection.collection_state);
     const scroll=document.createElement('div');scroll.className='scroll';card.append(scroll);
     const table=document.createElement('table');scroll.append(table);
