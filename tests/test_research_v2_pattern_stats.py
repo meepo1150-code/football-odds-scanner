@@ -104,3 +104,24 @@ def test_retirement_changes_queue_counts_not_settled_statistics(tmp_path):
         assert before[field]==after[field]
     assert after['raw_unresolved_ft_fixtures']==1
     assert after['retired_unresolved_ft_fixtures']==1 and after['active_unresolved_ft_fixtures']==0
+
+
+def test_equivalent_line_representations_share_wr_and_ou_populations(tmp_path):
+    import json
+    from odds_scanner.research_v2_pattern_stats import build,SNAPSHOTS,RESULTS
+    snapshots=[];results=[]
+    for i,line in enumerate([-1,-1.0,'-1.00',0,0.0,-0.0]):
+        s=quote();s.update(provider='oddspapi',fixture_id=str(i),home='Home',away='Away')
+        s['ah'].update(home_line=line,away_line=-float(line),selected_side_line=line)
+        snapshots.append(s);results.append({'fixture_id':str(i),'ft_home_goals':2 if i==0 else 1,'ft_away_goals':0 if i<3 else 1})
+    for path,rows in [(SNAPSHOTS,snapshots),(RESULTS,results)]:
+        p=tmp_path/path;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(''.join(json.dumps(x)+'\n' for x in rows))
+    raw=(tmp_path/SNAPSHOTS).read_bytes()
+    r=build(tmp_path)
+    groups={x['ah_line']:x for x in r['baseline_by_market_side_line']}
+    assert set(groups)=={'-1','0'}
+    assert groups['-1']['n']==3 and groups['-1']['full_win']==1 and groups['-1']['push']==2
+    assert groups['-1']['favorite_price_win_pct']==33.33
+    assert groups['0']['n']==3 and groups['0']['push']==3
+    assert len(r['over_under_2_5_by_ah_line_price'])==2
+    assert (tmp_path/SNAPSHOTS).read_bytes()==raw
