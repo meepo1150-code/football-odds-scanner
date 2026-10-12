@@ -7,7 +7,8 @@ from datetime import datetime, timezone
 
 BASE="https://api.prop-line.com/v1"
 ENV_KEY="PROPLINE_API_KEY"
-SPORTS=("soccer_epl","soccer_uefa_champs_league","soccer_uefa_europa_league","soccer_uefa_conference_league","soccer_efl_champ","soccer_germany_bundesliga","soccer_spain_la_liga","soccer_italy_serie_a","soccer_france_ligue_one","soccer_netherlands_eredivisie","soccer_japan_j_league","soccer_usa_mls","soccer_sweden_allsvenskan","soccer_turkey_super_lig")
+# Reviewed active Europe/UEFA keys only. Never expand odds calls from an unreviewed catalog.
+SPORTS=("soccer_epl","soccer_uefa_champs_league","soccer_uefa_europa_league","soccer_uefa_conference_league","soccer_efl_champ","soccer_germany_bundesliga","soccer_spain_la_liga","soccer_italy_serie_a","soccer_france_ligue_one","soccer_netherlands_eredivisie","soccer_sweden_allsvenskan","soccer_turkey_super_lig")
 
 def retry_seconds(exc):
     value=exc.headers.get('Retry-After','3600') if exc.headers else '3600'
@@ -23,7 +24,7 @@ def active_soccer_sports(key):
         payload=_get("/sports",key)
         items=payload.get("data") or payload.get("sports") or [] if isinstance(payload,dict) else payload
         from .research_population import exclusion_reason
-        keys=[str(x.get("key")) for x in (items or []) if isinstance(x,dict) and x.get("active") is not False and str(x.get("key","")).startswith("soccer") and exclusion_reason({'provider':'propline', 'country':x.get('country'), 'league':x.get('title') or x.get('name') or x.get('key')}) is None]
+        keys=[str(x.get("key")) for x in (items or []) if isinstance(x,dict) and x.get("active") is not False and str(x.get("key","")) in SPORTS and exclusion_reason({'provider':'propline', 'country':x.get('country'), 'league':x.get('title') or x.get('name') or x.get('key')}) is None]
         # A real catalog whose entries are all excluded must not re-enable fallback.
         return tuple(dict.fromkeys(keys)) if items else SPORTS
     except urllib.error.HTTPError as exc:
