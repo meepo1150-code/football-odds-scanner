@@ -105,6 +105,7 @@ def import_evidence(root=Path(".")):
                 quarantine.append({"fixture_id":fid,"reason":"CONFLICT_WITH_EXISTING_WEB_EVIDENCE"}); continue
             valid_ids.append(fid)
         for fid in valid_ids:
+            s=by_id[fid]
             accepted.append({"fixture_id":fid,"ft_home_goals":e["ft_home_goals"],"ft_away_goals":e["ft_away_goals"],
                 "result_source":"WEB_EVIDENCE_"+qreason,"source_urls":[x.get("url") for x in (e.get("sources") or [])],
                 "retrieved_at":e.get("retrieved_at"),"evidence_status":"FT",

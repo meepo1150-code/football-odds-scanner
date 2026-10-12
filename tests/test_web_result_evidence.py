@@ -118,3 +118,20 @@ def test_competition_context_prevents_cross_competition_identity_expansion():
     e={'home':'Alpha','away':'Beta','kickoff':'2026-10-03T14:00:00Z','competition':'FA Cup'}
     assert _same_identity(e,{**e,'league':'FA Cup'})
     assert not _same_identity(e,{**e,'league':'League Cup'})
+
+
+def test_provenance_comes_from_each_matched_fixture_not_last_snapshot(tmp_path):
+    e=_evidence()
+    _write(tmp_path/SNAPSHOTS_PATH,[
+        dict(e,provider='pinnwire',canonical_competition_id='league-a',home_club_id='home-a',away_club_id='away-a'),
+        dict(e,fixture_id='other:b',provider='other',canonical_competition_id='league-a',home_club_id='home-b',away_club_id='away-b'),
+        dict(e,fixture_id='other:c',home='Unrelated',provider='unrelated',canonical_competition_id='wrong',home_club_id='wrong',away_club_id='wrong'),
+    ])
+    _write(tmp_path/EVIDENCE_PATH,[e])
+    assert import_evidence(tmp_path)['results_added']==2
+    rows={r['fixture_id']:r for r in map(json.loads,(tmp_path/RESULTS_PATH).read_text().splitlines())}
+    assert rows['pinnwire:a']['provider']=='pinnwire'
+    assert rows['pinnwire:a']['home_club_id']=='home-a'
+    assert rows['other:b']['provider']=='other'
+    assert rows['other:b']['home_club_id']=='home-b'
+    assert all(r['canonical_competition_id']=='league-a' for r in rows.values())
