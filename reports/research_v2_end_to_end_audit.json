@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-13T09:25:22.068796+00:00",
+  "generated_at": "2026-10-13T12:21:25.200011+00:00",
   "research_only": true,
   "raw_deleted": 0,
   "settled_fixtures": 843,
@@ -423,11 +423,19 @@
     ]
   },
   "ft_triage_counts": {
-    "FUTURE_OR_RECENT": 21,
+    "FUTURE_OR_RECENT": 25,
     "POSTPONED": 1,
     "IDENTITY_CONFLICT": 1
   },
   "ft_triage_groups": [
+    {
+      "lifecycle": "FUTURE_OR_RECENT",
+      "provider": "oddspapi",
+      "country": "Bulgaria",
+      "canonical_competition_id": "BGR-0002",
+      "league": "Bulgarian Second League",
+      "n": 1
+    },
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
@@ -447,10 +455,34 @@
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
+      "country": "Hungary",
+      "canonical_competition_id": "HUN-0002",
+      "league": "Nemzeti Bajnoksag II",
+      "n": 1
+    },
+    {
+      "lifecycle": "FUTURE_OR_RECENT",
+      "provider": "oddspapi",
       "country": "International",
       "canonical_competition_id": "INT-0001",
       "league": "UEFA Champions League",
       "n": 8
+    },
+    {
+      "lifecycle": "FUTURE_OR_RECENT",
+      "provider": "oddspapi",
+      "country": "Scotland",
+      "canonical_competition_id": "SCO-0002",
+      "league": "Scottish Championship",
+      "n": 1
+    },
+    {
+      "lifecycle": "FUTURE_OR_RECENT",
+      "provider": "oddspapi",
+      "country": "Sweden",
+      "canonical_competition_id": "SWE-0002",
+      "league": "Superettan",
+      "n": 1
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -786,6 +818,24 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
+      "fixture_id": "id1000004667126390",
+      "provider": "oddspapi",
+      "football_day": "2026-10-13",
+      "league": "Superettan",
+      "kickoff": "2026-10-13T17:00:00+00:00",
+      "home": "IFK Norrkoping FK",
+      "away": "GIF Sundsvall",
+      "status": "MISSING_FT",
+      "country": "Sweden",
+      "canonical_competition_id": "SWE-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
       "fixture_id": "id1000009872735810",
       "provider": "oddspapi",
       "football_day": "2026-10-13",
@@ -868,6 +918,60 @@
       "status": "MISSING_FT",
       "country": "Estonia",
       "canonical_competition_id": "EST-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
+      "fixture_id": "id1000020674639234",
+      "provider": "oddspapi",
+      "football_day": "2026-10-13",
+      "league": "Scottish Championship",
+      "kickoff": "2026-10-13T18:45:00+00:00",
+      "home": "Queens Park FC",
+      "away": "Inverness Caledonian Thistle FC",
+      "status": "MISSING_FT",
+      "country": "Scotland",
+      "canonical_competition_id": "SCO-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
+      "fixture_id": "id1000113572466556",
+      "provider": "oddspapi",
+      "football_day": "2026-10-13",
+      "league": "Bulgarian Second League",
+      "kickoff": "2026-10-13T15:00:00+00:00",
+      "home": "PFC Montana 1921",
+      "away": "PFC Ludogorets Razgrad II",
+      "status": "MISSING_FT",
+      "country": "Bulgaria",
+      "canonical_competition_id": "BGR-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
+      "fixture_id": "id1000133975244082",
+      "provider": "oddspapi",
+      "football_day": "2026-10-13",
+      "league": "Nemzeti Bajnoksag II",
+      "kickoff": "2026-10-13T16:00:00+00:00",
+      "home": "Diosgyori VTK",
+      "away": "Szentlorinc SE",
+      "status": "MISSING_FT",
+      "country": "Hungary",
+      "canonical_competition_id": "HUN-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "FUTURE_OR_RECENT",
