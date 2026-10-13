@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 
 APPEND_PATHS = (
+    'data/normalized/scan_health_history.jsonl',
     'data/normalized/research_v2_provider_responses.jsonl',
     'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl',
     'data/normalized/europe_pinnacle_research_v2_audit.jsonl',
@@ -37,6 +38,8 @@ def merge_staged(root: Path, staged: Path) -> None:
     for relative in APPEND_PATHS:
         if (staged / relative).exists():
             merge_jsonl(root / relative, staged / relative)
+    from .scan_health import write_latest
+    write_latest(root)
     # Provider reports are latest-observation state, not append-only evidence.
     for incoming in (staged / 'reports').glob('*.json'):
         if incoming.name not in {

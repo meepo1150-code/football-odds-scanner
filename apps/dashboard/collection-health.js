@@ -33,6 +33,24 @@
     if(hist)line('p','Historical archive audit '+hist.source_archive_rows+' source rows · '+hist.generated_at+' · exploratory only');
     const get=async name=>{const response=await fetch('reports/'+name+'.json?t='+Date.now(),{cache:'no-store'});return response.ok?response.json():null;};
     const [scan,prep]=await Promise.all([get('europe_pinnacle_research_v2_status'),get('daily_preparation_status')]);
+    const [health,monitor]=await Promise.all([get('scan_health_latest'),get('scan_health_monitor')]);
+    line('h2','Scan Health Report');
+    if(health&&monitor){
+      line('p','Monitor '+monitor.status+' · '+monitor.generated_at+' · Scan Missing '+monitor.scan_missing_count+' · FT Delay '+monitor.ft_delay_count+' · Unmatched candidates '+monitor.unmatched_count);
+      line('p','Unmatched candidates คือ identity bridge ที่ยังยืนยันไม่ได้ ไม่ใช่จำนวน FT missing · เกมเลื่อนแสดงแยก '+monitor.verified_non_ft_lifecycle_count);
+      const latest=health.latest_scan;
+      if(latest){
+        line('p','Latest Scan '+latest.status+' · '+latest.provider+' · '+latest.generated_at+' · Football day '+latest.football_day+' · '+latest.provenance);
+        line('p','พบ '+(latest.fixtures_found??'UNKNOWN')+' คู่ · ราคาถูกต้อง 1.80–2.20 '+latest.fixtures_with_valid_odds+' · ยังไม่มีราคาถูกต้อง '+(latest.fixtures_without_valid_odds??'UNKNOWN')+' · ยังไม่ได้ query '+latest.fixtures_unqueried+' · API errors '+latest.api_error_count);
+        line('p','Report ID '+latest.report_id+' · '+latest.issues.join(', '));
+      }
+      const archive=document.createElement('details');card.append(archive);
+      const heading=document.createElement('summary');heading.textContent='ประวัติ Scan Health ('+health.report_count+' reports)';archive.append(heading);
+      const pre=document.createElement('pre');pre.style.whiteSpace='pre-wrap';pre.textContent=JSON.stringify(health.recent_reports,null,2);archive.append(pre);
+      const link=document.createElement('a');link.href='data/normalized/scan_health_history.jsonl';link.textContent='ประวัติรายงานทั้งหมด';archive.append(link);
+      const alert=document.createElement('details');card.append(alert);const title=document.createElement('summary');title.textContent='รายละเอียด Scan Missing / FT Delay / Unmatched';alert.append(title);
+      const payload=document.createElement('pre');payload.style.whiteSpace='pre-wrap';payload.textContent=JSON.stringify({issues:monitor.issues,scan_missing:monitor.scan_missing,ft_delay:monitor.ft_delay,unmatched:monitor.unmatched},null,2);alert.append(payload);
+    }else line('p','UNVERIFIED — ยังไม่มี Scan Health Report');
     line('h2','Coverage และการกู้ผล');
     line('p','Code health: offline assertions '+(report.data_assertions_passed?'PASS':'FAIL')+' · Collection health: '+collection.collection_state+' · Data quality: '+report.status+' · Workflow success ต้องตรวจแยกจาก data coverage');
     if(scan){

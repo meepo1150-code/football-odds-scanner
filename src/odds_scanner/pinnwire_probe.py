@@ -86,11 +86,13 @@ def _balanced(spreads):
     return best
 
 def collect():
+    from .scan_health import record
     now=datetime.now(timezone.utc); ws,we,day=_football_day_bounds(now)
     report={"schema_version":"3.2","generated_at":now.isoformat(),"classification":"PINNACLE_RESEARCH_V2","provider":"pinnwire","bookmaker":"pinnacle","football_day":day,"requests_used":0,"workflow_success":True,"data_source_health":"NOT_CHECKED","capability":"RESEARCH_ONLY"}
     from .master_scan_scope import provider_has_verified_scope,scan_scope_reason
     if not provider_has_verified_scope('pinnwire'):
         report.update(status='MASTER_PROVIDER_MAPPING_UNAVAILABLE',data_source_health='MASTER_SCOPE_BLOCKED',request_attempts=0)
+        record(Path('.'), report, 'pinnwire')
         REPORT.parent.mkdir(parents=True,exist_ok=True);REPORT.write_text(json.dumps(report,indent=2)+'\n');return report
     try:
         previous=json.loads(REPORT.read_text()) if REPORT.exists() else {}
@@ -144,6 +146,7 @@ def collect():
             report["cooldown_until"] = _cooldown_until(e, now, report["consecutive_rate_limits"])
     except Exception as e:
         report.update(status="API_REQUEST_FAILED", data_source_health="UNAVAILABLE", requests_used=1, request_attempts=1, errors=[f"{type(e).__name__}: {e}"])
+    record(Path('.'), report, 'pinnwire')
     REPORT.parent.mkdir(parents=True,exist_ok=True); REPORT.write_text(json.dumps(report,ensure_ascii=False,indent=2),encoding="utf-8"); return report
 
 if __name__=="__main__": print(json.dumps(collect() if os.getenv("PINNWIRE_V2_SCAN","").lower() in {"1","true","yes"} else probe(),ensure_ascii=False))
