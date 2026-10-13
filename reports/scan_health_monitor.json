@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-13T19:21:58.167093+00:00",
+  "generated_at": "2026-10-13T19:52:51.331949+00:00",
   "football_day": "2026-10-13",
   "status": "FAIL",
   "issues": [
@@ -14,74 +14,18 @@
   "scan_missing": [
     {
       "target_time": "2026-10-14T00:00:00+07:00",
-      "state": "MISSING",
+      "state": "MISSED",
       "provider": null,
       "observed_at": null,
       "lag_minutes": null,
       "valid_snapshot_count": 0,
       "canonical_fixture_count": 0,
-      "observation_timing": "MISSING",
+      "observation_timing": "MISSED",
       "recovered": false
     }
   ],
-  "ft_delay_count": 5,
+  "ft_delay_count": 1,
   "ft_delay": [
-    {
-      "fixture_id": "id1000017868214838",
-      "provider": "oddspapi",
-      "football_day": "2026-10-13",
-      "league": "Meistriliiga",
-      "kickoff": "2026-10-13T15:00:00+00:00",
-      "home": "Parnu JK Vaprus",
-      "away": "Nomme Kalju FC",
-      "status": "MISSING_FT",
-      "country": "Estonia",
-      "canonical_competition_id": "EST-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
-    },
-    {
-      "fixture_id": "id1000017868214840",
-      "provider": "oddspapi",
-      "football_day": "2026-10-13",
-      "league": "Meistriliiga",
-      "kickoff": "2026-10-13T15:00:00+00:00",
-      "home": "Harju JK Laagri",
-      "away": "FC Nomme United",
-      "status": "MISSING_FT",
-      "country": "Estonia",
-      "canonical_competition_id": "EST-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
-    },
-    {
-      "fixture_id": "id1000113572466556",
-      "provider": "oddspapi",
-      "football_day": "2026-10-13",
-      "league": "Bulgarian Second League",
-      "kickoff": "2026-10-13T15:00:00+00:00",
-      "home": "PFC Montana 1921",
-      "away": "PFC Ludogorets Razgrad II",
-      "status": "MISSING_FT",
-      "country": "Bulgaria",
-      "canonical_competition_id": "BGR-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
-    },
-    {
-      "fixture_id": "id1000133975244082",
-      "provider": "oddspapi",
-      "football_day": "2026-10-13",
-      "league": "Nemzeti Bajnoksag II",
-      "kickoff": "2026-10-13T16:00:00+00:00",
-      "home": "Diosgyori VTK",
-      "away": "Szentlorinc SE",
-      "status": "MISSING_FT",
-      "country": "Hungary",
-      "canonical_competition_id": "HUN-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
-    },
     {
       "fixture_id": "pinnwire:1637096650",
       "provider": "pinnwire",
@@ -439,13 +383,13 @@
     },
     {
       "target_time": "2026-10-14T00:00:00+07:00",
-      "state": "MISSING",
+      "state": "MISSED",
       "provider": null,
       "observed_at": null,
       "lag_minutes": null,
       "valid_snapshot_count": 0,
       "canonical_fixture_count": 0,
-      "observation_timing": "MISSING",
+      "observation_timing": "MISSED",
       "recovered": false
     }
   ],

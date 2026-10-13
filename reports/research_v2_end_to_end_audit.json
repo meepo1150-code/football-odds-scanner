@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-10-13T19:21:56.866774+00:00",
+  "generated_at": "2026-10-13T19:52:50.280003+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 845,
+  "settled_fixtures": 850,
   "movement_classification_counts": {
     "SINGLE_OBSERVATION": 651,
-    "AH_LINE_UNCHANGED__PRICE_DOWN": 66,
-    "AH_LINE_UNCHANGED__PRICE_UP": 48,
+    "FAVORITE_SWITCH": 5,
+    "AH_LINE_UNCHANGED__PRICE_DOWN": 68,
+    "AH_LINE_UNCHANGED__PRICE_UP": 49,
     "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 12,
-    "FAVORITE_SWITCH": 4,
-    "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 8,
+    "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 9,
     "AH_FAVORITE_LINE_WEAKER__PRICE_UP": 3,
     "INSUFFICIENT_OBSERVATIONS": 1,
     "AH_LINE_UNCHANGED__PRICE_FLAT": 49,
@@ -21,33 +21,33 @@
     "evaluation": "RETROSPECTIVE_VIEWED_DATA_CHRONOLOGICAL_WALK_FORWARD_BY_FOOTBALL_DAY",
     "untouched_holdout": false,
     "promotion_allowed": false,
-    "unique_eligible_fixtures": 193,
-    "unique_evaluated_fixtures": 24,
+    "unique_eligible_fixtures": 198,
+    "unique_evaluated_fixtures": 25,
     "metric": "BASELINE_MSE_MINUS_MOVEMENT_MSE; POSITIVE_IS_BETTER",
-    "mean_squared_error_improvement": 0.0044113436590415955,
+    "mean_squared_error_improvement": 0.005060361857894347,
     "improvement_bootstrap95": [
-      -0.036997,
-      0.048209
+      -0.034547,
+      0.046185
     ],
     "baseline": "MARKET_SIDE + AH_LINE + PRICE_BUCKET; TRAIN_MIN_5; PRIOR_DAYS_MIN_20",
     "movement_model": "SAME_BASELINE + MOVEMENT; SHRINKAGE_10_BASELINE_OBSERVATIONS",
     "multiple_testing_policy": "ONE_PREDEFINED_INCREMENTAL_COMPARISON; SUBGROUPS_DESCRIPTIVE_ONLY; NO_PROMOTION_OR_EDGE_CLAIMS; NEW_UNVIEWED_PERIOD_REQUIRED",
     "observation_gap_minutes": {
-      "n": 193,
+      "n": 198,
       "min": 0.713,
       "median": 202.761,
       "max": 649.593
     },
     "first_minutes_before_kickoff": {
-      "n": 193,
+      "n": 198,
       "min": 43.721,
       "median": 354.132,
       "max": 940.905
     },
     "last_minutes_before_kickoff": {
-      "n": 193,
+      "n": 198,
       "min": 0.501,
-      "median": 172.291,
+      "median": 171.6255,
       "max": 577.827
     },
     "descriptive_families": [
@@ -77,14 +77,14 @@
       },
       {
         "movement": "AH_FAVORITE_LINE_STRONGER__PRICE_UP",
-        "unique_fixture_n": 8,
-        "roi_pct": 12.813,
+        "unique_fixture_n": 9,
+        "roi_pct": 0.278,
         "profit_mean_bootstrap95": [
-          -0.5025,
-          0.763125
+          -0.573889,
+          0.600556
         ],
         "settlements": {
-          "FULL_LOSS": 3,
+          "FULL_LOSS": 4,
           "FULL_WIN": 4,
           "PUSH": 1
         }
@@ -121,15 +121,15 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_DOWN",
-        "unique_fixture_n": 66,
-        "roi_pct": 7.553,
+        "unique_fixture_n": 68,
+        "roi_pct": 7.197,
         "profit_mean_bootstrap95": [
-          -0.129892,
-          0.276756
+          -0.124423,
+          0.262252
         ],
         "settlements": {
-          "FULL_LOSS": 22,
-          "FULL_WIN": 29,
+          "FULL_LOSS": 23,
+          "FULL_WIN": 30,
           "HALF_LOSS": 3,
           "HALF_WIN": 5,
           "PUSH": 7
@@ -153,15 +153,15 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_UP",
-        "unique_fixture_n": 48,
-        "roi_pct": 10.506,
+        "unique_fixture_n": 49,
+        "roi_pct": 8.251,
         "profit_mean_bootstrap95": [
-          -0.176062,
-          0.38879
+          -0.184898,
+          0.33865
         ],
         "settlements": {
           "FULL_WIN": 24,
-          "FULL_LOSS": 18,
+          "FULL_LOSS": 19,
           "PUSH": 2,
           "HALF_LOSS": 3,
           "HALF_WIN": 1
@@ -169,15 +169,15 @@
       },
       {
         "movement": "FAVORITE_SWITCH",
-        "unique_fixture_n": 4,
-        "roi_pct": 18.981,
+        "unique_fixture_n": 5,
+        "roi_pct": 33.525,
         "profit_mean_bootstrap95": [
-          -0.541667,
-          0.87963
+          -0.4,
+          0.903837
         ],
         "settlements": {
           "FULL_LOSS": 1,
-          "FULL_WIN": 2,
+          "FULL_WIN": 3,
           "PUSH": 1
         }
       }
@@ -422,6 +422,16 @@
         "movement_return_prediction": 0.10461538461538468,
         "realized_profit_units": -1.0,
         "squared_error_improvement": 0.2927248520710055
+      },
+      {
+        "fixture_id": "id1000017868214840",
+        "football_day": "2026-10-13",
+        "baseline_train_n": 9,
+        "movement_train_n": 7,
+        "baseline_return_prediction": 0.08299697736763968,
+        "movement_return_prediction": 0.09558485705795024,
+        "realized_profit_units": 0.909,
+        "squared_error_improvement": 0.020636798630360387
       }
     ],
     "limitations": [
@@ -433,36 +443,11 @@
     ]
   },
   "ft_triage_counts": {
-    "FUTURE_OR_RECENT": 19,
+    "FUTURE_OR_RECENT": 18,
     "POSTPONED": 1,
-    "ACTIVE_OVERDUE": 4,
     "IDENTITY_CONFLICT": 1
   },
   "ft_triage_groups": [
-    {
-      "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "Bulgaria",
-      "canonical_competition_id": "BGR-0002",
-      "league": "Bulgarian Second League",
-      "n": 1
-    },
-    {
-      "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "Estonia",
-      "canonical_competition_id": "EST-0001",
-      "league": "Meistriliiga",
-      "n": 2
-    },
-    {
-      "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "Hungary",
-      "canonical_competition_id": "HUN-0002",
-      "league": "Nemzeti Bajnoksag II",
-      "n": 1
-    },
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
@@ -477,7 +462,7 @@
       "country": "International",
       "canonical_competition_id": "INT-0001",
       "league": "UEFA Champions League",
-      "n": 8
+      "n": 7
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -521,24 +506,6 @@
     }
   ],
   "ft_triage": [
-    {
-      "fixture_id": "id1000000774165904",
-      "provider": "oddspapi",
-      "football_day": "2026-10-13",
-      "league": "UEFA Champions League",
-      "kickoff": "2026-10-13T16:45:00+00:00",
-      "home": "Racing Club De Lens",
-      "away": "Sporting CP",
-      "status": "MISSING_FT",
-      "country": "International",
-      "canonical_competition_id": "INT-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
     {
       "fixture_id": "id1000000774165908",
       "provider": "oddspapi",
@@ -865,42 +832,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000017868214838",
-      "provider": "oddspapi",
-      "football_day": "2026-10-13",
-      "league": "Meistriliiga",
-      "kickoff": "2026-10-13T15:00:00+00:00",
-      "home": "Parnu JK Vaprus",
-      "away": "Nomme Kalju FC",
-      "status": "MISSING_FT",
-      "country": "Estonia",
-      "canonical_competition_id": "EST-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000017868214840",
-      "provider": "oddspapi",
-      "football_day": "2026-10-13",
-      "league": "Meistriliiga",
-      "kickoff": "2026-10-13T15:00:00+00:00",
-      "home": "Harju JK Laagri",
-      "away": "FC Nomme United",
-      "status": "MISSING_FT",
-      "country": "Estonia",
-      "canonical_competition_id": "EST-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000020674639234",
       "provider": "oddspapi",
       "football_day": "2026-10-13",
@@ -914,42 +845,6 @@
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000113572466556",
-      "provider": "oddspapi",
-      "football_day": "2026-10-13",
-      "league": "Bulgarian Second League",
-      "kickoff": "2026-10-13T15:00:00+00:00",
-      "home": "PFC Montana 1921",
-      "away": "PFC Ludogorets Razgrad II",
-      "status": "MISSING_FT",
-      "country": "Bulgaria",
-      "canonical_competition_id": "BGR-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000133975244082",
-      "provider": "oddspapi",
-      "football_day": "2026-10-13",
-      "league": "Nemzeti Bajnoksag II",
-      "kickoff": "2026-10-13T16:00:00+00:00",
-      "home": "Diosgyori VTK",
-      "away": "Szentlorinc SE",
-      "status": "MISSING_FT",
-      "country": "Hungary",
-      "canonical_competition_id": "HUN-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
