@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-10-13T20:26:21.100805+00:00",
+  "generated_at": "2026-10-13T22:37:26.946206+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 850,
+  "settled_fixtures": 852,
   "movement_classification_counts": {
     "SINGLE_OBSERVATION": 651,
     "FAVORITE_SWITCH": 5,
     "AH_LINE_UNCHANGED__PRICE_DOWN": 68,
-    "AH_LINE_UNCHANGED__PRICE_UP": 49,
+    "AH_LINE_UNCHANGED__PRICE_UP": 51,
     "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 12,
     "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 9,
     "AH_FAVORITE_LINE_WEAKER__PRICE_UP": 3,
@@ -21,10 +21,10 @@
     "evaluation": "RETROSPECTIVE_VIEWED_DATA_CHRONOLOGICAL_WALK_FORWARD_BY_FOOTBALL_DAY",
     "untouched_holdout": false,
     "promotion_allowed": false,
-    "unique_eligible_fixtures": 198,
+    "unique_eligible_fixtures": 200,
     "unique_evaluated_fixtures": 25,
     "metric": "BASELINE_MSE_MINUS_MOVEMENT_MSE; POSITIVE_IS_BETTER",
-    "mean_squared_error_improvement": 0.005060361857894347,
+    "mean_squared_error_improvement": 0.005060361857894338,
     "improvement_bootstrap95": [
       -0.034547,
       0.046185
@@ -33,21 +33,21 @@
     "movement_model": "SAME_BASELINE + MOVEMENT; SHRINKAGE_10_BASELINE_OBSERVATIONS",
     "multiple_testing_policy": "ONE_PREDEFINED_INCREMENTAL_COMPARISON; SUBGROUPS_DESCRIPTIVE_ONLY; NO_PROMOTION_OR_EDGE_CLAIMS; NEW_UNVIEWED_PERIOD_REQUIRED",
     "observation_gap_minutes": {
-      "n": 198,
+      "n": 200,
       "min": 0.713,
       "median": 202.761,
       "max": 649.593
     },
     "first_minutes_before_kickoff": {
-      "n": 198,
+      "n": 200,
       "min": 43.721,
       "median": 354.132,
       "max": 940.905
     },
     "last_minutes_before_kickoff": {
-      "n": 198,
+      "n": 200,
       "min": 0.501,
-      "median": 171.6255,
+      "median": 166.31400000000002,
       "max": 577.827
     },
     "descriptive_families": [
@@ -153,15 +153,15 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_UP",
-        "unique_fixture_n": 49,
-        "roi_pct": 8.251,
+        "unique_fixture_n": 51,
+        "roi_pct": 7.716,
         "profit_mean_bootstrap95": [
-          -0.184898,
-          0.33865
+          -0.188487,
+          0.332291
         ],
         "settlements": {
-          "FULL_WIN": 24,
-          "FULL_LOSS": 19,
+          "FULL_WIN": 25,
+          "FULL_LOSS": 20,
           "PUSH": 2,
           "HALF_LOSS": 3,
           "HALF_WIN": 1
@@ -429,9 +429,9 @@
         "baseline_train_n": 9,
         "movement_train_n": 7,
         "baseline_return_prediction": 0.08299697736763968,
-        "movement_return_prediction": 0.09558485705795024,
+        "movement_return_prediction": 0.09558485705795021,
         "realized_profit_units": 0.909,
-        "squared_error_improvement": 0.020636798630360387
+        "squared_error_improvement": 0.020636798630360165
       }
     ],
     "limitations": [
@@ -443,30 +443,13 @@
     ]
   },
   "ft_triage_counts": {
-    "FUTURE_OR_RECENT": 16,
+    "ACTIVE_OVERDUE": 16,
     "POSTPONED": 1,
-    "ACTIVE_OVERDUE": 2,
     "IDENTITY_CONFLICT": 1
   },
   "ft_triage_groups": [
     {
       "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "Sweden",
-      "canonical_competition_id": "SWE-0002",
-      "league": "Superettan",
-      "n": 1
-    },
-    {
-      "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "Turkey",
-      "canonical_competition_id": "TUR-0002",
-      "league": "TFF 1 Lig",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
       "country": "England",
       "canonical_competition_id": "ENG-0002",
@@ -474,7 +457,7 @@
       "n": 8
     },
     {
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "provider": "oddspapi",
       "country": "International",
       "canonical_competition_id": "INT-0001",
@@ -482,7 +465,7 @@
       "n": 7
     },
     {
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "provider": "oddspapi",
       "country": "Scotland",
       "canonical_competition_id": "SCO-0002",
@@ -520,7 +503,7 @@
       "canonical_competition_id": "INT-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -538,7 +521,7 @@
       "canonical_competition_id": "INT-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -556,7 +539,7 @@
       "canonical_competition_id": "INT-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -574,7 +557,7 @@
       "canonical_competition_id": "INT-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -592,7 +575,7 @@
       "canonical_competition_id": "INT-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -610,7 +593,7 @@
       "canonical_competition_id": "INT-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -628,7 +611,7 @@
       "canonical_competition_id": "INT-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -665,7 +648,7 @@
       "canonical_competition_id": "ENG-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -683,7 +666,7 @@
       "canonical_competition_id": "ENG-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -701,7 +684,7 @@
       "canonical_competition_id": "ENG-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -719,7 +702,7 @@
       "canonical_competition_id": "ENG-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -737,7 +720,7 @@
       "canonical_competition_id": "ENG-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -755,7 +738,7 @@
       "canonical_competition_id": "ENG-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -773,7 +756,7 @@
       "canonical_competition_id": "ENG-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -789,42 +772,6 @@
       "status": "MISSING_FT",
       "country": "England",
       "canonical_competition_id": "ENG-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000004667126390",
-      "provider": "oddspapi",
-      "football_day": "2026-10-13",
-      "league": "Superettan",
-      "kickoff": "2026-10-13T17:00:00+00:00",
-      "home": "IFK Norrkoping FK",
-      "away": "GIF Sundsvall",
-      "status": "MISSING_FT",
-      "country": "Sweden",
-      "canonical_competition_id": "SWE-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000009872735810",
-      "provider": "oddspapi",
-      "football_day": "2026-10-13",
-      "league": "TFF 1 Lig",
-      "kickoff": "2026-10-13T17:00:00+00:00",
-      "home": "Pendikspor",
-      "away": "Van Spor FK",
-      "status": "MISSING_FT",
-      "country": "Turkey",
-      "canonical_competition_id": "TUR-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "ACTIVE_OVERDUE",
@@ -845,7 +792,7 @@
       "canonical_competition_id": "SCO-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
