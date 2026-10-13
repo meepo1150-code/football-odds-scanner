@@ -44,6 +44,7 @@
         const receipt=health.recent_reports.find(r=>r.provider===provider);
         if(!receipt)continue;
         line('p',provider+' · Scan Health '+receipt.status+' · '+receipt.scan_status+' · '+(receipt.data_source_health||'')+' · '+receipt.generated_at+' · API errors '+receipt.api_error_count);
+        if(receipt.quota_skip_reason)line('p',provider+' · SKIPPED_QUOTA: '+receipt.quota_skip_reason+' · UTC day '+(receipt.quota_utc_day||'UNKNOWN')+' · reserved for future slots '+(receipt.future_utc_requests_reserved??'UNKNOWN'));
         if(receipt.workflow_run_url){const run=document.createElement('a');run.href=receipt.workflow_run_url;run.textContent=provider+' workflow';card.append(run);}
       }
       if(latest){
@@ -64,6 +65,7 @@
       line('p','Last scan status '+scan.status+' · Target '+scan.scheduled_target_at+' · Actual '+scan.actual_observed_at+' · Lag '+scan.schedule_lag_minutes+' นาที');
       line('p','พิจารณา '+(scan.master_competitions_considered??'—')+' ลีก · โปรแกรม '+(scan.scheduled_approved_fixtures??'—')+' คู่ · เก็บสะสม '+(scan.fixtures_captured_today??'—')+' คู่ · ยังไม่มีราคา '+(scan.scheduled_fixtures_without_snapshot??'—')+' คู่ · requests เพิ่มสำหรับลีกที่ถูกข้าม '+(scan.additional_market_requests_required??'—'));
       line('p','Quota ล่าสุดก่อนยิง '+(scan.quota_remaining_before??'UNKNOWN')+' · รอบนี้ใช้ '+(scan.requests_used??0)+' · '+(scan.coverage_complete?'พิจารณา scope ตาม receipt แล้ว':'COVERAGE GAPS REMAIN'));
+      if(scan.quota_utc_day)line('p','Research quota UTC '+scan.quota_utc_day+' · used/reserved today '+scan.research_requests_used_today+'/6 · month '+scan.research_requests_used_month+'/180 · future slots reserved '+scan.future_utc_requests_reserved+' · future days reserved '+scan.future_month_requests_reserved);
       const detail=document.createElement('details');card.append(detail);const summary=document.createElement('summary');summary.textContent='Coverage report ทุกลีกที่อนุมัติ';detail.append(summary);
       const pre=document.createElement('pre');pre.style.whiteSpace='pre-wrap';pre.textContent=JSON.stringify(scan.competition_coverage||[],null,2);detail.append(pre);
     }

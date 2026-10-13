@@ -50,7 +50,8 @@ def record(root, report, provider='oddspapi', provenance='LIVE_REPORT'):
     if found is None:
         found = number(report.get('football_day_fixtures', report.get('source_rows_in_football_day')))
     returned = number(report.get('football_day_fixtures'))
-    errors = len(report.get('errors') or [])
+    quota_skip = status == 'SKIPPED_QUOTA' or status.startswith('SKIPPED_QUOTA_PROVIDER_')
+    errors = 0 if quota_skip else len(report.get('errors') or [])
     attempted = (number(report.get('requests_used')) or 0) + (number(report.get('http_requests_attempted')) or 0) + (number(report.get('account_requests_attempted')) or 0)
     api_errors = errors if attempted else 0
     if status.startswith('SKIPPED_') or status in {'MISSED_SLOT','PROVIDER_COOLDOWN'}:
@@ -60,6 +61,7 @@ def record(root, report, provider='oddspapi', provenance='LIVE_REPORT'):
     unqueried = sum(number(c.get('remaining_prematch_fixtures')) or 0 for c in coverage if c.get('reason') in {'QUOTA_SKIPPED', 'AWAITING_ODDS', 'NO_SCHEDULE_EVIDENCE'})
     issues = []
     if errors or 'FAILED' in status or 'INVALID' in status or status == 'API_KEY_NOT_CONFIGURED': issues.append('API_OR_CONFIGURATION_FAILURE')
+    if quota_skip: issues.append('SKIPPED_QUOTA')
     if incomplete: issues.append('COVERAGE_INCOMPLETE')
     if unqueried: issues.append('QUOTA_OR_UNQUERIED_FIXTURES')
     if report.get('observation_timing') in {'LATE', 'OUTSIDE_WINDOW'}: issues.append('SCAN_LATE')
@@ -77,6 +79,10 @@ def record(root, report, provider='oddspapi', provenance='LIVE_REPORT'):
                'api_error_count': api_errors, 'source_or_configuration_error_count': errors, 'requests_used': number(report.get('requests_used')),
                'coverage_complete': not incomplete, 'schedule_response_id': report.get('schedule_response_id'),
                'data_source_health': report.get('data_source_health'),
+               'quota_skip_reason': report.get('quota_skip_reason'),
+               'quota_utc_day': report.get('quota_utc_day'),
+               'future_utc_requests_reserved': report.get('future_utc_requests_reserved'),
+               'budget_reservation_id': report.get('budget_reservation_id'),
                'account_requests_attempted': number(report.get('account_requests_attempted')),
                'account_transient_failures': report.get('account_transient_failures', []),
                'competition_coverage': coverage,

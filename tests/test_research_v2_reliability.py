@@ -29,4 +29,6 @@ def test_slot_ledger_marks_zero_fixture_complete_and_missed_incomplete(tmp_path:
     _record_slot(ledger,base,'ZERO_FIXTURES')
     assert _slot_done(ledger,target)
     _record_slot(ledger,{**base,'status':'MISSED_SLOT'},'MISSED')
-    assert not _slot_done(ledger,target)
+    # A later missed receipt cannot erase a confirmed empty-slot observation.
+    assert _slot_done(ledger,target)
+    assert len(ledger.read_text().splitlines())==2

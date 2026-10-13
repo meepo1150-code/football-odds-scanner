@@ -20,3 +20,13 @@ def test_oddspapi_tournament_batches_never_exceed_provider_safe_limit():
     batches = list(_chunks(list(range(54)), BATCH_SIZE))
     assert len(batches) == 11
     assert max(map(len, batches)) <= 5
+
+
+def test_divergent_raw_history_is_retained_without_overwrite(tmp_path):
+    path=tmp_path/'history'
+    first={'observed_at':'same','fixture_id':'x','price':1.9}
+    second={**first,'price':2.0}
+    _merge_jsonl(path,[first],('observed_at','fixture_id'))
+    before=path.read_bytes()
+    assert _merge_jsonl(path,[second],('observed_at','fixture_id'))==2
+    assert path.read_bytes().startswith(before)

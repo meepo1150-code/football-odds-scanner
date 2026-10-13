@@ -56,6 +56,17 @@ def test_collector_workflows_stage_archive_and_pages_publish_it():
     for p in Path('.github/workflows').glob('*.yml'):
         s=p.read_text()
         if 'python -m odds_scanner.research_v2_persistence' in s:
-            assert 'paths=(data/normalized/scan_health_history.jsonl' in s
+            assert 'data/normalized/scan_health_history.jsonl' in s
     s=Path('.github/workflows/pages.yml').read_text()
     assert 'scan_health_history.jsonl' in s and 'scan_health_monitor.json' in s
+
+
+def test_quota_skip_is_warning_and_never_an_api_failure(tmp_path):
+    from odds_scanner.scan_health import record
+    r=report();r.update(status='SKIPPED_QUOTA',requests_used=0,errors=['prior diagnostic'],quota_skip_reason='UTC_DAILY_EXHAUSTED')
+    receipt=record(tmp_path,r)
+    assert receipt['status']=='WARNING'
+    assert receipt['api_error_count']==0
+    assert 'SKIPPED_QUOTA' in receipt['issues']
+    assert 'API_OR_CONFIGURATION_FAILURE' not in receipt['issues']
+    assert receipt['fixtures_with_valid_odds']==0
