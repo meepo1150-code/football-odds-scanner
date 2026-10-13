@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-13T14:48:40.814066+00:00",
+  "generated_at": "2026-10-13T15:34:52.727008+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 843,
+  "settled_fixtures": 844,
   "movement_classification_counts": {
-    "SINGLE_OBSERVATION": 650,
+    "SINGLE_OBSERVATION": 651,
     "AH_LINE_UNCHANGED__PRICE_DOWN": 66,
     "AH_LINE_UNCHANGED__PRICE_UP": 48,
     "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 12,
@@ -425,18 +425,9 @@
   "ft_triage_counts": {
     "FUTURE_OR_RECENT": 24,
     "POSTPONED": 1,
-    "ACTIVE_OVERDUE": 1,
     "IDENTITY_CONFLICT": 1
   },
   "ft_triage_groups": [
-    {
-      "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "Turkey",
-      "canonical_competition_id": "TUR-0002",
-      "league": "TFF 1 Lig",
-      "n": 1
-    },
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
@@ -858,24 +849,6 @@
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000009872735814",
-      "provider": "oddspapi",
-      "football_day": "2026-10-13",
-      "league": "TFF 1 Lig",
-      "kickoff": "2026-10-13T11:30:00+00:00",
-      "home": "Bandirmaspor",
-      "away": "Sivasspor",
-      "status": "MISSING_FT",
-      "country": "Turkey",
-      "canonical_competition_id": "TUR-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
