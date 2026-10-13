@@ -1,31 +1,32 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-13T14:29:56.651161+00:00",
+  "generated_at": "2026-10-13T14:30:03.666778+00:00",
   "football_day": "2026-10-13",
-  "status": "FAIL",
+  "status": "WARNING",
   "issues": [
-    "SCAN_MISSING",
     "FT_DELAY",
     "FT_IDENTITY_CONFLICT",
     "UNMATCHED_IDENTITY_CANDIDATES",
-    "LATEST_SCAN_FAIL"
+    "LATEST_SCAN_WARNING"
   ],
-  "scan_missing_count": 1,
-  "scan_missing": [
-    {
-      "target_time": "2026-10-13T21:00:00+07:00",
-      "state": "MISSING",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "MISSING",
-      "recovered": false
-    }
-  ],
-  "ft_delay_count": 1,
+  "scan_missing_count": 0,
+  "scan_missing": [],
+  "ft_delay_count": 2,
   "ft_delay": [
+    {
+      "fixture_id": "id1000009872735814",
+      "provider": "oddspapi",
+      "football_day": "2026-10-13",
+      "league": "TFF 1 Lig",
+      "kickoff": "2026-10-13T11:30:00+00:00",
+      "home": "Bandirmaspor",
+      "away": "Sivasspor",
+      "status": "MISSING_FT",
+      "country": "Turkey",
+      "canonical_competition_id": "TUR-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
     {
       "fixture_id": "pinnwire:1637096650",
       "provider": "pinnwire",
@@ -344,9 +345,9 @@
     }
   ],
   "unmatched_semantics": "REJECTED_CROSS_PROVIDER_BRIDGE_CANDIDATES; NOT_AUTOMATICALLY_MISSING_FT",
-  "latest_scan_report_id": "e3092d53f30adad489e4aec306242469e90e6550b68cee3f0220640ca3a3a45e",
+  "latest_scan_report_id": "7cc6dc88c6c26c7177722aea8494c541dca6816bbed9c26ae3ebf1e94bf2f9c2",
   "latest_scan_day": "2026-10-13",
-  "history_report_count": 7,
+  "history_report_count": 8,
   "canonical_slots": [
     {
       "target_time": "2026-10-13T15:00:00+07:00",
@@ -372,13 +373,13 @@
     },
     {
       "target_time": "2026-10-13T21:00:00+07:00",
-      "state": "MISSING",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "MISSING",
+      "state": "OBSERVED",
+      "provider": "oddspapi",
+      "observed_at": "2026-10-13T21:29:57.654619+07:00",
+      "lag_minutes": 29.96,
+      "valid_snapshot_count": 22,
+      "canonical_fixture_count": 22,
+      "observation_timing": "ON_TIME",
       "recovered": false
     }
   ],
