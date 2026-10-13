@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-13T17:29:21.579821+00:00",
+  "generated_at": "2026-10-13T17:36:26.850942+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 844,
+  "settled_fixtures": 845,
   "movement_classification_counts": {
     "SINGLE_OBSERVATION": 651,
     "AH_LINE_UNCHANGED__PRICE_DOWN": 66,
@@ -12,7 +12,7 @@
     "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 8,
     "AH_FAVORITE_LINE_WEAKER__PRICE_UP": 3,
     "INSUFFICIENT_OBSERVATIONS": 1,
-    "AH_LINE_UNCHANGED__PRICE_FLAT": 48,
+    "AH_LINE_UNCHANGED__PRICE_FLAT": 49,
     "AH_FAVORITE_LINE_STRONGER__PRICE_DOWN": 2,
     "AH_FAVORITE_LINE_STRONGER__PRICE_FLAT": 1
   },
@@ -21,31 +21,31 @@
     "evaluation": "RETROSPECTIVE_VIEWED_DATA_CHRONOLOGICAL_WALK_FORWARD_BY_FOOTBALL_DAY",
     "untouched_holdout": false,
     "promotion_allowed": false,
-    "unique_eligible_fixtures": 192,
-    "unique_evaluated_fixtures": 23,
+    "unique_eligible_fixtures": 193,
+    "unique_evaluated_fixtures": 24,
     "metric": "BASELINE_MSE_MINUS_MOVEMENT_MSE; POSITIVE_IS_BETTER",
-    "mean_squared_error_improvement": -0.008124026271913358,
+    "mean_squared_error_improvement": 0.0044113436590415955,
     "improvement_bootstrap95": [
-      -0.044445,
-      0.02681
+      -0.036997,
+      0.048209
     ],
     "baseline": "MARKET_SIDE + AH_LINE + PRICE_BUCKET; TRAIN_MIN_5; PRIOR_DAYS_MIN_20",
     "movement_model": "SAME_BASELINE + MOVEMENT; SHRINKAGE_10_BASELINE_OBSERVATIONS",
     "multiple_testing_policy": "ONE_PREDEFINED_INCREMENTAL_COMPARISON; SUBGROUPS_DESCRIPTIVE_ONLY; NO_PROMOTION_OR_EDGE_CLAIMS; NEW_UNVIEWED_PERIOD_REQUIRED",
     "observation_gap_minutes": {
-      "n": 192,
+      "n": 193,
       "min": 0.713,
       "median": 202.761,
       "max": 649.593
     },
     "first_minutes_before_kickoff": {
-      "n": 192,
+      "n": 193,
       "min": 43.721,
       "median": 354.132,
       "max": 940.905
     },
     "last_minutes_before_kickoff": {
-      "n": 192,
+      "n": 193,
       "min": 0.501,
       "median": 172.291,
       "max": 577.827
@@ -137,18 +137,18 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_FLAT",
-        "unique_fixture_n": 48,
-        "roi_pct": 1.485,
+        "unique_fixture_n": 49,
+        "roi_pct": -0.586,
         "profit_mean_bootstrap95": [
-          -0.233704,
-          0.253515
+          -0.249301,
+          0.233982
         ],
         "settlements": {
           "HALF_LOSS": 5,
           "PUSH": 2,
           "FULL_WIN": 20,
           "HALF_WIN": 4,
-          "FULL_LOSS": 17
+          "FULL_LOSS": 18
         }
       },
       {
@@ -412,6 +412,16 @@
         "movement_return_prediction": 0.8492592592592593,
         "realized_profit_units": -1.0,
         "squared_error_improvement": -0.13963635116598194
+      },
+      {
+        "fixture_id": "id1000009872735816",
+        "football_day": "2026-10-13",
+        "baseline_train_n": 5,
+        "movement_train_n": 3,
+        "baseline_return_prediction": 0.23000000000000007,
+        "movement_return_prediction": 0.10461538461538468,
+        "realized_profit_units": -1.0,
+        "squared_error_improvement": 0.2927248520710055
       }
     ],
     "limitations": [
@@ -425,18 +435,9 @@
   "ft_triage_counts": {
     "FUTURE_OR_RECENT": 23,
     "POSTPONED": 1,
-    "ACTIVE_OVERDUE": 1,
     "IDENTITY_CONFLICT": 1
   },
   "ft_triage_groups": [
-    {
-      "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "Turkey",
-      "canonical_competition_id": "TUR-0002",
-      "league": "TFF 1 Lig",
-      "n": 1
-    },
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
@@ -858,24 +859,6 @@
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000009872735816",
-      "provider": "oddspapi",
-      "football_day": "2026-10-13",
-      "league": "TFF 1 Lig",
-      "kickoff": "2026-10-13T14:00:00+00:00",
-      "home": "Sariyer SK",
-      "away": "Bodrum FK",
-      "status": "MISSING_FT",
-      "country": "Turkey",
-      "canonical_competition_id": "TUR-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
