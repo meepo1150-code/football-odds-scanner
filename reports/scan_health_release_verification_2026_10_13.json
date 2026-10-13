@@ -1,0 +1,117 @@
+{
+  "project": "Football Odds Scanner",
+  "release_pr": "https://github.com/meepo1150-code/football-odds-scanner/pull/336",
+  "checks": [
+    {
+      "system": "GitHub Actions and deployment",
+      "status": "PASS",
+      "evidence": "All four PR checks succeeded; preparation, quota, health monitor and final Pages deployment 38338398224 succeeded."
+    },
+    {
+      "system": "Fixture mapping",
+      "status": "PASS",
+      "evidence": "92 approved exact competition mappings; no unmapped competitions."
+    },
+    {
+      "system": "Team mapping",
+      "status": "PASS",
+      "evidence": "1203 active clubs have exact provider mappings; Master QA has no errors."
+    },
+    {
+      "system": "Statistics",
+      "status": "PASS",
+      "evidence": "843 settled groups; five-state Asian settlement preserved; unresolved results excluded."
+    },
+    {
+      "system": "Canonical schedule configuration",
+      "status": "PASS",
+      "evidence": "Daily 15:00/18:00/21:00; weekend midnight after football day; unchanged original slots."
+    },
+    {
+      "system": "Historical persistence",
+      "status": "PASS",
+      "evidence": "Raw snapshots, audits, results, provider mappings and frozen registry unchanged by code release; concurrent health archive union tested."
+    },
+    {
+      "system": "Scan health reporting",
+      "status": "PASS",
+      "evidence": "Immutable history plus latest report and hourly monitor; runtime artifact created."
+    },
+    {
+      "system": "Dashboard data verification",
+      "status": "PASS",
+      "evidence": "Live browser verified new Scan Health panel, report ID cf24c2b389a8e905d97e39a8668647702f6e332a9cb00ccfd0c2cf730fa60df6, latest preparation timestamp 2026-10-13T02:44:42.295248+00:00, and today canonical slots. Latest odds remain October 12; no new pre-15:00 odds claimed."
+    },
+    {
+      "system": "API provider readiness",
+      "status": "WARNING",
+      "evidence": "OddsPapi 93/250 remaining at 2026-10-13T02:44:02Z; API-Football ACCOUNT_SUSPENDED; verified fallback mappings unavailable."
+    },
+    {
+      "system": "Odds market coverage",
+      "status": "WARNING",
+      "evidence": "Latest imported October 12 attempt: 44 approved scheduled fixtures; 9 valid core quotes; incomplete scope within free quota."
+    },
+    {
+      "system": "FT completeness",
+      "status": "WARNING",
+      "evidence": "One unresolved identity conflict; one verified postponed fixture reported separately; 99.76% FT completeness."
+    },
+    {
+      "system": "Unmatched identity candidates",
+      "status": "WARNING",
+      "evidence": "43 rejected bridge candidates retained and disclosed; not 43 missing FT."
+    }
+  ],
+  "counts": {
+    "PASS": 8,
+    "WARNING": 4,
+    "FAIL": 0
+  },
+  "overall_status": "WARNING",
+  "first_scheduled_1500_live_verification": "PENDING_FUTURE_SLOT_2026_10_13_15_00_BANGKOK",
+  "tests": {
+    "pytest": 572,
+    "master_unittest": 27
+  },
+  "runtime_evidence": {
+    "health_monitor": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/38338274861",
+    "daily_preparation": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/38338275097",
+    "quota_health": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/38338270991",
+    "deployment": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/38338398224",
+    "ci_offline": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/38338076605",
+    "ci_master": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/38338076628"
+  },
+  "preparation_runtime": {
+    "odds_requests": 0,
+    "public_requests": 6,
+    "errors": 0,
+    "ft_unresolved_queue": 3,
+    "first_odds_collection": "SKIPPED_NOT_DUE; NO_NEW_ODDS_OBSERVATION_CLAIMED"
+  },
+  "weekly_schedule": {
+    "weekdays_bangkok": [
+      "15:00",
+      "18:00",
+      "21:00"
+    ],
+    "weekends_bangkok": [
+      "15:00",
+      "18:00",
+      "21:00",
+      "00:00 after football day"
+    ],
+    "health_bangkok": "hourly :05",
+    "free_ft_backfill_bangkok": "hourly :15",
+    "recovery_window_minutes": 150
+  },
+  "automation_read_paths": [
+    "reports/scan_health_latest.json",
+    "reports/scan_health_monitor.json",
+    "data/normalized/scan_health_history.jsonl"
+  ],
+  "raw_deleted": 0,
+  "promotion_allowed": false,
+  "verified_at": "2026-10-13T02:52:30.933797+00:00",
+  "browser_verified": true
+}
