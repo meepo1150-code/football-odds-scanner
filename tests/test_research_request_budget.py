@@ -132,3 +132,29 @@ def test_provider_fallback_receipts_do_not_consume_oddspapi_budget(tmp_path):
     path=tmp_path/'ledger';r={**row(used=99),'provider':'propline'}
     path.write_text(json.dumps(r))
     assert allocation(path,list(range(54)),NOW)[1]['research_requests_used_today']==0
+
+
+@pytest.mark.parametrize('month', [11, 12])
+def test_complete_month_preserves_all_four_slots_with_optional_breadth(tmp_path, month):
+    """Optional calls yield before they exhaust later discovery or midnight."""
+    import calendar
+    from odds_scanner.research_request_budget import usage
+    path = tmp_path/'ledger'
+    ids = list(range(54))
+    receipts = []
+    for day in range(1, calendar.monthrange(2026, month)[1]+1):
+        for hour in (8, 11, 14, 17):
+            now = datetime(2026, month, day, hour, 5, tzinfo=timezone.utc)
+            overhead = int(hour == 8)
+            chosen, _ = allocation(path, ids, now, prioritized=True, overhead=overhead)
+            assert len(chosen) == 5
+            receipts.append(row(now, 1+overhead, f'{day}-{hour}'))
+            path.write_text('\n'.join(json.dumps(r) for r in receipts))
+        extra_at = now.replace(hour=20)
+        chosen, _ = allocation(path, ids, extra_at, prioritized=True, manual=True)
+        if chosen:
+            receipts.append(row(extra_at, len(chosen)//5, f'extra-{day}'))
+            path.write_text('\n'.join(json.dumps(r) for r in receipts))
+        daily, monthly = usage(path, extra_at)
+        assert daily <= 6 and monthly <= 180
+    assert monthly == 180

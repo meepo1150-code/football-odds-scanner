@@ -98,6 +98,11 @@ def _parse(v):
 
 def _write(r,root):
     from .scan_health import record
+    # Capacity checks may stop before transport. Preserve those decisions in the
+    # same append-only slot ledger as transported attempts, without claiming an
+    # observed quote or charging a zero-request skip to the quota budget.
+    if r.get('status') == 'SKIPPED_QUOTA' or str(r.get('status', '')).startswith('SKIPPED_QUOTA_PROVIDER_'):
+        _record_slot(root/SLOT_LEDGER_PATH, r, 'SKIPPED_QUOTA')
     record(root, r, 'oddspapi')
     p=root/REPORT_PATH;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(r,ensure_ascii=False,indent=2),encoding='utf-8');return r
 

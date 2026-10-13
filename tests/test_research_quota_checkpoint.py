@@ -91,3 +91,37 @@ def test_exhausted_account_stops_before_grant_or_billable_transport(tmp_path,mon
     result=collector.run(tmp_path)
     assert result['status']=='SKIPPED_QUOTA' and result['requests_used']==0
     assert calls==['/account'] and not (tmp_path/RESERVATIONS).exists()
+
+
+@pytest.mark.parametrize('block', ['research', 'account', 'checkpoint'])
+def test_pretransport_quota_skip_retains_slot_receipt_without_completion(tmp_path, monkeypatch, block):
+    from odds_scanner import europe_pinnacle_discovery as collector
+    from odds_scanner.research_v2_slots import read_ledger, completed, stamp
+    from test_collector_observation_contract import setup
+    setup(tmp_path, monkeypatch, now='2026-10-14T17:05:00+00:00')
+    if block == 'research':
+        (tmp_path/LEDGER).write_text(json.dumps({'finalized_at':NOW.isoformat(), 'requests_used':6})+'\n')
+    elif block == 'account':
+        monkeypatch.setattr(collector, 'summarize_account', lambda _: {'request_remaining':0})
+    else:
+        def blocked(*args, **kwargs):
+            raise ResearchQuotaBlocked('checkpoint unavailable')
+        monkeypatch.setattr(collector, 'reserve', blocked)
+    calls = []
+    def get(endpoint, *args):
+        calls.append(endpoint)
+        assert endpoint == '/account'
+        return {}
+    monkeypatch.setattr(collector, '_get', get)
+    result = collector.run(tmp_path)
+    assert result['status'] == 'SKIPPED_QUOTA' and result['requests_used'] == 0
+    ledger = read_ledger(tmp_path)
+    receipt = ledger[-1]
+    assert receipt['state'] == 'SKIPPED_QUOTA'
+    assert receipt['reason'] == 'SKIPPED_QUOTA' and receipt['requests_used'] == 0
+    target = stamp(result['scheduled_target_at'])
+    assert not completed(target, stamp(result['generated_at']), ledger, [])
+    assert calls == ([] if block == 'research' else ['/account'])
+    assert not (tmp_path/collector.SNAPSHOT_PATH).exists()
+    health = json.loads((tmp_path/'reports/scan_health_latest.json').read_text())['recent_reports'][0]
+    assert health['status'] == 'WARNING' and health['api_error_count'] == 0
