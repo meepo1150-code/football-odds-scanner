@@ -1,26 +1,26 @@
 {
   "schema_version": "1.0",
   "classification": "VALIDATION_V2_OPERATIONAL_PIPELINE_HEALTH",
-  "status": "HEALTH_UNKNOWN",
-  "generated_at": "2026-10-13T14:04:12.842143+00:00",
+  "status": "HEALTHY_COLLECTING",
+  "generated_at": "2026-10-13T14:30:20.600836+00:00",
   "research_gate_effect": "NONE_OPERATIONAL_HEALTH_DOES_NOT_CHANGE_FROZEN_FORWARD_GATES",
   "quota": {
-    "status": "ACCOUNT_UNAVAILABLE",
-    "request_limit": null,
-    "request_count": null,
-    "request_remaining": null,
-    "usage_fraction": null,
-    "quota_exhausted": null,
-    "soccer_sport_id_10_allowed": null,
-    "bet365_allowed": null,
-    "generated_at": "2026-10-13T14:03:44.925633+00:00"
+    "status": "QUOTA_AVAILABLE",
+    "request_limit": 250,
+    "request_count": 164,
+    "request_remaining": 86,
+    "usage_fraction": 0.656,
+    "quota_exhausted": false,
+    "soccer_sport_id_10_allowed": true,
+    "bet365_allowed": true,
+    "generated_at": "2026-10-13T14:29:50.356742+00:00"
   },
   "observer": {
     "status": "MAINLINE_SNAPSHOTS_OBSERVED",
     "operational_success": true,
     "generated_at": "2026-10-13T06:52:15.715298+00:00",
     "observed_at": "2026-10-13T06:52:19.036372+00:00",
-    "age_hours": 7.198279380833333,
+    "age_hours": 7.633767906666667,
     "stale_after_hours": 18.0,
     "stale": false,
     "failed_universe": null,
@@ -39,9 +39,7 @@
     "performance_status": "FORWARD_PERFORMANCE_AVAILABLE",
     "readiness_status": "COLLECTING_FORWARD_EVIDENCE"
   },
-  "operational_blockers": [
-    "ODDSPAPI_QUOTA_HEALTH_UNAVAILABLE"
-  ],
+  "operational_blockers": [],
   "paper_label": "PAPER_RESEARCH_ONLY",
   "production_promotion_allowed": false
 }
