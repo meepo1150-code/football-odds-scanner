@@ -10,11 +10,11 @@ on:
     branches: [main]
     types: [completed]
   schedule:
-    # BKK_18_SLOTS_V2, effective football day 2026-10-12.
-    # Weekdays 18/21; weekends 15/18/21/00 after that football day.
+    # BKK_28_SLOTS_V4, effective football day 2026-10-13.
+    # Every day 15/18/21/00; midnight closes the previous football day.
     # Recovery heartbeats share the evidence gate and collector lock.
-    - cron: '10,30,50 8,9,11,12,14,15 * * 1-5'
-    - cron: '10,30 10,13,16 * * 1-5'
+    - cron: '10,30,50 8,9,11,12,14,15,17,18 * * 1-5'
+    - cron: '10,30 10,13,16,19 * * 1-5'
     - cron: '10,30,50 8,9,11,12,14,15,17,18 * * 0,6'
     - cron: '10,30 10,13,16,19 * * 0,6'
 permissions: {contents: write}

@@ -10,6 +10,8 @@ SCHEDULE_EFFECTIVE_DAY = '2026-10-12'
 SCHEDULE_VERSION = 'BKK_18_SLOTS_V2'
 PREPARATION_EFFECTIVE_DAY = '2026-10-13'
 PREPARATION_VERSION = 'BKK_23_SLOTS_V3'
+MIDNIGHT_EFFECTIVE_DAY = '2026-10-13'
+MIDNIGHT_VERSION = 'BKK_28_SLOTS_V4'
 LEDGER = Path('data/normalized/research_v2_slot_ledger.jsonl')
 
 
@@ -29,13 +31,13 @@ def targets(day):
         return [datetime.combine(day, time(hour), BKK) for hour in hours]
     hours = (15, 18, 21) if day.weekday() >= 5 or day.isoformat() >= PREPARATION_EFFECTIVE_DAY else (18, 21)
     slots = [datetime.combine(day, time(hour), BKK) for hour in hours]
-    if day.weekday() >= 5:
+    if day.weekday() >= 5 or day.isoformat() >= MIDNIGHT_EFFECTIVE_DAY:
         slots.append(datetime.combine(day + timedelta(days=1), time(0), BKK))
     return slots
 
 
 def schedule_version(day):
-    return PREPARATION_VERSION if str(day) >= PREPARATION_EFFECTIVE_DAY else SCHEDULE_VERSION if str(day) >= SCHEDULE_EFFECTIVE_DAY else 'BKK_LEGACY_V1'
+    return MIDNIGHT_VERSION if str(day) >= MIDNIGHT_EFFECTIVE_DAY else PREPARATION_VERSION if str(day) >= PREPARATION_EFFECTIVE_DAY else SCHEDULE_VERSION if str(day) >= SCHEDULE_EFFECTIVE_DAY else 'BKK_LEGACY_V1'
 
 
 def target_football_day(target):

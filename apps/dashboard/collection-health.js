@@ -68,7 +68,7 @@
       const pre=document.createElement('pre');pre.style.whiteSpace='pre-wrap';pre.textContent=JSON.stringify(scan.competition_coverage||[],null,2);detail.append(pre);
     }
     if(prep){line('p','Daily preparation '+prep.status+' · '+prep.generated_at+' · Previous football day '+prep.previous_football_day+' · FT recovered '+prep.ft_recovered+' · unresolved '+prep.ft_unresolved+' · retired '+prep.retired_unresolved+' · Odds API สำหรับกู้ FT '+prep.odds_api_requests_used);}
-    line('p','15:00 ทุกวันเริ่ม 13 ต.ค. 2026 · 18:00/21:00 คงเดิม · เสาร์อาทิตย์มี 00:00 หลัง football day · รอบใหม่รอหลักฐาน runtime ตามเวลาจริง');
+    line('p','15:00 ทุกวันเริ่ม 13 ต.ค. 2026 · 18:00/21:00 คงเดิม · 00:00 ทุกวันปิดท้าย football day ก่อนหน้า · รอบใหม่รอหลักฐาน runtime ตามเวลาจริง');
     line('p','ราคาที่กู้ช้าใช้เวลาที่เก็บจริง ไม่ใช่ราคาย้อนหลัง ณ เวลาเป้าหมาย · PAPER RESEARCH ONLY');
   }catch(error){line('p','UNVERIFIED — '+error.message).style.color='var(--r)';}
 })();

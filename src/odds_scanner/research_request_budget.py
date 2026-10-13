@@ -48,7 +48,7 @@ def allocation(path, ids, now, batch_size=5, *, prioritized=False, overhead=0, m
         'research_daily_limit':DAILY_LIMIT, 'research_monthly_limit':MONTHLY_LIMIT,
         'research_run_limit':run_limit,
         'canonical_slots_in_football_day':slot_count,
-        'canonical_request_reservation':'ONE_BATCH_PER_WEEKEND_SLOT; TWO_PER_WEEKDAY_SLOT; FAILED_ATTEMPTS_COUNT',
+        'canonical_request_reservation':'ONE_BATCH_PER_FOUR_SLOT_DAY; TWO_PER_LEGACY_WEEKDAY_SLOT; FAILED_ATTEMPTS_COUNT',
         'budget_scope':'ODDSPAPI_RESEARCH_COLLECTOR_ONLY',
         'coverage_mode':'MASTER_SCHEDULE_PRIORITIZED' if prioritized else 'DAILY_STABLE_COHORT_WITH_REPEAT_OBSERVATIONS',
         'schedule_requests_reserved':overhead,
