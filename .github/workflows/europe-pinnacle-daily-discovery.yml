@@ -16,10 +16,10 @@ on:
     branches: [main]
     paths: ['controls/europe_pinnacle_research_v2_run_token.txt']
   schedule:
-    # BKK_18_SLOTS_V2, effective football day 2026-10-12.
-    # Weekdays 18/21; weekends 15/18/21/00 after that football day.
+    # BKK_28_SLOTS_V4, effective football day 2026-10-13.
+    # Every day 15/18/21/00; midnight closes the previous football day.
     # Recovery heartbeats share the evidence gate and collector lock.
-    - cron: '0,20,40 11,12,13,14,15,16 * * 1-5'
+    - cron: '0,20,40 11,12,13,14,15,16,17,18,19 * * 1-5'
     - cron: '0,20,40 8,9,10,11,12,13,14,15,16,17,18,19 * * 0,6'
 permissions: {contents: write}
 concurrency:
@@ -99,7 +99,7 @@ jobs:
               raise SystemExit(f"Data integrity failed: {r.get('assertion_failures')}")
           print(f"Collection status: {r.get('status')} missing={r.get('collection_failures')}")
           PY
-# Canonical observations: weekdays 18:00/21:00; weekends 15:00/18:00/21:00/00:00 after the football day.
+# Canonical observations: every day 15:00/18:00/21:00/00:00; midnight closes the previous football day.
 # Scheduled heartbeats run every 20 minutes around canonical slots; duplicates are zero-API skips.
 # Recovery window is 150 minutes and actual lag/timing is retained for QA.
 # Push-token recovery is an independent fallback: the token's first line must be the exact canonical ISO target.

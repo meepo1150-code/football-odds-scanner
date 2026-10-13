@@ -16,10 +16,10 @@ def test_daily_15_utc_version_cutover_and_remaining_slots():
     for d in range(7):
         day=date(2026,10,19)+timedelta(days=d)
         slots=targets(day)
-        assert [s.hour for s in slots]==([15,18,21,0] if day.weekday()>=5 else [15,18,21])
+        assert [s.hour for s in slots]==[15,18,21,0]
         assert slots[0].astimezone(timezone.utc).hour==8
     assert schedule_version('2026-10-12')=='BKK_18_SLOTS_V2'
-    assert schedule_version('2026-10-13')=='BKK_23_SLOTS_V3'
+    assert schedule_version('2026-10-13')=='BKK_28_SLOTS_V4'
 
 
 def test_retired_all_provider_queue_and_missing_names_never_collapse(tmp_path):
