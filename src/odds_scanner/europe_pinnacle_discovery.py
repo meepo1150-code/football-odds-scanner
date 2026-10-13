@@ -9,6 +9,8 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 from email.utils import parsedate_to_datetime
 from .research_request_budget import allocation
+from .research_quota_checkpoint import reserve, ResearchQuotaBlocked
+from .provider_request_budget import QuotaBlocked
 from .europe_bookmaker_coverage_probe import BOOKMAKER, quota_allows_probe, summarize_rows
 
 # Research V2 is the primary forward data collector. Keep a small emergency reserve,
@@ -41,14 +43,18 @@ def _rate_limit_until(exc, now):
     return until.isoformat()
 
 def _merge_jsonl(path,new_rows,key_fields):
-    rows={}
-    if path.exists():
-        for line in path.read_text(encoding='utf-8').splitlines():
-            try:r=json.loads(line)
-            except json.JSONDecodeError:continue
-            if isinstance(r,dict):rows[tuple(str(r.get(k)) for k in key_fields)]=r
-    for r in new_rows:rows[tuple(str(r.get(k)) for k in key_fields)]=r
-    ordered=sorted(rows.values(),key=lambda r:tuple(str(r.get(k)) for k in key_fields)); path.parent.mkdir(parents=True,exist_ok=True); path.write_text(''.join(json.dumps(r,ensure_ascii=False,separators=(',',':'))+'\n' for r in ordered),encoding='utf-8'); return len(ordered)
+    # Exact-record dedupe only: divergent quotes with identical identity/time
+    # remain forensic evidence, never silently replaced by a later record.
+    existing=[json.loads(line) for line in path.read_text(encoding='utf-8').splitlines() if line.strip()] if path.exists() else []
+    keys={json.dumps(row,sort_keys=True,ensure_ascii=False) for row in existing}
+    path.parent.mkdir(parents=True,exist_ok=True)
+    with path.open('a',encoding='utf-8') as handle:
+        for row in new_rows:
+            key=json.dumps(row,sort_keys=True,ensure_ascii=False)
+            if key not in keys:
+                handle.write(json.dumps(row,ensure_ascii=False,separators=(',',':'))+'\n')
+                keys.add(key)
+    return len(keys)
 
 def _football_day_bounds(now):
     local=now.astimezone(BANGKOK); label=local.date()-timedelta(days=1) if local.time()<dtime(FOOTBALL_DAY_END_HOUR) else local.date(); start=datetime.combine(label,dtime(12),BANGKOK); end=datetime.combine(label+timedelta(days=1),dtime(6),BANGKOK); return start.astimezone(timezone.utc),end.astimezone(timezone.utc),label.isoformat()
@@ -82,15 +88,8 @@ def _record_slot(path,report,state,reason=None):
     row['coverage_tournament_ids'] = report.get('coverage_tournament_ids')
     row['http_requests_attempted'] = report.get('http_requests_attempted',report.get('requests_used',0))
     row['request_completed_at'] = report.get('request_completed_at')
-    rows={}
-    if path.exists():
-        for line in path.read_text(encoding='utf-8').splitlines():
-            try:r=json.loads(line)
-            except json.JSONDecodeError:continue
-            if isinstance(r,dict) and r.get('scheduled_target_at'):rows[(str(r['scheduled_target_at']),str(r.get('finalized_at')))]=r
-    rows[(str(row['scheduled_target_at']),str(row['finalized_at']))]=row
-    path.parent.mkdir(parents=True,exist_ok=True)
-    path.write_text(''.join(json.dumps(x,ensure_ascii=False,separators=(',',':'))+'\n' for _,x in sorted(rows.items())),encoding='utf-8')
+    row['budget_reservation_id'] = report.get('budget_reservation_id')
+    _merge_jsonl(path,[row],('scheduled_target_at','finalized_at'))
 
 def _parse(v):
     try:
@@ -115,9 +114,9 @@ def run(root=Path('.')):
     previous = _load_json(root/REPORT_PATH) or {}
     cooldown = _parse(previous.get('rate_limit_cooldown_until'))
     if cooldown is not None and now < cooldown:
-        report.update(status='API_REQUEST_FAILED', data_source_health='RATE_LIMITED_COOLDOWN',
+        report.update(status='SKIPPED_QUOTA_PROVIDER_COOLDOWN', data_source_health='RATE_LIMITED_COOLDOWN',
                       rate_limit_cooldown_until=cooldown.isoformat(), requests_used=0,
-                      planned_requests=0, errors=['Provider cooldown active; no API request sent'])
+                      planned_requests=0, quota_skip_reason='PROVIDER_COOLDOWN')
         return _write(report, root)
     manual=os.getenv('RESEARCH_V2_MANUAL_BREADTH','').lower()=='true'
     report['manual_supplementary_scan']=manual
@@ -161,8 +160,8 @@ def run(root=Path('.')):
     report.update(budget)
     if not ids:
         if master_mode:schedule.finish_coverage(report,[],[])
-        report.update(status='SKIPPED_RESEARCH_REQUEST_BUDGET', requests_used=0, planned_requests=0,
-                      data_source_health='NOT_PROBED_BUDGET_LIMIT', next_action='FREE_COLLECTORS_CONTINUE')
+        report.update(status='SKIPPED_QUOTA', requests_used=0, planned_requests=0,
+                      quota_skip_reason='RESEARCH_CAPACITY_RESERVED_OR_EXHAUSTED', data_source_health='NOT_PROBED_BUDGET_LIMIT', next_action='FREE_COLLECTORS_CONTINUE')
         return _write(report, root)
     selected=[x for x in selected if x.get('tournament_id') in ids]
     normal=(len(ids)+BATCH_SIZE-1)//BATCH_SIZE
@@ -186,18 +185,39 @@ def run(root=Path('.')):
     # The reserve protects future canonical observations, not the current canonical
     # observation itself. Once quota falls to the reserve, spend it only on a current
     # canonical slot; background/history workflows remain responsible for yielding.
-    effective_reserve = 0 if report.get('coverage_mode') == 'LOW_QUOTA_BIG5_TOP_FLIGHT' else CORE_QUOTA_RESERVE
+    effective_reserve = budget['future_utc_requests_reserved']
     report['effective_quota_reserve']=effective_reserve
-    if not ids or remaining-normal-overhead < effective_reserve:report.update(status='SKIPPED_TO_PROTECT_CORE_QUOTA',requests_used=0);return _write(report,root)
+    if not ids or remaining-normal-overhead < effective_reserve:report.update(status='SKIPPED_QUOTA',quota_skip_reason='ACCOUNT_CAPACITY_RESERVED_OR_EXHAUSTED',requests_used=0);return _write(report,root)
+    try:
+        ids, budget, reservation_id, grant = reserve(root, ids, datetime.now(timezone.utc), overhead=overhead, manual=manual)
+    except ResearchQuotaBlocked as exc:
+        report.update(status='SKIPPED_QUOTA', quota_skip_reason=str(exc), requests_used=0, planned_requests=0)
+        return _write(report, root)
+    report.update(budget, budget_reservation_id=reservation_id, research_requests_reserved_this_run=grant)
+    selected=[x for x in selected if x['tournament_id'] in ids]
+    quota_day=datetime.fromisoformat(budget['quota_utc_day']).date()
     used=0;retries=0
+    def metered_get(endpoint, params, timeout):
+        nonlocal used
+        if used >= grant or datetime.now(timezone.utc).date() != quota_day:
+            raise ResearchQuotaBlocked('Grant exhausted or UTC day changed before transport')
+        try:
+            payload=_get(endpoint,key,params,timeout)
+        except QuotaBlocked:
+            # The shared transport guard rejected before issuing HTTP.
+            raise
+        except Exception:
+            used+=1
+            raise
+        used+=1
+        return payload
     if master_mode:
         try:
             if cached is None:
                 if datetime.now(timezone.utc)>target+timedelta(minutes=RECOVERY_WINDOW_MINUTES):
                     report.update(status='RECOVERY_WINDOW_EXPIRED_BEFORE_ODDS',requests_used=0);return _write(report,root)
                 params={'sportId':10,'from':ws.isoformat(),'to':we.isoformat(),'limit':schedule.SCHEDULE_LIMIT,'language':'en'}
-                used+=1
-                payload=_get('/fixtures',key,params,60)
+                payload=metered_get('/fixtures',params,60)
                 response_at=datetime.now(timezone.utc)
                 cached=schedule.retain(root,'/fixtures',params,payload,response_at)
                 report['request_completed_at']=response_at.isoformat()
@@ -207,14 +227,17 @@ def run(root=Path('.')):
             selected,scope=schedule.plan(schedule_rows,ws,we,datetime.now(timezone.utc),complete=complete)
             report.update(scope,schedule_response_id=cached['response_id'],schedule_observed_at=cached['observed_at'],schedule_requests_used=used)
             selected=schedule.prioritize(root,selected,report,datetime.now(timezone.utc))
-            ids,budget=allocation(root/SLOT_LEDGER_PATH,[x['tournament_id'] for x in selected],now,BATCH_SIZE,prioritized=True,overhead=used,manual=manual)
-            report.update(budget)
+            ids=[x['tournament_id'] for x in selected][:max(0,grant-used)*BATCH_SIZE]
+            report['coverage_tournament_ids']=ids
             selected=[x for x in selected if x['tournament_id'] in ids]
             report.update(resolved_competitions=len(ids),planned_requests=used+(len(ids)+BATCH_SIZE-1)//BATCH_SIZE,coverage_tournament_ids=ids)
             if not ids:
                 schedule.finish_coverage(report,[],[])
-                report.update(status='ZERO_USABLE_FIXTURES',requests_used=used,strict_snapshots_this_run=0,football_day_fixtures=0,coverage_complete=complete and not scope['remaining_prematch_competitions'])
+                report.update(status='SKIPPED_QUOTA' if scope['remaining_prematch_competitions'] else 'ZERO_USABLE_FIXTURES',quota_skip_reason='RUN_GRANT_EXHAUSTED' if scope['remaining_prematch_competitions'] else None,requests_used=used,strict_snapshots_this_run=0,football_day_fixtures=0,coverage_complete=complete and not scope['remaining_prematch_competitions'])
                 _record_slot(root/SLOT_LEDGER_PATH,report,'ZERO_FIXTURES');return _write(report,root)
+        except (QuotaBlocked, ResearchQuotaBlocked) as exc:
+            report.update(status='SKIPPED_QUOTA', quota_skip_reason=str(exc), requests_used=used)
+            _record_slot(root/SLOT_LEDGER_PATH,report,'SKIPPED_QUOTA');return _write(report,root)
         except Exception as exc:
             failed_at=datetime.now(timezone.utc)
             report.update(status='SCHEDULE_REQUEST_FAILED',requests_used=used,errors=[type(exc).__name__],request_completed_at=failed_at.isoformat())
@@ -229,9 +252,12 @@ def run(root=Path('.')):
             break
         payload=None
         for attempt in range(1,MAX_ATTEMPTS_PER_BATCH+1):
-            try:payload=_get('/odds-by-tournaments',key,{'tournamentIds':','.join(str(x) for x in batch),'bookmakers':BOOKMAKER,'language':'en','verbosity':3},90);used+=1;break
+            try:payload=metered_get('/odds-by-tournaments',{'tournamentIds':','.join(str(x) for x in batch),'bookmakers':BOOKMAKER,'language':'en','verbosity':3},90);break
+            except (QuotaBlocked, ResearchQuotaBlocked) as e:
+                report.update(status='SKIPPED_QUOTA',quota_skip_reason=str(e),requests_used=used)
+                request_failed=True
+                break
             except Exception as e:
-                used+=1
                 failed_at=datetime.now(timezone.utc)
                 report.update(generated_at=failed_at.isoformat(),actual_observed_at=failed_at.astimezone(BANGKOK).isoformat(),request_completed_at=failed_at.isoformat())
                 if getattr(e,'code',None)==429:
@@ -288,7 +314,7 @@ def run(root=Path('.')):
         report['data_source_health']=report.get('data_source_health','PARTIAL')
     state='OBSERVED' if strict else 'FAILED' if report.get('errors') or audit else 'ZERO_FIXTURES'
     if master_mode:report['coverage_complete']=not (request_failed or invalid or report.get('recovery_window_expired_during_collection')) and report.get('schedule_response_complete',False) and not any(x['reason'] in {'QUOTA_SKIPPED','PROVIDER_ERROR','AWAITING_ODDS','NO_SCHEDULE_EVIDENCE'} for x in report.get('competition_coverage',[]))
-    if state=='FAILED':report['status']='PROVIDER_RESPONSE_REJECTED' if invalid else 'API_REQUEST_FAILED' if request_failed else 'NO_VERIFIED_PREMATCH_QUOTES'
+    if state=='FAILED':report['status']='PROVIDER_RESPONSE_REJECTED' if invalid else report.get('status','API_REQUEST_FAILED') if request_failed else 'NO_VERIFIED_PREMATCH_QUOTES'
     _record_slot(root/SLOT_LEDGER_PATH,report,state);return _write(report,root)
 
 if __name__=='__main__':print(json.dumps(run(),ensure_ascii=False))

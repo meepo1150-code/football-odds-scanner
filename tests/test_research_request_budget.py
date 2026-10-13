@@ -4,7 +4,7 @@ import pytest
 from odds_scanner.research_request_budget import allocation
 from odds_scanner import europe_pinnacle_discovery as collector
 
-NOW=datetime(2026,10,4,5,tzinfo=timezone.utc)
+NOW=datetime(2026,10,12,14,tzinfo=timezone.utc)
 
 
 def row(stamp=NOW,used=2,target='slot'):
@@ -15,7 +15,7 @@ def test_budget_rotation_caps_and_deduplicates(tmp_path):
     path=tmp_path/'ledger'
     ids=list(range(54))
     first, report=allocation(path,ids,NOW)
-    assert first==ids[:10] and not report['coverage_complete']
+    assert len(first)==10 and not report['coverage_complete']
     path.write_text('\n'.join(json.dumps(x) for x in [row(),row()]))
     second, report=allocation(path,ids,NOW)
     assert second==first and report['research_requests_used_today']==2
@@ -56,7 +56,7 @@ def test_exhausted_daily_budget_calls_no_provider_even_when_forced(tmp_path,monk
     ledger.write_text(json.dumps(row(now,6)))
     monkeypatch.setattr(collector,'_get',lambda *a:pytest.fail('budget blocked before API call'))
     result=collector.run(tmp_path)
-    assert result['status']=='SKIPPED_RESEARCH_REQUEST_BUDGET'
+    assert result['status']=='SKIPPED_QUOTA'
     assert result['requests_used']==0
     assert result['coverage_complete'] is False
 
@@ -81,4 +81,54 @@ def test_old_backfilled_unknown_usage_does_not_block_new_month(tmp_path):
     path.write_text(json.dumps(row(NOW.replace(month=9),None)))
     assert allocation(path,list(range(54)),NOW)[0]
     path.write_text(json.dumps(row(NOW,None)))
-    with pytest.raises(TypeError):allocation(path,list(range(54)),NOW)
+    with pytest.raises(ValueError):allocation(path,list(range(54)),NOW)
+
+
+def test_manual_and_recovery_cannot_spend_midnight_reserve(tmp_path):
+    path=tmp_path/'ledger';ids=list(range(54))
+    now=datetime(2026,10,14,14,tzinfo=timezone.utc)
+    path.write_text(json.dumps(row(now,5)))
+    for manual in (False,True):
+        chosen,report=allocation(path,ids,now,manual=manual)
+        assert chosen==[]
+        assert report['future_utc_slots']==['2026-10-14T17:00:00+00:00']
+        assert report['future_utc_requests_reserved']==1
+    midnight=now.replace(hour=17)
+    assert len(allocation(path,ids,midnight,prioritized=True)[0])==5
+    assert allocation(path,ids,midnight)[1]['quota_utc_day']=='2026-10-14'
+
+
+def test_preparation_discovery_and_four_slots_fit_every_utc_day(tmp_path):
+    path=tmp_path/'ledger';receipts=[];ids=list(range(54))
+    for day in range(14,18):
+        for hour in (8,11,14,17):
+            now=datetime(2026,10,day,hour,tzinfo=timezone.utc)
+            overhead=int(hour==8)
+            chosen,report=allocation(path,ids,now,overhead=overhead,prioritized=True)
+            assert len(chosen)==5
+            receipts.append(row(now,1+overhead,f'{day}-{hour}'))
+            path.write_text('\n'.join(json.dumps(r) for r in receipts))
+        assert allocation(path,ids,now)[1]['research_requests_used_today']==5
+
+
+def test_bangkok_midnight_does_not_reset_utc_budget(tmp_path):
+    path=tmp_path/'ledger';path.write_text(json.dumps(row(datetime(2026,10,31,14,tzinfo=timezone.utc),6)))
+    now=datetime.fromisoformat('2026-11-01T00:00:00+07:00')
+    assert allocation(path,list(range(54)),now)[0]==[]
+    reset=datetime.fromisoformat('2026-11-01T07:00:00+07:00')
+    assert allocation(path,list(range(54)),reset,manual=True)[1]['research_requests_used_month']==0
+
+
+def test_monthly_capacity_reserved_for_future_days(tmp_path):
+    path=tmp_path/'ledger';now=datetime(2026,10,30,14,tzinfo=timezone.utc)
+    path.write_text(json.dumps(row(now-timedelta(days=1),174)))
+    chosen,report=allocation(path,list(range(54)),now)
+    assert chosen==[] and report['future_month_requests_reserved']==5
+    path.write_text(json.dumps(row(now-timedelta(days=1),173)))
+    assert len(allocation(path,list(range(54)),now)[0])==5
+
+
+def test_provider_fallback_receipts_do_not_consume_oddspapi_budget(tmp_path):
+    path=tmp_path/'ledger';r={**row(used=99),'provider':'propline'}
+    path.write_text(json.dumps(r))
+    assert allocation(path,list(range(54)),NOW)[1]['research_requests_used_today']==0

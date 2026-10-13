@@ -8,6 +8,7 @@ on:
   push:
     branches: [main]
     paths: ['controls/pinnwire_research_v2_scan_token.txt','src/odds_scanner/pinnwire_probe.py','src/odds_scanner/research_v2_scan_due.py','src/odds_scanner/provider_request_budget.py','.github/workflows/pinnwire-probe.yml']
+env: {RESEARCH_QUOTA_DURABLE: 'true'}
 permissions: {contents: write}
 concurrency: {group: research-v2-collectors, cancel-in-progress: false}
 jobs:
@@ -46,7 +47,7 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           stage=$(mktemp -d)
-          paths=(data/normalized/scan_health_history.jsonl data/normalized/research_v2_provider_responses.jsonl data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/research_v2_slot_ledger.jsonl reports/pinnwire_research_v2_status.json reports/propline_research_v2_status.json reports/europe_pinnacle_research_v2_status.json)
+          paths=(data/normalized/research_v2_quota_reservations.jsonl data/normalized/scan_health_history.jsonl data/normalized/research_v2_provider_responses.jsonl data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/research_v2_slot_ledger.jsonl reports/pinnwire_research_v2_status.json reports/propline_research_v2_status.json reports/europe_pinnacle_research_v2_status.json)
           for f in "${paths[@]}"; do if test -f "$f"; then mkdir -p "$stage/$(dirname "$f")"; cp "$f" "$stage/$f"; fi; done
           for attempt in 1 2 3; do
             git fetch origin main
