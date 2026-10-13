@@ -17,7 +17,7 @@ from .europe_bookmaker_coverage_probe import BOOKMAKER, quota_allows_probe, summ
 CORE_QUOTA_RESERVE = 3
 from .oddspapi_discovery import _rows
 from .oddspapi_provider import ENV_KEY, _get
-from .oddspapi_quota_health import summarize_account
+from .oddspapi_quota_health import summarize_account, read_account
 from .v2_mainline_observer import CATALOG_PATH, _load_json, extract_mainline_snapshot, mainline_shape
 
 TARGET_PATH=Path('reports/europe_discovery_tournaments.json'); SNAPSHOT_PATH=Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'); AUDIT_PATH=Path('data/normalized/europe_pinnacle_research_v2_audit.jsonl'); REPORT_PATH=Path('reports/europe_pinnacle_research_v2_status.json'); SLOT_LEDGER_PATH=Path('data/normalized/research_v2_slot_ledger.jsonl')
@@ -169,8 +169,11 @@ def run(root=Path('.')):
     report.update(resolved_competitions=len(ids), planned_requests=normal, max_planned_requests_with_retries=normal)
     key=os.getenv(ENV_KEY,'').strip()
     if not key:report.update(status='API_KEY_NOT_CONFIGURED',requests_used=0);return _write(report,root)
-    try:q=summarize_account(_get('/account',key))
-    except Exception as e:report.update(status='SKIPPED_QUOTA_HEALTH_UNAVAILABLE',requests_used=0,errors=[f'{type(e).__name__}: {e}']);return _write(report,root)
+    try:q=summarize_account(read_account(key, getter=_get, diagnostics=report))
+    except Exception as e:
+        report.update(status='SKIPPED_QUOTA_HEALTH_UNAVAILABLE',requests_used=0,
+                      data_source_health='ACCOUNT_UNAVAILABLE',errors=[type(e).__name__])
+        return _write(report,root)
     report['quota_remaining_before']=q.get('request_remaining')
     try: remaining=int(q.get('request_remaining'))
     except (TypeError,ValueError): remaining=-1

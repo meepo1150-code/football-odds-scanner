@@ -2,12 +2,39 @@ from __future__ import annotations
 
 import json
 import os
+import time
+import urllib.error
 from datetime import datetime, timezone
 from pathlib import Path
 
 from .oddspapi_provider import ENV_KEY, _get, _safe_account_summary
 
 REPORT_PATH = Path("reports/oddspapi_quota_health.json")
+
+
+def read_account(key, *, getter=None, diagnostics=None):
+    """Retry only transient failures of the unmetered account endpoint.
+
+    Never authorize odds from a stale balance or retry a billable endpoint.
+    Authentication and rate-limit failures remain immediate hard stops.
+    """
+    getter = getter or _get
+    diagnostics = diagnostics if diagnostics is not None else {}
+    failures = []
+    for attempt in range(1, 4):
+        diagnostics.update(account_requests_attempted=attempt,
+                           account_endpoint_metered=False,
+                           account_transient_failures=failures.copy())
+        try:
+            return getter('/account', key)
+        except Exception as exc:
+            code = getattr(exc, 'code', None)
+            transient = (isinstance(exc, urllib.error.HTTPError) and code in {500, 502, 503, 504}) or isinstance(exc, (TimeoutError, urllib.error.URLError)) and not isinstance(exc, urllib.error.HTTPError)
+            failures.append({'error_type': type(exc).__name__, 'http_status': code})
+            diagnostics['account_transient_failures'] = failures.copy()
+            if not transient or attempt == 3:
+                raise
+            time.sleep(attempt * 2)
 
 
 def summarize_account(account: dict) -> dict:
@@ -56,7 +83,8 @@ def check_from_env(root: Path = Path(".")) -> dict:
         }
         return _write(root, payload)
     try:
-        account = _get("/account", key)
+        diagnostics = {}
+        account = read_account(key, diagnostics=diagnostics)
         summary = summarize_account(account if isinstance(account, dict) else {})
         payload = {
             "schema_version": "1.1",
@@ -64,6 +92,7 @@ def check_from_env(root: Path = Path(".")) -> dict:
             "generated_at": generated_at,
             "account_endpoint_metered": False,
             **summary,
+            **diagnostics,
         }
     except Exception as exc:
         payload = {
@@ -72,7 +101,8 @@ def check_from_env(root: Path = Path(".")) -> dict:
             "status": "ACCOUNT_UNAVAILABLE",
             "generated_at": generated_at,
             "account_endpoint_metered": False,
-            "errors": [f"{type(exc).__name__}: {exc}"],
+            "errors": [type(exc).__name__],
+            **diagnostics,
         }
     return _write(root, payload)
 

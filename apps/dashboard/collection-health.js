@@ -39,6 +39,13 @@
       line('p','Monitor '+monitor.status+' · '+monitor.generated_at+' · Scan Missing '+monitor.scan_missing_count+' · FT Delay '+monitor.ft_delay_count+' · Unmatched candidates '+monitor.unmatched_count);
       line('p','Unmatched candidates คือ identity bridge ที่ยังยืนยันไม่ได้ ไม่ใช่จำนวน FT missing · เกมเลื่อนแสดงแยก '+monitor.verified_non_ft_lifecycle_count);
       const latest=health.latest_scan;
+      line('p','Workflow SUCCESS หมายถึง job ทำงานจบ · Scan Health PASS/WARNING/FAIL ตรวจการเก็บข้อมูลแยกกัน');
+      for(const provider of ['oddspapi','propline']){
+        const receipt=health.recent_reports.find(r=>r.provider===provider);
+        if(!receipt)continue;
+        line('p',provider+' · Scan Health '+receipt.status+' · '+receipt.scan_status+' · '+(receipt.data_source_health||'')+' · '+receipt.generated_at+' · API errors '+receipt.api_error_count);
+        if(receipt.workflow_run_url){const run=document.createElement('a');run.href=receipt.workflow_run_url;run.textContent=provider+' workflow';card.append(run);}
+      }
       if(latest){
         line('p','Latest Scan '+latest.status+' · '+latest.provider+' · '+latest.generated_at+' · Football day '+latest.football_day+' · '+latest.provenance);
         line('p','พบ '+(latest.fixtures_found??'UNKNOWN')+' คู่ · ราคาถูกต้อง 1.80–2.20 '+latest.fixtures_with_valid_odds+' · ยังไม่มีราคาถูกต้อง '+(latest.fixtures_without_valid_odds??'UNKNOWN')+' · ยังไม่ได้ query '+latest.fixtures_unqueried+' · API errors '+latest.api_error_count);
