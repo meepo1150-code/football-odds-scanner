@@ -1,5 +1,13 @@
 """User-selected population scope; exclusion is NOT a data-integrity failure."""
 import re
+import json
+from pathlib import Path
+from functools import lru_cache
+
+@lru_cache(maxsize=1)
+def reviewed_recovery_exclusions():
+    path=Path(__file__).resolve().parents[2]/'data/research/ft_unmatched_scope_review_20261013.json'
+    return {str(r['fixture_id']):r['reason'] for r in json.loads(path.read_text())['excluded']} if path.exists() else {}
 
 POLICY = 'REVIEWED_RESEARCH_SCOPE_V2'
 USER_EXCLUDED_COMPETITION_IDS = frozenset({'AND-0001', 'AZE-0001', 'AZE-0002', 'BLR-0001', 'POL-0002', 'RUS-0001'})
@@ -15,6 +23,8 @@ EXCLUDED_FIXTURE_IDS = ["pinnwire:1637297182","pinnwire:1636866949","pinnwire:16
 
 
 def exclusion_reason(row, *, provider=None):
+    recovery_reason=reviewed_recovery_exclusions().get(str(row.get('source_fixture_id') or row.get('fixture_id') or ''))
+    if recovery_reason:return recovery_reason
     if any(str(row.get(k) or '') in USER_EXCLUDED_COMPETITION_IDS for k in ('competition_id', 'canonical_competition_id')):
         return 'USER_REVIEWED_COMPETITION_OUT_OF_SCOPE'
     if str(row.get('fixture_id') or '') in EXCLUDED_FIXTURE_IDS:

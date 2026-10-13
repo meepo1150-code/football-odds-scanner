@@ -18,6 +18,9 @@ def _rows(path):
         try:x=json.loads(line)
         except (json.JSONDecodeError,TypeError):continue
         if isinstance(x,dict):out.append(x)
+    if path.name==SNAPSHOTS.name:
+        from .pinnwire_result_join import enrich_snapshot_names, API_FIXTURES_PATH
+        return enrich_snapshot_names(out,_rows(path.with_name(API_FIXTURES_PATH.name)))
     return out
 def _num(v):
     try:
@@ -137,6 +140,18 @@ def build(root=Path('.')):
     scope_excluded=[x for x in snaps if not in_scope(x)]
     snaps=[x for x in snaps if in_scope(x)]
     blocked_results={str(x.get('fixture_id')) for x in _rows((root/RESULTS).with_suffix('.conflicts.jsonl'))}
+    # Reviewed official home/away disagreements quarantine the odds identity;
+    # even a symmetric final score cannot repair a mislabeled snapshot.
+    from .research_v2_fixture_identity import utc
+    for review in _rows(root/'data/research/selected_fixture_identity_conflicts.jsonl'):
+        source=review.get('source') or {}
+        if source.get('tier')!='A_OFFICIAL' or source.get('verification_method')!='MANUAL_WEB_REVIEW':continue
+        exact=[s for s in snaps if s.get('fixture_id')==review.get('fixture_id')]
+        if (exact and all((s.get('home'),s.get('away'),s.get('league'),utc(s.get('kickoff')))==
+                         (review.get('home'),review.get('away'),review.get('league'),utc(review.get('kickoff'))) for s in exact)
+            and (source.get('home'),source.get('away'),utc(source.get('kickoff')))==
+                (review.get('away'),review.get('home'),utc(review.get('kickoff')))):
+            blocked_results.add(str(review['fixture_id']))
     raw_provider_unresolved = len({str(s.get("fixture_id")) for s in snaps if str(s.get("fixture_id")) not in results or str(s.get("fixture_id")) in blocked_results})
     mapping, identity_report = build_bridge(snaps)
     provider_fixture_ids = len({str(s.get('fixture_id')) for s in snaps})

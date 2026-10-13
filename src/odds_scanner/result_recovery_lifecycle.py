@@ -107,7 +107,7 @@ def review(root=Path('.'),now=None):
     blocked={str(r.get('fixture_id')) for r in rows((root/RESULTS).with_suffix('.conflicts.jsonl'))}
     snapshots={};identities={}
     for s in rows(root/SNAP):
-        if not (trusted_snapshot(s) and in_scope(s)):continue
+        if not (trusted_snapshot(s) and (in_scope(s) or str(s.get('fixture_id')) in USER_RETIRED_CONFLICTS)):continue
         fid=str(s.get('fixture_id'));snapshots[fid]=s
         identities.setdefault(fid,set()).add(tuple(s.get(k) for k in ('home','away','kickoff','league')))
     retired=[];pending=[]

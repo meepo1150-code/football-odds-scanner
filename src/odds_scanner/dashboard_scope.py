@@ -12,6 +12,7 @@ def build(root=Path('.')):
     reasons={str(r['fixture_id']):exclusion_reason(r) for r in raw if r.get('fixture_id') and exclusion_reason(r)}
     invalid={(str(r.get('fixture_id')),str(r.get('observed_at'))) for r in raw if not trusted_snapshot(r)}
     payload={'generated_at':datetime.now(timezone.utc).isoformat(),'policy':POLICY,
+             'identity_enrichments':{str(r['fixture_id']):{'home':r['home'],'away':r['away'],'basis':r['identity_enrichment_basis']} for r in raw if r.get('identity_enrichment_basis')},
              'excluded_fixture_reasons':reasons,'untrusted_observations':[list(x) for x in sorted(invalid)],
              'raw_rows':len(raw),'raw_deleted':0}
     p=root/'reports/dashboard_scope.json';p.parent.mkdir(parents=True,exist_ok=True)
