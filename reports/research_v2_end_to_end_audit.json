@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-13T18:20:52.025071+00:00",
+  "generated_at": "2026-10-13T19:21:56.866774+00:00",
   "research_only": true,
   "raw_deleted": 0,
   "settled_fixtures": 845,
@@ -433,9 +433,9 @@
     ]
   },
   "ft_triage_counts": {
-    "FUTURE_OR_RECENT": 20,
+    "FUTURE_OR_RECENT": 19,
     "POSTPONED": 1,
-    "ACTIVE_OVERDUE": 3,
+    "ACTIVE_OVERDUE": 4,
     "IDENTITY_CONFLICT": 1
   },
   "ft_triage_groups": [
@@ -456,20 +456,20 @@
       "n": 2
     },
     {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "oddspapi",
+      "country": "Hungary",
+      "canonical_competition_id": "HUN-0002",
+      "league": "Nemzeti Bajnoksag II",
+      "n": 1
+    },
+    {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
       "country": "England",
       "canonical_competition_id": "ENG-0002",
       "league": "Championship",
       "n": 8
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Hungary",
-      "canonical_competition_id": "HUN-0002",
-      "league": "Nemzeti Bajnoksag II",
-      "n": 1
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -949,7 +949,7 @@
       "canonical_competition_id": "HUN-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
