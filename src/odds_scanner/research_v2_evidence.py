@@ -18,6 +18,8 @@ def build(root=Path('.')):
     e2e=end_to_end(root)
     scope(root)
     history(root)
+    from .scan_health import refresh
+    refresh(root)
     if e2e['settled_fixtures']!=stats['settled_fixtures']:
         raise ValueError('Settled population differs between reports')
     return {'status':op['status'],'settled_identity_groups':stats['settled_fixtures'],

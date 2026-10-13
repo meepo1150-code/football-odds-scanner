@@ -98,6 +98,8 @@ def _parse(v):
     except (TypeError,ValueError):return None
 
 def _write(r,root):
+    from .scan_health import record
+    record(root, r, 'oddspapi')
     p=root/REPORT_PATH;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(r,ensure_ascii=False,indent=2),encoding='utf-8');return r
 
 def _chunks(v,n):

@@ -27,7 +27,10 @@ def run(root=Path("."), target_at=None):
     previous=json.loads((root/REPORT).read_text()) if (root/REPORT).exists() else {}
     cooldown=_dt(previous.get('cooldown_until'))
     if cooldown and now<cooldown:
-        return {**previous,'status':'PROVIDER_COOLDOWN','data_source_health':'RATE_LIMITED','http_requests_attempted':0,'checked_at':now.isoformat()}
+        report={**previous,'status':'PROVIDER_COOLDOWN','data_source_health':'RATE_LIMITED','http_requests_attempted':0,'requests_used':0,'checked_at':now.isoformat()}
+        from .scan_health import record
+        record(root, report, 'propline')
+        return report
     fetch_started_at=now.isoformat()
     try: rows,errors=fetch()
     except Exception as e: rows=[]; errors=[f"{type(e).__name__}: {e}"]
@@ -89,5 +92,7 @@ def run(root=Path("."), target_at=None):
     if report['scheduled_target_at']:
         _record_slot(root/SLOT_LEDGER_PATH, report, 'OBSERVED' if snaps else
                      'ZERO_FIXTURES' if not errors and in_day==0 else 'FAILED')
+    from .scan_health import record
+    record(root, report, 'propline')
     p=root/REPORT;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(report,indent=2),encoding="utf-8");return report
 if __name__=="__main__":print(json.dumps(run()))

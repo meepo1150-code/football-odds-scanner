@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - 'apps/dashboard/**'
+      - 'reports/scan_health_latest.json'
+      - 'reports/scan_health_monitor.json'
+      - 'data/normalized/scan_health_history.jsonl'
       - 'reports/europe_pinnacle_research_v2_status.json'
       - 'src/odds_scanner/api_football_provider.py'
       - 'reports/propline_research_v2_status.json'
@@ -31,6 +34,7 @@ on:
       - 'Free Research V2 Scanner'
       - 'Master Schedule Manual Recovery'
       - 'Daily Preparation Scan'
+      - 'Scan Health Monitor'
       - 'Research V2 Market State Stats'
       - 'Research V2 Daily Fixture Result Sync'
       - 'Research V2 Results and Movement'
@@ -72,10 +76,10 @@ jobs:
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery.html || true
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery/index.html || true
           test -f apps/dashboard/404.html && cp apps/dashboard/404.html site/404.html || true
-          for f in daily_preparation_status.json pinnwire_web_result_recovery_queue.json dashboard_scope.json research_v2_end_to_end_audit.json oddspapi_history_audit.json research_v2_operational_audit.json legacy_propline_recovery.json research_v2_daily_sync_status.json research_v2_movement_status.json propline_research_v2_status.json europe_pinnacle_research_v2_status.json oddspapi_quota_health.json research_v2_pattern_statistics.json pinnwire_result_join_status.json pinnwire_research_v2_status.json; do
+          for f in scan_health_latest.json scan_health_monitor.json daily_preparation_status.json pinnwire_web_result_recovery_queue.json dashboard_scope.json research_v2_end_to_end_audit.json oddspapi_history_audit.json research_v2_operational_audit.json legacy_propline_recovery.json research_v2_daily_sync_status.json research_v2_movement_status.json propline_research_v2_status.json europe_pinnacle_research_v2_status.json oddspapi_quota_health.json research_v2_pattern_statistics.json pinnwire_result_join_status.json pinnwire_research_v2_status.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
-          for f in europe_pinnacle_research_v2_snapshots.jsonl europe_pinnacle_research_v2_audit.jsonl research_v2_slot_ledger.jsonl oddspapi_finished_results.conflicts.jsonl oddspapi_finished_results.jsonl dashboard_verified_results.jsonl; do
+          for f in scan_health_history.jsonl europe_pinnacle_research_v2_snapshots.jsonl europe_pinnacle_research_v2_audit.jsonl research_v2_slot_ledger.jsonl oddspapi_finished_results.conflicts.jsonl oddspapi_finished_results.jsonl dashboard_verified_results.jsonl; do
             test -f "data/normalized/$f" && cp "data/normalized/$f" "site/data/normalized/$f" || true
           done
       - uses: actions/configure-pages@v6

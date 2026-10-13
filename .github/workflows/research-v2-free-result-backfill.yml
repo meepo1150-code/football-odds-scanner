@@ -86,7 +86,7 @@ jobs:
             python -m odds_scanner.research_v2_movement
             python -m odds_scanner.legacy_propline_recovery
             python -m odds_scanner.research_v2_evidence
-            git add -f reports/dashboard_scope.json reports/research_v2_end_to_end_audit.json reports/oddspapi_history_audit.json reports/research_v2_pattern_statistics.json reports/research_v2_operational_audit.json reports/research_v2_movement_status.json reports/research_v2_missing_ft_ledger.json reports/research_v2_fixture_identity.json data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
+            git add -f reports/scan_health_latest.json reports/scan_health_monitor.json reports/dashboard_scope.json reports/research_v2_end_to_end_audit.json reports/oddspapi_history_audit.json reports/research_v2_pattern_statistics.json reports/research_v2_operational_audit.json reports/research_v2_movement_status.json reports/research_v2_missing_ft_ledger.json reports/research_v2_fixture_identity.json data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
             git add -f reports/research_v2_operational_audit.json reports/research_v2_movement_status.json data/normalized/research_v2_movement_features.jsonl reports/legacy_propline_recovery.json data/normalized/legacy_propline_recovery_staged.jsonl
             for path in "${paths[@]}"; do if test -e "$path"; then git add -f -- "$path"; fi; done
             git diff --cached --quiet && exit 0

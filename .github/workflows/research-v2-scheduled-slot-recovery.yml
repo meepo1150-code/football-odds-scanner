@@ -50,7 +50,7 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           stage=$(mktemp -d)
-          paths=(data/normalized/research_v2_provider_responses.jsonl data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/research_v2_slot_ledger.jsonl reports/pinnwire_research_v2_status.json reports/propline_research_v2_status.json reports/europe_pinnacle_research_v2_status.json)
+          paths=(data/normalized/scan_health_history.jsonl data/normalized/research_v2_provider_responses.jsonl data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/research_v2_slot_ledger.jsonl reports/pinnwire_research_v2_status.json reports/propline_research_v2_status.json reports/europe_pinnacle_research_v2_status.json)
           for f in "${paths[@]}"; do if test -f "$f"; then mkdir -p "$stage/$(dirname "$f")"; cp "$f" "$stage/$f"; fi; done
           for attempt in 1 2 3; do
             git fetch origin main
@@ -60,7 +60,7 @@ jobs:
             python -m odds_scanner.research_v2_pattern_stats
             python -m odds_scanner.legacy_propline_recovery
             python -m odds_scanner.research_v2_evidence
-            git add -f reports/dashboard_scope.json reports/research_v2_end_to_end_audit.json reports/oddspapi_history_audit.json reports/research_v2_pattern_statistics.json reports/research_v2_operational_audit.json reports/research_v2_movement_status.json reports/research_v2_missing_ft_ledger.json reports/research_v2_fixture_identity.json data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
+            git add -f reports/scan_health_latest.json reports/scan_health_monitor.json reports/dashboard_scope.json reports/research_v2_end_to_end_audit.json reports/oddspapi_history_audit.json reports/research_v2_pattern_statistics.json reports/research_v2_operational_audit.json reports/research_v2_movement_status.json reports/research_v2_missing_ft_ledger.json reports/research_v2_fixture_identity.json data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
             git add -f data/normalized reports
             git diff --cached --quiet && exit 0
             git commit -m 'data: merge Research V2 evidence and rebuild [skip ci]'
