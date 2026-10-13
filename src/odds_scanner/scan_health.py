@@ -51,7 +51,7 @@ def record(root, report, provider='oddspapi', provenance='LIVE_REPORT'):
         found = number(report.get('football_day_fixtures', report.get('source_rows_in_football_day')))
     returned = number(report.get('football_day_fixtures'))
     errors = len(report.get('errors') or [])
-    attempted = (number(report.get('requests_used')) or 0) + (number(report.get('http_requests_attempted')) or 0)
+    attempted = (number(report.get('requests_used')) or 0) + (number(report.get('http_requests_attempted')) or 0) + (number(report.get('account_requests_attempted')) or 0)
     api_errors = errors if attempted else 0
     if status.startswith('SKIPPED_') or status in {'MISSED_SLOT','PROVIDER_COOLDOWN'}:
         valid = set()
@@ -76,6 +76,9 @@ def record(root, report, provider='oddspapi', provenance='LIVE_REPORT'):
                'fixtures_unqueried': unqueried, 'fixtures_returned_in_market_response': returned,
                'api_error_count': api_errors, 'source_or_configuration_error_count': errors, 'requests_used': number(report.get('requests_used')),
                'coverage_complete': not incomplete, 'schedule_response_id': report.get('schedule_response_id'),
+               'data_source_health': report.get('data_source_health'),
+               'account_requests_attempted': number(report.get('account_requests_attempted')),
+               'account_transient_failures': report.get('account_transient_failures', []),
                'competition_coverage': coverage,
                'count_semantics': 'DISTINCT_FIXTURES; STRICT_PREMATCH_CORE_AH_1.80_TO_2.20; UNQUERIED_IS_NOT_CONFIRMED_NO_MARKET',
                'record_type': 'CONTROL_CHECK' if status.startswith('SKIPPED_') or status in {'MISSED_SLOT','PROVIDER_COOLDOWN'} else 'SCAN_ATTEMPT'}
@@ -90,6 +93,16 @@ def record(root, report, provider='oddspapi', provenance='LIVE_REPORT'):
         with path.open('a', encoding='utf-8') as handle:
             handle.write(json.dumps(receipt, ensure_ascii=False, sort_keys=True)+'\n')
     write_latest(root)
+    summary = os.getenv('GITHUB_STEP_SUMMARY')
+    if summary and provenance == 'LIVE_REPORT':
+        with open(summary, 'a', encoding='utf-8') as handle:
+            handle.write('\n### Scan Health: '+provider+' — '+health+'\n\n')
+            handle.write('Workflow conclusion is separate from data health.\n\n')
+            handle.write('Scan status: `'+status+'` · valid odds: '+str(len(valid))+
+                         ' · fixtures: '+str(found if found is not None else 'UNKNOWN')+
+                         ' · API errors: '+str(api_errors)+' · billable requests: '+
+                         str(number(report.get('requests_used')) or 0)+'\n\n')
+            handle.write('Issues: '+(', '.join(issues) or 'none')+'\n')
     return receipt
 
 

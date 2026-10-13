@@ -42,16 +42,17 @@ def run(root=Path('.'), now=None, clock=None):
         with patch.dict(os.environ, {'RESEARCH_V2_FORCE_RUN':'true',
                                      'RESEARCH_V2_FORCE_TARGET_AT':target.isoformat()}):
             report = primary(root)
+        results.append(report)
         if not slot_completed(root, target, clock()):
             if clock() <= target + timedelta(minutes=RECOVERY_MINUTES):
                 report = fallback(root, target_at=target)
+                results.append(report)
             else:
                 _record_slot(root/SLOT_LEDGER_PATH, {'scheduled_target_at':target.isoformat(),
                              'football_day':day,'generated_at':clock().isoformat(),
                              'schedule_lag_minutes':(clock()-target).total_seconds()/60,
                              'status':'RECOVERY_WINDOW_EXPIRED_DURING_PRIMARY',
                              'observation_timing':'OUTSIDE_WINDOW','requests_used':0}, 'MISSED')
-        results.append(report)
     return results
 
 

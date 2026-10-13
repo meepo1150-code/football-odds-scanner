@@ -83,12 +83,15 @@ def run(root=Path("."), target_at=None):
     ta=_merge_jsonl(root/AUDIT_PATH,audits,("observed_at","fixture_id")) if audits else 0
     report={"schema_version":"1.1","provider":"propline","football_day":day,"generated_at":now.isoformat(),"status":"RESEARCH_V2_OBSERVED" if snaps else ("API_REQUEST_FAILED" if errors else "ZERO_USABLE_FIXTURES"),"workflow_success":True,"data_source_health":("PARTIAL" if rows else "UNAVAILABLE") if errors else "AVAILABLE","source_rows":len(rows),"source_rows_in_football_day":in_day,"strict_snapshots_this_run":len(snaps),"quarantined_observations_this_run":sum(1 for x in audits if x.get("quarantined")),"core_price_snapshots":len(snaps),"persisted_snapshot_rows":ts,"persisted_audit_rows":ta,"kickoff_date_counts":kickoff_dates,"kickoff_samples":kickoff_samples,"errors":errors[:10]}
     report.update(LAST_FETCH_DIAGNOSTICS)
+    if LAST_FETCH_DIAGNOSTICS.get('failure_class') == 'MASTER_PROVIDER_MAPPING_UNAVAILABLE':
+        report.update(status='MASTER_PROVIDER_MAPPING_UNAVAILABLE',
+                      requests_used=0, football_day_fixtures=None)
     if LAST_FETCH_DIAGNOSTICS.get('failure_class'):report['data_source_health']=LAST_FETCH_DIAGNOSTICS['failure_class']
     report['fetch_started_at']=fetch_started_at
     report.update(scheduled_target_at=target.isoformat() if target and 0<=lag<=150 else None,
                   actual_observed_at=now.astimezone(BKK).isoformat(), schedule_lag_minutes=lag,
                   observation_timing='LATE' if lag is not None and lag>30 else 'ON_TIME',
-                  football_day_fixtures=in_day)
+                  football_day_fixtures=None if report['status']=='MASTER_PROVIDER_MAPPING_UNAVAILABLE' else in_day)
     if report['scheduled_target_at']:
         _record_slot(root/SLOT_LEDGER_PATH, report, 'OBSERVED' if snaps else
                      'ZERO_FIXTURES' if not errors and in_day==0 else 'FAILED')
