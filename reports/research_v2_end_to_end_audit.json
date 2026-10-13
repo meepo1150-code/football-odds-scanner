@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-13T17:52:14.921788+00:00",
+  "generated_at": "2026-10-13T18:05:13.181360+00:00",
   "research_only": true,
   "raw_deleted": 0,
   "settled_fixtures": 845,
@@ -433,18 +433,27 @@
     ]
   },
   "ft_triage_counts": {
-    "FUTURE_OR_RECENT": 23,
+    "FUTURE_OR_RECENT": 20,
     "POSTPONED": 1,
+    "ACTIVE_OVERDUE": 3,
     "IDENTITY_CONFLICT": 1
   },
   "ft_triage_groups": [
     {
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "provider": "oddspapi",
       "country": "Bulgaria",
       "canonical_competition_id": "BGR-0002",
       "league": "Bulgarian Second League",
       "n": 1
+    },
+    {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "oddspapi",
+      "country": "Estonia",
+      "canonical_competition_id": "EST-0001",
+      "league": "Meistriliiga",
+      "n": 2
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -453,14 +462,6 @@
       "canonical_competition_id": "ENG-0002",
       "league": "Championship",
       "n": 8
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Estonia",
-      "canonical_competition_id": "EST-0001",
-      "league": "Meistriliiga",
-      "n": 2
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -876,7 +877,7 @@
       "canonical_competition_id": "EST-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -894,7 +895,7 @@
       "canonical_competition_id": "EST-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -930,7 +931,7 @@
       "canonical_competition_id": "BGR-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"

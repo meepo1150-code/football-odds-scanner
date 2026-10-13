@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-13T17:52:21.223307+00:00",
+  "generated_at": "2026-10-13T18:05:14.170365+00:00",
   "football_day": "2026-10-13",
   "status": "FAIL",
   "issues": [
@@ -24,8 +24,50 @@
       "recovered": false
     }
   ],
-  "ft_delay_count": 1,
+  "ft_delay_count": 4,
   "ft_delay": [
+    {
+      "fixture_id": "id1000017868214838",
+      "provider": "oddspapi",
+      "football_day": "2026-10-13",
+      "league": "Meistriliiga",
+      "kickoff": "2026-10-13T15:00:00+00:00",
+      "home": "Parnu JK Vaprus",
+      "away": "Nomme Kalju FC",
+      "status": "MISSING_FT",
+      "country": "Estonia",
+      "canonical_competition_id": "EST-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000017868214840",
+      "provider": "oddspapi",
+      "football_day": "2026-10-13",
+      "league": "Meistriliiga",
+      "kickoff": "2026-10-13T15:00:00+00:00",
+      "home": "Harju JK Laagri",
+      "away": "FC Nomme United",
+      "status": "MISSING_FT",
+      "country": "Estonia",
+      "canonical_competition_id": "EST-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000113572466556",
+      "provider": "oddspapi",
+      "football_day": "2026-10-13",
+      "league": "Bulgarian Second League",
+      "kickoff": "2026-10-13T15:00:00+00:00",
+      "home": "PFC Montana 1921",
+      "away": "PFC Ludogorets Razgrad II",
+      "status": "MISSING_FT",
+      "country": "Bulgaria",
+      "canonical_competition_id": "BGR-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
     {
       "fixture_id": "pinnwire:1637096650",
       "provider": "pinnwire",
@@ -344,9 +386,9 @@
     }
   ],
   "unmatched_semantics": "REJECTED_CROSS_PROVIDER_BRIDGE_CANDIDATES; NOT_AUTOMATICALLY_MISSING_FT",
-  "latest_scan_report_id": "3066b95fe9df8d4ff12e8df9f2c65e0410a7359b37db996269c5595d0716dc35",
+  "latest_scan_report_id": "da5baaed225e4104232feade8f358fe4f3a8de9bbddc1faa4d47ebce716d1728",
   "latest_scan_day": "2026-10-13",
-  "history_report_count": 14,
+  "history_report_count": 16,
   "canonical_slots": [
     {
       "target_time": "2026-10-13T15:00:00+07:00",
