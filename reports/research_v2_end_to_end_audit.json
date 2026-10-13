@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-13T15:34:52.727008+00:00",
+  "generated_at": "2026-10-13T17:29:21.579821+00:00",
   "research_only": true,
   "raw_deleted": 0,
   "settled_fixtures": 844,
@@ -423,11 +423,20 @@
     ]
   },
   "ft_triage_counts": {
-    "FUTURE_OR_RECENT": 24,
+    "FUTURE_OR_RECENT": 23,
     "POSTPONED": 1,
+    "ACTIVE_OVERDUE": 1,
     "IDENTITY_CONFLICT": 1
   },
   "ft_triage_groups": [
+    {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "oddspapi",
+      "country": "Turkey",
+      "canonical_competition_id": "TUR-0002",
+      "league": "TFF 1 Lig",
+      "n": 1
+    },
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
@@ -490,7 +499,7 @@
       "country": "Turkey",
       "canonical_competition_id": "TUR-0002",
       "league": "TFF 1 Lig",
-      "n": 2
+      "n": 1
     },
     {
       "lifecycle": "IDENTITY_CONFLICT",
@@ -866,7 +875,7 @@
       "canonical_competition_id": "TUR-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"

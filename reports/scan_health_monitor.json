@@ -1,18 +1,45 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-13T15:35:18.443236+00:00",
+  "generated_at": "2026-10-13T17:29:22.324465+00:00",
   "football_day": "2026-10-13",
-  "status": "WARNING",
+  "status": "FAIL",
   "issues": [
+    "SCAN_MISSING",
     "FT_DELAY",
     "FT_IDENTITY_CONFLICT",
     "UNMATCHED_IDENTITY_CANDIDATES",
-    "LATEST_SCAN_WARNING"
+    "LATEST_SCAN_FAIL"
   ],
-  "scan_missing_count": 0,
-  "scan_missing": [],
-  "ft_delay_count": 1,
+  "scan_missing_count": 1,
+  "scan_missing": [
+    {
+      "target_time": "2026-10-14T00:00:00+07:00",
+      "state": "MISSING",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "MISSING",
+      "recovered": false
+    }
+  ],
+  "ft_delay_count": 2,
   "ft_delay": [
+    {
+      "fixture_id": "id1000009872735816",
+      "provider": "oddspapi",
+      "football_day": "2026-10-13",
+      "league": "TFF 1 Lig",
+      "kickoff": "2026-10-13T14:00:00+00:00",
+      "home": "Sariyer SK",
+      "away": "Bodrum FK",
+      "status": "MISSING_FT",
+      "country": "Turkey",
+      "canonical_competition_id": "TUR-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
     {
       "fixture_id": "pinnwire:1637096650",
       "provider": "pinnwire",
@@ -331,9 +358,9 @@
     }
   ],
   "unmatched_semantics": "REJECTED_CROSS_PROVIDER_BRIDGE_CANDIDATES; NOT_AUTOMATICALLY_MISSING_FT",
-  "latest_scan_report_id": "7cc6dc88c6c26c7177722aea8494c541dca6816bbed9c26ae3ebf1e94bf2f9c2",
+  "latest_scan_report_id": "b26875e50eae82f346191e2e58d9529fc95834447f2bacf4ddb0e31e3021d55a",
   "latest_scan_day": "2026-10-13",
-  "history_report_count": 8,
+  "history_report_count": 10,
   "canonical_slots": [
     {
       "target_time": "2026-10-13T15:00:00+07:00",
@@ -370,13 +397,13 @@
     },
     {
       "target_time": "2026-10-14T00:00:00+07:00",
-      "state": "UPCOMING",
+      "state": "MISSING",
       "provider": null,
       "observed_at": null,
       "lag_minutes": null,
       "valid_snapshot_count": 0,
       "canonical_fixture_count": 0,
-      "observation_timing": "UPCOMING",
+      "observation_timing": "MISSING",
       "recovered": false
     }
   ],
