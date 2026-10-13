@@ -16,6 +16,28 @@ def _read(p):
         try:x=json.loads(line)
         except json.JSONDecodeError:continue
         if isinstance(x,dict):out.append(x)
+    if p.name==SNAPSHOTS_PATH.name:
+        return enrich_snapshot_names(out,_read(p.with_name(API_FIXTURES_PATH.name)))
+    return out
+
+def enrich_snapshot_names(rows, fixtures):
+    """Derived names only: exact provider ID, league and UTC kickoff; no guessing."""
+    out=[]
+    for s in rows:
+        if s.get('provider')!='api_football' or (s.get('home') and s.get('away')):
+            out.append(s);continue
+        pid=str(s.get('provider_fixture_id') or '').strip()
+        matches=[f for f in fixtures if pid and f.get('provider')=='api_football'
+                 and str(f.get('provider_fixture_id'))==pid and _utc(f.get('kickoff'))==_utc(s.get('kickoff'))
+                 and _utc(s.get('kickoff')) is not None and f.get('league')==s.get('league')
+                 and f.get('home') and f.get('away')]
+        identities={(f['home'],f['away']) for f in matches}
+        if len(identities)!=1:
+            out.append(s);continue
+        home,away=next(iter(identities))
+        if (s.get('home') and s['home']!=home) or (s.get('away') and s['away']!=away):
+            out.append(s);continue
+        out.append({**s,'home':home,'away':away,'identity_enrichment_basis':'EXACT_PROVIDER_ID_LEAGUE_UTC_KICKOFF_FROM_PERSISTED_API_FIXTURE'})
     return out
 def _name(v):
     s=unicodedata.normalize("NFKD",str(v or "")).encode("ascii","ignore").decode().casefold()
@@ -59,11 +81,18 @@ def _utc(v):
     except (TypeError,ValueError):return None
 def run(root=Path("."),kickoff_tolerance_seconds=0):
     snaps=[x for x in _read(root/SNAPSHOTS_PATH) if x.get("provider")=="pinnwire"]; fixtures=_read(root/API_FIXTURES_PATH)
-    web_results={str(x.get("fixture_id")):x for x in _read(root/RESULTS_PATH) if str(x.get("result_source") or "").startswith("WEB_EVIDENCE")}
+    conflicts={str(x.get('fixture_id')) for x in _read((root/RESULTS_PATH).with_suffix('.conflicts.jsonl'))}
+    # An exact persisted verified FT resolves recovery regardless of which
+    # provider supplied it. Missing API-Football links are not missing results.
+    web_results={str(x.get("fixture_id")):x for x in _read(root/RESULTS_PATH)
+                 if str(x.get('fixture_id')) not in conflicts
+                 and type(x.get('ft_home_goals')) is int and type(x.get('ft_away_goals')) is int
+                 and x['ft_home_goals']>=0 and x['ft_away_goals']>=0}
     # Match kickoff first, then require deterministic team aliases. This safely handles\n    # provider decoration such as "Pharco FC" vs "Pharco" without fuzzy guessing.
     latest={}
     for s in snaps:
         if not in_scope(s): continue
+        if re.search(r'\((?:corners?|bookings?|cards?)\)',str(s.get('home') or '')+' '+str(s.get('away') or ''),re.I):continue
         fid=str(s.get("fixture_id") or "")
         if fid and (fid not in latest or str(s.get("observed_at"))>str(latest[fid].get("observed_at"))):latest[fid]=s
     results=[];settlements=[];unmatched=[];ambiguous=[];matched_total=0;matched_pending=0;web_result_matches=0;unmatched_with_kickoff=0;unmatched_no_kickoff=0;unmatched_samples=[]

@@ -55,6 +55,7 @@ jobs:
         run: python -m odds_scanner.result_recovery_lifecycle
       - name: Refresh Research V2 statistics and readiness
         run: |
+          python -m odds_scanner.pinnwire_result_join
           python -m odds_scanner.v2_forward_performance
           python -m odds_scanner.research_v2_pattern_stats
           python -m odds_scanner.v2_forward_readiness
@@ -79,6 +80,8 @@ jobs:
             python -m odds_scanner.result_recovery_lifecycle
             python -m odds_scanner.v2_forward_performance
             python -m odds_scanner.research_v2_pattern_stats
+            python -m odds_scanner.pinnwire_result_join
+            git add -f reports/pinnwire_result_join_status.json data/normalized/pinnwire_research_v2_settlements.jsonl
             python -m odds_scanner.v2_forward_readiness
             python -m odds_scanner.research_v2_movement
             python -m odds_scanner.legacy_propline_recovery
