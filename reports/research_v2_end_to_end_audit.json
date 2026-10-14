@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-14T16:09:06.812431+00:00",
+  "generated_at": "2026-10-14T17:02:54.217823+00:00",
   "research_only": true,
   "raw_deleted": 0,
   "settled_fixtures": 830,
@@ -265,7 +265,7 @@
         "baseline_train_n": 8,
         "movement_train_n": 7,
         "baseline_return_prediction": -0.025628400461405354,
-        "movement_return_prediction": 0.03168757598204139,
+        "movement_return_prediction": 0.031687575982041374,
         "realized_profit_units": 0.909,
         "squared_error_improvement": 0.10385315761277869
       },
@@ -305,7 +305,7 @@
         "baseline_train_n": 8,
         "movement_train_n": 7,
         "baseline_return_prediction": -0.025628400461405354,
-        "movement_return_prediction": 0.03168757598204139,
+        "movement_return_prediction": 0.031687575982041374,
         "realized_profit_units": 0.8999999999999999,
         "squared_error_improvement": 0.10282147003679665
       },
@@ -329,11 +329,28 @@
     ]
   },
   "ft_triage_counts": {
-    "FUTURE_OR_RECENT": 27,
+    "FUTURE_OR_RECENT": 25,
     "POSTPONED": 1,
-    "IDENTITY_CONFLICT": 2
+    "IDENTITY_CONFLICT": 2,
+    "ACTIVE_OVERDUE": 2
   },
   "ft_triage_groups": [
+    {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "oddspapi",
+      "country": "Kazakhstan",
+      "canonical_competition_id": "KAZ-0001",
+      "league": "Kazakhstan Premier League",
+      "n": 1
+    },
+    {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "oddspapi",
+      "country": "Turkey",
+      "canonical_competition_id": "TUR-0002",
+      "league": "TFF 1 Lig",
+      "n": 1
+    },
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
@@ -369,14 +386,6 @@
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
-      "country": "Kazakhstan",
-      "canonical_competition_id": "KAZ-0001",
-      "league": "Kazakhstan Premier League",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
       "country": "Malta",
       "canonical_competition_id": "MLT-0001",
       "league": "Maltese Premier League",
@@ -396,7 +405,7 @@
       "country": "Turkey",
       "canonical_competition_id": "TUR-0002",
       "league": "TFF 1 Lig",
-      "n": 3
+      "n": 2
     },
     {
       "lifecycle": "IDENTITY_CONFLICT",
@@ -870,7 +879,7 @@
       "canonical_competition_id": "TUR-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -942,7 +951,7 @@
       "canonical_competition_id": "KAZ-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
