@@ -144,7 +144,7 @@ def refresh(root=Path('.'), now=None):
     identity = load(root, 'research_v2_fixture_identity')
     unmatched = identity.get('rejected', [])
     issues = []
-    missing = [r for r in col['canonical_slots'] if r['state'] in {'MISSING','MISSED'}]
+    missing = [r for r in col['canonical_slots'] if r['state'] in {'MISSING','MISSED','PARTIAL'}]
     if missing: issues.append('SCAN_MISSING')
     if overdue: issues.append('FT_DELAY')
     if stats.get('identity_conflict_ft_fixtures'): issues.append('FT_IDENTITY_CONFLICT')

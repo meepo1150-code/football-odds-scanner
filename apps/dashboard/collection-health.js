@@ -25,7 +25,7 @@
       const target=Date.parse(slot.target_time);
       const state=stale&&target<=Date.now()&&slot.state==='UPCOMING'?'UNVERIFIED — รอรายงานใหม่':slot.state+' / '+(slot.observation_timing||'UNVERIFIED');
       [slot.target_time,state,slot.provider||'—',slot.observed_at||'—',slot.lag_minutes??'—',slot.valid_snapshot_count,slot.canonical_fixture_count].forEach(v=>{const td=document.createElement('td');td.textContent=String(v);tr.append(td);});
-      if(/MISSING|MISSED|UNVERIFIED/.test(state))tr.style.color='var(--r)';
+      if(/MISSING|MISSED|PARTIAL|CHECKED_NO_VALID|UNVERIFIED/.test(state))tr.style.color='var(--r)';
     }
     for(const [name,p] of Object.entries(report.providers||{}))line('p',name+' · '+p.status+' · '+(p.fresh===false?'STALE · ':'')+'audit '+(p.generated_at||'UNKNOWN')+' · '+(p.errors||[]).join('; '));
     const [e2e,hist]=await Promise.all(['research_v2_end_to_end_audit','oddspapi_history_audit'].map(async name=>{let r=await fetch('reports/'+name+'.json',{cache:'no-store'});return r.ok?r.json():null;}));
@@ -64,6 +64,7 @@
     if(scan){
       line('p','Last scan status '+scan.status+' · Target '+scan.scheduled_target_at+' · Actual '+scan.actual_observed_at+' · Lag '+scan.schedule_lag_minutes+' นาที');
       line('p','พิจารณา '+(scan.master_competitions_considered??'—')+' ลีก · โปรแกรม '+(scan.scheduled_approved_fixtures??'—')+' คู่ · เก็บสะสม '+(scan.fixtures_captured_today??'—')+' คู่ · ยังไม่มีราคา '+(scan.scheduled_fixtures_without_snapshot??'—')+' คู่ · requests เพิ่มสำหรับลีกที่ถูกข้าม '+(scan.additional_market_requests_required??'—'));
+      line('p','Policy: research ไม่เกิน 6 requests/UTC day และ 180/month · รอบ 00:00 ใช้โควต้าวัน UTC เดิม');
       line('p','Quota ล่าสุดก่อนยิง '+(scan.quota_remaining_before??'UNKNOWN')+' · รอบนี้ใช้ '+(scan.requests_used??0)+' · '+(scan.coverage_complete?'พิจารณา scope ตาม receipt แล้ว':'COVERAGE GAPS REMAIN'));
       if(scan.quota_utc_day)line('p','Research quota UTC '+scan.quota_utc_day+' · used/reserved today '+scan.research_requests_used_today+'/'+(scan.research_daily_limit??'UNKNOWN')+' · month '+scan.research_requests_used_month+'/'+(scan.research_monthly_limit??'UNKNOWN')+' · future slots reserved '+scan.future_utc_requests_reserved+' · future days reserved '+scan.future_month_requests_reserved);
       if(scan.account_safety_reserve!=null)line('p','Account safety reserve '+scan.account_safety_reserve+' · ขั้นต่ำที่ต้องใช้ถึงสิ้นเดือน '+scan.account_minimum_requests_through_month_end+' · ขาดโควต้า '+scan.account_month_capacity_shortfall+' requests · ไม่รับประกันครบทุกวัน');

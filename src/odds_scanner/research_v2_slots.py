@@ -179,10 +179,17 @@ def coverage(now, day, ledger, snapshots):
                     and (r.get('state') in {'ZERO_FIXTURES','ZERO_COHORT'} or matched)]
         is_complete = completed(target, local, ledger, snapshots)
         latest = max((stamp(r.get('observed_at')) for r in matched), default=None)
-        row = evidence[-1] if evidence else {}
+        cohort_checks = [r for r in ledger if stamp(r.get('scheduled_target_at')) == target
+                         and r.get('daily_cohort_query_complete') is True
+                         and stamp(r.get('actual_observed_at'))
+                         and target <= stamp(r['actual_observed_at']) <= min(local, target+timedelta(minutes=RECOVERY_MINUTES))]
+        row = evidence[-1] if evidence else cohort_checks[-1] if cohort_checks else {}
         observed = latest or stamp(row.get('actual_observed_at') or row.get('observed_at'))
         state = ('OBSERVED' if matched else row.get('state')) if is_complete else (
             'UPCOMING' if target > local else 'PARTIAL' if matched else 'MISSED' if local > target + timedelta(minutes=RECOVERY_MINUTES) else 'MISSING')
+        if is_complete and not matched and cohort_checks:
+            details_ = row.get('daily_cohort_fixtures') or []
+            state = 'ZERO_FIXTURES' if details_ and all(f.get('reason') == 'KICKOFF_PASSED' for f in details_) else 'CHECKED_NO_VALID_CORE_ODDS'
         if (state=='ZERO_FIXTURES' and str(day)>=SCHEDULE_EFFECTIVE_DAY
                 and row.get('coverage_complete') is not True):
             # Preserve the old receipt for dedupe without asserting whole-scope emptiness.
