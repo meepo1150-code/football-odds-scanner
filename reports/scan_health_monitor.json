@@ -1,16 +1,29 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-14T11:49:49.149875+00:00",
+  "generated_at": "2026-10-14T12:14:05.779033+00:00",
   "football_day": "2026-10-14",
-  "status": "WARNING",
+  "status": "FAIL",
   "issues": [
+    "SCAN_MISSING",
     "FT_DELAY",
     "FT_IDENTITY_CONFLICT",
     "UNMATCHED_IDENTITY_CANDIDATES",
     "LATEST_SCAN_WARNING"
   ],
-  "scan_missing_count": 0,
-  "scan_missing": [],
+  "scan_missing_count": 1,
+  "scan_missing": [
+    {
+      "target_time": "2026-10-14T18:00:00+07:00",
+      "state": "MISSING",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "MISSING",
+      "recovered": false
+    }
+  ],
   "ft_delay_count": 1,
   "ft_delay": [
     {
@@ -348,14 +361,14 @@
     },
     {
       "target_time": "2026-10-14T18:00:00+07:00",
-      "state": "OBSERVED",
-      "provider": "oddspapi",
-      "observed_at": "2026-10-14T18:37:42.338548+07:00",
-      "lag_minutes": 37.71,
-      "valid_snapshot_count": 5,
-      "canonical_fixture_count": 5,
-      "observation_timing": "LATE",
-      "recovered": true
+      "state": "MISSING",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "MISSING",
+      "recovered": false
     },
     {
       "target_time": "2026-10-14T21:00:00+07:00",
