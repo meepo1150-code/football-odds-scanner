@@ -215,3 +215,14 @@ def test_market_signal_badges_match_bar_colors():
     assert ".signal-ah.signal-low.signal-underdog{background:rgba(244,247,252,.13)!important;border-color:#f4f7fc" in html
     assert ".signal-ou.signal-high:not(.signal-under){background:rgba(255,180,94,.17)!important;border-color:#ffb45e" in html
     assert ".signal-ou.signal-under{background:rgba(104,174,250,.17)!important;border-color:#68aefa" in html
+
+
+def test_fixture_title_centered_and_competition_country_grounded():
+    html=Path('apps/dashboard/index.html').read_text()
+    assert 'class="teams fixture-title"' in html
+    assert '.fixture .fixture-title{text-align:center;width:100%' in html
+    assert 'competitionCountry(named.league||first.league,named)' in html
+    assert '"tff 1 lig":"Turkey"' in html
+    assert '"meistriliiga":"Estonia"' in html
+    assert '"uefa champions league":"Europe"' in html
+    assert "return VERIFIED_COMPETITION_COUNTRIES[String(league||'').trim().toLowerCase()]||''" in html
