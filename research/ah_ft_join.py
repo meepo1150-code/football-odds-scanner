@@ -39,9 +39,18 @@ def analyze(features, results):
         side=r.get("last_favorite_side") or r.get("favorite_side")
         if side not in ("H","A"):
             excluded["missing_verified_favorite_side"]+=1; continue
-        scores=ft.get(str(r.get("fixture_id")),set())
+        # Only exact canonical/provider IDs retained by the movement builder.
+        # A bridge is accepted only when every matching ID has one consistent FT.
+        ids={str(r.get("fixture_id"))}
+        ids.update(str(x) for x in (r.get("source_fixture_ids") or []) if x is not None)
+        found=[ft[x] for x in ids if ft.get(x)]
+        scores=set().union(*found) if found else set()
+        if not scores:
+            excluded["ft_not_found"]+=1; continue
         if len(scores)!=1:
-            excluded["missing_or_conflicting_ft"]+=1; continue
+            excluded["ft_score_conflict"]+=1; continue
+        if not ft.get(str(r.get("fixture_id"))) and found:
+            excluded["provider_id_bridge_used"]+=1
         try:
             first=float(r["first_ah_line"]); last=float(r["last_ah_line"])
             h,a=next(iter(scores)); diff=(h-a if side=="H" else a-h)
