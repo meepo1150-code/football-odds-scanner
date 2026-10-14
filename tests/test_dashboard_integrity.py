@@ -82,6 +82,11 @@ assert.equal(fixtureResultState({kickoff:'bad'},null,ko).code,'UNKNOWN_KICKOFF')
 assert.equal(fixtureResultState(s,{ft_home_goals:0,ft_away_goals:0},ko).label,'FT 0 - 0');
 assert.equal(fixtureResultState(s,{ft_home_goals:0,ft_away_goals:0},ko,true).code,'CONFLICT');
 assert.equal(priceResultFromFT(null,s),'');
+const rawFT=[{fixture_id:'alias',ft_home_goals:0,ft_away_goals:0},{fixture_id:'clean',ft_home_goals:1,ft_away_goals:0}];
+const safe=identitySafeResults(rawFT,[],new Map([['alias','canonical']]),['canonical']);
+assert.equal(safe.size,1);assert(safe.has('clean'));
+assert.equal(priceResultFromFT(safe.get('canonical'),{favorite_side:'H',ah:{selected_side_line:-.5}}),'');
+assert.equal(identitySafeResults(rawFT,[],new Map,null).size,0);
 assert.equal(observationLabel({provider:'pinnwire'},null),'ข้อมูลวิจัย · mainline ยังไม่ยืนยัน');
 assert.equal(observationLabel({provider:'other'},null),'ยังไม่มีผลประเมินราคา');
 """
