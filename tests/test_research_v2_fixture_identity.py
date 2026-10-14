@@ -77,7 +77,12 @@ def test_reproduced_fallback_alias_is_derived_and_settles_once(tmp_path):
     assert mapping[rows[1]['fixture_id']]=='pinnwire:123'
     assert evidence['bridges'][0]['policy']=='REPRODUCED_PINNWIRE_FALLBACK_HASH_AND_UNIQUE_NATIVE_ID'
     write(tmp_path,rows,[dict(fixture_id=rows[1]['fixture_id'],ft_home_goals=1,ft_away_goals=0)])
-    assert build(tmp_path)['settled_fixtures']==1
+    stats=build(tmp_path)
+    assert stats['settled_fixtures']==1
+    assert stats['verified_cross_provider_canonical_fixtures']==0
+    assert stats['verified_same_provider_duplicate_fixtures']==1
+    outcome=json.loads((tmp_path/'data/normalized/research_v2_pattern_outcomes.jsonl').read_text())
+    assert outcome['result_join']=='VERIFIED_PROVIDER_FALLBACK_ALIAS'
     assert rows==original
     write(tmp_path,rows,[dict(fixture_id=r['fixture_id'],ft_home_goals=i,ft_away_goals=0) for i,r in enumerate(rows)])
     assert build(tmp_path)['settled_fixtures']==0
