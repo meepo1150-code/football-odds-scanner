@@ -186,3 +186,23 @@ for(const [n,tier] of [[null,'n-unknown'],[0,'n-unknown'],[8,'n-low'],[14,'n-low
 '''
     result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
+
+
+def test_favorite_ah_betting_win_label_is_clear():
+    html=Path('apps/dashboard/index.html').read_text()
+    assert "metricBar('เดิมพันฝั่งต่อชนะ'" in html
+    assert "signalBadge('เดิมพันฝั่งต่อชนะ'" in html
+    assert "signalBadge('เดิมพันฝั่งต่อชนะต่ำ'" in html
+    assert "'AH WR ต่อ'" not in html
+
+
+def test_ah_favorite_bar_uses_red_and_white_segments():
+    html=Path('apps/dashboard/index.html').read_text()
+    assert 'metric-track ah-split-track' in html
+    assert 'ah-segment favorite' in html
+    assert 'ah-segment underdog' in html
+    assert 'width:${p}%' in html
+    assert 'width:${100-p}%' in html
+    assert '.ah-segment.favorite{background:#ef5264}' in html
+    assert '.ah-segment.underdog{background:#f4f7fc}' in html
+    assert 'ส่วนที่ไม่ใช่ชัยชนะฝั่งต่อ' in html
