@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-14T18:37:53.132469+00:00",
+  "generated_at": "2026-10-14T19:19:07.550230+00:00",
   "football_day": "2026-10-14",
   "status": "WARNING",
   "issues": [
@@ -11,7 +11,7 @@
   ],
   "scan_missing_count": 0,
   "scan_missing": [],
-  "ft_delay_count": 2,
+  "ft_delay_count": 4,
   "ft_delay": [
     {
       "fixture_id": "id1000005472477468",
@@ -24,6 +24,34 @@
       "status": "IDENTITY_CONFLICT",
       "country": "Spain",
       "canonical_competition_id": null,
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000017275339776",
+      "provider": "oddspapi",
+      "football_day": "2026-10-14",
+      "league": "Czech First League",
+      "kickoff": "2026-10-14T16:00:00+00:00",
+      "home": "Bohemians Prague 1905",
+      "away": "FK Mlada Boleslav",
+      "status": "MISSING_FT",
+      "country": "Czechia",
+      "canonical_competition_id": "CZE-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000017868214842",
+      "provider": "oddspapi",
+      "football_day": "2026-10-14",
+      "league": "Meistriliiga",
+      "kickoff": "2026-10-14T16:00:00+00:00",
+      "home": "Paide Linnameeskond",
+      "away": "Tartu JK Tammeka",
+      "status": "MISSING_FT",
+      "country": "Estonia",
+      "canonical_competition_id": "EST-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false
     },
