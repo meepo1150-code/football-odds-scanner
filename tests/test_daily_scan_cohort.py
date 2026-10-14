@@ -104,3 +104,12 @@ def test_outside_core_quote_is_retained_and_reported_without_forced_price(tmp_pa
     snapshot=json.loads((tmp_path/collector.SNAPSHOT_PATH).read_text())
     assert snapshot['ah']['selected_side_price']==1.70
     assert snapshot['daily_cohort_policy']==cohort.POLICY
+
+
+def test_wrong_population_receipt_does_not_delay_correct_recovery_for_an_hour(tmp_path,monkeypatch):
+    from odds_scanner.research_v2_scan_due import due
+    clock,f=setup(tmp_path,monkeypatch,now='2026-10-14T12:10:00+00:00');baseline(tmp_path,f,monkeypatch)
+    wrong={'generated_at':'2026-10-14T11:37:00+00:00','actual_observed_at':'2026-10-14T18:37:00+07:00','scheduled_target_at':'2026-10-14T18:00:00+07:00','status':'RESEARCH_V2_OBSERVED','strict_snapshots_this_run':5,'requests_used':1}
+    ledger=read_ledger(tmp_path)+[{**wrong,'provider':'oddspapi','state':'OBSERVED'}]
+    assert due(clock.current,wrong,ledger_rows=ledger,snapshots=[])
+    assert not due(datetime.fromisoformat('2026-10-14T11:40:00+00:00'),wrong,ledger_rows=ledger,snapshots=[])
