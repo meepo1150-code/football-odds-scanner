@@ -23,7 +23,7 @@ def test_unknown_fails_closed(tmp_path):
     with pytest.raises(budget.QuotaBlocked): budget.reserve_request('/historical-odds',tmp_path)
 
 def test_budget_reserved_before_each_call(monkeypatch):
-    monkeypatch.setattr(budget,'_ACCOUNT',{'active_subscription':True,'request_limit':250,'request_count':249})
+    monkeypatch.setattr(budget,'_ACCOUNT',{'active_subscription':True,'request_limit':250,'request_count':239})
     budget.reserve_request('/odds')
     with pytest.raises(budget.QuotaBlocked): budget.reserve_request('/fixtures')
 
@@ -49,7 +49,7 @@ def test_429_not_retried_and_cooldown_persists(tmp_path,monkeypatch):
 
 
 def test_historical_free_but_blocked_on_exhaustion(monkeypatch):
-    monkeypatch.setattr(budget,'_ACCOUNT',{'active_subscription':True,'request_limit':250,'request_count':249})
+    monkeypatch.setattr(budget,'_ACCOUNT',{'active_subscription':True,'request_limit':250,'request_count':239})
     for _ in range(4): budget.reserve_request('/historical-odds')
     assert budget._SPENT == 0
     budget.reserve_request('/fixtures')
@@ -71,3 +71,13 @@ def test_propline_true_empty_scan_keeps_honest_available_status(tmp_path,monkeyp
     report=propline.run(tmp_path)
     assert report['status']=='ZERO_USABLE_FIXTURES'
     assert report['data_source_health']=='AVAILABLE'
+
+
+def test_shared_account_stops_at_240_including_failed_reservations(monkeypatch):
+    monkeypatch.setattr(budget, '_ACCOUNT', {'active_subscription': True, 'request_limit': 250, 'request_count': 238})
+    budget.reserve_request('/fixtures')
+    budget.reserve_request('/odds')
+    with pytest.raises(budget.QuotaBlocked, match='safety reserve'):
+        budget.reserve_request('/odds')
+    budget.reserve_request('/account')
+    assert budget._SPENT == 2

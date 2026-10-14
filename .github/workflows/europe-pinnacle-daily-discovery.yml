@@ -16,11 +16,9 @@ on:
     branches: [main]
     paths: ['controls/europe_pinnacle_research_v2_run_token.txt']
   schedule:
-    # BKK_28_SLOTS_V4, effective football day 2026-10-13.
-    # Every day 15/18/21/00; midnight closes the previous football day.
-    # Recovery heartbeats share the evidence gate and collector lock.
-    - cron: '0,20,40 11,12,13,14,15,16,17,18,19 * * 1-5'
-    - cron: '0,20,40 8,9,10,11,12,13,14,15,16,17,18,19 * * 0,6'
+    # UTC 08/11/14/17 = Bangkok 15/18/21/00; shared collector and evidence gate.
+    # Avoid minute-zero congestion; actual observation times remain authoritative.
+    - cron: '3 8,11,14,17 * * *'
 env: {RESEARCH_QUOTA_DURABLE: 'true'}
 permissions: {contents: write}
 concurrency:
@@ -33,10 +31,20 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with: {ref: main}
+      - name: Check whether a canonical slot needs collection
+        id: due
+        env:
+          SCAN_EVENT: ${{ github.event_name }}
+          SCAN_FINALIZE_MISSED: 'true'
+          PYTHONPATH: src
+        run: python -m odds_scanner.research_v2_scan_due >> "$GITHUB_OUTPUT"
       - uses: actions/setup-python@v6
+        if: steps.due.outputs.collect == 'true'
         with: {python-version: '3.12'}
       - run: python -m pip install -e '.[dev]'
+        if: steps.due.outputs.collect == 'true'
       - name: Resolve Research V2 recovery controls
+        if: steps.due.outputs.collect == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -57,13 +65,16 @@ jobs:
             echo "RESEARCH_V2_FORCE_TARGET_AT=" >> "$GITHUB_ENV"
           fi
       - name: Collect canonical-slot football-day research population
+        if: steps.due.outputs.collect == 'true'
         env:
           ODDSPAPI_KEY: '${{ secrets.ODDSPAPI_KEY }}'
           PROPLINE_API_KEY: '${{ secrets.PROPLINE_API_KEY }}'
         run: python -m odds_scanner.research_v2_slot_recovery
       - name: Build current movement features
+        if: steps.due.outputs.collect == 'true'
         run: python -m odds_scanner.research_v2_movement
       - name: Persist raw evidence and rebuild against latest main
+        if: steps.due.outputs.collect == 'true'
         run: |
           set -euo pipefail
           git config user.name github-actions[bot]
@@ -90,6 +101,7 @@ jobs:
           exit 1
 
       - name: Enforce collector business health
+        if: steps.due.outputs.collect == 'true'
         shell: bash
         run: |
           python - <<'PY'

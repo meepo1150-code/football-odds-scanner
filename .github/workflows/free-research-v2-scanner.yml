@@ -1,12 +1,6 @@
 name: Free Research V2 Scanner
 on:
   workflow_dispatch:
-  schedule:
-    # BKK_28_SLOTS_V4, effective football day 2026-10-13.
-    # Every day 15/18/21/00; midnight closes the previous football day.
-    # Recovery heartbeats share the evidence gate and collector lock.
-    - cron: '0 11,14,17 * * 1-5'
-    - cron: '0 8,11,14,17 * * 0,6'
   push:
     branches: [main]
     paths: ['src/odds_scanner/propline_research_v2.py', 'src/odds_scanner/propline_provider.py', '.github/workflows/free-research-v2-scanner.yml', 'controls/free_research_v2_scan_token.txt']

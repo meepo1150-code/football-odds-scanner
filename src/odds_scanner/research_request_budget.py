@@ -4,8 +4,8 @@ import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-DAILY_LIMIT = 6
-MONTHLY_LIMIT = 180
+DAILY_LIMIT = 8
+MONTHLY_LIMIT = 240
 RUN_LIMIT = 2
 RESERVATIONS = Path('data/normalized/research_v2_quota_reservations.jsonl')
 
@@ -65,12 +65,10 @@ def allocation(path, ids, now, batch_size=5, *, prioritized=False, overhead=0, m
     # preparation slot is still ahead. Manual and recovery cannot spend this.
     future_reserve = len(future) + int(bool(future) and future[0] == slots[0])
     # Protect five requests (discovery + four observations) on each future UTC
-    # day rather than promising 6 * 31 under a 180/month limit.
+    # day; optional second batches yield before reaching 240/month.
     future_month_reserve = sum(len(utc_targets(now.date() + timedelta(days=i))) + 1
         for i in range(1, calendar.monthrange(now.year, now.month)[1] - now.day + 1))
-    run_limit = 1 if len(slots) == 4 else RUN_LIMIT
-    if overhead or manual:
-        run_limit = RUN_LIMIT
+    run_limit = RUN_LIMIT
     available = max(0, min(run_limit, DAILY_LIMIT-daily-future_reserve,
                           MONTHLY_LIMIT-monthly-future_reserve-future_month_reserve))
     remaining = max(0, available-overhead)
@@ -78,7 +76,7 @@ def allocation(path, ids, now, batch_size=5, *, prioritized=False, overhead=0, m
     chosen = [batches[i if prioritized else (now.date().toordinal()+i)%len(batches)]
               for i in range(min(remaining, len(batches)))] if batches else []
     return [x for b in chosen for x in b], {
-        'request_budget_policy': 'RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH',
+        'request_budget_policy': 'RESEARCH_8_PER_UTC_DAY_240_PER_UTC_MONTH',
         'research_requests_used_today': daily, 'research_requests_used_month': monthly,
         'research_daily_limit': DAILY_LIMIT, 'research_monthly_limit': MONTHLY_LIMIT,
         'research_run_limit': run_limit, 'quota_utc_day': now.date().isoformat(),
