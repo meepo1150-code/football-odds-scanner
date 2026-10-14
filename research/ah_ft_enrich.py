@@ -57,7 +57,18 @@ def main():
     from research.ah_ft_join import analyze
     root=Path("data/normalized")
     features=enrich(read(root/"research_v2_movement_features.jsonl"),read(root/"europe_pinnacle_research_v2_snapshots.jsonl"))
-    report=analyze(features,read(root/"oddspapi_finished_results.jsonl"))
+    # Pinnwire settlements carry exact pinnwire fixture IDs and documented FT evidence.
+    # Normalize only fields supported by the settlement rows; do not bridge providers.
+    verified=[]
+    for row in read(root/"pinnwire_research_v2_settlements.jsonl"):
+        if not row.get("result_source") or not str(row.get("fixture_id","")).startswith("pinnwire:"):
+            continue
+        if row.get("ft_home_goals") is None or row.get("ft_away_goals") is None:
+            continue
+        verified.append({**row,"result_identity":"PINNWIRE_EXACT_FIXTURE_ID_SETTLEMENT_EVIDENCE"})
+    report=analyze(features,verified)
+    report["ft_input_rows"]=len(verified)
+    report["ft_input"]="pinnwire_research_v2_settlements.jsonl"
     report["side_evidence_counts"]={k:sum(x["side_evidence"]==k for x in features) for k in ("EXACT_SOURCE_SNAPSHOT","UNVERIFIED")}
     dest=Path("reports/research_ah_ft_join_exploratory.json")
     dest.parent.mkdir(parents=True,exist_ok=True)
