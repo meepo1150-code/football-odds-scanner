@@ -42,6 +42,8 @@
       if(monitor.next_slot_readiness){
         const next=monitor.next_slot_readiness;
         line('p','รอบถัดไป '+next.target_at+' · '+next.status+' · ชุดเดิม '+(next.fixture_set_size??'UNKNOWN')+' คู่ · ยังไม่ kickoff ณ รอบ '+next.remaining_prematch_at_target+' · ต้องใช้ '+next.required_market_requests+' market requests');
+        if(next.prematch_forecast_at)line('p','คาดการณ์ก่อนแข่ง ณ primary '+next.prematch_forecast_at+' · ยังไม่ใช่ snapshots ใหม่');
+        if(next.blocked_reasons?.length)line('p','Readiness blocked: '+next.blocked_reasons.join(', '));
         line('p','Account remaining estimate '+(next.account_remaining_estimate??'UNKNOWN')+' · อ้างอิงบัญชี '+(next.account_observed_before||'UNKNOWN')+' · จะตรวจบัญชีจริงตอนเก็บราคา · runtime '+(next.runtime_verified?'VERIFIED':'PENDING'));
       }
       if(monitor.latest_fixture_diagnostics){
