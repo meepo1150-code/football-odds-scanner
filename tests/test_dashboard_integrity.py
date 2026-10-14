@@ -206,3 +206,12 @@ def test_ah_favorite_bar_uses_red_and_white_segments():
     assert '.ah-segment.favorite{background:#ef5264}' in html
     assert '.ah-segment.underdog{background:#f4f7fc}' in html
     assert 'ส่วนที่ไม่ใช่ชัยชนะฝั่งต่อ' in html
+
+
+def test_market_signal_badges_match_bar_colors():
+    html=Path('apps/dashboard/index.html').read_text()
+    assert "signal-favorite" in html and "signal-underdog" in html
+    assert ".signal-ah.signal-high.signal-favorite{background:rgba(239,82,100,.18)!important;border-color:#ef5264" in html
+    assert ".signal-ah.signal-low.signal-underdog{background:rgba(244,247,252,.13)!important;border-color:#f4f7fc" in html
+    assert ".signal-ou.signal-high:not(.signal-under){background:rgba(255,180,94,.17)!important;border-color:#ffb45e" in html
+    assert ".signal-ou.signal-under{background:rgba(104,174,250,.17)!important;border-color:#68aefa" in html
