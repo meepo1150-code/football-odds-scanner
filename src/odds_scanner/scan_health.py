@@ -163,6 +163,12 @@ def refresh(root=Path('.'), now=None):
              'latest_scan_day': scan.get('football_day') if scan else None,
              'history_report_count': latest['report_count'], 'canonical_slots': col['canonical_slots'],
              'api_requests_used':0, 'raw_deleted':0, 'approved_unresolved_fixtures_retained':True}
+    from .scan_stabilization import readiness, diagnostics
+    value['next_slot_readiness'] = readiness(root, now)
+    report = load(root, 'europe_pinnacle_research_v2_status')
+    value['latest_fixture_diagnostics'] = diagnostics(root, report) if report else {'status': 'INSUFFICIENT_EVIDENCE', 'fixtures': []}
+    value['resolved_duplicate_identities'] = [b for b in identity.get('bridges', [])
+        if b.get('policy') == 'REPRODUCED_PINNWIRE_FALLBACK_HASH_AND_UNIQUE_NATIVE_ID']
     p = root / MONITOR
     p.write_text(json.dumps(value, ensure_ascii=False, indent=2)+'\n')
     return value
