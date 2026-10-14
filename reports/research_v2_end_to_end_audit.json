@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-14T12:52:44.446649+00:00",
+  "generated_at": "2026-10-14T13:12:39.674360+00:00",
   "research_only": true,
   "raw_deleted": 0,
   "settled_fixtures": 868,
@@ -513,11 +513,20 @@
     ]
   },
   "ft_triage_counts": {
-    "FUTURE_OR_RECENT": 32,
+    "FUTURE_OR_RECENT": 31,
     "POSTPONED": 1,
+    "ACTIVE_OVERDUE": 1,
     "IDENTITY_CONFLICT": 1
   },
   "ft_triage_groups": [
+    {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "oddspapi",
+      "country": "Kazakhstan",
+      "canonical_competition_id": "KAZ-0001",
+      "league": "Kazakhstan Premier League",
+      "n": 1
+    },
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
@@ -564,7 +573,7 @@
       "country": "Kazakhstan",
       "canonical_competition_id": "KAZ-0001",
       "league": "Kazakhstan Premier League",
-      "n": 2
+      "n": 1
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -1180,7 +1189,7 @@
       "canonical_competition_id": "KAZ-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -1248,8 +1257,8 @@
     "missed_backfill": false,
     "minimum_request_spacing_minutes": 15,
     "oddspapi_requests_per_run_max": 2,
-    "oddspapi_requests_per_utc_day_max": 8,
-    "oddspapi_research_requests_per_utc_month_max": 240,
+    "oddspapi_requests_per_utc_day_max": 6,
+    "oddspapi_research_requests_per_utc_month_max": 180,
     "account_limit": 250,
     "account_safety_reserve": 10,
     "account_gate": "READ_UNMETERED_ACCOUNT_BEFORE_BILLABLE_REQUESTS; SHARED_ACCOUNT_REMAINING_AND_RESERVE_GATE",
