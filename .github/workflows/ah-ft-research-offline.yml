@@ -17,6 +17,8 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
+      - name: Install test dependencies
+        run: python -m pip install pytest
       - name: Unit tests
         run: python -m pytest -q tests/test_ah_ft_enrich.py tests/test_ah_ft_join_research.py
       - name: Analyze historical files offline (no API or secrets)
