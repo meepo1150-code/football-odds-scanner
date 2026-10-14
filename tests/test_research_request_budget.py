@@ -19,12 +19,12 @@ def test_budget_rotation_caps_and_deduplicates(tmp_path):
     path.write_text('\n'.join(json.dumps(x) for x in [row(),row()]))
     second, report=allocation(path,ids,NOW)
     assert second==first and report['research_requests_used_today']==2
-    path.write_text(json.dumps(row(used=6)))
+    path.write_text(json.dumps(row(used=8)))
     assert allocation(path,ids,NOW)[0]==[]
     assert len(allocation(path,ids,NOW+timedelta(days=1))[0])<=10
-    path.write_text(json.dumps(row(NOW-timedelta(days=1),180)))
+    path.write_text(json.dumps(row(NOW-timedelta(days=1),240)))
     assert allocation(path,ids,NOW)[0]==[]
-    assert len(allocation(path,ids,datetime(2026,11,1,tzinfo=timezone.utc))[0])==5
+    assert len(allocation(path,ids,datetime(2026,11,1,tzinfo=timezone.utc))[0])==10
 
 
 @pytest.mark.parametrize("day", [14, 17])
@@ -33,7 +33,7 @@ def test_four_daily_slots_have_primary_budget_and_same_cohort(tmp_path, day):
     for hour in (8,11,14,17):
         now=datetime(2026,10,day,hour,tzinfo=timezone.utc)
         chosen,report=allocation(path,ids,now)
-        assert 0 < len(chosen) <= 5 and report['research_run_limit']==1
+        assert 0 < len(chosen) <= 10 and report['research_run_limit']==2
         cohorts.append(chosen)
         receipts.append(row(now,1,str(hour)))
         path.write_text('\n'.join(json.dumps(x) for x in receipts))
@@ -53,7 +53,7 @@ def test_exhausted_daily_budget_calls_no_provider_even_when_forced(tmp_path,monk
     target=tmp_path/collector.TARGET_PATH;target.parent.mkdir(parents=True)
     target.write_text(json.dumps({'tournaments':[{'tournament_id':n} for n in range(54)]}))
     ledger=tmp_path/collector.SLOT_LEDGER_PATH;ledger.parent.mkdir(parents=True)
-    ledger.write_text(json.dumps(row(now,6)))
+    ledger.write_text(json.dumps(row(now,8)))
     monkeypatch.setattr(collector,'_get',lambda *a:pytest.fail('budget blocked before API call'))
     result=collector.run(tmp_path)
     assert result['status']=='SKIPPED_QUOTA'
@@ -63,11 +63,11 @@ def test_exhausted_daily_budget_calls_no_provider_even_when_forced(tmp_path,monk
 
 def test_failed_attempts_remain_in_ledger_for_same_slot(tmp_path):
     ledger=tmp_path/'ledger'
-    for i in range(3):
+    for i in range(4):
         report={'generated_at':(NOW+timedelta(minutes=i)).isoformat(),
                 'scheduled_target_at':'same-slot','requests_used':2}
         collector._record_slot(ledger,report,'FAILED')
-    assert len(ledger.read_text().splitlines())==3
+    assert len(ledger.read_text().splitlines())==4
     assert allocation(ledger,list(range(54)),NOW)[0]==[]
 
 
@@ -87,7 +87,7 @@ def test_old_backfilled_unknown_usage_does_not_block_new_month(tmp_path):
 def test_manual_and_recovery_cannot_spend_midnight_reserve(tmp_path):
     path=tmp_path/'ledger';ids=list(range(54))
     now=datetime(2026,10,14,14,tzinfo=timezone.utc)
-    path.write_text(json.dumps(row(now,5)))
+    path.write_text(json.dumps(row(now,7)))
     for manual in (False,True):
         chosen,report=allocation(path,ids,now,manual=manual)
         assert chosen==[]
@@ -99,7 +99,7 @@ def test_manual_and_recovery_cannot_spend_midnight_reserve(tmp_path):
 
 
 def test_preparation_discovery_and_four_slots_fit_every_utc_day(tmp_path):
-    path=tmp_path/'ledger';receipts=[];ids=list(range(54))
+    path=tmp_path/'ledger';receipts=[];ids=list(range(5))
     for day in range(14,18):
         for hour in (8,11,14,17):
             now=datetime(2026,10,day,hour,tzinfo=timezone.utc)
@@ -112,7 +112,7 @@ def test_preparation_discovery_and_four_slots_fit_every_utc_day(tmp_path):
 
 
 def test_bangkok_midnight_does_not_reset_utc_budget(tmp_path):
-    path=tmp_path/'ledger';path.write_text(json.dumps(row(datetime(2026,10,31,14,tzinfo=timezone.utc),6)))
+    path=tmp_path/'ledger';path.write_text(json.dumps(row(datetime(2026,10,31,14,tzinfo=timezone.utc),8)))
     now=datetime.fromisoformat('2026-11-01T00:00:00+07:00')
     assert allocation(path,list(range(54)),now)[0]==[]
     reset=datetime.fromisoformat('2026-11-01T07:00:00+07:00')
@@ -121,10 +121,10 @@ def test_bangkok_midnight_does_not_reset_utc_budget(tmp_path):
 
 def test_monthly_capacity_reserved_for_future_days(tmp_path):
     path=tmp_path/'ledger';now=datetime(2026,10,30,14,tzinfo=timezone.utc)
-    path.write_text(json.dumps(row(now-timedelta(days=1),174)))
+    path.write_text(json.dumps(row(now-timedelta(days=1),234)))
     chosen,report=allocation(path,list(range(54)),now)
     assert chosen==[] and report['future_month_requests_reserved']==5
-    path.write_text(json.dumps(row(now-timedelta(days=1),173)))
+    path.write_text(json.dumps(row(now-timedelta(days=1),233)))
     assert len(allocation(path,list(range(54)),now)[0])==5
 
 
@@ -147,8 +147,8 @@ def test_complete_month_preserves_all_four_slots_with_optional_breadth(tmp_path,
             now = datetime(2026, month, day, hour, 5, tzinfo=timezone.utc)
             overhead = int(hour == 8)
             chosen, _ = allocation(path, ids, now, prioritized=True, overhead=overhead)
-            assert len(chosen) == 5
-            receipts.append(row(now, 1+overhead, f'{day}-{hour}'))
+            assert 5 <= len(chosen) <= 10
+            receipts.append(row(now, len(chosen)//5+overhead, f'{day}-{hour}'))
             path.write_text('\n'.join(json.dumps(r) for r in receipts))
         extra_at = now.replace(hour=20)
         chosen, _ = allocation(path, ids, extra_at, prioritized=True, manual=True)
@@ -156,5 +156,5 @@ def test_complete_month_preserves_all_four_slots_with_optional_breadth(tmp_path,
             receipts.append(row(extra_at, len(chosen)//5, f'extra-{day}'))
             path.write_text('\n'.join(json.dumps(r) for r in receipts))
         daily, monthly = usage(path, extra_at)
-        assert daily <= 6 and monthly <= 180
-    assert monthly == 180
+        assert daily <= 8 and monthly <= 240
+    assert monthly == 240

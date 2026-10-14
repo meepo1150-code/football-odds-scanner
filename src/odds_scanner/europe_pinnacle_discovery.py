@@ -10,7 +10,7 @@ from zoneinfo import ZoneInfo
 from email.utils import parsedate_to_datetime
 from .research_request_budget import allocation
 from .research_quota_checkpoint import reserve, ResearchQuotaBlocked
-from .provider_request_budget import QuotaBlocked
+from .provider_request_budget import QuotaBlocked, ACCOUNT_RESERVE
 from .europe_bookmaker_coverage_probe import BOOKMAKER, quota_allows_probe, summarize_rows
 
 # Research V2 is the primary forward data collector. Keep a small emergency reserve,
@@ -190,7 +190,20 @@ def run(root=Path('.')):
     # The reserve protects future canonical observations, not the current canonical
     # observation itself. Once quota falls to the reserve, spend it only on a current
     # canonical slot; background/history workflows remain responsible for yielding.
-    effective_reserve = budget['future_utc_requests_reserved']
+    effective_reserve = ACCOUNT_RESERVE + budget['future_utc_requests_reserved']
+    month_minimum = (budget['future_month_requests_reserved']
+                     + budget['future_utc_requests_reserved'] + overhead + 1)
+    report['account_safety_reserve'] = ACCOUNT_RESERVE
+    report['account_minimum_requests_through_month_end'] = month_minimum
+    report['account_month_capacity_shortfall'] = max(0, month_minimum + ACCOUNT_RESERVE - remaining)
+    # Breadth is optional. Keep the minimum market call available today even
+    # when earlier account usage makes all remaining days impossible to fund.
+    if normal > 1 and remaining - normal - overhead < ACCOUNT_RESERVE + month_minimum - overhead - 1:
+        ids = ids[:BATCH_SIZE]
+        selected = [x for x in selected if x.get('tournament_id') in ids]
+        normal = 1
+        report.update(planned_requests=normal, coverage_tournament_ids=ids,
+                      account_optional_breadth_deferred=True)
     report['effective_quota_reserve']=effective_reserve
     if not ids or remaining-normal-overhead < effective_reserve:report.update(status='SKIPPED_QUOTA',quota_skip_reason='ACCOUNT_CAPACITY_RESERVED_OR_EXHAUSTED',requests_used=0);return _write(report,root)
     try:

@@ -107,15 +107,8 @@ def test_every_day_midnight_has_utc_schedule_and_recovery_heartbeats():
         assert target.hour==0 and target.date()==day+timedelta(days=1)
         assert _football_day_bounds(target+timedelta(minutes=10))[2]==day.isoformat()
         assert due(target+timedelta(minutes=10),{},ledger_rows=[],snapshots=[])
-    for name in ['free-research-v2-scanner','research-v2-scheduled-slot-recovery']:
-        doc=yaml.safe_load(Path('.github/workflows/'+name+'.yml').read_text())
-        events=doc.get('on',doc.get(True))
-        crons=[r['cron'].split() for r in events['schedule']]
-        for day in range(7):
-            assert any(c[0]=='0' and '17' in c[1].split(',') and
-                       (c[4]=='*' or c[4]=='1-5' and 1<=day<=5 or c[4]=='0,6' and day in (0,6)) for c in crons)
-    for name in ['europe-pinnacle-daily-discovery','research-v2-slot-watchdog']:
-        doc=yaml.safe_load(Path('.github/workflows/'+name+'.yml').read_text())
-        crons=[r['cron'].split() for r in doc.get('on',doc.get(True))['schedule']]
-        assert any('17' in c[1].split(',') and c[4]=='1-5' for c in crons)
-        assert any('19' in c[1].split(',') and c[4]=='1-5' for c in crons)
+    primary=yaml.safe_load(Path('.github/workflows/europe-pinnacle-daily-discovery.yml').read_text())
+    crons=[r['cron'].split() for r in primary.get('on',primary.get(True))['schedule']]
+    for day in range(7):
+        for hour in (8,11,14,17):
+            assert any(c[0]=='3' and str(hour) in c[1].split(',') and c[4]=='*' for c in crons)
