@@ -1,5 +1,6 @@
 import copy
 import json
+import hashlib
 from odds_scanner.research_v2_fixture_identity import build_bridge, project
 from odds_scanner.research_v2_pattern_stats import build, SNAPSHOTS, RESULTS
 from odds_scanner.research_v2_movement import run
@@ -58,5 +59,35 @@ def test_result_on_either_id_and_conflicts_fail_closed(tmp_path):
         assert build(tmp_path)['settled_fixtures']==1
     write(tmp_path,rows,[dict(fixture_id='pinnwire:1',ft_home_goals=1,ft_away_goals=0),dict(fixture_id='propline:2',ft_home_goals=2,ft_away_goals=0)])
     assert build(tmp_path)['settled_fixtures']==0
+
     write(tmp_path,rows,[dict(fixture_id='pinnwire:1',ft_home_goals=1,ft_away_goals=0)],[dict(fixture_id='propline:2')])
     assert build(tmp_path)['settled_fixtures']==0
+
+
+def native_and_fallback():
+    r=pair()[0]
+    r.update(fixture_id='pinnwire:123',provider_fixture_id='123')
+    digest=hashlib.sha1(f"{r['home']}|{r['away']}|{r['kickoff']}".encode()).hexdigest()[:16]
+    return [r,dict(copy.deepcopy(r),fixture_id='pinnwire:'+digest,provider_fixture_id=digest)]
+
+
+def test_reproduced_fallback_alias_is_derived_and_settles_once(tmp_path):
+    rows=native_and_fallback();original=copy.deepcopy(rows)
+    mapping,evidence=build_bridge(rows)
+    assert mapping[rows[1]['fixture_id']]=='pinnwire:123'
+    assert evidence['bridges'][0]['policy']=='REPRODUCED_PINNWIRE_FALLBACK_HASH_AND_UNIQUE_NATIVE_ID'
+    write(tmp_path,rows,[dict(fixture_id=rows[1]['fixture_id'],ft_home_goals=1,ft_away_goals=0)])
+    assert build(tmp_path)['settled_fixtures']==1
+    assert rows==original
+    write(tmp_path,rows,[dict(fixture_id=r['fixture_id'],ft_home_goals=i,ft_away_goals=0) for i,r in enumerate(rows)])
+    assert build(tmp_path)['settled_fixtures']==0
+
+
+def test_same_teams_different_date_reschedule_and_unproven_ids_remain_unmatched():
+    for key,value in [('kickoff','2026-10-02T18:45:00+00:00'),('away','Other'),
+                      ('provider_fixture_id','unverified'),('fixture_id','pinnwire:456')]:
+        rows=native_and_fallback();rows[1][key]=value
+        assert not build_bridge(rows)[0]
+    rows=native_and_fallback();changed=dict(rows[0],kickoff='2026-10-02T18:45:00+00:00')
+    mapping,evidence=build_bridge(rows+[changed])
+    assert not mapping and any(r['reason']=='INCONSISTENT_IDENTITY' for r in evidence['rejected'])

@@ -38,6 +38,18 @@
     if(health&&monitor){
       line('p','Monitor '+monitor.status+' · '+monitor.generated_at+' · Scan Missing '+monitor.scan_missing_count+' · FT Delay '+monitor.ft_delay_count+' · Unmatched candidates '+monitor.unmatched_count);
       line('p','Unmatched candidates คือ identity bridge ที่ยังยืนยันไม่ได้ ไม่ใช่จำนวน FT missing · เกมเลื่อนแสดงแยก '+monitor.verified_non_ft_lifecycle_count);
+      line('p','Duplicate ID ที่ยืนยันจาก hash เดิม '+(monitor.resolved_duplicate_identities||[]).length+' กลุ่ม · raw history คงอยู่');
+      if(monitor.next_slot_readiness){
+        const next=monitor.next_slot_readiness;
+        line('p','รอบถัดไป '+next.target_at+' · '+next.status+' · ชุดเดิม '+(next.fixture_set_size??'UNKNOWN')+' คู่ · ยังไม่ kickoff ณ รอบ '+next.remaining_prematch_at_target+' · ต้องใช้ '+next.required_market_requests+' market requests');
+        line('p','Account remaining estimate '+(next.account_remaining_estimate??'UNKNOWN')+' · อ้างอิงบัญชี '+(next.account_observed_before||'UNKNOWN')+' · จะตรวจบัญชีจริงตอนเก็บราคา · runtime '+(next.runtime_verified?'VERIFIED':'PENDING'));
+      }
+      if(monitor.latest_fixture_diagnostics){
+        line('p','สาเหตุรายคู่จาก response เดิม: '+JSON.stringify(monitor.latest_fixture_diagnostics.reason_counts||{}));
+        const detail=document.createElement('details');card.append(detail);
+        const summary=document.createElement('summary');summary.textContent='แยก Already Kickoff / Market / Quota / Provider / Mapping / Validation';detail.append(summary);
+        const pre=document.createElement('pre');pre.style.whiteSpace='pre-wrap';pre.textContent=JSON.stringify(monitor.latest_fixture_diagnostics.fixtures||[],null,2);detail.append(pre);
+      }
       const latest=health.latest_scan;
       line('p','Workflow SUCCESS หมายถึง job ทำงานจบ · Scan Health PASS/WARNING/FAIL ตรวจการเก็บข้อมูลแยกกัน');
       for(const provider of ['oddspapi','propline']){
