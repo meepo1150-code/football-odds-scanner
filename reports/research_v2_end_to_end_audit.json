@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-10-14T17:04:04.000979+00:00",
+  "generated_at": "2026-10-14T18:00:49.846547+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 830,
+  "settled_fixtures": 832,
   "movement_classification_counts": {
     "SINGLE_OBSERVATION": 613,
     "FAVORITE_SWITCH": 5,
     "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 10,
     "AH_LINE_UNCHANGED__PRICE_DOWN": 70,
     "AH_LINE_UNCHANGED__PRICE_UP": 47,
-    "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 9,
+    "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 10,
     "AH_FAVORITE_LINE_WEAKER__PRICE_UP": 2,
-    "AH_LINE_UNCHANGED__PRICE_FLAT": 30,
+    "AH_LINE_UNCHANGED__PRICE_FLAT": 31,
     "INSUFFICIENT_OBSERVATIONS": 42,
     "AH_FAVORITE_LINE_STRONGER__PRICE_DOWN": 2
   },
@@ -20,33 +20,33 @@
     "evaluation": "RETROSPECTIVE_VIEWED_DATA_CHRONOLOGICAL_WALK_FORWARD_BY_FOOTBALL_DAY",
     "untouched_holdout": false,
     "promotion_allowed": false,
-    "unique_eligible_fixtures": 175,
-    "unique_evaluated_fixtures": 15,
+    "unique_eligible_fixtures": 177,
+    "unique_evaluated_fixtures": 16,
     "metric": "BASELINE_MSE_MINUS_MOVEMENT_MSE; POSITIVE_IS_BETTER",
-    "mean_squared_error_improvement": 0.007708909161023343,
+    "mean_squared_error_improvement": 0.012195471370269287,
     "improvement_bootstrap95": [
-      -0.059574,
-      0.072919
+      -0.058954,
+      0.076893
     ],
     "baseline": "MARKET_SIDE + AH_LINE + PRICE_BUCKET; TRAIN_MIN_5; PRIOR_DAYS_MIN_20",
     "movement_model": "SAME_BASELINE + MOVEMENT; SHRINKAGE_10_BASELINE_OBSERVATIONS",
     "multiple_testing_policy": "ONE_PREDEFINED_INCREMENTAL_COMPARISON; SUBGROUPS_DESCRIPTIVE_ONLY; NO_PROMOTION_OR_EDGE_CLAIMS; NEW_UNVIEWED_PERIOD_REQUIRED",
     "observation_gap_minutes": {
-      "n": 175,
+      "n": 177,
       "min": 0.713,
       "median": 205.049,
       "max": 649.593
     },
     "first_minutes_before_kickoff": {
-      "n": 175,
+      "n": 177,
       "min": 43.721,
       "median": 379.972,
       "max": 940.905
     },
     "last_minutes_before_kickoff": {
-      "n": 175,
+      "n": 177,
       "min": 0.501,
-      "median": 128.686,
+      "median": 115.96,
       "max": 577.827
     },
     "descriptive_families": [
@@ -78,15 +78,15 @@
       },
       {
         "movement": "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN",
-        "unique_fixture_n": 9,
-        "roi_pct": 16.853,
+        "unique_fixture_n": 10,
+        "roi_pct": 5.167,
         "profit_mean_bootstrap95": [
-          -0.360502,
-          0.655326
+          -0.471052,
+          0.536789
         ],
         "settlements": {
           "FULL_WIN": 4,
-          "FULL_LOSS": 2,
+          "FULL_LOSS": 3,
           "HALF_LOSS": 1,
           "HALF_WIN": 1,
           "PUSH": 1
@@ -123,16 +123,16 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_FLAT",
-        "unique_fixture_n": 30,
-        "roi_pct": -6.511,
+        "unique_fixture_n": 31,
+        "roi_pct": -3.288,
         "profit_mean_bootstrap95": [
-          -0.400654,
-          0.261982
+          -0.35583,
+          0.2829
         ],
         "settlements": {
           "HALF_LOSS": 2,
           "PUSH": 2,
-          "FULL_WIN": 12,
+          "FULL_WIN": 13,
           "FULL_LOSS": 13,
           "HALF_WIN": 1
         }
@@ -318,6 +318,16 @@
         "movement_return_prediction": -0.6574545454545454,
         "realized_profit_units": 0.8839999999999999,
         "squared_error_improvement": -0.10443027570247976
+      },
+      {
+        "fixture_id": "id1000009872735818",
+        "football_day": "2026-10-14",
+        "baseline_train_n": 5,
+        "movement_train_n": 1,
+        "baseline_return_prediction": 0.33200162601626015,
+        "movement_return_prediction": 0.30181966001478194,
+        "realized_profit_units": -1.0,
+        "squared_error_improvement": 0.07949390450895844
       }
     ],
     "limitations": [
@@ -331,26 +341,9 @@
   "ft_triage_counts": {
     "FUTURE_OR_RECENT": 25,
     "POSTPONED": 1,
-    "IDENTITY_CONFLICT": 2,
-    "ACTIVE_OVERDUE": 2
+    "IDENTITY_CONFLICT": 2
   },
   "ft_triage_groups": [
-    {
-      "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "Kazakhstan",
-      "canonical_competition_id": "KAZ-0001",
-      "league": "Kazakhstan Premier League",
-      "n": 1
-    },
-    {
-      "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "Turkey",
-      "canonical_competition_id": "TUR-0002",
-      "league": "TFF 1 Lig",
-      "n": 1
-    },
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
@@ -867,24 +860,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000009872735818",
-      "provider": "oddspapi",
-      "football_day": "2026-10-14",
-      "league": "TFF 1 Lig",
-      "kickoff": "2026-10-14T14:00:00+00:00",
-      "home": "Umraniyespor",
-      "away": "Boluspor",
-      "status": "MISSING_FT",
-      "country": "Turkey",
-      "canonical_competition_id": "TUR-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000017275339776",
       "provider": "oddspapi",
       "football_day": "2026-10-14",
@@ -934,24 +909,6 @@
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000068274070700",
-      "provider": "oddspapi",
-      "football_day": "2026-10-14",
-      "league": "Kazakhstan Premier League",
-      "kickoff": "2026-10-14T14:00:00+00:00",
-      "home": "FK Atyrau",
-      "away": "FC Yelimai",
-      "status": "MISSING_FT",
-      "country": "Kazakhstan",
-      "canonical_competition_id": "KAZ-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
