@@ -67,6 +67,12 @@
       line('p','Quota ล่าสุดก่อนยิง '+(scan.quota_remaining_before??'UNKNOWN')+' · รอบนี้ใช้ '+(scan.requests_used??0)+' · '+(scan.coverage_complete?'พิจารณา scope ตาม receipt แล้ว':'COVERAGE GAPS REMAIN'));
       if(scan.quota_utc_day)line('p','Research quota UTC '+scan.quota_utc_day+' · used/reserved today '+scan.research_requests_used_today+'/'+(scan.research_daily_limit??'UNKNOWN')+' · month '+scan.research_requests_used_month+'/'+(scan.research_monthly_limit??'UNKNOWN')+' · future slots reserved '+scan.future_utc_requests_reserved+' · future days reserved '+scan.future_month_requests_reserved);
       if(scan.account_safety_reserve!=null)line('p','Account safety reserve '+scan.account_safety_reserve+' · ขั้นต่ำที่ต้องใช้ถึงสิ้นเดือน '+scan.account_minimum_requests_through_month_end+' · ขาดโควต้า '+scan.account_month_capacity_shortfall+' requests · ไม่รับประกันครบทุกวัน');
+      if(scan.daily_cohort_policy){
+        line('p','กลุ่มคู่จาก 15:00 '+scan.daily_cohort_fixture_count+' คู่ · ยังไม่เตะ '+scan.daily_cohort_remaining_prematch_count+' · ตรวจครบกลุ่ม '+(scan.daily_cohort_query_complete?'YES':'NO'));
+        const cohort=document.createElement('details');card.append(cohort);
+        const title=document.createElement('summary');title.textContent='ผลสแกนรายคู่จากกลุ่ม 15:00';cohort.append(title);
+        const body=document.createElement('pre');body.style.whiteSpace='pre-wrap';body.textContent=JSON.stringify(scan.daily_cohort_fixtures||[],null,2);cohort.append(body);
+      }
       const detail=document.createElement('details');card.append(detail);const summary=document.createElement('summary');summary.textContent='Coverage report ทุกลีกที่อนุมัติ';detail.append(summary);
       const pre=document.createElement('pre');pre.style.whiteSpace='pre-wrap';pre.textContent=JSON.stringify(scan.competition_coverage||[],null,2);detail.append(pre);
     }

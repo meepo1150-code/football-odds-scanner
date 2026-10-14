@@ -34,6 +34,18 @@ def due(now, report, event='schedule', fallback=None, ledger_rows=None, snapshot
                 return False
         except (ValueError, TypeError, KeyError):
             pass
+    # An earlier quote of the wrong population must not impose the 60-minute
+    # retry delay on the newly required fixed-cohort observation. The common
+    # 15-minute transport spacing above still applies.
+    if ledger_rows is not None and max(targets).hour != 15 and local.date().isoformat() >= '2026-10-14':
+        setup_target = canonical_targets(_football_day_bounds(now)[2])[0].isoformat()
+        master_setup = any(r.get('scheduled_target_at') == setup_target
+                           and r.get('collection_succeeded') is True
+                           and r.get('master_competitions_considered') for r in ledger_rows)
+        master_setup = master_setup or any(r.get('scheduled_target_at') == setup_target
+                                          and r.get('home_club_id') and r.get('away_club_id') for r in snapshots or [])
+        if master_setup and report.get('daily_cohort_policy') != 'FIXED_1500_FIXTURE_COHORT_V1':
+            return True
     try:
         attempted = datetime.fromisoformat(report['generated_at'].replace('Z', '+00:00'))
         if (attempted.tzinfo and max(targets) <= attempted <= now

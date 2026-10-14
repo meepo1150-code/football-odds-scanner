@@ -33,7 +33,12 @@ def test_four_daily_slots_have_primary_budget_and_same_cohort(tmp_path, day):
     for hour in (8,11,14,17):
         now=datetime(2026,10,day,hour,tzinfo=timezone.utc)
         chosen,report=allocation(path,ids,now)
-        assert 0 < len(chosen) <= 10 and report['research_run_limit']==2
+        assert chosen and report['research_run_limit']==(1 if hour==8 else 2)
+        if hour==8:
+            fixed_ids=chosen
+        else:
+            chosen,_=allocation(path,fixed_ids,now,prioritized=True)
+            assert chosen==fixed_ids
         cohorts.append(chosen)
         receipts.append(row(now,1,str(hour)))
         path.write_text('\n'.join(json.dumps(x) for x in receipts))
