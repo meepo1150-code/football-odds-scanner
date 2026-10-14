@@ -186,3 +186,11 @@ for(const [n,tier] of [[null,'n-unknown'],[0,'n-unknown'],[8,'n-low'],[14,'n-low
 '''
     result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
+
+
+def test_favorite_ah_betting_win_label_is_clear():
+    html=Path('apps/dashboard/index.html').read_text()
+    assert "metricBar('เดิมพันฝั่งต่อชนะ'" in html
+    assert "signalBadge('เดิมพันฝั่งต่อชนะ'" in html
+    assert "signalBadge('เดิมพันฝั่งต่อชนะต่ำ'" in html
+    assert "'AH WR ต่อ'" not in html
