@@ -171,3 +171,18 @@ def test_round_header_price_specific_ah_sample_n():
     assert 'class="round-ah-n"' in html
     assert 'N=${Number(signalStats(s,st).ah?.settled_n)>0' in html
     assert '.round-price-top{display:flex' in html
+
+
+def test_ah_sample_n_badge_color_tiers():
+    node=shutil.which('node')
+    if not node:pytest.skip('Node unavailable')
+    html=Path('apps/dashboard/index.html').read_text()
+    assert 'ahSampleTier(signalStats(s,st).ah?.settled_n)' in html
+    assert '.round-ah-n.n-low' in html and '.round-ah-n.n-large' in html
+    script=html.split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
+    checks='''
+const assert=require('assert');
+for(const [n,tier] of [[null,'n-unknown'],[0,'n-unknown'],[8,'n-low'],[14,'n-low'],[15,'n-limited'],[29,'n-limited'],[30,'n-good'],[59,'n-good'],[60,'n-large'],[100,'n-large']])assert.equal(ahSampleTier(n),tier);
+'''
+    result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
+    assert result.returncode==0,result.stderr
