@@ -161,3 +161,13 @@ assert(timeline.includes('Scan 15:00')&&timeline.includes('Scan 18:00'));
 '''
     result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
+
+
+def test_round_header_price_specific_ah_sample_n():
+    html=Path('apps/dashboard/index.html').read_text()
+    assert 'class="round-price-top"' in html
+    assert 'AH ${esc(s.ah?.selected_side_line)}' in html
+    assert 'signalStats(s,st).ah?.settled_n' in html
+    assert 'class="round-ah-n"' in html
+    assert 'N=${Number(signalStats(s,st).ah?.settled_n)>0' in html
+    assert '.round-price-top{display:flex' in html
