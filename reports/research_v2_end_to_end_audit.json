@@ -1,14 +1,14 @@
 {
-  "generated_at": "2026-10-14T15:34:37.350858+00:00",
+  "generated_at": "2026-10-14T16:08:23.539924+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 828,
+  "settled_fixtures": 830,
   "movement_classification_counts": {
-    "SINGLE_OBSERVATION": 612,
+    "SINGLE_OBSERVATION": 613,
     "FAVORITE_SWITCH": 5,
     "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 10,
     "AH_LINE_UNCHANGED__PRICE_DOWN": 70,
-    "AH_LINE_UNCHANGED__PRICE_UP": 46,
+    "AH_LINE_UNCHANGED__PRICE_UP": 47,
     "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 9,
     "AH_FAVORITE_LINE_WEAKER__PRICE_UP": 2,
     "AH_LINE_UNCHANGED__PRICE_FLAT": 30,
@@ -20,33 +20,33 @@
     "evaluation": "RETROSPECTIVE_VIEWED_DATA_CHRONOLOGICAL_WALK_FORWARD_BY_FOOTBALL_DAY",
     "untouched_holdout": false,
     "promotion_allowed": false,
-    "unique_eligible_fixtures": 174,
-    "unique_evaluated_fixtures": 14,
+    "unique_eligible_fixtures": 175,
+    "unique_evaluated_fixtures": 15,
     "metric": "BASELINE_MSE_MINUS_MOVEMENT_MSE; POSITIVE_IS_BETTER",
-    "mean_squared_error_improvement": 0.01571885093698785,
+    "mean_squared_error_improvement": 0.007708909161023343,
     "improvement_bootstrap95": [
-      -0.057337,
-      0.086262
+      -0.059574,
+      0.072919
     ],
     "baseline": "MARKET_SIDE + AH_LINE + PRICE_BUCKET; TRAIN_MIN_5; PRIOR_DAYS_MIN_20",
     "movement_model": "SAME_BASELINE + MOVEMENT; SHRINKAGE_10_BASELINE_OBSERVATIONS",
     "multiple_testing_policy": "ONE_PREDEFINED_INCREMENTAL_COMPARISON; SUBGROUPS_DESCRIPTIVE_ONLY; NO_PROMOTION_OR_EDGE_CLAIMS; NEW_UNVIEWED_PERIOD_REQUIRED",
     "observation_gap_minutes": {
-      "n": 174,
+      "n": 175,
       "min": 0.713,
       "median": 205.049,
       "max": 649.593
     },
     "first_minutes_before_kickoff": {
-      "n": 174,
+      "n": 175,
       "min": 43.721,
-      "median": 380.8445,
+      "median": 379.972,
       "max": 940.905
     },
     "last_minutes_before_kickoff": {
-      "n": 174,
+      "n": 175,
       "min": 0.501,
-      "median": 129.96949999999998,
+      "median": 128.686,
       "max": 577.827
     },
     "descriptive_families": [
@@ -139,14 +139,14 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_UP",
-        "unique_fixture_n": 46,
-        "roi_pct": -8.526,
+        "unique_fixture_n": 47,
+        "roi_pct": -6.464,
         "profit_mean_bootstrap95": [
-          -0.364933,
-          0.180305
+          -0.333428,
+          0.224824
         ],
         "settlements": {
-          "FULL_WIN": 19,
+          "FULL_WIN": 20,
           "FULL_LOSS": 22,
           "HALF_LOSS": 3,
           "HALF_WIN": 1,
@@ -308,6 +308,16 @@
         "movement_return_prediction": 0.03168757598204139,
         "realized_profit_units": 0.8999999999999999,
         "squared_error_improvement": 0.10282147003679665
+      },
+      {
+        "fixture_id": "id1000002267018238",
+        "football_day": "2026-10-14",
+        "baseline_train_n": 5,
+        "movement_train_n": 1,
+        "baseline_return_prediction": -0.6232,
+        "movement_return_prediction": -0.6574545454545454,
+        "realized_profit_units": 0.8839999999999999,
+        "squared_error_improvement": -0.10443027570247976
       }
     ],
     "limitations": [
@@ -319,7 +329,7 @@
     ]
   },
   "ft_triage_counts": {
-    "FUTURE_OR_RECENT": 29,
+    "FUTURE_OR_RECENT": 27,
     "POSTPONED": 1,
     "IDENTITY_CONFLICT": 2
   },
@@ -346,7 +356,7 @@
       "country": "Estonia",
       "canonical_competition_id": "EST-0001",
       "league": "Meistriliiga",
-      "n": 2
+      "n": 1
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -378,7 +388,7 @@
       "country": "Norway",
       "canonical_competition_id": "NOR-0002",
       "league": "Norwegian First Division",
-      "n": 8
+      "n": 7
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -776,24 +786,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000002267018238",
-      "provider": "oddspapi",
-      "football_day": "2026-10-14",
-      "league": "Norwegian First Division",
-      "kickoff": "2026-10-14T13:00:00+00:00",
-      "home": "Stroemmen IF",
-      "away": "Aasane Fotball",
-      "status": "MISSING_FT",
-      "country": "Norway",
-      "canonical_competition_id": "NOR-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000002267018240",
       "provider": "oddspapi",
       "football_day": "2026-10-14",
@@ -909,24 +901,6 @@
       "kickoff": "2026-10-14T16:00:00+00:00",
       "home": "Paide Linnameeskond",
       "away": "Tartu JK Tammeka",
-      "status": "MISSING_FT",
-      "country": "Estonia",
-      "canonical_competition_id": "EST-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000017868214844",
-      "provider": "oddspapi",
-      "football_day": "2026-10-14",
-      "league": "Meistriliiga",
-      "kickoff": "2026-10-14T13:00:00+00:00",
-      "home": "JK Narva Trans",
-      "away": "FC Kuressaare",
       "status": "MISSING_FT",
       "country": "Estonia",
       "canonical_competition_id": "EST-0001",
