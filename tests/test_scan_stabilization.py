@@ -63,3 +63,31 @@ def test_reviewed_ft_batch_has_exact_identity_and_final_source_assertions():
         assert _quality(result)[0]
         retained=[r for r in snapshots if r['fixture_id']==result['fixture_id']]
         assert retained and all(_same_identity(result,r) for r in retained)
+
+
+def test_diagnostics_include_first_batch_and_exclude_other_attempts(monkeypatch, tmp_path):
+    monkeypatch.setattr(s, 'registry', lambda: [dict(tournament_id=17)])
+    monkeypatch.setattr(s, 'cohort', lambda *a: dict(fixtures=[]))
+    from odds_scanner import research_population, master_scan_scope, research_v2_slots
+    monkeypatch.setattr(research_population, 'exclusion_reason', lambda *a, **k: None)
+    monkeypatch.setattr(master_scan_scope, 'scan_scope_reason', lambda *a, **k: None)
+    monkeypatch.setattr(research_v2_slots, 'collection_snapshot', lambda r: True)
+    fixtures = [dict(fixtureId=fid, tournamentId=17, startTime='2026-10-14T19:00:00Z')
+                for fid in ('first-batch', 'last-batch', 'previous-attempt', 'not-returned')]
+    save(tmp_path, str(s.RAW_PATH), [dict(endpoint='/fixtures', response_id='raw', payload=fixtures),
+        dict(endpoint='/odds-by-tournaments', observed_at='2026-10-14T14:04:05Z', payload=fixtures[:1]),
+        dict(endpoint='/odds-by-tournaments', observed_at='2026-10-14T14:04:08Z', payload=fixtures[1:2]),
+        dict(endpoint='/odds-by-tournaments', observed_at='2026-10-14T14:03:59Z', payload=fixtures[2:])])
+    save(tmp_path, 'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl', [
+        dict(fixture_id='first-batch', observed_at='2026-10-14T14:04:05Z'),
+        dict(fixture_id='last-batch', observed_at='2026-10-14T14:04:08Z'),
+        dict(fixture_id='previous-attempt', observed_at='2026-10-14T14:03:59Z'),
+        dict(fixture_id='not-returned', provider='pinnwire', observed_at='2026-10-14T14:04:05Z')])
+    report = dict(schedule_response_id='raw', actual_observed_at='2026-10-14T14:04:08Z',
+        collection_started_at='2026-10-14T14:04:03Z', request_completed_at='2026-10-14T14:04:08Z',
+        football_day='2026-10-14', football_day_window_start='2026-10-14T05:00:00Z',
+        football_day_window_end='2026-10-14T23:00:00Z', coverage_tournament_ids=[17])
+    result = s.diagnostics(tmp_path, report)
+    assert result['reason_counts'] == {'VALID_ODDS': 2, 'MARKET_UNAVAILABLE': 2}
+    report['request_completed_at'] = '2026-10-14T14:04:04Z'
+    assert s.diagnostics(tmp_path, report)['status'] == 'INSUFFICIENT_EVIDENCE'

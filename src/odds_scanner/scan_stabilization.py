@@ -21,17 +21,25 @@ def diagnostics(root, report):
     when = stamp(report.get('actual_observed_at'))
     if not schedule or not when:
         return {'status': 'INSUFFICIENT_EVIDENCE', 'fixtures': []}
+    started = stamp(report.get('collection_started_at')) or when
+    finished = stamp(report.get('request_completed_at')) or when
+    if not started <= when <= finished:
+        return {'status': 'INSUFFICIENT_EVIDENCE', 'fixtures': []}
+    def in_attempt(row):
+        observed = stamp(row.get('observed_at'))
+        return (row.get('provider') in (None, 'oddspapi')
+                and observed is not None and started <= observed <= finished)
     from .research_population import exclusion_reason
     from .master_scan_scope import scan_scope_reason
     approved = {str(r['tournament_id']) for r in registry()}
     audit = {str(r['fixture_id']): r for r in rows(root / 'data/normalized/europe_pinnacle_research_v2_audit.jsonl')
-             if stamp(r.get('observed_at')) == when}
+             if in_attempt(r)}
     from .research_v2_slots import collection_snapshot
     valid = {str(r['fixture_id']) for r in rows(root / 'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl')
-             if stamp(r.get('observed_at')) == when and collection_snapshot(r)}
+             if in_attempt(r) and collection_snapshot(r)}
     requested = set(map(str, report.get('coverage_tournament_ids') or []))
     responses = [r for r in rows(root / RAW_PATH) if r.get('endpoint') == '/odds-by-tournaments'
-                 and stamp(r.get('observed_at')) == when]
+                 and in_attempt(r)]
     returned = {str(f.get('fixtureId')) for r in responses for f in items(r['payload'])}
     frozen = cohort(root, report['football_day'])
     baseline = {f['fixture_id'] for f in frozen['fixtures']} if frozen else set()
@@ -63,6 +71,7 @@ def diagnostics(root, report):
                         'reason': cause, 'provider_reason': seen.get('eligibility_reason') if seen else None,
                         'query_scope_includes_tournament': tid in requested})
     return {'status': 'RETAINED_RESPONSE_DIAGNOSIS', 'observed_at': when.isoformat(),
+            'attempt_started_at': started.isoformat(), 'attempt_completed_at': finished.isoformat(),
             'schedule_response_id': schedule['response_id'], 'fixtures': details,
             'reason_counts': dict(Counter(f['reason'] for f in details)),
             'no_price_or_result_inferred': True}
