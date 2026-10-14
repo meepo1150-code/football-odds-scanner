@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "missing_ft_count": 33,
+  "missing_ft_count": 32,
   "excluded_derivative_markets": 1,
   "fixtures": [
     {
@@ -313,6 +313,20 @@
       "retired_from_active_queue": false
     },
     {
+      "fixture_id": "id1000005472477468",
+      "provider": "oddspapi",
+      "football_day": "2026-10-04",
+      "league": "LaLiga 2",
+      "kickoff": "2026-10-04T19:00:00+00:00",
+      "home": "CE Sabadell FC",
+      "away": "FC Andorra",
+      "status": "IDENTITY_CONFLICT",
+      "country": "Spain",
+      "canonical_competition_id": null,
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
       "fixture_id": "id1000009872735808",
       "provider": "oddspapi",
       "football_day": "2026-10-14",
@@ -348,20 +362,6 @@
       "kickoff": "2026-10-14T14:00:00+00:00",
       "home": "Umraniyespor",
       "away": "Boluspor",
-      "status": "MISSING_FT",
-      "country": "Turkey",
-      "canonical_competition_id": "TUR-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
-    },
-    {
-      "fixture_id": "id1000009872735822",
-      "provider": "oddspapi",
-      "football_day": "2026-10-14",
-      "league": "TFF 1 Lig",
-      "kickoff": "2026-10-14T11:30:00+00:00",
-      "home": "Batman Petrolspor",
-      "away": "Istanbulspor AS",
       "status": "MISSING_FT",
       "country": "Turkey",
       "canonical_competition_id": "TUR-0002",
@@ -407,20 +407,6 @@
       "status": "MISSING_FT",
       "country": "Estonia",
       "canonical_competition_id": "EST-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
-    },
-    {
-      "fixture_id": "id1000018675178678",
-      "provider": "oddspapi",
-      "football_day": "2026-10-14",
-      "league": "Super League Greece 2",
-      "kickoff": "2026-10-14T11:45:00+00:00",
-      "home": "Olympiacos Piraeus B",
-      "away": "Athens Kallithea FC",
-      "status": "MISSING_FT",
-      "country": "Greece",
-      "canonical_competition_id": "GRC-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false
     },
