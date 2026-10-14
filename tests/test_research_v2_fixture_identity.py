@@ -96,3 +96,11 @@ def test_same_teams_different_date_reschedule_and_unproven_ids_remain_unmatched(
     rows=native_and_fallback();changed=dict(rows[0],kickoff='2026-10-02T18:45:00+00:00')
     mapping,evidence=build_bridge(rows+[changed])
     assert not mapping and any(r['reason']=='INCONSISTENT_IDENTITY' for r in evidence['rejected'])
+
+
+def test_ft_cannot_settle_reused_provider_id_across_two_match_dates(tmp_path):
+    rows=native_and_fallback()[:1]
+    rows.append(dict(rows[0],kickoff='2026-10-02T18:45:00+00:00'))
+    write(tmp_path,rows,[dict(fixture_id='pinnwire:123',ft_home_goals=0,ft_away_goals=0)])
+    stats=build(tmp_path)
+    assert stats['settled_fixtures']==0 and stats['identity_conflict_ft_fixtures']==1

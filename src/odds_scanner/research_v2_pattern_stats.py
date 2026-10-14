@@ -154,6 +154,10 @@ def build(root=Path('.')):
             blocked_results.add(str(review['fixture_id']))
     raw_provider_unresolved = len({str(s.get("fixture_id")) for s in snaps if str(s.get("fixture_id")) not in results or str(s.get("fixture_id")) in blocked_results})
     mapping, identity_report = build_bridge(snaps)
+    # A result on an ID reused across different kickoff identities cannot
+    # settle either date merely because it is the latest retained snapshot.
+    blocked_results.update(r['fixture_id'] for r in identity_report['rejected']
+                           if r.get('reason') == 'INCONSISTENT_IDENTITY' and r.get('fixture_id'))
     provider_fixture_ids = len({str(s.get('fixture_id')) for s in snaps})
     cross_provider_ids = {b['canonical_fixture_id'] for b in identity_report['bridges']
                           if len({r['provider'] for r in b['members']}) > 1}
