@@ -139,3 +139,25 @@ assert.equal(providerLabel({source_semantics:'CURRENT_ODDSPAPI_MAINLINE_TRUE_OBS
 '''
     result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
+
+
+def test_mobile_round_labels_and_complementary_ou_split():
+    node=shutil.which('node')
+    if not node:pytest.skip('Node unavailable')
+    script=Path('apps/dashboard/index.html').read_text().split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
+    checks='''
+const assert=require('assert');
+assert.equal(scanLabel({scheduled_target_at:'2026-10-13T08:00:00Z'},0),'Scan 15:00');
+assert.equal(scanLabel({scheduled_target_at:'2026-10-13T11:00:00Z'},1),'Scan 18:00');
+assert.equal(scanLabel({scheduled_target_at:null},2),'r3');
+const split=ouSplitBar({n:8,over_2_5_pct:25,under_2_5_pct:75});
+assert(split.includes('25.0%')&&split.includes('75.0%'));
+assert(split.includes('width:25%')&&split.includes('width:75%'));
+assert(split.includes('N=8')&&split.includes('ou-segment under'));
+assert(!split.includes('NaN'));
+assert(ouSplitBar({n:0}).includes('ไม่มีข้อมูล')||ouSplitBar({n:0}).includes('ยังไม่มี'));
+const timeline=miniTimeline([{scheduled_target_at:'2026-10-13T08:00:00Z',observed_at:'2026-10-13T08:03:00Z',ah:{selected_side_line:-.25,selected_side_price:2.13}},{scheduled_target_at:'2026-10-13T11:00:00Z',observed_at:'2026-10-13T11:03:00Z',ah:{selected_side_line:-.25,selected_side_price:2.15}}]);
+assert(timeline.includes('Scan 15:00')&&timeline.includes('Scan 18:00'));
+'''
+    result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
+    assert result.returncode==0,result.stderr
