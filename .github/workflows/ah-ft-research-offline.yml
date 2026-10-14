@@ -1,0 +1,29 @@
+name: AH FT Research Offline Only
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'research/ah_ft_*.py'
+      - 'tests/test_ah_ft_*.py'
+      - '.github/workflows/ah-ft-research-offline.yml'
+permissions:
+  contents: read
+jobs:
+  offline-analysis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Unit tests
+        run: python -m pytest -q tests/test_ah_ft_enrich.py tests/test_ah_ft_join_research.py
+      - name: Analyze historical files offline (no API or secrets)
+        run: python -m research.ah_ft_enrich
+      - name: Upload research report only
+        uses: actions/upload-artifact@v4
+        with:
+          name: ah-ft-exploratory-report
+          path: reports/research_ah_ft_join_exploratory.json
+          retention-days: 14
