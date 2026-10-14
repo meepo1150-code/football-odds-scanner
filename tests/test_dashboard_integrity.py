@@ -168,7 +168,7 @@ def test_round_header_price_specific_ah_sample_n():
     assert 'class="round-price-top"' in html
     assert 'AH ${esc(s.ah?.selected_side_line)}' in html
     assert 'signalStats(s,st).ah?.settled_n' in html
-    assert 'class="round-ah-n"' in html
+    assert 'class="round-ah-n ${ahSampleTier(signalStats(s,st).ah?.settled_n)}"' in html
     assert 'N=${Number(signalStats(s,st).ah?.settled_n)>0' in html
     assert '.round-price-top{display:flex' in html
 
