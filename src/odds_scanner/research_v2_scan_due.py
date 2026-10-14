@@ -46,6 +46,16 @@ def due(now, report, event='schedule', fallback=None, ledger_rows=None, snapshot
                                           and r.get('home_club_id') and r.get('away_club_id') for r in snapshots or [])
         if master_setup and report.get('daily_cohort_policy') != 'FIXED_1500_FIXTURE_COHORT_V1':
             return True
+    if ledger_rows is not None:
+        # Control checks may overwrite the latest report. The immutable ledger
+        # still governs retry pacing and prevents another paid call on a wakeup.
+        attempts = [stamp(r.get('request_completed_at') or r.get('actual_observed_at'))
+                    for r in ledger_rows if provider_attempt_receipt(r)
+                    and (r.get('requests_used', 0) or r.get('http_requests_attempted', 0))
+                    and stamp(r.get('scheduled_target_at')) == max(targets)]
+        attempts = [t for t in attempts if t and max(targets) <= t <= now]
+        if attempts and now - max(attempts) < timedelta(minutes=60):
+            return False
     try:
         attempted = datetime.fromisoformat(report['generated_at'].replace('Z', '+00:00'))
         if (attempted.tzinfo and max(targets) <= attempted <= now
@@ -87,3 +97,9 @@ if __name__ == '__main__':
     if os.getenv('SCAN_FINALIZE_MISSED') == 'true':
         collect = collect or needs_finalization(now, ledger, snapshots)
     print('collect=' + str(collect).lower())
+    print('gate_reason=' + ('DUE_OR_MISSED_FINALIZATION' if collect else 'NOT_DUE_COMPLETED_OR_ATTEMPT_COOLDOWN'))
+    summary = os.getenv('GITHUB_STEP_SUMMARY')
+    if summary:
+        with open(summary, 'a') as handle:
+            handle.write('\nSlot gate at '+now.isoformat()+': collect='+str(collect).lower()+
+                         '. Ledger evidence and transport cooldown checked; no provider calls in gate.\n')

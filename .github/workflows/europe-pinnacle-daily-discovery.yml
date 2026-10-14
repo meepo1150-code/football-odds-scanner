@@ -113,7 +113,7 @@ jobs:
           print(f"Collection status: {r.get('status')} missing={r.get('collection_failures')}")
           PY
 # Canonical observations: every day 15:00/18:00/21:00/00:00; midnight closes the previous football day.
-# Scheduled heartbeats run every 20 minutes around canonical slots; duplicates are zero-API skips.
+# Primary wakes at +3 minutes; independent watchdog at +13; guarded recovery at +23/+53/+83/+113.
 # Recovery window is 150 minutes and actual lag/timing is retained for QA.
 # Push-token recovery is an independent fallback: the token's first line must be the exact canonical ISO target.
 # _slot_done remains authoritative, so fallback recovery cannot duplicate an already-observed slot.

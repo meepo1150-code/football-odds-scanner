@@ -44,6 +44,10 @@ def run(root=Path('.'), now=None, clock=None):
             report = primary(root)
         results.append(report)
         if not slot_completed(root, target, clock()):
+            # No verified cross-provider fixture map exists for this fixed cohort.
+            # A broad fallback would collect unrelated matches, not price flow.
+            if report.get('daily_cohort_policy') == 'FIXED_1500_FIXTURE_COHORT_V1':
+                continue
             if clock() <= target + timedelta(minutes=RECOVERY_MINUTES):
                 report = fallback(root, target_at=target)
                 results.append(report)

@@ -36,4 +36,4 @@ def test_legacy_pinnwire_trigger_uses_same_coordinator_and_new_schedule():
     assert 'python -m odds_scanner.pinnwire_probe' not in text
     assert "'odds_scanner.propline_research_v2'" not in text
     assert 'ODDSPAPI_KEY:' in text
-    assert "'0,37 8,11,14,17 * * 0,6'" in text
+    assert '  schedule:' not in text

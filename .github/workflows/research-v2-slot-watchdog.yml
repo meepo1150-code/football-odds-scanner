@@ -13,7 +13,8 @@ on:
   schedule:
     # UTC 08/11/14/17 = Bangkok 15/18/21/00; shared collector and evidence gate.
     # Avoid minute-zero congestion; actual observation times remain authoritative.
-    - cron: '13 10,13,16,19 * * *'
+    - cron: '13 8,11,14,17 * * *' # First recovery at canonical target +13 minutes.
+    - cron: '13 10,13,16,19 * * *' # Last chance at +133 minutes.
 env: {RESEARCH_QUOTA_DURABLE: 'true'}
 permissions: {contents: write}
 concurrency:

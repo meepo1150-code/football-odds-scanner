@@ -4,8 +4,8 @@ import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-DAILY_LIMIT = 8
-MONTHLY_LIMIT = 240
+DAILY_LIMIT = 6
+MONTHLY_LIMIT = 180
 RUN_LIMIT = 2
 RESERVATIONS = Path('data/normalized/research_v2_quota_reservations.jsonl')
 
@@ -64,8 +64,15 @@ def allocation(path, ids, now, batch_size=5, *, prioritized=False, overhead=0, m
     # One market call per future slot, plus the day's fixture discovery if the
     # preparation slot is still ahead. Manual and recovery cannot spend this.
     future_reserve = len(future) + int(bool(future) and future[0] == slots[0])
+    current_reserve = 0
+    if manual:
+        from .research_v2_slots import completed, read_snapshots
+        elapsed = [t for t in slots if t <= now <= t + timedelta(minutes=150)]
+        if elapsed and not completed(max(elapsed), now, _rows(path), read_snapshots(path.parents[2]) if len(path.parents) > 2 else []):
+            current_reserve = 1 + int(max(elapsed) == slots[0])
+    protected_reserve = future_reserve + current_reserve
     # Protect five requests (discovery + four observations) on each future UTC
-    # day; optional second batches yield before reaching 240/month.
+    # day; optional second batches yield before reaching 180/month.
     future_month_reserve = sum(len(utc_targets(now.date() + timedelta(days=i))) + 1
         for i in range(1, calendar.monthrange(now.year, now.month)[1] - now.day + 1))
     run_limit = RUN_LIMIT
@@ -73,20 +80,21 @@ def allocation(path, ids, now, batch_size=5, *, prioritized=False, overhead=0, m
     # This keeps every repeat observation affordable under the future-slot minimum.
     if now.date().isoformat() >= '2026-10-14' and not manual and slots and slots[0] <= now <= slots[0]+timedelta(minutes=150):
         run_limit = min(RUN_LIMIT, overhead+1)
-    available = max(0, min(run_limit, DAILY_LIMIT-daily-future_reserve,
-                          MONTHLY_LIMIT-monthly-future_reserve-future_month_reserve))
+    available = max(0, min(run_limit, DAILY_LIMIT-daily-protected_reserve,
+                          MONTHLY_LIMIT-monthly-protected_reserve-future_month_reserve))
     remaining = max(0, available-overhead)
     batches = [ids[i:i+batch_size] for i in range(0, len(ids), batch_size)]
     chosen = [batches[i if prioritized else (now.date().toordinal()+i)%len(batches)]
               for i in range(min(remaining, len(batches)))] if batches else []
     return [x for b in chosen for x in b], {
-        'request_budget_policy': 'RESEARCH_8_PER_UTC_DAY_240_PER_UTC_MONTH',
+        'request_budget_policy': 'RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH',
         'research_requests_used_today': daily, 'research_requests_used_month': monthly,
         'research_daily_limit': DAILY_LIMIT, 'research_monthly_limit': MONTHLY_LIMIT,
         'research_run_limit': run_limit, 'quota_utc_day': now.date().isoformat(),
         'canonical_slots_in_football_day': len(slots),
         'future_utc_slots': [t.isoformat() for t in future],
-        'future_utc_requests_reserved': future_reserve,
+        'future_utc_requests_reserved': protected_reserve,
+        'current_canonical_requests_reserved': current_reserve,
         'future_month_requests_reserved': future_month_reserve,
         'canonical_request_reservation': 'UTC_FUTURE_SLOTS_PLUS_DISCOVERY; MANUAL_AND_RECOVERY_YIELD; FAILED_ATTEMPTS_COUNT',
         'budget_scope': 'ODDSPAPI_RESEARCH_COLLECTOR_ONLY',

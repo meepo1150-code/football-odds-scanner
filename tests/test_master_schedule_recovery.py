@@ -38,7 +38,7 @@ def test_request_reservation_includes_fixture_discovery_and_failed_usage(tmp_pat
     chosen,report=allocation(ledger,ids,NOW,prioritized=True,overhead=1)
     assert chosen==list(range(5)) and report['schedule_requests_reserved']==1
     ledger.write_text(json.dumps({'finalized_at':NOW.isoformat(),'scheduled_target_at':'first','requests_used':4}))
-    assert len(allocation(ledger,ids,NOW,prioritized=True,overhead=1,manual=True)[0])==5
+    assert allocation(ledger,ids,NOW,prioritized=True,overhead=1,manual=True)[0]==[]
     assert allocation(ledger,ids,NOW,prioritized=True,overhead=2,manual=True)[0]==[]
 
 
