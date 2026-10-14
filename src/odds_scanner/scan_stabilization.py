@@ -75,9 +75,10 @@ def readiness(root, now):
     target = min(future)
     day = target_football_day(target)
     fixed = cohort(root, day)
-    pending = [f for f in fixed['fixtures'] if stamp(f['kickoff']) > target] if fixed else []
+    primary_at = target + timedelta(minutes=3)
+    pending = [f for f in fixed['fixtures'] if stamp(f['kickoff']) > primary_at] if fixed else []
     ids = sorted({f['tournament_id'] for f in pending})
-    chosen, budget = allocation(root / LEDGER, ids, target.astimezone(timezone.utc), prioritized=True)
+    chosen, budget = allocation(root / LEDGER, ids, primary_at.astimezone(timezone.utc), prioritized=True)
     report_path = root / 'reports/europe_pinnacle_research_v2_status.json'
     last = json.loads(report_path.read_text()) if report_path.exists() else {}
     # The last account response predates that run's transport. Count every
@@ -89,13 +90,24 @@ def readiness(root, now):
     estimated = max(0, account_before-consumed) if type(account_before) is int else None
     required = math.ceil(len(ids)/5)
     reserve = last.get('account_safety_reserve', 10) + budget['future_utc_requests_reserved']
-    ready = fixed is not None and chosen == ids and estimated is not None and estimated-required >= reserve
+    finalized = {r.get('budget_reservation_id') for r in rows(root / LEDGER)}
+    unconfirmed = [r['reservation_id'] for r in rows(root / RESERVATIONS)
+                   if stamp(r.get('scheduled_target_at')) == target
+                   and r.get('reservation_id') not in finalized]
+    blockers = []
+    if fixed is None: blockers.append('FIXED_COHORT_UNAVAILABLE')
+    if chosen != ids: blockers.append('RESEARCH_CAPACITY_RESERVED_OR_EXHAUSTED')
+    if estimated is None or not account_at or account_at > now or estimated-required < reserve:
+        blockers.append('ACCOUNT_CAPACITY_UNCONFIRMED_OR_INSUFFICIENT')
+    if unconfirmed: blockers.append('CANONICAL_GRANT_OUTCOME_UNCONFIRMED')
+    ready = not blockers
     return {'target_at': target.isoformat(), 'football_day': day,
             'status': 'READY_FROM_RETAINED_EVIDENCE' if ready else 'UNVERIFIED_OR_CAPACITY_BLOCKED',
             'fixture_set_size': len(fixed['fixtures']) if fixed else None,
-            'remaining_prematch_at_target': len(pending), 'pending_fixture_ids': [f['fixture_id'] for f in pending],
+            'remaining_prematch_at_target': len(pending), 'prematch_forecast_at': primary_at.isoformat(),
+            'unconfirmed_grants': unconfirmed, 'blocked_reasons': blockers, 'pending_fixture_ids': [f['fixture_id'] for f in pending],
             'required_market_requests': required, 'allocated_tournament_ids': chosen,
-            'quota_utc_day': budget['quota_utc_day'], 'research_usage': dict(zip(('day', 'month'), usage(root/LEDGER, now))),
+            'quota_utc_day': budget['quota_utc_day'], 'research_usage': dict(zip(('day', 'month'), usage(root/LEDGER, now.astimezone(timezone.utc)))),
             'account_remaining_estimate': estimated, 'account_observed_before': account_at.isoformat() if account_at else None,
             'account_estimate_limitation': 'OTHER_ACCOUNT_CONSUMERS_AFTER_OBSERVATION_NOT_MEASURED; RECHECK_UNMETERED_ACCOUNT_AT_COLLECTION',
             'fixture_set_policy': fixed['policy'] if fixed else None,
