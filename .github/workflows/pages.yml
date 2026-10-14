@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'apps/dashboard/**'
+      - 'ah-public-demo.html'
       - 'reports/scan_health_latest.json'
       - 'reports/scan_health_monitor.json'
       - 'data/normalized/scan_health_history.jsonl'
@@ -70,6 +71,7 @@ jobs:
           PYTHONPATH=src python -m odds_scanner.dashboard_scope > /dev/null
           mkdir -p site/reports site/data/normalized site/discovery
           cp apps/dashboard/index.html site/index.html
+          cp ah-public-demo.html site/ah-public-demo.html
           cp apps/dashboard/monitor.html site/monitor.html
           cp apps/dashboard/collection-health.js site/collection-health.js
           cp apps/dashboard/deployment.json site/deployment.json
