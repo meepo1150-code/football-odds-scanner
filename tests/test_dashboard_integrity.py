@@ -87,7 +87,7 @@ assert.equal(observationLabel({provider:'other'},null),'ยังไม่มี
 """
     r=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
     assert r.returncode==0,r.stderr
-    assert 'data-f="OVERDUE"' in html and 'data-f="SCHEDULED"' in html
+    assert 'fixtureResultState(' in html and 'OVERDUE_RESULT' in html and 'SCHEDULED' in html
     assert "'UNCLASSIFIED'" not in html
 
 
