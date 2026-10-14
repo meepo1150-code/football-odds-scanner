@@ -1,19 +1,19 @@
 {
   "schema_version": "2.9",
-  "generated_at": "2026-10-14T08:02:30.607079+00:00",
+  "generated_at": "2026-10-14T11:37:42.345975+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "bookmaker": "pinnacle",
   "football_day": "2026-10-14",
   "football_day_timezone": "Asia/Bangkok",
   "football_day_window_start": "2026-10-14T05:00:00+00:00",
   "football_day_window_end": "2026-10-14T23:00:00+00:00",
-  "scheduled_target_at": "2026-10-14T15:00:00+07:00",
-  "actual_observed_at": "2026-10-14T15:02:30.544242+07:00",
-  "schedule_lag_minutes": 2.51,
+  "scheduled_target_at": "2026-10-14T18:00:00+07:00",
+  "actual_observed_at": "2026-10-14T18:37:42.338548+07:00",
+  "schedule_lag_minutes": 37.71,
   "recovery_window_minutes": 150,
-  "observation_timing": "ON_TIME",
+  "observation_timing": "LATE",
   "force_run": true,
-  "force_target_at": "2026-10-14T15:00:00+07:00",
+  "force_target_at": "2026-10-14T18:00:00+07:00",
   "research_only": true,
   "production_promotion_allowed": false,
   "core_quota_reserve": 3,
@@ -109,11 +109,16 @@
         "id1001418975014660"
       ],
       "next_kickoff": "2026-10-14T12:00:00+00:00",
-      "reason": "QUOTA_SKIPPED",
+      "reason": "NO_MARKET",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 2,
       "uncaptured_remaining_prematch_fixtures": 2,
-      "last_market_request_at": "2026-10-13T14:29:54.724329+00:00"
+      "last_market_request_at": "2026-10-14T11:37:42.338548+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 0,
+      "market_reason_counts": {
+        "AMBIGUOUS_OR_MISSING_1X2": 2
+      }
     },
     {
       "canonical_competition_id": "ROU-0001",
@@ -225,11 +230,16 @@
         "id1000017275339776"
       ],
       "next_kickoff": "2026-10-14T16:00:00+00:00",
-      "reason": "QUOTA_SKIPPED",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 1,
-      "uncaptured_remaining_prematch_fixtures": 1,
-      "last_market_request_at": null
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 1,
+      "scheduled_fixtures_without_snapshot": 0,
+      "uncaptured_remaining_prematch_fixtures": 0,
+      "last_market_request_at": "2026-10-14T11:37:42.338548+00:00",
+      "odds_fixture_rows": 1,
+      "strict_snapshots": 1,
+      "market_reason_counts": {
+        "OK": 1
+      }
     },
     {
       "canonical_competition_id": "EST-0001",
@@ -247,11 +257,16 @@
         "id1000017868214844"
       ],
       "next_kickoff": "2026-10-14T13:00:00+00:00",
-      "reason": "QUOTA_SKIPPED",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 2,
-      "uncaptured_remaining_prematch_fixtures": 2,
-      "last_market_request_at": "2026-10-13T14:29:57.654619+00:00"
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 2,
+      "scheduled_fixtures_without_snapshot": 0,
+      "uncaptured_remaining_prematch_fixtures": 0,
+      "last_market_request_at": "2026-10-14T11:37:42.338548+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
     },
     {
       "canonical_competition_id": "ENG-0002",
@@ -273,16 +288,11 @@
         "id1000001872339910"
       ],
       "next_kickoff": "2026-10-14T18:45:00+00:00",
-      "reason": "OBSERVED",
+      "reason": "QUOTA_SKIPPED",
       "fixtures_captured_today": 4,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-14T08:02:30.544242+00:00",
-      "odds_fixture_rows": 4,
-      "strict_snapshots": 4,
-      "market_reason_counts": {
-        "OK": 4
-      }
+      "last_market_request_at": "2026-10-14T08:02:30.544242+00:00"
     },
     {
       "canonical_competition_id": "FRA-0002",
@@ -330,11 +340,16 @@
         "id1000018675178678"
       ],
       "next_kickoff": "2026-10-14T11:45:00+00:00",
-      "reason": "QUOTA_SKIPPED",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 1,
-      "uncaptured_remaining_prematch_fixtures": 1,
-      "last_market_request_at": null
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 1,
+      "scheduled_fixtures_without_snapshot": 0,
+      "uncaptured_remaining_prematch_fixtures": 0,
+      "last_market_request_at": "2026-10-14T11:37:42.338548+00:00",
+      "odds_fixture_rows": 1,
+      "strict_snapshots": 1,
+      "market_reason_counts": {
+        "OK": 1
+      }
     },
     {
       "canonical_competition_id": "HUN-0001",
@@ -700,16 +715,11 @@
         "id1000002267018240"
       ],
       "next_kickoff": "2026-10-14T13:00:00+00:00",
-      "reason": "OBSERVED",
+      "reason": "QUOTA_SKIPPED",
       "fixtures_captured_today": 8,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-14T08:02:30.544242+00:00",
-      "odds_fixture_rows": 8,
-      "strict_snapshots": 8,
-      "market_reason_counts": {
-        "OK": 8
-      }
+      "last_market_request_at": "2026-10-14T08:02:30.544242+00:00"
     },
     {
       "canonical_competition_id": "BIH-0001",
@@ -1273,11 +1283,16 @@
         "id1000062975208868"
       ],
       "next_kickoff": "2026-10-14T17:00:00+00:00",
-      "reason": "QUOTA_SKIPPED",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 1,
-      "uncaptured_remaining_prematch_fixtures": 1,
-      "last_market_request_at": null
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 1,
+      "scheduled_fixtures_without_snapshot": 0,
+      "uncaptured_remaining_prematch_fixtures": 0,
+      "last_market_request_at": "2026-10-14T11:37:42.338548+00:00",
+      "odds_fixture_rows": 1,
+      "strict_snapshots": 1,
+      "market_reason_counts": {
+        "OK": 1
+      }
     },
     {
       "canonical_competition_id": "ARM-0001",
@@ -1333,26 +1348,20 @@
       "tournament_name": "Kazakhstan Premier League",
       "country": "Kazakhstan",
       "scheduled_fixtures": 2,
-      "remaining_prematch_fixtures": 2,
+      "remaining_prematch_fixtures": 1,
       "scheduled_fixture_ids": [
         "id1000068274070696",
         "id1000068274070700"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000068274070696",
         "id1000068274070700"
       ],
-      "next_kickoff": "2026-10-14T10:00:00+00:00",
-      "reason": "OBSERVED",
+      "next_kickoff": "2026-10-14T14:00:00+00:00",
+      "reason": "QUOTA_SKIPPED",
       "fixtures_captured_today": 2,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-14T08:02:30.544242+00:00",
-      "odds_fixture_rows": 2,
-      "strict_snapshots": 2,
-      "market_reason_counts": {
-        "OK": 2
-      }
+      "last_market_request_at": "2026-10-14T08:02:30.544242+00:00"
     },
     {
       "canonical_competition_id": "MDA-0001",
@@ -1448,16 +1457,11 @@
         "id1000000774165938"
       ],
       "next_kickoff": "2026-10-14T16:45:00+00:00",
-      "reason": "OBSERVED",
+      "reason": "QUOTA_SKIPPED",
       "fixtures_captured_today": 9,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-14T08:02:30.544242+00:00",
-      "odds_fixture_rows": 9,
-      "strict_snapshots": 9,
-      "market_reason_counts": {
-        "OK": 9
-      }
+      "last_market_request_at": "2026-10-14T08:02:30.544242+00:00"
     },
     {
       "canonical_competition_id": "GEO-0001",
@@ -1593,7 +1597,7 @@
       "tournament_name": "TFF 1 Lig",
       "country": "Turkey",
       "scheduled_fixtures": 4,
-      "remaining_prematch_fixtures": 4,
+      "remaining_prematch_fixtures": 3,
       "scheduled_fixture_ids": [
         "id1000009872735808",
         "id1000009872735812",
@@ -1603,117 +1607,103 @@
       "remaining_prematch_fixture_ids": [
         "id1000009872735808",
         "id1000009872735812",
-        "id1000009872735818",
-        "id1000009872735822"
+        "id1000009872735818"
       ],
-      "next_kickoff": "2026-10-14T11:30:00+00:00",
-      "reason": "OBSERVED",
+      "next_kickoff": "2026-10-14T14:00:00+00:00",
+      "reason": "QUOTA_SKIPPED",
       "fixtures_captured_today": 4,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-14T08:02:30.544242+00:00",
-      "odds_fixture_rows": 4,
-      "strict_snapshots": 4,
-      "market_reason_counts": {
-        "OK": 4
-      }
+      "last_market_request_at": "2026-10-14T08:02:30.544242+00:00"
     }
   ],
   "forward_scope_policy": "VERIFIED_ACTIVE_MASTER_81_DIVISIONS_PLUS_8_DOMESTIC_CUPS_AND_3_UEFA_CLUB_COMPETITIONS",
   "master_scope_rejections": [],
   "master_scope_excluded_targets": 0,
   "resolved_competitions": 5,
-  "planned_requests": 2,
-  "max_planned_requests_with_retries": 1,
+  "planned_requests": 1,
+  "max_planned_requests_with_retries": 2,
   "coverage_mode": "MASTER_SCHEDULE_PRIORITIZED",
-  "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
-  "research_requests_used_today": 0,
-  "research_requests_used_month": 82,
-  "research_daily_limit": 6,
-  "research_monthly_limit": 180,
+  "request_budget_policy": "RESEARCH_8_PER_UTC_DAY_240_PER_UTC_MONTH",
+  "research_requests_used_today": 2,
+  "research_requests_used_month": 84,
+  "research_daily_limit": 8,
+  "research_monthly_limit": 240,
   "research_run_limit": 2,
   "quota_utc_day": "2026-10-14",
   "canonical_slots_in_football_day": 4,
   "future_utc_slots": [
-    "2026-10-14T11:00:00+00:00",
     "2026-10-14T14:00:00+00:00",
     "2026-10-14T17:00:00+00:00"
   ],
-  "future_utc_requests_reserved": 3,
+  "future_utc_requests_reserved": 2,
   "future_month_requests_reserved": 85,
   "canonical_request_reservation": "UTC_FUTURE_SLOTS_PLUS_DISCOVERY; MANUAL_AND_RECOVERY_YIELD; FAILED_ATTEMPTS_COUNT",
   "budget_scope": "ODDSPAPI_RESEARCH_COLLECTOR_ONLY",
-  "schedule_requests_reserved": 1,
+  "schedule_requests_reserved": 0,
   "coverage_complete": false,
   "coverage_tournament_ids": [
-    7,
-    22,
-    98,
-    18,
-    682
+    14189,
+    178,
+    186,
+    172,
+    629
   ],
   "account_requests_attempted": 1,
   "account_endpoint_metered": false,
   "account_transient_failures": [],
-  "quota_remaining_before": 79,
-  "effective_quota_reserve": 3,
-  "budget_reservation_id": "c203b2f58bc84a6e80d0071b7a660035",
-  "research_requests_reserved_this_run": 2,
-  "request_completed_at": "2026-10-14T08:02:30.544242+00:00",
+  "quota_remaining_before": 77,
+  "account_safety_reserve": 10,
+  "account_minimum_requests_through_month_end": 88,
+  "account_month_capacity_shortfall": 21,
+  "account_optional_breadth_deferred": true,
+  "effective_quota_reserve": 12,
+  "budget_reservation_id": "fa32e4c03f654de3810aced66ac910dc",
+  "research_requests_reserved_this_run": 1,
   "schedule_response_id": "260976b703b489cd3be38833b8bcc3545a06817392f61879658c887161642f21",
   "schedule_observed_at": "2026-10-14T08:02:29.203486+00:00",
-  "schedule_requests_used": 1,
-  "fixtures_captured_today": 27,
-  "scheduled_fixtures_without_snapshot": 9,
+  "schedule_requests_used": 0,
+  "fixtures_captured_today": 32,
+  "scheduled_fixtures_without_snapshot": 4,
   "market_requests_required_all_remaining_competitions": 3,
-  "collection_started_at": "2026-10-14T08:02:25.148925+00:00",
+  "request_completed_at": "2026-10-14T11:37:42.338548+00:00",
+  "collection_started_at": "2026-10-14T11:37:37.954057+00:00",
   "excluded_unrequested_scope_fixtures": 0,
   "invalid_payload_batches": 0,
   "status": "RESEARCH_V2_OBSERVED",
-  "requests_used": 2,
+  "requests_used": 1,
   "rate_limit_retries": 0,
-  "api_fixtures_returned": 38,
-  "excluded_outside_football_day": 11,
-  "football_day_fixtures": 27,
-  "strict_snapshots_this_run": 27,
-  "persisted_snapshot_rows": 1972,
-  "persisted_audit_rows": 1235,
-  "fixtures_seen": 27,
-  "bookmaker_active_fixtures": 27,
-  "fixtures_with_exactly_one_main_ah": 27,
-  "fixtures_with_exactly_one_main_ou": 27,
-  "fixtures_with_both_exact_mainlines": 27,
-  "strict_snapshots": 27,
+  "api_fixtures_returned": 14,
+  "excluded_outside_football_day": 7,
+  "football_day_fixtures": 7,
+  "strict_snapshots_this_run": 5,
+  "persisted_snapshot_rows": 1977,
+  "persisted_audit_rows": 1242,
+  "fixtures_seen": 7,
+  "bookmaker_active_fixtures": 7,
+  "fixtures_with_exactly_one_main_ah": 7,
+  "fixtures_with_exactly_one_main_ou": 7,
+  "fixtures_with_both_exact_mainlines": 7,
+  "strict_snapshots": 5,
   "rejection_counts": {
-    "OK": 27
+    "AMBIGUOUS_OR_MISSING_1X2": 2,
+    "OK": 5
   },
   "league_coverage": [
     {
-      "league": "England \u00b7 Championship",
-      "fixtures": 4,
-      "bookmaker_active": 4,
-      "ah_main_exactly_one": 4,
-      "ou_main_exactly_one": 4,
-      "both_main_exactly_one": 4,
-      "strict_snapshots": 4,
+      "league": "Czechia \u00b7 Czech First League",
+      "fixtures": 1,
+      "bookmaker_active": 1,
+      "ah_main_exactly_one": 1,
+      "ou_main_exactly_one": 1,
+      "both_main_exactly_one": 1,
+      "strict_snapshots": 1,
       "reason_counts": {
-        "OK": 4
+        "OK": 1
       }
     },
     {
-      "league": "International \u00b7 UEFA Champions League",
-      "fixtures": 9,
-      "bookmaker_active": 9,
-      "ah_main_exactly_one": 9,
-      "ou_main_exactly_one": 9,
-      "both_main_exactly_one": 9,
-      "strict_snapshots": 9,
-      "reason_counts": {
-        "OK": 9
-      }
-    },
-    {
-      "league": "Kazakhstan \u00b7 Kazakhstan Premier League",
+      "league": "Estonia \u00b7 Meistriliiga",
       "fixtures": 2,
       "bookmaker_active": 2,
       "ah_main_exactly_one": 2,
@@ -1725,34 +1715,47 @@
       }
     },
     {
-      "league": "Norway \u00b7 Norwegian First Division",
-      "fixtures": 8,
-      "bookmaker_active": 8,
-      "ah_main_exactly_one": 8,
-      "ou_main_exactly_one": 8,
-      "both_main_exactly_one": 8,
-      "strict_snapshots": 8,
+      "league": "Greece \u00b7 Super League Greece 2",
+      "fixtures": 1,
+      "bookmaker_active": 1,
+      "ah_main_exactly_one": 1,
+      "ou_main_exactly_one": 1,
+      "both_main_exactly_one": 1,
+      "strict_snapshots": 1,
       "reason_counts": {
-        "OK": 8
+        "OK": 1
       }
     },
     {
-      "league": "Turkey \u00b7 TFF 1 Lig",
-      "fixtures": 4,
-      "bookmaker_active": 4,
-      "ah_main_exactly_one": 4,
-      "ou_main_exactly_one": 4,
-      "both_main_exactly_one": 4,
-      "strict_snapshots": 4,
+      "league": "Kosovo \u00b7 Football Superleague of Kosovo",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 0,
       "reason_counts": {
-        "OK": 4
+        "AMBIGUOUS_OR_MISSING_1X2": 2
+      }
+    },
+    {
+      "league": "Malta \u00b7 Maltese Premier League",
+      "fixtures": 1,
+      "bookmaker_active": 1,
+      "ah_main_exactly_one": 1,
+      "ou_main_exactly_one": 1,
+      "both_main_exactly_one": 1,
+      "strict_snapshots": 1,
+      "reason_counts": {
+        "OK": 1
       }
     }
   ],
   "competition_reason_counts": {
     "NO_MATCHES": 80,
     "QUOTA_SKIPPED": 7,
-    "OBSERVED": 5
+    "NO_MARKET": 1,
+    "OBSERVED": 4
   },
   "additional_market_requests_required": 2
 }

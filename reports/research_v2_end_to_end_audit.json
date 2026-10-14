@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-14T11:37:48.618295+00:00",
+  "generated_at": "2026-10-14T11:37:57.938699+00:00",
   "research_only": true,
   "raw_deleted": 0,
   "settled_fixtures": 868,
@@ -513,7 +513,7 @@
     ]
   },
   "ft_triage_counts": {
-    "FUTURE_OR_RECENT": 27,
+    "FUTURE_OR_RECENT": 32,
     "POSTPONED": 1,
     "IDENTITY_CONFLICT": 1
   },
@@ -521,10 +521,34 @@
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
+      "country": "Czechia",
+      "canonical_competition_id": "CZE-0001",
+      "league": "Czech First League",
+      "n": 1
+    },
+    {
+      "lifecycle": "FUTURE_OR_RECENT",
+      "provider": "oddspapi",
       "country": "England",
       "canonical_competition_id": "ENG-0002",
       "league": "Championship",
       "n": 4
+    },
+    {
+      "lifecycle": "FUTURE_OR_RECENT",
+      "provider": "oddspapi",
+      "country": "Estonia",
+      "canonical_competition_id": "EST-0001",
+      "league": "Meistriliiga",
+      "n": 2
+    },
+    {
+      "lifecycle": "FUTURE_OR_RECENT",
+      "provider": "oddspapi",
+      "country": "Greece",
+      "canonical_competition_id": "GRC-0002",
+      "league": "Super League Greece 2",
+      "n": 1
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -541,6 +565,14 @@
       "canonical_competition_id": "KAZ-0001",
       "league": "Kazakhstan Premier League",
       "n": 2
+    },
+    {
+      "lifecycle": "FUTURE_OR_RECENT",
+      "provider": "oddspapi",
+      "country": "Malta",
+      "canonical_competition_id": "MLT-0001",
+      "league": "Maltese Premier League",
+      "n": 1
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -1038,6 +1070,96 @@
       "status": "MISSING_FT",
       "country": "Turkey",
       "canonical_competition_id": "TUR-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
+      "fixture_id": "id1000017275339776",
+      "provider": "oddspapi",
+      "football_day": "2026-10-14",
+      "league": "Czech First League",
+      "kickoff": "2026-10-14T16:00:00+00:00",
+      "home": "Bohemians Prague 1905",
+      "away": "FK Mlada Boleslav",
+      "status": "MISSING_FT",
+      "country": "Czechia",
+      "canonical_competition_id": "CZE-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
+      "fixture_id": "id1000017868214842",
+      "provider": "oddspapi",
+      "football_day": "2026-10-14",
+      "league": "Meistriliiga",
+      "kickoff": "2026-10-14T16:00:00+00:00",
+      "home": "Paide Linnameeskond",
+      "away": "Tartu JK Tammeka",
+      "status": "MISSING_FT",
+      "country": "Estonia",
+      "canonical_competition_id": "EST-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
+      "fixture_id": "id1000017868214844",
+      "provider": "oddspapi",
+      "football_day": "2026-10-14",
+      "league": "Meistriliiga",
+      "kickoff": "2026-10-14T13:00:00+00:00",
+      "home": "JK Narva Trans",
+      "away": "FC Kuressaare",
+      "status": "MISSING_FT",
+      "country": "Estonia",
+      "canonical_competition_id": "EST-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
+      "fixture_id": "id1000018675178678",
+      "provider": "oddspapi",
+      "football_day": "2026-10-14",
+      "league": "Super League Greece 2",
+      "kickoff": "2026-10-14T11:45:00+00:00",
+      "home": "Olympiacos Piraeus B",
+      "away": "Athens Kallithea FC",
+      "status": "MISSING_FT",
+      "country": "Greece",
+      "canonical_competition_id": "GRC-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
+      "fixture_id": "id1000062975208868",
+      "provider": "oddspapi",
+      "football_day": "2026-10-14",
+      "league": "Maltese Premier League",
+      "kickoff": "2026-10-14T17:00:00+00:00",
+      "home": "Mosta FC",
+      "away": "Gzira United FC",
+      "status": "MISSING_FT",
+      "country": "Malta",
+      "canonical_competition_id": "MLT-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "FUTURE_OR_RECENT",

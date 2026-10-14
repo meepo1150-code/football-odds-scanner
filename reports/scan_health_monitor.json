@@ -1,29 +1,16 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-14T11:37:49.968608+00:00",
+  "generated_at": "2026-10-14T11:37:58.951572+00:00",
   "football_day": "2026-10-14",
-  "status": "FAIL",
+  "status": "WARNING",
   "issues": [
-    "SCAN_MISSING",
     "FT_DELAY",
     "FT_IDENTITY_CONFLICT",
     "UNMATCHED_IDENTITY_CANDIDATES",
     "LATEST_SCAN_WARNING"
   ],
-  "scan_missing_count": 1,
-  "scan_missing": [
-    {
-      "target_time": "2026-10-14T18:00:00+07:00",
-      "state": "MISSING",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "MISSING",
-      "recovered": false
-    }
-  ],
+  "scan_missing_count": 0,
+  "scan_missing": [],
   "ft_delay_count": 1,
   "ft_delay": [
     {
@@ -344,9 +331,9 @@
     }
   ],
   "unmatched_semantics": "REJECTED_CROSS_PROVIDER_BRIDGE_CANDIDATES; NOT_AUTOMATICALLY_MISSING_FT",
-  "latest_scan_report_id": "a64d523ac562eb192e39f5bd3cda1f7001108601eaf3b829f23c489529f4c4fe",
+  "latest_scan_report_id": "d0235e05446b4f252c2ff69f8a4eace814974544b7966f32577dfb772fc7c59f",
   "latest_scan_day": "2026-10-14",
-  "history_report_count": 21,
+  "history_report_count": 22,
   "canonical_slots": [
     {
       "target_time": "2026-10-14T15:00:00+07:00",
@@ -361,14 +348,14 @@
     },
     {
       "target_time": "2026-10-14T18:00:00+07:00",
-      "state": "MISSING",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "MISSING",
-      "recovered": false
+      "state": "OBSERVED",
+      "provider": "oddspapi",
+      "observed_at": "2026-10-14T18:37:42.338548+07:00",
+      "lag_minutes": 37.71,
+      "valid_snapshot_count": 5,
+      "canonical_fixture_count": 5,
+      "observation_timing": "LATE",
+      "recovered": true
     },
     {
       "target_time": "2026-10-14T21:00:00+07:00",
