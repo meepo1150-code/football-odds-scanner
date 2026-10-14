@@ -62,6 +62,6 @@ def main():
     dest=Path("reports/research_ah_ft_join_exploratory.json")
     dest.parent.mkdir(parents=True,exist_ok=True)
     dest.write_text(json.dumps(report,indent=2)+"\n",encoding="utf-8")
-    print(json.dumps({"matched":report["matched"],"side_evidence_counts":report["side_evidence_counts"]}))
+    print(json.dumps({"matched":report["matched"],"side_evidence_counts":report["side_evidence_counts"],"excluded":report["excluded"]}))
 
 if __name__=="__main__":main()
