@@ -66,9 +66,22 @@ def main():
         if row.get("ft_home_goals") is None or row.get("ft_away_goals") is None:
             continue
         verified.append({**row,"result_identity":"PINNWIRE_EXACT_FIXTURE_ID_SETTLEMENT_EVIDENCE"})
+    # Read existing verified local FT sources without API calls or data writes.
+    inputs={"pinnwire_research_v2_settlements.jsonl":len(verified)}
+    for filename in ("dashboard_verified_results.jsonl","oddspapi_finished_results.jsonl","v2_forward_settlements.jsonl"):
+        count=0
+        for row in read(root/filename):
+            if not row.get("result_source") or row.get("ft_home_goals") is None or row.get("ft_away_goals") is None: continue
+            if filename=="dashboard_verified_results.jsonl":
+                if row.get("status")!="FT" or not row.get("verified_at"): continue
+                row={**row,"result_identity":"DASHBOARD_VERIFIED_EXACT_FIXTURE_ID"}
+            elif not row.get("result_identity"): continue
+            verified.append(row); count+=1
+        inputs[filename]=count
     report=analyze(features,verified)
+    report["ft_source_counts"]=inputs
     report["ft_input_rows"]=len(verified)
-    report["ft_input"]="pinnwire_research_v2_settlements.jsonl"
+    report["ft_input"]="multiple_local_verified_ft_files"
     report["side_evidence_counts"]={k:sum(x["side_evidence"]==k for x in features) for k in ("EXACT_SOURCE_SNAPSHOT","UNVERIFIED")}
     dest=Path("reports/research_ah_ft_join_exploratory.json")
     dest.parent.mkdir(parents=True,exist_ok=True)
