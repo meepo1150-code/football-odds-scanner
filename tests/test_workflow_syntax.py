@@ -24,3 +24,11 @@ def test_recovered_results_trigger_dashboard_and_refresh_queue_after_merge():
     assert persist.index('odds_scanner.result_artifact_merge') < persist.index('odds_scanner.pinnwire_result_join')
     assert persist.index('odds_scanner.pinnwire_result_join') < persist.index('odds_scanner.web_result_recovery')
     assert persist.index('odds_scanner.web_result_recovery') < persist.index('git add')
+
+
+def test_dashboard_publication_survives_frequent_report_updates():
+    pages = yaml.safe_load(Path('.github/workflows/pages.yml').read_text())
+    assert pages['concurrency'] == {'group': 'pages', 'cancel-in-progress': False}
+    checkout = next(step for step in pages['jobs']['deploy']['steps']
+                    if str(step.get('uses', '')).startswith('actions/checkout@'))
+    assert checkout['with']['ref'] == 'main'
