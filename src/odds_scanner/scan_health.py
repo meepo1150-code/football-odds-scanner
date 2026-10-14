@@ -86,6 +86,10 @@ def record(root, report, provider='oddspapi', provenance='LIVE_REPORT'):
                'account_requests_attempted': number(report.get('account_requests_attempted')),
                'account_transient_failures': report.get('account_transient_failures', []),
                'competition_coverage': coverage,
+               'daily_cohort_policy': report.get('daily_cohort_policy'),
+               'daily_cohort_query_complete': report.get('daily_cohort_query_complete'),
+               'daily_cohort_fixture_count': report.get('daily_cohort_fixture_count'),
+               'daily_cohort_fixtures': report.get('daily_cohort_fixtures'),
                'count_semantics': 'DISTINCT_FIXTURES; STRICT_PREMATCH_CORE_AH_1.80_TO_2.20; UNQUERIED_IS_NOT_CONFIRMED_NO_MARKET',
                'record_type': 'CONTROL_CHECK' if status.startswith('SKIPPED_') or status in {'MISSED_SLOT','PROVIDER_COOLDOWN'} else 'SCAN_ATTEMPT'}
     # Imported prior reports are explicitly marked and carry no current Actions identity.

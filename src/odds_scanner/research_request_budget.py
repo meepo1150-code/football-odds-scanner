@@ -69,6 +69,10 @@ def allocation(path, ids, now, batch_size=5, *, prioritized=False, overhead=0, m
     future_month_reserve = sum(len(utc_targets(now.date() + timedelta(days=i))) + 1
         for i in range(1, calendar.monthrange(now.year, now.month)[1] - now.day + 1))
     run_limit = RUN_LIMIT
+    # One odds batch defines the daily cohort, even if discovery is cached.
+    # This keeps every repeat observation affordable under the future-slot minimum.
+    if now.date().isoformat() >= '2026-10-14' and not manual and slots and slots[0] <= now <= slots[0]+timedelta(minutes=150):
+        run_limit = min(RUN_LIMIT, overhead+1)
     available = max(0, min(run_limit, DAILY_LIMIT-daily-future_reserve,
                           MONTHLY_LIMIT-monthly-future_reserve-future_month_reserve))
     remaining = max(0, available-overhead)
