@@ -416,7 +416,7 @@
     "USER_REVIEWED_COMPETITION_OUT_OF_SCOPE": 4
   },
   "provider_fixture_ids": 911,
-  "raw_unresolved_provider_fixture_ids": 35,
+  "raw_unresolved_provider_fixture_ids": 34,
   "fixture_identity_bridges": [
     {
       "canonical_fixture_id": "pinnwire:1636867987",
@@ -615,7 +615,7 @@
   "snapshot_selection": "LATEST_VALID_STRICT_PREMATCH_OBSERVATION_UTC_THEN_PROVIDER_SOURCE_ID_TIEBREAK",
   "classification": "RESEARCH_V2_AH_MARKET_STATE_STATISTICS",
   "statistical_population_policy": "VERIFIED_FT_ONLY; RAW UNRESOLVED FIXTURES QUARANTINED AND EXCLUDED",
-  "generated_at": "2026-10-14T13:18:51.435881+00:00",
+  "generated_at": "2026-10-14T13:19:25.240319+00:00",
   "research_only": true,
   "recommendation_semantics": false,
   "signal_policy": "DESCRIPTIVE_ONLY; NO EDGE TEST FROM WIN RATE; FROZEN PROMOTION GATES UNCHANGED",
@@ -635,7 +635,7 @@
   "ou25_source": "EXACT_2_5_TWO_SIDED_PREMATCH_WITH_PROVENANCE_ONLY",
   "ou25_frequency_population": "VERIFIED_FT_GROUPED_BY_AH_STATE; PRICED_RETURNS_USE_SEPARATE_VERIFIED_QUOTE_N",
   "ou25_quote_status_counts": {
-    "NOT_EXACT_2_5": 468,
+    "NOT_EXACT_2_5": 469,
     "VERIFIED_EXACT_2_5_PREMATCH": 400
   },
   "snapshot_rows": 1458,
@@ -643,20 +643,20 @@
   "quarantined_snapshot_rows": 90,
   "quarantine_policy": "LEGACY_PROPLINE_EXCLUDED; VERIFIED_PINNACLE_TWO_SIDED_CORE_MAINLINE_ALLOWED",
   "unique_snapshot_fixtures": 903,
-  "settled_fixtures": 868,
+  "settled_fixtures": 869,
   "core_price_settled_fixtures": 811,
   "missing_result_fixtures": 0,
-  "raw_unresolved_ft_fixtures": 34,
-  "active_unresolved_ft_fixtures": 32,
+  "raw_unresolved_ft_fixtures": 33,
+  "active_unresolved_ft_fixtures": 31,
   "retired_unresolved_ft_fixtures": 2,
   "retired_unresolved_fixture_ids": [
     "id1000000872478578",
     "pinnwire:1637096650"
   ],
-  "excluded_missing_ft_from_statistical_population": 34,
+  "excluded_missing_ft_from_statistical_population": 33,
   "excluded_derivative_markets_from_ft_completeness": 1,
-  "eligible_statistical_fixtures": 868,
-  "ft_completeness_pct": 96.23,
+  "eligible_statistical_fixtures": 869,
+  "ft_completeness_pct": 96.34,
   "missing_result_fixtures_by_provider": {},
   "unique_snapshot_fixtures_by_provider": {
     "api_football": 4,
@@ -667,11 +667,11 @@
   "pinnwire_missing_result_fixtures": 0,
   "non_pinnwire_missing_result_fixtures": 0,
   "raw_unresolved_ft_by_provider": {
-    "oddspapi": 33,
+    "oddspapi": 32,
     "pinnwire": 1
   },
   "raw_pinnwire_unresolved_ft": 1,
-  "raw_non_pinnwire_unresolved_ft": 33,
+  "raw_non_pinnwire_unresolved_ft": 32,
   "ambiguous_result_fixtures": 0,
   "baseline_by_market_side_line": [
     {
@@ -13495,24 +13495,24 @@
   "all_by_movement": [
     {
       "movement": "SINGLE_OBSERVATION",
-      "n": 651,
-      "settled_n": 651,
-      "full_win": 280,
+      "n": 652,
+      "settled_n": 652,
+      "full_win": 281,
       "half_win": 37,
       "push": 43,
       "half_loss": 51,
       "full_loss": 240,
-      "favorite_price_win_n": 317,
+      "favorite_price_win_n": 318,
       "underdog_price_win_n": 291,
-      "favorite_price_win_pct": 48.69,
-      "underdog_price_win_pct": 44.7,
-      "push_pct": 6.61,
-      "favorite_profit_units": 5.6468,
-      "favorite_roi_pct": 0.87,
-      "underdog_profit_units": -60.5061,
-      "underdog_roi_pct": -9.29,
-      "favorite_win_wilson95_low": 44.87,
-      "favorite_win_wilson95_high": 52.53,
+      "favorite_price_win_pct": 48.77,
+      "underdog_price_win_pct": 44.63,
+      "push_pct": 6.6,
+      "favorite_profit_units": 6.4278,
+      "favorite_roi_pct": 0.99,
+      "underdog_profit_units": -61.5061,
+      "underdog_roi_pct": -9.43,
+      "favorite_win_wilson95_low": 44.95,
+      "favorite_win_wilson95_high": 52.61,
       "sample_label": "STRONG_300_PLUS",
       "signal_label": "DESCRIPTIVE_ONLY"
     },
@@ -15623,7 +15623,7 @@
   "verified_cross_provider_canonical_fixtures": 8,
   "unlinked_provider_fixture_groups": 895,
   "movement_classification_counts": {
-    "SINGLE_OBSERVATION": 651,
+    "SINGLE_OBSERVATION": 652,
     "FAVORITE_SWITCH": 5,
     "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 12,
     "AH_LINE_UNCHANGED__PRICE_DOWN": 78,
@@ -15642,7 +15642,7 @@
     "[2.00,2.10)",
     "[2.10,2.20]"
   ],
-  "active_overdue_ft_fixtures": 1,
+  "active_overdue_ft_fixtures": 0,
   "active_future_or_recent_ft_fixtures": 31,
   "active_unknown_kickoff_ft_fixtures": 0
 }

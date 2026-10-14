@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-14T13:18:52.867996+00:00",
+  "generated_at": "2026-10-14T13:19:25.478302+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 868,
+  "settled_fixtures": 869,
   "movement_classification_counts": {
-    "SINGLE_OBSERVATION": 651,
+    "SINGLE_OBSERVATION": 652,
     "FAVORITE_SWITCH": 5,
     "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 12,
     "AH_LINE_UNCHANGED__PRICE_DOWN": 78,
@@ -515,18 +515,9 @@
   "ft_triage_counts": {
     "FUTURE_OR_RECENT": 31,
     "POSTPONED": 1,
-    "ACTIVE_OVERDUE": 1,
     "IDENTITY_CONFLICT": 1
   },
   "ft_triage_groups": [
-    {
-      "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "Kazakhstan",
-      "canonical_competition_id": "KAZ-0001",
-      "league": "Kazakhstan Premier League",
-      "n": 1
-    },
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
@@ -1172,24 +1163,6 @@
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000068274070696",
-      "provider": "oddspapi",
-      "football_day": "2026-10-14",
-      "league": "Kazakhstan Premier League",
-      "kickoff": "2026-10-14T10:00:00+00:00",
-      "home": "FC Irtysh Pavlodar",
-      "away": "FC Astana",
-      "status": "MISSING_FT",
-      "country": "Kazakhstan",
-      "canonical_competition_id": "KAZ-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
