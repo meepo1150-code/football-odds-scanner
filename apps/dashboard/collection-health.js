@@ -45,6 +45,7 @@
         if(next.prematch_forecast_at)line('p','คาดการณ์ก่อนแข่ง ณ primary '+next.prematch_forecast_at+' · ยังไม่ใช่ snapshots ใหม่');
         if(next.blocked_reasons?.length)line('p','Readiness blocked: '+next.blocked_reasons.join(', '));
         line('p','Account remaining estimate '+(next.account_remaining_estimate??'UNKNOWN')+' · อ้างอิงบัญชี '+(next.account_observed_before||'UNKNOWN')+' · จะตรวจบัญชีจริงตอนเก็บราคา · runtime '+(next.runtime_verified?'VERIFIED':'PENDING'));
+        if(next.research_usage&&next.budget)line('p','Quota ledger ณ Monitor · UTC '+next.quota_utc_day+' · ใช้/จองแล้ววันนี้ '+next.research_usage.day+'/'+next.budget.research_daily_limit+' · เดือน '+next.research_usage.month+'/'+next.budget.research_monthly_limit+' · รวม request ของรอบล่าสุดแล้ว');
       }
       if(monitor.latest_fixture_diagnostics){
         line('p','สาเหตุรายคู่จาก response เดิม: '+JSON.stringify(monitor.latest_fixture_diagnostics.reason_counts||{}));
@@ -80,7 +81,7 @@
       line('p','พิจารณา '+(scan.master_competitions_considered??'—')+' ลีก · โปรแกรม '+(scan.scheduled_approved_fixtures??'—')+' คู่ · เก็บสะสม '+(scan.fixtures_captured_today??'—')+' คู่ · ยังไม่มีราคา '+(scan.scheduled_fixtures_without_snapshot??'—')+' คู่ · requests เพิ่มสำหรับลีกที่ถูกข้าม '+(scan.additional_market_requests_required??'—'));
       line('p','Policy: research ไม่เกิน 6 requests/UTC day และ 180/month · รอบ 00:00 ใช้โควต้าวัน UTC เดิม');
       line('p','Quota ล่าสุดก่อนยิง '+(scan.quota_remaining_before??'UNKNOWN')+' · รอบนี้ใช้ '+(scan.requests_used??0)+' · '+(scan.coverage_complete?'พิจารณา scope ตาม receipt แล้ว':'COVERAGE GAPS REMAIN'));
-      if(scan.quota_utc_day)line('p','Research quota UTC '+scan.quota_utc_day+' · used/reserved today '+scan.research_requests_used_today+'/'+(scan.research_daily_limit??'UNKNOWN')+' · month '+scan.research_requests_used_month+'/'+(scan.research_monthly_limit??'UNKNOWN')+' · future slots reserved '+scan.future_utc_requests_reserved+' · future days reserved '+scan.future_month_requests_reserved);
+      if(scan.quota_utc_day)line('p','Quota receipt ก่อนจอง request ของรอบนี้ · UTC '+scan.quota_utc_day+' · used/reserved today '+scan.research_requests_used_today+'/'+(scan.research_daily_limit??'UNKNOWN')+' · month '+scan.research_requests_used_month+'/'+(scan.research_monthly_limit??'UNKNOWN')+' · future slots reserved '+scan.future_utc_requests_reserved+' · future days reserved '+scan.future_month_requests_reserved);
       if(scan.account_safety_reserve!=null)line('p','Account safety reserve '+scan.account_safety_reserve+' · ขั้นต่ำที่ต้องใช้ถึงสิ้นเดือน '+scan.account_minimum_requests_through_month_end+' · ขาดโควต้า '+scan.account_month_capacity_shortfall+' requests · ไม่รับประกันครบทุกวัน');
       if(scan.daily_cohort_policy){
         line('p','กลุ่มคู่จาก 15:00 '+scan.daily_cohort_fixture_count+' คู่ · ยังไม่เตะ '+scan.daily_cohort_remaining_prematch_count+' · ตรวจครบกลุ่ม '+(scan.daily_cohort_query_complete?'YES':'NO'));
