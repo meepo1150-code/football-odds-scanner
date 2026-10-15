@@ -3,6 +3,8 @@ import copy
 import json
 from pathlib import Path
 import socket
+import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -98,6 +100,11 @@ class AdapterTests(unittest.TestCase):
 
 
 class StatsTests(unittest.TestCase):
+    def test_stdlib_statistics_not_shadowed(self):
+        directory=str(Path(__file__).resolve().parent)
+        code="import sys; sys.path.insert(0,sys.argv[1]); from statistics import mean,stdev; assert mean([1,2,3])==2; assert stdev([1,2,3])==1"
+        subprocess.run([sys.executable,'-c',code,directory],check=True,capture_output=True)
+
     def row(self):
         r=reconstruct_slot(**BASE);r.update(ft_score=[1,0],ft_status='VERIFIED_EXACT_ID')
         return r

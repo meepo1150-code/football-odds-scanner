@@ -40,7 +40,7 @@ BACKFILLED ONLY: no rows. COMBINED OFFLINE: unchanged from observed-only. Added 
 
 ## QA and safety
 
-- 51 unittest cases passed: latest-state/suspension, timestamps, quarter lines, staleness, malformed data, same-time conflict, immutable raw bytes, symlink escape, exact mapping, FT conflicts, band boundaries, dedup, observed precedence, and synthetic end-to-end integration with networking disabled.
+- 52 unittest cases passed: latest-state/suspension, timestamps, quarter lines, staleness, malformed data, same-time conflict, immutable raw bytes, symlink escape, exact mapping, FT conflicts, band boundaries, dedup, observed precedence, and synthetic end-to-end integration with networking disabled.
 - 4 original production settlement test functions passed by direct execution (pytest is unavailable locally). No full-repository pytest or CI pass is claimed at preparation time.
 - Actual pinned-data offline integration completed; every input Git blob identity matched baseline; SHA256 input values before/after are unchanged in pilot.json.
 - AGENTS.md not found in either complete repository tree. Uploaded instructions read; their September state was treated as stale where current main differs.
@@ -54,3 +54,5 @@ BACKFILLED ONLY: no rows. COMBINED OFFLINE: unchanged from observed-only. Added 
 **REVISE; live pilot BLOCKED. Do not expand to 50–100.** Benefit of current work: deterministic, reviewable preparation with no production quota/data impact. Trade-off: no real historical recovery or coverage proof yet. Main risks: historical active/time semantics, incomplete ticks, provisional one-hour staleness, exact catalog/entitlement verification, and correlated/selection-biased samples.
 
 The provider must clarify historical state semantics and the execution environment must support isolated, authorized credentials and a quiet request window. Then run only the ten prepared requests, with a live account check, cache-first behavior, 5.2-second spacing, no retries and stop-on-429. Request-count billing documentation is verified, but actual measured cost/latency and production impact cannot be extrapolated before a real pilot. No production integration merge/deploy is authorized in this task.
+
+Full-suite CI initially exposed stdlib statistics name shadowing. Renamed the research module to offline_stats.py and added a subprocess import regression. No production code was changed.
