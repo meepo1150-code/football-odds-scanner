@@ -97,7 +97,18 @@ if __name__ == '__main__':
     if os.getenv('SCAN_FINALIZE_MISSED') == 'true':
         collect = collect or needs_finalization(now, ledger, snapshots)
     print('collect=' + str(collect).lower())
-    print('gate_reason=' + ('DUE_OR_MISSED_FINALIZATION' if collect else 'NOT_DUE_COMPLETED_OR_ATTEMPT_COOLDOWN'))
+    # Observability only: do not replace the authoritative due() decision.
+    from .research_v2_gate_diagnostics import explain
+    from .europe_pinnacle_discovery import _football_day_bounds
+    diagnostic = explain(now, canonical_targets(_football_day_bounds(now)[2]), ledger, snapshots)
+    reason = diagnostic['reason']
+    if collect and not diagnostic['collect']:
+        reason = 'COLLECT_ALLOWED_BY_EXISTING_GATE_OR_MISSED_FINALIZATION'
+    elif not collect and diagnostic['collect']:
+        reason = 'BLOCKED_BY_EXISTING_GATE_OR_REPORT_COOLDOWN'
+    print('gate_reason=' + reason)
+    print('gate_target=' + (diagnostic['target'] or 'NONE'))
+    print('gate_diagnostic_only=true')
     summary = os.getenv('GITHUB_STEP_SUMMARY')
     if summary:
         with open(summary, 'a') as handle:
