@@ -1,0 +1,66 @@
+name: Global Expansion Readiness Audit
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ['Daily Preparation Scan', 'Research V2 Scheduled Slot Recovery', 'Research V2 Independent Slot Watchdog']
+    types: [completed]
+  push:
+    branches: [main]
+    paths: ['controls/global_expansion_audit_token.txt']
+permissions:
+  contents: read
+concurrency:
+  group: global-expansion-readiness
+  cancel-in-progress: false
+jobs:
+  audit:
+    if: >-
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_run' &&
+       github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.event != 'pull_request' &&
+       github.event.workflow_run.event != 'pull_request_target' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - run: python -m pip install -e .
+      - name: Validate official identity evidence without network calls
+        run: python data/research/global_expansion_readiness/build.py
+      - name: Audit all staged leagues against canonical collector receipts
+        run: python data/research/global_expansion_readiness/audit.py
+      - name: Summarize actual coverage separately from job success
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          r=json.loads(Path('reports/global_expansion_readiness.json').read_text())
+          c=r['counts'];g=r['full_scope_live_test_gate']
+          lines=['# Staged league readiness — no new API requests',
+                 f"Football day: {r['football_day']}; expected scan: {r['expected_scan_target']}",
+                 f"Leagues: {c['leagues']}; canonical clubs: {c['clubs']}; mapped: {c['provider_mapped_clubs']}; unresolved: {c['provider_unresolved_clubs']}",
+                 f"Actual schedule response: {r['schedule_observed_at']}",
+                 f"Returned fixtures: {c['returned_fixtures']}; matched: {c['matched_fixtures']}",
+                 f"Full-scope live-test gate: {'READY' if g['allowed'] else 'BLOCKED'} — {', '.join(g['reasons'])}",
+                 'Job SUCCESS means the audit ran; it does not certify complete mapping or price coverage.',
+                 '', '| League | IDs mapped | Returned fixtures matched | Price evidence |', '|---|---:|---:|---|']
+          for x in r['leagues']:
+              lines.append(f"| {x['competition_id']} {x['competition_name']} | {x['provider_mapped_clubs']}/{x['canonical_clubs']} | {x['matched_fixtures']}/{x['returned_fixtures']} | {x['price_status']} |")
+          Path(os.environ['GITHUB_STEP_SUMMARY']).write_text('\n\n'.join(lines[:8])+'\n\n'+'\n'.join(lines[8:])+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: global-expansion-readiness-${{ github.run_id }}
+          path: |
+            reports/global_expansion_readiness.json
+            data/research/global_expansion_readiness/identity_review.json
+          retention-days: 30
+# Read only: no provider keys, transport, quota changes, activation, commits or deployment.
