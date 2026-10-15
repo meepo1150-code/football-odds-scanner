@@ -1,29 +1,107 @@
 {
   "schema_version": "1.0",
   "classification": "FOTMOB_EXACT_RESULT_BACKFILL",
-  "missing_before": 0,
-  "missing_after": 0,
+  "missing_before": 1,
+  "missing_after": 1,
   "verified_bridge_matches": 0,
-  "days_requested": [],
-  "events_fetched": 0,
+  "days_requested": [
+    "2026-10-14",
+    "2026-10-15",
+    "2026-10-16"
+  ],
+  "events_fetched": 438,
   "exact_results_added": 0,
   "ambiguous_exact_matches_rejected": 0,
   "exact_identity_unfinished": 0,
-  "no_exact_identity": 0,
-  "kickoff_candidate_only": 0,
-  "kickoff_candidate_samples": [],
+  "no_exact_identity": 1,
+  "kickoff_candidate_only": 1,
+  "kickoff_candidate_samples": [
+    {
+      "fixture_id": "id1000009872735824",
+      "snapshot": {
+        "home": "Mardin 1969 Spor",
+        "away": "Fatih Karagumruk Istanbul",
+        "kickoff": "2026-10-15T14:00:00+00:00"
+      },
+      "fotmob_candidates": [
+        {
+          "id": 5200666,
+          "home": "Andijon",
+          "away": "Qizilqum Zarafshon",
+          "finished": true,
+          "score": [
+            0,
+            1
+          ],
+          "league": "Superliga"
+        },
+        {
+          "id": 5200671,
+          "home": "Mashal Muborak",
+          "away": "AGMK",
+          "finished": true,
+          "score": [
+            0,
+            1
+          ],
+          "league": "Superliga"
+        },
+        {
+          "id": 5908662,
+          "home": "Mardin 1969 Spor",
+          "away": "Fatih Karagümrük",
+          "finished": true,
+          "score": [
+            1,
+            0
+          ],
+          "league": "1. Lig"
+        },
+        {
+          "id": 5162040,
+          "home": "RFS",
+          "away": "SK Super Nova",
+          "finished": true,
+          "score": [
+            4,
+            0
+          ],
+          "league": "Virsliga"
+        }
+      ]
+    }
+  ],
   "request_failures": [],
   "matching_policy": "EXACT_ALIAS_OR_SAFE_CLUB_TOKEN_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY",
   "fuzzy_matching_used": false,
   "promotion_eligible": false,
   "retired_included": false,
   "deferred_days": [],
-  "generated_at": "2026-10-15T13:25:59.393752+00:00",
-  "requests_used": 0,
+  "generated_at": "2026-10-15T17:46:40.891620+00:00",
+  "requests_used": 3,
   "cache_hits": 0,
   "stale_cache_fallbacks": 0,
-  "fetch_evidence": [],
-  "existing_results_revalidated": 0,
+  "fetch_evidence": [
+    {
+      "day": "2026-10-14",
+      "source": "NETWORK",
+      "fetched_at": "2026-10-15T17:46:39.031727+00:00",
+      "requests": 1
+    },
+    {
+      "day": "2026-10-15",
+      "source": "NETWORK",
+      "fetched_at": "2026-10-15T17:46:39.694056+00:00",
+      "requests": 1
+    },
+    {
+      "day": "2026-10-16",
+      "source": "NETWORK",
+      "fetched_at": "2026-10-15T17:46:40.276498+00:00",
+      "requests": 1
+    }
+  ],
+  "existing_results_revalidated": 18,
   "invalid_ft_results_quarantined": 0,
   "invalid_ft_fixture_ids": []
 }
