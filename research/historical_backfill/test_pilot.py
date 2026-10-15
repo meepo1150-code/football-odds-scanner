@@ -162,7 +162,7 @@ class CandidateTests(unittest.TestCase):
         self.assertEqual(len(c[0]['unassigned_observations']),1)
 
     def test_limit_enforced(self):
-        with self.assertRaises(ValueError):select_candidates(*self.sample(),limit=11)
+        with self.assertRaises(ValueError):select_candidates(*self.sample(),limit=101)
 
     def test_conflicting_ft_separate(self):
         args=list(self.sample());args[2]=[dict(fixture_id='idTEST',ft_home_goals=n,ft_away_goals=0,result_source='synthetic') for n in (1,2)]

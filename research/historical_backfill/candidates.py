@@ -16,8 +16,8 @@ def planned_slots(day, kickoff):
 
 
 def select_candidates(snapshots, fixtures, results, mappings, competitions, excluded, limit=10):
-    if not 1 <= limit <= 10:
-        raise ValueError('pilot limit must be 1..10')
+    if not 1 <= limit <= 100:
+        raise ValueError('pilot limit must be 1..100; acquisition is separately staged')
     by_id, ft, groups = defaultdict(list), defaultdict(list), defaultdict(list)
     for r in fixtures:
         by_id[str(r.get('fixture_id'))].append(r)
@@ -36,6 +36,8 @@ def select_candidates(snapshots, fixtures, results, mappings, competitions, excl
         tid = str(r.get('tournament_id'))
         if len(ids[tid]) != 1:
             rejects['NOT_APPROVED_EXACT_COMPETITION'] += 1; continue
+        if r.get('canonical_competition_id') not in (None,next(iter(ids[tid]))):
+            rejects['CANONICAL_COMPETITION_CONFLICT'] += 1; continue
         exact = [f for f in by_id[fid] if str(f.get('tournament_id')) == tid
                  and f.get('home') == r.get('home') and f.get('away') == r.get('away')
                  and parse_time(f['kickoff']) == parse_time(r['kickoff'])]

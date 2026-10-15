@@ -1,6 +1,9 @@
-# Historical backfill: isolated 10-fixture pilot preparation
+# Historical backfill: isolated staged multi-day pilot
 
-Status: **BLOCKED_LIVE_PILOT — REVISE**. No successful live pilot is claimed.
+Status: **BLOCKED_LIVE_PILOT — REVISE**. 100 fixtures are prepared, not recovered.
+Current evidence: `reports/MULTIDAY_REPORT.md`, `multiday_manifest.json`,
+`multiday_result.json` and `multiday_baseline.json`. The original 10-fixture reports
+and candidate_manifest.json remain frozen calibration evidence from the prior task.
 The user's 2026-10-15 pilot instructions supersede this branch's earlier blanket
 OddsPapi ban. Offline OddsPapi imports are permitted. Live access remains gated.
 
@@ -15,8 +18,10 @@ PYTHONPATH=src:. python -m research.historical_backfill.pilot
 
 The builder verifies Git blob identities against `reports/baseline.json`; it refuses
 inputs from another baseline. Obtain that commit's inputs for reproducibility.
-Outputs are restricted to `research/historical_backfill/reports/`. No workflow,
-network client, credential reader, provider request, production hook or integration exists.
+Offline reports are restricted to `research/historical_backfill/reports/`.
+The new manual `isolated_runner.py` has a bounded HTTP client, accepts only
+`HISTORICAL_ODDSPAPI_KEY`, and never reads/falls back to the production credential.
+No workflow, scheduler hook, production import or integration has been added.
 The existing production Asian settlement module is imported read-only.
 
 ## Files and contracts
@@ -42,6 +47,13 @@ The existing production Asian settlement module is imported read-only.
 - `pilot.py`: actual pinned evidence, manifest, zero-request blocked report. The gate
   flags on low-level adapter/comparison functions are caller assertions for offline
   testing only; they do not establish provider permission or authorize network calls.
+- `multiday.py`: 10 original calibration identities plus up to 90 further exact-ID
+  fixtures, pinned Git blob verification, 30-day filter, bookmaker/day/kickoff strata.
+- `isolated_runner.py`: cache-first manual execution, dedicated-subscription evidence,
+  fresh account/entitlement checks, per-response before/after quota comparison, immediate
+  stop on 429/errors/anomalies, no retries, 10-fixture quality gate before expansion.
+- `coverage_metrics.py`: fixture-slot coverage by 7/14/30-day windows, disjoint age bins,
+  league/bookmaker/slot; conditioned same-line offline statistics without mainline claims.
 
 All successful reconstructed records carry BACKFILLED provenance, two actual entry
 creation timestamps, slot, source/bookmaker, line, teams, league, kickoff, quality,
@@ -64,9 +76,10 @@ without a preregistered common line-selection rule. No edge or promotion claim i
 
 ## Live gate and prepared requests
 
-See `reports/API_COST_SAFETY.md` and `reports/candidate_manifest.json`. No runnable
-network command is included. The endpoint's documented zero monthly debit does not
+See `reports/MULTIDAY_REPORT.md` for current evidence and the original
+`reports/API_COST_SAFETY.md` for the earlier audit. The endpoint's documented zero monthly debit does not
 remove account exhaustion, cooldown, active-state semantics or credential isolation risks.
-Only a subsequent gated, manually scoped execution may consume these requests.
+Only a gated, manually scoped execution may consume these requests. A pending gate
+and empty reviewed-catalog placeholder are deliberately shipped, not an enabled configuration.
 Never add the pilot to production scheduler, collector, quota or recovery logic.
 Do not merge/deploy production integration in this task.
