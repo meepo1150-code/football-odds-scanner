@@ -2,8 +2,8 @@ name: Canonical Slot 30-Minute Deadline Audit
 on:
   workflow_dispatch:
   schedule:
-    # Bangkok 00:32, 15:32, 18:32, 21:32 (UTC+7)
-    - cron: '32 17,8,11,14 * * *'
+    # Bangkok 00:25, 15:25, 18:25, 21:25 (UTC+7)
+    - cron: '25 17,8,11,14 * * *'
 permissions:
   contents: read
 jobs:
@@ -31,6 +31,7 @@ jobs:
           rows=[r for r in data["slots"] if r["state"] != "UPCOMING"]
           # Audit the latest elapsed canonical slot, not stale earlier slots.
           rows=sorted(rows,key=lambda r:r["scheduled_target_at"])[-1:]
+          # The 25-minute check is an early warning, not proof of a 30-minute breach.
           if not rows:
               raise SystemExit("No elapsed canonical slot found for audit")
           with open(os.environ["GITHUB_STEP_SUMMARY"],"a") as f:
