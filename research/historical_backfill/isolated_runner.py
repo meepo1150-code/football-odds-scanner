@@ -16,7 +16,7 @@ from zoneinfo import ZoneInfo
 from research.historical_backfill import storage
 from research.historical_backfill.normalizer import normalize
 from research.historical_backfill.comparison import reconstruct_candidate, compare_observation
-from research.historical_backfill.reconstruct import parse_time
+from research.historical_backfill.reconstruct import parse_time,finite
 
 BKK=ZoneInfo('Asia/Bangkok')
 SEVERITY={'PASS':0,'WARNING':1,'FAIL':2}
@@ -107,8 +107,10 @@ def load_cache(root,candidate):
     if index.is_symlink() or index.resolve().parent!=root/'cache':
         raise StopPilot('CACHE_INDEX_PATH_INVALID')
     receipt=json.loads(index.read_text())
-    if receipt.get('request')!=candidate['request'] or receipt.get('origin')!='LIVE_HTTP_200':
+    if receipt.get('request')!=candidate['request'] or receipt.get('origin') not in {'LIVE_HTTP_200','LIVE_HTTP_404'}:
         raise StopPilot('CACHE_PROVENANCE_INVALID')
+    if receipt['origin']=='LIVE_HTTP_404':
+        return dict(fixtureId=candidate['fixture_id'],bookmakers={},cached_http_status=404)
     if not isinstance(receipt.get('raw_sha256'),str) or not re.fullmatch('[0-9a-f]{64}',receipt['raw_sha256']):
         raise StopPilot('CACHE_HASH_INVALID')
     path=root/'raw'/(receipt['raw_sha256']+'.json')
@@ -164,6 +166,12 @@ def run(manifest,catalog,observations,gate,health_reader,*,key=None,allow_expans
             raise StopPilot('SEMANTICS_UNVERIFIED')
         if gate.get('catalog_sha256')!=digest(catalog) or not catalog:
             raise StopPilot('REVIEWED_CATALOG_REQUIRED')
+        for meta in catalog:
+            if (meta.get('review_status')!='VERIFIED_FULL_MATCH_AH_HOME_LINE'
+                or not finite(meta.get('home_line'))
+                or abs(meta['home_line']*4-round(meta['home_line']*4))>1e-8
+                or not all(meta.get(k) is not None for k in ('market_id','home_outcome_id','away_outcome_id','evidence'))):
+                raise StopPilot('CATALOG_REVIEW_INCOMPLETE')
         if gate.get('manifest_sha256')!=digest(manifest):raise StopPilot('MANIFEST_NOT_REVIEWED')
         now=clock();baseline=health_reader();health_check(baseline,baseline,now)
         root=(storage.ROOT if root is None else root).resolve()
@@ -208,6 +216,10 @@ def run(manifest,catalog,observations,gate,health_reader,*,key=None,allow_expans
                 if (before['request_count'],before['request_limit'],before['subscription_fingerprint']) != (after['request_count'],after['request_limit'],after['subscription_fingerprint']):
                     raise StopPilot('QUOTA_OR_SUBSCRIPTION_ANOMALY')
                 if status==404:
+                    index=cache_path(root,candidate);index.parent.mkdir(parents=True,exist_ok=True)
+                    with index.open('x') as stream:
+                        json.dump(dict(request=candidate['request'],origin='LIVE_HTTP_404',
+                            http_status=404,fetched_at=clock().isoformat()),stream,sort_keys=True)
                     report['results'].append(dict(fixture_id=candidate['fixture_id'],bookmaker=candidate['bookmaker'],
                         historical_ah_available=False,reconstructed=[],complete_slots=0,comparisons=[],paired_observations=0,invalid_rows=0,http_status=404))
                     continue

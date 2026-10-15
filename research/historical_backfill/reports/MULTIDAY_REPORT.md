@@ -95,6 +95,7 @@ counter and subscription-fingerprint summaries are retained. HTTP redirects are
 disabled, exception URLs are not logged, responses are size bounded, no retry occurs.
 
 Cache is checked by exact request, immutable raw hash and LIVE_HTTP_200 receipt.
+Permanent 404 no-history responses are also cached, so they are not queried again.
 Original bytes are saved before quota/quality review so anomalies do not erase
 evidence. Cache indexes and raw files reject symlink/path escape and corruption.
 Raw/cache/run output remains ignored under `research/historical_backfill/data/`.
@@ -172,7 +173,7 @@ post-kickoff tick can fill a slot. Full provenance and exact lines remain intact
 
 ## QA, reproducibility and decision
 
-71 local tests pass, including synthetic 100-fixture selection, calibration identity
+73 local tests pass, including synthetic 100-fixture selection, calibration identity
 preservation, simulated 10-to-20 staged execution, cache reuse/corruption, HTTP429,
 quota anomaly, entitlement failure, quiet windows, stale/degraded health, exact mapping,
 timestamp/active states, dedup, settlement, bands and no-live-coverage labelling.

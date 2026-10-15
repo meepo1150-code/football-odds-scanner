@@ -126,6 +126,24 @@ class RunnerTests(unittest.TestCase,FixtureFactory):
         args=list(self.setup());args[0]['candidates'][0]['home']='Changed'
         r=self.invoke(args);self.assertEqual(r['actual_total_requests'],0)
 
+    def test_unreviewed_catalog_blocks_before_account(self):
+        args=list(self.setup());args[1][0]['review_status']='PENDING'
+        args[3]['catalog_sha256']=digest(args[1]);r=self.invoke(args)
+        self.assertEqual(r['actual_total_requests'],0)
+
+    def test_negative_404_cache_not_requeried(self):
+        m,c,o,g,h,a,calls,old=self.setup()
+        def client(path,params):
+            return (404,{},b'') if path=='/historical-odds' else old(path,params)
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)/'historical'
+            with patch.object(storage,'ROOT',root):
+                kw=dict(key='SYNTHETIC',client=client,clock=lambda:NOW,sleeper=lambda _:None,root=root)
+                first=run(m,c,o,g,lambda:h,**kw);second=run(m,c,o,g,lambda:h,**kw)
+                self.assertEqual(first['actual_historical_requests'],10)
+                self.assertEqual(second['actual_historical_requests'],0)
+                self.assertEqual(second['cache_hits'],10)
+
     def test_unsafe_request_contract_blocks(self):
         args=list(self.setup());args[0]['candidates'][0]['request']['params']['active']=True
         args[3]['manifest_sha256']=digest(args[0]);r=self.invoke(args)
