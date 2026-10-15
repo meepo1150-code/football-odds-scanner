@@ -2,6 +2,8 @@
 
 No provider requests, history mutation, or quota reservation.
 """
+import argparse
+import json
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -39,3 +41,21 @@ def report(now=None, root=Path("."), football_day=None):
         rows.append(item)
     return {"generated_at": now.isoformat(), "football_day": str(day),
             "slots": rows, "overdue_count": sum(r["state"] == "OVERDUE" for r in rows)}
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Read-only 30-minute canonical slot deadline audit")
+    parser.add_argument("--football-day", default=None)
+    parser.add_argument("--root", default=".")
+    parser.add_argument("--output", default=None)
+    args = parser.parse_args(argv)
+    result = report(root=Path(args.root), football_day=args.football_day)
+    serialized = json.dumps(result, ensure_ascii=False, indent=2) + "\\n"
+    if args.output:
+        Path(args.output).write_text(serialized, encoding="utf-8")
+    print(serialized, end="")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
