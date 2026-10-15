@@ -50,7 +50,7 @@ def main(argv=None):
     parser.add_argument("--output", default=None)
     args = parser.parse_args(argv)
     result = report(root=Path(args.root), football_day=args.football_day)
-    serialized = json.dumps(result, ensure_ascii=False, indent=2) + "\\n"
+    serialized = json.dumps(result, ensure_ascii=False, indent=2) + "\n"
     if args.output:
         Path(args.output).write_text(serialized, encoding="utf-8")
     print(serialized, end="")
