@@ -30,11 +30,10 @@ class ValidateAHTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_ah_record(record)
 
-    def test_prohibit_oddspapi(self):
+    def test_offline_oddspapi_permitted(self):
         record = sample()
         record["source"] = "OddsPapi"
-        with self.assertRaises(ValueError):
-            validate_ah_record(record)
+        self.assertEqual(validate_ah_record(record)["source"], "OddsPapi")
 
     def test_post_kickoff(self):
         record = sample()
@@ -63,3 +62,4 @@ class ValidateAHTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

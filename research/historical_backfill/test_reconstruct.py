@@ -14,10 +14,10 @@ BASE = dict(
     line=-0.75,
     selections={
         "home": [
-            {"created_at": "2026-10-01T13:50:00Z", "price": 1.95},
-            {"created_at": "2026-10-01T14:10:00Z", "price": 1.80},
+            {"created_at": "2026-10-01T13:50:00Z", "active": True, "price": 1.95},
+            {"created_at": "2026-10-01T14:10:00Z", "active": True, "price": 1.80},
         ],
-        "away": [{"created_at": "2026-10-01T13:59:00Z", "price": 1.90}],
+        "away": [{"created_at": "2026-10-01T13:59:00Z", "active": True, "price": 1.90}],
     },
 )
 
@@ -34,7 +34,7 @@ class TestReconstruct(unittest.TestCase):
         self.assertEqual(reconstruct_slot(**args)["status"], "NO_HISTORICAL_DATA")
 
     def test_stale_quote(self):
-        self.assertEqual(reconstruct_slot(**dict(BASE, max_age_seconds=30))["status"], "NO_HISTORICAL_DATA")
+        self.assertEqual(reconstruct_slot(**dict(BASE, max_age_seconds=30))["status"], "STALE_QUOTE")
 
     def test_kickoff_exclusion(self):
         with self.assertRaises(ValueError):
@@ -49,9 +49,10 @@ class TestReconstruct(unittest.TestCase):
             reconstruct_slot(**dict(BASE, slot="2026-10-01T14:00:00"))
 
     def test_invalid_price(self):
-        args = dict(BASE, selections={"home": [{"created_at": BASE["slot"], "price": 0}], "away": BASE["selections"]["away"]})
-        self.assertEqual(reconstruct_slot(**args)["status"], "NO_HISTORICAL_DATA")
+        args = dict(BASE, selections={"home": [{"created_at": BASE["slot"], "active": True, "price": 0}], "away": BASE["selections"]["away"]})
+        self.assertEqual(reconstruct_slot(**args)["status"], "INVALID_PRICE")
 
 
 if __name__ == "__main__":
     unittest.main()
+

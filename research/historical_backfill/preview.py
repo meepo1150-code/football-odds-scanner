@@ -57,7 +57,8 @@ def preview(records: list[dict], max_age_seconds: int = 3600) -> dict:
         "distinct_source_fixtures": len(fixture_ids),
         "slots_evaluated": sum(summary.values()),
         "complete": summary["COMPLETE"],
-        "missing": summary["NO_HISTORICAL_DATA"],
+        "missing": sum(summary.values()) - summary["COMPLETE"],
+        "quality_counts": dict(summary),
         "writes": 0,
         "api_requests": 0,
     }
@@ -77,3 +78,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

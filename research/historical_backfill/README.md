@@ -1,48 +1,72 @@
-# Historical Backfill — isolated research track
+# Historical backfill: isolated 10-fixture pilot preparation
 
-Status: RESEARCH ONLY; not enabled in production.
-Branch: research/historical-backfill-isolated-20261015
+Status: **BLOCKED_LIVE_PILOT — REVISE**. No successful live pilot is claimed.
+The user's 2026-10-15 pilot instructions supersede this branch's earlier blanket
+OddsPapi ban. Offline OddsPapi imports are permitted. Live access remains gated.
 
-## Non-negotiable boundaries
-- Never call OddsPapi, including its historical endpoint.
-- Never modify production collector, scheduler, quota ledger, fixture mapping, raw history, dashboard, or deployed workflows in this track.
-- No scheduled workflows, secrets, provider credentials, or network requests until an independent free data source is verified.
-- No writes to existing normalized production files.
-- Separate raw historical imports from live-captured snapshots. No promotion into unified statistics without a review gate.
+## Run offline
 
-## Provider qualification gate
-Document license/automated-use permission, free-tier history access, request limits, historical depth, supported leagues, bookmaker identity, AH line and BOTH prices, source quote timestamps, kickoff, and missing-data behavior.
-Test samples across 7, 30, 90 and 180 days, multiple leagues and fixtures. Count complete, partial, missing, stale, and ambiguous snapshots. Do not confuse closing-only data with intraday ticks.
-No provider is approved yet.
+From repository root, with Python 3.11+ and no third-party dependencies:
 
-## Canonical data contract (proposed)
-fixture_source_id, source, bookmaker, league_source_id, home_source_id, away_source_id, kickoff_utc,
-market_type, ah_home_line, selection, decimal_price, quote_at_utc, imported_at_utc,
-requested_slot_bangkok, source_record_id, raw_record_hash, provenance=HISTORICAL_RECONSTRUCTED,
-quality_status.
+```sh
+PYTHONPATH=src:. python -m unittest discover -s research/historical_backfill -p 'test_*.py'
+PYTHONPATH=src:. python -m research.historical_backfill.pilot
+```
 
-AH lines must be exact 0.25 increments. Preserve both selection prices with independently
-recorded quote times. For each requested slot select only the latest quote with quote_at <= slot,
-and slot < kickoff; reject stale quotes using an explicit maximum age selected after sampling.
-Never use post-kickoff ticks or fill gaps with fabricated/interpolated odds.
+The builder verifies Git blob identities against `reports/baseline.json`; it refuses
+inputs from another baseline. Obtain that commit's inputs for reproducibility.
+Outputs are restricted to `research/historical_backfill/reports/`. No workflow,
+network client, credential reader, provider request, production hook or integration exists.
+The existing production Asian settlement module is imported read-only.
 
-## Data integrity
-- Raw immutable imports, normalized output and QA reports live under a separate historical namespace.
-- Deduplicate on source fixture + bookmaker + market + line + selection + quote timestamp + source id/hash.
-- Resolve to master IDs only with auditable exact evidence; unresolved matches remain excluded.
-- Fixture count and independent FT outcomes are separate from snapshot counts.
-- FT settlement uses existing tested Asian settlement functions without changing production code.
-- Never combine bookmaker prices blindly; keep separate league, source, bookmaker and era diagnostics.
-- Train/validation/holdout must be chronological and prevent look-ahead and duplicate fixture leakage.
+## Files and contracts
 
-## Work sequence
-1. Read-only audit of current main and approved league registry.
-2. Independent free-source licensing and API capability research.
-3. Offline fixture/tick samples and adapter tests on this branch.
-4. 7–30-day backfill dry-run with QA, zero production writes.
-5. Review coverage, timestamp integrity, quota and licensing; only then propose integration.
-6. Separate PR and explicit QA gate before any statistics merge.
+- `candidates.py`: exact OddsPapi fixture ID + teams + kickoff + tournament evidence;
+  verified official domestic competition allowlist minus user exclusions. Cups are
+  deliberately outside this initial selector. Unique fixtures across bookmaker groups.
+- `normalizer.py`: offline v4 payloads; same bookmaker, reviewed full-match AH market
+  catalog, exact home-signed quarter line, two explicit outcome IDs, player `0` only.
+  Never guess an ID, line, side, mainline, or market scope from a number or name.
+- `reconstruct.py`: last state at/before slot, strictly before kickoff; both sides
+  independently timestamped. Unknown/inactive/invalid latest states block older ticks.
+  Equal-time conflicting states fail closed. Default max age **3,600 seconds per side**
+  is provisional, not empirically calibrated. No interpolation or closing substitution.
+- `storage.py`: original response bytes can be preserved by `append_bytes`; canonical
+  records by `append_raw`. SHA256-addressed exclusive creation, dedup, corruption and
+  symlink checks. Raw data stays ignored under `data/raw/`; do not commit raw responses.
+- `comparison.py`: snapshot metadata, missing-data/FT status and actual-observation-time
+  comparison for the same bookmaker and exact AH line. Deltas alone are not errors.
+- `statistics.py`: observed/backfilled/combined descriptive previews; observed precedence
+  on identical fixture/slot/bookmaker/semantic market/line. Provider market IDs remain
+  provenance, not an extra sample dimension. Conflicting duplicates raise an error.
+- `pilot.py`: actual pinned evidence, manifest, zero-request blocked report. The gate
+  flags on low-level adapter/comparison functions are caller assertions for offline
+  testing only; they do not establish provider permission or authorize network calls.
 
-## Abort conditions
-No legally reusable free timestamped AH history; provider cannot prove both sides and times;
-inadequate coverage; any risk to production quota or scheduled scanning.
+All successful reconstructed records carry BACKFILLED provenance, two actual entry
+creation timestamps, slot, source/bookmaker, line, teams, league, kickoff, quality,
+FT and settlement-readiness. They must never claim an observation by the live scanner.
+Observed source price-change times are unknown where absent, never replaced by fetch time.
+
+## Slot interpretation and sample limits
+
+Only 15:00/18:00/21:00 and **next calendar day's 00:00** for the football day are targets.
+Slots at/after kickoff are excluded. Missing targets before the current schedule existed
+are counterfactual research targets, not evidence of a failed production scan.
+Only explicit `scheduled_target_at` within the production 150-minute recovery window
+assigns an observed round; extra legacy hours and unslotted observations stay separate.
+
+The pilot is selected for missingness and diversity, so its WR is selection-biased.
+Multiple sides, lines and rounds of one fixture are correlated, not independent outcomes.
+Backfill adds time observations; it cannot add independent FT matches when fixtures
+already exist. Market-ladder backfill and observed mainline statistics are not comparable
+without a preregistered common line-selection rule. No edge or promotion claim is allowed.
+
+## Live gate and prepared requests
+
+See `reports/API_COST_SAFETY.md` and `reports/candidate_manifest.json`. No runnable
+network command is included. The endpoint's documented zero monthly debit does not
+remove account exhaustion, cooldown, active-state semantics or credential isolation risks.
+Only a subsequent gated, manually scoped execution may consume these requests.
+Never add the pilot to production scheduler, collector, quota or recovery logic.
+Do not merge/deploy production integration in this task.
