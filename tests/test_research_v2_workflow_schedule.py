@@ -8,7 +8,7 @@ def test_one_primary_and_independent_recovery_cover_four_daily_slots():
     import yaml
     expected = {
         'europe-pinnacle-daily-discovery': ['3 8,11,14,17 * * *'],
-        'research-v2-scheduled-slot-recovery': ['23,53 8,9,11,12,14,15,17,18 * * *'],
+        'research-v2-scheduled-slot-recovery': ['3,8 8,11,14,17 * * *', '23,53 8,9,11,12,14,15,17,18 * * *'],
         'research-v2-slot-watchdog': ['13 8,11,14,17 * * *', '13 10,13,16,19 * * *'],
     }
     for name, crons in expected.items():
