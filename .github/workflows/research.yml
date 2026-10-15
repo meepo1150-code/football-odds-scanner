@@ -54,7 +54,7 @@ jobs:
           ACCOUNT_PROBE_KEY: ${{ secrets.ODDSPAPI_KEY }}
         run: python -m research.historical_backfill.actions_pilot production-after
       - name: Preserve immutable isolated cache, including partial runs
-        if: always()
+        if: always() && hashFiles('research/historical_backfill/data/cache/*.json') != ''
         uses: actions/cache/save@v4
         with:
           path: |
