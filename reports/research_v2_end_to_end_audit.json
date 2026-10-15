@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-15T16:51:39.943638+00:00",
+  "generated_at": "2026-10-15T17:09:36.767958+00:00",
   "research_only": true,
   "raw_deleted": 0,
   "settled_fixtures": 857,
@@ -265,7 +265,7 @@
         "baseline_train_n": 8,
         "movement_train_n": 7,
         "baseline_return_prediction": -0.025628400461405354,
-        "movement_return_prediction": 0.031687575982041374,
+        "movement_return_prediction": 0.03168757598204139,
         "realized_profit_units": 0.909,
         "squared_error_improvement": 0.10385315761277869
       },
@@ -305,7 +305,7 @@
         "baseline_train_n": 8,
         "movement_train_n": 7,
         "baseline_return_prediction": -0.025628400461405354,
-        "movement_return_prediction": 0.031687575982041374,
+        "movement_return_prediction": 0.03168757598204139,
         "realized_profit_units": 0.8999999999999999,
         "squared_error_improvement": 0.10282147003679665
       },
@@ -410,10 +410,19 @@
   },
   "ft_triage_counts": {
     "POSTPONED": 1,
-    "FUTURE_OR_RECENT": 38,
-    "IDENTITY_CONFLICT": 2
+    "FUTURE_OR_RECENT": 37,
+    "IDENTITY_CONFLICT": 2,
+    "ACTIVE_OVERDUE": 1
   },
   "ft_triage_groups": [
+    {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "oddspapi",
+      "country": "Turkey",
+      "canonical_competition_id": "TUR-0002",
+      "league": "TFF 1 Lig",
+      "n": 1
+    },
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
@@ -444,7 +453,7 @@
       "country": "Turkey",
       "canonical_competition_id": "TUR-0002",
       "league": "TFF 1 Lig",
-      "n": 3
+      "n": 2
     },
     {
       "lifecycle": "IDENTITY_CONFLICT",
@@ -558,7 +567,7 @@
       "canonical_competition_id": "TUR-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
