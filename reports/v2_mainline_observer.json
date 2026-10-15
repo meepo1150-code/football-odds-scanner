@@ -1,9 +1,9 @@
 {
   "schema_version": "1.2",
   "classification": "V2_PROSPECTIVE_MAINLINE_OBSERVER",
-  "status": "MAINLINE_SNAPSHOTS_OBSERVED",
-  "generated_at": "2026-10-15T04:49:57.155193+00:00",
-  "observed_at": "2026-10-15T04:50:01.968907+00:00",
+  "status": "NO_UNAMBIGUOUS_MAINLINE_SNAPSHOTS",
+  "generated_at": "2026-10-15T17:08:17.919566+00:00",
+  "observed_at": "2026-10-15T17:08:23.018494+00:00",
   "source_semantics": "CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED",
   "historical_mainline_reconstruction_allowed": false,
   "requests_attempted": 2,
@@ -23,20 +23,19 @@
   ],
   "tournament_count": 10,
   "batch_fixture_rows": 146,
-  "snapshots_this_run": 1,
+  "snapshots_this_run": 0,
   "snapshots_stored": 555,
   "candidate_matches_this_run": {},
   "parse_reasons": {
-    "AMBIGUOUS_OR_MISSING_1X2": 49,
-    "AMBIGUOUS_OR_MISSING_MAIN_AH": 17,
-    "BOOKMAKER_NOT_ACTIVE": 7,
-    "OK": 1
+    "AMBIGUOUS_OR_MISSING_1X2": 47,
+    "AMBIGUOUS_OR_MISSING_MAIN_AH": 23,
+    "BOOKMAKER_NOT_ACTIVE": 4
   },
   "mainline_shape_counts": {
-    "AH0_OU0": 50,
-    "AH0_OU1": 18,
-    "AH1_OU0": 2,
-    "AH1_OU1": 4
+    "AH0_OU0": 29,
+    "AH0_OU1": 30,
+    "AH1_OU0": 7,
+    "AH1_OU1": 8
   },
   "mainline_shape_samples": [
     {
@@ -54,24 +53,19 @@
       "fixture_id": "id1000002371945310",
       "universe": "BIG5_AH",
       "league": "Serie A",
-      "ah_main_count": 0,
-      "ou_main_count": 0,
-      "ah_lines": [],
-      "ou_lines": []
+      "ah_main_count": 1,
+      "ou_main_count": 1,
+      "ah_lines": [
+        0.0
+      ],
+      "ou_lines": [
+        3.25
+      ]
     },
     {
       "fixture_id": "id1000003472036224",
       "universe": "BIG5_AH",
       "league": "Ligue 1",
-      "ah_main_count": 0,
-      "ou_main_count": 0,
-      "ah_lines": [],
-      "ou_lines": []
-    },
-    {
-      "fixture_id": "id1000000872478630",
-      "universe": "BIG5_AH",
-      "league": "LaLiga",
       "ah_main_count": 0,
       "ou_main_count": 1,
       "ah_lines": [],
@@ -80,25 +74,36 @@
       ]
     },
     {
-      "fixture_id": "id1000001772221318",
+      "fixture_id": "id1000000872478630",
       "universe": "BIG5_AH",
-      "league": "Premier League",
+      "league": "LaLiga",
       "ah_main_count": 1,
       "ou_main_count": 1,
       "ah_lines": [
-        0.25
+        -0.5
       ],
       "ou_lines": [
-        2.75
+        2.5
       ]
+    },
+    {
+      "fixture_id": "id1000001772221318",
+      "universe": "BIG5_AH",
+      "league": "Premier League",
+      "ah_main_count": 0,
+      "ou_main_count": 0,
+      "ah_lines": [],
+      "ou_lines": []
     },
     {
       "fixture_id": "id1000000872478632",
       "universe": "BIG5_AH",
       "league": "LaLiga",
-      "ah_main_count": 0,
+      "ah_main_count": 1,
       "ou_main_count": 1,
-      "ah_lines": [],
+      "ah_lines": [
+        0.75
+      ],
       "ou_lines": [
         2.5
       ]
@@ -116,11 +121,9 @@
       "fixture_id": "id1000003572513244",
       "universe": "BIG5_AH",
       "league": "Bundesliga",
-      "ah_main_count": 1,
+      "ah_main_count": 0,
       "ou_main_count": 0,
-      "ah_lines": [
-        1.0
-      ],
+      "ah_lines": [],
       "ou_lines": []
     },
     {
@@ -166,22 +169,21 @@
   "odds_batch_min_cooldown_seconds": 1.25,
   "odds_batch_rate_limit_policy": "WAIT_AFTER_PREVIOUS_ODDS_BY_TOURNAMENTS_COMPLETES_NO_AUTOMATIC_RETRY",
   "exact_external_fixture_ids_seen": 146,
-  "strict_snapshots_enriched_with_exact_external_ids": 1,
+  "strict_snapshots_enriched_with_exact_external_ids": 0,
   "external_id_policy": "CURRENT_ODDSPAPI_EXTERNALPROVIDERS_EXACT_IDS_ONLY_NO_NAME_MATCHING",
   "ah_market_marker_signatures": {
-    "H_FALSE__A_FALSE": 5,
-    "H_MISSING__A_MISSING": 82,
-    "H_MISSING__A_TRUE": 2,
-    "H_TRUE__A_MISSING": 4,
-    "H_TRUE__A_TRUE": 17
+    "H_MISSING__A_MISSING": 69,
+    "H_MISSING__A_TRUE": 4,
+    "H_TRUE__A_MISSING": 5,
+    "H_TRUE__A_TRUE": 38
   },
   "ah_fixture_shape_counts": {
-    "AH_MARKETS_0__BOTH_TRUE_0": 69,
-    "AH_MARKETS_1__BOTH_TRUE_0": 36,
-    "AH_MARKETS_1__BOTH_TRUE_1": 10,
-    "AH_MARKETS_2__BOTH_TRUE_0": 23,
-    "AH_MARKETS_2__BOTH_TRUE_1": 6,
-    "AH_MARKETS_3__BOTH_TRUE_0": 1,
+    "AH_MARKETS_0__BOTH_TRUE_0": 66,
+    "AH_MARKETS_1__BOTH_TRUE_0": 28,
+    "AH_MARKETS_1__BOTH_TRUE_1": 19,
+    "AH_MARKETS_2__BOTH_TRUE_0": 12,
+    "AH_MARKETS_2__BOTH_TRUE_1": 18,
+    "AH_MARKETS_3__BOTH_TRUE_0": 2,
     "AH_MARKETS_3__BOTH_TRUE_1": 1
   },
   "ah_marker_samples": [
@@ -201,9 +203,11 @@
       "start_time": "2026-10-16T18:45:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_MISSING__A_MISSING": 1
+        "H_TRUE__A_TRUE": 1
       },
-      "both_true_lines": []
+      "both_true_lines": [
+        0.0
+      ]
     },
     {
       "fixture_id": "id1000003472036224",
@@ -221,10 +225,12 @@
       "start_time": "2026-10-16T19:00:00.000Z",
       "ah_markets": 2,
       "signatures": {
-        "H_FALSE__A_FALSE": 1,
-        "H_MISSING__A_MISSING": 1
+        "H_MISSING__A_MISSING": 1,
+        "H_TRUE__A_TRUE": 1
       },
-      "both_true_lines": []
+      "both_true_lines": [
+        -0.5
+      ]
     },
     {
       "fixture_id": "id1000001772221318",
@@ -232,11 +238,9 @@
       "start_time": "2026-10-17T11:30:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_TRUE__A_TRUE": 1
+        "H_MISSING__A_MISSING": 1
       },
-      "both_true_lines": [
-        0.25
-      ]
+      "both_true_lines": []
     },
     {
       "fixture_id": "id1000000872478632",
@@ -244,9 +248,12 @@
       "start_time": "2026-10-17T12:00:00.000Z",
       "ah_markets": 2,
       "signatures": {
-        "H_MISSING__A_MISSING": 2
+        "H_MISSING__A_MISSING": 1,
+        "H_TRUE__A_TRUE": 1
       },
-      "both_true_lines": []
+      "both_true_lines": [
+        0.75
+      ]
     },
     {
       "fixture_id": "id1000003572513244",
@@ -254,11 +261,9 @@
       "start_time": "2026-10-17T13:30:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_TRUE__A_TRUE": 1
+        "H_MISSING__A_MISSING": 1
       },
-      "both_true_lines": [
-        1.0
-      ]
+      "both_true_lines": []
     },
     {
       "fixture_id": "id1000003572513248",
@@ -276,10 +281,12 @@
       "start_time": "2026-10-17T14:00:00.000Z",
       "ah_markets": 2,
       "signatures": {
-        "H_FALSE__A_FALSE": 1,
-        "H_MISSING__A_MISSING": 1
+        "H_MISSING__A_MISSING": 1,
+        "H_TRUE__A_TRUE": 1
       },
-      "both_true_lines": []
+      "both_true_lines": [
+        -0.25
+      ]
     },
     {
       "fixture_id": "id1000001772221320",
@@ -287,9 +294,11 @@
       "start_time": "2026-10-17T14:00:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_MISSING__A_MISSING": 1
+        "H_TRUE__A_TRUE": 1
       },
-      "both_true_lines": []
+      "both_true_lines": [
+        -0.75
+      ]
     },
     {
       "fixture_id": "id1000001772221324",
@@ -297,9 +306,11 @@
       "start_time": "2026-10-17T14:00:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_MISSING__A_MISSING": 1
+        "H_TRUE__A_TRUE": 1
       },
-      "both_true_lines": []
+      "both_true_lines": [
+        -1.75
+      ]
     },
     {
       "fixture_id": "id1000003472036234",
@@ -307,9 +318,11 @@
       "start_time": "2026-10-17T15:15:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_FALSE__A_FALSE": 1
+        "H_TRUE__A_TRUE": 1
       },
-      "both_true_lines": []
+      "both_true_lines": [
+        1.25
+      ]
     },
     {
       "fixture_id": "id1000002371945306",
@@ -317,7 +330,7 @@
       "start_time": "2026-10-17T16:00:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_MISSING__A_MISSING": 1
+        "H_TRUE__A_MISSING": 1
       },
       "both_true_lines": []
     },
@@ -327,8 +340,7 @@
       "start_time": "2026-10-17T16:30:00.000Z",
       "ah_markets": 2,
       "signatures": {
-        "H_FALSE__A_FALSE": 1,
-        "H_MISSING__A_MISSING": 1
+        "H_MISSING__A_MISSING": 2
       },
       "both_true_lines": []
     },
@@ -338,9 +350,11 @@
       "start_time": "2026-10-17T16:30:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_MISSING__A_MISSING": 1
+        "H_TRUE__A_TRUE": 1
       },
-      "both_true_lines": []
+      "both_true_lines": [
+        -0.25
+      ]
     },
     {
       "fixture_id": "id1000003572513238",
@@ -348,7 +362,7 @@
       "start_time": "2026-10-17T16:30:00.000Z",
       "ah_markets": 1,
       "signatures": {
-        "H_MISSING__A_MISSING": 1
+        "H_MISSING__A_TRUE": 1
       },
       "both_true_lines": []
     },
@@ -356,8 +370,9 @@
       "fixture_id": "id1000002371945320",
       "tournament_id": 23,
       "start_time": "2026-10-17T18:45:00.000Z",
-      "ah_markets": 1,
+      "ah_markets": 2,
       "signatures": {
+        "H_MISSING__A_MISSING": 1,
         "H_TRUE__A_MISSING": 1
       },
       "both_true_lines": []
@@ -368,7 +383,20 @@
       "start_time": "2026-10-17T18:45:00.000Z",
       "ah_markets": 2,
       "signatures": {
-        "H_MISSING__A_MISSING": 2
+        "H_MISSING__A_MISSING": 1,
+        "H_TRUE__A_TRUE": 1
+      },
+      "both_true_lines": [
+        -0.5
+      ]
+    },
+    {
+      "fixture_id": "id1000003472036236",
+      "tournament_id": 34,
+      "start_time": "2026-10-17T18:45:00.000Z",
+      "ah_markets": 1,
+      "signatures": {
+        "H_MISSING__A_MISSING": 1
       },
       "both_true_lines": []
     },
@@ -381,19 +409,6 @@
         "H_MISSING__A_MISSING": 1
       },
       "both_true_lines": []
-    },
-    {
-      "fixture_id": "id1000001772221322",
-      "tournament_id": 17,
-      "start_time": "2026-10-18T13:00:00.000Z",
-      "ah_markets": 2,
-      "signatures": {
-        "H_MISSING__A_MISSING": 1,
-        "H_TRUE__A_TRUE": 1
-      },
-      "both_true_lines": [
-        -0.25
-      ]
     }
   ],
   "ah_marker_diagnostics_policy": "SAME_CURRENT_PAYLOAD_ONLY_DIAGNOSTIC_NO_LINE_SELECTION_NO_ADMISSIBILITY_CHANGE"
