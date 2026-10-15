@@ -47,3 +47,13 @@ def test_naive_time_rejected():
 def test_negative_snapshot_count_rejected():
     with pytest.raises(ValueError):
         classify(T, T, snapshot_count=-1)
+
+
+def test_future_observation_rejected():
+    with pytest.raises(ValueError):
+        classify(T, T + timedelta(minutes=1), observed_at=T + timedelta(minutes=2), snapshot_count=1)
+
+
+def test_pre_slot_observation_cannot_pass():
+    result = classify(T, T + timedelta(minutes=30), observed_at=T - timedelta(minutes=1), snapshot_count=1)
+    assert result["state"] == "OVERDUE"
