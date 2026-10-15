@@ -2,8 +2,9 @@ name: Canonical Slot 30-Minute Deadline Audit
 on:
   workflow_dispatch:
   schedule:
-    # Bangkok 00:25, 15:25, 18:25, 21:25 (UTC+7)
-    - cron: '25 17,8,11,14 * * *'
+    # Bangkok +3/+8/+15/+25/+30 for 00:00, 15:00, 18:00, 21:00.
+    # GitHub scheduled starts are best-effort, not exact-minute guarantees.
+    - cron: '3,8,15,25,30 17,8,11,14 * * *'
 permissions:
   contents: read
 jobs:
@@ -31,7 +32,7 @@ jobs:
           rows=[r for r in data["slots"] if r["state"] != "UPCOMING"]
           # Audit the latest elapsed canonical slot, not stale earlier slots.
           rows=sorted(rows,key=lambda r:r["scheduled_target_at"])[-1:]
-          # The 25-minute check is an early warning, not proof of a 30-minute breach.
+          # Before +30, RECOVERY_REQUIRED is an early warning, not a missed deadline.
           if not rows:
               raise SystemExit("No elapsed canonical slot found for audit")
           with open(os.environ["GITHUB_STEP_SUMMARY"],"a") as f:
