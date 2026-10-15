@@ -19,6 +19,7 @@ def source_hashes(source):
     for directory in ('data','reports','config'):
         for p in sorted((source/directory).rglob('*')):
             if p.is_symlink():raise StopPilot('HEALTH_SOURCE_SYMLINK')
+            if '__pycache__' in p.parts or p.suffix in ('.pyc','.pyo'):continue
             if p.is_file():result[str(p.relative_to(source))]=hashlib.sha256(p.read_bytes()).hexdigest()
     return result
 
@@ -30,7 +31,7 @@ def rebuild(source=Path('production-state')):
     if destination.exists():raise StopPilot('HEALTH_INPUTS_ALREADY_EXIST')
     destination.mkdir(parents=True)
     for directory in ('data','reports','config'):
-        shutil.copytree(source/directory,destination/directory)
+        shutil.copytree(source/directory,destination/directory,ignore=shutil.ignore_patterns('__pycache__','*.pyc','*.pyo'))
     env={**os.environ,'PYTHONPATH':str(source/'src')}
     # Exact production health code, run without provider credentials in its environment.
     for key in ('ODDSPAPI_KEY','HISTORICAL_ODDSPAPI_KEY','ACCOUNT_PROBE_KEY'):
