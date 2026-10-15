@@ -54,7 +54,7 @@ def in_window(value, earliest=START):
         return False
 
 
-def review(repo=REPO, snapshot=None):
+def review(repo=REPO, snapshot=None, official_aliases=()):
     raw_path = repo/'reports/master_provider_snapshot.json'
     raw = snapshot if snapshot is not None else json_file(raw_path)
     if raw.get('provider') != 'oddspapi' or raw.get('status') != 'SNAPSHOT_AVAILABLE_REQUIRES_IDENTITY_REVIEW':
@@ -102,6 +102,15 @@ def review(repo=REPO, snapshot=None):
     for cid, tid, name in [('THA-0001', '1032', 'Thai League 1'), ('THA-0002', '19232', 'Thai League 2')]:
         candidates[cid] = [dict(provider_id=tid, provider_name=name, provider_country='Thailand')]
 
+    # Optional staging evidence is supplied by the separately hash-pinned
+    # official alias follow-up. Keep aliases scoped to the proven membership.
+    extra_names = defaultdict(set)
+    for alias in official_aliases:
+        cid, club, name = alias['competition_id'], alias['club_id'], alias['alias']
+        if club not in rosters[cid] or not spelling(name):
+            raise ValueError('Alias requires an existing scoped membership and nonempty name')
+        extra_names[cid, club].add(name)
+
     catalog = {str(t['tournamentId']): t for t in raw['tournaments']}
     catalog_counts = Counter(str(t['tournamentId']) for t in raw['tournaments'])
     # Conflicting versions of the same fixture cannot prove any identity.
@@ -122,7 +131,7 @@ def review(repo=REPO, snapshot=None):
     for cid, members in sorted(rosters.items()):
         lookup = defaultdict(set)
         for club in members:
-            for name in names[club]:
+            for name in names[club] | extra_names[cid, club]:
                 token = spelling(name)
                 # The generic KFA label is not an explicit N/B qualifier.
                 if cid == 'KOR-0003' and clubs[club]['canonical_name'] == '전북현대 N팀' and token != spelling('전북현대 N팀'):
