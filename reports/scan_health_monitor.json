@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-15T19:03:01.558346+00:00",
+  "generated_at": "2026-10-15T20:11:08.444985+00:00",
   "football_day": "2026-10-15",
   "status": "WARNING",
   "issues": [
@@ -11,7 +11,7 @@
   ],
   "scan_missing_count": 0,
   "scan_missing": [],
-  "ft_delay_count": 2,
+  "ft_delay_count": 4,
   "ft_delay": [
     {
       "fixture_id": "id1000005472477468",
@@ -24,6 +24,34 @@
       "status": "IDENTITY_CONFLICT",
       "country": "Spain",
       "canonical_competition_id": null,
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000067974172962",
+      "provider": "oddspapi",
+      "football_day": "2026-10-15",
+      "league": "UEFA Europa League",
+      "kickoff": "2026-10-15T16:45:00+00:00",
+      "home": "Union Saint-Gilloise",
+      "away": "Real Sociedad San Sebastian",
+      "status": "MISSING_FT",
+      "country": "International",
+      "canonical_competition_id": "INT-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1003448074173156",
+      "provider": "oddspapi",
+      "football_day": "2026-10-15",
+      "league": "UEFA Conference League",
+      "kickoff": "2026-10-15T16:45:00+00:00",
+      "home": "Kuopion Palloseura",
+      "away": "Trabzonspor",
+      "status": "MISSING_FT",
+      "country": "International",
+      "canonical_competition_id": "INT-0004",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false
     },
