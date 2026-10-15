@@ -19,6 +19,7 @@ def report(now=None, root=Path("."), football_day=None):
     if now.tzinfo is None:
         raise ValueError("now must be timezone-aware")
     from .europe_pinnacle_discovery import _football_day_bounds
+    from .research_v2_slots import target_football_day
     day = football_day or _football_day_bounds(now)[2]
     ledger, snapshots = read_ledger(root), read_snapshots(root)
     rows = []
