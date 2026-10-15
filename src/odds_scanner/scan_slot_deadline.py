@@ -17,11 +17,13 @@ def classify(target: datetime, now: datetime, *, observed_at=None,
         raise ValueError("target and now must be timezone-aware")
     if observed_at is not None and observed_at.tzinfo is None:
         raise ValueError("observed_at must be timezone-aware")
+    if observed_at is not None and observed_at > now:
+        raise ValueError("observed_at cannot be in the future")
     if snapshot_count < 0:
         raise ValueError("snapshot_count cannot be negative")
     deadline = target + timedelta(minutes=30)
-    if observed_at is not None and snapshot_count > 0:
-        state = "PASS" if target <= observed_at <= deadline else "LATE_OBSERVED"
+    if observed_at is not None and snapshot_count > 0 and observed_at >= target:
+        state = "PASS" if observed_at <= deadline else "LATE_OBSERVED"
     elif now < target:
         state = "UPCOMING"
     elif now >= deadline:
