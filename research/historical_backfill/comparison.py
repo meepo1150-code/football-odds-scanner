@@ -1,6 +1,6 @@
 """Offline reconstruction/QA, retaining every exact reviewed market line."""
 from research.historical_backfill.reconstruct import reconstruct_slot,parse_time
-from research.historical_backfill.statistics import deduplicate
+from research.historical_backfill.offline_stats import deduplicate
 
 
 def reconstruct_candidate(candidate, normalized, *, state_semantics_verified=False, max_age_seconds=3600):

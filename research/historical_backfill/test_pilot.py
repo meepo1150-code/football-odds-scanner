@@ -9,7 +9,7 @@ from unittest.mock import patch
 
 from research.historical_backfill.reconstruct import reconstruct_slot
 from research.historical_backfill.normalizer import normalize
-from research.historical_backfill.statistics import three_previews,preview_statistics,deduplicate
+from research.historical_backfill.offline_stats import three_previews,preview_statistics,deduplicate
 from research.historical_backfill.candidates import select_candidates,planned_slots
 from research.historical_backfill.pilot import build
 from research.historical_backfill.test_reconstruct import BASE

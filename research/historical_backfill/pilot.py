@@ -5,7 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 from research.historical_backfill.candidates import select_candidates
-from research.historical_backfill.statistics import three_previews
+from research.historical_backfill.offline_stats import three_previews
 from research.historical_backfill.reconstruct import parse_time
 
 BASELINE='2ff67333b5c65bd1d4ca24020750a7260f59201e'

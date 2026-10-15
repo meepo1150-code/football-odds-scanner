@@ -36,7 +36,7 @@ The existing production Asian settlement module is imported read-only.
   symlink checks. Raw data stays ignored under `data/raw/`; do not commit raw responses.
 - `comparison.py`: snapshot metadata, missing-data/FT status and actual-observation-time
   comparison for the same bookmaker and exact AH line. Deltas alone are not errors.
-- `statistics.py`: observed/backfilled/combined descriptive previews; observed precedence
+- `offline_stats.py`: observed/backfilled/combined descriptive previews; observed precedence
   on identical fixture/slot/bookmaker/semantic market/line. Provider market IDs remain
   provenance, not an extra sample dimension. Conflicting duplicates raise an error.
 - `pilot.py`: actual pinned evidence, manifest, zero-request blocked report. The gate
