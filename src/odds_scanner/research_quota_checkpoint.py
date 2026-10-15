@@ -56,6 +56,11 @@ def _publish(root, base):
 
 def reserve(root, ids, now, *, overhead=0, manual=False):
     durable = os.getenv('RESEARCH_QUOTA_DURABLE') == 'true'
+    from .research_request_budget import utc_targets
+    from datetime import timedelta
+    slots = [t for t in utc_targets(now.astimezone(timezone.utc).date())
+             if t <= now <= t + timedelta(minutes=150)]
+    target = max(slots).isoformat() if slots and not manual else None
     reservation_id = uuid.uuid4().hex
     path = root/RESERVATIONS
     for attempt in range(3):
@@ -67,6 +72,16 @@ def reserve(root, ids, now, *, overhead=0, manual=False):
             filtered = [line for line in existing if json.loads(line).get('reservation_id') != reservation_id]
             if len(filtered) != len(existing):
                 path.write_text(''.join(line+'\n' for line in filtered))
+            # A grant without a finalized receipt may already have reached the
+            # provider before runner cancellation. Do not pay for it again.
+            if target:
+                receipts = root/'data/normalized/research_v2_slot_ledger.jsonl'
+                finalized = {r.get('budget_reservation_id') for r in
+                             (json.loads(l) for l in receipts.read_text().splitlines() if l.strip())} if receipts.exists() else set()
+                for line in filtered:
+                    prior = json.loads(line)
+                    if prior.get('scheduled_target_at') == target and prior.get('reservation_id') not in finalized:
+                        raise ResearchQuotaBlocked('Canonical grant outcome unconfirmed; duplicate transport blocked')
             chosen, budget = allocation(root/'data/normalized/research_v2_slot_ledger.jsonl',
                                         ids, now, prioritized=True, overhead=overhead, manual=manual)
             if not chosen:
@@ -75,7 +90,8 @@ def reserve(root, ids, now, *, overhead=0, manual=False):
             receipt = {'reservation_id': reservation_id, 'provider': 'oddspapi',
                        'finalized_at': now.astimezone(timezone.utc).isoformat(),
                        'requests_used': count, 'state': 'RESERVED_BEFORE_TRANSPORT',
-                       'github_run_id': os.getenv('GITHUB_RUN_ID')}
+                       'github_run_id': os.getenv('GITHUB_RUN_ID'),
+                       'scheduled_target_at': target, 'manual_supplementary_scan': manual}
             path.parent.mkdir(parents=True, exist_ok=True)
             with path.open('a') as handle:
                 handle.write(json.dumps(receipt, sort_keys=True)+'\n')

@@ -4,18 +4,19 @@ from pathlib import Path
 WORKFLOW = Path(".github/workflows/research-v2-scheduled-slot-recovery.yml")
 
 
-def test_weekday_canonical_slots_have_exact_triggers_and_recovery_heartbeats():
-    text = WORKFLOW.read_text()
-    assert "- cron: '0 11,14,17 * * 1-5'" in text
-    assert "- cron: '17,47 8,9,10,11,12,13,14,15,16,17,18,19 * * 1-5'" in text
-    assert "- cron: '0 8,11,14,17 * * 0,6'" in text
-    assert "- cron: '17,47 8,9,10,11,12,13,14,15,16,17,18,19 * * 0,6'" in text
-
-
-def test_primary_scanner_covers_all_canonical_slots():
-    text = Path(".github/workflows/free-research-v2-scanner.yml").read_text()
-    assert "- cron: '0 11,14,17 * * 1-5'" in text
-    assert "- cron: '0 8,11,14,17 * * 0,6'" in text
+def test_one_primary_and_independent_recovery_cover_four_daily_slots():
+    import yaml
+    expected = {
+        'europe-pinnacle-daily-discovery': ['3 8,11,14,17 * * *'],
+        'research-v2-scheduled-slot-recovery': ['23,53 8,9,11,12,14,15,17,18 * * *'],
+        'research-v2-slot-watchdog': ['13 8,11,14,17 * * *', '13 10,13,16,19 * * *'],
+    }
+    for name, crons in expected.items():
+        data = yaml.safe_load(Path('.github/workflows/'+name+'.yml').read_text())
+        triggers = data.get('on', data.get(True))
+        assert [r['cron'] for r in triggers['schedule']] == crons
+    data = yaml.safe_load(Path('.github/workflows/free-research-v2-scanner.yml').read_text())
+    assert 'schedule' not in data.get('on', data.get(True))
 
 
 def test_primary_scanner_uses_guarded_provider_fallback_collector():
@@ -46,7 +47,7 @@ def test_watchdog_event_fallback_is_main_only_and_has_no_self_loop():
     data = yaml.safe_load(text)
     triggers = data.get('on', data.get(True))
     upstream = triggers['workflow_run']
-    assert upstream['workflows'] == ['Live Odds Scan', 'Validation v2 Pipeline Health']
+    assert upstream['workflows'] == ['Live Odds Scan', 'Validation v2 Pipeline Health', 'Scan Health Monitor']
     assert upstream['branches'] == ['main']
     assert upstream['types'] == ['completed']
     assert data['name'] not in upstream['workflows']
@@ -57,7 +58,19 @@ def test_watchdog_event_fallback_is_main_only_and_has_no_self_loop():
 
 def test_watchdog_upstreams_do_not_subscribe_back_to_watchdog():
     import yaml
-    for path in ('.github/workflows/live-scan.yml', '.github/workflows/v2-pipeline-health.yml'):
+    for path in ('.github/workflows/live-scan.yml', '.github/workflows/v2-pipeline-health.yml', '.github/workflows/scan-health-monitor.yml'):
         data = yaml.safe_load(Path(path).read_text())
         triggers = data.get('on', data.get(True))
         assert 'Research V2 Independent Slot Watchdog' not in triggers.get('workflow_run', {}).get('workflows', [])
+
+
+def test_all_automatic_entrypoints_use_same_collector_lock_and_gate():
+    for name in ('europe-pinnacle-daily-discovery', 'daily-preparation-scan',
+                 'research-v2-scheduled-slot-recovery', 'research-v2-slot-watchdog',
+                 'free-research-v2-scanner'):
+        text = Path('.github/workflows/'+name+'.yml').read_text()
+        assert 'python -m odds_scanner.research_v2_slot_recovery' in text
+        assert 'python -m odds_scanner.research_v2_scan_due' in text
+        assert 'research-v2-collectors' in text
+        assert 'cancel-in-progress: false' in text
+        assert "RESEARCH_QUOTA_DURABLE: 'true'" in text

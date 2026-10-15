@@ -1,6 +1,7 @@
 """Conservative, reproducible cross-feed identities. Never modify raw evidence."""
 from .research_population import in_scope, exclusion_reason, POLICY
 from collections import defaultdict
+import hashlib
 from datetime import datetime, timezone
 from .research_v2_integrity import trusted_snapshot
 
@@ -30,7 +31,10 @@ def build_bridge(snapshots):
     rejected = []
     for fid, rows in sorted(by_id.items()):
         if len({identity(r) for r in rows}) != 1:
-            rejected.append({'fixture_id': fid, 'reason': 'INCONSISTENT_IDENTITY'})
+            rejected.append({'fixture_id': fid, 'reason': 'INCONSISTENT_IDENTITY',
+                             'classification': 'INSUFFICIENT_EVIDENCE',
+                             'identities': [dict(zip(('home','away','kickoff','league'), values))
+                                            for values in sorted({identity(r) for r in rows}, key=str)]})
             continue
         row = rows[0]
         home, away, kickoff, league = identity(row)
@@ -51,14 +55,26 @@ def build_bridge(snapshots):
         if len(members) < 2:
             continue
         providers = [r['provider'] for _, r in members]
-        if len(members) != 2 or set(providers) != {'pinnwire', 'propline'}:
+        # PinnWire formerly synthesized this exact digest when event.id was
+        # absent. Reconcile only that reproducible alias with one native ID.
+        # Two native IDs, changed dates/teams, or arbitrary hashes stay rejected.
+        native = [(fid, r) for fid, r in members if r['provider'] == 'pinnwire'
+                  and fid.removeprefix('pinnwire:').isdigit()
+                  and str(r.get('provider_fixture_id')) == fid.removeprefix('pinnwire:')]
+        fallback = [(fid, r) for fid, r in members if r['provider'] == 'pinnwire'
+                    and fid == 'pinnwire:' + hashlib.sha1(
+                        f"{r['home']}|{r['away']}|{r['kickoff']}".encode()).hexdigest()[:16]
+                    and str(r.get('provider_fixture_id')) == fid.removeprefix('pinnwire:')]
+        duplicate = len(members) == 2 and len(native) == len(fallback) == 1 and set(providers) == {'pinnwire'}
+        if not duplicate and (len(members) != 2 or set(providers) != {'pinnwire', 'propline'}):
             rejected.append({'fixture_ids': [fid for fid, _ in members], 'reason': 'AMBIGUOUS_PROVIDER_IDENTITY'})
             continue
-        canonical = next(fid for fid, r in members if r['provider'] == 'pinnwire')
+        canonical = native[0][0] if duplicate else next(fid for fid, r in members if r['provider'] == 'pinnwire')
         evidence = [{'fixture_id': fid, 'provider': r['provider'],
                      **dict(zip(('home', 'away', 'kickoff', 'league'), identity(r)))} for fid, r in members]
         bridges.append({'canonical_fixture_id': canonical, 'members': evidence,
-                        'policy': 'EXACT_TEAMS_UTC_KICKOFF_VERIFIED_COMPETITION_UNIQUE_PER_PROVIDER',
+                        'classification': 'DUPLICATE_IDENTITY' if duplicate else 'APPROVED_LEAGUE_VERIFIED_FIXTURE',
+                        'policy': 'REPRODUCED_PINNWIRE_FALLBACK_HASH_AND_UNIQUE_NATIVE_ID' if duplicate else 'EXACT_TEAMS_UTC_KICKOFF_VERIFIED_COMPETITION_UNIQUE_PER_PROVIDER',
                         'competition': key[3], 'bookmaker': 'pinnacle'})
         for fid, _ in members:
             mapping[fid] = canonical

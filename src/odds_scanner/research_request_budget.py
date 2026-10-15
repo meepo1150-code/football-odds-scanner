@@ -64,15 +64,24 @@ def allocation(path, ids, now, batch_size=5, *, prioritized=False, overhead=0, m
     # One market call per future slot, plus the day's fixture discovery if the
     # preparation slot is still ahead. Manual and recovery cannot spend this.
     future_reserve = len(future) + int(bool(future) and future[0] == slots[0])
+    current_reserve = 0
+    if manual:
+        from .research_v2_slots import completed, read_snapshots
+        elapsed = [t for t in slots if t <= now <= t + timedelta(minutes=150)]
+        if elapsed and not completed(max(elapsed), now, _rows(path), read_snapshots(path.parents[2]) if len(path.parents) > 2 else []):
+            current_reserve = 1 + int(max(elapsed) == slots[0])
+    protected_reserve = future_reserve + current_reserve
     # Protect five requests (discovery + four observations) on each future UTC
-    # day rather than promising 6 * 31 under a 180/month limit.
+    # day; optional second batches yield before reaching 180/month.
     future_month_reserve = sum(len(utc_targets(now.date() + timedelta(days=i))) + 1
         for i in range(1, calendar.monthrange(now.year, now.month)[1] - now.day + 1))
-    run_limit = 1 if len(slots) == 4 else RUN_LIMIT
-    if overhead or manual:
-        run_limit = RUN_LIMIT
-    available = max(0, min(run_limit, DAILY_LIMIT-daily-future_reserve,
-                          MONTHLY_LIMIT-monthly-future_reserve-future_month_reserve))
+    run_limit = RUN_LIMIT
+    # One odds batch defines the daily cohort, even if discovery is cached.
+    # This keeps every repeat observation affordable under the future-slot minimum.
+    if now.date().isoformat() >= '2026-10-14' and not manual and slots and slots[0] <= now <= slots[0]+timedelta(minutes=150):
+        run_limit = min(RUN_LIMIT, overhead+1)
+    available = max(0, min(run_limit, DAILY_LIMIT-daily-protected_reserve,
+                          MONTHLY_LIMIT-monthly-protected_reserve-future_month_reserve))
     remaining = max(0, available-overhead)
     batches = [ids[i:i+batch_size] for i in range(0, len(ids), batch_size)]
     chosen = [batches[i if prioritized else (now.date().toordinal()+i)%len(batches)]
@@ -84,7 +93,8 @@ def allocation(path, ids, now, batch_size=5, *, prioritized=False, overhead=0, m
         'research_run_limit': run_limit, 'quota_utc_day': now.date().isoformat(),
         'canonical_slots_in_football_day': len(slots),
         'future_utc_slots': [t.isoformat() for t in future],
-        'future_utc_requests_reserved': future_reserve,
+        'future_utc_requests_reserved': protected_reserve,
+        'current_canonical_requests_reserved': current_reserve,
         'future_month_requests_reserved': future_month_reserve,
         'canonical_request_reservation': 'UTC_FUTURE_SLOTS_PLUS_DISCOVERY; MANUAL_AND_RECOVERY_YIELD; FAILED_ATTEMPTS_COUNT',
         'budget_scope': 'ODDSPAPI_RESEARCH_COLLECTOR_ONLY',

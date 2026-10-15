@@ -1,7 +1,5 @@
 name: Research V2 Offline Evidence Audit
 on:
-  pull_request:
-    branches: [main]
   push:
     branches: [main]
     paths: ['src/odds_scanner/**', 'apps/dashboard/**', '.github/workflows/research-v2-offline-evidence.yml', 'controls/research_v2_offline_audit_token.txt']
@@ -28,7 +26,7 @@ jobs:
           python -m odds_scanner.oddspapi_history_audit > /dev/null
           git diff --exit-code -- data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/oddspapi_finished_results.jsonl data/normalized/oddspapi_history_ticks.jsonl reports/pattern_registry.json
       - name: Persist current derived evidence on main only
-        if: github.event_name != 'pull_request'
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && github.event_name != 'pull_request_target'
         run: |
           set -euo pipefail
           git config user.name github-actions[bot]

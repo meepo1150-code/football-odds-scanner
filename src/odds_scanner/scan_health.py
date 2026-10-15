@@ -86,6 +86,10 @@ def record(root, report, provider='oddspapi', provenance='LIVE_REPORT'):
                'account_requests_attempted': number(report.get('account_requests_attempted')),
                'account_transient_failures': report.get('account_transient_failures', []),
                'competition_coverage': coverage,
+               'daily_cohort_policy': report.get('daily_cohort_policy'),
+               'daily_cohort_query_complete': report.get('daily_cohort_query_complete'),
+               'daily_cohort_fixture_count': report.get('daily_cohort_fixture_count'),
+               'daily_cohort_fixtures': report.get('daily_cohort_fixtures'),
                'count_semantics': 'DISTINCT_FIXTURES; STRICT_PREMATCH_CORE_AH_1.80_TO_2.20; UNQUERIED_IS_NOT_CONFIRMED_NO_MARKET',
                'record_type': 'CONTROL_CHECK' if status.startswith('SKIPPED_') or status in {'MISSED_SLOT','PROVIDER_COOLDOWN'} else 'SCAN_ATTEMPT'}
     # Imported prior reports are explicitly marked and carry no current Actions identity.
@@ -140,7 +144,7 @@ def refresh(root=Path('.'), now=None):
     identity = load(root, 'research_v2_fixture_identity')
     unmatched = identity.get('rejected', [])
     issues = []
-    missing = [r for r in col['canonical_slots'] if r['state'] in {'MISSING','MISSED'}]
+    missing = [r for r in col['canonical_slots'] if r['state'] in {'MISSING','MISSED','PARTIAL'}]
     if missing: issues.append('SCAN_MISSING')
     if overdue: issues.append('FT_DELAY')
     if stats.get('identity_conflict_ft_fixtures'): issues.append('FT_IDENTITY_CONFLICT')
@@ -159,6 +163,12 @@ def refresh(root=Path('.'), now=None):
              'latest_scan_day': scan.get('football_day') if scan else None,
              'history_report_count': latest['report_count'], 'canonical_slots': col['canonical_slots'],
              'api_requests_used':0, 'raw_deleted':0, 'approved_unresolved_fixtures_retained':True}
+    from .scan_stabilization import readiness, diagnostics
+    value['next_slot_readiness'] = readiness(root, now)
+    report = load(root, 'europe_pinnacle_research_v2_status')
+    value['latest_fixture_diagnostics'] = diagnostics(root, report) if report else {'status': 'INSUFFICIENT_EVIDENCE', 'fixtures': []}
+    value['resolved_duplicate_identities'] = [b for b in identity.get('bridges', [])
+        if b.get('policy') == 'REPRODUCED_PINNWIRE_FALLBACK_HASH_AND_UNIQUE_NATIVE_ID']
     p = root / MONITOR
     p.write_text(json.dumps(value, ensure_ascii=False, indent=2)+'\n')
     return value

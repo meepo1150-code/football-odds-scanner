@@ -33,7 +33,12 @@ def test_four_daily_slots_have_primary_budget_and_same_cohort(tmp_path, day):
     for hour in (8,11,14,17):
         now=datetime(2026,10,day,hour,tzinfo=timezone.utc)
         chosen,report=allocation(path,ids,now)
-        assert 0 < len(chosen) <= 5 and report['research_run_limit']==1
+        assert chosen and report['research_run_limit']==(1 if hour==8 else 2)
+        if hour==8:
+            fixed_ids=chosen
+        else:
+            chosen,_=allocation(path,fixed_ids,now,prioritized=True)
+            assert chosen==fixed_ids
         cohorts.append(chosen)
         receipts.append(row(now,1,str(hour)))
         path.write_text('\n'.join(json.dumps(x) for x in receipts))
@@ -63,11 +68,11 @@ def test_exhausted_daily_budget_calls_no_provider_even_when_forced(tmp_path,monk
 
 def test_failed_attempts_remain_in_ledger_for_same_slot(tmp_path):
     ledger=tmp_path/'ledger'
-    for i in range(3):
+    for i in range(4):
         report={'generated_at':(NOW+timedelta(minutes=i)).isoformat(),
                 'scheduled_target_at':'same-slot','requests_used':2}
         collector._record_slot(ledger,report,'FAILED')
-    assert len(ledger.read_text().splitlines())==3
+    assert len(ledger.read_text().splitlines())==4
     assert allocation(ledger,list(range(54)),NOW)[0]==[]
 
 
@@ -92,14 +97,14 @@ def test_manual_and_recovery_cannot_spend_midnight_reserve(tmp_path):
         chosen,report=allocation(path,ids,now,manual=manual)
         assert chosen==[]
         assert report['future_utc_slots']==['2026-10-14T17:00:00+00:00']
-        assert report['future_utc_requests_reserved']==1
+        assert report['future_utc_requests_reserved']==(2 if manual else 1)
     midnight=now.replace(hour=17)
     assert len(allocation(path,ids,midnight,prioritized=True)[0])==5
     assert allocation(path,ids,midnight)[1]['quota_utc_day']=='2026-10-14'
 
 
 def test_preparation_discovery_and_four_slots_fit_every_utc_day(tmp_path):
-    path=tmp_path/'ledger';receipts=[];ids=list(range(54))
+    path=tmp_path/'ledger';receipts=[];ids=list(range(5))
     for day in range(14,18):
         for hour in (8,11,14,17):
             now=datetime(2026,10,day,hour,tzinfo=timezone.utc)
@@ -147,8 +152,8 @@ def test_complete_month_preserves_all_four_slots_with_optional_breadth(tmp_path,
             now = datetime(2026, month, day, hour, 5, tzinfo=timezone.utc)
             overhead = int(hour == 8)
             chosen, _ = allocation(path, ids, now, prioritized=True, overhead=overhead)
-            assert len(chosen) == 5
-            receipts.append(row(now, 1+overhead, f'{day}-{hour}'))
+            assert 5 <= len(chosen) <= 10
+            receipts.append(row(now, len(chosen)//5+overhead, f'{day}-{hour}'))
             path.write_text('\n'.join(json.dumps(r) for r in receipts))
         extra_at = now.replace(hour=20)
         chosen, _ = allocation(path, ids, extra_at, prioritized=True, manual=True)

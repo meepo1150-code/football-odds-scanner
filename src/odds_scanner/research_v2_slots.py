@@ -110,7 +110,14 @@ def collection_snapshot(row):
 
 def matched_snapshots(target, now, snapshots):
     matched = []
+    day = target_football_day(target)
+    baseline = {str(r.get('fixture_id')) for r in snapshots
+                if r.get('scheduled_target_at') == day+'T15:00:00+07:00'
+                or (r.get('daily_cohort_policy') == 'FIXED_1500_FIXTURE_COHORT_V1'
+                    and r.get('daily_cohort_setup_target_at') == day+'T15:00:00+07:00')}
     for snap in snapshots:
+        if day >= '2026-10-14' and target.hour != 15 and baseline and str(snap.get('fixture_id')) not in baseline:
+            continue
         if not collection_snapshot(snap):
             continue
         observed = stamp(snap.get('observed_at'))
@@ -140,6 +147,20 @@ def read_snapshots(root=Path('.')):
 
 
 def completed(target, now, ledger, snapshots):
+    day = target_football_day(target)
+    baseline = [r for r in ledger if r.get('scheduled_target_at') == day+'T15:00:00+07:00'
+                and r.get('provider', 'oddspapi') == 'oddspapi' and r.get('collection_succeeded') is True]
+    has_master_setup = any(r.get('master_competitions_considered') for r in baseline) or any(
+        r.get('scheduled_target_at') == day+'T15:00:00+07:00' and r.get('home_club_id') and r.get('away_club_id') for r in snapshots)
+    if day >= '2026-10-14' and target.hour != 15 and baseline and has_master_setup:
+        # A few unrelated quotes cannot close a fixed-cohort follow-up slot.
+        for row in ledger:
+            observed = stamp(row.get('actual_observed_at'))
+            if (stamp(row.get('scheduled_target_at')) == target and observed
+                    and target <= observed <= min(now, target+timedelta(minutes=RECOVERY_MINUTES))
+                    and row.get('daily_cohort_query_complete') is True):
+                return True
+        return False
     return bool(matched_snapshots(target, now, snapshots) or any(
         row.get('state') in {'ZERO_FIXTURES','ZERO_COHORT'} and valid_completion(row, target, now)
         for row in ledger))
@@ -156,12 +177,19 @@ def coverage(now, day, ledger, snapshots):
         matched = matched_snapshots(target, local, snapshots)
         evidence = [r for r in ledger if valid_completion(r, target, local)
                     and (r.get('state') in {'ZERO_FIXTURES','ZERO_COHORT'} or matched)]
-        completed = bool(matched or evidence)
+        is_complete = completed(target, local, ledger, snapshots)
         latest = max((stamp(r.get('observed_at')) for r in matched), default=None)
-        row = evidence[-1] if evidence else {}
+        cohort_checks = [r for r in ledger if stamp(r.get('scheduled_target_at')) == target
+                         and r.get('daily_cohort_query_complete') is True
+                         and stamp(r.get('actual_observed_at'))
+                         and target <= stamp(r['actual_observed_at']) <= min(local, target+timedelta(minutes=RECOVERY_MINUTES))]
+        row = evidence[-1] if evidence else cohort_checks[-1] if cohort_checks else {}
         observed = latest or stamp(row.get('actual_observed_at') or row.get('observed_at'))
-        state = ('OBSERVED' if matched else row.get('state')) if completed else (
-            'UPCOMING' if target > local else 'MISSED' if local > target + timedelta(minutes=RECOVERY_MINUTES) else 'MISSING')
+        state = ('OBSERVED' if matched else row.get('state')) if is_complete else (
+            'UPCOMING' if target > local else 'PARTIAL' if matched else 'MISSED' if local > target + timedelta(minutes=RECOVERY_MINUTES) else 'MISSING')
+        if is_complete and not matched and cohort_checks:
+            details_ = row.get('daily_cohort_fixtures') or []
+            state = 'ZERO_FIXTURES' if details_ and all(f.get('reason') == 'KICKOFF_PASSED' for f in details_) else 'CHECKED_NO_VALID_CORE_ODDS'
         if (state=='ZERO_FIXTURES' and str(day)>=SCHEDULE_EFFECTIVE_DAY
                 and row.get('coverage_complete') is not True):
             # Preserve the old receipt for dedupe without asserting whole-scope emptiness.
@@ -173,7 +201,7 @@ def coverage(now, day, ledger, snapshots):
                         'valid_snapshot_count': len(matched),
                         'canonical_fixture_count': len({r.get('fixture_id') for r in matched}),
                         'observation_timing': ('ON_TIME' if observed and observed <= target + timedelta(minutes=30) else 'LATE' if observed else state),
-                        'recovered': bool(completed and observed and observed > target + timedelta(minutes=30))})
+                        'recovered': bool(is_complete and observed and observed > target + timedelta(minutes=30))})
     elapsed = [r for r in details if r['state'] != 'UPCOMING']
     done = [r for r in elapsed if r['state'] in {'OBSERVED', 'ZERO_FIXTURES','ZERO_COHORT'}]
     partial = [r for r in done if r['state']=='ZERO_COHORT']

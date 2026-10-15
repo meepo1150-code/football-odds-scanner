@@ -25,7 +25,7 @@
       const target=Date.parse(slot.target_time);
       const state=stale&&target<=Date.now()&&slot.state==='UPCOMING'?'UNVERIFIED — รอรายงานใหม่':slot.state+' / '+(slot.observation_timing||'UNVERIFIED');
       [slot.target_time,state,slot.provider||'—',slot.observed_at||'—',slot.lag_minutes??'—',slot.valid_snapshot_count,slot.canonical_fixture_count].forEach(v=>{const td=document.createElement('td');td.textContent=String(v);tr.append(td);});
-      if(/MISSING|MISSED|UNVERIFIED/.test(state))tr.style.color='var(--r)';
+      if(/MISSING|MISSED|PARTIAL|CHECKED_NO_VALID|UNVERIFIED/.test(state))tr.style.color='var(--r)';
     }
     for(const [name,p] of Object.entries(report.providers||{}))line('p',name+' · '+p.status+' · '+(p.fresh===false?'STALE · ':'')+'audit '+(p.generated_at||'UNKNOWN')+' · '+(p.errors||[]).join('; '));
     const [e2e,hist]=await Promise.all(['research_v2_end_to_end_audit','oddspapi_history_audit'].map(async name=>{let r=await fetch('reports/'+name+'.json',{cache:'no-store'});return r.ok?r.json():null;}));
@@ -38,6 +38,21 @@
     if(health&&monitor){
       line('p','Monitor '+monitor.status+' · '+monitor.generated_at+' · Scan Missing '+monitor.scan_missing_count+' · FT Delay '+monitor.ft_delay_count+' · Unmatched candidates '+monitor.unmatched_count);
       line('p','Unmatched candidates คือ identity bridge ที่ยังยืนยันไม่ได้ ไม่ใช่จำนวน FT missing · เกมเลื่อนแสดงแยก '+monitor.verified_non_ft_lifecycle_count);
+      line('p','Duplicate ID ที่ยืนยันจาก hash เดิม '+(monitor.resolved_duplicate_identities||[]).length+' กลุ่ม · raw history คงอยู่');
+      if(monitor.next_slot_readiness){
+        const next=monitor.next_slot_readiness;
+        line('p','รอบถัดไป '+next.target_at+' · '+next.status+' · ชุดเดิม '+(next.fixture_set_size??'UNKNOWN')+' คู่ · ยังไม่ kickoff ณ รอบ '+next.remaining_prematch_at_target+' · ต้องใช้ '+next.required_market_requests+' market requests');
+        if(next.prematch_forecast_at)line('p','คาดการณ์ก่อนแข่ง ณ primary '+next.prematch_forecast_at+' · ยังไม่ใช่ snapshots ใหม่');
+        if(next.blocked_reasons?.length)line('p','Readiness blocked: '+next.blocked_reasons.join(', '));
+        line('p','Account remaining estimate '+(next.account_remaining_estimate??'UNKNOWN')+' · อ้างอิงบัญชี '+(next.account_observed_before||'UNKNOWN')+' · จะตรวจบัญชีจริงตอนเก็บราคา · runtime '+(next.runtime_verified?'VERIFIED':'PENDING'));
+        if(next.research_usage&&next.budget)line('p','Quota ledger ณ Monitor · UTC '+next.quota_utc_day+' · ใช้/จองแล้ววันนี้ '+next.research_usage.day+'/'+next.budget.research_daily_limit+' · เดือน '+next.research_usage.month+'/'+next.budget.research_monthly_limit+' · รวม request ของรอบล่าสุดแล้ว');
+      }
+      if(monitor.latest_fixture_diagnostics){
+        line('p','สาเหตุรายคู่จาก response เดิม: '+JSON.stringify(monitor.latest_fixture_diagnostics.reason_counts||{}));
+        const detail=document.createElement('details');card.append(detail);
+        const summary=document.createElement('summary');summary.textContent='แยก Already Kickoff / Market / Quota / Provider / Mapping / Validation';detail.append(summary);
+        const pre=document.createElement('pre');pre.style.whiteSpace='pre-wrap';pre.textContent=JSON.stringify(monitor.latest_fixture_diagnostics.fixtures||[],null,2);detail.append(pre);
+      }
       const latest=health.latest_scan;
       line('p','Workflow SUCCESS หมายถึง job ทำงานจบ · Scan Health PASS/WARNING/FAIL ตรวจการเก็บข้อมูลแยกกัน');
       for(const provider of ['oddspapi','propline']){
@@ -64,8 +79,16 @@
     if(scan){
       line('p','Last scan status '+scan.status+' · Target '+scan.scheduled_target_at+' · Actual '+scan.actual_observed_at+' · Lag '+scan.schedule_lag_minutes+' นาที');
       line('p','พิจารณา '+(scan.master_competitions_considered??'—')+' ลีก · โปรแกรม '+(scan.scheduled_approved_fixtures??'—')+' คู่ · เก็บสะสม '+(scan.fixtures_captured_today??'—')+' คู่ · ยังไม่มีราคา '+(scan.scheduled_fixtures_without_snapshot??'—')+' คู่ · requests เพิ่มสำหรับลีกที่ถูกข้าม '+(scan.additional_market_requests_required??'—'));
+      line('p','Policy: research ไม่เกิน 6 requests/UTC day และ 180/month · รอบ 00:00 ใช้โควต้าวัน UTC เดิม');
       line('p','Quota ล่าสุดก่อนยิง '+(scan.quota_remaining_before??'UNKNOWN')+' · รอบนี้ใช้ '+(scan.requests_used??0)+' · '+(scan.coverage_complete?'พิจารณา scope ตาม receipt แล้ว':'COVERAGE GAPS REMAIN'));
-      if(scan.quota_utc_day)line('p','Research quota UTC '+scan.quota_utc_day+' · used/reserved today '+scan.research_requests_used_today+'/6 · month '+scan.research_requests_used_month+'/180 · future slots reserved '+scan.future_utc_requests_reserved+' · future days reserved '+scan.future_month_requests_reserved);
+      if(scan.quota_utc_day)line('p','Quota receipt ก่อนจอง request ของรอบนี้ · UTC '+scan.quota_utc_day+' · used/reserved today '+scan.research_requests_used_today+'/'+(scan.research_daily_limit??'UNKNOWN')+' · month '+scan.research_requests_used_month+'/'+(scan.research_monthly_limit??'UNKNOWN')+' · future slots reserved '+scan.future_utc_requests_reserved+' · future days reserved '+scan.future_month_requests_reserved);
+      if(scan.account_safety_reserve!=null)line('p','Account safety reserve '+scan.account_safety_reserve+' · ขั้นต่ำที่ต้องใช้ถึงสิ้นเดือน '+scan.account_minimum_requests_through_month_end+' · ขาดโควต้า '+scan.account_month_capacity_shortfall+' requests · ไม่รับประกันครบทุกวัน');
+      if(scan.daily_cohort_policy){
+        line('p','กลุ่มคู่จาก 15:00 '+scan.daily_cohort_fixture_count+' คู่ · ยังไม่เตะ '+scan.daily_cohort_remaining_prematch_count+' · ตรวจครบกลุ่ม '+(scan.daily_cohort_query_complete?'YES':'NO'));
+        const cohort=document.createElement('details');card.append(cohort);
+        const title=document.createElement('summary');title.textContent='ผลสแกนรายคู่จากกลุ่ม 15:00';cohort.append(title);
+        const body=document.createElement('pre');body.style.whiteSpace='pre-wrap';body.textContent=JSON.stringify(scan.daily_cohort_fixtures||[],null,2);cohort.append(body);
+      }
       const detail=document.createElement('details');card.append(detail);const summary=document.createElement('summary');summary.textContent='Coverage report ทุกลีกที่อนุมัติ';detail.append(summary);
       const pre=document.createElement('pre');pre.style.whiteSpace='pre-wrap';pre.textContent=JSON.stringify(scan.competition_coverage||[],null,2);detail.append(pre);
     }

@@ -10,7 +10,7 @@ from zoneinfo import ZoneInfo
 from email.utils import parsedate_to_datetime
 from .research_request_budget import allocation
 from .research_quota_checkpoint import reserve, ResearchQuotaBlocked
-from .provider_request_budget import QuotaBlocked
+from .provider_request_budget import QuotaBlocked, ACCOUNT_RESERVE
 from .europe_bookmaker_coverage_probe import BOOKMAKER, quota_allows_probe, summarize_rows
 
 # Research V2 is the primary forward data collector. Keep a small emergency reserve,
@@ -89,6 +89,9 @@ def _record_slot(path,report,state,reason=None):
     row['http_requests_attempted'] = report.get('http_requests_attempted',report.get('requests_used',0))
     row['request_completed_at'] = report.get('request_completed_at')
     row['budget_reservation_id'] = report.get('budget_reservation_id')
+    for field in ('master_competitions_considered', 'daily_cohort_policy', 'daily_cohort_query_complete', 'daily_cohort_fixture_count', 'daily_cohort_fixtures'):
+        if field in report:
+            row[field] = report[field]
     _merge_jsonl(path,[row],('scheduled_target_at','finalized_at'))
 
 def _parse(v):
@@ -98,9 +101,12 @@ def _parse(v):
 
 def _write(r,root):
     from .scan_health import record
-    # Capacity checks may stop before transport. Preserve those decisions in the
-    # same append-only slot ledger as transported attempts, without claiming an
-    # observed quote or charging a zero-request skip to the quota budget.
+    if r.get('daily_cohort_policy') and not r.get('daily_cohort_query_complete'):
+        from .daily_scan_cohort import cohort, annotate
+        setup = cohort(root, r['football_day'])
+        if setup is not None and 'collection_started_at' not in r:
+            requested = r.get('coverage_tournament_ids', []) if r.get('status') == 'API_REQUEST_FAILED' else []
+            annotate(r, setup, datetime.now(timezone.utc), requested, errors=True)
     if r.get('status') == 'SKIPPED_QUOTA' or str(r.get('status', '')).startswith('SKIPPED_QUOTA_PROVIDER_'):
         _record_slot(root/SLOT_LEDGER_PATH, r, 'SKIPPED_QUOTA')
     record(root, r, 'oddspapi')
@@ -150,6 +156,22 @@ def run(root=Path('.')):
         'reason':exclusion_reason(r,provider='oddspapi') or scan_scope_reason(r,provider='oddspapi')}
         for r in selected if exclusion_reason(r,provider='oddspapi') or scan_scope_reason(r,provider='oddspapi')]
     selected = filter_scan_targets(selected)
+    fixed = None
+    if master_mode and not manual and day >= '2026-10-14' and target.hour != 15:
+        from .daily_scan_cohort import cohort, annotate
+        fixed = cohort(root, day)
+        if fixed is None:
+            report.update(status='DAILY_COHORT_UNAVAILABLE', requests_used=0,
+                          errors=['Retained 15:00 setup evidence is required; no new cohort substituted'])
+            return _write(report, root)
+        pending = {str(f['tournament_id']) for f in fixed['fixtures'] if schedule.stamp(f['kickoff']) > now}
+        selected = [r for r in selected if str(r['tournament_id']) in pending]
+        annotate(report, fixed, now)
+        if not pending:
+            report.update(status='ZERO_USABLE_FIXTURES', requests_used=0, football_day_fixtures=0,
+                          strict_snapshots_this_run=0, coverage_complete=True)
+            _record_slot(root/SLOT_LEDGER_PATH, report, 'ZERO_FIXTURES')
+            return _write(report, root)
     report['master_scope_excluded_targets'] = original_count - len(selected)
     ids=[x.get('tournament_id') for x in selected if isinstance(x,dict) and x.get('tournament_id') is not None]
     if original_count and not selected:
@@ -190,7 +212,20 @@ def run(root=Path('.')):
     # The reserve protects future canonical observations, not the current canonical
     # observation itself. Once quota falls to the reserve, spend it only on a current
     # canonical slot; background/history workflows remain responsible for yielding.
-    effective_reserve = budget['future_utc_requests_reserved']
+    effective_reserve = ACCOUNT_RESERVE + budget['future_utc_requests_reserved']
+    month_minimum = (budget['future_month_requests_reserved']
+                     + budget['future_utc_requests_reserved'] + overhead + 1)
+    report['account_safety_reserve'] = ACCOUNT_RESERVE
+    report['account_minimum_requests_through_month_end'] = month_minimum
+    report['account_month_capacity_shortfall'] = max(0, month_minimum + ACCOUNT_RESERVE - remaining)
+    # Breadth is optional. Keep the minimum market call available today even
+    # when earlier account usage makes all remaining days impossible to fund.
+    if fixed is None and normal > 1 and remaining - normal - overhead < ACCOUNT_RESERVE + month_minimum - overhead - 1:
+        ids = ids[:BATCH_SIZE]
+        selected = [x for x in selected if x.get('tournament_id') in ids]
+        normal = 1
+        report.update(planned_requests=normal, coverage_tournament_ids=ids,
+                      account_optional_breadth_deferred=True)
     report['effective_quota_reserve']=effective_reserve
     if not ids or remaining-normal-overhead < effective_reserve:report.update(status='SKIPPED_QUOTA',quota_skip_reason='ACCOUNT_CAPACITY_RESERVED_OR_EXHAUSTED',requests_used=0);return _write(report,root)
     try:
@@ -232,6 +267,11 @@ def run(root=Path('.')):
             selected,scope=schedule.plan(schedule_rows,ws,we,datetime.now(timezone.utc),complete=complete)
             report.update(scope,schedule_response_id=cached['response_id'],schedule_observed_at=cached['observed_at'],schedule_requests_used=used)
             selected=schedule.prioritize(root,selected,report,datetime.now(timezone.utc))
+            if fixed is not None:
+                pending = {str(f['tournament_id']) for f in fixed['fixtures'] if schedule.stamp(f['kickoff']) > datetime.now(timezone.utc)}
+                # The follow-up cannot rotate into unseen tournaments.
+                selected = [r for r in selected if str(r['tournament_id']) in pending]
+                selected.sort(key=lambda r: r['tournament_id'])
             ids=[x['tournament_id'] for x in selected][:max(0,grant-used)*BATCH_SIZE]
             report['coverage_tournament_ids']=ids
             selected=[x for x in selected if x['tournament_id'] in ids]
@@ -277,6 +317,9 @@ def run(root=Path('.')):
         payloads.append((payload,response_at,set(map(str,batch))))
     if not payloads:
         if request_failed:
+            if fixed is not None:
+                from .daily_scan_cohort import annotate
+                annotate(report, fixed, datetime.now(timezone.utc), ids, errors=True)
             _record_slot(root/SLOT_LEDGER_PATH,report,'FAILED');return _write(report,root)
         report.update(status='RECOVERY_WINDOW_EXPIRED_BEFORE_ODDS',requests_used=used,actual_observed_at=None,generated_at=datetime.now(timezone.utc).isoformat())
         _record_slot(root/SLOT_LEDGER_PATH,report,'MISSED');return _write(report,root)
@@ -299,6 +342,9 @@ def run(root=Path('.')):
                 report['excluded_unrequested_scope_fixtures']+=1
                 continue
             if k is None or not(ws<=k<we):excluded+=1;continue
+            if fixed is not None and str(f.get('fixtureId')) not in {r['fixture_id'] for r in fixed['fixtures']}:
+                report['excluded_outside_daily_cohort'] = report.get('excluded_outside_daily_cohort', 0) + 1
+                continue
             tm={**(meta.get(int(f.get('tournamentId') or -1)) or {}),'universe':'PINNACLE_RESEARCH_V2'};book=(f.get('bookmakerOdds') or {}).get(BOOKMAKER);active=isinstance(book,dict) and book.get('bookmakerIsActive') is True and book.get('suspended') is False;shape=mainline_shape(f,catalog,bookmaker=BOOKMAKER)
             try:snap,reason=extract_mainline_snapshot(f,catalog,observed_at=observed_at,tournament_meta=tm,bookmaker=BOOKMAKER)
             except ValueError:snap=None;reason='MASTER_CANONICAL_ID_CONFLICT'
@@ -306,6 +352,9 @@ def run(root=Path('.')):
                 snap=None;reason='MASTER_CLUB_UNMAPPED'
             diag.append({'country':tm.get('country'),'league':tm.get('tournament_name'),'fixture_id':f.get('fixtureId'),'bookmaker_active':active,'ah_main_count':shape.get('ah_main_count',0),'ou_main_count':shape.get('ou_main_count',0),'strict_snapshot':snap is not None,'reason':reason});audit.append({'football_day':day,'fixture_id':f.get('fixtureId'),'tournament_id':f.get('tournamentId'),'country':tm.get('country'),'league':tm.get('tournament_name'),'home':f.get('participant1Name'),'away':f.get('participant2Name'),'kickoff':f.get('startTime'),'observed_at':observed_at.isoformat(),'scheduled_target_at':target.isoformat() if target else None,'schedule_lag_minutes':batch_lag,'observation_timing':timing,'bookmaker':BOOKMAKER,'eligibility_status':'MATCH' if snap else 'NOT_MATCH','eligibility_reason':reason,'research_population':True})
             if snap and in_scope(snap):snap.update(football_day=day,research_only=True,scheduled_target_at=target.isoformat() if 0<=batch_lag<=RECOVERY_WINDOW_MINUTES else None,attempted_target_at=target.isoformat(),schedule_lag_minutes=batch_lag,observation_timing=timing);strict.append(snap)
+    if fixed is not None:
+        for snapshot in strict:
+            snapshot.update(daily_cohort_policy=fixed['policy'], daily_cohort_setup_target_at=fixed['setup_target_at'])
     ts=_merge_jsonl(root/SNAPSHOT_PATH,strict,('observed_at','fixture_id'));ta=_merge_jsonl(root/AUDIT_PATH,audit,('observed_at','fixture_id'));report.update(status='RESEARCH_V2_OBSERVED',requests_used=used,rate_limit_retries=retries,api_fixtures_returned=alln,excluded_outside_football_day=excluded,football_day_fixtures=len(audit),strict_snapshots_this_run=len(strict),persisted_snapshot_rows=ts,persisted_audit_rows=ta,**summarize_rows(diag))
     if master_mode:
         schedule.finish_coverage(report,ids,audit,request_failed)
@@ -320,6 +369,10 @@ def run(root=Path('.')):
     state='OBSERVED' if strict else 'FAILED' if report.get('errors') or audit else 'ZERO_FIXTURES'
     if master_mode:report['coverage_complete']=not (request_failed or invalid or report.get('recovery_window_expired_during_collection')) and report.get('schedule_response_complete',False) and not any(x['reason'] in {'QUOTA_SKIPPED','PROVIDER_ERROR','AWAITING_ODDS','NO_SCHEDULE_EVIDENCE'} for x in report.get('competition_coverage',[]))
     if state=='FAILED':report['status']='PROVIDER_RESPONSE_REJECTED' if invalid else report.get('status','API_REQUEST_FAILED') if request_failed else 'NO_VERIFIED_PREMATCH_QUOTES'
+    if fixed is not None:
+        from .daily_scan_cohort import annotate
+        annotate(report, fixed, datetime.now(timezone.utc), ids, audit, strict,
+                 errors=bool(request_failed or invalid or report.get('recovery_window_expired_during_collection')))
     _record_slot(root/SLOT_LEDGER_PATH,report,state);return _write(report,root)
 
 if __name__=='__main__':print(json.dumps(run(),ensure_ascii=False))

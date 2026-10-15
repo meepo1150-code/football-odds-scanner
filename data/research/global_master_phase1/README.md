@@ -35,3 +35,7 @@ Existing full-suite tests can write synthetic scan-health reports into the local
 Draft PR only. No merge, deployment, automatic mapper rebuild, source refresh API, or activation is authorized by this dataset. Future admission requires a separately approved migration preserving permanent IDs, reviewed provider season/stage and team bindings, exclusion-ledger protection, and a bounded operational coverage check. The offline catalog does not prove live odds availability or quote quality.
 
 Head commit deliberately uses `[skip ci]`: the existing unconditional Pages `workflow_run` listener can deploy main after an offline-evidence PR workflow completes. Automatic CI cannot be run safely until that existing workflow coupling is addressed separately. Local checks are complete; skipped GitHub CI must not be described as passing CI.
+
+## Completion review — 2026-10-15
+
+PR #373 isolates PR validation from Pages and production evidence writes. The historical manifest is retained; continuous staging QA pins master tables and provider catalog, while the PR diff verifies no scanner, scheduler, quota, raw history, production mapping, or dashboard modifications. Operational reports may advance independently. Safe merge is authorized as staging only; production admission remains prohibited. Original 2026-10-14 roster evidence is retained without claiming a new live re-fetch.

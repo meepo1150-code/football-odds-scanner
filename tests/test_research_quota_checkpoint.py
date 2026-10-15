@@ -13,11 +13,11 @@ LEDGER=Path('data/normalized/research_v2_slot_ledger.jsonl')
 
 def test_cancelled_run_and_finalized_receipt_count_once(tmp_path,monkeypatch):
     monkeypatch.delenv('RESEARCH_QUOTA_DURABLE',raising=False)
-    ids,budget,rid,count=reserve(tmp_path,list(range(10)),NOW)
+    ids,budget,rid,count=reserve(tmp_path,list(range(5)),NOW)
     assert count==1
-    assert allocation(tmp_path/LEDGER,list(range(10)),NOW)[1]['research_requests_used_today']==1
+    assert allocation(tmp_path/LEDGER,list(range(5)),NOW)[1]['research_requests_used_today']==1
     (tmp_path/LEDGER).write_text(json.dumps({'budget_reservation_id':rid,'finalized_at':NOW.isoformat(),'requests_used':1}))
-    assert allocation(tmp_path/LEDGER,list(range(10)),NOW)[1]['research_requests_used_today']==1
+    assert allocation(tmp_path/LEDGER,list(range(5)),NOW)[1]['research_requests_used_today']==1
 
 
 def test_persistence_failure_blocks_before_transport(tmp_path,monkeypatch):
@@ -125,3 +125,22 @@ def test_pretransport_quota_skip_retains_slot_receipt_without_completion(tmp_pat
     assert not (tmp_path/collector.SNAPSHOT_PATH).exists()
     health = json.loads((tmp_path/'reports/scan_health_latest.json').read_text())['recent_reports'][0]
     assert health['status'] == 'WARNING' and health['api_error_count'] == 0
+
+
+def test_account_reserve_blocks_before_grant_and_protects_later_slots(tmp_path, monkeypatch):
+    from odds_scanner import europe_pinnacle_discovery as collector
+    from test_collector_observation_contract import setup
+    setup(tmp_path, monkeypatch, now='2026-10-14T11:03:00+00:00')
+    monkeypatch.setattr(collector, 'summarize_account', lambda _: {'request_remaining':12})
+    calls = []
+    def get(endpoint, *args):
+        calls.append(endpoint)
+        assert endpoint == '/account'
+        return {}
+    monkeypatch.setattr(collector, '_get', get)
+    result = collector.run(tmp_path)
+    assert result['status'] == 'SKIPPED_QUOTA'
+    assert result['account_safety_reserve'] == 10
+    assert result['effective_quota_reserve'] == 12
+    assert calls == ['/account']
+    assert not (tmp_path/RESERVATIONS).exists()

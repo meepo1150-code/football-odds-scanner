@@ -1,10 +1,6 @@
 name: PinnWire Current AH Probe
 on:
   workflow_dispatch:
-  schedule:
-    # Same canonical version and evidence gate as the primary collector.
-    - cron: '0,37 11,14 * * 1-5'
-    - cron: '0,37 8,11,14,17 * * 0,6'
   push:
     branches: [main]
     paths: ['controls/pinnwire_research_v2_scan_token.txt','src/odds_scanner/pinnwire_probe.py','src/odds_scanner/research_v2_scan_due.py','src/odds_scanner/provider_request_budget.py','.github/workflows/pinnwire-probe.yml']
