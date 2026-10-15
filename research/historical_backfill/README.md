@@ -21,7 +21,7 @@ inputs from another baseline. Obtain that commit's inputs for reproducibility.
 Offline reports are restricted to `research/historical_backfill/reports/`.
 The new manual `isolated_runner.py` has a bounded HTTP client, accepts only
 `HISTORICAL_ODDSPAPI_KEY`, and never reads/falls back to the production credential.
-No workflow, scheduler hook, production import or integration has been added.
+An environment-bound manual workflow now exists on this research branch only; see `reports/ENVIRONMENT_PILOT_20261015.md`. No production scheduler hook or integration has been added.
 The existing production Asian settlement module is imported read-only.
 
 ## Files and contracts
