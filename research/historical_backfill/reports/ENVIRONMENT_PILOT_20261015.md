@@ -32,16 +32,17 @@ Empty cache saves are now skipped; no historical body existed to cache in this r
 
 ## Workflow scope and next valid run
 
-The research branch uses `.github/workflows/research.yml` as a manual-only definition
-at an already registered, enabled workflow path. This allows branch dispatch without
-registering a new workflow on main. Main's workflow file and schedule remain unchanged.
-The job requires exact branch `research/historical-backfill-isolated-20261015`,
-workflow_dispatch, and environment historical-research. Token contents permission is
-read-only; no git push, merge, production collector, scheduler or deployment steps.
-Research history always uses HISTORICAL_ODDSPAPI_KEY with no fallback. The production
-key is scoped to separate unmetered identity/account-only steps and never reaches the
-historical runner. Output is limited to sanitized research artifacts; raw account
-responses and API keys are never persisted or logged.
+The original run used a research-branch override of `research.yml`. That file and
+`global-expansion-readiness.yml` have since been restored byte-for-byte to their
+original definitions. Current manual entrypoint: `historical-research-pilot.yml`.
+For dispatch before registering the new path on main, the research branch also
+has an exact-branch manual sibling job in `global-expansion-matchday-probe.yml`.
+Its original main-only probe job is unchanged and skips research-branch dispatches.
+The historical sibling uses read-only contents permission, its own concurrency,
+`historical-research`, and the dedicated secret. Main has not been modified.
+No new scheduled trigger, merge, deploy or production collector change is included.
+Research history has no production-key fallback. Separate production account-only
+steps verify subscription identity and request count; no raw account is persisted.
 
 A later manual pilot requires fresh real Production Health, an open quiet window,
 and fresh account checks. Do not loosen the gate, relabel timestamps, claim historical
