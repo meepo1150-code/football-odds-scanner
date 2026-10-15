@@ -4,6 +4,7 @@ on:
   schedule:
     # UTC 08/11/14/17 = Bangkok 15/18/21/00; shared collector and evidence gate.
     # Avoid minute-zero congestion; actual observation times remain authoritative.
+    - cron: '3,8 8,11,14,17 * * *' # Early guarded attempts after each canonical slot.
     - cron: '23,53 8,9,11,12,14,15,17,18 * * *'
   push:
     branches: [main]
