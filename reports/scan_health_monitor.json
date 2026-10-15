@@ -1,29 +1,16 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-15T11:19:14.739331+00:00",
+  "generated_at": "2026-10-15T11:20:18.780524+00:00",
   "football_day": "2026-10-15",
-  "status": "FAIL",
+  "status": "WARNING",
   "issues": [
-    "SCAN_MISSING",
     "FT_DELAY",
     "FT_IDENTITY_CONFLICT",
     "UNMATCHED_IDENTITY_CANDIDATES",
     "LATEST_SCAN_WARNING"
   ],
-  "scan_missing_count": 1,
-  "scan_missing": [
-    {
-      "target_time": "2026-10-15T18:00:00+07:00",
-      "state": "MISSING",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "MISSING",
-      "recovered": false
-    }
-  ],
+  "scan_missing_count": 0,
+  "scan_missing": [],
   "ft_delay_count": 2,
   "ft_delay": [
     {
@@ -79,9 +66,9 @@
     }
   ],
   "unmatched_semantics": "REJECTED_CROSS_PROVIDER_BRIDGE_CANDIDATES; NOT_AUTOMATICALLY_MISSING_FT",
-  "latest_scan_report_id": "305d1d62e80a72bf1817306965b70eb0bab7c4128858b3432c15df914c75976e",
+  "latest_scan_report_id": "c0bd87ef8773a01faedbe01716489b95cd4a8d06ae44b4b634912391f5eb2cd0",
   "latest_scan_day": "2026-10-15",
-  "history_report_count": 26,
+  "history_report_count": 27,
   "canonical_slots": [
     {
       "target_time": "2026-10-15T15:00:00+07:00",
@@ -96,13 +83,13 @@
     },
     {
       "target_time": "2026-10-15T18:00:00+07:00",
-      "state": "MISSING",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "MISSING",
+      "state": "OBSERVED",
+      "provider": "oddspapi",
+      "observed_at": "2026-10-15T18:20:12.244180+07:00",
+      "lag_minutes": 20.2,
+      "valid_snapshot_count": 38,
+      "canonical_fixture_count": 38,
+      "observation_timing": "ON_TIME",
       "recovered": false
     },
     {
@@ -190,18 +177,18 @@
     ],
     "quota_utc_day": "2026-10-15",
     "research_usage": {
-      "day": 2,
-      "month": 90
+      "day": 3,
+      "month": 91
     },
-    "account_remaining_estimate": 66,
-    "account_observed_before": "2026-10-15T08:21:02.414066+00:00",
+    "account_remaining_estimate": 65,
+    "account_observed_before": "2026-10-15T11:20:07.219490+00:00",
     "account_estimate_limitation": "OTHER_ACCOUNT_CONSUMERS_AFTER_OBSERVATION_NOT_MEASURED; RECHECK_UNMETERED_ACCOUNT_AT_COLLECTION",
     "fixture_set_policy": "FIXED_1500_FIXTURE_COHORT_V1",
     "schedule_response_id": "95791253fa451ca566726bc2d3355ac9725cddc29de453d26083d82d2547f84f",
     "budget": {
       "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
-      "research_requests_used_today": 2,
-      "research_requests_used_month": 90,
+      "research_requests_used_today": 3,
+      "research_requests_used_month": 91,
       "research_daily_limit": 6,
       "research_monthly_limit": 180,
       "research_run_limit": 2,
@@ -230,9 +217,9 @@
   },
   "latest_fixture_diagnostics": {
     "status": "RETAINED_RESPONSE_DIAGNOSIS",
-    "observed_at": "2026-10-15T08:21:07.559908+00:00",
-    "attempt_started_at": "2026-10-15T08:21:02.414066+00:00",
-    "attempt_completed_at": "2026-10-15T08:21:07.559908+00:00",
+    "observed_at": "2026-10-15T11:20:12.244180+00:00",
+    "attempt_started_at": "2026-10-15T11:20:07.219490+00:00",
+    "attempt_completed_at": "2026-10-15T11:20:12.244180+00:00",
     "schedule_response_id": "95791253fa451ca566726bc2d3355ac9725cddc29de453d26083d82d2547f84f",
     "fixtures": [
       {
@@ -265,7 +252,7 @@
         "tournament_id": "197",
         "in_1500_cohort": true,
         "reason": "MARKET_UNAVAILABLE",
-        "provider_reason": "AMBIGUOUS_OR_MISSING_1X2",
+        "provider_reason": "BOOKMAKER_NOT_ACTIVE",
         "query_scope_includes_tournament": true
       },
       {
@@ -649,7 +636,7 @@
         "kickoff": "2026-10-15T19:00:00+00:00",
         "tournament_id": "34480",
         "in_1500_cohort": true,
-        "reason": "VALIDATION_REJECTED",
+        "reason": "VALID_ODDS",
         "provider_reason": "OK",
         "query_scope_includes_tournament": true
       },
@@ -711,10 +698,9 @@
     ],
     "reason_counts": {
       "QUOTA_SKIPPED": 2,
-      "VALID_ODDS": 37,
+      "VALID_ODDS": 38,
       "MARKET_UNAVAILABLE": 2,
-      "MAPPING_FAILURE": 1,
-      "VALIDATION_REJECTED": 1
+      "MAPPING_FAILURE": 1
     },
     "no_price_or_result_inferred": true
   },
