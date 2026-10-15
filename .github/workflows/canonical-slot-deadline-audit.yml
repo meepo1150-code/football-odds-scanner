@@ -29,6 +29,10 @@ jobs:
           from pathlib import Path
           data=json.loads(Path("scan-slot-deadline-report.json").read_text())
           rows=[r for r in data["slots"] if r["state"] != "UPCOMING"]
+          # Audit the latest elapsed canonical slot, not stale earlier slots.
+          rows=sorted(rows,key=lambda r:r["scheduled_target_at"])[-1:]
+          if not rows:
+              raise SystemExit("No elapsed canonical slot found for audit")
           with open(os.environ["GITHUB_STEP_SUMMARY"],"a") as f:
               f.write("## Canonical slot deadline audit\n\n")
               f.write("| Slot (Bangkok) | State | Valid quotes | Observed |\n|---|---|---:|---|\n")
