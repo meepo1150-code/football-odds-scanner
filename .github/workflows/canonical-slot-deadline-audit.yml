@@ -1,0 +1,52 @@
+name: Canonical Slot 30-Minute Deadline Audit
+on:
+  workflow_dispatch:
+  schedule:
+    # Bangkok +3/+8/+15/+25/+30 for 00:00, 15:00, 18:00, 21:00.
+    # GitHub scheduled starts are best-effort, not exact-minute guarantees.
+    - cron: '3,8,15,25,30 17,8,11,14 * * *'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build canonical read-only deadline report
+        env:
+          PYTHONPATH: src
+        run: |
+          python -m odds_scanner.scan_slot_deadline_report --output scan-slot-deadline-report.json
+      - name: Write summary and fail on overdue slots
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          data=json.loads(Path("scan-slot-deadline-report.json").read_text())
+          rows=[r for r in data["slots"] if r["state"] != "UPCOMING"]
+          # Audit the latest elapsed canonical slot, not stale earlier slots.
+          rows=sorted(rows,key=lambda r:r["scheduled_target_at"])[-1:]
+          # Before +30, RECOVERY_REQUIRED is an early warning, not a missed deadline.
+          if not rows:
+              raise SystemExit("No elapsed canonical slot found for audit")
+          with open(os.environ["GITHUB_STEP_SUMMARY"],"a") as f:
+              f.write("## Canonical slot deadline audit\n\n")
+              f.write("| Slot (Bangkok) | State | Valid quotes | Observed |\n|---|---|---:|---|\n")
+              for r in rows:
+                  f.write(f'| {r["scheduled_target_at"]} | {r["state"]} | {r["snapshot_count"]} | {r["observed_at"] or "-"} |\n')
+          if any(r["state"] in ("OVERDUE", "RECOVERY_REQUIRED") for r in rows):
+              raise SystemExit("Canonical slot missing or overdue; see artifact and summary")
+          PY
+      - name: Preserve deadline evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: canonical-slot-deadline
+          path: scan-slot-deadline-report.json
+          if-no-files-found: warn
