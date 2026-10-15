@@ -74,7 +74,7 @@ def main():
                 credential_evidence='Live unmetered account checks: distinct active subscription fingerprints',
                 catalog_sha256=digest(catalog),manifest_sha256=digest(manifest))
             # main is checked out separately read-only by Actions; never change production state.
-            health=lambda:json.loads(Path('production-state/reports/scan_health_monitor.json').read_text())
+            health=lambda:json.loads((OUT/'health.json').read_text())
             observations=[]
             for name in ('europe_pinnacle_research_v2_snapshots.jsonl','v2_mainline_snapshots.jsonl'):
                 p=Path('data/normalized')/name
