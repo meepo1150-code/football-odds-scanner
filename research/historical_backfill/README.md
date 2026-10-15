@@ -1,6 +1,7 @@
 # Historical backfill: isolated staged multi-day pilot
 
-Status: **BLOCKED_LIVE_PILOT — REVISE**. 100 fixtures are prepared, not recovered.
+Status: **10-FIXTURE LIVE PILOT COMPLETED**. 163 complete snapshots across 19/25 target fixture-slots; 90 additional candidates remain unexecuted.
+Measured evidence: `reports/LIVE_PILOT_20261016.md` and `.json`.
 Current evidence: `reports/MULTIDAY_REPORT.md`, `multiday_manifest.json`,
 `multiday_result.json` and `multiday_baseline.json`. The original 10-fixture reports
 and candidate_manifest.json remain frozen calibration evidence from the prior task.
@@ -79,7 +80,7 @@ without a preregistered common line-selection rule. No edge or promotion claim i
 See `reports/MULTIDAY_REPORT.md` for current evidence and the original
 `reports/API_COST_SAFETY.md` for the earlier audit. The endpoint's documented zero monthly debit does not
 remove account exhaustion, cooldown, active-state semantics or credential isolation risks.
-Only a gated, manually scoped execution may consume these requests. A pending gate
-and empty reviewed-catalog placeholder are deliberately shipped, not an enabled configuration.
+Only a gated, manually scoped execution may consume these requests. The checked-in pending gate remains fail-closed. The Actions wrapper supplies live
+subscription evidence and the reviewed 49-market catalog only after checks pass.
 Never add the pilot to production scheduler, collector, quota or recovery logic.
 Do not merge/deploy production integration in this task.
