@@ -21,6 +21,8 @@ def context_gate(env):
 
 def probe(key,books):
     if not key:raise StopPilot('CREDENTIAL_MISSING')
+    # Pace across workflow steps and credentials; the endpoint has a 1000ms cooldown.
+    time.sleep(1.2)
     status,_,body=HttpClient(key)('/account',{})
     if status!=200:raise StopPilot('ACCOUNT_HTTP_'+str(status))
     payload=json.loads(body)
