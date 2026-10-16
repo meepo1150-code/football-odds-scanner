@@ -392,3 +392,33 @@ def test_external_fixture_rejects_incorrect_football_day(tmp_path):
     with pytest.raises(ValueError, match='EXTERNAL_FOOTBALL_DAY_CONFLICT'):
         planner.build(tmp_path, '2026-09-13', '2026-09-13',
             '15:00', 'pinnacle', NOW)
+
+
+def test_publish_new_verified_fixture_without_original_snapshot():
+    from scripts.publish_manual_historical import produce
+    c = dict(fixture_id='id987654', bookmaker='pinnacle', home='Home', away='Away',
+        league='League', kickoff='2026-09-13T15:00:00Z', football_day='2026-09-13',
+        evidence=[dict(mapping_source='ODDSPAPI_EXACT',
+                       evidence_url='https://example.org/verified')],
+        targets=[dict(target_utc='2026-09-13T08:00:00Z')])
+    s = dict(line_selection='BALANCED_LINE', market='AH',
+        official_mainline_verified=False, fixture_id=c['fixture_id'],
+        bookmaker='pinnacle', slot_utc='2026-09-13T08:00:00Z',
+        market_id='market-1', home_line=-0.5, away_line=0.5,
+        raw_record_hash='sha256-test',
+        quotes={side: dict(active=True, price=2.0,
+            quote_at_utc='2026-09-13T07:59:00Z') for side in ('home', 'away')})
+    manifest=dict(scope='VERIFIED_NATIVE_OR_EXTERNAL_ODDSPAPI_FIXTURES', candidates=[c])
+    report=dict(status='COMPLETED', errors=[], production_writes=0, research_only=True,
+        results=[dict(fixture_id=c['fixture_id'], bookmaker='pinnacle',
+            football_day=c['football_day'], home='Home', away='Away',
+            kickoff=c['kickoff'], slots=[dict(target_utc='2026-09-13T08:00:00Z',
+                status='BALANCED_LINE', selected=s)])])
+    incoming, counts = produce(report, manifest, [])
+    assert len(incoming) == 1
+    row = next(iter(incoming.values()))
+    assert row['favorite_side'] == 'H'
+    assert row['favorite_side_basis'] == 'HISTORICAL_NEGATIVE_AH_HANDICAP'
+    assert row['data_origin'] == 'BACKFILLED'
+    assert row['promotion_eligible'] is False
+    assert row['observed_at'] == '2026-09-13T07:59:00+00:00'
