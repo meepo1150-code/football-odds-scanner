@@ -86,7 +86,7 @@ def plan(report, manifest, originals):
             if (selected.get("quality_status") != "COMPLETE" or
                 selected.get("fixture_id") != fid or
                 selected.get("bookmaker") != c["bookmaker"] or
-                selected.get("line_selection") != "EXACT_REVIEWED_LINE_NOT_ASSUMED_MAINLINE" or
+                selected.get("line_selection") != "BALANCED_LINE" or
                 slot.get("official_mainline_verified") is not False or
                 any(q.get("active") is not True for q in (home, away)) or
                 abs(line * 4 - round(line * 4)) > 1e-8 or
