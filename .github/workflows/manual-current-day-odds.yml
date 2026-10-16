@@ -20,6 +20,7 @@ jobs:
     env:
       ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
       RESEARCH_QUOTA_DURABLE: 'true'
+      RESEARCH_V2_MANUAL_UNRESTRICTED: 'true'
     steps:
       - uses: actions/checkout@v6
         with:
