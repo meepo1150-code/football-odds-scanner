@@ -1,52 +1,19 @@
 name: Master Schedule Manual Recovery
+# Retired legacy scanner: no event triggers. Preserved for migration audit.
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: ['controls/master_schedule_recovery_token.txt']
-env: {RESEARCH_QUOTA_DURABLE: 'true'}
+    inputs:
+      retired_scanner_disabled:
+        description: 'Retired legacy scanner; execution is blocked'
+        required: true
+        type: boolean
+        default: false
+
 permissions: {contents: write}
 concurrency: {group: research-v2-collectors, cancel-in-progress: false}
 jobs:
-  scan:
+  retired:
+    if: ${{ false }}
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v6
-        with: {ref: main}
-      - uses: actions/setup-python@v6
-        with: {python-version: '3.12'}
-      - run: python -m pip install -e '.[dev]'
-      - name: Collect supplementary live Master schedule scan
-        env:
-          RESEARCH_V2_MANUAL_BREADTH: 'true'
-          ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
-          PROPLINE_API_KEY: ${{ secrets.PROPLINE_API_KEY }}
-        run: python -m odds_scanner.europe_pinnacle_discovery
-      - name: Build movement features
-        run: python -m odds_scanner.research_v2_movement
-      - name: Persist raw evidence and rebuild against latest main
-        run: |
-          set -euo pipefail
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          stage=$(mktemp -d)
-          paths=(data/normalized/research_v2_quota_reservations.jsonl data/normalized/scan_health_history.jsonl data/normalized/research_v2_provider_responses.jsonl data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/research_v2_slot_ledger.jsonl reports/pinnwire_research_v2_status.json reports/propline_research_v2_status.json reports/europe_pinnacle_research_v2_status.json)
-          for f in "${paths[@]}"; do if test -f "$f"; then mkdir -p "$stage/$(dirname "$f")"; cp "$f" "$stage/$f"; fi; done
-          for attempt in 1 2 3; do
-            git fetch origin main
-            git reset --hard origin/main
-            python -m odds_scanner.research_v2_persistence "$stage"
-            python -m odds_scanner.research_v2_movement
-            python -m odds_scanner.research_v2_pattern_stats
-            python -m odds_scanner.legacy_propline_recovery
-            python -m odds_scanner.research_v2_evidence
-            git add -f reports/scan_health_latest.json reports/scan_health_monitor.json reports/dashboard_scope.json reports/research_v2_end_to_end_audit.json reports/oddspapi_history_audit.json reports/research_v2_pattern_statistics.json reports/research_v2_operational_audit.json reports/research_v2_movement_status.json reports/research_v2_missing_ft_ledger.json reports/research_v2_fixture_identity.json data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
-            git add -f data/normalized reports
-            git diff --cached --quiet && exit 0
-            git commit -m 'data: merge Research V2 evidence and rebuild [skip ci]'
-            git push origin HEAD:main && exit 0
-            sleep 3
-          done
-          echo 'Failed to persist Research V2 output' >&2
-          exit 1
+      - run: echo 'Legacy scanner retired; no API calls'
