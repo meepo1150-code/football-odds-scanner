@@ -105,6 +105,52 @@ def build(root, start, end, times, bookmakers, now):
             c['observations'].append(row)
             if row.get('football_day') and row['football_day'] not in c['source_day_labels']:
                 c['source_day_labels'].append(row['football_day'])
+    # Reuse immutable native OddsPapi /fixtures response receipts, including
+    # matches with no live odds snapshot. No HTTP and no name-based joining.
+    receipts = root / 'data/normalized/research_v2_provider_responses.jsonl'
+    if receipts.exists():
+        from odds_scanner.master_schedule_plan import registry, items
+        approved = {str(r['tournament_id']): r for r in registry()}
+        for number, line in enumerate(receipts.read_text().splitlines(), 1):
+            if not line.strip():
+                continue
+            receipt = json.loads(line)
+            if receipt.get('provider') != 'oddspapi' or receipt.get('endpoint') != '/fixtures':
+                continue
+            if not receipt.get('response_id') or not receipt.get('observed_at'):
+                continue
+            for fixture in items(receipt.get('payload')):
+                fid = str(fixture.get('fixtureId') or '')
+                tournament = approved.get(str(fixture.get('tournamentId')))
+                if not tournament or not re.fullmatch(r'id\\d+', fid):
+                    continue
+                home, away, kickoff = fixture.get('participant1Name'), fixture.get('participant2Name'), fixture.get('startTime')
+                if not home or not away or not kickoff:
+                    continue
+                ko = stamp(kickoff)
+                day = football_day(kickoff)
+                if day not in targets:
+                    continue
+                identity = (home, away, ko.isoformat())
+                if fid in identities and identities[fid] != identity:
+                    conflicts.add(fid)
+                identities[fid] = identity
+                for book in sorted(books):
+                    key = fid, book
+                    if key in by_key:
+                        c = by_key[key]
+                        if (c['home'], c['away'], c['kickoff']) != identity:
+                            raise ValueError('PROVIDER_RECEIPT_FIXTURE_CONFLICT')
+                    else:
+                        c = dict(fixture_id=fid, bookmaker=book, home=home, away=away,
+                            league=tournament['tournament_name'], kickoff=ko.isoformat(),
+                            football_day=day.isoformat(), request=request_for(*key),
+                            evidence=[], observations=[], source_day_labels=[])
+                        by_key[key] = c
+                    c['evidence'].append(dict(path=str(receipts.relative_to(root)), line=number,
+                        sha256=hashlib.sha256(line.encode()).hexdigest(),
+                        mapping_source='ODDSPAPI_NATIVE_FIXTURES_RECEIPT',
+                        response_id=receipt['response_id']))
     # Independently verified historical fixture identities. These are not live
     # snapshots; require explicit OddsPapi identity evidence and league provenance.
     external = root / EXTERNAL_FIXTURE_SOURCE
