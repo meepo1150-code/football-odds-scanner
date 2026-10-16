@@ -56,9 +56,14 @@ def produce(report, manifest, original):
                    and o.get("favorite_side") in ("H", "A")
                    and o.get("data_origin") != "BACKFILLED"]
         sides = {m["favorite_side"] for m in matches}
-        if len(sides) != 1:
+        if len(sides) > 1:
             raise ValueError("MISSING_OR_AMBIGUOUS_FAVORITE_IDENTITY")
-        templates[key] = matches[-1]
+        if not sides:
+            if not any(e.get("mapping_source", "").startswith("ODDSPAPI_") and e.get("evidence_url", "").startswith("https://") for e in c.get("evidence", [])):
+                raise ValueError("NEW_FIXTURE_REQUIRES_EXTERNAL_PROVIDER_EVIDENCE")
+            templates[key] = None
+        else:
+            templates[key] = matches[-1]
     incoming = {}
     counts = Counter()
     for result in report["results"]:
@@ -107,8 +112,18 @@ def produce(report, manifest, original):
                 prices.append(price)
             home, away = prices
             base = templates[key]
-            fav = base["favorite_side"]
-            row = dict(base)
+            # No fabricated pre-match favorite: for a new verified fixture the
+            # negative AH side is the handicap favorite; level ball is unknown.
+            if base is None:
+                if hl == 0:
+                    raise ValueError("LEVEL_BALL_FAVORITE_UNRESOLVED")
+                fav = "H" if hl < 0 else "A"
+                row = {k: c[k] for k in ("fixture_id", "home", "away", "league", "kickoff")}
+                favorite_basis = "HISTORICAL_NEGATIVE_AH_HANDICAP"
+            else:
+                fav = base["favorite_side"]
+                row = dict(base)
+                favorite_basis = "VERIFIED_OBSERVED_COHORT"
             row.update(provider="oddspapi", bookmaker=c["bookmaker"], football_day=c["football_day"],
                 observed_at=max(times).isoformat(), scheduled_target_at=target.isoformat(),
                 historical_target_slot_at=target.isoformat(), historical_quote_home_at=times[0].isoformat(),
@@ -119,7 +134,7 @@ def produce(report, manifest, original):
                 source_semantics="HISTORICAL_BALANCED_LINE_AS_OF_SLOT", data_origin="BACKFILLED",
                 mainline_verified=False, promotion_eligible=False, research_only=True,
                 one_x_two={}, ou={}, favorite_fair_probability=None,
-                favorite_side=fav, favorite_side_basis="VERIFIED_OBSERVED_COHORT",
+                favorite_side=fav, favorite_side_basis=favorite_basis,
                 ah={"home_line":hl, "away_line":al, "home_price":home, "away_price":away,
                     "selected_side_line":hl if fav=="H" else al,
                     "selected_side_price":home if fav=="H" else away,
