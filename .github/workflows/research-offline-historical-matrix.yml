@@ -1,0 +1,53 @@
+name: Research Sep14 Historical Odds Recovery
+on:
+  workflow_dispatch:
+permissions: {contents: read}
+jobs:
+  sep14-recovery:
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/historical-backfill-isolated-20261015'
+    environment: historical-research
+    concurrency: {group: historical-research-isolated-manual, cancel-in-progress: false}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONPATH: src:.
+      PILOT_ENVIRONMENT: historical-research
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Existing historical safety and price quality tests
+        run: python -m unittest discover -s research/historical_backfill -p 'test_*.py'
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            research/historical_backfill/data/raw
+            research/historical_backfill/data/cache
+          key: historical-pilot-v1-${{ github.run_id }}
+          restore-keys: historical-pilot-v1-
+      - uses: actions/checkout@v4
+        with: {ref: main, path: production-state, persist-credentials: false}
+      - name: Bounded Sep14 live experiment
+        env:
+          HISTORICAL_ODDSPAPI_KEY: ${{ secrets.HISTORICAL_ODDSPAPI_KEY }}
+          ACCOUNT_PROBE_KEY: ${{ secrets.ODDSPAPI_KEY }}
+        run: python -m research.historical_backfill.sep14.run
+      - uses: actions/cache/save@v4
+        if: always() && hashFiles('research/historical_backfill/data/cache/*.json') != ''
+        with:
+          path: |
+            research/historical_backfill/data/raw
+            research/historical_backfill/data/cache
+          key: historical-pilot-v1-${{ github.run_id }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sep14-historical-recovery-${{ github.run_id }}
+          path: |
+            research/historical_backfill/sep14
+            research/historical_backfill/data/actions/health.json
+            research/historical_backfill/data/actions/health-evidence.json
+            research/historical_backfill/data/raw
+            research/historical_backfill/data/cache
+          retention-days: 30
