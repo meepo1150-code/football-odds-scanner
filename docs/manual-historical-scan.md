@@ -46,8 +46,11 @@ Finished-fixture cache is hash checked and reused. The first run bootstraps the
 reviewed September 15–17 artifact from run `38867737713` (90-day retention), then
 subsequent runs use main-branch Actions cache. An unavailable seed fails closed;
 it must not silently refetch previously recovered history. Actions cache can be
-evicted, so artifacts retain raw bytes/receipts for 90 days as recovery evidence,
+evicted, so artifacts retain **newly fetched** raw bytes/receipts for 90 days as recovery evidence,
 not permanent storage. Restore sources require review when their retention ends.
+Cache-only replays do not duplicate the 1GB seed in every artifact/cache version.
+The baseline seed remains in its original reviewed artifact; no permanent/free
+storage guarantee is made. Monitor GitHub storage before large repeated recovery.
 
 New historical requests use only `HISTORICAL_ODDSPAPI_KEY` in environment
 `historical-research`. Production key is restricted to account-only baseline and

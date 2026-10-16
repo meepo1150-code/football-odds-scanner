@@ -88,7 +88,7 @@ jobs:
           if [ "$INPUT_CONFIRM" = true ]; then confirm+=(--confirm-live-requests); fi
           python -m odds_scanner.historical_manual.runner --start-day "$INPUT_START" --end-day "$INPUT_END" --times "$INPUT_TIMES" --bookmakers "$INPUT_BOOKS" --mode "$INPUT_MODE" --max-requests "$INPUT_CAP" "${confirm[@]}"
       - uses: actions/cache/save@v4
-        if: always() && hashFiles('research/historical_backfill/data/cache/*.json') != ''
+        if: always() && hashFiles('research/historical_backfill/data/cache/*.json') != '' && (steps.history_cache.outputs.cache-matched-key == '' || hashFiles('research/manual_historical/output/new_cache/cache/*.json') != '')
         with:
           path: |
             research/historical_backfill/data/raw
@@ -100,7 +100,5 @@ jobs:
           name: manual-historical-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             research/manual_historical/output
-            research/historical_backfill/data/raw
-            research/historical_backfill/data/cache
           retention-days: 90
           if-no-files-found: warn

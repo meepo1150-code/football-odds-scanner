@@ -256,6 +256,17 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
                     if status not in (200, 404):
                         raise StopPilot('HISTORY_HTTP_'+str(status)+'_STOP_NO_RETRY')
                     cache_store(cache, c, status, raw, clock())
+                    # Artifacts retain only newly fetched bytes, not another full
+                    # copy of the 1GB reviewed seed on every cache-only replay.
+                    index = cache/'cache'/(digest(c['request'])+'.json')
+                    archive = out/'new_cache'
+                    (archive/'cache').mkdir(parents=True, exist_ok=True)
+                    shutil.copyfile(index, archive/'cache'/index.name)
+                    entry = json.loads(index.read_text())
+                    if entry.get('raw_sha256'):
+                        (archive/'raw').mkdir(parents=True, exist_ok=True)
+                        name = entry['raw_sha256']+'.json'
+                        shutil.copyfile(cache/'raw'/name, archive/'raw'/name)
                     after = account(env['HISTORICAL_ODDSPAPI_KEY'], books)
                     if before != after:
                         raise StopPilot('RESEARCH_QUOTA_OR_SUBSCRIPTION_CHANGED')
