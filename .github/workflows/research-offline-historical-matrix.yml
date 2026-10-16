@@ -22,6 +22,8 @@ jobs:
           python -m unittest discover -s research/full_gap_audit -p 'test_fixture_round_report.py' -v
           python -m unittest discover -s research/full_gap_audit -p 'test_silent_slot_expansion.py' -v
           bash research/full_gap_audit/run_offline_round_report.sh
+          git fetch --depth=1 origin main
+          git checkout FETCH_HEAD -- data/normalized data/research data/master reports src
           PYTHONPATH=src:. python research/full_gap_audit/export_dashboard_ft_schedule.py
           python research/full_gap_audit/export_fixture_schedule.py --inventory research/full_gap_audit/results/pinned-b6976e2f/fixture_inventory.jsonl.gz --output research/full_gap_audit/results/fixture-schedule-bangkok-20261016.csv
           python research/full_gap_audit/historical_request_plan.py --manifest research/full_gap_audit/results/pinned-b6976e2f/missing_slot_manifest.jsonl --output research/full_gap_audit/results/historical-request-plan-20261016.jsonl
