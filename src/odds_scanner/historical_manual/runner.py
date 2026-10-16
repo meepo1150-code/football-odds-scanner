@@ -184,8 +184,6 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
             raise StopPilot('SUBSCRIPTION_ID_MISSING')
         return summarize_account(payload, books, clock())
     try:
-        if type(args.max_requests) is not int or not 0 <= args.max_requests <= 50:
-            raise StopPilot('REQUEST_CAP_MUST_BE_0_TO_50')
         if args.mode not in {'plan', 'cache-only', 'recover'}:
             raise StopPilot('INVALID_MODE')
         raw_catalog = CATALOG.read_bytes()
@@ -207,7 +205,8 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
             else:
                 payloads[key] = payload
         manifest.update(planned_historical_requests=len(uncached), cached_pairs=len(payloads),
-            max_new_historical_requests=args.max_requests, request_deduplication='FIXTURE_BOOKMAKER_NOT_TARGET_TIME',
+            request_count_policy='ALL_VERIFIED_CANDIDATES_NO_INTERNAL_COUNT_CAP',
+            request_deduplication='FIXTURE_BOOKMAKER_NOT_TARGET_TIME',
             estimated_account_checks_if_recover=2*len(uncached)+3 if uncached else 0,
             requested_target_slots=sum(len(c['targets']) for c in manifest['candidates']))
         write_json(out/'manifest.json', manifest)
@@ -217,8 +216,6 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
         elif args.mode == 'plan':
             report['status'] = 'PLANNED'
         else:
-            if args.mode == 'recover' and len(uncached) > args.max_requests:
-                raise StopPilot('REQUEST_CAP_EXCEEDED_NO_REQUESTS_SENT')
             if args.mode == 'recover' and uncached:
                 if not args.confirm_live_requests:
                     raise StopPilot('LIVE_REQUEST_CONFIRMATION_REQUIRED')
@@ -314,7 +311,6 @@ def main():
     p.add_argument('--times', default='15:00,18:00,21:00,00:00')
     p.add_argument('--bookmakers', default='pinnacle')
     p.add_argument('--mode', choices=['plan', 'cache-only', 'recover'], default='plan')
-    p.add_argument('--max-requests', type=int, default=25)
     p.add_argument('--confirm-live-requests', action='store_true')
     args = p.parse_args()
     report = execute(args)

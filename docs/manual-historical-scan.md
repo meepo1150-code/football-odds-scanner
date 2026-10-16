@@ -38,9 +38,13 @@ Coverage is **known native fixtures**, not every fixture that existed that day.
 - **plan** (default): manifest, cache coverage and request estimate. Zero provider HTTP.
 - **cache-only**: replay available verified cache; misses are explicitly
   `CACHE_MISS_NO_REQUEST`, not claims that the provider has no history. Zero provider HTTP.
-- **recover**: explicitly confirm live requests and set the hard cap (0–50;
-  default 25). If total misses exceed the cap, stop before even account probes.
-  Narrow the date range or increase the cap deliberately; no silent truncation.
+- **recover**: explicitly confirm live requests. Process **all verified candidates**
+  in the selected range, fetching every cache miss with no internal request-count
+  cap (no 25-default or 50-maximum). Provider pacing, entitlement, health and quiet
+  window stop conditions still apply. The workflow retains its 30-minute timeout;
+  an interruption is not a claim that the entire date range completed. Saved
+  cache and per-candidate progress allow a later manual rerun to avoid refetching.
+  This change does not add automatic continuation or discover unmapped fixtures.
 
 Finished-fixture cache is hash checked and reused. The first run bootstraps the
 reviewed September 15–17 artifact from run `38867737713` (90-day retention), then
