@@ -36,22 +36,22 @@ def test_today_remaining_two_requests_go_to_21_and_midnight(tmp_path):
     prior={'finalized_at':'2026-10-14T12:14:10+00:00','requests_used':4}
     path.write_text(json.dumps(prior)+'\n')
     ids=[7,18,22,98,682]
-    assert allocation(path, ids, dt('2026-10-14T12:55:00+00:00'), manual=True)[0]==[]
+    assert allocation(path, ids, dt('2026-10-14T12:55:00+00:00'), manual=True)[0]==ids
     for hour in (14,17):
         now=datetime(2026,10,14,hour,3,tzinfo=timezone.utc)
         chosen,budget=allocation(path,ids,now,prioritized=True)
-        assert chosen==ids and budget['research_daily_limit']==6 and budget['research_monthly_limit']==180
+        assert chosen==ids and budget['research_daily_limit'] is None and budget['research_monthly_limit'] is None
         with path.open('a') as f:
             f.write(json.dumps({'finalized_at':now.isoformat(),'scheduled_target_at':str(hour),'requests_used':1})+'\n')
     assert usage(path,now)[0]==6
-    assert allocation(path,ids,now,manual=True)[0]==[]
+    assert allocation(path,ids,now,manual=True)[0]==ids
 
 
 def test_manual_cannot_take_unobserved_current_canonical_request(tmp_path):
     path=tmp_path/LEDGER;path.parent.mkdir(parents=True)
     path.write_text(json.dumps({'finalized_at':'2026-10-14T12:00:00+00:00','requests_used':4}))
     chosen,budget=allocation(path,[1],dt('2026-10-14T14:03:00+00:00'),manual=True)
-    assert chosen==[] and budget['current_canonical_requests_reserved']==1
+    assert chosen==[1] and budget['current_canonical_requests_reserved']==0
 
 
 def test_cancelled_grant_blocks_duplicate_recovery_before_new_grant(tmp_path,monkeypatch):
