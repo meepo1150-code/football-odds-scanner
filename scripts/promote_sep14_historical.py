@@ -42,7 +42,7 @@ def plan(report, manifest, originals):
     if report.get("status") != "COMPLETED" or report.get("errors") or report.get("production_writes") != 0:
         raise ValueError("Research artifact is not a clean completed run")
     candidates = manifest.get("candidates", [])
-    if len(candidates) != 21 or len(report.get("results", [])) != 21:
+    if len(candidates) != 21 or len({r["fixture_id"] for r in report.get("fixture_slots", [])}) != 21:
         raise ValueError("Unexpected historical candidate population")
     by_id = {c["fixture_id"]: c for c in candidates}
     if len(by_id) != 21:
@@ -50,7 +50,9 @@ def plan(report, manifest, originals):
     eligible = {fid: c for fid, c in by_id.items() if football_day(c["kickoff"]) == DAY}
     if len(eligible) != 20:
         raise ValueError("Expected exactly 20 verified football-day fixtures")
-    historical = {r["fixture_id"]: r for r in report["results"]}
+    historical = defaultdict(list)
+    for r in report["fixture_slots"]:
+        historical[r["fixture_id"]].append(r)
     if set(historical) != set(by_id):
         raise ValueError("Report and manifest fixture IDs differ")
     old = defaultdict(list)
@@ -69,29 +71,24 @@ def plan(report, manifest, originals):
         base = old[fid][-1]
         if str(base.get("bookmaker")).lower() != str(c.get("bookmaker")).lower():
             raise ValueError("Bookmaker mismatch: " + fid)
-        slots = historical[fid].get("slots", [])
-        if len(slots) != 4 or {s["slot_utc"] for s in slots} != ALLOWED_SLOTS:
+        slots = historical[fid]
+        if len(slots) != 4 or {dt(s["target_bangkok"]).astimezone(__import__("datetime").timezone.utc).isoformat() for s in slots} != ALLOWED_SLOTS:
             raise ValueError("Unexpected slot manifest: " + fid)
         for slot in slots:
             if slot.get("status") != "BALANCED_LINE":
                 slot_counts[str(slot.get("status"))] += 1
                 continue
-            selected = slot.get("selected") or {}
-            quotes = selected.get("quotes") or {}
-            home, away = quotes.get("home") or {}, quotes.get("away") or {}
-            line = float(selected["line"])
-            hp, ap = float(home["price"]), float(away["price"])
-            ht, at = dt(home["quote_at_utc"]), dt(away["quote_at_utc"])
-            slot_time, kickoff = dt(slot["slot_utc"]), dt(c["kickoff"])
-            if (selected.get("quality_status") != "COMPLETE" or
-                selected.get("fixture_id") != fid or
-                selected.get("bookmaker") != c["bookmaker"] or
-                selected.get("line_selection") != "BALANCED_LINE" or
-                slot.get("official_mainline_verified") is not False or
-                any(q.get("active") is not True for q in (home, away)) or
+            line = float(slot["home_line"])
+            hp, ap = float(slot["home_price"]), float(slot["away_price"])
+            ht, at = dt(slot["home_history_entry_at"]), dt(slot["away_history_entry_at"])
+            slot_time, kickoff = dt(slot["target_bangkok"]), dt(c["kickoff"])
+            if (slot.get("bookmaker") != c["bookmaker"] or
+                slot.get("home") != c["home"] or slot.get("away") != c["away"] or
+                abs(float(slot["away_line"]) + line) > 1e-9 or
                 abs(line * 4 - round(line * 4)) > 1e-8 or
                 not (1.80 <= hp <= 2.20 and 1.80 <= ap <= 2.20) or
-                not (ht <= slot_time and at <= slot_time and slot_time < kickoff)):
+                not (ht <= slot_time and at <= slot_time and slot_time < kickoff) or
+                max((slot_time-ht).total_seconds(), (slot_time-at).total_seconds()) > 3600):
                 raise ValueError("Untrusted selected quote: " + fid + " " + slot["slot_utc"])
             fav = base.get("favorite_side")
             if fav not in ("H", "A"):
@@ -105,11 +102,11 @@ def plan(report, manifest, originals):
                 "scheduled_target_at": slot["slot_utc"],
                 "source_semantics": "HISTORICAL_BALANCED_LINE_AS_OF_SLOT",
                 "mainline_verified": False,
-                "historical_target_slot_at": slot["slot_utc"],
+                "historical_target_slot_at": slot_time.astimezone(__import__("datetime").timezone.utc).isoformat(),
                 "historical_quote_home_at": ht.isoformat(),
                 "historical_quote_away_at": at.isoformat(),
                 "historical_provenance": "ODDSPAPI_RECONSTRUCTED_FROM_RUN_38860129483",
-                "historical_market_id": selected.get("market_id"),
+                "historical_market_id": None,
                 "research_only": True,
                 # No time-aligned historical 1X2 or OU was recovered.
                 "one_x_two": {},
@@ -157,7 +154,7 @@ def main():
     source = root / SOURCE
     original_bytes = source.read_bytes()
     with __import__("zipfile").ZipFile(args.artifact) as z:
-        report = json.loads(z.read("sep14/results/report.json"))
+        report = json.loads(z.read("sep14/RESULT.json"))
         manifest = json.loads(z.read("sep14/manifest.json"))
     rows, receipt = plan(report, manifest, jsonl(source))
     receipt["original_file_sha256"] = hashlib.sha256(original_bytes).hexdigest()
