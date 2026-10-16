@@ -133,6 +133,7 @@ def plan(report, manifest, originals):
     receipt = {
         "date": DAY, "source_run": 38860129483,
         "verified_football_day_fixtures": len(eligible),
+        "promoted_fixture_ids": sorted(eligible),
         "excluded_out_of_day_fixture_ids": sorted(set(by_id)-set(eligible)),
         "replaced_original_rows": before,
         "historical_balanced_slots": len(generated),
@@ -162,7 +163,14 @@ def main():
     receipt["promoted_snapshot_rows"] = len(rows)
     print(json.dumps(receipt, indent=2, ensure_ascii=False))
     if not args.dry_run:
-        source.write_text("".join(json.dumps(x, ensure_ascii=False, separators=(",", ":")) + "\n" for x in rows), encoding="utf-8")
+        ids = set(receipt["promoted_fixture_ids"])
+        kept_lines = [line for line in original_bytes.decode("utf-8").splitlines(keepends=True)
+                      if not (str(json.loads(line).get("fixture_id")) in ids and
+                              json.loads(line).get("football_day") == DAY)]
+        if len(kept_lines) != len(rows) - 52:
+            raise ValueError("Original-line preservation mismatch")
+        new_lines = [json.dumps(x, ensure_ascii=False, separators=(",", ":")) + "\n" for x in rows[-52:]]
+        source.write_text("".join(kept_lines + new_lines), encoding="utf-8")
         target = root / RECEIPT
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
