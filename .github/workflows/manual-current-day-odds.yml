@@ -32,7 +32,7 @@ jobs:
       - name: Collect current eligible slot only (never backdate prices)
         run: |
           set -euo pipefail
-          python -m odds_scanner.research_v2_slot_recovery
+          RESEARCH_V2_MANUAL_BREADTH=true RESEARCH_V2_FORCE_RUN=true python -m odds_scanner.europe_pinnacle_discovery
       - name: Preserve and publish observation evidence
         if: always()
         run: |
