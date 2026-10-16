@@ -61,11 +61,13 @@ def main():
             manifest=json.loads((BASE/'reports/multiday_manifest.json').read_text())
             production=json.loads((OUT/'production-before.json').read_text())
             if a.expand:
-                from research.historical_backfill.revalidate import authorize_expansion
+                from research.historical_backfill.revalidate import authorize_expansion, require_cached_prefix
                 from research.historical_backfill import storage
                 authorize_expansion(json.loads((BASE/'data/quality/calibration.json').read_text()),manifest,
                     json.loads((BASE/'reports/reviewed_catalog.json').read_text()),storage.ROOT)
                 if os.getenv('PILOT_ALLOW_EXPANSION')!='true':raise StopPilot('EXPANSION_NOT_REQUESTED')
+                report['cached_prefix_verified']=require_cached_prefix(manifest,
+                    int(os.getenv('PILOT_MIN_CACHED_FIXTURES','10')),storage.ROOT)
             if production['status']!='PASS':raise StopPilot('PRODUCTION_BASELINE_MISSING')
             books={c['bookmaker'] for c in (manifest['candidates'] if a.expand else manifest['candidates'][:10])}
             report['account_requests']=1
