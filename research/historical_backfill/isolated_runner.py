@@ -231,6 +231,15 @@ def run(manifest,catalog,observations,gate,health_reader,*,key=None,allow_expans
                 with index.open('x') as stream:json.dump(receipt,stream,sort_keys=True)
             item=evaluate(candidate,payload,catalog,observations);report['results'].append(item)
             if item['invalid_rows']:raise StopPilot('QUALITY_ANOMALY')
+            if allow_expansion:
+                from research.historical_backfill.representative import select
+                from research.historical_backfill.revalidate import HARD_REJECTIONS
+                for slot in candidate['missing_rounds']:
+                    rs=[r for r in item['reconstructed'] if parse_time(r['slot_utc'])==parse_time(slot)]
+                    pick=select(rs,fixture_id=candidate['fixture_id'],bookmaker=candidate['bookmaker'],
+                        kickoff=candidate['kickoff'],slot=slot,catalog=catalog)
+                    if set(pick['rejection_counts'])&HARD_REJECTIONS or pick['reason']=='CONFLICTING_DUPLICATE_LINE':
+                        raise StopPilot('REPRESENTATIVE_PRICE_QUALITY_ANOMALY')
             if (i+1)%10==0:
                 health_check(health_reader(),baseline,clock());report['production_health_checks']+=1
         report['calibration_passed']=calibration_passed(report['results'][:10])
@@ -252,6 +261,10 @@ def main():
     p.add_argument('--observations',nargs='+',required=True);p.add_argument('--expand',action='store_true')
     a=p.parse_args();read=lambda path:json.loads(Path(path).read_text())
     observations=[json.loads(s) for path in a.observations for s in Path(path).read_text().splitlines() if s.strip()]
+    if a.expand:
+        from research.historical_backfill.revalidate import authorize_expansion
+        authorize_expansion(read('research/historical_backfill/data/quality/calibration.json'),
+            read(a.manifest),read(a.catalog),storage.ROOT)
     report=run(read(a.manifest),read(a.catalog),observations,read(a.gate),lambda:read(a.health),
                key=os.getenv('HISTORICAL_ODDSPAPI_KEY'),allow_expansion=a.expand)
     dest=storage.ROOT/'runs'/(uuid.uuid4().hex+'.json');dest.parent.mkdir(parents=True,exist_ok=True)
