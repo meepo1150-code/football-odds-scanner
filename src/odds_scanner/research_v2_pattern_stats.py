@@ -122,7 +122,7 @@ def _signal(n,roi,ci):
 def pending_age_counts(rows, now):
     counts={'active_overdue_ft_fixtures':0,'active_future_or_recent_ft_fixtures':0,'active_unknown_kickoff_ft_fixtures':0}
     for row in rows:
-        if row.get('status') in {'RETIRED_UNRESOLVED','POSTPONED','CANCELLED','ABANDONED'} or row.get('retired_from_active_queue'):continue
+        if row.get('status') in {'RETIRED_UNRESOLVED','POSTPONED','CANCELLED','ABANDONED','IDENTITY_CONFLICT'} or row.get('retired_from_active_queue'):continue
         try:
             kickoff=datetime.fromisoformat(str(row.get('kickoff')).replace('Z','+00:00'))
             if kickoff.tzinfo is None:raise ValueError('timezone required')
@@ -253,5 +253,11 @@ def build(root=Path('.')):
     payload['line_grouping_semantics']='EXACT_NUMERIC_QUARTER_LINE; INT_FLOAT_STRING_AND_SIGNED_ZERO_EQUIVALENT; NO_INVALID_LINE_ROUNDING'
     payload['price_bucket_intervals']=['[1.80,1.90)','[1.90,2.00)','[2.00,2.10)','[2.10,2.20]']
     payload.update(pending_age_counts(missing_rows,datetime.now(timezone.utc)))
+    # Keep all-time evidence coverage intact. The separately labeled due metric
+    # excludes fixtures not yet 3h past kickoff, archived/postponed and conflicts.
+    due_denominator=len(outcomes)+payload['active_overdue_ft_fixtures']
+    payload['ft_due_denominator']=due_denominator
+    payload['ft_due_completeness_pct']=round(100*len(outcomes)/due_denominator,2) if due_denominator else None
+    payload['ft_due_population']='VERIFIED_FT_PLUS_ACTIVE_MISSING_AT_LEAST_3H_AFTER_KICKOFF; KICKOFF_AGE_NOT_PROOF_OF_FINISHED_STATUS'
     q=root/REPORT;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8');return payload
 if __name__=='__main__':print(json.dumps(build(),ensure_ascii=False))
