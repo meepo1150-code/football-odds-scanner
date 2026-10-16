@@ -67,7 +67,7 @@ def main():
                     json.loads((BASE/'reports/reviewed_catalog.json').read_text()),storage.ROOT)
                 if os.getenv('PILOT_ALLOW_EXPANSION')!='true':raise StopPilot('EXPANSION_NOT_REQUESTED')
             if production['status']!='PASS':raise StopPilot('PRODUCTION_BASELINE_MISSING')
-            books={c['bookmaker'] for c in manifest['candidates'][:10]}
+            books={c['bookmaker'] for c in (manifest['candidates'] if a.expand else manifest['candidates'][:10])}
             report['account_requests']=1
             research=probe(os.getenv('HISTORICAL_ODDSPAPI_KEY'),books)
             report['research_account']=research
