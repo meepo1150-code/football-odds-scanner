@@ -38,6 +38,7 @@ def verify_isolation(research,production):
 
 def main():
     parser=argparse.ArgumentParser();parser.add_argument('mode',choices=['production-before','pilot','production-after'])
+    parser.add_argument('--expand',action='store_true')
     a=parser.parse_args();OUT.mkdir(parents=True,exist_ok=True)
     report={'status':'BLOCKED','mode':a.mode,'account_requests':0,'historical_requests':0,'errors':[]}
     try:
@@ -59,6 +60,12 @@ def main():
         else:
             manifest=json.loads((BASE/'reports/multiday_manifest.json').read_text())
             production=json.loads((OUT/'production-before.json').read_text())
+            if a.expand:
+                from research.historical_backfill.revalidate import authorize_expansion
+                from research.historical_backfill import storage
+                authorize_expansion(json.loads((BASE/'data/quality/calibration.json').read_text()),manifest,
+                    json.loads((BASE/'reports/reviewed_catalog.json').read_text()),storage.ROOT)
+                if os.getenv('PILOT_ALLOW_EXPANSION')!='true':raise StopPilot('EXPANSION_NOT_REQUESTED')
             if production['status']!='PASS':raise StopPilot('PRODUCTION_BASELINE_MISSING')
             books={c['bookmaker'] for c in manifest['candidates'][:10]}
             report['account_requests']=1
@@ -80,8 +87,12 @@ def main():
                 p=Path('data/normalized')/name
                 if p.exists():observations.extend(json.loads(s) for s in p.read_text().splitlines() if s.strip())
             result=run(manifest,catalog,observations,gate,health,
-                       key=os.getenv('HISTORICAL_ODDSPAPI_KEY'),allow_expansion=False)
+                       key=os.getenv('HISTORICAL_ODDSPAPI_KEY'),allow_expansion=a.expand)
             report['pilot']=result
+            if any(x.get('historical_ah_available') for x in result['results']):
+                report['historical_access']='LIVE_RESPONSE_OR_IMMUTABLE_LIVE_CACHE_VERIFIED'
+            from research.historical_backfill.quality_coverage import coverage
+            report['balanced_coverage']=coverage(manifest,result,catalog)
             report['account_requests']+=result['actual_account_requests']
             report['historical_requests']=result['actual_historical_requests']
             report['status']=result['status']
@@ -99,7 +110,7 @@ def main():
         value=os.getenv(name)
         if value and value in text:raise SystemExit('SECRET_OUTPUT_BLOCKED')
     (OUT/(a.mode+'.json')).write_text(text+'\n')
-    print(json.dumps({k:v for k,v in report.items() if k not in ('pilot','research_account','account')},indent=2))
+    print(json.dumps({k:v for k,v in report.items() if k not in ('pilot','research_account','account','balanced_coverage')},indent=2))
     summary=os.getenv('GITHUB_STEP_SUMMARY')
     if summary:
         with open(summary,'a') as f:f.write('### Historical pilot: '+a.mode+'\n\nStatus: **'+report['status']+'**\n\n'+', '.join(report['errors'])+'\n')
