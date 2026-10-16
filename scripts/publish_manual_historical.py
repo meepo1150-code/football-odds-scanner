@@ -32,7 +32,7 @@ def _validate(report, manifest):
         raise ValueError("SCAN_NOT_COMPLETED")
     if report.get("production_writes") != 0 or report.get("research_only") is not True:
         raise ValueError("UNTRUSTED_REPORT_ORIGIN")
-    if manifest.get("scope") != "VERIFIED_NATIVE_SNAPSHOT_FIXTURES_ONLY":
+    if manifest.get("scope") not in {"VERIFIED_NATIVE_SNAPSHOT_FIXTURES_ONLY", "VERIFIED_NATIVE_OR_EXTERNAL_ODDSPAPI_FIXTURES"}:
         raise ValueError("UNTRUSTED_MANIFEST_SCOPE")
     candidates = {}
     for c in manifest["candidates"]:
