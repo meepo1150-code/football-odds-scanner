@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-16T14:52:04.178215+00:00",
+  "generated_at": "2026-10-16T15:35:11.878632+00:00",
   "research_only": true,
   "raw_deleted": 0,
   "settled_fixtures": 901,
@@ -834,9 +834,9 @@
   },
   "ft_triage_counts": {
     "POSTPONED": 1,
-    "FUTURE_OR_RECENT": 72,
+    "FUTURE_OR_RECENT": 71,
     "IDENTITY_CONFLICT": 2,
-    "ACTIVE_OVERDUE": 2
+    "ACTIVE_OVERDUE": 3
   },
   "ft_triage_groups": [
     {
@@ -853,6 +853,14 @@
       "country": "International",
       "canonical_competition_id": "INT-0004",
       "league": "UEFA Conference League",
+      "n": 1
+    },
+    {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "oddspapi",
+      "country": "Serbia",
+      "canonical_competition_id": "SRB-0002",
+      "league": "Serbian First League",
       "n": 1
     },
     {
@@ -1077,14 +1085,6 @@
       "country": "Serbia",
       "canonical_competition_id": "SRB-0001",
       "league": "Serbian SuperLiga",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Serbia",
-      "canonical_competition_id": "SRB-0002",
-      "league": "Serbian First League",
       "n": 1
     },
     {
@@ -2389,7 +2389,7 @@
       "canonical_competition_id": "SRB-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
