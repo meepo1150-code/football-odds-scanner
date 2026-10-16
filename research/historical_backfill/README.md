@@ -1,7 +1,12 @@
 # Historical backfill: isolated staged multi-day pilot
 
-Status: **10-FIXTURE LIVE PILOT COMPLETED**. 163 complete snapshots across 19/25 target fixture-slots; 90 additional candidates remain unexecuted.
-Measured evidence: `reports/LIVE_PILOT_20261016.md` and `.json`.
+Status: **BALANCED AH QUALITY GATE PASS; 100-FIXTURE CONTROLLED EXPANSION COMPLETED**.
+100/100 have historical AH; 73 fixtures have eligible balanced prices. 1,176 complete
+all-line snapshots include 142 balanced-range lines; 129 selected representatives
+cover 129/235 target fixture-slots (54.89%), with 106 MAINLINE_UNRESOLVED slots.
+Measured evidence: `reports/PRICE_QUALITY_CALIBRATION_20261016.md` and
+`reports/CONTROLLED_EXPANSION_20261016.md` (full prices/timestamps in matching JSON).
+The original 10-fixture / 163-snapshot live evidence remains frozen.
 Current evidence: `reports/MULTIDAY_REPORT.md`, `multiday_manifest.json`,
 `multiday_result.json` and `multiday_baseline.json`. The original 10-fixture reports
 and candidate_manifest.json remain frozen calibration evidence from the prior task.
@@ -84,3 +89,16 @@ Only a gated, manually scoped execution may consume these requests. The checked-
 subscription evidence and the reviewed 49-market catalog only after checks pass.
 Never add the pilot to production scheduler, collector, quota or recovery logic.
 Do not merge/deploy production integration in this task.
+
+## Balanced-line manual workflow
+
+`representative.py` selects BALANCED_LINE only when both active decimal quotes are
+in [1.80,2.20], correctly mapped and fresh at the target; minimize squared distance
+to 2.00. It never claims official mainline. All-line extraction/raw history remain unchanged.
+`revalidate.py` replays the original ten from verified immutable cache with no API calls.
+Manual mode `expand` requires PASS and live health/quota/entitlement checks. Resume
+requires every first 93 completed cache receipt, preventing refetch on cache loss.
+First expansion stopped safely at 93 on health age; fresh manual resume fetched only
+7 remaining fixtures. Total new requests: 90 history + 185 research account + 4
+production account = 279; production count remained 189/250, research 0/250.
+No schedule, production integration, merge or deploy is included.
