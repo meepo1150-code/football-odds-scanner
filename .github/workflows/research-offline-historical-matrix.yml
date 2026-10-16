@@ -1,10 +1,13 @@
 name: Research Sep14 Historical Odds Recovery
 on:
   workflow_dispatch:
+  push:
+    branches: [research/historical-backfill-isolated-20261015]
+    paths: [.github/workflows/research-offline-historical-matrix.yml]
 permissions: {contents: read}
 jobs:
   sep14-recovery:
-    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/historical-backfill-isolated-20261015'
+    if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && github.ref == 'refs/heads/research/historical-backfill-isolated-20261015'
     environment: historical-research
     concurrency: {group: historical-research-isolated-manual, cancel-in-progress: false}
     runs-on: ubuntu-latest
