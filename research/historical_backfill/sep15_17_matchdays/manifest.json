@@ -6,7 +6,7 @@
   "timezone": "Asia/Bangkok",
   "source_main_commit": "d74756fecbe4b8bb4624bbade74aa65cfc43bd50",
   "selection": "FOOTBALL_DAY: explicit Pinnacle football_day; Bet365 local kickoff before 06:00 belongs to previous day, matching existing noon-to-06:00 football-day window.",
-  "max_historical_requests": 2,
+  "max_historical_requests": 15,
   "requires_cache_for_other_candidates": true,
   "allowed_uncached_requests": [
     {
@@ -19,8 +19,99 @@
     {
       "endpoint": "/v4/historical-odds",
       "params": {
+        "fixtureId": "id1000000872478576",
+        "bookmakers": "bet365"
+      }
+    },
+    {
+      "endpoint": "/v4/historical-odds",
+      "params": {
+        "fixtureId": "id1000000872478578",
+        "bookmakers": "bet365"
+      }
+    },
+    {
+      "endpoint": "/v4/historical-odds",
+      "params": {
         "fixtureId": "id1000000872478582",
         "bookmakers": "bet365"
+      }
+    },
+    {
+      "endpoint": "/v4/historical-odds",
+      "params": {
+        "fixtureId": "id1000002174158488",
+        "bookmakers": "pinnacle"
+      }
+    },
+    {
+      "endpoint": "/v4/historical-odds",
+      "params": {
+        "fixtureId": "id1000002174158490",
+        "bookmakers": "pinnacle"
+      }
+    },
+    {
+      "endpoint": "/v4/historical-odds",
+      "params": {
+        "fixtureId": "id1000002174158494",
+        "bookmakers": "pinnacle"
+      }
+    },
+    {
+      "endpoint": "/v4/historical-odds",
+      "params": {
+        "fixtureId": "id1000002174314590",
+        "bookmakers": "pinnacle"
+      }
+    },
+    {
+      "endpoint": "/v4/historical-odds",
+      "params": {
+        "fixtureId": "id1000067974172918",
+        "bookmakers": "pinnacle"
+      }
+    },
+    {
+      "endpoint": "/v4/historical-odds",
+      "params": {
+        "fixtureId": "id1000067974172920",
+        "bookmakers": "pinnacle"
+      }
+    },
+    {
+      "endpoint": "/v4/historical-odds",
+      "params": {
+        "fixtureId": "id1000067974172922",
+        "bookmakers": "pinnacle"
+      }
+    },
+    {
+      "endpoint": "/v4/historical-odds",
+      "params": {
+        "fixtureId": "id1000067974172924",
+        "bookmakers": "pinnacle"
+      }
+    },
+    {
+      "endpoint": "/v4/historical-odds",
+      "params": {
+        "fixtureId": "id1000067974172926",
+        "bookmakers": "pinnacle"
+      }
+    },
+    {
+      "endpoint": "/v4/historical-odds",
+      "params": {
+        "fixtureId": "id1000067974172928",
+        "bookmakers": "pinnacle"
+      }
+    },
+    {
+      "endpoint": "/v4/historical-odds",
+      "params": {
+        "fixtureId": "id1000067974172930",
+        "bookmakers": "pinnacle"
       }
     }
   ],
