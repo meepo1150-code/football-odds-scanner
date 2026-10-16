@@ -22,6 +22,7 @@ jobs:
           python -m unittest discover -s research/full_gap_audit -p 'test_fixture_round_report.py' -v
           python -m unittest discover -s research/full_gap_audit -p 'test_silent_slot_expansion.py' -v
           bash research/full_gap_audit/run_offline_round_report.sh
+          python research/full_gap_audit/historical_request_plan.py --manifest research/full_gap_audit/results/pinned-b6976e2f/missing_slot_manifest.jsonl --output research/full_gap_audit/results/historical-request-plan-20261016.jsonl
       - name: Print actual counts from generated reports
         run: |
           python - <<'PY'
@@ -30,6 +31,7 @@ jobs:
           with open(p,encoding='utf-8') as f:
               rows=list(csv.DictReader(f))
           print('fixture_day_rows',len(rows))
+          print('historical_request_plan_rows',sum(1 for _ in open('research/full_gap_audit/results/historical-request-plan-20261016.jsonl')))
           for k in ('expected_elapsed_pre_kickoff','elapsed_complete','elapsed_scan_failed','elapsed_no_price','elapsed_unmatched','elapsed_unknown_ah'):
               print(k,sum(int(r[k]) for r in rows))
           for k in ('expected_proven','complete','scan_failed','no_price','unmatched','expected_unknown_ah','unknown_membership'):
@@ -42,4 +44,5 @@ jobs:
           path: |
             research/full_gap_audit/results/fixture-round-report-20261016.csv
             research/full_gap_audit/results/silent-slot-triage-20261016.json
+            research/full_gap_audit/results/historical-request-plan-20261016.jsonl
           retention-days: 30
