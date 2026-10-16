@@ -17,6 +17,9 @@ on:
       - 'reports/pinnwire_result_join_status.json'
       - 'reports/pinnwire_research_v2_status.json'
       - 'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl'
+      - 'data/normalized/automatic_scan_slots.jsonl'
+      - 'data/normalized/automatic_scan_manifests.jsonl'
+      - 'reports/automatic_scan_latest.json'
       - 'data/normalized/europe_pinnacle_research_v2_audit.jsonl'
       - 'data/normalized/research_v2_slot_ledger.jsonl'
       - 'data/normalized/oddspapi_finished_results.jsonl'
@@ -147,13 +150,15 @@ jobs:
                   for key in ('slot_id', 'status', 'scan_health', 'generated_at'):
                       if current.get(key) != expected.get(key):
                           raise RuntimeError(f'Stale published automatic scan receipt: {key}')
-              if Path('site/data/normalized/automatic_scan_slots.jsonl').exists():
-                  url = base + 'data/normalized/automatic_scan_slots.jsonl?publication_verify=' + run_id
-                  req = urllib.request.Request(url, method='HEAD',
-                      headers={'Cache-Control': 'no-cache'})
-                  with urllib.request.urlopen(req, timeout=15) as response:
-                      if response.status != 200:
-                          raise RuntimeError('Automatic slot history missing from live Pages')
+              # Compare the actual published JSONL bytes, not merely HTTP 200:
+              # a stale Pages bundle may return 200 for an older slot history.
+              for name in ('automatic_scan_slots.jsonl',
+                           'automatic_scan_manifests.jsonl'):
+                  path = Path('site/data/normalized') / name
+                  if path.exists():
+                      current = read_live('data/normalized/' + name)
+                      if current != path.read_bytes():
+                          raise RuntimeError('Stale published automatic scan data: ' + name)
               return deployed
 
           for attempt in range(1, 25):
