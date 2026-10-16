@@ -8,6 +8,7 @@ import gzip
 import json
 from collections import Counter, defaultdict
 from pathlib import Path
+from datetime import datetime, timezone
 
 def records(path):
     opener = gzip.open if path.suffix == '.gz' else open
@@ -16,7 +17,8 @@ def records(path):
             if line.strip():
                 yield json.loads(line)
 
-def summarize(rows):
+def summarize(rows, asof='2026-10-16T08:52:42+07:00'):
+    cutoff=datetime.fromisoformat(asof)
     fixtures=defaultdict(list)
     for r in rows:
         fixtures[(r['fixture_id'],r['football_day'])].append(r)
@@ -24,6 +26,7 @@ def summarize(rows):
     for (fid,day),slots in sorted(fixtures.items()):
         slots.sort(key=lambda x:x['slot_utc'])
         known=[s for s in slots if s.get('expected') is True]
+        eligible=[s for s in known if datetime.fromisoformat(s['slot_utc'])<=cutoff and datetime.fromisoformat(s['slot_utc'])<datetime.fromisoformat(s['kickoff_utc'])]
         counts=Counter(s['status'] for s in known)
         output.append({
             'fixture_id':fid,'football_day':day,
@@ -31,6 +34,12 @@ def summarize(rows):
             'away':next((s.get('away') for s in slots if s.get('away')), ''),
             'league':next((s.get('league') for s in slots if s.get('league')), ''),
             'expected_proven':len(known),
+            'expected_elapsed_pre_kickoff':len(eligible),
+            'elapsed_complete':sum(s['status']=='COMPLETE' for s in eligible),
+            'elapsed_scan_failed':sum(s['status']=='SCAN_FAILED' for s in eligible),
+            'elapsed_no_price':sum(s['status']=='NO_PRICE' for s in eligible),
+            'elapsed_unmatched':sum(s['status']=='UNMATCHED' for s in eligible),
+            'elapsed_unknown_ah':sum(s['status']=='UNKNOWN_EVIDENCE' for s in eligible),
             'complete':counts['COMPLETE'],
             'scan_failed':counts['SCAN_FAILED'],
             'no_price':counts['NO_PRICE'],
