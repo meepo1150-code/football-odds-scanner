@@ -24,8 +24,8 @@ def source_hashes(source):
     return result
 
 
-def rebuild(source=Path('production-state')):
-    context_gate(os.environ)
+def rebuild(source=Path('production-state'), *, context_validator=context_gate):
+    context_validator(os.environ)
     source=source.resolve();before=source_hashes(source)
     destination=(OUT/'health-inputs').resolve()
     if destination.exists():raise StopPilot('HEALTH_INPUTS_ALREADY_EXIST')
