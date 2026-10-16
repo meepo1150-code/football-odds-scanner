@@ -1,70 +1,15 @@
-name: Scan Health Monitor
+name: Retired - scan-health-monitor.yml
+# Scanner operational monitoring retired; historical reports are preserved.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '5 * * * *' # Hourly, no provider calls.
-  push:
-    branches: [main]
-    paths: ['controls/scan_health_monitor_token.txt']
-  workflow_run:
-    workflows: ['Europe Pinnacle Research V2', 'Daily Preparation Scan', 'Research V2 Scheduled Slot Recovery', 'Free Research V2 Scanner', 'Master Schedule Manual Recovery', 'PinnWire Current AH Probe']
-    branches: [main]
-    types: [completed]
-permissions: {contents: write}
-concurrency: {group: scan-health-monitor, cancel-in-progress: false}
+    inputs:
+      retired:
+        description: 'Old scanner monitoring disabled'
+        type: boolean
+        default: false
 jobs:
-  health:
-    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.event != 'pull_request' }}
+  retired:
+    if: ${{ false }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v6
-        with: {ref: main}
-      - name: Refresh data health without API requests
-        env: {PYTHONPATH: src}
-        run: python -m odds_scanner.research_v2_evidence
-      - name: Persist latest health against current evidence
-        env: {PYTHONPATH: src}
-        run: |
-          set -euo pipefail
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          for attempt in 1 2 3; do
-            git fetch origin main
-            git reset --hard origin/main
-            python -m odds_scanner.research_v2_evidence > /dev/null
-            git add -f reports/scan_health_latest.json reports/scan_health_monitor.json
-            if git diff --cached --quiet; then break; fi
-            git commit -m 'data: publish scan health monitor [skip ci]'
-            if git push origin HEAD:main; then break; fi
-            if test "$attempt" = 3; then exit 1; fi
-          done
-      - name: Publish machine-readable health and Actions summary
-        env: {PYTHONPATH: src}
-        run: |
-          python - <<'PY'
-          import json, os
-          from pathlib import Path
-          r=json.loads(Path('reports/scan_health_monitor.json').read_text())
-          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:
-              f.write('## Scan Health: '+r['status']+'\n\n')
-              f.write('Time: '+r['generated_at']+'\n\n')
-              f.write('| Scan Missing | FT Delay | Unmatched candidates |\n|---|---|---|\n')
-              f.write(f"| {r['scan_missing_count']} | {r['ft_delay_count']} | {r['unmatched_count']} |\n\n")
-              f.write('Issues: '+', '.join(r['issues'])+'\n')
-          PY
-      - uses: actions/upload-artifact@v4
-        with:
-          name: scan-health-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            reports/scan_health_latest.json
-            reports/scan_health_monitor.json
-            data/normalized/scan_health_history.jsonl
-      - name: Surface failed data health as a failed check
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          r=json.loads(Path('reports/scan_health_monitor.json').read_text())
-          if r['status']=='FAIL': raise SystemExit('Data health FAIL: '+', '.join(r['issues']))
-          PY
+      - run: echo 'Legacy scan monitor retired'
