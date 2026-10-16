@@ -81,7 +81,7 @@ def import_artifact(archive, output=OUTPUT):
             replaced += 1
         existing[key] = row
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text("".join(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\\n" for _, row in sorted(existing.items())))
+    output.write_text("".join(json.dumps(row, ensure_ascii=False, sort_keys=True) + "\n" for _, row in sorted(existing.items())))
     return {"source_run_id": SOURCE_RUN, "slot_statuses": dict(statuses),
             "added": added, "replaced": replaced, "unchanged": unchanged,
             "historical_rows_total": len(existing), "live_snapshots_modified": 0}
