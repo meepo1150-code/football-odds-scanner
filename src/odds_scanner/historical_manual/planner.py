@@ -8,6 +8,7 @@ from zoneinfo import ZoneInfo
 
 BKK = ZoneInfo('Asia/Bangkok')
 DAY_POLICY = 'BKK_KICKOFF_BEFORE_0600_PREVIOUS_DAY_V1'
+EXTERNAL_FIXTURE_SOURCE = 'data/research/manual_historical_verified_fixtures.jsonl'
 SOURCES = (
     'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl',
     'data/normalized/v2_mainline_snapshots.jsonl',
@@ -104,6 +105,46 @@ def build(root, start, end, times, bookmakers, now):
             c['observations'].append(row)
             if row.get('football_day') and row['football_day'] not in c['source_day_labels']:
                 c['source_day_labels'].append(row['football_day'])
+    # Independently verified historical fixture identities. These are not live
+    # snapshots; require explicit OddsPapi identity evidence and league provenance.
+    external = root / EXTERNAL_FIXTURE_SOURCE
+    if external.exists():
+        for number, line in enumerate(external.read_text().splitlines(), 1):
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            required = ('fixture_id', 'bookmaker', 'home', 'away', 'league',
+                        'kickoff', 'mapping_source', 'evidence_url')
+            if any(not row.get(k) for k in required):
+                raise ValueError('EXTERNAL_FIXTURE_EVIDENCE_INCOMPLETE')
+            fid, book = row['fixture_id'], row['bookmaker']
+            if (not re.fullmatch(r'id\\d+', fid) or book not in {'pinnacle', 'bet365'}
+                    or not str(row['mapping_source']).startswith('ODDSPAPI_')
+                    or not str(row['evidence_url']).startswith('https://')):
+                raise ValueError('EXTERNAL_FIXTURE_EVIDENCE_INVALID')
+            ko = stamp(row['kickoff'])
+            identity = (row['home'], row['away'], ko.isoformat())
+            if fid in identities and identities[fid] != identity:
+                conflicts.add(fid)
+            identities[fid] = identity
+            day = football_day(row['kickoff'])
+            if day not in targets or book not in books:
+                continue
+            key = fid, book
+            if key in by_key:
+                c = by_key[key]
+                if (c['home'], c['away'], c['league'], c['kickoff']) != (
+                        row['home'], row['away'], row['league'], ko.isoformat()):
+                    raise ValueError('EXTERNAL_FIXTURE_CONFLICT')
+            else:
+                c = dict(fixture_id=fid, bookmaker=book, home=row['home'],
+                    away=row['away'], league=row['league'], kickoff=ko.isoformat(),
+                    football_day=day.isoformat(), request=request_for(*key),
+                    evidence=[], observations=[], source_day_labels=[])
+                by_key[key] = c
+            c['evidence'].append(dict(path=EXTERNAL_FIXTURE_SOURCE, line=number,
+                sha256=hashlib.sha256(line.encode()).hexdigest(),
+                evidence_url=row['evidence_url'], mapping_source=row['mapping_source']))
     if conflicts & {c['fixture_id'] for c in by_key.values()}:
         raise ValueError('EXACT_IDENTITY_CONFLICT')
     candidates = sorted(by_key.values(), key=lambda c: (c['football_day'], c['fixture_id'], c['bookmaker']))
@@ -113,6 +154,6 @@ def build(root, start, end, times, bookmakers, now):
             status='PENDING' if t < stamp(c['kickoff']) else 'NOT_PREMATCH_SLOT') for t in ts]
         c['source_day_conflict'] = any(d != c['football_day'] for d in c['source_day_labels'])
     return dict(schema_version=1, timezone='Asia/Bangkok', day_policy=DAY_POLICY,
-        start_day=start, end_day=end, target_times_thai=times, scope='VERIFIED_NATIVE_SNAPSHOT_FIXTURES_ONLY',
+        start_day=start, end_day=end, target_times_thai=times, scope='VERIFIED_NATIVE_OR_EXTERNAL_ODDSPAPI_FIXTURES',
         full_provider_universe_claimed=False, unique_fixtures=len({c['fixture_id'] for c in candidates}),
         fixture_bookmaker_pairs=len(candidates), candidates=candidates)
