@@ -146,7 +146,6 @@ jobs:
             reports/dashboard_scope.json \
             reports/research_v2_missing_ft_ledger.json \
             reports/research_v2_fixture_identity.json
-          git add -u reports/research_v2_pattern_statistics.json reports/dashboard_scope.json
           if git diff --cached --quiet; then
             echo 'No content changed'
           else
