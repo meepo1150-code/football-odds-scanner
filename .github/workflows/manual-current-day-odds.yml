@@ -39,7 +39,7 @@ jobs:
           set -euo pipefail
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          paths=(data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/research_v2_slot_ledger.jsonl reports/europe_pinnacle_research_v2_status.json reports/scan_health_latest.json reports/scan_health_monitor.json)
+          paths=(data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/research_v2_slot_ledger.jsonl reports/europe_pinnacle_research_v2_status.json reports/scan_health_latest.json reports/scan_health_monitor.json data/normalized/research_v2_quota_reservations.jsonl)
           mkdir -p /tmp/manual-observation
           for path in "${paths[@]}"; do
             if test -f "$path"; then mkdir -p "/tmp/manual-observation/$(dirname "$path")"; cp "$path" "/tmp/manual-observation/$path"; fi
