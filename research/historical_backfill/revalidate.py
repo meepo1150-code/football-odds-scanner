@@ -150,3 +150,24 @@ def main():
 
 if __name__=='__main__':
     raise SystemExit(main())
+
+
+def authorize_expansion(report, manifest, catalog, root):
+    """Bind passing calibration to exact inputs and unchanged raw bytes, before HTTP."""
+    if (report.get('status')!='PASS' or report.get('expansion_allowed') is not True
+        or report.get('policy')!=POLICY or report.get('errors')
+        or report.get('manifest_sha256')!=digest(manifest)
+        or report.get('catalog_sha256')!=digest(catalog)
+        or report.get('sporting_expected_verified') is not True
+        or report.get('raw_cache_unchanged') is not True
+        or report.get('recovered_line_snapshots')!=163
+        or report.get('balanced_fixtures',0)<8 or report.get('paired_fixtures',0)<5):
+        raise ValueError('PRICE_QUALITY_GATE_REQUIRED')
+    now=immutable_hashes(root)
+    expected=report.get('immutable_cache_hashes',{})
+    if not expected or any(now.get(k)!=v for k,v in expected.items()):
+        raise ValueError('CALIBRATION_CACHE_CHANGED')
+    for c in manifest['candidates'][:10]:
+        payload=load_cache(root,c)
+        if payload is None or payload.get('cached_http_status')==404:
+            raise ValueError('CALIBRATION_CACHE_REQUIRED_NO_REFETCH')
