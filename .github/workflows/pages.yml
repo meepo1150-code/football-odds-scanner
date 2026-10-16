@@ -25,6 +25,7 @@ on:
       - '.github/workflows/pages.yml'
   workflow_run:
     workflows:
+      - 'Automatic Four-Round Odds Observation'
       - 'Research V2 Offline Evidence Audit'
       - 'Research V2 Free Result Backfill'
       - 'Previous Day Results and Statistics'
@@ -45,7 +46,7 @@ jobs:
       (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
       (github.event_name == 'workflow_run' &&
-       github.event.workflow_run.conclusion == 'success' &&
+       (github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.name == 'Automatic Four-Round Odds Observation') &&
        github.event.workflow_run.head_branch == 'main' &&
        github.event.workflow_run.event != 'pull_request' &&
        github.event.workflow_run.event != 'pull_request_target' &&
@@ -76,14 +77,15 @@ jobs:
           cp ah-public-demo.html site/ah-public-demo.html
           cp apps/dashboard/monitor.html site/monitor.html
           cp apps/dashboard/collection-health.js site/collection-health.js
+          cp apps/dashboard/automatic-rounds.js site/automatic-rounds.js
           cp apps/dashboard/deployment.json site/deployment.json
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery.html || true
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery/index.html || true
           test -f apps/dashboard/404.html && cp apps/dashboard/404.html site/404.html || true
-          for f in scan_health_latest.json scan_health_monitor.json daily_preparation_status.json pinnwire_web_result_recovery_queue.json dashboard_scope.json research_v2_end_to_end_audit.json oddspapi_history_audit.json research_v2_operational_audit.json legacy_propline_recovery.json research_v2_daily_sync_status.json research_v2_movement_status.json propline_research_v2_status.json europe_pinnacle_research_v2_status.json oddspapi_quota_health.json research_v2_pattern_statistics.json pinnwire_result_join_status.json pinnwire_research_v2_status.json; do
+          for f in automatic_scan_latest.json scan_health_latest.json scan_health_monitor.json daily_preparation_status.json pinnwire_web_result_recovery_queue.json dashboard_scope.json research_v2_end_to_end_audit.json oddspapi_history_audit.json research_v2_operational_audit.json legacy_propline_recovery.json research_v2_daily_sync_status.json research_v2_movement_status.json propline_research_v2_status.json europe_pinnacle_research_v2_status.json oddspapi_quota_health.json research_v2_pattern_statistics.json pinnwire_result_join_status.json pinnwire_research_v2_status.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
-          for f in scan_health_history.jsonl europe_pinnacle_research_v2_snapshots.jsonl europe_pinnacle_research_v2_audit.jsonl research_v2_slot_ledger.jsonl oddspapi_finished_results.conflicts.jsonl oddspapi_finished_results.jsonl dashboard_verified_results.jsonl; do
+          for f in automatic_scan_slots.jsonl automatic_scan_manifests.jsonl scan_health_history.jsonl europe_pinnacle_research_v2_snapshots.jsonl europe_pinnacle_research_v2_audit.jsonl research_v2_slot_ledger.jsonl oddspapi_finished_results.conflicts.jsonl oddspapi_finished_results.jsonl dashboard_verified_results.jsonl; do
             test -f "data/normalized/$f" && cp "data/normalized/$f" "site/data/normalized/$f" || true
           done
       - uses: actions/configure-pages@v6

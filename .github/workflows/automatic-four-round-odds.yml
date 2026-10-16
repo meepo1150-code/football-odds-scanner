@@ -1,0 +1,85 @@
+name: Automatic Four-Round Odds Observation
+on:
+  schedule:
+    - cron: '0 8,11,14,17 * * *' # Bangkok 15:00/18:00/21:00/00:00 next day
+    - cron: '7,17,27,35 8,11,14,17 * * *' # Recovery, reconciliation, SLA audit
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Network-free plan; false runs only the currently eligible slot'
+        type: boolean
+        default: true
+  push:
+    branches: [main]
+    paths: ['controls/automatic_scan_dry_run.txt', 'controls/automatic_scan_live.txt']
+permissions:
+  contents: write
+concurrency:
+  group: research-v2-collectors
+  cancel-in-progress: false
+jobs:
+  observe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
+      RESEARCH_QUOTA_DURABLE: 'true'
+      DRY_RUN: ${{ (github.event_name == 'workflow_dispatch' && inputs.dry_run) || (github.event_name == 'push' && contains(github.event.head_commit.message, '[auto-dry-run]')) }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: main, persist-credentials: true}
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - run: python -m pip install -e .
+      - name: Observe or reconcile current slot
+        run: |
+          if [ "$DRY_RUN" = true ]; then
+            python -m odds_scanner.automatic_scan --dry-run
+          else
+            python -m odds_scanner.automatic_scan
+          fi
+      - name: Preserve evidence on success or failure
+        if: always() && env.DRY_RUN != 'true'
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          stage=/tmp/automatic-observation
+          mkdir -p "$stage"
+          python - "$stage" <<'PY'
+          import shutil, sys
+          from pathlib import Path
+          from odds_scanner.automatic_scan_persistence import PATHS
+          for name in (*PATHS, 'reports/automatic_scan_latest.json', 'reports/europe_pinnacle_research_v2_status.json'):
+              source = Path(name)
+              if source.exists():
+                  dest = Path(sys.argv[1])/name
+                  dest.parent.mkdir(parents=True, exist_ok=True)
+                  shutil.copyfile(source, dest)
+          PY
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            python -m odds_scanner.automatic_scan_persistence "$stage"
+            python - <<'PY'
+          import subprocess
+          from pathlib import Path
+          from odds_scanner.automatic_scan_persistence import PATHS
+          paths = [p for p in (*PATHS, 'reports/automatic_scan_latest.json', 'reports/europe_pinnacle_research_v2_status.json', 'reports/scan_health_latest.json', 'reports/scan_health_monitor.json') if Path(p).exists()]
+          subprocess.run(['git','add','-f','--',*paths],check=True)
+          PY
+            git diff --cached --quiet && exit 0
+            git commit -m 'data: automatic four-round observation evidence [skip ci]'
+            git push origin HEAD:main && exit 0
+            sleep 3
+          done
+          exit 1
+      - name: Preserve local evidence if git publication fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: automatic-observation-${{ github.run_id }}
+          path: |
+            /tmp/automatic-observation
+            reports/automatic_scan_latest.json
+          retention-days: 30
