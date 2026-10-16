@@ -9,7 +9,7 @@ import threading
 from datetime import datetime, timezone
 from pathlib import Path
 
-ACCOUNT_RESERVE = 10  # At most 240 of the observed 250-request plan.
+ACCOUNT_RESERVE = 0  # No locally imposed account reserve.
 
 _LOCK = threading.Lock()
 _ACCOUNT = None
@@ -62,8 +62,8 @@ def reserve_request(path, root=Path('.')):
             remaining = int(account['request_limit']) - int(account['request_count']) - _SPENT
         except (KeyError, TypeError, ValueError):
             raise QuotaBlocked('ODDSPAPI_QUOTA_UNKNOWN') from None
-        if account.get('active_subscription') is not True or remaining <= ACCOUNT_RESERVE:
-            raise QuotaBlocked('ODDSPAPI_EXTERNALLY_QUOTA_BLOCKED: account safety reserve reached; no metered request sent')
+        if account.get('active_subscription') is not True or remaining <= 0:
+            raise QuotaBlocked('ODDSPAPI_EXTERNALLY_QUOTA_BLOCKED: provider quota exhausted; no metered request sent')
         # Reserve before transport, including failures: quota semantics for failed
         # requests are not guaranteed, so do not refund them speculatively.
         if path.rstrip("/") != "/historical-odds":
