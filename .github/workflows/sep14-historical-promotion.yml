@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
-  actions: read
+  actions: write
 concurrency:
   group: sep14-historical-production-promotion
   cancel-in-progress: false
@@ -74,3 +74,9 @@ jobs:
           git diff --cached --quiet && exit 0
           git commit -m 'data: promote Sep14 historical AH and rebuild unchanged statistics [skip ci]'
           git push origin HEAD:main
+      - name: Deploy recalculated Dashboard through existing Pages workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh workflow run pages.yml -R "${{ github.repository }}" --ref main
