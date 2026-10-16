@@ -14,7 +14,7 @@ from .planner import BKK, build, stamp
 from .normalizer import normalize
 from .reconstruct import reconstruct_slot
 from .representative import select
-from .safety import HttpClient, StopPilot, digest, health_check, quiet_window, summarize_account
+from .safety import HttpClient, StopPilot, digest, health_check, summarize_account
 
 CACHE = Path('research/historical_backfill/data')
 OUT = Path('research/manual_historical/output')
@@ -223,27 +223,25 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
                         or env.get('GITHUB_REF') != 'refs/heads/main'
                         or env.get('PILOT_ENVIRONMENT') != 'historical-research'):
                     raise StopPilot('MAIN_MANUAL_HISTORICAL_ENVIRONMENT_REQUIRED')
-                if not quiet_window(clock(), allowance_seconds=600):
-                    raise StopPilot('PRODUCTION_QUIET_WINDOW_CLOSED')
                 reader = health_reader or (lambda: fresh_health(root))
                 baseline = reader()
-                health_check(baseline, baseline, clock())
                 books = {c['bookmaker'] for c in uncached}
                 production = account(env.get('ACCOUNT_PROBE_KEY'), set())
                 research = account(env.get('HISTORICAL_ODDSPAPI_KEY'), books)
                 if production['subscription_fingerprint'] == research['subscription_fingerprint']:
                     raise StopPilot('SHARED_PRODUCTION_SUBSCRIPTION')
-                report.update(production_before=production, research_before=research)
+                isolation = dict(research=research['subscription_fingerprint'],
+                                 production=production['subscription_fingerprint'])
+                health_check(baseline, baseline, clock(), account_isolation=isolation)
+                report.update(production_before=production, research_before=research,
+                    credential_isolation='DISTINCT_ACTIVE_SUBSCRIPTIONS_VERIFIED',
+                    time_policy='ISOLATED_MANUAL_NO_PRODUCTION_CLOCK_BLACKOUT',
+                    production_health_baseline={k: baseline[k] for k in ('generated_at', 'status', 'issues')})
                 client = client_factory(env['HISTORICAL_ODDSPAPI_KEY'])
                 for c in uncached:
-                    if not quiet_window(clock(), allowance_seconds=60):
-                        raise StopPilot('PRODUCTION_QUIET_WINDOW_CLOSED')
-                    health_check(reader(), baseline, clock())
+                    health_check(reader(), baseline, clock(), account_isolation=isolation)
                     before = account(env['HISTORICAL_ODDSPAPI_KEY'], books)
                     sleeper(5.2)
-                    # Recheck after pacing immediately before transport.
-                    if not quiet_window(clock(), allowance_seconds=60):
-                        raise StopPilot('PRODUCTION_QUIET_WINDOW_CLOSED')
                     receipt = dict(fixture_id=c['fixture_id'], bookmaker=c['bookmaker'], attempted_at=clock().isoformat())
                     report['requests'].append(receipt)
                     report['historical_requests'] += 1
@@ -292,7 +290,13 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
             try:
                 after = account(env.get('ACCOUNT_PROBE_KEY'), set())
                 report['production_after'] = after
-                if after != production:
+                delta = after['request_count'] - production['request_count']
+                report['production_quota_delta'] = delta
+                report['production_usage_attribution'] = 'OBSERVED_ACCOUNT_USAGE_NOT_ATTRIBUTED_TO_HISTORICAL'
+                # Concurrent live collectors may legitimately consume their own
+                # distinct subscription. Never relabel that as historical usage.
+                stable = all(after[k] == production[k] for k in production if k != 'request_count')
+                if not stable or delta < 0:
                     raise StopPilot('PRODUCTION_ACCOUNT_CHANGED')
             except (StopPilot, ValueError, KeyError, TypeError, OSError):
                 report['status'] = 'STOPPED'

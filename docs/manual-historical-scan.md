@@ -40,7 +40,7 @@ Coverage is **known native fixtures**, not every fixture that existed that day.
   `CACHE_MISS_NO_REQUEST`, not claims that the provider has no history. Zero provider HTTP.
 - **recover**: explicitly confirm live requests. Process **all verified candidates**
   in the selected range, fetching every cache miss with no internal request-count
-  cap (no 25-default or 50-maximum). Provider pacing, entitlement, health and quiet
+  cap (no 25-default or 50-maximum). Provider pacing, entitlement and health
   window stop conditions still apply. The workflow retains its 30-minute timeout;
   an interruption is not a claim that the entire date range completed. Saved
   cache and per-candidate progress allow a later manual rerun to avoid refetching.
@@ -58,10 +58,24 @@ storage guarantee is made. Monitor GitHub storage before large repeated recovery
 
 New historical requests use only `HISTORICAL_ODDSPAPI_KEY` in environment
 `historical-research`. Production key is restricted to account-only baseline and
-postcheck. Active subscription fingerprints must differ. Existing account/quota,
-fresh production health, quiet-window and 5.2-second historical pacing gates are
-retained. Production target minus 15 minutes through target plus 150 minutes is
-protected. No automatic retries after 429 or transport/provider errors.
+postcheck. Active subscription fingerprints must differ, verified live before
+any historical request. This isolated manual workflow has **no production clock
+blackout**: the pilot's target-minus-15 / target-plus-150-minute rule unnecessarily
+blocked independent manual research (e.g. run `38894926278` at 18:37 BKK).
+
+Existing account/quota and 5.2-second pacing gates remain. Fresh production health
+is retained as an honest baseline, including an existing FAIL, only after distinct
+active subscriptions are proven. Existing FAIL is never relabeled PASS. Stale or
+invalid health, worsening severity, or new production issues stop further history
+requests. Default safety.health_check without account isolation retains strict
+pilot behavior. Shared/missing/expired accounts still fail closed.
+
+Production account usage can legitimately rise due to concurrent live collectors.
+Report the actual delta without attributing it to historical requests; subscription
+identity/entitlement changes or counter decreases still fail. Production key is
+never routed to the historical endpoint. The workflow verifies tracked production
+data/reports/config inputs unchanged after every run; repository write permission
+is still absent. No automatic retries after 429 or transport/provider errors.
 
 Actual HTTP accounting is separate from quota usage. For H new historical calls
 in one successful run: H historical + (2H+3) account = **3H+3 HTTP**. Cached-only

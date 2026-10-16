@@ -82,6 +82,9 @@ jobs:
           confirm=()
           if [ "$INPUT_CONFIRM" = true ]; then confirm+=(--confirm-live-requests); fi
           python -m odds_scanner.historical_manual.runner --start-day "$INPUT_START" --end-day "$INPUT_END" --times "$INPUT_TIMES" --bookmakers "$INPUT_BOOKS" --mode "$INPUT_MODE" "${confirm[@]}"
+      - name: Verify production checkout inputs remain unchanged
+        if: always()
+        run: git diff --exit-code -- data reports config
       - uses: actions/cache/save@v4
         if: always() && hashFiles('research/historical_backfill/data/cache/*.json') != '' && (steps.history_cache.outputs.cache-matched-key == '' || hashFiles('research/manual_historical/output/new_cache/cache/*.json') != '')
         with:
