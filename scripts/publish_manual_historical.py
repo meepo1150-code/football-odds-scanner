@@ -44,9 +44,10 @@ def _validate(report, manifest):
         raise ValueError("INCOMPLETE_RESULT_SET")
     return candidates
 
-def produce(report, manifest, original):
+def produce(report, manifest, original, reference=()):
     candidates = _validate(report, manifest)
     templates = {}
+    reference_sides = {}
     for c in candidates.values():
         key = _identity(c)
         matches = [o for o in original if _identity(o) == key
@@ -56,6 +57,21 @@ def produce(report, manifest, original):
                    and o.get("favorite_side") in ("H", "A")
                    and o.get("data_origin") != "BACKFILLED"]
         sides = {m["favorite_side"] for m in matches}
+        # Independently retained exact-ID mainline is favorite-side evidence;
+        # never copy its current prices into historical observations.
+        refs = [o for o in reference if _identity(o) == key
+                and (o.get('home'), o.get('away'), o.get('league')) ==
+                    (c['home'], c['away'], c['league'])
+                and stamp(o['kickoff']) == stamp(c['kickoff'])
+                and o.get('favorite_side') in ('H', 'A')
+                and o.get('mainline_verified') is True
+                and o.get('source_semantics') == 'CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED'
+                and stamp(o['observed_at']) < stamp(c['kickoff'])
+                and o.get('data_origin') != 'BACKFILLED']
+        ref_sides = {o['favorite_side'] for o in refs}
+        if len(ref_sides) > 1:
+            raise ValueError('AMBIGUOUS_NATIVE_MAINLINE_FAVORITE')
+        reference_sides[key] = next(iter(ref_sides), None)
         if len(sides) > 1:
             raise ValueError("MISSING_OR_AMBIGUOUS_FAVORITE_IDENTITY")
         if not sides:
@@ -132,10 +148,14 @@ def produce(report, manifest, original):
             # negative AH side is the handicap favorite; level ball is unknown.
             if base is None:
                 if hl == 0:
-                    raise ValueError("LEVEL_BALL_FAVORITE_UNRESOLVED")
-                fav = "H" if hl < 0 else "A"
+                    fav = reference_sides.get(key)
+                    if fav not in ('H', 'A'):
+                        raise ValueError("LEVEL_BALL_FAVORITE_UNRESOLVED")
+                    favorite_basis = "VERIFIED_NATIVE_MAINLINE_SNAPSHOT"
+                else:
+                    fav = "H" if hl < 0 else "A"
+                    favorite_basis = "HISTORICAL_NEGATIVE_AH_HANDICAP"
                 row = {k: c[k] for k in ("fixture_id", "home", "away", "league", "kickoff")}
-                favorite_basis = "HISTORICAL_NEGATIVE_AH_HANDICAP"
             else:
                 fav = base["favorite_side"]
                 row = dict(base)
@@ -166,7 +186,8 @@ def produce(report, manifest, original):
 def publish(report, manifest, root=Path(".")):
     path = root/SNAPSHOTS
     original = _rows(path)
-    incoming, counts = produce(report, manifest, original)
+    reference = _rows(root/'data/normalized/v2_mainline_snapshots.jsonl')
+    incoming, counts = produce(report, manifest, original, reference)
     prior = {}
     for row in original:
         k = _key(row)
