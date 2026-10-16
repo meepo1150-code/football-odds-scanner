@@ -442,3 +442,31 @@ def test_native_schedule_receipt_discovers_historical_fixture_without_snapshot(t
     assert c['observations'] == []
     assert c['evidence'][0]['mapping_source'] == 'ODDSPAPI_NATIVE_FIXTURES_RECEIPT'
     assert c['evidence'][0]['response_id'] == 'immutable-response-id'
+
+def test_publish_native_observation_source_without_published_snapshot():
+    from scripts.publish_manual_historical import produce
+    c = dict(fixture_id='id123', bookmaker='pinnacle', home='Home',
+        away='Away', league='League', kickoff='2026-09-13T15:00:00Z',
+        football_day='2026-09-13',
+        observations=[dict(fixture_id='id123', source_semantics='CURRENT_ODDSPAPI_MAINLINE')],
+        evidence=[dict(path='data/research/pre_sep14_historical_originals.jsonl',
+                       line=1, sha256='a'*64)],
+        targets=[dict(target_utc='2026-09-13T08:00:00Z')])
+    selection = dict(line_selection='BALANCED_LINE', market='AH',
+        official_mainline_verified=False, fixture_id='id123',
+        bookmaker='pinnacle', slot_utc='2026-09-13T08:00:00Z',
+        market_id='ah-1', home_line=-0.5, away_line=0.5,
+        quotes={side:dict(active=True,price=2.0,
+            quote_at_utc='2026-09-13T07:59:00Z') for side in ('home','away')})
+    manifest=dict(scope='VERIFIED_NATIVE_OR_EXTERNAL_ODDSPAPI_FIXTURES',
+        candidates=[c])
+    report=dict(status='COMPLETED', errors=[], production_writes=0,
+        research_only=True, results=[dict(
+            fixture_id='id123', bookmaker='pinnacle', home='Home',
+            away='Away', kickoff=c['kickoff'], football_day=c['football_day'],
+            slots=[dict(target_utc='2026-09-13T08:00:00Z',
+                        status='BALANCED_LINE', selected=selection)])])
+    incoming, counts=produce(report,manifest,[])
+    assert len(incoming)==1
+    assert counts['BALANCED_LINE']==1
+    assert next(iter(incoming.values()))['data_origin']=='BACKFILLED'
