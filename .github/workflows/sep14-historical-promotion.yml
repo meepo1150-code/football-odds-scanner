@@ -1,0 +1,82 @@
+name: Sep14 Historical Production Promotion
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/promote_sep14_historical.py'
+      - '.github/workflows/sep14-historical-promotion.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: sep14-historical-production-promotion
+  cancel-in-progress: false
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Fetch exact reviewed historical artifact, no OddsPapi requests
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/sep14-artifact
+          gh run download 38860129483 -R "${{ github.repository }}" -n sep14-historical-recovery-38860129483 -D /tmp/sep14-artifact
+          test -s /tmp/sep14-artifact/sep14/results/report.json
+          (cd /tmp/sep14-artifact && zip -q -r /tmp/sep14-recovery.zip sep14)
+      - name: Save exact original production source before replacement
+        uses: actions/upload-artifact@v4
+        with:
+          name: sep14-pre-promotion-backup-${{ github.run_id }}
+          path: data/normalized/europe_pinnacle_research_v2_snapshots.jsonl
+          retention-days: 90
+          if-no-files-found: error
+      - name: Validate 20 fixture identities and 52 AH slots
+        run: |
+          python scripts/promote_sep14_historical.py --artifact /tmp/sep14-recovery.zip --dry-run
+      - name: Replace only Sep14 source observations and rebuild existing formulas
+        run: |
+          set -euo pipefail
+          python -m pip install -e .
+          python scripts/promote_sep14_historical.py --artifact /tmp/sep14-recovery.zip
+          python -m odds_scanner.research_v2_evidence
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('reports/sep14_historical_promotion.json').read_text())
+          assert p['verified_football_day_fixtures']==20
+          assert p['historical_balanced_slots']==52
+          assert p['historical_api_requests']==0
+          rows=[json.loads(x) for x in Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl').read_text().splitlines()]
+          new=[r for r in rows if r.get('historical_provenance')=='ODDSPAPI_RECONSTRUCTED_FROM_RUN_38860129483']
+          assert len(new)==52
+          assert {r['football_day'] for r in new}=={'2026-09-14'}
+          assert all(r['mainline_verified'] is False and r['one_x_two']=={} and r['ou']=={} for r in new)
+          print('Verified promotion and unchanged settlement formulas',len(new))
+          PY
+      - name: Persist canonical inputs and recalculated statistics to main
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f data/normalized/europe_pinnacle_research_v2_snapshots.jsonl
+          git add -f data/normalized/research_v2_pattern_outcomes.jsonl
+          git add -f data/normalized/research_v2_movement_features.jsonl
+          git add -f reports/sep14_historical_promotion.json reports/research_v2_pattern_statistics.json reports/research_v2_movement_status.json reports/research_v2_operational_audit.json reports/research_v2_end_to_end_audit.json reports/research_v2_fixture_identity.json reports/research_v2_missing_ft_ledger.json reports/dashboard_scope.json reports/oddspapi_history_audit.json reports/scan_health_latest.json reports/scan_health_monitor.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'data: promote Sep14 historical AH and rebuild unchanged statistics [skip ci]'
+          git push origin HEAD:main
+      - name: Deploy recalculated Dashboard through existing Pages workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh workflow run pages.yml -R "${{ github.repository }}" --ref main
