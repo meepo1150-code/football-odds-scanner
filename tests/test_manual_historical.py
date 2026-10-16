@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 
 from odds_scanner.historical_manual import planner, runner
-from odds_scanner.historical_manual.safety import StopPilot, digest
+from odds_scanner.historical_manual.safety import StopPilot, digest, health_check
 from odds_scanner.historical_manual.seed import seed
 
 NOW = datetime(2026, 10, 16, 6, tzinfo=timezone.utc)
@@ -171,18 +171,22 @@ def account_payload(key):
         is_active=True, request_limit=250, request_count=0, sport_ids=[10], bookmakers={'pinnacle': {}})])
 
 
-def live(tmp_path, *, status=200, body=None, env=None, now=NOW, rows=None):
+def live(tmp_path, *, status=200, body=None, env=None, now=NOW, rows=None,
+         health_reader=None, production_delta=0):
     source(tmp_path, rows or [native()])
     calls = []
     def factory(key):
         def request(path, params):
             calls.append((key, path, params))
             value = account_payload(key) if path == '/account' else (body or payload(params['fixtureId']))
+            if path == '/account' and key == 'test-production' and sum(
+                    k == key and p == '/account' for k, p, _ in calls) > 1:
+                value['subscriptions'][0]['request_count'] = production_delta
             return (200 if path == '/account' else status), {}, json.dumps(value).encode()
         return request
     r = runner.execute(args(mode='recover', confirm_live_requests=True), root=tmp_path,
         clock=lambda: now, sleeper=lambda _: None, client_factory=factory,
-        health_reader=lambda: dict(generated_at=now.isoformat(), status='PASS', issues=[]),
+        health_reader=health_reader or (lambda: dict(generated_at=now.isoformat(), status='PASS', issues=[])),
         environ=ENV if env is None else env)
     return r, calls
 
@@ -250,10 +254,67 @@ def test_shared_subscription_gate(tmp_path):
     assert not any(c[1] == '/historical-odds' for c in calls)
 
 
-def test_production_quiet_window_stops_before_http(tmp_path):
-    r, calls = live(tmp_path, now=datetime(2026, 10, 16, 8, tzinfo=timezone.utc))
-    assert r['errors'] == ['PRODUCTION_QUIET_WINDOW_CLOSED']
-    assert not calls
+@pytest.mark.parametrize('hour,minute', [(8, 0), (11, 37), (14, 0), (17, 0)])
+def test_distinct_manual_accounts_work_during_production_clock_windows(tmp_path, hour, minute):
+    r, calls = live(tmp_path, now=datetime(2026, 10, 16, hour, minute, tzinfo=timezone.utc))
+    assert r['status'] == 'COMPLETED'
+    assert r['historical_requests'] == 1
+    assert r['credential_isolation'] == 'DISTINCT_ACTIVE_SUBSCRIPTIONS_VERIFIED'
+    assert r['time_policy'] == 'ISOLATED_MANUAL_NO_PRODUCTION_CLOCK_BLACKOUT'
+    assert all(k == 'test-historical' for k, p, _ in calls if p == '/historical-odds')
+
+
+def test_existing_production_fail_retained_after_isolation_not_relabelled(tmp_path):
+    health = dict(generated_at=NOW.isoformat(), status='FAIL', issues=['SCAN_MISSING', 'FT_DELAY'])
+    r, _ = live(tmp_path, health_reader=lambda: health)
+    assert r['status'] == 'COMPLETED'
+    assert r['production_health_baseline'] == health
+
+
+def test_default_pilot_health_still_rejects_fail():
+    health = dict(generated_at=NOW.isoformat(), status='FAIL', issues=['SCAN_MISSING'])
+    with pytest.raises(StopPilot, match='PRODUCTION_HEALTH_UNSAFE'):
+        health_check(health, health, NOW)
+    with pytest.raises(StopPilot, match='CREDENTIAL_ISOLATION_UNVERIFIED'):
+        health_check(health, health, NOW, account_isolation=dict(research='a'*64, production='a'*64))
+
+
+@pytest.mark.parametrize('baseline_status,current_status,reason', [
+    ('PASS', 'FAIL', 'PRODUCTION_HEALTH_DEGRADED'),
+    ('FAIL', 'FAIL', 'NEW_PRODUCTION_HEALTH_ISSUE'),
+])
+def test_new_production_health_problem_stops_before_history(tmp_path, baseline_status, current_status, reason):
+    baseline = dict(generated_at=NOW.isoformat(), status=baseline_status, issues=[])
+    current = dict(generated_at=NOW.isoformat(), status=current_status, issues=['NEW_PROBLEM'])
+    readings = iter([baseline, current])
+    r, calls = live(tmp_path, health_reader=lambda: next(readings))
+    assert r['errors'] == [reason]
+    assert not any(p == '/historical-odds' for _, p, _ in calls)
+
+
+def test_stale_health_still_blocks_with_isolated_accounts(tmp_path):
+    health = dict(generated_at='2026-10-16T05:00:00Z', status='FAIL', issues=[])
+    r, calls = live(tmp_path, health_reader=lambda: health)
+    assert r['errors'] == ['PRODUCTION_HEALTH_STALE']
+    assert not any(p == '/historical-odds' for _, p, _ in calls)
+
+
+def test_concurrent_production_usage_is_reported_without_false_attribution(tmp_path):
+    r, calls = live(tmp_path, production_delta=1)
+    assert r['status'] == 'COMPLETED'
+    assert r['production_quota_delta'] == 1
+    assert r['production_before']['request_count'] == 0
+    assert r['production_after']['request_count'] == 1
+    assert 'NOT_ATTRIBUTED_TO_HISTORICAL' in r['production_usage_attribution']
+    assert all(p == '/account' for k, p, _ in calls if k == 'test-production')
+
+
+def test_checkout_production_sources_not_mutated(tmp_path):
+    source(tmp_path, [native()])
+    before = (tmp_path/planner.SOURCES[0]).read_bytes()
+    r, _ = live(tmp_path)
+    assert r['status'] == 'COMPLETED'
+    assert (tmp_path/planner.SOURCES[0]).read_bytes() == before
 
 
 def test_kickoff_exclusion(tmp_path):
@@ -295,3 +356,5 @@ def test_workflow_is_manual_readonly_and_inputs_not_shell_interpolated():
     for step in workflow['jobs']['historical']['steps']:
         assert '${{ inputs.' not in step.get('run', '')
     assert workflow['jobs']['historical']['environment'] == 'historical-research'
+    assert any(s.get('run') == 'git diff --exit-code -- data reports config'
+               and s.get('if') == 'always()' for s in workflow['jobs']['historical']['steps'])

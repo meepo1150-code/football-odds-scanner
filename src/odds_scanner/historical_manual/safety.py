@@ -32,12 +32,20 @@ def quiet_window(now, allowance_seconds=45):
     return True
 
 
-def health_check(current, baseline, now):
+def health_check(current, baseline, now, *, account_isolation=None):
+    # Only a live-verified distinct-subscription manual runner may retain an
+    # already-failing production baseline. Default pilot behavior stays strict.
+    isolated = False
+    if account_isolation is not None:
+        values = [account_isolation.get(k) for k in ('research', 'production')]
+        if not all(isinstance(v, str) and len(v) == 64 for v in values) or values[0] == values[1]:
+            raise StopPilot('CREDENTIAL_ISOLATION_UNVERIFIED')
+        isolated = True
     timestamp=parse_time(current['generated_at'])
     if not 0 <= (now-timestamp).total_seconds() <= 900:
         raise StopPilot('PRODUCTION_HEALTH_STALE')
     state=current.get('status')
-    if state not in SEVERITY or state=='FAIL':raise StopPilot('PRODUCTION_HEALTH_UNSAFE')
+    if state not in SEVERITY or (state=='FAIL' and not isolated):raise StopPilot('PRODUCTION_HEALTH_UNSAFE')
     if SEVERITY[state]>SEVERITY.get(baseline.get('status'),-1):raise StopPilot('PRODUCTION_HEALTH_DEGRADED')
     if set(current.get('issues',[]))-set(baseline.get('issues',[])):raise StopPilot('NEW_PRODUCTION_HEALTH_ISSUE')
 
