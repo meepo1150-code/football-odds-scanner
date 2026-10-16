@@ -1,18 +1,18 @@
 {
-  "generated_at": "2026-10-16T07:09:11.013622+00:00",
+  "generated_at": "2026-10-16T08:00:57.051840+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 893,
+  "settled_fixtures": 894,
   "movement_classification_counts": {
-    "SINGLE_OBSERVATION": 602,
+    "SINGLE_OBSERVATION": 570,
     "FAVORITE_SWITCH": 8,
-    "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 26,
-    "AH_LINE_UNCHANGED__PRICE_DOWN": 93,
-    "AH_LINE_UNCHANGED__PRICE_UP": 67,
-    "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 15,
-    "AH_FAVORITE_LINE_WEAKER__PRICE_UP": 3,
-    "AH_LINE_UNCHANGED__PRICE_FLAT": 34,
-    "AH_FAVORITE_LINE_STRONGER__PRICE_DOWN": 3,
+    "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 39,
+    "AH_LINE_UNCHANGED__PRICE_DOWN": 101,
+    "AH_LINE_UNCHANGED__PRICE_UP": 75,
+    "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 16,
+    "AH_FAVORITE_LINE_WEAKER__PRICE_UP": 2,
+    "AH_LINE_UNCHANGED__PRICE_FLAT": 36,
+    "AH_FAVORITE_LINE_STRONGER__PRICE_DOWN": 5,
     "INSUFFICIENT_OBSERVATIONS": 42
   },
   "movement_evaluation": {
@@ -20,31 +20,31 @@
     "evaluation": "RETROSPECTIVE_VIEWED_DATA_CHRONOLOGICAL_WALK_FORWARD_BY_FOOTBALL_DAY",
     "untouched_holdout": false,
     "promotion_allowed": false,
-    "unique_eligible_fixtures": 249,
-    "unique_evaluated_fixtures": 44,
+    "unique_eligible_fixtures": 282,
+    "unique_evaluated_fixtures": 62,
     "metric": "BASELINE_MSE_MINUS_MOVEMENT_MSE; POSITIVE_IS_BETTER",
-    "mean_squared_error_improvement": 0.014391319695907406,
+    "mean_squared_error_improvement": 0.025415885696434954,
     "improvement_bootstrap95": [
-      -0.029692,
-      0.055775
+      -0.014743,
+      0.062778
     ],
     "baseline": "MARKET_SIDE + AH_LINE + PRICE_BUCKET; TRAIN_MIN_5; PRIOR_DAYS_MIN_20",
     "movement_model": "SAME_BASELINE + MOVEMENT; SHRINKAGE_10_BASELINE_OBSERVATIONS",
     "multiple_testing_policy": "ONE_PREDEFINED_INCREMENTAL_COMPARISON; SUBGROUPS_DESCRIPTIVE_ONLY; NO_PROMOTION_OR_EDGE_CLAIMS; NEW_UNVIEWED_PERIOD_REQUIRED",
     "observation_gap_minutes": {
-      "n": 249,
+      "n": 282,
       "min": 0.713,
-      "median": 266.333,
+      "median": 360.252,
       "max": 649.593
     },
     "first_minutes_before_kickoff": {
-      "n": 249,
+      "n": 282,
       "min": 43.721,
-      "median": 475.355,
+      "median": 516.1895,
       "max": 940.905
     },
     "last_minutes_before_kickoff": {
-      "n": 249,
+      "n": 282,
       "min": 0.501,
       "median": 124.982,
       "max": 577.827
@@ -52,87 +52,88 @@
     "descriptive_families": [
       {
         "movement": "AH_FAVORITE_LINE_STRONGER__PRICE_DOWN",
-        "unique_fixture_n": 3,
-        "roi_pct": -37.2,
+        "unique_fixture_n": 5,
+        "roi_pct": -62.32,
         "profit_mean_bootstrap95": [
           -1.0,
-          0.884
+          0.1304
         ],
         "settlements": {
-          "FULL_LOSS": 2,
+          "FULL_LOSS": 4,
           "FULL_WIN": 1
         }
       },
       {
         "movement": "AH_FAVORITE_LINE_STRONGER__PRICE_UP",
-        "unique_fixture_n": 26,
-        "roi_pct": 7.592,
+        "unique_fixture_n": 39,
+        "roi_pct": 6.536,
         "profit_mean_bootstrap95": [
-          -0.293808,
-          0.439769
+          -0.245308,
+          0.350462
         ],
         "settlements": {
-          "FULL_WIN": 12,
-          "FULL_LOSS": 10,
-          "PUSH": 3,
-          "HALF_LOSS": 1
+          "FULL_WIN": 17,
+          "FULL_LOSS": 14,
+          "PUSH": 4,
+          "HALF_WIN": 1,
+          "HALF_LOSS": 3
         }
       },
       {
         "movement": "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN",
-        "unique_fixture_n": 15,
-        "roi_pct": -4.335,
+        "unique_fixture_n": 16,
+        "roi_pct": -3.783,
         "profit_mean_bootstrap95": [
-          -0.442883,
-          0.325117
+          -0.396975,
+          0.313039
         ],
         "settlements": {
           "FULL_WIN": 5,
+          "PUSH": 3,
           "FULL_LOSS": 4,
           "HALF_LOSS": 3,
-          "HALF_WIN": 1,
-          "PUSH": 2
+          "HALF_WIN": 1
         }
       },
       {
         "movement": "AH_FAVORITE_LINE_WEAKER__PRICE_UP",
-        "unique_fixture_n": 3,
-        "roi_pct": 34.0,
+        "unique_fixture_n": 2,
+        "roi_pct": 0.0,
         "profit_mean_bootstrap95": [
           -1.0,
-          1.02
+          1.0
         ],
         "settlements": {
-          "FULL_WIN": 2,
-          "FULL_LOSS": 1
+          "FULL_LOSS": 1,
+          "FULL_WIN": 1
         }
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_DOWN",
-        "unique_fixture_n": 93,
-        "roi_pct": 4.693,
+        "unique_fixture_n": 101,
+        "roi_pct": 1.161,
         "profit_mean_bootstrap95": [
-          -0.136279,
-          0.21628
+          -0.161356,
+          0.180121
         ],
         "settlements": {
-          "FULL_LOSS": 33,
-          "FULL_WIN": 42,
-          "PUSH": 9,
+          "FULL_LOSS": 38,
+          "FULL_WIN": 44,
+          "PUSH": 10,
           "HALF_LOSS": 5,
           "HALF_WIN": 4
         }
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_FLAT",
-        "unique_fixture_n": 34,
-        "roi_pct": -3.548,
+        "unique_fixture_n": 36,
+        "roi_pct": 1.691,
         "profit_mean_bootstrap95": [
-          -0.347651,
-          0.267074
+          -0.267706,
+          0.307571
         ],
         "settlements": {
-          "FULL_WIN": 14,
+          "FULL_WIN": 16,
           "PUSH": 3,
           "FULL_LOSS": 14,
           "HALF_WIN": 1,
@@ -141,15 +142,15 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_UP",
-        "unique_fixture_n": 67,
-        "roi_pct": 3.289,
+        "unique_fixture_n": 75,
+        "roi_pct": 8.11,
         "profit_mean_bootstrap95": [
-          -0.20024,
-          0.253557
+          -0.142628,
+          0.292926
         ],
         "settlements": {
-          "FULL_WIN": 32,
-          "FULL_LOSS": 29,
+          "FULL_WIN": 38,
+          "FULL_LOSS": 31,
           "HALF_LOSS": 3,
           "HALF_WIN": 2,
           "PUSH": 1
@@ -172,164 +173,284 @@
     ],
     "predictions": [
       {
-        "fixture_id": "propline:soccer_uefa_nations_league:240698",
-        "football_day": "2026-10-05",
+        "fixture_id": "pinnwire:1636866527",
+        "football_day": "2026-10-01",
+        "baseline_train_n": 5,
+        "movement_train_n": 3,
+        "baseline_return_prediction": -1.0,
+        "movement_return_prediction": -1.0,
+        "realized_profit_units": 1.0700000000000003,
+        "squared_error_improvement": 0.0
+      },
+      {
+        "fixture_id": "propline:soccer_uefa_nations_league:232279",
+        "football_day": "2026-10-03",
+        "baseline_train_n": 5,
+        "movement_train_n": 0,
+        "baseline_return_prediction": 0.6197999999999999,
+        "movement_return_prediction": 0.6197999999999999,
+        "realized_profit_units": 1.0099999999999998,
+        "squared_error_improvement": 0.0
+      },
+      {
+        "fixture_id": "id1000005472477452",
+        "football_day": "2026-10-03",
         "baseline_train_n": 5,
         "movement_train_n": 1,
-        "baseline_return_prediction": 0.37497475728155344,
-        "movement_return_prediction": 0.24997705207413948,
+        "baseline_return_prediction": -0.019199999999999974,
+        "movement_return_prediction": -0.01745454545454543,
+        "realized_profit_units": 0.0,
+        "squared_error_improvement": 6.397884297520647e-05
+      },
+      {
+        "fixture_id": "id1000013172044706",
+        "football_day": "2026-10-03",
+        "baseline_train_n": 5,
+        "movement_train_n": 3,
+        "baseline_return_prediction": 0.6197999999999999,
+        "movement_return_prediction": 0.5613076923076922,
+        "realized_profit_units": 1.0099999999999998,
+        "squared_error_improvement": -0.04906874698224856
+      },
+      {
+        "fixture_id": "propline:soccer_uefa_nations_league:232281",
+        "football_day": "2026-10-03",
+        "baseline_train_n": 5,
+        "movement_train_n": 0,
+        "baseline_return_prediction": -0.019199999999999974,
+        "movement_return_prediction": -0.019199999999999974,
+        "realized_profit_units": 0.970873786407767,
+        "squared_error_improvement": 0.0
+      },
+      {
+        "fixture_id": "id1000013172044702",
+        "football_day": "2026-10-03",
+        "baseline_train_n": 5,
+        "movement_train_n": 3,
+        "baseline_return_prediction": 0.732,
+        "movement_return_prediction": 0.8007692307692308,
+        "realized_profit_units": -0.5,
+        "squared_error_improvement": -0.1741765917159761
+      },
+      {
+        "fixture_id": "propline:soccer_uefa_nations_league:238397",
+        "football_day": "2026-10-04",
+        "baseline_train_n": 6,
+        "movement_train_n": 4,
+        "baseline_return_prediction": -0.6549999999999999,
+        "movement_return_prediction": -0.6057142857142856,
         "realized_profit_units": -1.0,
-        "squared_error_improvement": 0.32811295244951055
+        "squared_error_improvement": -0.0364362244897959
+      },
+      {
+        "fixture_id": "propline:soccer_uefa_nations_league:238398",
+        "football_day": "2026-10-04",
+        "baseline_train_n": 5,
+        "movement_train_n": 0,
+        "baseline_return_prediction": 0.48960000000000004,
+        "movement_return_prediction": 0.4896000000000001,
+        "realized_profit_units": 0.4424778761061947,
+        "squared_error_improvement": -5.204170427930421e-18
+      },
+      {
+        "fixture_id": "propline:soccer_uefa_nations_league:238400",
+        "football_day": "2026-10-04",
+        "baseline_train_n": 5,
+        "movement_train_n": 0,
+        "baseline_return_prediction": 0.5539801801801802,
+        "movement_return_prediction": 0.5539801801801802,
+        "realized_profit_units": 0.9900990099009901,
+        "squared_error_improvement": 0.0
+      },
+      {
+        "fixture_id": "propline:soccer_uefa_nations_league:240698",
+        "football_day": "2026-10-05",
+        "baseline_train_n": 7,
+        "movement_train_n": 1,
+        "baseline_return_prediction": 0.12498196948682387,
+        "movement_return_prediction": 0.022710881351658066,
+        "realized_profit_units": -1.0,
+        "squared_error_improvement": 0.21964688483536787
+      },
+      {
+        "fixture_id": "propline:soccer_uefa_nations_league:240713",
+        "football_day": "2026-10-05",
+        "baseline_train_n": 6,
+        "movement_train_n": 0,
+        "baseline_return_prediction": 0.5266666666666666,
+        "movement_return_prediction": 0.5266666666666666,
+        "realized_profit_units": -1.0,
+        "squared_error_improvement": 0.0
       },
       {
         "fixture_id": "propline:soccer_brasileirao:218738",
         "football_day": "2026-10-07",
-        "baseline_train_n": 5,
-        "movement_train_n": 1,
-        "baseline_return_prediction": 1.0237999999999998,
-        "movement_return_prediction": 1.0216363636363635,
+        "baseline_train_n": 7,
+        "movement_train_n": 2,
+        "baseline_return_prediction": 0.7312857142857142,
+        "movement_return_prediction": 0.7760714285714285,
         "realized_profit_units": 1.08,
-        "squared_error_improvement": -0.0002478740495867786
+        "squared_error_improvement": 0.029229076530612283
+      },
+      {
+        "fixture_id": "propline:soccer_swiss_super_league:240493",
+        "football_day": "2026-10-10",
+        "baseline_train_n": 6,
+        "movement_train_n": 4,
+        "baseline_return_prediction": 0.4817463126843658,
+        "movement_return_prediction": 0.45789022334597557,
+        "realized_profit_units": 0.8771929824561404,
+        "squared_error_improvement": -0.01943673516380995
       },
       {
         "fixture_id": "propline:soccer_greek_super_league:223728",
         "football_day": "2026-10-10",
-        "baseline_train_n": 6,
+        "baseline_train_n": 8,
         "movement_train_n": 1,
-        "baseline_return_prediction": 1.0331666666666666,
-        "movement_return_prediction": 1.031060606060606,
+        "baseline_return_prediction": 0.774875,
+        "movement_return_prediction": 0.7962499999999999,
         "realized_profit_units": 1.0499999999999998,
-        "squared_error_improvement": -7.533953168043856e-05
+        "squared_error_improvement": 0.011304703124999954
+      },
+      {
+        "fixture_id": "propline:soccer_eredivisie:223497",
+        "football_day": "2026-10-10",
+        "baseline_train_n": 6,
+        "movement_train_n": 4,
+        "baseline_return_prediction": 0.4817463126843658,
+        "movement_return_prediction": 0.45789022334597557,
+        "realized_profit_units": 0.8771929824561404,
+        "squared_error_improvement": -0.01943673516380995
       },
       {
         "fixture_id": "propline:soccer_mls:238270",
         "football_day": "2026-10-10",
         "baseline_train_n": 5,
-        "movement_train_n": 4,
+        "movement_train_n": 3,
         "baseline_return_prediction": -0.2332,
-        "movement_return_prediction": -0.1784285714285714,
+        "movement_return_prediction": -0.11523076923076922,
         "realized_profit_units": 0.9900990099009901,
-        "squared_error_improvement": 0.13100375929682784
+        "squared_error_improvement": 0.2747065469892789
+      },
+      {
+        "fixture_id": "propline:soccer_ligue_1:222079",
+        "football_day": "2026-10-10",
+        "baseline_train_n": 6,
+        "movement_train_n": 1,
+        "baseline_return_prediction": 0.4817463126843658,
+        "movement_return_prediction": 0.5156784660766962,
+        "realized_profit_units": -1.0,
+        "squared_error_improvement": -0.10170907737489232
       },
       {
         "fixture_id": "propline:soccer_ligue_1:222081",
         "football_day": "2026-10-10",
         "baseline_train_n": 5,
-        "movement_train_n": 4,
+        "movement_train_n": 3,
         "baseline_return_prediction": -0.2332,
-        "movement_return_prediction": -0.1784285714285714,
+        "movement_return_prediction": -0.11523076923076922,
         "realized_profit_units": 0.970873786407767,
-        "squared_error_improvement": 0.12889777338617026
+        "squared_error_improvement": 0.2701705773355547
       },
       {
         "fixture_id": "propline:soccer_bundesliga:222073",
         "football_day": "2026-10-11",
-        "baseline_train_n": 7,
-        "movement_train_n": 4,
-        "baseline_return_prediction": 0.5415519772883537,
-        "movement_return_prediction": 0.6363504098425583,
+        "baseline_train_n": 9,
+        "movement_train_n": 6,
+        "baseline_return_prediction": 0.40498487122427507,
+        "movement_return_prediction": 0.4623271673221895,
         "realized_profit_units": 0.4201680672268908,
-        "squared_error_improvement": -0.03200075163698853
+        "squared_error_improvement": -0.0015468602799915648
       },
       {
         "fixture_id": "propline:soccer_la_liga:223479",
         "football_day": "2026-10-11",
-        "baseline_train_n": 7,
-        "movement_train_n": 3,
-        "baseline_return_prediction": 1.0355714285714284,
-        "movement_return_prediction": 1.0357472527472527,
+        "baseline_train_n": 9,
+        "movement_train_n": 4,
+        "baseline_return_prediction": 0.8054444444444444,
+        "movement_return_prediction": 0.7259603174603174,
         "realized_profit_units": -0.5,
-        "squared_error_improvement": -0.0005400120758367599
-      },
-      {
-        "fixture_id": "propline:soccer_argentina_primera:237361",
-        "football_day": "2026-10-11",
-        "baseline_train_n": 5,
-        "movement_train_n": 3,
-        "baseline_return_prediction": -0.18199999999999994,
-        "movement_return_prediction": -0.37076923076923074,
-        "realized_profit_units": 1.06,
-        "squared_error_improvement": -0.5045365917159765
+        "squared_error_improvement": 0.2012064975434622
       },
       {
         "fixture_id": "propline:soccer_brasileirao:291334",
         "football_day": "2026-10-11",
-        "baseline_train_n": 7,
-        "movement_train_n": 4,
-        "baseline_return_prediction": 0.5415519772883537,
-        "movement_return_prediction": 0.6363504098425583,
+        "baseline_train_n": 9,
+        "movement_train_n": 6,
+        "baseline_return_prediction": 0.40498487122427507,
+        "movement_return_prediction": 0.4623271673221895,
         "realized_profit_units": 0.847457627118644,
-        "squared_error_improvement": 0.04901200941203974
+        "squared_error_improvement": 0.04745666864572934
       },
       {
         "fixture_id": "propline:soccer_brasileirao:291796",
         "football_day": "2026-10-11",
         "baseline_train_n": 6,
         "movement_train_n": 0,
-        "baseline_return_prediction": 0.27053216374269007,
-        "movement_return_prediction": 0.27053216374269007,
+        "baseline_return_prediction": 0.12319883040935675,
+        "movement_return_prediction": 0.12319883040935675,
         "realized_profit_units": 0.0,
         "squared_error_improvement": 0.0
       },
       {
         "fixture_id": "propline:soccer_argentina_primera:237359",
         "football_day": "2026-10-11",
-        "baseline_train_n": 7,
-        "movement_train_n": 2,
-        "baseline_return_prediction": 1.0355714285714284,
-        "movement_return_prediction": 1.0363095238095237,
+        "baseline_train_n": 9,
+        "movement_train_n": 3,
+        "baseline_return_prediction": 0.8054444444444444,
+        "movement_return_prediction": 0.8564957264957265,
         "realized_profit_units": -1.0,
-        "squared_error_improvement": -0.003005435941044965
+        "squared_error_improvement": -0.186946740521587
       },
       {
         "fixture_id": "id1000005472477488",
         "football_day": "2026-10-12",
         "baseline_train_n": 5,
-        "movement_train_n": 2,
-        "baseline_return_prediction": 0.3026666666666667,
-        "movement_return_prediction": 0.39222222222222225,
+        "movement_train_n": 1,
+        "baseline_return_prediction": -0.06673333333333331,
+        "movement_return_prediction": 0.015060606060606078,
         "realized_profit_units": 0.813,
-        "squared_error_improvement": 0.08338617283950622
+        "squared_error_improvement": 0.13722346137741048
       },
       {
         "fixture_id": "id1000009872735816",
         "football_day": "2026-10-13",
-        "baseline_train_n": 6,
+        "baseline_train_n": 5,
         "movement_train_n": 4,
-        "baseline_return_prediction": 0.02500000000000006,
-        "movement_return_prediction": -0.12071428571428566,
+        "baseline_return_prediction": -0.17399999999999993,
+        "movement_return_prediction": -0.2628571428571428,
         "realized_profit_units": -1.0,
-        "squared_error_improvement": 0.27748163265306147
+        "squared_error_improvement": 0.13889640816326532
       },
       {
         "fixture_id": "id1000017868214840",
         "football_day": "2026-10-13",
         "baseline_train_n": 7,
-        "movement_train_n": 6,
+        "movement_train_n": 5,
         "baseline_return_prediction": 0.11356754232982245,
-        "movement_return_prediction": 0.18316551372543635,
+        "movement_return_prediction": 0.2620432146404654,
         "realized_profit_units": 0.909,
-        "squared_error_improvement": 0.10587709324975902
+        "squared_error_improvement": 0.21415971259247585
       },
       {
         "fixture_id": "id1000001872339892",
         "football_day": "2026-10-13",
-        "baseline_train_n": 9,
-        "movement_train_n": 6,
-        "baseline_return_prediction": 0.5620543928182233,
-        "movement_return_prediction": 0.6488472242150031,
+        "baseline_train_n": 11,
+        "movement_train_n": 8,
+        "baseline_return_prediction": 0.4465899577603646,
+        "movement_return_prediction": 0.5044950687145255,
         "realized_profit_units": -1.0,
-        "squared_error_improvement": -0.27868324267881217
+        "squared_error_improvement": -0.17088290589319133
       },
       {
         "fixture_id": "id1000001872339896",
         "football_day": "2026-10-13",
-        "baseline_train_n": 9,
+        "baseline_train_n": 11,
         "movement_train_n": 2,
-        "baseline_return_prediction": 0.6387777777777777,
-        "movement_return_prediction": 0.7039814814814814,
+        "baseline_return_prediction": 0.5226363636363636,
+        "movement_return_prediction": 0.6071969696969696,
         "realized_profit_units": -1.0,
-        "squared_error_improvement": -0.2179602842935533
+        "squared_error_improvement": -0.2646606035353529
       },
       {
         "fixture_id": "id1000001872339902",
@@ -345,11 +466,11 @@
         "fixture_id": "id1000000774165910",
         "football_day": "2026-10-13",
         "baseline_train_n": 7,
-        "movement_train_n": 6,
+        "movement_train_n": 5,
         "baseline_return_prediction": 0.11356754232982245,
-        "movement_return_prediction": 0.18316551372543635,
+        "movement_return_prediction": 0.2620432146404654,
         "realized_profit_units": 0.8999999999999999,
-        "squared_error_improvement": 0.10462432976463787
+        "squared_error_improvement": 0.21148715049088423
       },
       {
         "fixture_id": "id1000000774165916",
@@ -362,14 +483,24 @@
         "squared_error_improvement": -0.013591469675191786
       },
       {
+        "fixture_id": "id1000001872339898",
+        "football_day": "2026-10-13",
+        "baseline_train_n": 6,
+        "movement_train_n": 1,
+        "baseline_return_prediction": 0.6266666518003152,
+        "movement_return_prediction": 0.6597059570821947,
+        "realized_profit_units": 0.98,
+        "squared_error_improvement": 0.022256181021366783
+      },
+      {
         "fixture_id": "id1000002267018238",
         "football_day": "2026-10-14",
         "baseline_train_n": 5,
-        "movement_train_n": 1,
+        "movement_train_n": 0,
         "baseline_return_prediction": -0.6232,
-        "movement_return_prediction": -0.6574545454545454,
+        "movement_return_prediction": -0.6232,
         "realized_profit_units": 0.8839999999999999,
-        "squared_error_improvement": -0.10443027570247976
+        "squared_error_improvement": 0.0
       },
       {
         "fixture_id": "id1000009872735818",
@@ -422,184 +553,234 @@
         "squared_error_improvement": 0.0
       },
       {
+        "fixture_id": "id1000009872735812",
+        "football_day": "2026-10-14",
+        "baseline_train_n": 7,
+        "movement_train_n": 4,
+        "baseline_return_prediction": 0.30857142857142855,
+        "movement_return_prediction": 0.4054081632653061,
+        "realized_profit_units": 1.0899999999999999,
+        "squared_error_improvement": 0.14196462932111636
+      },
+      {
         "fixture_id": "id1000001872339906",
         "football_day": "2026-10-14",
         "baseline_train_n": 6,
-        "movement_train_n": 1,
-        "baseline_return_prediction": 0.38772222222222225,
-        "movement_return_prediction": 0.3524747474747475,
+        "movement_train_n": 2,
+        "baseline_return_prediction": 0.0798888888888889,
+        "movement_return_prediction": -0.01675925925925925,
         "realized_profit_units": -1.0,
-        "squared_error_improvement": 0.0965850234925012
+        "squared_error_improvement": 0.19939765809327847
       },
       {
         "fixture_id": "id1000001872339908",
         "football_day": "2026-10-14",
-        "baseline_train_n": 10,
+        "baseline_train_n": 12,
         "movement_train_n": 3,
-        "baseline_return_prediction": 0.47489999999999993,
-        "movement_return_prediction": 0.4468461538461538,
+        "baseline_return_prediction": 0.39574999999999994,
+        "movement_return_prediction": 0.3859615384615384,
         "realized_profit_units": 1.04,
-        "squared_error_improvement": -0.03249347520710055
+        "squared_error_improvement": -0.01270824667159759
       },
       {
         "fixture_id": "id1000000774165926",
         "football_day": "2026-10-14",
-        "baseline_train_n": 5,
-        "movement_train_n": 1,
-        "baseline_return_prediction": 0.17419998216037821,
-        "movement_return_prediction": 0.2402637020458803,
+        "baseline_train_n": 7,
+        "movement_train_n": 3,
+        "baseline_return_prediction": 0.6771428444002702,
+        "movement_return_prediction": 0.7354868726848924,
         "realized_profit_units": 0.9610000000000001,
-        "squared_error_improvement": 0.0995934568838196
+        "squared_error_improvement": 0.029718714193729324
       },
       {
         "fixture_id": "id1000000774165928",
         "football_day": "2026-10-14",
-        "baseline_train_n": 10,
-        "movement_train_n": 7,
-        "baseline_return_prediction": 0.40584895353640105,
-        "movement_return_prediction": 0.4599706585071663,
+        "baseline_train_n": 12,
+        "movement_train_n": 9,
+        "baseline_return_prediction": 0.32604079461366753,
+        "movement_return_prediction": 0.36186418975760476,
         "realized_profit_units": 0.8839999999999999,
-        "squared_error_improvement": 0.048827540787388546
+        "squared_error_improvement": 0.038692670537864904
+      },
+      {
+        "fixture_id": "id1000000774165932",
+        "football_day": "2026-10-14",
+        "baseline_train_n": 7,
+        "movement_train_n": 4,
+        "baseline_return_prediction": 0.30857142857142855,
+        "movement_return_prediction": 0.4054081632653061,
+        "realized_profit_units": -1.0,
+        "squared_error_improvement": -0.26281292169929205
       },
       {
         "fixture_id": "id1000000774165934",
         "football_day": "2026-10-14",
-        "baseline_train_n": 7,
+        "baseline_train_n": 6,
         "movement_train_n": 1,
-        "baseline_return_prediction": -0.12142857142857137,
-        "movement_return_prediction": -0.013116883116883042,
+        "baseline_return_prediction": -0.3116666666666666,
+        "movement_return_prediction": -0.18606060606060595,
         "realized_profit_units": -1.0,
-        "squared_error_improvement": -0.20205053128689476
+        "squared_error_improvement": -0.18869455922865014
+      },
+      {
+        "fixture_id": "id1000001872339904",
+        "football_day": "2026-10-14",
+        "baseline_train_n": 5,
+        "movement_train_n": 5,
+        "baseline_return_prediction": -0.26091954022988506,
+        "movement_return_prediction": -0.26091954022988506,
+        "realized_profit_units": 0.8540000000000001,
+        "squared_error_improvement": 0.0
       },
       {
         "fixture_id": "id1000009872735824",
         "football_day": "2026-10-15",
-        "baseline_train_n": 8,
+        "baseline_train_n": 7,
         "movement_train_n": 2,
-        "baseline_return_prediction": -0.23124999999999996,
-        "movement_return_prediction": -0.18687499999999993,
+        "baseline_return_prediction": -0.41,
+        "movement_return_prediction": -0.33583333333333326,
         "realized_profit_units": 1.04,
-        "squared_error_improvement": 0.11085429687500015
+        "squared_error_improvement": 0.20958263888888928
+      },
+      {
+        "fixture_id": "id1000067974172952",
+        "football_day": "2026-10-15",
+        "baseline_train_n": 5,
+        "movement_train_n": 1,
+        "baseline_return_prediction": -0.2206,
+        "movement_return_prediction": -0.29145454545454547,
+        "realized_profit_units": -1.0,
+        "squared_error_improvement": 0.10542769884297509
       },
       {
         "fixture_id": "id1000067974172958",
         "football_day": "2026-10-15",
         "baseline_train_n": 7,
-        "movement_train_n": 4,
-        "baseline_return_prediction": 0.23188471177944864,
-        "movement_return_prediction": 0.3530028643036162,
+        "movement_train_n": 3,
+        "baseline_return_prediction": 0.10559899749373436,
+        "movement_return_prediction": 0.21501407364565261,
         "realized_profit_units": 0.847,
-        "squared_error_improvement": 0.13433364772642045
+        "squared_error_improvement": 0.15026923540733317
+      },
+      {
+        "fixture_id": "id1000067974172960",
+        "football_day": "2026-10-15",
+        "baseline_train_n": 5,
+        "movement_train_n": 2,
+        "baseline_return_prediction": -0.03159999999999998,
+        "movement_return_prediction": 0.05008333333333335,
+        "realized_profit_units": -1.0,
+        "squared_error_improvement": -0.16487644694444414
       },
       {
         "fixture_id": "id1003448074173138",
         "football_day": "2026-10-15",
-        "baseline_train_n": 11,
+        "baseline_train_n": 13,
         "movement_train_n": 0,
-        "baseline_return_prediction": 0.5262727272727272,
-        "movement_return_prediction": 0.5262727272727272,
+        "baseline_return_prediction": 0.44530769230769224,
+        "movement_return_prediction": 0.4453076923076923,
         "realized_profit_units": 1.0699999999999998,
-        "squared_error_improvement": 0.0
+        "squared_error_improvement": 1.1102230246251565e-16
+      },
+      {
+        "fixture_id": "id1003448074173148",
+        "football_day": "2026-10-15",
+        "baseline_train_n": 5,
+        "movement_train_n": 2,
+        "baseline_return_prediction": -0.2314,
+        "movement_return_prediction": -0.2011666666666667,
+        "realized_profit_units": 0.4545,
+        "squared_error_improvement": 0.0405600322222221
       },
       {
         "fixture_id": "id1003448074173170",
         "football_day": "2026-10-15",
         "baseline_train_n": 9,
-        "movement_train_n": 8,
+        "movement_train_n": 7,
         "baseline_return_prediction": 0.28933031070097304,
-        "movement_return_prediction": 0.36095977240658267,
+        "movement_return_prediction": 0.44101622960696985,
         "realized_profit_units": -1.0,
-        "squared_error_improvement": -0.18983885201670958
-      },
-      {
-        "fixture_id": "id1003448074173174",
-        "football_day": "2026-10-15",
-        "baseline_train_n": 5,
-        "movement_train_n": 3,
-        "baseline_return_prediction": 0.1737851851851852,
-        "movement_return_prediction": 0.20052136752136757,
-        "realized_profit_units": 0.0,
-        "squared_error_improvement": -0.010007528242790244
+        "squared_error_improvement": -0.41415512389841935
       },
       {
         "fixture_id": "id1000009872735820",
         "football_day": "2026-10-15",
-        "baseline_train_n": 5,
+        "baseline_train_n": 7,
         "movement_train_n": 2,
-        "baseline_return_prediction": -0.586,
-        "movement_return_prediction": -0.6549999999999999,
+        "baseline_return_prediction": -0.7042857142857143,
+        "movement_return_prediction": -0.7535714285714286,
         "realized_profit_units": -1.0,
-        "squared_error_improvement": 0.05237099999999996
+        "squared_error_improvement": 0.026719897959183662
       },
       {
         "fixture_id": "id1000002472341270",
         "football_day": "2026-10-15",
         "baseline_train_n": 7,
-        "movement_train_n": 3,
-        "baseline_return_prediction": 0.1894761904761905,
-        "movement_return_prediction": 0.3375201465201465,
+        "movement_train_n": 2,
+        "baseline_return_prediction": -0.07438095238095237,
+        "movement_return_prediction": 0.07518253968253968,
         "realized_profit_units": 0.0,
-        "squared_error_improvement": -0.07801862254961155
+        "squared_error_improvement": -0.00011988819601914998
       },
       {
         "fixture_id": "id1000067974172968",
         "football_day": "2026-10-15",
         "baseline_train_n": 9,
-        "movement_train_n": 8,
+        "movement_train_n": 7,
         "baseline_return_prediction": 0.28933031070097304,
-        "movement_return_prediction": 0.36095977240658267,
+        "movement_return_prediction": 0.44101622960696985,
         "realized_profit_units": 0.9430000000000001,
-        "squared_error_improvement": 0.08851323617128948
+        "squared_error_improvement": 0.175296356970284
       },
       {
         "fixture_id": "id1000067974172970",
         "football_day": "2026-10-15",
         "baseline_train_n": 9,
-        "movement_train_n": 8,
+        "movement_train_n": 7,
         "baseline_return_prediction": 0.28933031070097304,
-        "movement_return_prediction": 0.36095977240658267,
+        "movement_return_prediction": 0.44101622960696985,
         "realized_profit_units": 0.99,
-        "squared_error_improvement": 0.09524640557161679
-      },
-      {
-        "fixture_id": "id1000067974172972",
-        "football_day": "2026-10-15",
-        "baseline_train_n": 5,
-        "movement_train_n": 2,
-        "baseline_return_prediction": -0.22621481481481479,
-        "movement_return_prediction": -0.19326234567901232,
-        "realized_profit_units": 0.98,
-        "squared_error_improvement": 0.07840964769052006
+        "squared_error_improvement": 0.18955483334744772
       },
       {
         "fixture_id": "id1000067974172974",
         "football_day": "2026-10-15",
         "baseline_train_n": 9,
-        "movement_train_n": 1,
+        "movement_train_n": 2,
         "baseline_return_prediction": 0.28933031070097304,
-        "movement_return_prediction": 0.17211846427361185,
+        "movement_return_prediction": 0.0744419255841442,
         "realized_profit_units": -1.0,
-        "squared_error_improvement": 0.2885109558011376
+        "squared_error_improvement": 0.507947198639304
+      },
+      {
+        "fixture_id": "id1000067974172978",
+        "football_day": "2026-10-15",
+        "baseline_train_n": 5,
+        "movement_train_n": 1,
+        "baseline_return_prediction": -0.432,
+        "movement_return_prediction": -0.3163636363636364,
+        "realized_profit_units": 0.877,
+        "squared_error_improvement": 0.2893642314049585
       },
       {
         "fixture_id": "id1000067974172984",
         "football_day": "2026-10-15",
         "baseline_train_n": 9,
-        "movement_train_n": 8,
+        "movement_train_n": 7,
         "baseline_return_prediction": 0.28933031070097304,
-        "movement_return_prediction": 0.36095977240658267,
+        "movement_return_prediction": 0.44101622960696985,
         "realized_profit_units": -1.0,
-        "squared_error_improvement": -0.18983885201670958
+        "squared_error_improvement": -0.41415512389841935
       },
       {
         "fixture_id": "id1003448074173188",
         "football_day": "2026-10-15",
-        "baseline_train_n": 11,
+        "baseline_train_n": 13,
         "movement_train_n": 0,
-        "baseline_return_prediction": 0.5262727272727272,
-        "movement_return_prediction": 0.5262727272727272,
+        "baseline_return_prediction": 0.44530769230769224,
+        "movement_return_prediction": 0.4453076923076923,
         "realized_profit_units": 1.04,
-        "squared_error_improvement": 0.0
+        "squared_error_improvement": 1.1102230246251565e-16
       },
       {
         "fixture_id": "id1003448074173196",
