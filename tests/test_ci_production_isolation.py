@@ -29,7 +29,7 @@ def workflow(name):
 ])
 def test_pages_gate(event, ref, conclusion, branch, source_event, repo, expected):
     gate = workflow('pages.yml')['jobs']['deploy']['if']
-    run = SimpleNamespace(conclusion=conclusion, head_branch=branch, event=source_event,
+    run = SimpleNamespace(name='Research V2 Offline Evidence Audit', conclusion=conclusion, head_branch=branch, event=source_event,
                           head_repository=SimpleNamespace(full_name=repo))
     github = SimpleNamespace(event_name=event, ref=ref, repository='owner/repo',
                              event=SimpleNamespace(workflow_run=run))
