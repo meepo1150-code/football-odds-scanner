@@ -171,3 +171,13 @@ def authorize_expansion(report, manifest, catalog, root):
         payload=load_cache(root,c)
         if payload is None or payload.get('cached_http_status')==404:
             raise ValueError('CALIBRATION_CACHE_REQUIRED_NO_REFETCH')
+
+
+def require_cached_prefix(manifest, count, root):
+    """Resume only if every previously completed candidate is still in verified cache."""
+    if type(count) is not int or not 10 <= count <= len(manifest['candidates']):
+        raise ValueError('INVALID_RESUME_PREFIX')
+    for c in manifest['candidates'][:count]:
+        if load_cache(root,c) is None:
+            raise ValueError('RESUME_CACHE_INCOMPLETE_NO_REFETCH')
+    return count
