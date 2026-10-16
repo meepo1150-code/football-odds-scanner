@@ -30,6 +30,8 @@ jobs:
           with open(p,encoding='utf-8') as f:
               rows=list(csv.DictReader(f))
           print('fixture_day_rows',len(rows))
+          for k in ('expected_elapsed_pre_kickoff','elapsed_complete','elapsed_scan_failed','elapsed_no_price','elapsed_unmatched','elapsed_unknown_ah'):
+              print(k,sum(int(r[k]) for r in rows))
           for k in ('expected_proven','complete','scan_failed','no_price','unmatched','expected_unknown_ah','unknown_membership'):
               print(k,sum(int(r[k]) for r in rows))
           print(json.load(open('research/full_gap_audit/results/silent-slot-triage-20261016.json')))
