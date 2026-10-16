@@ -30,7 +30,7 @@ jobs:
           set -euo pipefail
           mkdir -p /tmp/sep14-artifact
           gh run download 38860129483 -R "${{ github.repository }}" -n sep14-historical-recovery-38860129483 -D /tmp/sep14-artifact
-          test -s /tmp/sep14-artifact/sep14/results/report.json
+          test -s /tmp/sep14-artifact/sep14/RESULT.json
           (cd /tmp/sep14-artifact && zip -q -r /tmp/sep14-recovery.zip sep14)
       - name: Save exact original production source before replacement
         uses: actions/upload-artifact@v4
