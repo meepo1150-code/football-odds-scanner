@@ -65,7 +65,11 @@ jobs:
           git add -f reports/historical_38901047977_promotion.json reports/research_v2_pattern_statistics.json reports/research_v2_movement_status.json reports/research_v2_operational_audit.json reports/research_v2_end_to_end_audit.json reports/research_v2_fixture_identity.json reports/research_v2_missing_ft_ledger.json reports/dashboard_scope.json
           if git diff --cached --quiet; then exit 0; fi
           git commit -m 'data: promote reviewed historical AH to canonical source [skip ci]'
-          git pull --rebase origin main
+          # Derived report generators may leave unrelated unstaged files. Preserve them
+          # outside the commit, and synchronize only the reviewed staged promotion.
+          git stash push --include-untracked -m historical-promotion-unrelated-working-tree || true
+          git fetch origin main
+          git rebase origin/main
           git push origin HEAD:main
       - name: Deploy existing Dashboard
         env:
