@@ -12,6 +12,12 @@ from research.historical_backfill.isolated_runner import (StopPilot, HttpClient,
 from research.historical_backfill import storage
 from research.historical_backfill.representative import select
 
+def sep14_context(env):
+    if env.get('GITHUB_REF')!='refs/heads/research/historical-backfill-isolated-20261015' or env.get('GITHUB_EVENT_NAME') not in ('push','workflow_dispatch'):
+        raise StopPilot('SEP14_RESEARCH_BRANCH_EVENT_REQUIRED')
+    if env.get('PILOT_ENVIRONMENT')!='historical-research':
+        raise StopPilot('ENVIRONMENT_REQUIRED')
+
 BASE=Path('research/historical_backfill/sep14')
 OUT=BASE/'results'
 
@@ -31,7 +37,7 @@ def main():
         return probe(key,books)
     production=None
     try:
-        context_gate(os.environ)
+        sep14_context(os.environ)
         manifest=json.loads((BASE/'manifest.json').read_text())
         candidates=manifest['candidates']
         if len(candidates)!=21 or manifest['max_historical_requests']!=21:
@@ -48,7 +54,7 @@ def main():
                 raise StopPilot('REQUEST_CONTRACT_INVALID')
         report['manifest_sha256']=hashlib.sha256((BASE/'manifest.json').read_bytes()).hexdigest()
         report['verified_fixture_count']=len(candidates)
-        baseline=rebuild()
+        baseline=rebuild(context_validator=sep14_context)
         now=datetime.now(timezone.utc)
         health_check(baseline,baseline,now)
         if not quiet_window(now,allowance_seconds=600):raise StopPilot('PRODUCTION_QUIET_WINDOW_CLOSED')
