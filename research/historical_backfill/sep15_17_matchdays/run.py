@@ -44,7 +44,7 @@ def main():
         candidates=all_candidates
         report['batch_index']=BATCH
         report['date_range']=manifest['date_range']
-        if BATCH!=0 or len(all_candidates)!=58 or manifest['max_historical_requests']!=2:
+        if BATCH!=0 or len(all_candidates)!=58 or manifest['max_historical_requests']!=15:
             raise StopPilot('MANIFEST_LIMIT_INVALID')
         for c in candidates:
             p=Path(c['evidence']['path'])
@@ -71,7 +71,7 @@ def main():
         baseline=rebuild(context_validator=sep15_17_matchdays_context)
         now=datetime.now(timezone.utc)
         health_check(baseline,baseline,now)
-        if not quiet_window(now,allowance_seconds=180):raise StopPilot('PRODUCTION_QUIET_WINDOW_CLOSED')
+        if not quiet_window(now,allowance_seconds=600):raise StopPilot('PRODUCTION_QUIET_WINDOW_CLOSED')
         production=account(os.getenv('ACCOUNT_PROBE_KEY'),set())
         report['production_before']=production
         books={c['bookmaker'] for c in candidates}
@@ -92,7 +92,7 @@ def main():
             if payload is not None:
                 report['cache_hits']+=1
             else:
-                if report['historical_requests']>=2:raise StopPilot('REQUEST_CAP_REACHED')
+                if report['historical_requests']>=15:raise StopPilot('REQUEST_CAP_REACHED')
                 if not quiet_window(datetime.now(timezone.utc),allowance_seconds=60):raise StopPilot('PRODUCTION_QUIET_WINDOW_CLOSED')
                 health_check(json.loads(Path('research/historical_backfill/data/actions/health.json').read_text()),baseline,datetime.now(timezone.utc))
                 before=account(os.getenv('HISTORICAL_ODDSPAPI_KEY'),books)
