@@ -122,7 +122,7 @@ def build(root, start, end, times, bookmakers, now):
             for fixture in items(receipt.get('payload')):
                 fid = str(fixture.get('fixtureId') or '')
                 tournament = approved.get(str(fixture.get('tournamentId')))
-                if not tournament or not re.fullmatch(r'id\\d+', fid):
+                if not tournament or not re.fullmatch(r'id\d+', fid):
                     continue
                 home, away, kickoff = fixture.get('participant1Name'), fixture.get('participant2Name'), fixture.get('startTime')
                 if not home or not away or not kickoff:
