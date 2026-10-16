@@ -7,7 +7,7 @@ import argparse
 import gzip
 import hashlib
 import json
-from collections import Counter, defaultdict
+from collections import Counter
 from datetime import datetime
 from pathlib import Path
 
@@ -20,23 +20,19 @@ def read_rows(path):
 
 def expand(rows):
     data=list(rows)
-    by_day=defaultdict(list)
-    for r in data:
-        by_day[(r['fixture_id'],r['football_day'])].append(r)
-    expanded=[];counts=Counter()
+    expanded=[];counts=Counter();by_day=Counter()
     for r in data:
         if r.get('expected') is not None or r.get('status')!='UNKNOWN_EVIDENCE':
             continue
+        by_day[str(r.get('football_day'))]+=1
         if r.get('policy_version')!='FIXED_1500':
             counts['unsupported_policy']+=1
             continue
-        siblings=by_day[(r['fixture_id'],r['football_day'])]
-        cohort=[s for s in siblings if s.get('membership')=='EXACT_ATTEMPT_OR_DEPLOYED_COHORT' and s.get('expected') is True]
         # A sibling's direct attempt alone is not sufficient to prove fixed cohort.
         # A true day-level cohort must be explicitly identified in a separate trusted source.
         counts['needs_explicit_cohort_proof']+=1
     return {'newly_proven_expected':0,'newly_proven_missing':0,
-            'reviewed_unknown':sum(counts.values()),'reasons':dict(counts),
+            'reviewed_unknown':sum(counts.values()),'reasons':dict(counts),'unknown_by_football_day':dict(sorted(by_day.items())),
             'classification':'EVIDENCE_REQUIRED_NOT_MISSING'}, expanded
 
 def main():
