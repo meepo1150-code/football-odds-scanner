@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-16T15:40:12.888932+00:00",
+  "generated_at": "2026-10-16T17:09:34.555315+00:00",
   "football_day": "2026-10-16",
   "status": "FAIL",
   "issues": [
@@ -10,7 +10,7 @@
     "UNMATCHED_IDENTITY_CANDIDATES",
     "LATEST_SCAN_WARNING"
   ],
-  "scan_missing_count": 2,
+  "scan_missing_count": 3,
   "scan_missing": [
     {
       "target_time": "2026-10-16T18:00:00+07:00",
@@ -25,6 +25,17 @@
     },
     {
       "target_time": "2026-10-16T21:00:00+07:00",
+      "state": "MISSED",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "MISSED",
+      "recovered": false
+    },
+    {
+      "target_time": "2026-10-17T00:00:00+07:00",
       "state": "MISSING",
       "provider": null,
       "observed_at": null,
@@ -35,8 +46,120 @@
       "recovered": false
     }
   ],
-  "ft_delay_count": 5,
+  "ft_delay_count": 12,
   "ft_delay": [
+    {
+      "fixture_id": "id1000001772221268",
+      "provider": "oddspapi",
+      "football_day": "2026-09-12",
+      "league": "Premier League",
+      "kickoff": "2026-09-12T19:00:00+00:00",
+      "home": "Sunderland AFC",
+      "away": "Arsenal FC",
+      "status": "MISSING_FT",
+      "country": null,
+      "canonical_competition_id": null,
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000002371945250",
+      "provider": "oddspapi",
+      "football_day": "2026-09-12",
+      "league": "Serie A",
+      "kickoff": "2026-09-12T13:00:00+00:00",
+      "home": "Genoa CFC",
+      "away": "Frosinone Calcio",
+      "status": "MISSING_FT",
+      "country": null,
+      "canonical_competition_id": null,
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000002371945254",
+      "provider": "oddspapi",
+      "football_day": "2026-09-12",
+      "league": "Serie A",
+      "kickoff": "2026-09-12T16:00:00+00:00",
+      "home": "Lazio Rome",
+      "away": "AC Milan",
+      "status": "MISSING_FT",
+      "country": null,
+      "canonical_competition_id": null,
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000002371945260",
+      "provider": "oddspapi",
+      "football_day": "2026-09-13",
+      "league": "Serie A",
+      "kickoff": "2026-09-13T18:45:00+00:00",
+      "home": "Sassuolo Calcio",
+      "away": "Juventus Turin",
+      "status": "MISSING_FT",
+      "country": null,
+      "canonical_competition_id": null,
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000002371945264",
+      "provider": "oddspapi",
+      "football_day": "2026-09-11",
+      "league": "Serie A",
+      "kickoff": "2026-09-11T18:45:00+00:00",
+      "home": "Venezia FC",
+      "away": "ACF Fiorentina",
+      "status": "MISSING_FT",
+      "country": null,
+      "canonical_competition_id": null,
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000003472036168",
+      "provider": "oddspapi",
+      "football_day": "2026-09-13",
+      "league": "Ligue 1",
+      "kickoff": "2026-09-13T18:45:00+00:00",
+      "home": "Stade Brest 29",
+      "away": "Paris Saint-Germain",
+      "status": "MISSING_FT",
+      "country": null,
+      "canonical_competition_id": null,
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000003572513194",
+      "provider": "oddspapi",
+      "football_day": "2026-09-12",
+      "league": "Bundesliga",
+      "kickoff": "2026-09-12T13:30:00+00:00",
+      "home": "FSV Mainz",
+      "away": "Eintracht Frankfurt",
+      "status": "MISSING_FT",
+      "country": null,
+      "canonical_competition_id": null,
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000003572513198",
+      "provider": "oddspapi",
+      "football_day": "2026-09-12",
+      "league": "Bundesliga",
+      "kickoff": "2026-09-12T16:30:00+00:00",
+      "home": "1. FC Cologne",
+      "away": "Werder Bremen",
+      "status": "MISSING_FT",
+      "country": null,
+      "canonical_competition_id": null,
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
     {
       "fixture_id": "id1000005472477468",
       "provider": "oddspapi",
@@ -62,20 +185,6 @@
       "status": "MISSING_FT",
       "country": "International",
       "canonical_competition_id": "INT-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
-    },
-    {
-      "fixture_id": "id1000072172120958",
-      "provider": "oddspapi",
-      "football_day": "2026-10-16",
-      "league": "Serbian First League",
-      "kickoff": "2026-10-16T12:00:00+00:00",
-      "home": "OFK Vrsac",
-      "away": "FK Teleoptik",
-      "status": "MISSING_FT",
-      "country": "Serbia",
-      "canonical_competition_id": "SRB-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false
     },
@@ -160,6 +269,17 @@
     },
     {
       "target_time": "2026-10-16T21:00:00+07:00",
+      "state": "MISSED",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "MISSED",
+      "recovered": false
+    },
+    {
+      "target_time": "2026-10-17T00:00:00+07:00",
       "state": "MISSING",
       "provider": null,
       "observed_at": null,
@@ -168,76 +288,58 @@
       "canonical_fixture_count": 0,
       "observation_timing": "MISSING",
       "recovered": false
-    },
-    {
-      "target_time": "2026-10-17T00:00:00+07:00",
-      "state": "UPCOMING",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "UPCOMING",
-      "recovered": false
     }
   ],
   "api_requests_used": 0,
   "raw_deleted": 0,
   "approved_unresolved_fixtures_retained": true,
   "next_slot_readiness": {
-    "target_at": "2026-10-17T00:00:00+07:00",
-    "football_day": "2026-10-16",
+    "target_at": "2026-10-17T15:00:00+07:00",
+    "football_day": "2026-10-17",
     "status": "UNVERIFIED_OR_CAPACITY_BLOCKED",
-    "fixture_set_size": 25,
-    "remaining_prematch_at_target": 11,
-    "prematch_forecast_at": "2026-10-17T00:03:00+07:00",
+    "fixture_set_size": null,
+    "remaining_prematch_at_target": 0,
+    "prematch_forecast_at": "2026-10-17T15:03:00+07:00",
     "unconfirmed_grants": [],
     "blocked_reasons": [
-      "RESEARCH_CAPACITY_RESERVED_OR_EXHAUSTED"
+      "FIXED_COHORT_UNAVAILABLE",
+      "ACCOUNT_CAPACITY_UNCONFIRMED_OR_INSUFFICIENT"
     ],
-    "pending_fixture_ids": [
-      "id1000018272037380",
-      "id1000018272037382",
-      "id1000018272037384",
-      "id1000018272037386",
-      "id1000018272037394",
-      "id1000013572440716",
-      "id1000019366854956",
-      "id1000019366854958",
-      "id1000019366854960",
-      "id1000019366854962",
-      "id1000019366854964"
-    ],
-    "required_market_requests": 1,
+    "pending_fixture_ids": [],
+    "required_market_requests": 0,
     "allocated_tournament_ids": [],
-    "quota_utc_day": "2026-10-16",
+    "quota_utc_day": "2026-10-17",
     "research_usage": {
-      "day": 59,
-      "month": 152
+      "day": 78,
+      "month": 171
     },
-    "account_remaining_estimate": 19,
-    "account_observed_before": "2026-10-16T14:00:54.888639+00:00",
+    "account_remaining_estimate": 11,
+    "account_observed_before": "2026-10-16T17:00:59.050240+00:00",
     "account_estimate_limitation": "OTHER_ACCOUNT_CONSUMERS_AFTER_OBSERVATION_NOT_MEASURED; RECHECK_UNMETERED_ACCOUNT_AT_COLLECTION",
-    "fixture_set_policy": "FIXED_1500_FIXTURE_COHORT_V1",
-    "schedule_response_id": "699f190a7fe82cf20e0a6a4cd0ce78af923ed667b791f45b07c0cdff88493b2f",
+    "fixture_set_policy": null,
+    "schedule_response_id": null,
     "budget": {
       "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
-      "research_requests_used_today": 59,
-      "research_requests_used_month": 152,
+      "research_requests_used_today": 0,
+      "research_requests_used_month": 171,
       "research_daily_limit": 6,
       "research_monthly_limit": 180,
-      "research_run_limit": 2,
-      "quota_utc_day": "2026-10-16",
+      "research_run_limit": 1,
+      "quota_utc_day": "2026-10-17",
       "canonical_slots_in_football_day": 4,
-      "future_utc_slots": [],
-      "future_utc_requests_reserved": 0,
+      "future_utc_slots": [
+        "2026-10-17T11:00:00+00:00",
+        "2026-10-17T14:00:00+00:00",
+        "2026-10-17T17:00:00+00:00"
+      ],
+      "future_utc_requests_reserved": 3,
       "current_canonical_requests_reserved": 0,
-      "future_month_requests_reserved": 75,
+      "future_month_requests_reserved": 70,
       "canonical_request_reservation": "UTC_FUTURE_SLOTS_PLUS_DISCOVERY; MANUAL_AND_RECOVERY_YIELD; FAILED_ATTEMPTS_COUNT",
       "budget_scope": "ODDSPAPI_RESEARCH_COLLECTOR_ONLY",
       "coverage_mode": "MASTER_SCHEDULE_PRIORITIZED",
       "schedule_requests_reserved": 0,
-      "coverage_complete": false,
+      "coverage_complete": true,
       "coverage_tournament_ids": []
     },
     "network_requests": 0,
@@ -245,9 +347,9 @@
   },
   "latest_fixture_diagnostics": {
     "status": "RETAINED_RESPONSE_DIAGNOSIS",
-    "observed_at": "2026-10-16T14:01:23.175764+00:00",
-    "attempt_started_at": "2026-10-16T14:00:54.888639+00:00",
-    "attempt_completed_at": "2026-10-16T14:01:23.175764+00:00",
+    "observed_at": "2026-10-16T17:01:17.023624+00:00",
+    "attempt_started_at": "2026-10-16T17:00:59.050240+00:00",
+    "attempt_completed_at": "2026-10-16T17:01:17.023624+00:00",
     "schedule_response_id": "699f190a7fe82cf20e0a6a4cd0ce78af923ed667b791f45b07c0cdff88493b2f",
     "fixtures": [
       {
@@ -325,7 +427,7 @@
         "in_1500_cohort": true,
         "reason": "ALREADY_KICKOFF",
         "provider_reason": null,
-        "query_scope_includes_tournament": true
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000067175028972",
@@ -336,7 +438,7 @@
         "in_1500_cohort": false,
         "reason": "ALREADY_KICKOFF",
         "provider_reason": null,
-        "query_scope_includes_tournament": true
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000072772284134",
@@ -402,7 +504,7 @@
         "in_1500_cohort": false,
         "reason": "ALREADY_KICKOFF",
         "provider_reason": null,
-        "query_scope_includes_tournament": true
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000072473070150",
@@ -433,8 +535,8 @@
         "kickoff": "2026-10-16T15:00:00+00:00",
         "tournament_id": "152",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
         "query_scope_includes_tournament": true
       },
       {
@@ -444,9 +546,9 @@
         "kickoff": "2026-10-16T15:00:00+00:00",
         "tournament_id": "205",
         "in_1500_cohort": true,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000021072083088",
@@ -455,9 +557,9 @@
         "kickoff": "2026-10-16T15:00:00+00:00",
         "tournament_id": "210",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000022472305256",
@@ -466,9 +568,9 @@
         "kickoff": "2026-10-16T15:00:00+00:00",
         "tournament_id": "224",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000022472305258",
@@ -477,9 +579,9 @@
         "kickoff": "2026-10-16T15:00:00+00:00",
         "tournament_id": "224",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000067175028974",
@@ -488,9 +590,9 @@
         "kickoff": "2026-10-16T15:00:00+00:00",
         "tournament_id": "671",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000020572587358",
@@ -499,9 +601,9 @@
         "kickoff": "2026-10-16T15:30:00+00:00",
         "tournament_id": "205",
         "in_1500_cohort": true,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000021272278500",
@@ -510,9 +612,9 @@
         "kickoff": "2026-10-16T15:30:00+00:00",
         "tournament_id": "212",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000017071913092",
@@ -521,9 +623,9 @@
         "kickoff": "2026-10-16T16:00:00+00:00",
         "tournament_id": "170",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000020272043200",
@@ -532,8 +634,8 @@
         "kickoff": "2026-10-16T16:00:00+00:00",
         "tournament_id": "202",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
         "query_scope_includes_tournament": true
       },
       {
@@ -543,9 +645,9 @@
         "kickoff": "2026-10-16T16:00:00+00:00",
         "tournament_id": "205",
         "in_1500_cohort": true,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000020572300826",
@@ -554,9 +656,9 @@
         "kickoff": "2026-10-16T16:00:00+00:00",
         "tournament_id": "205",
         "in_1500_cohort": true,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000020572300830",
@@ -565,9 +667,9 @@
         "kickoff": "2026-10-16T16:00:00+00:00",
         "tournament_id": "205",
         "in_1500_cohort": true,
-        "reason": "VALIDATION_REJECTED",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000022275604992",
@@ -576,9 +678,9 @@
         "kickoff": "2026-10-16T16:00:00+00:00",
         "tournament_id": "222",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000053272281400",
@@ -587,9 +689,9 @@
         "kickoff": "2026-10-16T16:00:00+00:00",
         "tournament_id": "532",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000053272281404",
@@ -598,9 +700,9 @@
         "kickoff": "2026-10-16T16:00:00+00:00",
         "tournament_id": "532",
         "in_1500_cohort": false,
-        "reason": "VALIDATION_REJECTED",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000069274084534",
@@ -609,9 +711,9 @@
         "kickoff": "2026-10-16T16:00:00+00:00",
         "tournament_id": "692",
         "in_1500_cohort": false,
-        "reason": "MARKET_UNAVAILABLE",
-        "provider_reason": "AMBIGUOUS_OR_MISSING_1X2",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000004472513916",
@@ -620,9 +722,9 @@
         "kickoff": "2026-10-16T16:30:00+00:00",
         "tournament_id": "44",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000004472513922",
@@ -631,9 +733,9 @@
         "kickoff": "2026-10-16T16:30:00+00:00",
         "tournament_id": "44",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000013572440704",
@@ -642,8 +744,8 @@
         "kickoff": "2026-10-16T16:30:00+00:00",
         "tournament_id": "135",
         "in_1500_cohort": true,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
         "query_scope_includes_tournament": true
       },
       {
@@ -653,8 +755,8 @@
         "kickoff": "2026-10-16T16:30:00+00:00",
         "tournament_id": "135",
         "in_1500_cohort": true,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
         "query_scope_includes_tournament": true
       },
       {
@@ -664,8 +766,8 @@
         "kickoff": "2026-10-16T16:30:00+00:00",
         "tournament_id": "135",
         "in_1500_cohort": true,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
         "query_scope_includes_tournament": true
       },
       {
@@ -675,9 +777,9 @@
         "kickoff": "2026-10-16T16:30:00+00:00",
         "tournament_id": "720",
         "in_1500_cohort": false,
-        "reason": "MARKET_UNAVAILABLE",
-        "provider_reason": "AMBIGUOUS_OR_MISSING_1X2",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000003971925054",
@@ -686,9 +788,9 @@
         "kickoff": "2026-10-16T17:00:00+00:00",
         "tournament_id": "39",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000004067126812",
@@ -697,9 +799,9 @@
         "kickoff": "2026-10-16T17:00:00+00:00",
         "tournament_id": "40",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000004772044364",
@@ -708,9 +810,9 @@
         "kickoff": "2026-10-16T17:00:00+00:00",
         "tournament_id": "47",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000004772044366",
@@ -719,9 +821,9 @@
         "kickoff": "2026-10-16T17:00:00+00:00",
         "tournament_id": "47",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000004772044368",
@@ -730,9 +832,9 @@
         "kickoff": "2026-10-16T17:00:00+00:00",
         "tournament_id": "47",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000005272723260",
@@ -741,9 +843,9 @@
         "kickoff": "2026-10-16T17:00:00+00:00",
         "tournament_id": "52",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
-        "provider_reason": "OK",
-        "query_scope_includes_tournament": true
+        "reason": "ALREADY_KICKOFF",
+        "provider_reason": null,
+        "query_scope_includes_tournament": false
       },
       {
         "fixture_id": "id1000018874506544",
@@ -752,7 +854,7 @@
         "kickoff": "2026-10-16T17:00:00+00:00",
         "tournament_id": "188",
         "in_1500_cohort": false,
-        "reason": "INSUFFICIENT_EVIDENCE",
+        "reason": "ALREADY_KICKOFF",
         "provider_reason": null,
         "query_scope_includes_tournament": true
       },
@@ -1181,18 +1283,18 @@
         "kickoff": "2026-10-16T22:00:00+00:00",
         "tournament_id": "720",
         "in_1500_cohort": false,
-        "reason": "INSUFFICIENT_EVIDENCE",
+        "reason": "QUOTA_SKIPPED",
         "provider_reason": null,
-        "query_scope_includes_tournament": true
+        "query_scope_includes_tournament": false
       }
     ],
     "reason_counts": {
-      "ALREADY_KICKOFF": 16,
-      "VALID_ODDS": 59,
-      "VALIDATION_REJECTED": 2,
-      "MARKET_UNAVAILABLE": 3,
-      "INSUFFICIENT_EVIDENCE": 4,
-      "MAPPING_FAILURE": 1
+      "ALREADY_KICKOFF": 46,
+      "VALID_ODDS": 34,
+      "MARKET_UNAVAILABLE": 1,
+      "INSUFFICIENT_EVIDENCE": 2,
+      "MAPPING_FAILURE": 1,
+      "QUOTA_SKIPPED": 1
     },
     "no_price_or_result_inferred": true
   },
