@@ -1,0 +1,649 @@
+{
+  "baseline_sha": "825dccf9d4b27949049ab429febb06d915bb1400",
+  "manifest_sha256": "52a4754ee69897bf0188d67f4c03e779f8e1c6bc574ff2817aca5668b980f0fe",
+  "status": "BLOCKED_NO_LIVE_HISTORICAL_RECOVERY",
+  "recommendation": "REVISE_DO_NOT_BACKFILL_ALL_HISTORY",
+  "prepared_fixture_count": 100,
+  "prepared_missing_target_slots": 235,
+  "run": {
+    "status": "BLOCKED",
+    "actual_historical_requests": 0,
+    "actual_account_requests": 0,
+    "cache_hits": 0,
+    "errors": [
+      "ISOLATED_CREDENTIAL_NOT_CONFIGURED"
+    ],
+    "results": [],
+    "calibration_passed": false,
+    "quota_comparisons": [],
+    "production_health_checks": 0,
+    "expansion_started": false,
+    "execution_origin": "LIVE_CLIENT",
+    "actual_total_requests": 0,
+    "live_coverage_measured": false,
+    "manifest_sha256": "52a4754ee69897bf0188d67f4c03e779f8e1c6bc574ff2817aca5668b980f0fe",
+    "generated_at": "2026-10-15T13:07:50.838801+00:00"
+  },
+  "coverage": [
+    {
+      "dimension": "age_band",
+      "value": "0_7",
+      "planned_fixture_slots": 51,
+      "planned_unique_fixtures": 31,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "age_band",
+      "value": "15_30",
+      "planned_fixture_slots": 180,
+      "planned_unique_fixtures": 68,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "age_band",
+      "value": "8_14",
+      "planned_fixture_slots": 0,
+      "planned_unique_fixtures": 0,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NO_CANDIDATES"
+    },
+    {
+      "dimension": "age_band",
+      "value": "OUTSIDE_30",
+      "planned_fixture_slots": 4,
+      "planned_unique_fixtures": 1,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "age_window",
+      "value": "14",
+      "planned_fixture_slots": 51,
+      "planned_unique_fixtures": 31,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "age_window",
+      "value": "30",
+      "planned_fixture_slots": 231,
+      "planned_unique_fixtures": 99,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "age_window",
+      "value": "7",
+      "planned_fixture_slots": 51,
+      "planned_unique_fixtures": 31,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "bookmaker",
+      "value": "bet365",
+      "planned_fixture_slots": 65,
+      "planned_unique_fixtures": 28,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "bookmaker",
+      "value": "pinnacle",
+      "planned_fixture_slots": 170,
+      "planned_unique_fixtures": 72,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "2. Bundesliga",
+      "planned_fixture_slots": 4,
+      "planned_unique_fixtures": 1,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Allsvenskan",
+      "planned_fixture_slots": 4,
+      "planned_unique_fixtures": 2,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Bulgarian Second League",
+      "planned_fixture_slots": 1,
+      "planned_unique_fixtures": 1,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Bundesliga",
+      "planned_fixture_slots": 24,
+      "planned_unique_fixtures": 10,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Championship",
+      "planned_fixture_slots": 8,
+      "planned_unique_fixtures": 8,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Czech First League",
+      "planned_fixture_slots": 2,
+      "planned_unique_fixtures": 1,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Ekstraklasa",
+      "planned_fixture_slots": 11,
+      "planned_unique_fixtures": 4,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Eredivisie",
+      "planned_fixture_slots": 11,
+      "planned_unique_fixtures": 3,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "LaLiga",
+      "planned_fixture_slots": 38,
+      "planned_unique_fixtures": 16,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "LaLiga 2",
+      "planned_fixture_slots": 9,
+      "planned_unique_fixtures": 3,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "League One",
+      "planned_fixture_slots": 3,
+      "planned_unique_fixtures": 1,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Liga Leumit",
+      "planned_fixture_slots": 6,
+      "planned_unique_fixtures": 3,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Liga Portugal",
+      "planned_fixture_slots": 4,
+      "planned_unique_fixtures": 1,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Ligue 1",
+      "planned_fixture_slots": 28,
+      "planned_unique_fixtures": 9,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Ligue 2",
+      "planned_fixture_slots": 8,
+      "planned_unique_fixtures": 2,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Maltese Premier League",
+      "planned_fixture_slots": 2,
+      "planned_unique_fixtures": 1,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Meistriliiga",
+      "planned_fixture_slots": 3,
+      "planned_unique_fixtures": 2,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Nemzeti Bajnoksag II",
+      "planned_fixture_slots": 1,
+      "planned_unique_fixtures": 1,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Premier League",
+      "planned_fixture_slots": 18,
+      "planned_unique_fixtures": 9,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Premiership",
+      "planned_fixture_slots": 2,
+      "planned_unique_fixtures": 1,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Pro League",
+      "planned_fixture_slots": 8,
+      "planned_unique_fixtures": 2,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Scottish Championship",
+      "planned_fixture_slots": 2,
+      "planned_unique_fixtures": 1,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Serie A",
+      "planned_fixture_slots": 24,
+      "planned_unique_fixtures": 11,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Serie B",
+      "planned_fixture_slots": 4,
+      "planned_unique_fixtures": 1,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Super League",
+      "planned_fixture_slots": 2,
+      "planned_unique_fixtures": 1,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Super League Greece 2",
+      "planned_fixture_slots": 1,
+      "planned_unique_fixtures": 1,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Superettan",
+      "planned_fixture_slots": 1,
+      "planned_unique_fixtures": 1,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "Superliga",
+      "planned_fixture_slots": 4,
+      "planned_unique_fixtures": 1,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "league",
+      "value": "TFF 1 Lig",
+      "planned_fixture_slots": 2,
+      "planned_unique_fixtures": 2,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "scan_slot",
+      "value": "0",
+      "planned_fixture_slots": 42,
+      "planned_unique_fixtures": 42,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "scan_slot",
+      "value": "15",
+      "planned_fixture_slots": 79,
+      "planned_unique_fixtures": 79,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "scan_slot",
+      "value": "18",
+      "planned_fixture_slots": 71,
+      "planned_unique_fixtures": 71,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    },
+    {
+      "dimension": "scan_slot",
+      "value": "21",
+      "planned_fixture_slots": 43,
+      "planned_unique_fixtures": 43,
+      "tested_fixture_slots": 0,
+      "complete_fixture_slots": 0,
+      "coverage": null,
+      "status": "NOT_TESTED"
+    }
+  ],
+  "statistics": {
+    "observed_only": {
+      "snapshot_rows": 86,
+      "unique_fixtures": 53,
+      "bands": [
+        {
+          "band": "[1.80,1.90)",
+          "selection_observations": 52,
+          "fixture_slot_markets": 50,
+          "unique_fixtures": 34,
+          "settlements": {
+            "FULL_LOSS": 25,
+            "FULL_WIN": 22,
+            "PUSH": 4,
+            "HALF_LOSS": 1
+          },
+          "win_rate_half_stake_excluding_pushes": 0.4631578947368421,
+          "profit_units": -6.6530000000000005
+        },
+        {
+          "band": "[1.90,2.00)",
+          "selection_observations": 51,
+          "fixture_slot_markets": 33,
+          "unique_fixtures": 27,
+          "settlements": {
+            "FULL_LOSS": 24,
+            "FULL_WIN": 17,
+            "PUSH": 6,
+            "HALF_LOSS": 3,
+            "HALF_WIN": 1
+          },
+          "win_rate_half_stake_excluding_pushes": 0.4069767441860465,
+          "profit_units": -8.864
+        },
+        {
+          "band": "[2.00,2.10)",
+          "selection_observations": 48,
+          "fixture_slot_markets": 48,
+          "unique_fixtures": 31,
+          "settlements": {
+            "FULL_WIN": 26,
+            "FULL_LOSS": 18,
+            "PUSH": 1,
+            "HALF_WIN": 3
+          },
+          "win_rate_half_stake_excluding_pushes": 0.6043956043956044,
+          "profit_units": 10.619999999999997
+        },
+        {
+          "band": "[2.10,2.20]",
+          "selection_observations": 12,
+          "fixture_slot_markets": 12,
+          "unique_fixtures": 8,
+          "settlements": {
+            "FULL_WIN": 7,
+            "FULL_LOSS": 4,
+            "PUSH": 1
+          },
+          "win_rate_half_stake_excluding_pushes": 0.6363636363636364,
+          "profit_units": 3.9
+        }
+      ],
+      "inference": "DESCRIPTIVE_ONLY_NO_INDEPENDENCE_OR_EDGE_CLAIM"
+    },
+    "backfilled_only": {
+      "snapshot_rows": 0,
+      "unique_fixtures": 0,
+      "bands": [
+        {
+          "band": "[1.80,1.90)",
+          "selection_observations": 0,
+          "fixture_slot_markets": 0,
+          "unique_fixtures": 0,
+          "settlements": {},
+          "win_rate_half_stake_excluding_pushes": null,
+          "profit_units": 0
+        },
+        {
+          "band": "[1.90,2.00)",
+          "selection_observations": 0,
+          "fixture_slot_markets": 0,
+          "unique_fixtures": 0,
+          "settlements": {},
+          "win_rate_half_stake_excluding_pushes": null,
+          "profit_units": 0
+        },
+        {
+          "band": "[2.00,2.10)",
+          "selection_observations": 0,
+          "fixture_slot_markets": 0,
+          "unique_fixtures": 0,
+          "settlements": {},
+          "win_rate_half_stake_excluding_pushes": null,
+          "profit_units": 0
+        },
+        {
+          "band": "[2.10,2.20]",
+          "selection_observations": 0,
+          "fixture_slot_markets": 0,
+          "unique_fixtures": 0,
+          "settlements": {},
+          "win_rate_half_stake_excluding_pushes": null,
+          "profit_units": 0
+        }
+      ],
+      "inference": "DESCRIPTIVE_ONLY_NO_INDEPENDENCE_OR_EDGE_CLAIM"
+    },
+    "combined_offline": {
+      "snapshot_rows": 86,
+      "unique_fixtures": 53,
+      "bands": [
+        {
+          "band": "[1.80,1.90)",
+          "selection_observations": 52,
+          "fixture_slot_markets": 50,
+          "unique_fixtures": 34,
+          "settlements": {
+            "FULL_LOSS": 25,
+            "FULL_WIN": 22,
+            "PUSH": 4,
+            "HALF_LOSS": 1
+          },
+          "win_rate_half_stake_excluding_pushes": 0.4631578947368421,
+          "profit_units": -6.6530000000000005
+        },
+        {
+          "band": "[1.90,2.00)",
+          "selection_observations": 51,
+          "fixture_slot_markets": 33,
+          "unique_fixtures": 27,
+          "settlements": {
+            "FULL_LOSS": 24,
+            "FULL_WIN": 17,
+            "PUSH": 6,
+            "HALF_LOSS": 3,
+            "HALF_WIN": 1
+          },
+          "win_rate_half_stake_excluding_pushes": 0.4069767441860465,
+          "profit_units": -8.864
+        },
+        {
+          "band": "[2.00,2.10)",
+          "selection_observations": 48,
+          "fixture_slot_markets": 48,
+          "unique_fixtures": 31,
+          "settlements": {
+            "FULL_WIN": 26,
+            "FULL_LOSS": 18,
+            "PUSH": 1,
+            "HALF_WIN": 3
+          },
+          "win_rate_half_stake_excluding_pushes": 0.6043956043956044,
+          "profit_units": 10.619999999999997
+        },
+        {
+          "band": "[2.10,2.20]",
+          "selection_observations": 12,
+          "fixture_slot_markets": 12,
+          "unique_fixtures": 8,
+          "settlements": {
+            "FULL_WIN": 7,
+            "FULL_LOSS": 4,
+            "PUSH": 1
+          },
+          "win_rate_half_stake_excluding_pushes": 0.6363636363636364,
+          "profit_units": 3.9
+        }
+      ],
+      "inference": "DESCRIPTIVE_ONLY_NO_INDEPENDENCE_OR_EDGE_CLAIM"
+    },
+    "observed_precedence_overlaps": 0,
+    "selection_rule": "EXACT_LINES_SEEN_IN_EXISTING_OBSERVATIONS_DESCRIPTIVE_CONDITIONED_SUBSET",
+    "mainline_at_past_slot_proven": false,
+    "newly_discovered_database_fixtures": 0,
+    "added_snapshot_rows": 0,
+    "added_distinct_fixtures_with_target_rows": 0,
+    "no_predictive_edge_claim": true
+  },
+  "historical_ah_coverage": null,
+  "quota_before": null,
+  "quota_after": null,
+  "error_rate": null,
+  "real_backfilled_snapshots": 0,
+  "real_backfilled_unique_fixtures": 0,
+  "unresolved_blockers": [
+    "ISOLATED_CREDENTIAL_UNAVAILABLE",
+    "CURRENT_ACCOUNT_ENTITLEMENT_UNVERIFIED",
+    "PINNED_FULL_MATCH_AH_CATALOG_REVIEW_PENDING",
+    "FRESH_PRODUCTION_HEALTH_PREFLIGHT_REQUIRED"
+  ],
+  "semantics_resolution": {
+    "mode": "PROVIDER_REPORTED_SNAPSHOT",
+    "continuous_availability_proven": false,
+    "quote_change_time_proven": false,
+    "evidence": "https://oddspapi.io/blog/bet365-historical-odds-guide-the-data-apis-and-strategy/"
+  },
+  "provider_requests": 0,
+  "production_modifications": 0,
+  "merge": false,
+  "deploy": false
+}

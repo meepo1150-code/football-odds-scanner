@@ -1,0 +1,2498 @@
+{
+  "status": "PASS",
+  "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+  "api_requests": 0,
+  "expansion_allowed": true,
+  "manifest_sha256": "52a4754ee69897bf0188d67f4c03e779f8e1c6bc574ff2817aca5668b980f0fe",
+  "catalog_sha256": "e53d1a5e6e4e8d43534d7ea6241dcd885e9a21069fbb545cdd30cd70ccbbcc28",
+  "gate_policy": {
+    "min_balanced_fixtures": 8,
+    "min_paired_fixtures": 5,
+    "invalid_selections": 0,
+    "original_163_unchanged": true,
+    "sporting_regression_required": true
+  },
+  "errors": [],
+  "fixtures_replayed": 10,
+  "recovered_line_snapshots": 163,
+  "balanced_fixtures": 10,
+  "paired_fixtures": 9,
+  "target_slots": 25,
+  "selected_slots": 19,
+  "unresolved_slots": 6,
+  "eligible_lines": 23,
+  "rejected_lines": 257,
+  "rejection_counts": {
+    "INACTIVE_OR_UNKNOWN": 38,
+    "STALE_QUOTE": 56,
+    "PRICE_OUTSIDE_BALANCED_RANGE": 140,
+    "NO_HISTORICAL_DATA": 23
+  },
+  "sporting_expected_verified": true,
+  "raw_cache_unchanged": true,
+  "immutable_cache_hashes": {
+    "raw/00d64e0221a7e454c80eb4f7ab734bb296e78d70272dce61cd8dd6ac6c56a50f.json": "00d64e0221a7e454c80eb4f7ab734bb296e78d70272dce61cd8dd6ac6c56a50f",
+    "raw/117cb7c68b1a75a2c85b2292048da2d861923777f78c6d5b2734c5712c437bb0.json": "117cb7c68b1a75a2c85b2292048da2d861923777f78c6d5b2734c5712c437bb0",
+    "raw/28feaf497cd81f81bf0a931a686038724446f5f3f1d3ba3ace1e4d20637bdb0e.json": "28feaf497cd81f81bf0a931a686038724446f5f3f1d3ba3ace1e4d20637bdb0e",
+    "raw/3e936b4d064c92f48ff5135da9b8aa21d217121fc2b69b8b12acf33fa72808e7.json": "3e936b4d064c92f48ff5135da9b8aa21d217121fc2b69b8b12acf33fa72808e7",
+    "raw/42f15e75300a6a2ed2bc0f8f9fe07999a290bc96221c5c8cd30671d20b2dc6f1.json": "42f15e75300a6a2ed2bc0f8f9fe07999a290bc96221c5c8cd30671d20b2dc6f1",
+    "raw/7600139bebf554808748eb9519e442f9681190cbbb260519f137027096452792.json": "7600139bebf554808748eb9519e442f9681190cbbb260519f137027096452792",
+    "raw/a06c501159b0f98c5f8e6084ed3cc2a578062f92e6f82b2a43fa0e8c3c515c58.json": "a06c501159b0f98c5f8e6084ed3cc2a578062f92e6f82b2a43fa0e8c3c515c58",
+    "raw/cafe013463b69eabe301bde6e867439c3ee80881db1889d52f9299fd85a4ed72.json": "cafe013463b69eabe301bde6e867439c3ee80881db1889d52f9299fd85a4ed72",
+    "raw/d2dcd9c1a41499618b0c3669361378b585696d8afa9c405eeb81d9545a17a37a.json": "d2dcd9c1a41499618b0c3669361378b585696d8afa9c405eeb81d9545a17a37a",
+    "raw/e26e3b81fb7d424561715c3adb72fabaac6ad3374fa7b79a04d5b1c48eea1ee1.json": "e26e3b81fb7d424561715c3adb72fabaac6ad3374fa7b79a04d5b1c48eea1ee1",
+    "cache/0be75d81426d4a3e4640fc6c778276af15455f3fdb96b849d3d406795b9478a8.json": "76a70e9dc8816dc0f1a41389ab5340a781bf509ea74a4b31ab26f873532fb708",
+    "cache/12c2d31cb83de7fa7c9dfc1181c7944f568a843e1330e276641f9aa9ca1d8daa.json": "acc83f73c12fd2f0e86a3363990535937d057338cbdf0e07b7f48bbd7cea71fe",
+    "cache/1711a347c0b26a58b9d6d1ddd32c709b2d85d74698469fa81f47d96f4dcc7bbc.json": "d6dba65f44dd9b0ebf639236ea2264db36aa11726088be0d83894d17e6222052",
+    "cache/1b2db1fc8fa867bc55649e5026823fd55a38e4b545f8a01841993e963150f91b.json": "2a1b4abb7d4e7fec2e81f7a621e8602322628e96dab483f77bf685ecc713df5c",
+    "cache/1f7ae8cd31b4f02537d6fe5a3bfa3d5d19fa92530c7c59abf983a66bd0647ca6.json": "75edfb9c0880e899e62504fc7f9ae3effb85c12052f58d99d42e802c68012270",
+    "cache/3d7ef4c229afda2bf8ff499722a0522216031530662f923e90210dee0b348a85.json": "5e7f984d88ef93fc41351b447b7f3c23d3d3f190d206b2af990d047777b88ce0",
+    "cache/5fbfbb6d3ddad3f7dec6a7e04a5d0a370b671495bbcf1c5df5dedb38147917ac.json": "9129296a7bf66e83942c929a8cda9992dd2dbd185f8d912b8eb1cd40179a27fa",
+    "cache/9418a0c13f4bd34de4136aadcac9148af58733b3097b7cda26595853c2babb04.json": "f82e0b7b49647fedb59539a968ad62a02020281fa548e766852a5d5f468c1215",
+    "cache/cfcdbf6f86b0aacc64fcb68a96b8c5ab0116237de791186dac67ed4365dfd680.json": "174536cf4109b7a162c99563905e322adc9fe81c02f69b489f7f731c9a816ace",
+    "cache/f35ba0c36d6ac75018aac8aab587d4a01187f1d0de29cc7d9e4ccc8d5437254c.json": "e937dd0a95dcd95babc129ca0d15e680940145c98bace0e470e327c1bb2995f9"
+  },
+  "raw_audit": [
+    {
+      "fixture_id": "id1000062975208868",
+      "reviewed_ah_markets": 9,
+      "raw_sha256": "7600139bebf554808748eb9519e442f9681190cbbb260519f137027096452792",
+      "tick_count": 1668,
+      "active_states": {
+        "True": 1622,
+        "False": 46
+      },
+      "earliest_quote": "2026-10-13T17:11:44.465000+00:00",
+      "latest_quote": "2026-10-14T18:50:37.732000+00:00"
+    },
+    {
+      "fixture_id": "id1000009872735814",
+      "reviewed_ah_markets": 11,
+      "raw_sha256": "d2dcd9c1a41499618b0c3669361378b585696d8afa9c405eeb81d9545a17a37a",
+      "tick_count": 4014,
+      "active_states": {
+        "True": 3922,
+        "False": 92
+      },
+      "earliest_quote": "2026-10-09T17:11:50.244000+00:00",
+      "latest_quote": "2026-10-13T13:20:01.967000+00:00"
+    },
+    {
+      "fixture_id": "id1000020274128332",
+      "reviewed_ah_markets": 11,
+      "raw_sha256": "00d64e0221a7e454c80eb4f7ab734bb296e78d70272dce61cd8dd6ac6c56a50f",
+      "tick_count": 4565,
+      "active_states": {
+        "True": 4447,
+        "False": 118
+      },
+      "earliest_quote": "2026-10-09T18:41:51.650000+00:00",
+      "latest_quote": "2026-10-12T20:16:52.435000+00:00"
+    },
+    {
+      "fixture_id": "id1000023872530942",
+      "reviewed_ah_markets": 16,
+      "raw_sha256": "a06c501159b0f98c5f8e6084ed3cc2a578062f92e6f82b2a43fa0e8c3c515c58",
+      "tick_count": 8690,
+      "active_states": {
+        "True": 8452,
+        "False": 238
+      },
+      "earliest_quote": "2026-09-13T19:41:36.162000+00:00",
+      "latest_quote": "2026-09-19T21:25:12.558000+00:00"
+    },
+    {
+      "fixture_id": "id1000002472341166",
+      "reviewed_ah_markets": 10,
+      "raw_sha256": "28feaf497cd81f81bf0a931a686038724446f5f3f1d3ba3ace1e4d20637bdb0e",
+      "tick_count": 4631,
+      "active_states": {
+        "True": 4551,
+        "False": 80
+      },
+      "earliest_quote": "2026-09-12T14:12:07.484000+00:00",
+      "latest_quote": "2026-09-17T20:46:38.711000+00:00"
+    },
+    {
+      "fixture_id": "id1000000872478578",
+      "reviewed_ah_markets": 10,
+      "raw_sha256": "42f15e75300a6a2ed2bc0f8f9fe07999a290bc96221c5c8cd30671d20b2dc6f1",
+      "tick_count": 2681,
+      "active_states": {
+        "True": 2593,
+        "False": 88
+      },
+      "earliest_quote": "2026-09-06T19:06:21.984000+00:00",
+      "latest_quote": "2026-09-16T19:32:37.032000+00:00"
+    },
+    {
+      "fixture_id": "id1000021574374474",
+      "reviewed_ah_markets": 10,
+      "raw_sha256": "117cb7c68b1a75a2c85b2292048da2d861923777f78c6d5b2734c5712c437bb0",
+      "tick_count": 4407,
+      "active_states": {
+        "True": 4261,
+        "False": 146
+      },
+      "earliest_quote": "2026-09-12T16:11:58.059000+00:00",
+      "latest_quote": "2026-09-15T18:48:34.739000+00:00"
+    },
+    {
+      "fixture_id": "id1000018274100008",
+      "reviewed_ah_markets": 11,
+      "raw_sha256": "e26e3b81fb7d424561715c3adb72fabaac6ad3374fa7b79a04d5b1c48eea1ee1",
+      "tick_count": 6396,
+      "active_states": {
+        "True": 6246,
+        "False": 150
+      },
+      "earliest_quote": "2026-09-07T13:41:33.377000+00:00",
+      "latest_quote": "2026-09-14T20:35:49.698000+00:00"
+    },
+    {
+      "fixture_id": "id1000003572513218",
+      "reviewed_ah_markets": 11,
+      "raw_sha256": "cafe013463b69eabe301bde6e867439c3ee80881db1889d52f9299fd85a4ed72",
+      "tick_count": 7092,
+      "active_states": {
+        "True": 6934,
+        "False": 158
+      },
+      "earliest_quote": "2026-09-06T19:08:42.527000+00:00",
+      "latest_quote": "2026-09-20T19:18:01.632000+00:00"
+    },
+    {
+      "fixture_id": "id1000018675178678",
+      "reviewed_ah_markets": 8,
+      "raw_sha256": "3e936b4d064c92f48ff5135da9b8aa21d217121fc2b69b8b12acf33fa72808e7",
+      "tick_count": 2161,
+      "active_states": {
+        "True": 2117,
+        "False": 44
+      },
+      "earliest_quote": "2026-10-13T12:11:35.349000+00:00",
+      "latest_quote": "2026-10-14T13:40:20.255000+00:00"
+    }
+  ],
+  "slots": [
+    {
+      "fixture_id": "id1000062975208868",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-10-14T08:00:00+00:00",
+      "kickoff_utc": "2026-10-14T17:00:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 9,
+      "eligible_lines": 0,
+      "rejected_lines": 9,
+      "rejection_counts": {
+        "INACTIVE_OR_UNKNOWN": 2,
+        "STALE_QUOTE": 7
+      },
+      "selected": null,
+      "status": "MAINLINE_UNRESOLVED",
+      "reason": "NO_ELIGIBLE_BALANCED_LINE"
+    },
+    {
+      "fixture_id": "id1000062975208868",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-10-14T14:00:00+00:00",
+      "kickoff_utc": "2026-10-14T17:00:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 9,
+      "eligible_lines": 1,
+      "rejected_lines": 8,
+      "rejection_counts": {
+        "INACTIVE_OR_UNKNOWN": 2,
+        "PRICE_OUTSIDE_BALANCED_RANGE": 6
+      },
+      "selected": {
+        "fixture_id": "id1000062975208868",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": 0.0,
+        "slot_utc": "2026-10-14T14:00:00+00:00",
+        "kickoff_utc": "2026-10-14T17:00:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 1.934,
+            "quote_at_utc": "2026-10-14T13:23:04.129000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 1.826,
+            "quote_at_utc": "2026-10-14T13:23:04.129000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "Maltese Premier League",
+        "home": "Mosta FC",
+        "away": "Gzira United FC",
+        "market_id": "1072",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          1,
+          1
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "0eb727b8f8a49e917241af2f2367968d0e9d719d1b56cdb7f5f1f48e90c6ba3a",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-10-14T13:23:04.129000+00:00",
+          "away": "2026-10-14T13:23:04.129000+00:00"
+        },
+        "home_line": 0.0,
+        "away_line": -0.0,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000009872735814",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-10-13T11:00:00+00:00",
+      "kickoff_utc": "2026-10-13T11:30:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 11,
+      "eligible_lines": 1,
+      "rejected_lines": 10,
+      "rejection_counts": {
+        "NO_HISTORICAL_DATA": 1,
+        "PRICE_OUTSIDE_BALANCED_RANGE": 8,
+        "INACTIVE_OR_UNKNOWN": 1
+      },
+      "selected": {
+        "fixture_id": "id1000009872735814",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": -0.5,
+        "slot_utc": "2026-10-13T11:00:00+00:00",
+        "kickoff_utc": "2026-10-13T11:30:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 2.009,
+            "quote_at_utc": "2026-10-13T10:54:16.227000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 1.847,
+            "quote_at_utc": "2026-10-13T10:44:19.599000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "TFF 1 Lig",
+        "home": "Bandirmaspor",
+        "away": "Sivasspor",
+        "market_id": "1068",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          1,
+          1
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "6a6ba1130ca41f237b29100e51db82e62edcb4d1ef873c9aac68eb0da30aa01e",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-10-13T10:54:16.227000+00:00",
+          "away": "2026-10-13T10:44:19.599000+00:00"
+        },
+        "home_line": -0.5,
+        "away_line": 0.5,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000020274128332",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-10-12T08:00:00+00:00",
+      "kickoff_utc": "2026-10-12T18:30:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 11,
+      "eligible_lines": 1,
+      "rejected_lines": 10,
+      "rejection_counts": {
+        "INACTIVE_OR_UNKNOWN": 2,
+        "PRICE_OUTSIDE_BALANCED_RANGE": 6,
+        "STALE_QUOTE": 2
+      },
+      "selected": {
+        "fixture_id": "id1000020274128332",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": -0.25,
+        "slot_utc": "2026-10-12T08:00:00+00:00",
+        "kickoff_utc": "2026-10-12T18:30:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 1.826,
+            "quote_at_utc": "2026-10-12T07:48:15.437000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 2.07,
+            "quote_at_utc": "2026-10-12T07:48:15.437000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "Ekstraklasa",
+        "home": "GKS Katowice",
+        "away": "Wieczysta Krakow",
+        "market_id": "1070",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          2,
+          1
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "335c39453a2dc4e52fb6e4725363e5f3f9c00807d8f9b917d4d1c816add6412d",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-10-12T07:48:15.437000+00:00",
+          "away": "2026-10-12T07:48:15.437000+00:00"
+        },
+        "home_line": -0.25,
+        "away_line": 0.25,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000020274128332",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-10-12T11:00:00+00:00",
+      "kickoff_utc": "2026-10-12T18:30:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 11,
+      "eligible_lines": 2,
+      "rejected_lines": 9,
+      "rejection_counts": {
+        "INACTIVE_OR_UNKNOWN": 2,
+        "PRICE_OUTSIDE_BALANCED_RANGE": 7
+      },
+      "selected": {
+        "fixture_id": "id1000020274128332",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": -0.25,
+        "slot_utc": "2026-10-12T11:00:00+00:00",
+        "kickoff_utc": "2026-10-12T18:30:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 1.84,
+            "quote_at_utc": "2026-10-12T10:30:52.638000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 2.06,
+            "quote_at_utc": "2026-10-12T10:30:52.638000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "Ekstraklasa",
+        "home": "GKS Katowice",
+        "away": "Wieczysta Krakow",
+        "market_id": "1070",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          2,
+          1
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "335c39453a2dc4e52fb6e4725363e5f3f9c00807d8f9b917d4d1c816add6412d",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-10-12T10:30:52.638000+00:00",
+          "away": "2026-10-12T10:30:52.638000+00:00"
+        },
+        "home_line": -0.25,
+        "away_line": 0.25,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000020274128332",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-10-12T17:00:00+00:00",
+      "kickoff_utc": "2026-10-12T18:30:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 11,
+      "eligible_lines": 2,
+      "rejected_lines": 9,
+      "rejection_counts": {
+        "INACTIVE_OR_UNKNOWN": 2,
+        "PRICE_OUTSIDE_BALANCED_RANGE": 7
+      },
+      "selected": {
+        "fixture_id": "id1000020274128332",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": -0.5,
+        "slot_utc": "2026-10-12T17:00:00+00:00",
+        "kickoff_utc": "2026-10-12T18:30:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 2.05,
+            "quote_at_utc": "2026-10-12T16:33:37.042000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 1.847,
+            "quote_at_utc": "2026-10-12T16:33:37.042000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "Ekstraklasa",
+        "home": "GKS Katowice",
+        "away": "Wieczysta Krakow",
+        "market_id": "1068",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          2,
+          1
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "335c39453a2dc4e52fb6e4725363e5f3f9c00807d8f9b917d4d1c816add6412d",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-10-12T16:33:37.042000+00:00",
+          "away": "2026-10-12T16:33:37.042000+00:00"
+        },
+        "home_line": -0.5,
+        "away_line": 0.5,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000023872530942",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-19T08:00:00+00:00",
+      "kickoff_utc": "2026-09-19T19:30:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 16,
+      "eligible_lines": 1,
+      "rejected_lines": 15,
+      "rejection_counts": {
+        "NO_HISTORICAL_DATA": 5,
+        "PRICE_OUTSIDE_BALANCED_RANGE": 8,
+        "INACTIVE_OR_UNKNOWN": 2
+      },
+      "selected": {
+        "fixture_id": "id1000023872530942",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": -2.0,
+        "slot_utc": "2026-09-19T08:00:00+00:00",
+        "kickoff_utc": "2026-09-19T19:30:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 1.892,
+            "quote_at_utc": "2026-09-19T07:34:32.343000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 1.99,
+            "quote_at_utc": "2026-09-19T07:34:32.343000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "Liga Portugal",
+        "home": "Sporting CP",
+        "away": "FC Arouca",
+        "market_id": "1056",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          2,
+          2
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "77bd78c37c91a53eb0a0f367cfeba535d4786d9347728939f2c3a4b1d03a83c8",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-09-19T07:34:32.343000+00:00",
+          "away": "2026-09-19T07:34:32.343000+00:00"
+        },
+        "home_line": -2.0,
+        "away_line": 2.0,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000023872530942",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-19T11:00:00+00:00",
+      "kickoff_utc": "2026-09-19T19:30:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 16,
+      "eligible_lines": 1,
+      "rejected_lines": 15,
+      "rejection_counts": {
+        "NO_HISTORICAL_DATA": 5,
+        "PRICE_OUTSIDE_BALANCED_RANGE": 8,
+        "INACTIVE_OR_UNKNOWN": 2
+      },
+      "selected": {
+        "fixture_id": "id1000023872530942",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": -2.0,
+        "slot_utc": "2026-09-19T11:00:00+00:00",
+        "kickoff_utc": "2026-09-19T19:30:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 1.877,
+            "quote_at_utc": "2026-09-19T10:35:54.659000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 2.02,
+            "quote_at_utc": "2026-09-19T10:38:37.042000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "Liga Portugal",
+        "home": "Sporting CP",
+        "away": "FC Arouca",
+        "market_id": "1056",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          2,
+          2
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "77bd78c37c91a53eb0a0f367cfeba535d4786d9347728939f2c3a4b1d03a83c8",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-09-19T10:35:54.659000+00:00",
+          "away": "2026-09-19T10:38:37.042000+00:00"
+        },
+        "home_line": -2.0,
+        "away_line": 2.0,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000023872530942",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-19T14:00:00+00:00",
+      "kickoff_utc": "2026-09-19T19:30:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 16,
+      "eligible_lines": 1,
+      "rejected_lines": 15,
+      "rejection_counts": {
+        "NO_HISTORICAL_DATA": 5,
+        "PRICE_OUTSIDE_BALANCED_RANGE": 8,
+        "INACTIVE_OR_UNKNOWN": 2
+      },
+      "selected": {
+        "fixture_id": "id1000023872530942",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": -2.0,
+        "slot_utc": "2026-09-19T14:00:00+00:00",
+        "kickoff_utc": "2026-09-19T19:30:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 1.9,
+            "quote_at_utc": "2026-09-19T13:52:39.153000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 1.99,
+            "quote_at_utc": "2026-09-19T13:52:39.153000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "Liga Portugal",
+        "home": "Sporting CP",
+        "away": "FC Arouca",
+        "market_id": "1056",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          2,
+          2
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "77bd78c37c91a53eb0a0f367cfeba535d4786d9347728939f2c3a4b1d03a83c8",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-09-19T13:52:39.153000+00:00",
+          "away": "2026-09-19T13:52:39.153000+00:00"
+        },
+        "home_line": -2.0,
+        "away_line": 2.0,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000023872530942",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-19T17:00:00+00:00",
+      "kickoff_utc": "2026-09-19T19:30:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 16,
+      "eligible_lines": 1,
+      "rejected_lines": 15,
+      "rejection_counts": {
+        "NO_HISTORICAL_DATA": 5,
+        "PRICE_OUTSIDE_BALANCED_RANGE": 8,
+        "INACTIVE_OR_UNKNOWN": 2
+      },
+      "selected": {
+        "fixture_id": "id1000023872530942",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": -2.0,
+        "slot_utc": "2026-09-19T17:00:00+00:00",
+        "kickoff_utc": "2026-09-19T19:30:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 1.833,
+            "quote_at_utc": "2026-09-19T16:54:15.353000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 2.07,
+            "quote_at_utc": "2026-09-19T16:54:15.353000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "Liga Portugal",
+        "home": "Sporting CP",
+        "away": "FC Arouca",
+        "market_id": "1056",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          2,
+          2
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "77bd78c37c91a53eb0a0f367cfeba535d4786d9347728939f2c3a4b1d03a83c8",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-09-19T16:54:15.353000+00:00",
+          "away": "2026-09-19T16:54:15.353000+00:00"
+        },
+        "home_line": -2.0,
+        "away_line": 2.0,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000002472341166",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-17T08:00:00+00:00",
+      "kickoff_utc": "2026-09-17T19:00:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 10,
+      "eligible_lines": 1,
+      "rejected_lines": 9,
+      "rejection_counts": {
+        "INACTIVE_OR_UNKNOWN": 1,
+        "PRICE_OUTSIDE_BALANCED_RANGE": 8
+      },
+      "selected": {
+        "fixture_id": "id1000002472341166",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": 0.25,
+        "slot_utc": "2026-09-17T08:00:00+00:00",
+        "kickoff_utc": "2026-09-17T19:00:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 1.826,
+            "quote_at_utc": "2026-09-17T07:01:54.718000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 2.08,
+            "quote_at_utc": "2026-09-17T07:01:54.718000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "League One",
+        "home": "AFC Wimbledon",
+        "away": "Milton Keynes Dons",
+        "market_id": "1074",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          0,
+          0
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "f1557e6606bed5b2b63a756cf459e414ad38f03ff1f70d01c9601e1b24126963",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-09-17T07:01:54.718000+00:00",
+          "away": "2026-09-17T07:01:54.718000+00:00"
+        },
+        "home_line": 0.25,
+        "away_line": -0.25,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000002472341166",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-17T11:00:00+00:00",
+      "kickoff_utc": "2026-09-17T19:00:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 10,
+      "eligible_lines": 0,
+      "rejected_lines": 10,
+      "rejection_counts": {
+        "INACTIVE_OR_UNKNOWN": 1,
+        "STALE_QUOTE": 9
+      },
+      "selected": null,
+      "status": "MAINLINE_UNRESOLVED",
+      "reason": "NO_ELIGIBLE_BALANCED_LINE"
+    },
+    {
+      "fixture_id": "id1000002472341166",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-17T17:00:00+00:00",
+      "kickoff_utc": "2026-09-17T19:00:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 10,
+      "eligible_lines": 1,
+      "rejected_lines": 9,
+      "rejection_counts": {
+        "PRICE_OUTSIDE_BALANCED_RANGE": 8,
+        "INACTIVE_OR_UNKNOWN": 1
+      },
+      "selected": {
+        "fixture_id": "id1000002472341166",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": 0.0,
+        "slot_utc": "2026-09-17T17:00:00+00:00",
+        "kickoff_utc": "2026-09-17T19:00:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 2.009,
+            "quote_at_utc": "2026-09-17T16:59:04.886000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 1.877,
+            "quote_at_utc": "2026-09-17T16:32:55.347000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "League One",
+        "home": "AFC Wimbledon",
+        "away": "Milton Keynes Dons",
+        "market_id": "1072",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          0,
+          0
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "f1557e6606bed5b2b63a756cf459e414ad38f03ff1f70d01c9601e1b24126963",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-09-17T16:59:04.886000+00:00",
+          "away": "2026-09-17T16:32:55.347000+00:00"
+        },
+        "home_line": 0.0,
+        "away_line": -0.0,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000000872478578",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-16T08:00:00+00:00",
+      "kickoff_utc": "2026-09-16T19:30:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 10,
+      "eligible_lines": 1,
+      "rejected_lines": 9,
+      "rejection_counts": {
+        "INACTIVE_OR_UNKNOWN": 1,
+        "PRICE_OUTSIDE_BALANCED_RANGE": 8
+      },
+      "selected": {
+        "fixture_id": "id1000000872478578",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": 0.25,
+        "slot_utc": "2026-09-16T08:00:00+00:00",
+        "kickoff_utc": "2026-09-16T19:30:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 2.02,
+            "quote_at_utc": "2026-09-16T07:52:28.315000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 1.909,
+            "quote_at_utc": "2026-09-16T07:52:28.315000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "LaLiga",
+        "home": "Levante UD",
+        "away": "Athletic Bilbao",
+        "market_id": "1074",
+        "ft_status": "FT_MISSING",
+        "ft_score": null,
+        "quality_status": "COMPLETE",
+        "settlement_status": "NOT_SETTLED",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "6e5e6b9d11fd0b8123807d1510ccc6df4c1893f3850f04b0a44562ba5c51cb40",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-09-16T07:52:28.315000+00:00",
+          "away": "2026-09-16T07:52:28.315000+00:00"
+        },
+        "home_line": 0.25,
+        "away_line": -0.25,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000000872478578",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-16T11:00:00+00:00",
+      "kickoff_utc": "2026-09-16T19:30:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 10,
+      "eligible_lines": 0,
+      "rejected_lines": 10,
+      "rejection_counts": {
+        "INACTIVE_OR_UNKNOWN": 1,
+        "STALE_QUOTE": 9
+      },
+      "selected": null,
+      "status": "MAINLINE_UNRESOLVED",
+      "reason": "NO_ELIGIBLE_BALANCED_LINE"
+    },
+    {
+      "fixture_id": "id1000000872478578",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-16T14:00:00+00:00",
+      "kickoff_utc": "2026-09-16T19:30:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 10,
+      "eligible_lines": 0,
+      "rejected_lines": 10,
+      "rejection_counts": {
+        "INACTIVE_OR_UNKNOWN": 1,
+        "STALE_QUOTE": 9
+      },
+      "selected": null,
+      "status": "MAINLINE_UNRESOLVED",
+      "reason": "NO_ELIGIBLE_BALANCED_LINE"
+    },
+    {
+      "fixture_id": "id1000021574374474",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-15T08:00:00+00:00",
+      "kickoff_utc": "2026-09-15T17:00:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 10,
+      "eligible_lines": 0,
+      "rejected_lines": 10,
+      "rejection_counts": {
+        "STALE_QUOTE": 9,
+        "INACTIVE_OR_UNKNOWN": 1
+      },
+      "selected": null,
+      "status": "MAINLINE_UNRESOLVED",
+      "reason": "NO_ELIGIBLE_BALANCED_LINE"
+    },
+    {
+      "fixture_id": "id1000021574374474",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-15T11:00:00+00:00",
+      "kickoff_utc": "2026-09-15T17:00:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 10,
+      "eligible_lines": 2,
+      "rejected_lines": 8,
+      "rejection_counts": {
+        "PRICE_OUTSIDE_BALANCED_RANGE": 7,
+        "INACTIVE_OR_UNKNOWN": 1
+      },
+      "selected": {
+        "fixture_id": "id1000021574374474",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": 0.5,
+        "slot_utc": "2026-09-15T11:00:00+00:00",
+        "kickoff_utc": "2026-09-15T17:00:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 2.04,
+            "quote_at_utc": "2026-09-15T10:15:12.595000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 1.869,
+            "quote_at_utc": "2026-09-15T10:15:12.595000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "Super League",
+        "home": "Grasshopper Club Zurich",
+        "away": "FC Sion",
+        "market_id": "1076",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          2,
+          5
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "3bb9e2a85b9cc2eb4bc8d2f0b37c0a4cde33a74b69cb34e32d25c33bf235f6ba",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-09-15T10:15:12.595000+00:00",
+          "away": "2026-09-15T10:15:12.595000+00:00"
+        },
+        "home_line": 0.5,
+        "away_line": -0.5,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000018274100008",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-14T08:00:00+00:00",
+      "kickoff_utc": "2026-09-14T18:45:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 11,
+      "eligible_lines": 1,
+      "rejected_lines": 10,
+      "rejection_counts": {
+        "PRICE_OUTSIDE_BALANCED_RANGE": 6,
+        "STALE_QUOTE": 2,
+        "INACTIVE_OR_UNKNOWN": 2
+      },
+      "selected": {
+        "fixture_id": "id1000018274100008",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": -0.25,
+        "slot_utc": "2026-09-14T08:00:00+00:00",
+        "kickoff_utc": "2026-09-14T18:45:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 2.08,
+            "quote_at_utc": "2026-09-14T07:14:41.439000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 1.819,
+            "quote_at_utc": "2026-09-14T07:09:42.694000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "Ligue 2",
+        "home": "Red Star FC",
+        "away": "FC Metz",
+        "market_id": "1070",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          1,
+          0
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "17e548c67bb213f13191d8d0418245aada040deb7013579f87987245b7c11cd6",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-09-14T07:14:41.439000+00:00",
+          "away": "2026-09-14T07:09:42.694000+00:00"
+        },
+        "home_line": -0.25,
+        "away_line": 0.25,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000018274100008",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-14T11:00:00+00:00",
+      "kickoff_utc": "2026-09-14T18:45:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 11,
+      "eligible_lines": 1,
+      "rejected_lines": 10,
+      "rejection_counts": {
+        "PRICE_OUTSIDE_BALANCED_RANGE": 8,
+        "INACTIVE_OR_UNKNOWN": 2
+      },
+      "selected": {
+        "fixture_id": "id1000018274100008",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": -0.25,
+        "slot_utc": "2026-09-14T11:00:00+00:00",
+        "kickoff_utc": "2026-09-14T18:45:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 2.1,
+            "quote_at_utc": "2026-09-14T10:54:24.316000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 1.806,
+            "quote_at_utc": "2026-09-14T10:54:24.316000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "Ligue 2",
+        "home": "Red Star FC",
+        "away": "FC Metz",
+        "market_id": "1070",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          1,
+          0
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "17e548c67bb213f13191d8d0418245aada040deb7013579f87987245b7c11cd6",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-09-14T10:54:24.316000+00:00",
+          "away": "2026-09-14T10:54:24.316000+00:00"
+        },
+        "home_line": -0.25,
+        "away_line": 0.25,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000018274100008",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-14T14:00:00+00:00",
+      "kickoff_utc": "2026-09-14T18:45:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 11,
+      "eligible_lines": 0,
+      "rejected_lines": 11,
+      "rejection_counts": {
+        "STALE_QUOTE": 9,
+        "INACTIVE_OR_UNKNOWN": 2
+      },
+      "selected": null,
+      "status": "MAINLINE_UNRESOLVED",
+      "reason": "NO_ELIGIBLE_BALANCED_LINE"
+    },
+    {
+      "fixture_id": "id1000018274100008",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-14T17:00:00+00:00",
+      "kickoff_utc": "2026-09-14T18:45:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 11,
+      "eligible_lines": 1,
+      "rejected_lines": 10,
+      "rejection_counts": {
+        "INACTIVE_OR_UNKNOWN": 2,
+        "PRICE_OUTSIDE_BALANCED_RANGE": 8
+      },
+      "selected": {
+        "fixture_id": "id1000018274100008",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": 0.0,
+        "slot_utc": "2026-09-14T17:00:00+00:00",
+        "kickoff_utc": "2026-09-14T18:45:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 1.833,
+            "quote_at_utc": "2026-09-14T16:57:54.417000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 2.07,
+            "quote_at_utc": "2026-09-14T16:57:54.417000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "Ligue 2",
+        "home": "Red Star FC",
+        "away": "FC Metz",
+        "market_id": "1072",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          1,
+          0
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "17e548c67bb213f13191d8d0418245aada040deb7013579f87987245b7c11cd6",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-09-14T16:57:54.417000+00:00",
+          "away": "2026-09-14T16:57:54.417000+00:00"
+        },
+        "home_line": 0.0,
+        "away_line": -0.0,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000003572513218",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-20T14:00:00+00:00",
+      "kickoff_utc": "2026-09-20T17:30:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 11,
+      "eligible_lines": 1,
+      "rejected_lines": 10,
+      "rejection_counts": {
+        "NO_HISTORICAL_DATA": 1,
+        "PRICE_OUTSIDE_BALANCED_RANGE": 8,
+        "INACTIVE_OR_UNKNOWN": 1
+      },
+      "selected": {
+        "fixture_id": "id1000003572513218",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": 0.75,
+        "slot_utc": "2026-09-20T14:00:00+00:00",
+        "kickoff_utc": "2026-09-20T17:30:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 2.009,
+            "quote_at_utc": "2026-09-20T13:33:47.903000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 1.917,
+            "quote_at_utc": "2026-09-20T13:40:28.452000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "Bundesliga",
+        "home": "SC Paderborn 07",
+        "away": "TSG Hoffenheim",
+        "market_id": "1078",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          3,
+          1
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "c22f67e8d9a992f242f0f26c8e52192ac70755cf4ff4ca196fde9cc1db3176a0",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-09-20T13:33:47.903000+00:00",
+          "away": "2026-09-20T13:40:28.452000+00:00"
+        },
+        "home_line": 0.75,
+        "away_line": -0.75,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000003572513218",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-09-20T17:00:00+00:00",
+      "kickoff_utc": "2026-09-20T17:30:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 11,
+      "eligible_lines": 2,
+      "rejected_lines": 9,
+      "rejection_counts": {
+        "NO_HISTORICAL_DATA": 1,
+        "PRICE_OUTSIDE_BALANCED_RANGE": 7,
+        "INACTIVE_OR_UNKNOWN": 1
+      },
+      "selected": {
+        "fixture_id": "id1000003572513218",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": 0.75,
+        "slot_utc": "2026-09-20T17:00:00+00:00",
+        "kickoff_utc": "2026-09-20T17:30:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 1.892,
+            "quote_at_utc": "2026-09-20T16:48:55.993000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 2.029,
+            "quote_at_utc": "2026-09-20T16:54:53.350000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "Bundesliga",
+        "home": "SC Paderborn 07",
+        "away": "TSG Hoffenheim",
+        "market_id": "1078",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          3,
+          1
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "c22f67e8d9a992f242f0f26c8e52192ac70755cf4ff4ca196fde9cc1db3176a0",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-09-20T16:48:55.993000+00:00",
+          "away": "2026-09-20T16:54:53.350000+00:00"
+        },
+        "home_line": 0.75,
+        "away_line": -0.75,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    },
+    {
+      "fixture_id": "id1000018675178678",
+      "bookmaker": "pinnacle",
+      "slot_utc": "2026-10-14T08:00:00+00:00",
+      "kickoff_utc": "2026-10-14T11:45:00+00:00",
+      "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+      "official_mainline_verified": false,
+      "evaluated_lines": 8,
+      "eligible_lines": 1,
+      "rejected_lines": 7,
+      "rejection_counts": {
+        "INACTIVE_OR_UNKNOWN": 1,
+        "PRICE_OUTSIDE_BALANCED_RANGE": 6
+      },
+      "selected": {
+        "fixture_id": "id1000018675178678",
+        "source": "oddspapi",
+        "bookmaker": "pinnacle",
+        "market": "AH",
+        "line": 0.5,
+        "slot_utc": "2026-10-14T08:00:00+00:00",
+        "kickoff_utc": "2026-10-14T11:45:00+00:00",
+        "data_origin": "BACKFILLED",
+        "provenance": "HISTORICAL_RECONSTRUCTED",
+        "status": "COMPLETE",
+        "quotes": {
+          "home": {
+            "price": 1.854,
+            "quote_at_utc": "2026-10-14T07:49:12.226000+00:00",
+            "source_record_id": null,
+            "active": true
+          },
+          "away": {
+            "price": 1.9,
+            "quote_at_utc": "2026-10-14T07:49:12.226000+00:00",
+            "source_record_id": null,
+            "active": true
+          }
+        },
+        "league": "Super League Greece 2",
+        "home": "Olympiacos Piraeus B",
+        "away": "Athens Kallithea FC",
+        "market_id": "1076",
+        "ft_status": "VERIFIED_EXACT_ID",
+        "ft_score": [
+          0,
+          1
+        ],
+        "quality_status": "COMPLETE",
+        "settlement_status": "READY",
+        "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+        "raw_record_hash": "13de8ba0f694a06093dcebd3d857311b7efa4781db3f416da5b88731d9a78315",
+        "line_selection": "BALANCED_LINE",
+        "actual_price_timestamp": {
+          "home": "2026-10-14T07:49:12.226000+00:00",
+          "away": "2026-10-14T07:49:12.226000+00:00"
+        },
+        "home_line": 0.5,
+        "away_line": -0.5,
+        "official_mainline_verified": false
+      },
+      "status": "BALANCED_LINE",
+      "reason": null
+    }
+  ],
+  "observed_comparisons": [
+    {
+      "fixture_id": "id1000062975208868",
+      "observed_at": "2026-10-14T11:37:42.338548+00:00",
+      "observed_home_line": 0.0,
+      "observed_home_price": 1.877,
+      "observed_away_price": 1.877,
+      "balanced": {
+        "fixture_id": "id1000062975208868",
+        "bookmaker": "pinnacle",
+        "slot_utc": "2026-10-14T11:37:42.338548+00:00",
+        "kickoff_utc": "2026-10-14T17:00:00+00:00",
+        "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+        "official_mainline_verified": false,
+        "evaluated_lines": 9,
+        "eligible_lines": 0,
+        "rejected_lines": 9,
+        "rejection_counts": {
+          "INACTIVE_OR_UNKNOWN": 2,
+          "STALE_QUOTE": 7
+        },
+        "selected": null,
+        "status": "MAINLINE_UNRESOLVED",
+        "reason": "NO_ELIGIBLE_BALANCED_LINE"
+      },
+      "same_observed_line_quotes": null,
+      "difference_is_not_automatically_error": true
+    },
+    {
+      "fixture_id": "id1000009872735814",
+      "observed_at": "2026-10-13T08:29:39.604016+00:00",
+      "observed_home_line": -0.25,
+      "observed_home_price": 1.813,
+      "observed_away_price": 2.06,
+      "balanced": {
+        "fixture_id": "id1000009872735814",
+        "bookmaker": "pinnacle",
+        "slot_utc": "2026-10-13T08:29:39.604016+00:00",
+        "kickoff_utc": "2026-10-13T11:30:00+00:00",
+        "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+        "official_mainline_verified": false,
+        "evaluated_lines": 11,
+        "eligible_lines": 1,
+        "rejected_lines": 10,
+        "rejection_counts": {
+          "NO_HISTORICAL_DATA": 1,
+          "INACTIVE_OR_UNKNOWN": 1,
+          "PRICE_OUTSIDE_BALANCED_RANGE": 8
+        },
+        "selected": {
+          "fixture_id": "id1000009872735814",
+          "source": "oddspapi",
+          "bookmaker": "pinnacle",
+          "market": "AH",
+          "line": -0.25,
+          "slot_utc": "2026-10-13T08:29:39.604016+00:00",
+          "kickoff_utc": "2026-10-13T11:30:00+00:00",
+          "data_origin": "BACKFILLED",
+          "provenance": "HISTORICAL_RECONSTRUCTED",
+          "status": "COMPLETE",
+          "quotes": {
+            "home": {
+              "price": 1.813,
+              "quote_at_utc": "2026-10-13T08:20:52.325000+00:00",
+              "source_record_id": null,
+              "active": true
+            },
+            "away": {
+              "price": 2.06,
+              "quote_at_utc": "2026-10-13T08:20:52.325000+00:00",
+              "source_record_id": null,
+              "active": true
+            }
+          },
+          "league": "TFF 1 Lig",
+          "home": "Bandirmaspor",
+          "away": "Sivasspor",
+          "market_id": "1070",
+          "ft_status": "VERIFIED_EXACT_ID",
+          "ft_score": [
+            1,
+            1
+          ],
+          "quality_status": "COMPLETE",
+          "settlement_status": "READY",
+          "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+          "raw_record_hash": "6a6ba1130ca41f237b29100e51db82e62edcb4d1ef873c9aac68eb0da30aa01e",
+          "line_selection": "BALANCED_LINE",
+          "actual_price_timestamp": {
+            "home": "2026-10-13T08:20:52.325000+00:00",
+            "away": "2026-10-13T08:20:52.325000+00:00"
+          },
+          "home_line": -0.25,
+          "away_line": 0.25,
+          "official_mainline_verified": false
+        },
+        "status": "BALANCED_LINE",
+        "reason": null
+      },
+      "same_observed_line_quotes": {
+        "home": {
+          "price": 1.813,
+          "quote_at_utc": "2026-10-13T08:20:52.325000+00:00",
+          "source_record_id": null,
+          "active": true
+        },
+        "away": {
+          "price": 2.06,
+          "quote_at_utc": "2026-10-13T08:20:52.325000+00:00",
+          "source_record_id": null,
+          "active": true
+        }
+      },
+      "difference_is_not_automatically_error": true
+    },
+    {
+      "fixture_id": "id1000020274128332",
+      "observed_at": "2026-10-12T15:31:04.951721+00:00",
+      "observed_home_line": -0.5,
+      "observed_home_price": 2.05,
+      "observed_away_price": 1.847,
+      "balanced": {
+        "fixture_id": "id1000020274128332",
+        "bookmaker": "pinnacle",
+        "slot_utc": "2026-10-12T15:31:04.951721+00:00",
+        "kickoff_utc": "2026-10-12T18:30:00+00:00",
+        "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+        "official_mainline_verified": false,
+        "evaluated_lines": 11,
+        "eligible_lines": 2,
+        "rejected_lines": 9,
+        "rejection_counts": {
+          "INACTIVE_OR_UNKNOWN": 2,
+          "PRICE_OUTSIDE_BALANCED_RANGE": 7
+        },
+        "selected": {
+          "fixture_id": "id1000020274128332",
+          "source": "oddspapi",
+          "bookmaker": "pinnacle",
+          "market": "AH",
+          "line": -0.5,
+          "slot_utc": "2026-10-12T15:31:04.951721+00:00",
+          "kickoff_utc": "2026-10-12T18:30:00+00:00",
+          "data_origin": "BACKFILLED",
+          "provenance": "HISTORICAL_RECONSTRUCTED",
+          "status": "COMPLETE",
+          "quotes": {
+            "home": {
+              "price": 2.05,
+              "quote_at_utc": "2026-10-12T14:41:28.234000+00:00",
+              "source_record_id": null,
+              "active": true
+            },
+            "away": {
+              "price": 1.847,
+              "quote_at_utc": "2026-10-12T14:41:28.234000+00:00",
+              "source_record_id": null,
+              "active": true
+            }
+          },
+          "league": "Ekstraklasa",
+          "home": "GKS Katowice",
+          "away": "Wieczysta Krakow",
+          "market_id": "1068",
+          "ft_status": "VERIFIED_EXACT_ID",
+          "ft_score": [
+            2,
+            1
+          ],
+          "quality_status": "COMPLETE",
+          "settlement_status": "READY",
+          "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+          "raw_record_hash": "335c39453a2dc4e52fb6e4725363e5f3f9c00807d8f9b917d4d1c816add6412d",
+          "line_selection": "BALANCED_LINE",
+          "actual_price_timestamp": {
+            "home": "2026-10-12T14:41:28.234000+00:00",
+            "away": "2026-10-12T14:41:28.234000+00:00"
+          },
+          "home_line": -0.5,
+          "away_line": 0.5,
+          "official_mainline_verified": false
+        },
+        "status": "BALANCED_LINE",
+        "reason": null
+      },
+      "same_observed_line_quotes": {
+        "home": {
+          "price": 2.05,
+          "quote_at_utc": "2026-10-12T14:41:28.234000+00:00",
+          "source_record_id": null,
+          "active": true
+        },
+        "away": {
+          "price": 1.847,
+          "quote_at_utc": "2026-10-12T14:41:28.234000+00:00",
+          "source_record_id": null,
+          "active": true
+        }
+      },
+      "difference_is_not_automatically_error": true
+    },
+    {
+      "fixture_id": "id1000023872530942",
+      "observed_at": "2026-09-19T17:08:54.510865+00:00",
+      "observed_home_line": -2,
+      "observed_home_price": 1.833,
+      "observed_away_price": 2.07,
+      "balanced": {
+        "fixture_id": "id1000023872530942",
+        "bookmaker": "pinnacle",
+        "slot_utc": "2026-09-19T17:08:54.510865+00:00",
+        "kickoff_utc": "2026-09-19T19:30:00+00:00",
+        "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+        "official_mainline_verified": false,
+        "evaluated_lines": 16,
+        "eligible_lines": 1,
+        "rejected_lines": 15,
+        "rejection_counts": {
+          "NO_HISTORICAL_DATA": 5,
+          "PRICE_OUTSIDE_BALANCED_RANGE": 8,
+          "INACTIVE_OR_UNKNOWN": 2
+        },
+        "selected": {
+          "fixture_id": "id1000023872530942",
+          "source": "oddspapi",
+          "bookmaker": "pinnacle",
+          "market": "AH",
+          "line": -2.0,
+          "slot_utc": "2026-09-19T17:08:54.510865+00:00",
+          "kickoff_utc": "2026-09-19T19:30:00+00:00",
+          "data_origin": "BACKFILLED",
+          "provenance": "HISTORICAL_RECONSTRUCTED",
+          "status": "COMPLETE",
+          "quotes": {
+            "home": {
+              "price": 1.833,
+              "quote_at_utc": "2026-09-19T16:54:15.353000+00:00",
+              "source_record_id": null,
+              "active": true
+            },
+            "away": {
+              "price": 2.07,
+              "quote_at_utc": "2026-09-19T16:54:15.353000+00:00",
+              "source_record_id": null,
+              "active": true
+            }
+          },
+          "league": "Liga Portugal",
+          "home": "Sporting CP",
+          "away": "FC Arouca",
+          "market_id": "1056",
+          "ft_status": "VERIFIED_EXACT_ID",
+          "ft_score": [
+            2,
+            2
+          ],
+          "quality_status": "COMPLETE",
+          "settlement_status": "READY",
+          "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+          "raw_record_hash": "77bd78c37c91a53eb0a0f367cfeba535d4786d9347728939f2c3a4b1d03a83c8",
+          "line_selection": "BALANCED_LINE",
+          "actual_price_timestamp": {
+            "home": "2026-09-19T16:54:15.353000+00:00",
+            "away": "2026-09-19T16:54:15.353000+00:00"
+          },
+          "home_line": -2.0,
+          "away_line": 2.0,
+          "official_mainline_verified": false
+        },
+        "status": "BALANCED_LINE",
+        "reason": null
+      },
+      "same_observed_line_quotes": {
+        "home": {
+          "price": 1.833,
+          "quote_at_utc": "2026-09-19T16:54:15.353000+00:00",
+          "source_record_id": null,
+          "active": true
+        },
+        "away": {
+          "price": 2.07,
+          "quote_at_utc": "2026-09-19T16:54:15.353000+00:00",
+          "source_record_id": null,
+          "active": true
+        }
+      },
+      "difference_is_not_automatically_error": true
+    },
+    {
+      "fixture_id": "id1000002472341166",
+      "observed_at": "2026-09-17T15:15:56.773773+00:00",
+      "observed_home_line": 0,
+      "observed_home_price": 2.01,
+      "observed_away_price": 1.884,
+      "balanced": {
+        "fixture_id": "id1000002472341166",
+        "bookmaker": "pinnacle",
+        "slot_utc": "2026-09-17T15:15:56.773773+00:00",
+        "kickoff_utc": "2026-09-17T19:00:00+00:00",
+        "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+        "official_mainline_verified": false,
+        "evaluated_lines": 10,
+        "eligible_lines": 1,
+        "rejected_lines": 9,
+        "rejection_counts": {
+          "PRICE_OUTSIDE_BALANCED_RANGE": 8,
+          "INACTIVE_OR_UNKNOWN": 1
+        },
+        "selected": {
+          "fixture_id": "id1000002472341166",
+          "source": "oddspapi",
+          "bookmaker": "pinnacle",
+          "market": "AH",
+          "line": 0.0,
+          "slot_utc": "2026-09-17T15:15:56.773773+00:00",
+          "kickoff_utc": "2026-09-17T19:00:00+00:00",
+          "data_origin": "BACKFILLED",
+          "provenance": "HISTORICAL_RECONSTRUCTED",
+          "status": "COMPLETE",
+          "quotes": {
+            "home": {
+              "price": 2.009,
+              "quote_at_utc": "2026-09-17T15:14:58.643000+00:00",
+              "source_record_id": null,
+              "active": true
+            },
+            "away": {
+              "price": 1.884,
+              "quote_at_utc": "2026-09-17T15:14:58.643000+00:00",
+              "source_record_id": null,
+              "active": true
+            }
+          },
+          "league": "League One",
+          "home": "AFC Wimbledon",
+          "away": "Milton Keynes Dons",
+          "market_id": "1072",
+          "ft_status": "VERIFIED_EXACT_ID",
+          "ft_score": [
+            0,
+            0
+          ],
+          "quality_status": "COMPLETE",
+          "settlement_status": "READY",
+          "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+          "raw_record_hash": "f1557e6606bed5b2b63a756cf459e414ad38f03ff1f70d01c9601e1b24126963",
+          "line_selection": "BALANCED_LINE",
+          "actual_price_timestamp": {
+            "home": "2026-09-17T15:14:58.643000+00:00",
+            "away": "2026-09-17T15:14:58.643000+00:00"
+          },
+          "home_line": 0.0,
+          "away_line": -0.0,
+          "official_mainline_verified": false
+        },
+        "status": "BALANCED_LINE",
+        "reason": null
+      },
+      "same_observed_line_quotes": {
+        "home": {
+          "price": 2.009,
+          "quote_at_utc": "2026-09-17T15:14:58.643000+00:00",
+          "source_record_id": null,
+          "active": true
+        },
+        "away": {
+          "price": 1.884,
+          "quote_at_utc": "2026-09-17T15:14:58.643000+00:00",
+          "source_record_id": null,
+          "active": true
+        }
+      },
+      "difference_is_not_automatically_error": true
+    },
+    {
+      "fixture_id": "id1000000872478578",
+      "observed_at": "2026-09-16T17:53:57.394972+00:00",
+      "observed_home_line": 0.25,
+      "observed_home_price": 2.02,
+      "observed_away_price": 1.909,
+      "balanced": {
+        "fixture_id": "id1000000872478578",
+        "bookmaker": "pinnacle",
+        "slot_utc": "2026-09-16T17:53:57.394972+00:00",
+        "kickoff_utc": "2026-09-16T19:30:00+00:00",
+        "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+        "official_mainline_verified": false,
+        "evaluated_lines": 10,
+        "eligible_lines": 1,
+        "rejected_lines": 9,
+        "rejection_counts": {
+          "INACTIVE_OR_UNKNOWN": 1,
+          "PRICE_OUTSIDE_BALANCED_RANGE": 8
+        },
+        "selected": {
+          "fixture_id": "id1000000872478578",
+          "source": "oddspapi",
+          "bookmaker": "pinnacle",
+          "market": "AH",
+          "line": 0.25,
+          "slot_utc": "2026-09-16T17:53:57.394972+00:00",
+          "kickoff_utc": "2026-09-16T19:30:00+00:00",
+          "data_origin": "BACKFILLED",
+          "provenance": "HISTORICAL_RECONSTRUCTED",
+          "status": "COMPLETE",
+          "quotes": {
+            "home": {
+              "price": 2.02,
+              "quote_at_utc": "2026-09-16T17:52:47.876000+00:00",
+              "source_record_id": null,
+              "active": true
+            },
+            "away": {
+              "price": 1.909,
+              "quote_at_utc": "2026-09-16T17:52:47.876000+00:00",
+              "source_record_id": null,
+              "active": true
+            }
+          },
+          "league": "LaLiga",
+          "home": "Levante UD",
+          "away": "Athletic Bilbao",
+          "market_id": "1074",
+          "ft_status": "FT_MISSING",
+          "ft_score": null,
+          "quality_status": "COMPLETE",
+          "settlement_status": "NOT_SETTLED",
+          "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+          "raw_record_hash": "6e5e6b9d11fd0b8123807d1510ccc6df4c1893f3850f04b0a44562ba5c51cb40",
+          "line_selection": "BALANCED_LINE",
+          "actual_price_timestamp": {
+            "home": "2026-09-16T17:52:47.876000+00:00",
+            "away": "2026-09-16T17:52:47.876000+00:00"
+          },
+          "home_line": 0.25,
+          "away_line": -0.25,
+          "official_mainline_verified": false
+        },
+        "status": "BALANCED_LINE",
+        "reason": null
+      },
+      "same_observed_line_quotes": {
+        "home": {
+          "price": 2.02,
+          "quote_at_utc": "2026-09-16T17:52:47.876000+00:00",
+          "source_record_id": null,
+          "active": true
+        },
+        "away": {
+          "price": 1.909,
+          "quote_at_utc": "2026-09-16T17:52:47.876000+00:00",
+          "source_record_id": null,
+          "active": true
+        }
+      },
+      "difference_is_not_automatically_error": true
+    },
+    {
+      "fixture_id": "id1000021574374474",
+      "observed_at": "2026-09-15T14:42:49.739659+00:00",
+      "observed_home_line": 0.5,
+      "observed_home_price": 2.01,
+      "observed_away_price": 1.9,
+      "balanced": {
+        "fixture_id": "id1000021574374474",
+        "bookmaker": "pinnacle",
+        "slot_utc": "2026-09-15T14:42:49.739659+00:00",
+        "kickoff_utc": "2026-09-15T17:00:00+00:00",
+        "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+        "official_mainline_verified": false,
+        "evaluated_lines": 10,
+        "eligible_lines": 2,
+        "rejected_lines": 8,
+        "rejection_counts": {
+          "PRICE_OUTSIDE_BALANCED_RANGE": 7,
+          "INACTIVE_OR_UNKNOWN": 1
+        },
+        "selected": {
+          "fixture_id": "id1000021574374474",
+          "source": "oddspapi",
+          "bookmaker": "pinnacle",
+          "market": "AH",
+          "line": 0.5,
+          "slot_utc": "2026-09-15T14:42:49.739659+00:00",
+          "kickoff_utc": "2026-09-15T17:00:00+00:00",
+          "data_origin": "BACKFILLED",
+          "provenance": "HISTORICAL_RECONSTRUCTED",
+          "status": "COMPLETE",
+          "quotes": {
+            "home": {
+              "price": 2.009,
+              "quote_at_utc": "2026-09-15T14:02:08.945000+00:00",
+              "source_record_id": null,
+              "active": true
+            },
+            "away": {
+              "price": 1.9,
+              "quote_at_utc": "2026-09-15T14:02:08.945000+00:00",
+              "source_record_id": null,
+              "active": true
+            }
+          },
+          "league": "Super League",
+          "home": "Grasshopper Club Zurich",
+          "away": "FC Sion",
+          "market_id": "1076",
+          "ft_status": "VERIFIED_EXACT_ID",
+          "ft_score": [
+            2,
+            5
+          ],
+          "quality_status": "COMPLETE",
+          "settlement_status": "READY",
+          "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+          "raw_record_hash": "3bb9e2a85b9cc2eb4bc8d2f0b37c0a4cde33a74b69cb34e32d25c33bf235f6ba",
+          "line_selection": "BALANCED_LINE",
+          "actual_price_timestamp": {
+            "home": "2026-09-15T14:02:08.945000+00:00",
+            "away": "2026-09-15T14:02:08.945000+00:00"
+          },
+          "home_line": 0.5,
+          "away_line": -0.5,
+          "official_mainline_verified": false
+        },
+        "status": "BALANCED_LINE",
+        "reason": null
+      },
+      "same_observed_line_quotes": {
+        "home": {
+          "price": 2.009,
+          "quote_at_utc": "2026-09-15T14:02:08.945000+00:00",
+          "source_record_id": null,
+          "active": true
+        },
+        "away": {
+          "price": 1.9,
+          "quote_at_utc": "2026-09-15T14:02:08.945000+00:00",
+          "source_record_id": null,
+          "active": true
+        }
+      },
+      "difference_is_not_automatically_error": true
+    },
+    {
+      "fixture_id": "id1000018274100008",
+      "observed_at": "2026-09-14T14:52:05.006403+00:00",
+      "observed_home_line": -0.25,
+      "observed_home_price": 2.12,
+      "observed_away_price": 1.793,
+      "balanced": {
+        "fixture_id": "id1000018274100008",
+        "bookmaker": "pinnacle",
+        "slot_utc": "2026-09-14T14:52:05.006403+00:00",
+        "kickoff_utc": "2026-09-14T18:45:00+00:00",
+        "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+        "official_mainline_verified": false,
+        "evaluated_lines": 11,
+        "eligible_lines": 0,
+        "rejected_lines": 11,
+        "rejection_counts": {
+          "PRICE_OUTSIDE_BALANCED_RANGE": 9,
+          "INACTIVE_OR_UNKNOWN": 2
+        },
+        "selected": null,
+        "status": "MAINLINE_UNRESOLVED",
+        "reason": "NO_ELIGIBLE_BALANCED_LINE"
+      },
+      "same_observed_line_quotes": {
+        "home": {
+          "price": 2.12,
+          "quote_at_utc": "2026-09-14T14:47:35.961000+00:00",
+          "source_record_id": null,
+          "active": true
+        },
+        "away": {
+          "price": 1.793,
+          "quote_at_utc": "2026-09-14T14:47:35.961000+00:00",
+          "source_record_id": null,
+          "active": true
+        }
+      },
+      "difference_is_not_automatically_error": true
+    },
+    {
+      "fixture_id": "id1000003572513218",
+      "observed_at": "2026-09-20T05:32:16.710452+00:00",
+      "observed_home_line": 0.75,
+      "observed_home_price": 2.02,
+      "observed_away_price": 1.892,
+      "balanced": {
+        "fixture_id": "id1000003572513218",
+        "bookmaker": "pinnacle",
+        "slot_utc": "2026-09-20T05:32:16.710452+00:00",
+        "kickoff_utc": "2026-09-20T17:30:00+00:00",
+        "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+        "official_mainline_verified": false,
+        "evaluated_lines": 11,
+        "eligible_lines": 1,
+        "rejected_lines": 10,
+        "rejection_counts": {
+          "NO_HISTORICAL_DATA": 1,
+          "PRICE_OUTSIDE_BALANCED_RANGE": 8,
+          "INACTIVE_OR_UNKNOWN": 1
+        },
+        "selected": {
+          "fixture_id": "id1000003572513218",
+          "source": "oddspapi",
+          "bookmaker": "pinnacle",
+          "market": "AH",
+          "line": 0.75,
+          "slot_utc": "2026-09-20T05:32:16.710452+00:00",
+          "kickoff_utc": "2026-09-20T17:30:00+00:00",
+          "data_origin": "BACKFILLED",
+          "provenance": "HISTORICAL_RECONSTRUCTED",
+          "status": "COMPLETE",
+          "quotes": {
+            "home": {
+              "price": 2.02,
+              "quote_at_utc": "2026-09-20T05:32:01.761000+00:00",
+              "source_record_id": null,
+              "active": true
+            },
+            "away": {
+              "price": 1.892,
+              "quote_at_utc": "2026-09-20T05:32:01.761000+00:00",
+              "source_record_id": null,
+              "active": true
+            }
+          },
+          "league": "Bundesliga",
+          "home": "SC Paderborn 07",
+          "away": "TSG Hoffenheim",
+          "market_id": "1078",
+          "ft_status": "VERIFIED_EXACT_ID",
+          "ft_score": [
+            3,
+            1
+          ],
+          "quality_status": "COMPLETE",
+          "settlement_status": "READY",
+          "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+          "raw_record_hash": "c22f67e8d9a992f242f0f26c8e52192ac70755cf4ff4ca196fde9cc1db3176a0",
+          "line_selection": "BALANCED_LINE",
+          "actual_price_timestamp": {
+            "home": "2026-09-20T05:32:01.761000+00:00",
+            "away": "2026-09-20T05:32:01.761000+00:00"
+          },
+          "home_line": 0.75,
+          "away_line": -0.75,
+          "official_mainline_verified": false
+        },
+        "status": "BALANCED_LINE",
+        "reason": null
+      },
+      "same_observed_line_quotes": {
+        "home": {
+          "price": 2.02,
+          "quote_at_utc": "2026-09-20T05:32:01.761000+00:00",
+          "source_record_id": null,
+          "active": true
+        },
+        "away": {
+          "price": 1.892,
+          "quote_at_utc": "2026-09-20T05:32:01.761000+00:00",
+          "source_record_id": null,
+          "active": true
+        }
+      },
+      "difference_is_not_automatically_error": true
+    },
+    {
+      "fixture_id": "id1000003572513218",
+      "observed_at": "2026-09-20T09:30:13.639852+00:00",
+      "observed_home_line": 0.75,
+      "observed_home_price": 1.98,
+      "observed_away_price": 1.943,
+      "balanced": {
+        "fixture_id": "id1000003572513218",
+        "bookmaker": "pinnacle",
+        "slot_utc": "2026-09-20T09:30:13.639852+00:00",
+        "kickoff_utc": "2026-09-20T17:30:00+00:00",
+        "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+        "official_mainline_verified": false,
+        "evaluated_lines": 11,
+        "eligible_lines": 0,
+        "rejected_lines": 11,
+        "rejection_counts": {
+          "NO_HISTORICAL_DATA": 1,
+          "STALE_QUOTE": 8,
+          "PRICE_OUTSIDE_BALANCED_RANGE": 1,
+          "INACTIVE_OR_UNKNOWN": 1
+        },
+        "selected": null,
+        "status": "MAINLINE_UNRESOLVED",
+        "reason": "NO_ELIGIBLE_BALANCED_LINE"
+      },
+      "same_observed_line_quotes": null,
+      "difference_is_not_automatically_error": true
+    },
+    {
+      "fixture_id": "id1000003572513218",
+      "observed_at": "2026-09-20T11:15:03.636186+00:00",
+      "observed_home_line": 0.75,
+      "observed_home_price": 1.99,
+      "observed_away_price": 1.925,
+      "balanced": {
+        "fixture_id": "id1000003572513218",
+        "bookmaker": "pinnacle",
+        "slot_utc": "2026-09-20T11:15:03.636186+00:00",
+        "kickoff_utc": "2026-09-20T17:30:00+00:00",
+        "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+        "official_mainline_verified": false,
+        "evaluated_lines": 11,
+        "eligible_lines": 1,
+        "rejected_lines": 10,
+        "rejection_counts": {
+          "NO_HISTORICAL_DATA": 1,
+          "PRICE_OUTSIDE_BALANCED_RANGE": 8,
+          "INACTIVE_OR_UNKNOWN": 1
+        },
+        "selected": {
+          "fixture_id": "id1000003572513218",
+          "source": "oddspapi",
+          "bookmaker": "pinnacle",
+          "market": "AH",
+          "line": 0.75,
+          "slot_utc": "2026-09-20T11:15:03.636186+00:00",
+          "kickoff_utc": "2026-09-20T17:30:00+00:00",
+          "data_origin": "BACKFILLED",
+          "provenance": "HISTORICAL_RECONSTRUCTED",
+          "status": "COMPLETE",
+          "quotes": {
+            "home": {
+              "price": 1.99,
+              "quote_at_utc": "2026-09-20T11:00:11.334000+00:00",
+              "source_record_id": null,
+              "active": true
+            },
+            "away": {
+              "price": 1.925,
+              "quote_at_utc": "2026-09-20T11:00:11.334000+00:00",
+              "source_record_id": null,
+              "active": true
+            }
+          },
+          "league": "Bundesliga",
+          "home": "SC Paderborn 07",
+          "away": "TSG Hoffenheim",
+          "market_id": "1078",
+          "ft_status": "VERIFIED_EXACT_ID",
+          "ft_score": [
+            3,
+            1
+          ],
+          "quality_status": "COMPLETE",
+          "settlement_status": "READY",
+          "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+          "raw_record_hash": "c22f67e8d9a992f242f0f26c8e52192ac70755cf4ff4ca196fde9cc1db3176a0",
+          "line_selection": "BALANCED_LINE",
+          "actual_price_timestamp": {
+            "home": "2026-09-20T11:00:11.334000+00:00",
+            "away": "2026-09-20T11:00:11.334000+00:00"
+          },
+          "home_line": 0.75,
+          "away_line": -0.75,
+          "official_mainline_verified": false
+        },
+        "status": "BALANCED_LINE",
+        "reason": null
+      },
+      "same_observed_line_quotes": {
+        "home": {
+          "price": 1.99,
+          "quote_at_utc": "2026-09-20T11:00:11.334000+00:00",
+          "source_record_id": null,
+          "active": true
+        },
+        "away": {
+          "price": 1.925,
+          "quote_at_utc": "2026-09-20T11:00:11.334000+00:00",
+          "source_record_id": null,
+          "active": true
+        }
+      },
+      "difference_is_not_automatically_error": true
+    },
+    {
+      "fixture_id": "id1000003572513218",
+      "observed_at": "2026-09-20T13:40:29.981210+00:00",
+      "observed_home_line": 0.75,
+      "observed_home_price": 2.01,
+      "observed_away_price": 1.917,
+      "balanced": {
+        "fixture_id": "id1000003572513218",
+        "bookmaker": "pinnacle",
+        "slot_utc": "2026-09-20T13:40:29.981210+00:00",
+        "kickoff_utc": "2026-09-20T17:30:00+00:00",
+        "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+        "official_mainline_verified": false,
+        "evaluated_lines": 11,
+        "eligible_lines": 1,
+        "rejected_lines": 10,
+        "rejection_counts": {
+          "NO_HISTORICAL_DATA": 1,
+          "PRICE_OUTSIDE_BALANCED_RANGE": 8,
+          "INACTIVE_OR_UNKNOWN": 1
+        },
+        "selected": {
+          "fixture_id": "id1000003572513218",
+          "source": "oddspapi",
+          "bookmaker": "pinnacle",
+          "market": "AH",
+          "line": 0.75,
+          "slot_utc": "2026-09-20T13:40:29.981210+00:00",
+          "kickoff_utc": "2026-09-20T17:30:00+00:00",
+          "data_origin": "BACKFILLED",
+          "provenance": "HISTORICAL_RECONSTRUCTED",
+          "status": "COMPLETE",
+          "quotes": {
+            "home": {
+              "price": 2.009,
+              "quote_at_utc": "2026-09-20T13:33:47.903000+00:00",
+              "source_record_id": null,
+              "active": true
+            },
+            "away": {
+              "price": 1.917,
+              "quote_at_utc": "2026-09-20T13:40:28.452000+00:00",
+              "source_record_id": null,
+              "active": true
+            }
+          },
+          "league": "Bundesliga",
+          "home": "SC Paderborn 07",
+          "away": "TSG Hoffenheim",
+          "market_id": "1078",
+          "ft_status": "VERIFIED_EXACT_ID",
+          "ft_score": [
+            3,
+            1
+          ],
+          "quality_status": "COMPLETE",
+          "settlement_status": "READY",
+          "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+          "raw_record_hash": "c22f67e8d9a992f242f0f26c8e52192ac70755cf4ff4ca196fde9cc1db3176a0",
+          "line_selection": "BALANCED_LINE",
+          "actual_price_timestamp": {
+            "home": "2026-09-20T13:33:47.903000+00:00",
+            "away": "2026-09-20T13:40:28.452000+00:00"
+          },
+          "home_line": 0.75,
+          "away_line": -0.75,
+          "official_mainline_verified": false
+        },
+        "status": "BALANCED_LINE",
+        "reason": null
+      },
+      "same_observed_line_quotes": {
+        "home": {
+          "price": 2.009,
+          "quote_at_utc": "2026-09-20T13:33:47.903000+00:00",
+          "source_record_id": null,
+          "active": true
+        },
+        "away": {
+          "price": 1.917,
+          "quote_at_utc": "2026-09-20T13:40:28.452000+00:00",
+          "source_record_id": null,
+          "active": true
+        }
+      },
+      "difference_is_not_automatically_error": true
+    },
+    {
+      "fixture_id": "id1000003572513218",
+      "observed_at": "2026-09-20T15:14:29.910805+00:00",
+      "observed_home_line": 0.75,
+      "observed_home_price": 2,
+      "observed_away_price": 1.917,
+      "balanced": {
+        "fixture_id": "id1000003572513218",
+        "bookmaker": "pinnacle",
+        "slot_utc": "2026-09-20T15:14:29.910805+00:00",
+        "kickoff_utc": "2026-09-20T17:30:00+00:00",
+        "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+        "official_mainline_verified": false,
+        "evaluated_lines": 11,
+        "eligible_lines": 0,
+        "rejected_lines": 11,
+        "rejection_counts": {
+          "NO_HISTORICAL_DATA": 1,
+          "STALE_QUOTE": 6,
+          "PRICE_OUTSIDE_BALANCED_RANGE": 3,
+          "INACTIVE_OR_UNKNOWN": 1
+        },
+        "selected": null,
+        "status": "MAINLINE_UNRESOLVED",
+        "reason": "NO_ELIGIBLE_BALANCED_LINE"
+      },
+      "same_observed_line_quotes": null,
+      "difference_is_not_automatically_error": true
+    },
+    {
+      "fixture_id": "id1000018675178678",
+      "observed_at": "2026-10-14T11:37:42.338548+00:00",
+      "observed_home_line": 0.5,
+      "observed_home_price": 1.9,
+      "observed_away_price": 1.884,
+      "balanced": {
+        "fixture_id": "id1000018675178678",
+        "bookmaker": "pinnacle",
+        "slot_utc": "2026-10-14T11:37:42.338548+00:00",
+        "kickoff_utc": "2026-10-14T11:45:00+00:00",
+        "policy": "BALANCED_LINE_V1_BOTH_1.80_2.20_MIN_SQUARED_DISTANCE_TO_2",
+        "official_mainline_verified": false,
+        "evaluated_lines": 8,
+        "eligible_lines": 1,
+        "rejected_lines": 7,
+        "rejection_counts": {
+          "INACTIVE_OR_UNKNOWN": 1,
+          "PRICE_OUTSIDE_BALANCED_RANGE": 6
+        },
+        "selected": {
+          "fixture_id": "id1000018675178678",
+          "source": "oddspapi",
+          "bookmaker": "pinnacle",
+          "market": "AH",
+          "line": 0.5,
+          "slot_utc": "2026-10-14T11:37:42.338548+00:00",
+          "kickoff_utc": "2026-10-14T11:45:00+00:00",
+          "data_origin": "BACKFILLED",
+          "provenance": "HISTORICAL_RECONSTRUCTED",
+          "status": "COMPLETE",
+          "quotes": {
+            "home": {
+              "price": 1.9,
+              "quote_at_utc": "2026-10-14T11:19:22.832000+00:00",
+              "source_record_id": null,
+              "active": true
+            },
+            "away": {
+              "price": 1.884,
+              "quote_at_utc": "2026-10-14T11:19:22.832000+00:00",
+              "source_record_id": null,
+              "active": true
+            }
+          },
+          "league": "Super League Greece 2",
+          "home": "Olympiacos Piraeus B",
+          "away": "Athens Kallithea FC",
+          "market_id": "1076",
+          "ft_status": "VERIFIED_EXACT_ID",
+          "ft_score": [
+            0,
+            1
+          ],
+          "quality_status": "COMPLETE",
+          "settlement_status": "READY",
+          "catalog_evidence": "Pinned provider catalog SHA256 987ea5e2a340a52343da8a20700ce8789a3bc5a4893b7114aa33b0e27ef05ee0; sportId=10, Asian Handicap, spreads, fulltime, playerProp=false, outcome 1=home / 2=away; https://oddspapi.io/us/docs/get-markets",
+          "raw_record_hash": "13de8ba0f694a06093dcebd3d857311b7efa4781db3f416da5b88731d9a78315",
+          "line_selection": "BALANCED_LINE",
+          "actual_price_timestamp": {
+            "home": "2026-10-14T11:19:22.832000+00:00",
+            "away": "2026-10-14T11:19:22.832000+00:00"
+          },
+          "home_line": 0.5,
+          "away_line": -0.5,
+          "official_mainline_verified": false
+        },
+        "status": "BALANCED_LINE",
+        "reason": null
+      },
+      "same_observed_line_quotes": {
+        "home": {
+          "price": 1.9,
+          "quote_at_utc": "2026-10-14T11:19:22.832000+00:00",
+          "source_record_id": null,
+          "active": true
+        },
+        "away": {
+          "price": 1.884,
+          "quote_at_utc": "2026-10-14T11:19:22.832000+00:00",
+          "source_record_id": null,
+          "active": true
+        }
+      },
+      "difference_is_not_automatically_error": true
+    }
+  ]
+}

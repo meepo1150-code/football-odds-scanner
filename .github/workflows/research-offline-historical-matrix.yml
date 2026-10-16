@@ -1,0 +1,57 @@
+name: Research Sep15–17 Football-Day Recovery
+on:
+  workflow_dispatch:
+  push:
+    branches: [research/historical-backfill-isolated-20261015]
+    paths: [.github/workflows/research-offline-historical-matrix.yml]
+permissions: {contents: read}
+jobs:
+  sep15-17-football-day:
+    if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && github.ref == 'refs/heads/research/historical-backfill-isolated-20261015'
+    environment: historical-research
+    concurrency: {group: historical-research-isolated-manual, cancel-in-progress: false}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONPATH: src:.
+      PILOT_ENVIRONMENT: historical-research
+      MANIFEST_BATCH_ID: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - name: Existing historical safety and price quality tests
+        run: python -m unittest discover -s research/historical_backfill -p 'test_*.py'
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            research/historical_backfill/data/raw
+            research/historical_backfill/data/cache
+          key: historical-pilot-v1-${{ github.run_id }}-football-day
+          restore-keys: historical-pilot-v1-
+      - uses: actions/checkout@v4
+        with: {ref: main, path: production-state, persist-credentials: false}
+      - name: Bounded Sep15–17 live experiment
+        env:
+          HISTORICAL_ODDSPAPI_KEY: ${{ secrets.HISTORICAL_ODDSPAPI_KEY }}
+          ACCOUNT_PROBE_KEY: ${{ secrets.ODDSPAPI_KEY }}
+        run: python -m research.historical_backfill.sep15_17_matchdays.run
+      - uses: actions/cache/save@v4
+        if: always() && hashFiles('research/historical_backfill/data/cache/*.json') != ''
+        with:
+          path: |
+            research/historical_backfill/data/raw
+            research/historical_backfill/data/cache
+          key: historical-pilot-v1-${{ github.run_id }}-football-day
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sep15-17-football-day-recovery-${{ github.run_id }}-football-day
+          path: |
+            research/historical_backfill/sep15_17_matchdays
+            research/historical_backfill/data/actions/health.json
+            research/historical_backfill/data/actions/health-evidence.json
+            research/historical_backfill/data/raw
+            research/historical_backfill/data/cache
+          retention-days: 30
