@@ -10,8 +10,18 @@ import math
 import zipfile
 from collections import Counter, defaultdict
 from pathlib import Path
-from datetime import timedelta
-from scripts.promote_sep14_historical import dt, football_day, BKK
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+
+def dt(value):
+    parsed=datetime.fromisoformat(str(value).replace('Z','+00:00'))
+    if parsed.tzinfo is None:
+        raise ValueError('Timezone required')
+    return parsed
+
+def football_day(kickoff):
+    local=dt(kickoff).astimezone(ZoneInfo('Asia/Bangkok'))
+    return (local-timedelta(days=1) if local.hour<6 else local).date().isoformat()
 
 SOURCE = Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl')
 NATIVE = Path('data/normalized/v2_mainline_snapshots.jsonl')
