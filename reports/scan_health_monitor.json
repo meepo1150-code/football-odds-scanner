@@ -1,16 +1,29 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-16T10:36:18.298740+00:00",
+  "generated_at": "2026-10-16T11:15:01.072708+00:00",
   "football_day": "2026-10-16",
-  "status": "WARNING",
+  "status": "FAIL",
   "issues": [
+    "SCAN_MISSING",
     "FT_DELAY",
     "FT_IDENTITY_CONFLICT",
     "UNMATCHED_IDENTITY_CANDIDATES",
     "LATEST_SCAN_WARNING"
   ],
-  "scan_missing_count": 0,
-  "scan_missing": [],
+  "scan_missing_count": 1,
+  "scan_missing": [
+    {
+      "target_time": "2026-10-16T18:00:00+07:00",
+      "state": "MISSING",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "MISSING",
+      "recovered": false
+    }
+  ],
   "ft_delay_count": 4,
   "ft_delay": [
     {
@@ -111,13 +124,13 @@
     },
     {
       "target_time": "2026-10-16T18:00:00+07:00",
-      "state": "UPCOMING",
+      "state": "MISSING",
       "provider": null,
       "observed_at": null,
       "lag_minutes": null,
       "valid_snapshot_count": 0,
       "canonical_fixture_count": 0,
-      "observation_timing": "UPCOMING",
+      "observation_timing": "MISSING",
       "recovered": false
     },
     {
@@ -147,23 +160,17 @@
   "raw_deleted": 0,
   "approved_unresolved_fixtures_retained": true,
   "next_slot_readiness": {
-    "target_at": "2026-10-16T18:00:00+07:00",
+    "target_at": "2026-10-16T21:00:00+07:00",
     "football_day": "2026-10-16",
     "status": "UNVERIFIED_OR_CAPACITY_BLOCKED",
     "fixture_set_size": 25,
-    "remaining_prematch_at_target": 25,
-    "prematch_forecast_at": "2026-10-16T18:03:00+07:00",
+    "remaining_prematch_at_target": 19,
+    "prematch_forecast_at": "2026-10-16T21:03:00+07:00",
     "unconfirmed_grants": [],
     "blocked_reasons": [
       "RESEARCH_CAPACITY_RESERVED_OR_EXHAUSTED"
     ],
     "pending_fixture_ids": [
-      "id1000020572300828",
-      "id1000072772284134",
-      "id1000072772284136",
-      "id1000072772284138",
-      "id1000072772284140",
-      "id1000072772284142",
       "id1000020572300824",
       "id1000020572587358",
       "id1000020572300816",
@@ -188,28 +195,27 @@
     "allocated_tournament_ids": [],
     "quota_utc_day": "2026-10-16",
     "research_usage": {
-      "day": 21,
-      "month": 114
+      "day": 40,
+      "month": 133
     },
-    "account_remaining_estimate": 37,
-    "account_observed_before": "2026-10-16T10:10:19.859812+00:00",
+    "account_remaining_estimate": 28,
+    "account_observed_before": "2026-10-16T11:01:47.744485+00:00",
     "account_estimate_limitation": "OTHER_ACCOUNT_CONSUMERS_AFTER_OBSERVATION_NOT_MEASURED; RECHECK_UNMETERED_ACCOUNT_AT_COLLECTION",
     "fixture_set_policy": "FIXED_1500_FIXTURE_COHORT_V1",
     "schedule_response_id": "699f190a7fe82cf20e0a6a4cd0ce78af923ed667b791f45b07c0cdff88493b2f",
     "budget": {
       "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
-      "research_requests_used_today": 21,
-      "research_requests_used_month": 114,
+      "research_requests_used_today": 40,
+      "research_requests_used_month": 133,
       "research_daily_limit": 6,
       "research_monthly_limit": 180,
       "research_run_limit": 2,
       "quota_utc_day": "2026-10-16",
       "canonical_slots_in_football_day": 4,
       "future_utc_slots": [
-        "2026-10-16T14:00:00+00:00",
         "2026-10-16T17:00:00+00:00"
       ],
-      "future_utc_requests_reserved": 2,
+      "future_utc_requests_reserved": 1,
       "current_canonical_requests_reserved": 0,
       "future_month_requests_reserved": 75,
       "canonical_request_reservation": "UTC_FUTURE_SLOTS_PLUS_DISCOVERY; MANUAL_AND_RECOVERY_YIELD; FAILED_ATTEMPTS_COUNT",
@@ -224,9 +230,9 @@
   },
   "latest_fixture_diagnostics": {
     "status": "RETAINED_RESPONSE_DIAGNOSIS",
-    "observed_at": "2026-10-16T10:10:45.133532+00:00",
-    "attempt_started_at": "2026-10-16T10:10:19.859812+00:00",
-    "attempt_completed_at": "2026-10-16T10:10:45.133532+00:00",
+    "observed_at": "2026-10-16T11:02:13.079739+00:00",
+    "attempt_started_at": "2026-10-16T11:01:47.744485+00:00",
+    "attempt_completed_at": "2026-10-16T11:02:13.079739+00:00",
     "schedule_response_id": "699f190a7fe82cf20e0a6a4cd0ce78af923ed667b791f45b07c0cdff88493b2f",
     "fixtures": [
       {
@@ -313,7 +319,7 @@
         "kickoff": "2026-10-16T13:00:00+00:00",
         "tournament_id": "671",
         "in_1500_cohort": false,
-        "reason": "VALIDATION_REJECTED",
+        "reason": "VALID_ODDS",
         "provider_reason": "OK",
         "query_scope_includes_tournament": true
       },
@@ -456,7 +462,7 @@
         "kickoff": "2026-10-16T15:00:00+00:00",
         "tournament_id": "224",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
+        "reason": "VALIDATION_REJECTED",
         "provider_reason": "OK",
         "query_scope_includes_tournament": true
       },
@@ -577,7 +583,7 @@
         "kickoff": "2026-10-16T16:00:00+00:00",
         "tournament_id": "532",
         "in_1500_cohort": false,
-        "reason": "VALID_ODDS",
+        "reason": "VALIDATION_REJECTED",
         "provider_reason": "OK",
         "query_scope_includes_tournament": true
       },
@@ -654,8 +660,8 @@
         "kickoff": "2026-10-16T16:30:00+00:00",
         "tournament_id": "720",
         "in_1500_cohort": false,
-        "reason": "INSUFFICIENT_EVIDENCE",
-        "provider_reason": null,
+        "reason": "MARKET_UNAVAILABLE",
+        "provider_reason": "AMBIGUOUS_OR_MISSING_1X2",
         "query_scope_includes_tournament": true
       },
       {
@@ -1167,10 +1173,10 @@
     ],
     "reason_counts": {
       "ALREADY_KICKOFF": 2,
-      "VALIDATION_REJECTED": 5,
-      "INSUFFICIENT_EVIDENCE": 8,
-      "VALID_ODDS": 67,
-      "MARKET_UNAVAILABLE": 2,
+      "VALIDATION_REJECTED": 6,
+      "INSUFFICIENT_EVIDENCE": 7,
+      "VALID_ODDS": 66,
+      "MARKET_UNAVAILABLE": 3,
       "MAPPING_FAILURE": 1
     },
     "no_price_or_result_inferred": true
