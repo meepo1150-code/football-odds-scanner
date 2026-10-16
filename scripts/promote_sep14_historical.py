@@ -47,7 +47,8 @@ def plan(report, manifest, originals):
     by_id = {c["fixture_id"]: c for c in candidates}
     if len(by_id) != 21:
         raise ValueError("Duplicate manifest fixture IDs")
-    eligible = {fid: c for fid, c in by_id.items() if football_day(c["kickoff"]) == DAY}
+    original_ids = {str(r.get("fixture_id")) for r in originals if r.get("football_day") == DAY}
+    eligible = {fid: c for fid, c in by_id.items() if fid in original_ids}
     if len(eligible) != 20:
         raise ValueError("Expected exactly 20 verified football-day fixtures")
     historical = defaultdict(list)
