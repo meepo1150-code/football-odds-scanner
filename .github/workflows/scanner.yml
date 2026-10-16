@@ -1,43 +1,19 @@
 name: Validated Current Scanner
+# Retired legacy scanner: no event triggers. Preserved for migration audit.
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'reports/pattern_registry.json'
-      - 'src/odds_scanner/scanner.py'
-      - 'src/odds_scanner/settlement_ev.py'
-      - 'src/odds_scanner/sgodds_provider.py'
-      - 'src/odds_scanner/pattern_policy.py'
-      - 'tests/test_current_ev_scanner.py'
-      - 'tests/test_sgodds_provider.py'
-      - '.github/workflows/scanner.yml'
-  schedule:
-    - cron: '0 4 * * *'
-concurrency:
-  group: validated-current-scanner
-  cancel-in-progress: false
+    inputs:
+      retired_scanner_disabled:
+        description: 'Retired legacy scanner; execution is blocked'
+        required: true
+        type: boolean
+        default: false
+
 permissions:
   contents: write
 jobs:
-  scan:
+  retired:
+    if: ${{ false }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
-        with: {python-version: '3.11'}
-      - run: python -m pip install -e '.[dev]'
-      - run: pytest -q
-      - name: Run validated production scanner
-        run: python -c "from pathlib import Path; import json; from odds_scanner.scanner import scan; print(json.dumps(scan(Path('.'))))"
-      - name: Commit scanner output
-        run: |
-          set -euo pipefail
-          git config user.name 'odds-scanner-actions'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- reports/today.json
-          git diff --cached --quiet && exit 0
-          git commit -m 'Update validated scanner output'
-          git pull --rebase origin main
-          git push
+      - run: echo 'Legacy scanner retired; no API calls'
