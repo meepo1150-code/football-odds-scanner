@@ -1,6 +1,7 @@
 """UTC reservations for OddsPapi research; failures consume capacity."""
 import calendar
 import json
+import os
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -59,7 +60,7 @@ def allocation(path, ids, now, batch_size=5, *, prioritized=False, overhead=0, m
         raise ValueError('allocation requires an aware clock')
     now = now.astimezone(timezone.utc)
     daily, monthly = usage(path, now)
-    if manual:
+    if manual and os.getenv('RESEARCH_V2_MANUAL_UNRESTRICTED') == 'true':
         # Manual observations are not canonical slots: no internal day/month,
         # future-slot or per-run cap. Provider quota is checked by the collector.
         batches = [ids[i:i+batch_size] for i in range(0, len(ids), batch_size)]
