@@ -7,14 +7,12 @@ import argparse
 import json
 import math
 from collections import Counter
-from datetime import datetime, timezone
 from pathlib import Path
 
-from odds_scanner.historical_manual.planner import stamp, football_day
+from odds_scanner.historical_manual.planner import stamp
 from odds_scanner.research_v2_pattern_stats import _rows, SNAPSHOTS
 
 RECEIPT = Path("reports/manual_historical_promotion_latest.json")
-HISTORY = Path("data/historical/manual_historical_import_ledger.jsonl")
 VALID = "BALANCED_LINE"
 
 def _identity(r):
