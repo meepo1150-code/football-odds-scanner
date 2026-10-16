@@ -70,7 +70,7 @@ jobs:
           git add -f data/normalized/europe_pinnacle_research_v2_snapshots.jsonl
           git add -f data/normalized/research_v2_pattern_outcomes.jsonl
           git add -f data/normalized/research_v2_movement_features.jsonl
-          git add -f reports
+          git add -f reports/sep14_historical_promotion.json reports/research_v2_pattern_statistics.json reports/research_v2_movement_status.json reports/research_v2_operational_audit.json reports/research_v2_end_to_end_audit.json reports/research_v2_fixture_identity.json reports/research_v2_missing_ft_ledger.json reports/dashboard_scope.json reports/oddspapi_history_audit.json reports/scan_health_latest.json reports/scan_health_monitor.json
           git diff --cached --quiet && exit 0
           git commit -m 'data: promote Sep14 historical AH and rebuild unchanged statistics [skip ci]'
           git push origin HEAD:main
