@@ -96,3 +96,80 @@ jobs:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v5
+
+      - name: Verify live Pages matches this build and published research data
+        env:
+          DEPLOY_URL: ${{ steps.deployment.outputs.page_url }}
+          DEPLOY_RUN_ID: ${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          python - <<'PYVERIFY'
+          import json
+          import os
+          import time
+          import urllib.error
+          import urllib.request
+          from pathlib import Path
+
+          base = os.environ['DEPLOY_URL'].rstrip('/') + '/'
+          run_id = os.environ['DEPLOY_RUN_ID']
+          local_deploy = json.loads(Path('site/deployment.json').read_text())
+          expected_sha = local_deploy['source_sha']
+          # GitHub Pages CDN propagation is asynchronous after deploy-pages
+          # reports success. Verify actual files before marking green.
+          def read_live(name):
+              url = base + name + '?publication_verify=' + run_id
+              request = urllib.request.Request(
+                  url, headers={'Cache-Control': 'no-cache',
+                                'User-Agent': 'football-odds-scanner-publication-check'})
+              with urllib.request.urlopen(request, timeout=15) as response:
+                  if response.status != 200:
+                      raise RuntimeError(f'{name}: HTTP {response.status}')
+                  return response.read()
+
+          def verify():
+              deployed = json.loads(read_live('deployment.json'))
+              if deployed.get('source_sha') != expected_sha:
+                  raise RuntimeError(
+                      f"Stale Pages deployment: expected {expected_sha}, "
+                      f"received {deployed.get('source_sha')}")
+              if Path('site/reports/research_v2_pattern_statistics.json').exists():
+                  expected = json.loads(Path('site/reports/research_v2_pattern_statistics.json').read_text())
+                  current = json.loads(read_live('reports/research_v2_pattern_statistics.json'))
+                  for key in ('raw_snapshot_rows', 'snapshot_rows', 'settled_fixtures'):
+                      if current.get(key) != expected.get(key):
+                          raise RuntimeError(
+                              f'Stale published statistics {key}: '
+                              f"expected {expected.get(key)}, received {current.get(key)}")
+              if Path('site/reports/automatic_scan_latest.json').exists():
+                  expected = json.loads(Path('site/reports/automatic_scan_latest.json').read_text())
+                  current = json.loads(read_live('reports/automatic_scan_latest.json'))
+                  for key in ('slot_id', 'status', 'scan_health', 'generated_at'):
+                      if current.get(key) != expected.get(key):
+                          raise RuntimeError(f'Stale published automatic scan receipt: {key}')
+              if Path('site/data/normalized/automatic_scan_slots.jsonl').exists():
+                  url = base + 'data/normalized/automatic_scan_slots.jsonl?publication_verify=' + run_id
+                  req = urllib.request.Request(url, method='HEAD',
+                      headers={'Cache-Control': 'no-cache'})
+                  with urllib.request.urlopen(req, timeout=15) as response:
+                      if response.status != 200:
+                          raise RuntimeError('Automatic slot history missing from live Pages')
+              return deployed
+
+          for attempt in range(1, 25):
+              try:
+                  deployed = verify()
+                  print('LIVE_DASHBOARD_VERIFIED', json.dumps({
+                      'source_sha': expected_sha,
+                      'run_id': run_id,
+                      'pages_url': base,
+                      'statistics_and_scan_receipts': 'MATCH_LOCAL_BUILD'
+                  }))
+                  break
+              except (urllib.error.URLError, TimeoutError, ValueError,
+                      KeyError, json.JSONDecodeError, RuntimeError) as exc:
+                  if attempt == 24:
+                      raise SystemExit(f'LIVE_DASHBOARD_VERIFICATION_FAILED: {exc}')
+                  print(f'Pages propagation check {attempt}/24: {exc}; retry in 5s')
+                  time.sleep(5)
+          PYVERIFY
