@@ -1,0 +1,210 @@
+{
+  "run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/34858378595",
+  "job_id": 104023791063,
+  "log_summary": {
+    "schema_version": "2.4",
+    "generated_at": "2026-09-14T14:52:05.006403+00:00",
+    "classification": "PINNACLE_RESEARCH_V2",
+    "bookmaker": "pinnacle",
+    "football_day": "2026-09-14",
+    "football_day_timezone": "Asia/Bangkok",
+    "football_day_window_start": "2026-09-14T05:00:00+00:00",
+    "football_day_window_end": "2026-09-14T23:00:00+00:00",
+    "research_only": true,
+    "production_promotion_allowed": false,
+    "core_quota_reserve": 30,
+    "batch_size": 5,
+    "batching_strategy": "VERIFIED_TOURNAMENTS_BATCHED_WITH_RATE_LIMIT_BACKOFF",
+    "inter_batch_delay_seconds": 2,
+    "rate_limit_retry_delay_seconds": 5,
+    "max_attempts_per_batch": 2,
+    "resolved_competitions": 38,
+    "planned_requests": 8,
+    "max_planned_requests_with_retries": 16,
+    "competition_type_counts": {
+      "DOMESTIC_CUP": 7,
+      "EUROPEAN_CUP": 3,
+      "LEAGUE": 28
+    },
+    "quota_remaining_before": 118,
+    "status": "RESEARCH_V2_OBSERVED",
+    "requests_used": 8,
+    "rate_limit_retries": 0,
+    "api_fixtures_returned": 310,
+    "excluded_outside_football_day": 290,
+    "football_day_fixtures": 20,
+    "strict_snapshots_this_run": 20,
+    "non_strict_fixtures_this_run": 0,
+    "persisted_snapshot_rows": 20,
+    "persisted_audit_rows": 20,
+    "fixtures_seen": 20,
+    "bookmaker_active_fixtures": 20,
+    "fixtures_with_exactly_one_main_ah": 20,
+    "fixtures_with_exactly_one_main_ou": 20,
+    "fixtures_with_both_exact_mainlines": 20,
+    "strict_snapshots": 20,
+    "rejection_counts": {
+      "OK": 20
+    },
+    "league_coverage": [
+      {
+        "league": "Denmark · Superliga",
+        "fixtures": 1,
+        "bookmaker_active": 1,
+        "ah_main_exactly_one": 1,
+        "ou_main_exactly_one": 1,
+        "both_main_exactly_one": 1,
+        "strict_snapshots": 1,
+        "reason_counts": {
+          "OK": 1
+        }
+      },
+      {
+        "league": "England · Premier League",
+        "fixtures": 1,
+        "bookmaker_active": 1,
+        "ah_main_exactly_one": 1,
+        "ou_main_exactly_one": 1,
+        "both_main_exactly_one": 1,
+        "strict_snapshots": 1,
+        "reason_counts": {
+          "OK": 1
+        }
+      },
+      {
+        "league": "France · Ligue 2",
+        "fixtures": 1,
+        "bookmaker_active": 1,
+        "ah_main_exactly_one": 1,
+        "ou_main_exactly_one": 1,
+        "both_main_exactly_one": 1,
+        "strict_snapshots": 1,
+        "reason_counts": {
+          "OK": 1
+        }
+      },
+      {
+        "league": "Italy · Serie A",
+        "fixtures": 3,
+        "bookmaker_active": 3,
+        "ah_main_exactly_one": 3,
+        "ou_main_exactly_one": 3,
+        "both_main_exactly_one": 3,
+        "strict_snapshots": 3,
+        "reason_counts": {
+          "OK": 3
+        }
+      },
+      {
+        "league": "Netherlands · Eerste Divisie",
+        "fixtures": 2,
+        "bookmaker_active": 2,
+        "ah_main_exactly_one": 2,
+        "ou_main_exactly_one": 2,
+        "both_main_exactly_one": 2,
+        "strict_snapshots": 2,
+        "reason_counts": {
+          "OK": 2
+        }
+      },
+      {
+        "league": "Norway · Eliteserien",
+        "fixtures": 1,
+        "bookmaker_active": 1,
+        "ah_main_exactly_one": 1,
+        "ou_main_exactly_one": 1,
+        "both_main_exactly_one": 1,
+        "strict_snapshots": 1,
+        "reason_counts": {
+          "OK": 1
+        }
+      },
+      {
+        "league": "Poland · Ekstraklasa",
+        "fixtures": 1,
+        "bookmaker_active": 1,
+        "ah_main_exactly_one": 1,
+        "ou_main_exactly_one": 1,
+        "both_main_exactly_one": 1,
+        "strict_snapshots": 1,
+        "reason_counts": {
+          "OK": 1
+        }
+      },
+      {
+        "league": "Portugal · Liga Portugal",
+        "fixtures": 3,
+        "bookmaker_active": 3,
+        "ah_main_exactly_one": 3,
+        "ou_main_exactly_one": 3,
+        "both_main_exactly_one": 3,
+        "strict_snapshots": 3,
+        "reason_counts": {
+          "OK": 3
+        }
+      },
+      {
+        "league": "Romania · Superliga",
+        "fixtures": 2,
+        "bookmaker_active": 2,
+        "ah_main_exactly_one": 2,
+        "ou_main_exactly_one": 2,
+        "both_main_exactly_one": 2,
+        "strict_snapshots": 2,
+        "reason_counts": {
+          "OK": 2
+        }
+      },
+      {
+        "league": "Spain · LaLiga",
+        "fixtures": 1,
+        "bookmaker_active": 1,
+        "ah_main_exactly_one": 1,
+        "ou_main_exactly_one": 1,
+        "both_main_exactly_one": 1,
+        "strict_snapshots": 1,
+        "reason_counts": {
+          "OK": 1
+        }
+      },
+      {
+        "league": "Spain · LaLiga 2",
+        "fixtures": 1,
+        "bookmaker_active": 1,
+        "ah_main_exactly_one": 1,
+        "ou_main_exactly_one": 1,
+        "both_main_exactly_one": 1,
+        "strict_snapshots": 1,
+        "reason_counts": {
+          "OK": 1
+        }
+      },
+      {
+        "league": "Sweden · Allsvenskan",
+        "fixtures": 2,
+        "bookmaker_active": 2,
+        "ah_main_exactly_one": 2,
+        "ou_main_exactly_one": 2,
+        "both_main_exactly_one": 2,
+        "strict_snapshots": 2,
+        "reason_counts": {
+          "OK": 2
+        }
+      },
+      {
+        "league": "Turkey · Super Lig",
+        "fixtures": 1,
+        "bookmaker_active": 1,
+        "ah_main_exactly_one": 1,
+        "ou_main_exactly_one": 1,
+        "both_main_exactly_one": 1,
+        "strict_snapshots": 1,
+        "reason_counts": {
+          "OK": 1
+        }
+      }
+    ]
+  },
+  "snapshot_time_bangkok": "2026-09-14T21:52:05.006403+07:00",
+  "note": "Actual original observation is 52 minutes after 21:00 target; never relabel as exact scheduled slot."
+}
