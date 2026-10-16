@@ -62,7 +62,7 @@ jobs:
               for line in incoming.read_text().splitlines():
                   if line.strip() and line not in seen:
                       json.loads(line)
-                      out.write(line+'\\n')
+                      out.write(line+chr(10))
                       seen.add(line)
           PY
                     ;;
