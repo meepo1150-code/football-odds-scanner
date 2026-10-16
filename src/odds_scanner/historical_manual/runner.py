@@ -191,6 +191,25 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
             raise StopPilot('REVIEWED_CATALOG_CHANGED')
         catalog = json.loads(raw_catalog)
         manifest = build(root, args.start_day, args.end_day, args.times, args.bookmakers, clock())
+        # Opt-in deterministic fixture sharding for isolated, bounded jobs.
+        # The original manual workflow passes neither option and is unchanged.
+        shard = getattr(args, 'fixture_shard', None)
+        count = getattr(args, 'fixture_shards', None)
+        if (shard is None) != (count is None):
+            raise StopPilot('SHARD_ARGUMENT_PAIR_REQUIRED')
+        if shard is not None:
+            if type(shard) is not int or type(count) is not int or not 0 <= shard < count <= 128:
+                raise StopPilot('INVALID_SHARD_CONFIGURATION')
+            complete = manifest['candidates']
+            manifest['candidates'] = [
+                c for c in complete
+                if int(hashlib.sha256(c['fixture_id'].encode()).hexdigest(), 16) % count == shard
+            ]
+            manifest['unique_fixtures'] = len({c['fixture_id'] for c in manifest['candidates']})
+            manifest['fixture_bookmaker_pairs'] = len(manifest['candidates'])
+            manifest['all_candidate_pairs_before_sharding'] = len(complete)
+            manifest['fixture_shard'] = shard
+            manifest['fixture_shards'] = count
         # No new requests for a growing/prematch fixture history.
         if any(stamp(c['kickoff']) >= clock() for c in manifest['candidates']):
             raise StopPilot('FIXTURE_HAS_NOT_KICKED_OFF')
@@ -316,6 +335,8 @@ def main():
     p.add_argument('--bookmakers', default='pinnacle')
     p.add_argument('--mode', choices=['plan', 'cache-only', 'recover'], default='plan')
     p.add_argument('--confirm-live-requests', action='store_true')
+    p.add_argument('--fixture-shard', type=int)
+    p.add_argument('--fixture-shards', type=int)
     args = p.parse_args()
     report = execute(args)
     summary = {k:v for k,v in report.items() if k not in ('results', 'requests')}
