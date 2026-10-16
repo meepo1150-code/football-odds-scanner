@@ -1,4 +1,4 @@
-name: Research Sep14 Historical Odds Recovery
+name: Research Sep15–17 Historical Odds Recovery
 on:
   workflow_dispatch:
   push:
@@ -6,8 +6,13 @@ on:
     paths: [.github/workflows/research-offline-historical-matrix.yml]
 permissions: {contents: read}
 jobs:
-  sep14-recovery:
+  sep15-17-recovery:
     if: (github.event_name == 'workflow_dispatch' || github.event_name == 'push') && github.ref == 'refs/heads/research/historical-backfill-isolated-20261015'
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        batch: [0, 1, 2]
     environment: historical-research
     concurrency: {group: historical-research-isolated-manual, cancel-in-progress: false}
     runs-on: ubuntu-latest
@@ -15,6 +20,7 @@ jobs:
     env:
       PYTHONPATH: src:.
       PILOT_ENVIRONMENT: historical-research
+      MANIFEST_BATCH_ID: ${{ matrix.batch }}
     steps:
       - uses: actions/checkout@v4
         with: {persist-credentials: false}
@@ -27,28 +33,28 @@ jobs:
           path: |
             research/historical_backfill/data/raw
             research/historical_backfill/data/cache
-          key: historical-pilot-v1-${{ github.run_id }}
+          key: historical-pilot-v1-${{ github.run_id }}-${{ matrix.batch }}
           restore-keys: historical-pilot-v1-
       - uses: actions/checkout@v4
         with: {ref: main, path: production-state, persist-credentials: false}
-      - name: Bounded Sep14 live experiment
+      - name: Bounded Sep15–17 live experiment
         env:
           HISTORICAL_ODDSPAPI_KEY: ${{ secrets.HISTORICAL_ODDSPAPI_KEY }}
           ACCOUNT_PROBE_KEY: ${{ secrets.ODDSPAPI_KEY }}
-        run: python -m research.historical_backfill.sep14.run
+        run: python -m research.historical_backfill.sep15_17.run
       - uses: actions/cache/save@v4
         if: always() && hashFiles('research/historical_backfill/data/cache/*.json') != ''
         with:
           path: |
             research/historical_backfill/data/raw
             research/historical_backfill/data/cache
-          key: historical-pilot-v1-${{ github.run_id }}
+          key: historical-pilot-v1-${{ github.run_id }}-${{ matrix.batch }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: sep14-historical-recovery-${{ github.run_id }}
+          name: sep15-17-historical-recovery-${{ github.run_id }}-${{ matrix.batch }}
           path: |
-            research/historical_backfill/sep14
+            research/historical_backfill/sep15_17
             research/historical_backfill/data/actions/health.json
             research/historical_backfill/data/actions/health-evidence.json
             research/historical_backfill/data/raw
