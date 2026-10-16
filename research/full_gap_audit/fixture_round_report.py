@@ -38,6 +38,8 @@ def summarize(rows):
             'expected_unknown_ah':counts['UNKNOWN_EVIDENCE'],
             'unknown_membership':sum(s.get('expected') is None for s in slots),
             'observed_slots':';'.join(s['slot_bangkok'] for s in slots if s['status']=='COMPLETE'),
+            'observed_ah_quote_records':sum(s.get('actual_observation_count',0) for s in slots),
+            'round_status_detail':json.dumps([{'slot':s['slot_bangkok'],'status':s['status'],'expected':s.get('expected'),'observations':s.get('actual_observation_count',0),'policy':s.get('policy_version'),'reason':s.get('reason')} for s in slots],ensure_ascii=False,separators=(',',':')),
             'candidate_deficit_slots':';'.join(s['slot_bangkok'] for s in known if s['status'] in ('SCAN_FAILED','NO_PRICE')),
             'needs_evidence_slots':';'.join(s['slot_bangkok'] for s in slots if s.get('expected') is None or (s.get('expected') is True and s['status'] in ('UNMATCHED','UNKNOWN_EVIDENCE')))
         })
