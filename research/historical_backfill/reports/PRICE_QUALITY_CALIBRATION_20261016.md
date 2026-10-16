@@ -37,6 +37,8 @@ This is a research selection rule, not proof of the bookmaker's official mainlin
 - **6/25 slots unresolved**; selected coverage **19/25 (76%)**. No threshold was loosened.
 - Compared 14 existing observations at their actual observation timestamps; 11 have
   complete same-bookmaker/exact-AH-line historical comparisons across **9 fixtures**.
+  At 10 observation times with an eligible balanced line, the selected line matched
+  the observed production line in all 10 cases. This is calibration evidence only.
   The 3 unavailable same-line comparisons are not silently matched to another line.
 - Historical vs observed price differences are reported descriptively, not treated
   as automatic errors: provider history is captured state, not a continuous tradability feed.
