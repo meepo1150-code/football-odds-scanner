@@ -59,7 +59,7 @@ def produce(report, manifest, original):
         if len(sides) > 1:
             raise ValueError("MISSING_OR_AMBIGUOUS_FAVORITE_IDENTITY")
         if not sides:
-            if not any(e.get("mapping_source", "").startswith("ODDSPAPI_") and e.get("evidence_url", "").startswith("https://") for e in c.get("evidence", [])):
+            if not any(e.get("mapping_source", "").startswith("ODDSPAPI_") and (e.get("evidence_url", "").startswith("https://") or (e.get("mapping_source") == "ODDSPAPI_NATIVE_FIXTURES_RECEIPT" and e.get("response_id") and e.get("sha256"))) for e in c.get("evidence", [])):
                 raise ValueError("NEW_FIXTURE_REQUIRES_EXTERNAL_PROVIDER_EVIDENCE")
             templates[key] = None
         else:

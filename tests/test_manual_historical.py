@@ -422,3 +422,23 @@ def test_publish_new_verified_fixture_without_original_snapshot():
     assert row['data_origin'] == 'BACKFILLED'
     assert row['promotion_eligible'] is False
     assert row['observed_at'] == '2026-09-13T07:59:00+00:00'
+
+
+def test_native_schedule_receipt_discovers_historical_fixture_without_snapshot(tmp_path, monkeypatch):
+    from odds_scanner import master_schedule_plan
+    monkeypatch.setattr(master_schedule_plan, 'registry', lambda: [
+        dict(tournament_id=17, tournament_name='Verified League')])
+    path = tmp_path/'data/normalized/research_v2_provider_responses.jsonl'
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(dict(provider='oddspapi', endpoint='/fixtures',
+        response_id='immutable-response-id', observed_at='2026-09-14T00:00:00Z',
+        payload=[dict(fixtureId='id987654', tournamentId=17,
+            participant1Name='Home', participant2Name='Away',
+            startTime='2026-09-13T15:00:00Z')])) + '\n')
+    manifest = planner.build(tmp_path, '2026-09-13', '2026-09-13',
+        '15:00,18:00,21:00,00:00', 'pinnacle', NOW)
+    assert manifest['unique_fixtures'] == 1
+    c = manifest['candidates'][0]
+    assert c['observations'] == []
+    assert c['evidence'][0]['mapping_source'] == 'ODDSPAPI_NATIVE_FIXTURES_RECEIPT'
+    assert c['evidence'][0]['response_id'] == 'immutable-response-id'
