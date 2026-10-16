@@ -141,7 +141,7 @@ def publish(report, manifest, root=Path(".")):
     prior = {}
     for row in original:
         k = _key(row)
-        if k[-1] is not None:
+        if k[-1] is not None and row.get("data_origin") == "BACKFILLED":
             if k in prior and prior[k] != row:
                 raise ValueError("CONFLICTING_EXISTING_BACKFILL")
             prior[k] = row
