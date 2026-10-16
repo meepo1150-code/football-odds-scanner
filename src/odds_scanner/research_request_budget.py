@@ -75,17 +75,14 @@ def allocation(path, ids, now, batch_size=5, *, prioritized=False, overhead=0, m
     # day; optional second batches yield before reaching 180/month.
     future_month_reserve = sum(len(utc_targets(now.date() + timedelta(days=i))) + 1
         for i in range(1, calendar.monthrange(now.year, now.month)[1] - now.day + 1))
-    run_limit = RUN_LIMIT
-    # One odds batch defines the daily cohort, even if discovery is cached.
-    # This keeps every repeat observation affordable under the future-slot minimum.
-    if now.date().isoformat() >= '2026-10-14' and not manual and slots and slots[0] <= now <= slots[0]+timedelta(minutes=150):
-        run_limit = min(RUN_LIMIT, overhead+1)
-    available = max(0, min(run_limit, DAILY_LIMIT-daily-protected_reserve,
-                          MONTHLY_LIMIT-monthly-protected_reserve-future_month_reserve))
-    remaining = max(0, available-overhead)
+    # Full-coverage policy: do not truncate the approved tournament universe
+    # to preserve research quota. Transport still obeys provider HTTP limits.
     batches = [ids[i:i+batch_size] for i in range(0, len(ids), batch_size)]
-    chosen = [batches[i if prioritized else (now.date().toordinal()+i)%len(batches)]
-              for i in range(min(remaining, len(batches)))] if batches else []
+    chosen = batches
+    run_limit = len(batches) + overhead
+    available = run_limit
+    protected_reserve = 0
+    future_month_reserve = 0
     return [x for b in chosen for x in b], {
         'request_budget_policy': 'RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH',
         'research_requests_used_today': daily, 'research_requests_used_month': monthly,
