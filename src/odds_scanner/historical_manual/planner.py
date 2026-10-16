@@ -118,7 +118,7 @@ def build(root, start, end, times, bookmakers, now):
             if any(not row.get(k) for k in required):
                 raise ValueError('EXTERNAL_FIXTURE_EVIDENCE_INCOMPLETE')
             fid, book = row['fixture_id'], row['bookmaker']
-            if (not re.fullmatch(r'id\\d+', fid) or book not in {'pinnacle', 'bet365'}
+            if (not re.fullmatch(r'id\d+', fid) or book not in {'pinnacle', 'bet365'}
                     or not str(row['mapping_source']).startswith('ODDSPAPI_')
                     or not str(row['evidence_url']).startswith('https://')):
                 raise ValueError('EXTERNAL_FIXTURE_EVIDENCE_INVALID')
