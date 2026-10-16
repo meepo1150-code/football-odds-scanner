@@ -123,6 +123,7 @@ jobs:
         with: {python-version: '3.12'}
       - run: python -m pip install -e '.[dev]'
       - name: Fetch exact historical scan artifact
+        id: artifact_gate
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -144,22 +145,16 @@ jobs:
           unzip -q /tmp/historical-publish.zip -d manual-publish-artifact
           test -s manual-publish-artifact/report.json
           test -s manual-publish-artifact/manifest.json
-          python - <<'PYVERIFY'
-          import json, os
-          from pathlib import Path
-          report=json.loads(Path('manual-publish-artifact/report.json').read_text())
-          if report.get('status') != 'COMPLETED' or report.get('research_only') is not True:
-              raise SystemExit('Historical artifact not completed research')
-          expected=f"/actions/runs/{os.environ['GITHUB_RUN_ID']}"
-          if not str(report.get('run_url','')).endswith(expected):
-              raise SystemExit('Historical artifact belongs to another run')
-          PYVERIFY
+          python -m odds_scanner.historical_manual.publish_gate \
+            --report manual-publish-artifact/report.json --run-id "$GITHUB_RUN_ID"
       - name: Validate, import, and rebuild main statistics (offline)
+        if: steps.artifact_gate.outputs.publish == 'true'
         run: |
           set -euo pipefail
           python scripts/publish_manual_historical.py --artifact-dir manual-publish-artifact
           python -m odds_scanner.research_v2_evidence
       - name: Commit data and regenerated statistics, preserving other main changes
+        if: steps.artifact_gate.outputs.publish == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -180,6 +175,7 @@ jobs:
             git push origin HEAD:main
           fi
       - name: Explicitly dispatch Pages deployment after publish
+        if: steps.artifact_gate.outputs.publish == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
