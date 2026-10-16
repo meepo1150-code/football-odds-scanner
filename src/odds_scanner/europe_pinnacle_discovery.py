@@ -130,6 +130,7 @@ def run(root=Path('.')):
                       planned_requests=0, quota_skip_reason='PROVIDER_COOLDOWN')
         return _write(report, root)
     manual=os.getenv('RESEARCH_V2_MANUAL_BREADTH','').lower()=='true'
+    unrestricted_manual = manual and os.getenv('RESEARCH_V2_MANUAL_UNRESTRICTED') == 'true'
     report['manual_supplementary_scan']=manual
     if manual:
         from .research_v2_slots import read_ledger,provider_attempt_receipt,stamp
@@ -220,14 +221,14 @@ def run(root=Path('.')):
     report['account_month_capacity_shortfall'] = max(0, month_minimum + ACCOUNT_RESERVE - remaining)
     # Breadth is optional. Keep the minimum market call available today even
     # when earlier account usage makes all remaining days impossible to fund.
-    if not manual and fixed is None and normal > 1 and remaining - normal - overhead < ACCOUNT_RESERVE + month_minimum - overhead - 1:
+    if not unrestricted_manual and fixed is None and normal > 1 and remaining - normal - overhead < ACCOUNT_RESERVE + month_minimum - overhead - 1:
         ids = ids[:BATCH_SIZE]
         selected = [x for x in selected if x.get('tournament_id') in ids]
         normal = 1
         report.update(planned_requests=normal, coverage_tournament_ids=ids,
                       account_optional_breadth_deferred=True)
-    report['effective_quota_reserve']=0 if manual else effective_reserve
-    if not ids or remaining < 0 or (not manual and remaining-normal-overhead < effective_reserve) or (manual and remaining < normal+overhead):report.update(status='SKIPPED_QUOTA',quota_skip_reason='PROVIDER_CAPACITY_INSUFFICIENT' if manual else 'ACCOUNT_CAPACITY_RESERVED_OR_EXHAUSTED',requests_used=0);return _write(report,root)
+    report['effective_quota_reserve']=0 if unrestricted_manual else effective_reserve
+    if not ids or remaining < 0 or (not unrestricted_manual and remaining-normal-overhead < effective_reserve) or (unrestricted_manual and remaining < normal+overhead):report.update(status='SKIPPED_QUOTA',quota_skip_reason='PROVIDER_CAPACITY_INSUFFICIENT' if unrestricted_manual else 'ACCOUNT_CAPACITY_RESERVED_OR_EXHAUSTED',requests_used=0);return _write(report,root)
     try:
         ids, budget, reservation_id, grant = reserve(root, ids, datetime.now(timezone.utc), overhead=overhead, manual=manual)
     except ResearchQuotaBlocked as exc:
