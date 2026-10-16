@@ -1,0 +1,118 @@
+"""Thai football-day planning from exact native provider evidence, without HTTP."""
+import hashlib
+import json
+import re
+from datetime import date, datetime, time, timedelta, timezone
+from pathlib import Path
+from zoneinfo import ZoneInfo
+
+BKK = ZoneInfo('Asia/Bangkok')
+DAY_POLICY = 'BKK_KICKOFF_BEFORE_0600_PREVIOUS_DAY_V1'
+SOURCES = (
+    'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl',
+    'data/normalized/v2_mainline_snapshots.jsonl',
+    'data/research/pre_sep14_historical_originals.jsonl',
+    'data/research/pre_sep15_17_historical_originals.jsonl',
+)
+
+
+def stamp(value):
+    result = datetime.fromisoformat(str(value).replace('Z', '+00:00'))
+    if result.tzinfo is None:
+        raise ValueError('TIMEZONE_REQUIRED')
+    return result.astimezone(timezone.utc)
+
+
+def football_day(kickoff):
+    local = stamp(kickoff).astimezone(BKK)
+    return local.date() - timedelta(days=1) if local.hour < 6 else local.date()
+
+
+def parse_days(start, end):
+    if not all(re.fullmatch(r'\d{4}-\d{2}-\d{2}', v) for v in (start, end)):
+        raise ValueError('DATES_REQUIRE_YYYY_MM_DD')
+    first, last = date.fromisoformat(start), date.fromisoformat(end)
+    if not 0 <= (last-first).days <= 6:
+        raise ValueError('RANGE_MUST_BE_1_TO_7_DAYS')
+    return [first + timedelta(days=i) for i in range((last-first).days+1)]
+
+
+def parse_times(value):
+    values = value.split(',')
+    if not 1 <= len(values) <= 8:
+        raise ValueError('SELECT_1_TO_8_TIMES')
+    result = []
+    for token in values:
+        token = token.strip()
+        if not re.fullmatch(r'(?:[01]\d|2[0-3]):[0-5]\d', token):
+            raise ValueError('TIMES_REQUIRE_HH_MM')
+        result.append(time.fromisoformat(token))
+    if len(set(result)) != len(result):
+        raise ValueError('DUPLICATE_TARGET_TIME')
+    return sorted(result, key=lambda t: (t.hour < 6, t))
+
+
+def target(day, clock):
+    # 01:45 selected for football day 14 means calendar day 15, 01:45 BKK.
+    calendar = day + timedelta(days=1) if clock.hour < 6 else day
+    return datetime.combine(calendar, clock, BKK)
+
+
+def request_for(fid, book):
+    return {'endpoint': '/v4/historical-odds', 'params': {'fixtureId': fid, 'bookmakers': book}}
+
+
+def build(root, start, end, times, bookmakers, now):
+    days, clocks = parse_days(start, end), parse_times(times)
+    books = set(bookmakers.split(','))
+    if not books or not books <= {'pinnacle', 'bet365'}:
+        raise ValueError('UNSUPPORTED_BOOKMAKER')
+    targets = {d: [target(d, t) for t in clocks] for d in days}
+    if any(t >= now for ts in targets.values() for t in ts):
+        raise ValueError('TARGETS_MUST_BE_IN_THE_PAST')
+    by_key, identities, conflicts = {}, {}, set()
+    for source in SOURCES:
+        path = root/source
+        if not path.exists():
+            continue
+        for number, line in enumerate(path.read_text().splitlines(), 1):
+            if not line.strip():
+                continue
+            row = json.loads(line)
+            if (not str(row.get('source_semantics', '')).startswith('CURRENT_ODDSPAPI_')
+                    or row.get('data_origin') == 'BACKFILLED'
+                    or row.get('bookmaker') not in books):
+                continue
+            fid = row.get('fixture_id', '')
+            if not re.fullmatch(r'id\d+', fid) or not all(row.get(k) for k in ('home', 'away', 'kickoff', 'league')):
+                continue
+            ko = stamp(row['kickoff'])
+            identity = (row['home'], row['away'], ko.isoformat())
+            if fid in identities and identities[fid] != identity:
+                conflicts.add(fid)
+            identities[fid] = identity
+            day = football_day(row['kickoff'])
+            if day not in targets:
+                continue
+            key = fid, row['bookmaker']
+            c = by_key.setdefault(key, dict(fixture_id=fid, bookmaker=row['bookmaker'],
+                home=row['home'], away=row['away'], league=row['league'], kickoff=ko.isoformat(),
+                football_day=day.isoformat(), request=request_for(*key), evidence=[], observations=[],
+                source_day_labels=[]))
+            c['evidence'].append(dict(path=source, line=number,
+                sha256=hashlib.sha256(line.encode()).hexdigest()))
+            c['observations'].append(row)
+            if row.get('football_day') and row['football_day'] not in c['source_day_labels']:
+                c['source_day_labels'].append(row['football_day'])
+    if conflicts & {c['fixture_id'] for c in by_key.values()}:
+        raise ValueError('EXACT_IDENTITY_CONFLICT')
+    candidates = sorted(by_key.values(), key=lambda c: (c['football_day'], c['fixture_id'], c['bookmaker']))
+    for c in candidates:
+        ts = targets[date.fromisoformat(c['football_day'])]
+        c['targets'] = [dict(target_thai=t.isoformat(), target_utc=t.astimezone(timezone.utc).isoformat(),
+            status='PENDING' if t < stamp(c['kickoff']) else 'NOT_PREMATCH_SLOT') for t in ts]
+        c['source_day_conflict'] = any(d != c['football_day'] for d in c['source_day_labels'])
+    return dict(schema_version=1, timezone='Asia/Bangkok', day_policy=DAY_POLICY,
+        start_day=start, end_day=end, target_times_thai=times, scope='VERIFIED_NATIVE_SNAPSHOT_FIXTURES_ONLY',
+        full_provider_universe_claimed=False, unique_fixtures=len({c['fixture_id'] for c in candidates}),
+        fixture_bookmaker_pairs=len(candidates), candidates=candidates)
