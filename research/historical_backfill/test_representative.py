@@ -91,3 +91,26 @@ class BalancedSelectionTests(unittest.TestCase):
         with self.assertRaises(ValueError):validate_catalog(catalog+[catalog[0]],source)
 
 if __name__=='__main__':unittest.main()
+
+class CalibrationBindingTests(unittest.TestCase):
+    def test_invalid_gate_cannot_authorize_expansion(self):
+        from research.historical_backfill.revalidate import authorize_expansion
+        from unittest.mock import patch
+        with patch('research.historical_backfill.revalidate.immutable_hashes', side_effect=AssertionError('must not touch cache')):
+            for gate in ({}, {'status':'FAIL'}, {'status':'PASS','expansion_allowed':True}):
+                with self.subTest(gate=gate),self.assertRaisesRegex(ValueError,'PRICE_QUALITY_GATE_REQUIRED'):
+                    authorize_expansion(gate,{},[],Path('.'))
+
+    def test_coverage_does_not_count_unattempted_as_tested(self):
+        from research.historical_backfill.quality_coverage import coverage
+        from datetime import datetime,timezone
+        c=dict(fixture_id='synthetic',bookmaker='pinnacle',kickoff=ARGS['kickoff'],
+               missing_rounds=[ARGS['slot']],football_day='2026-09-19',home='H',away='A',league='Test')
+        r=coverage({'candidates':[c]}, {'results':[]}, CATALOG,datetime(2026,10,16,tzinfo=timezone.utc))
+        self.assertEqual(r['tested_fixtures'],0)
+        self.assertEqual(r['untested_slots'],1)
+        self.assertIsNone(r['breakdown'][0]['coverage_of_tested'])
+        result=dict(fixture_id='synthetic',bookmaker='pinnacle',historical_ah_available=True,reconstructed=[row()])
+        r=coverage({'candidates':[c]}, {'results':[result]}, CATALOG,datetime(2026,10,16,tzinfo=timezone.utc))
+        self.assertEqual(r['balanced_slots'],1)
+        self.assertEqual(r['slots'][0]['selected']['line'],-2)
