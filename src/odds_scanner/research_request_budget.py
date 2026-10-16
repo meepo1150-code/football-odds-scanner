@@ -1,12 +1,8 @@
 """UTC reservations for OddsPapi research; failures consume capacity."""
-import calendar
 import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-DAILY_LIMIT = 6
-MONTHLY_LIMIT = 180
-RUN_LIMIT = 2
 RESERVATIONS = Path('data/normalized/research_v2_quota_reservations.jsonl')
 
 
@@ -61,22 +57,7 @@ def allocation(path, ids, now, batch_size=5, *, prioritized=False, overhead=0, m
     daily, monthly = usage(path, now)
     slots = utc_targets(now.date())
     future = [t for t in slots if t > now]
-    # One market call per future slot, plus the day's fixture discovery if the
-    # preparation slot is still ahead. Manual and recovery cannot spend this.
-    future_reserve = len(future) + int(bool(future) and future[0] == slots[0])
-    current_reserve = 0
-    if manual:
-        from .research_v2_slots import completed, read_snapshots
-        elapsed = [t for t in slots if t <= now <= t + timedelta(minutes=150)]
-        if elapsed and not completed(max(elapsed), now, _rows(path), read_snapshots(path.parents[2]) if len(path.parents) > 2 else []):
-            current_reserve = 1 + int(max(elapsed) == slots[0])
-    protected_reserve = future_reserve + current_reserve
-    # Protect five requests (discovery + four observations) on each future UTC
-    # day; optional second batches yield before reaching 180/month.
-    future_month_reserve = sum(len(utc_targets(now.date() + timedelta(days=i))) + 1
-        for i in range(1, calendar.monthrange(now.year, now.month)[1] - now.day + 1))
-    # No locally imposed request ceiling: provider entitlement and rate-limit responses
-    # remain authoritative in the collector.
+    # Schedule metadata is observational; only provider entitlement gates transport.
     run_limit = (len(ids) + batch_size - 1) // batch_size + overhead
     remaining = max(0, run_limit - overhead)
     batches = [ids[i:i+batch_size] for i in range(0, len(ids), batch_size)]
@@ -85,7 +66,7 @@ def allocation(path, ids, now, batch_size=5, *, prioritized=False, overhead=0, m
     return [x for b in chosen for x in b], {
         'request_budget_policy': 'PROVIDER_ENFORCED_ONLY',
         'research_requests_used_today': daily, 'research_requests_used_month': monthly,
-        'research_daily_limit': DAILY_LIMIT, 'research_monthly_limit': MONTHLY_LIMIT,
+        'research_daily_limit': None, 'research_monthly_limit': None,
         'research_run_limit': run_limit, 'quota_utc_day': now.date().isoformat(),
         'canonical_slots_in_football_day': len(slots),
         'future_utc_slots': [t.isoformat() for t in future],
