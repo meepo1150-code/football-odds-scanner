@@ -1,0 +1,74 @@
+name: Sep05-10 Native Fixture Discovery and Recovery Dispatch
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sep05-10-fixture-discovery.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: sep05-10-isolated-discovery
+  cancel-in-progress: false
+jobs:
+  discover:
+    if: github.ref == 'refs/heads/main'
+    environment: historical-research
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      PILOT_ENVIRONMENT: historical-research
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e '.[dev]'
+      - name: Run independent offline safety tests
+        run: python -m pytest -q tests/test_sep05_10_discovery.py tests/test_manual_historical.py
+      - name: Retrieve native fixtures using isolated account (max 1 billable request)
+        id: discovery
+        env:
+          HISTORICAL_ODDSPAPI_KEY: ${{ secrets.HISTORICAL_ODDSPAPI_KEY }}
+          ACCOUNT_PROBE_KEY: ${{ secrets.ODDSPAPI_KEY }}
+        run: python -m odds_scanner.historical_manual.sep05_10_discovery
+      - name: Check that production data, reports and config remain untouched
+        run: git diff --exit-code -- data/normalized reports config
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sep05-10-fixture-discovery-${{ github.run_id }}
+          path: research/sep05_10_discovery/output
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Retain original native fixture evidence in main
+        if: steps.discovery.outcome == 'success'
+        run: |
+          set -euo pipefail
+          test -s data/research/manual_historical_provider_receipts.jsonl
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -f data/research/manual_historical_provider_receipts.jsonl
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: retain native Sep05-10 fixture evidence [skip ci]'
+            git push origin HEAD:main
+          fi
+      - name: Dispatch existing isolated historical runner
+        if: steps.discovery.outputs.dispatch == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh workflow run manual-historical-scan.yml -R "$GITHUB_REPOSITORY" --ref main \
+            -f start_day=2026-09-05 \
+            -f end_day=2026-09-10 \
+            -f times_thai=15:00,18:00,21:00,00:00 \
+            -f bookmakers=pinnacle,bet365 \
+            -f mode=recover \
+            -f publish_to_dashboard=true \
+            -f confirm_live_requests=true
+          echo "Existing research runner dispatched; actual evidence must be verified in its run."
