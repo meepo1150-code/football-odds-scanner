@@ -105,12 +105,18 @@ def build(root, start, end, times, bookmakers, now):
             c['observations'].append(row)
             if row.get('football_day') and row['football_day'] not in c['source_day_labels']:
                 c['source_day_labels'].append(row['football_day'])
-    # Reuse immutable native OddsPapi /fixtures response receipts, including
-    # matches with no live odds snapshot. No HTTP and no name-based joining.
-    receipts = root / 'data/normalized/research_v2_provider_responses.jsonl'
-    if receipts.exists():
-        from odds_scanner.master_schedule_plan import registry, items
-        approved = {str(r['tournament_id']): r for r in registry()}
+    # Native, SHA-bound provider /fixtures evidence. Never infer OddsPapi
+    # fixture IDs from names, match results, or bookmaker pricing.
+    from odds_scanner.master_schedule_plan import registry, items
+    approved = {str(r['tournament_id']): r for r in registry()}
+    for relative in (
+        'data/normalized/research_v2_provider_responses.jsonl',
+        'data/research/manual_historical_provider_receipts.jsonl',
+    ):
+        receipts = root / relative
+        if not receipts.exists():
+            continue
+        is_research_receipt = relative.startswith('data/research/')
         for number, line in enumerate(receipts.read_text().splitlines(), 1):
             if not line.strip():
                 continue
@@ -119,12 +125,22 @@ def build(root, start, end, times, bookmakers, now):
                 continue
             if not receipt.get('response_id') or not receipt.get('observed_at'):
                 continue
+            if is_research_receipt:
+                record = {k: v for k, v in receipt.items() if k != 'response_id'}
+                actual = hashlib.sha256(json.dumps(record, sort_keys=True,
+                    ensure_ascii=False).encode()).hexdigest()
+                if receipt['response_id'] != actual:
+                    raise ValueError('MANUAL_FIXTURE_RECEIPT_HASH_MISMATCH')
             for fixture in items(receipt.get('payload')):
                 fid = str(fixture.get('fixtureId') or '')
                 tournament = approved.get(str(fixture.get('tournamentId')))
                 if not tournament or not re.fullmatch(r'id\d+', fid):
                     continue
-                home, away, kickoff = fixture.get('participant1Name'), fixture.get('participant2Name'), fixture.get('startTime')
+                if is_research_receipt and fixture.get('statusId') != 2:
+                    # Historical reconstruction is restricted to finished matches.
+                    continue
+                home, away, kickoff = (fixture.get('participant1Name'),
+                    fixture.get('participant2Name'), fixture.get('startTime'))
                 if not home or not away or not kickoff:
                     continue
                 ko = stamp(kickoff)
@@ -147,7 +163,7 @@ def build(root, start, end, times, bookmakers, now):
                             football_day=day.isoformat(), request=request_for(*key),
                             evidence=[], observations=[], source_day_labels=[])
                         by_key[key] = c
-                    c['evidence'].append(dict(path=str(receipts.relative_to(root)), line=number,
+                    c['evidence'].append(dict(path=relative, line=number,
                         sha256=hashlib.sha256(line.encode()).hexdigest(),
                         mapping_source='ODDSPAPI_NATIVE_FIXTURES_RECEIPT',
                         response_id=receipt['response_id']))
