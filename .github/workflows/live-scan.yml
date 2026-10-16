@@ -1,62 +1,22 @@
 name: Live Odds Scan
+# Retired legacy scanner: no event triggers. Preserved for migration audit.
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'src/odds_scanner/oddspapi_current_provider.py'
-      - 'src/odds_scanner/oddspapi_provider.py'
-      - 'src/odds_scanner/oddspapi_big5.py'
-      - 'src/odds_scanner/run_live_scan.py'
-      - 'src/odds_scanner/scanner.py'
-      - 'src/odds_scanner/execution_safety.py'
-      - 'src/odds_scanner/market_contract.py'
-      - 'reports/pattern_registry.json'
-      - '.github/workflows/live-scan.yml'
-  schedule:
-    - cron: '0 5 * * *'
-    - cron: '0 10 * * *'
-    - cron: '0 14 * * *'
+    inputs:
+      retired_scanner_disabled:
+        description: 'Retired legacy scanner; execution is blocked'
+        required: true
+        type: boolean
+        default: false
+
 permissions:
   contents: write
 concurrency:
   group: football-odds-live-scan
   cancel-in-progress: true
 jobs:
-  scan:
+  retired:
+    if: ${{ false }}
     runs-on: ubuntu-latest
-    timeout-minutes: 12
-    env:
-      ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
     steps:
-      - uses: actions/checkout@v6
-        with:
-          ref: main
-      - uses: actions/setup-python@v6
-        with: {python-version: '3.11'}
-      - run: python -m pip install -e '.[dev]'
-      - run: pytest -q
-      - name: Run registry-first fail-closed live scan
-        run: python -m odds_scanner.run_live_scan
-      - name: Commit scanner report without generated-file rebase conflicts
-        run: |
-          set -euo pipefail
-          cp reports/today.json /tmp/today.json
-          git config user.name 'odds-scanner-actions'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          for attempt in 1 2 3; do
-            git fetch origin main
-            git reset --hard origin/main
-            mkdir -p reports
-            cp /tmp/today.json reports/today.json
-            git add -- reports/today.json
-            git diff --cached --quiet && exit 0
-            git commit -m 'Update live odds scan'
-            if git push origin HEAD:main; then exit 0; fi
-            echo "Push race on attempt $attempt; retrying from latest main"
-          done
-          exit 1
-
-# Quota policy: OddsPapi fetch is lazy. With an empty validated registry the
-# scanner returns before provider.fetch(), so scheduled scans consume 0 API
-# requests. When patterns exist, one production scan uses 3 provider requests.
+      - run: echo 'Legacy scanner retired; no API calls'
