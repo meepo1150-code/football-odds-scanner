@@ -1,8 +1,11 @@
 import copy
 import json
 from pathlib import Path
+import importlib.util
 import pytest
-from scripts import promote_sep15_17_historical as p
+spec=importlib.util.spec_from_file_location('sep15_17_promotion',Path(__file__).resolve().parents[1]/'scripts/promote_sep15_17_historical.py')
+p=importlib.util.module_from_spec(spec)
+spec.loader.exec_module(p)
 
 @pytest.fixture
 def example(monkeypatch):
