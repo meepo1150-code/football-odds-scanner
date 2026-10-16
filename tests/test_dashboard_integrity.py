@@ -231,3 +231,33 @@ def test_fixture_title_centered_and_competition_country_grounded():
     assert '"meistriliiga":"Estonia"' in html
     assert '"uefa champions league":"Europe"' in html
     assert "return VERIFIED_COMPETITION_COUNTRIES[String(league||'').trim().toLowerCase()]||''" in html
+
+
+def test_dashboard_due_ft_uses_active_matured_manifest_not_future_or_quarantine():
+    node=shutil.which('node')
+    if not node:pytest.skip('Node unavailable')
+    html=Path('apps/dashboard/index.html').read_text()
+    assert 'FT ถึงกำหนด ≥3 ชม.' in html
+    assert 'FT ทุกคู่' in html
+    script=html.split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
+    checks = """
+const assert=require('assert');
+const at=Date.parse('2026-10-16T17:00:00Z');
+const rows=[
+ {fixture_id:'old',status:'MISSING_FT',kickoff:'2026-10-16T12:00:00Z'},
+ {fixture_id:'recent',status:'MISSING_FT',kickoff:'2026-10-16T16:00:00Z'},
+ {fixture_id:'blocked',status:'IDENTITY_CONFLICT',kickoff:'2026-10-16T12:00:00Z'},
+ {fixture_id:'postponed',status:'POSTPONED',kickoff:'2026-10-16T12:00:00Z'},
+ {fixture_id:'retired',status:'RETIRED_UNRESOLVED',kickoff:'2026-10-16T12:00:00Z'},
+ {fixture_id:'archive',status:'MISSING_FT',retired_from_active_queue:true,kickoff:'2026-10-16T12:00:00Z'},
+ {fixture_id:'unknown',status:'MISSING_FT',kickoff:'2026-10-16'}
+];
+const s={settled_fixtures:90,raw_unresolved_ft_fixtures:7};
+const ledger={missing_ft_count:7,fixtures:rows};
+const due=ftDueSummary(s,ledger,at);
+assert.deepEqual(due,{overdue:1,recent:1,unknown:1,denominator:91,rate:9000/91});
+assert.equal(ftDueSummary(s,{...ledger,missing_ft_count:5},at),null);
+assert.equal(ftDueSummary(s,null,at),null);
+"""
+    r=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
+    assert r.returncode==0,r.stderr
