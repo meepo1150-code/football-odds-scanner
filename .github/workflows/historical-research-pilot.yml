@@ -60,6 +60,7 @@ jobs:
         env:
           HISTORICAL_ODDSPAPI_KEY: ${{ secrets.HISTORICAL_ODDSPAPI_KEY }}
           PILOT_ALLOW_EXPANSION: 'true'
+          PILOT_MIN_CACHED_FIXTURES: '93'
         run: python -m research.historical_backfill.actions_pilot pilot --expand
       - name: Verify production quota unchanged
         if: always() && inputs.mode == 'expand' && steps.production_baseline.outcome == 'success'
