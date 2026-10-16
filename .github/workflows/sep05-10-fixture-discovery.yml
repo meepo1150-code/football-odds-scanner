@@ -1,4 +1,5 @@
 name: Sep05-10 Native Fixture Discovery and Recovery Dispatch
+# Retry after correcting refreshed-health timestamp ordering; no API retries inside a run.
 on:
   push:
     branches: [main]

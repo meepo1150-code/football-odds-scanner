@@ -1,6 +1,6 @@
 """Network-free native-ID discovery and September 5-10 coverage tests."""
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
@@ -127,3 +127,30 @@ def test_workflow_preserves_original_manual_action():
     assert "confirm_live_requests=true" in text
     assert "pages.yml" not in text
     assert wf["jobs"]["discover"]["environment"] == "historical-research"
+
+
+def test_regenerated_health_timestamp_after_started_is_not_stale():
+    # The live runner refreshes health *after* capturing the start time.
+    generated = (NOW + timedelta(seconds=6)).isoformat()
+    report = dict(generated_at=generated, status="FAIL", issues=["SCAN_MISSING"])
+    check_at = discovery.checked_health_at(report, NOW)
+    assert check_at.isoformat() == generated
+    from odds_scanner.historical_manual.safety import health_check
+    health_check(report, report, check_at,
+                 account_isolation={"research": "a" * 64, "production": "b" * 64})
+
+
+def test_preexisting_stale_health_still_rejected():
+    report = dict(generated_at=(NOW - timedelta(minutes=16)).isoformat(),
+                  status="PASS", issues=[])
+    from odds_scanner.historical_manual.safety import health_check
+    with pytest.raises(StopPilot, match="PRODUCTION_HEALTH_STALE"):
+        health_check(report, report, discovery.checked_health_at(report, NOW),
+                     account_isolation={"research": "a" * 64, "production": "b" * 64})
+
+
+def test_future_dated_health_is_not_trusted():
+    report = dict(generated_at=(NOW + timedelta(minutes=4)).isoformat(),
+                  status="PASS", issues=[])
+    with pytest.raises(StopPilot, match="FUTURE_TIMESTAMP"):
+        discovery.checked_health_at(report, NOW)
