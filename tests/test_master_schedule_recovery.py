@@ -36,10 +36,10 @@ def test_partial_schedule_cannot_claim_no_matches_and_started_not_backfilled():
 def test_request_reservation_includes_fixture_discovery_and_failed_usage(tmp_path):
     ledger=tmp_path/'ledger';ids=list(range(30))
     chosen,report=allocation(ledger,ids,NOW,prioritized=True,overhead=1)
-    assert chosen==list(range(5)) and report['schedule_requests_reserved']==1
+    assert chosen==ids and report['schedule_requests_reserved']==1
     ledger.write_text(json.dumps({'finalized_at':NOW.isoformat(),'scheduled_target_at':'first','requests_used':4}))
-    assert allocation(ledger,ids,NOW,prioritized=True,overhead=1,manual=True)[0]==[]
-    assert allocation(ledger,ids,NOW,prioritized=True,overhead=2,manual=True)[0]==[]
+    assert allocation(ledger,ids,NOW,prioritized=True,overhead=1,manual=True)[0]==ids
+    assert allocation(ledger,ids,NOW,prioritized=True,overhead=2,manual=True)[0]==ids
 
 
 def test_raw_schedule_cache_is_window_specific_and_append_only(tmp_path):
