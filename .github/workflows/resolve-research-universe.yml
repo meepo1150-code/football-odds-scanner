@@ -1,46 +1,15 @@
-name: Resolve Research V2 Universe
+name: Retired - resolve-research-universe.yml
+# Legacy scanner/research acquisition disabled during clean rebuild.
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/resolve-research-universe.yml'
-      - 'src/odds_scanner/oddspapi_tournament_universe.py'
-permissions:
-  contents: write
-concurrency: {group: oddspapi-universe, cancel-in-progress: false}
+    inputs:
+      retired:
+        description: 'Retired, no provider access'
+        type: boolean
+        default: false
 jobs:
-  resolve:
+  retired:
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-        with: {ref: main}
-      - uses: actions/setup-python@v6
-        with: {python-version: '3.12'}
-      - run: python -m pip install -e '.[dev]' requests
-      - name: Resolve provider-verified active competitions
-        env:
-          ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
-        run: python -m odds_scanner.oddspapi_tournament_universe
-      - name: Persist candidate universe evidence
-        run: |
-          set -euo pipefail
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          stage=$(mktemp -d)
-          for path in reports/oddspapi_tournament_universe_candidates.json reports/oddspapi_universe_health.json; do
-            test ! -f "$path" || cp "$path" "$stage/"
-          done
-          for attempt in 1 2 3; do
-            git fetch origin main
-            git reset --hard origin/main
-            cp "$stage/"*.json reports/
-            git add reports/oddspapi_tournament_universe_candidates.json
-            test ! -f reports/oddspapi_universe_health.json || git add reports/oddspapi_universe_health.json
-            git diff --cached --quiet && exit 0
-            git commit -m 'data: resolve Research V2 tournament universe [skip ci]'
-            git push origin HEAD:main && exit 0
-          done
-          exit 1
-# Candidate output is deliberately not promoted automatically into the production
-# research universe. Review competition type, relevance and Pinnacle coverage first.
+      - run: echo 'Legacy workflow disabled'
