@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-16T21:07:51.305123+00:00",
-  "matured_unresolved_total": 5,
+  "generated_at": "2026-10-16T22:05:55.078917+00:00",
+  "matured_unresolved_total": 6,
   "retired_from_active_queue": 5,
-  "active_matured_unresolved": 0,
+  "active_matured_unresolved": 1,
   "raw_deleted": 0,
   "settled_results_deleted": 0,
   "low_tier_scope_exclusions": 0,
@@ -11,5 +11,26 @@
   "minimum_sources": 2,
   "minimum_age_hours": 72,
   "minimum_attempt_span_hours": 24,
-  "pending": []
+  "pending": [
+    {
+      "fixture_id": "id1000003572513242",
+      "home": "Eintracht Frankfurt",
+      "away": "1. FC Cologne",
+      "league": "Bundesliga",
+      "kickoff": "2026-10-16T18:30:00+00:00",
+      "attempt_count": 0,
+      "round_ids": [],
+      "sources": [],
+      "reviewed_at": "2026-10-16T22:05:55.078917+00:00",
+      "unmet_gates": [
+        "MINIMUM_DISTINCT_ROUNDS",
+        "MINIMUM_SOURCES",
+        "MINIMUM_AGE_72H",
+        "MINIMUM_ATTEMPT_SPAN_24H"
+      ],
+      "age_eligible_at": "2026-10-19T18:30:00+00:00",
+      "status": "ACTIVE_UNRESOLVED",
+      "reason": "RETIREMENT_EVIDENCE_OR_AGE_GATE_NOT_MET"
+    }
+  ]
 }
