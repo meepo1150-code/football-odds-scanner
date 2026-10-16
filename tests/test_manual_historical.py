@@ -17,7 +17,7 @@ NOW = datetime(2026, 10, 16, 6, tzinfo=timezone.utc)
 def args(**kw):
     return argparse.Namespace(**dict(dict(start_day='2026-09-14', end_day='2026-09-14',
         times='15:00,18:00,21:00,00:00', bookmakers='pinnacle', mode='plan',
-        max_requests=25, confirm_live_requests=False), **kw))
+        confirm_live_requests=False), **kw))
 
 
 def native(fid='id123', **kw):
@@ -142,11 +142,11 @@ def test_cache_miss_is_not_no_provider_history(tmp_path):
     assert r['total_http_requests'] == 0
 
 
-def test_cap_checked_before_accounts(tmp_path):
+def test_live_confirmation_still_required_without_count_cap(tmp_path):
     source(tmp_path, [native()])
-    r = runner.execute(args(mode='recover', max_requests=0, confirm_live_requests=True),
+    r = runner.execute(args(mode='recover', confirm_live_requests=False),
         root=tmp_path, clock=lambda: NOW, client_factory=lambda *_: pytest.fail('HTTP forbidden'))
-    assert r['errors'] == ['REQUEST_CAP_EXCEEDED_NO_REQUESTS_SENT']
+    assert r['errors'] == ['LIVE_REQUEST_CONFIRMATION_REQUIRED']
     assert r['total_http_requests'] == 0
 
 
@@ -195,6 +195,21 @@ def test_live_one_request_supplies_four_rounds_with_separate_keys(tmp_path):
     history = [c for c in calls if c[1] == '/historical-odds']
     assert history == [('test-historical', '/historical-odds', {'fixtureId':'id123', 'bookmakers':'pinnacle'})]
     assert r['production_before'] == r['production_after']
+
+
+def test_more_than_fifty_uncached_candidates_are_all_processed(tmp_path):
+    # Injected transport only: prove no count-based cutoff without provider HTTP.
+    rows = [native('id'+str(1000+i)) for i in range(51)]
+    r, calls = live(tmp_path, rows=rows)
+    assert r['status'] == 'COMPLETED'
+    assert r['historical_requests'] == 51
+    assert r['account_requests'] == 105
+    assert len(r['results']) == 51
+    assert r['slot_status_counts'] == {'BALANCED_LINE': 204}
+    sent = [p['fixtureId'] for _, path, p in calls if path == '/historical-odds']
+    assert len(sent) == len(set(sent)) == 51
+    assert r['plan']['request_count_policy'] == 'ALL_VERIFIED_CANDIDATES_NO_INTERNAL_COUNT_CAP'
+    assert 'max_new_historical_requests' not in r['plan']
 
 
 def test_429_stops_no_retry(tmp_path):
@@ -274,6 +289,8 @@ def test_workflow_is_manual_readonly_and_inputs_not_shell_interpolated():
     workflow = yaml.safe_load(path.read_text())
     trigger = workflow.get('on', workflow.get(True))
     assert set(trigger) == {'workflow_dispatch'}
+    assert 'max_new_requests' not in trigger['workflow_dispatch']['inputs']
+    assert '--max-requests' not in path.read_text()
     assert workflow['permissions'] == {'contents': 'read', 'actions': 'read'}
     for step in workflow['jobs']['historical']['steps']:
         assert '${{ inputs.' not in step.get('run', '')

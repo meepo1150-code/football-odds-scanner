@@ -25,10 +25,6 @@ on:
         type: choice
         options: [plan, cache-only, recover]
         default: plan
-      max_new_requests:
-        description: 'Hard cap for new historical requests (0-50); excess blocks before any request'
-        type: number
-        default: 25
       confirm_live_requests:
         description: 'Authorize dedicated historical-key requests; never publish production'
         type: boolean
@@ -80,13 +76,12 @@ jobs:
           INPUT_TIMES: ${{ inputs.times_thai }}
           INPUT_BOOKS: ${{ inputs.bookmakers }}
           INPUT_MODE: ${{ inputs.mode }}
-          INPUT_CAP: ${{ inputs.max_new_requests }}
           INPUT_CONFIRM: ${{ inputs.confirm_live_requests }}
         run: |
           set -euo pipefail
           confirm=()
           if [ "$INPUT_CONFIRM" = true ]; then confirm+=(--confirm-live-requests); fi
-          python -m odds_scanner.historical_manual.runner --start-day "$INPUT_START" --end-day "$INPUT_END" --times "$INPUT_TIMES" --bookmakers "$INPUT_BOOKS" --mode "$INPUT_MODE" --max-requests "$INPUT_CAP" "${confirm[@]}"
+          python -m odds_scanner.historical_manual.runner --start-day "$INPUT_START" --end-day "$INPUT_END" --times "$INPUT_TIMES" --bookmakers "$INPUT_BOOKS" --mode "$INPUT_MODE" "${confirm[@]}"
       - uses: actions/cache/save@v4
         if: always() && hashFiles('research/historical_backfill/data/cache/*.json') != '' && (steps.history_cache.outputs.cache-matched-key == '' || hashFiles('research/manual_historical/output/new_cache/cache/*.json') != '')
         with:
