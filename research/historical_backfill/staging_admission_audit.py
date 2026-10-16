@@ -33,7 +33,7 @@ def inspect(report):
                 if not 1.8 <= price <= 2.2: reasons.append(side.upper()+"_PRICE_OUT_OF_RANGE")
                 if not (0 <= (target-observed).total_seconds() <= 3600): reasons.append(side.upper()+"_QUOTE_TIME_INVALID")
                 if observed >= kickoff: reasons.append(side.upper()+"_AFTER_KICKOFF")
-            if float(selected["line"])*4 != int(float(selected["line"])*4):
+            if not (float(selected["line"])*4).is_integer():
                 reasons.append("NON_QUARTER_LINE")
         except (ValueError, KeyError, TypeError, OverflowError) as exc:
             reasons.append("INVALID_FIELDS:"+type(exc).__name__)
