@@ -85,7 +85,7 @@ def produce(report, manifest, original):
                     or s.get("bookmaker") != c["bookmaker"]
                     or stamp(s["slot_utc"]) != target
                     or target >= kickoff
-                    or not s.get("catalog_evidence")):
+                    or not s.get("market_id")):
                 raise ValueError("UNVERIFIED_SELECTED_LINE")
             hl = s.get("home_line")
             al = s.get("away_line")
