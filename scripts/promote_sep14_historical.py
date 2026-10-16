@@ -102,6 +102,7 @@ def plan(report, manifest, originals):
             row.update({
                 "provider": "oddspapi",
                 "observed_at": max(ht, at).isoformat(),
+                "scheduled_target_at": slot["slot_utc"],
                 "source_semantics": "HISTORICAL_BALANCED_LINE_AS_OF_SLOT",
                 "mainline_verified": False,
                 "historical_target_slot_at": slot["slot_utc"],
