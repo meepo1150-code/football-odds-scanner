@@ -114,3 +114,15 @@ class CalibrationBindingTests(unittest.TestCase):
         r=coverage({'candidates':[c]}, {'results':[result]}, CATALOG,datetime(2026,10,16,tzinfo=timezone.utc))
         self.assertEqual(r['balanced_slots'],1)
         self.assertEqual(r['slots'][0]['selected']['line'],-2)
+
+class ResumeSafetyTests(unittest.TestCase):
+    def test_missing_previous_response_blocks_instead_of_refetching(self):
+        from research.historical_backfill.revalidate import require_cached_prefix
+        from unittest.mock import patch
+        m={'candidates':[{'fixture_id':str(n)} for n in range(100)]}
+        with patch('research.historical_backfill.revalidate.load_cache',side_effect=lambda root,c: None if c['fixture_id']=='92' else {'cached':True}):
+            with self.assertRaisesRegex(ValueError,'RESUME_CACHE_INCOMPLETE_NO_REFETCH'):
+                require_cached_prefix(m,93,Path('.'))
+        with patch('research.historical_backfill.revalidate.load_cache',return_value={'cached':True}) as load:
+            self.assertEqual(require_cached_prefix(m,93,Path('.')),93)
+            self.assertEqual(load.call_count,93)
