@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-10-16T22:05:58.570432+00:00",
+  "generated_at": "2026-10-16T23:35:29.607034+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 992,
+  "settled_fixtures": 993,
   "movement_classification_counts": {
     "SINGLE_OBSERVATION": 564,
     "FAVORITE_SWITCH": 9,
     "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 49,
-    "AH_LINE_UNCHANGED__PRICE_DOWN": 123,
+    "AH_LINE_UNCHANGED__PRICE_DOWN": 124,
     "AH_LINE_UNCHANGED__PRICE_UP": 105,
     "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 23,
     "AH_FAVORITE_LINE_WEAKER__PRICE_UP": 3,
@@ -21,7 +21,7 @@
     "evaluation": "RETROSPECTIVE_VIEWED_DATA_CHRONOLOGICAL_WALK_FORWARD_BY_FOOTBALL_DAY",
     "untouched_holdout": false,
     "promotion_allowed": false,
-    "unique_eligible_fixtures": 367,
+    "unique_eligible_fixtures": 368,
     "unique_evaluated_fixtures": 130,
     "metric": "BASELINE_MSE_MINUS_MOVEMENT_MSE; POSITIVE_IS_BETTER",
     "mean_squared_error_improvement": 0.026542476962498212,
@@ -33,21 +33,21 @@
     "movement_model": "SAME_BASELINE + MOVEMENT; SHRINKAGE_10_BASELINE_OBSERVATIONS",
     "multiple_testing_policy": "ONE_PREDEFINED_INCREMENTAL_COMPARISON; SUBGROUPS_DESCRIPTIVE_ONLY; NO_PROMOTION_OR_EDGE_CLAIMS; NEW_UNVIEWED_PERIOD_REQUIRED",
     "observation_gap_minutes": {
-      "n": 367,
+      "n": 368,
       "min": 0.713,
-      "median": 352.395,
+      "median": 352.5425,
       "max": 649.593
     },
     "first_minutes_before_kickoff": {
-      "n": 367,
+      "n": 368,
       "min": 43.721,
       "median": 503.874,
       "max": 940.905
     },
     "last_minutes_before_kickoff": {
-      "n": 367,
+      "n": 368,
       "min": 0.501,
-      "median": 120.71,
+      "median": 120.8145,
       "max": 577.827
     },
     "descriptive_families": [
@@ -111,17 +111,17 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_DOWN",
-        "unique_fixture_n": 123,
-        "roi_pct": -1.327,
+        "unique_fixture_n": 124,
+        "roi_pct": -1.316,
         "profit_mean_bootstrap95": [
-          -0.171985,
-          0.141497
+          -0.16428,
+          0.142989
         ],
         "settlements": {
           "HALF_LOSS": 8,
           "FULL_LOSS": 47,
           "FULL_WIN": 52,
-          "PUSH": 11,
+          "PUSH": 12,
           "HALF_WIN": 5
         }
       },
@@ -1485,8 +1485,7 @@
   "ft_triage_counts": {
     "POSTPONED": 1,
     "ACTIVE_OVERDUE": 1,
-    "IDENTITY_CONFLICT": 2,
-    "FUTURE_OR_RECENT": 1
+    "IDENTITY_CONFLICT": 2
   },
   "ft_triage_groups": [
     {
@@ -1495,14 +1494,6 @@
       "country": "Germany",
       "canonical_competition_id": "DEU-0001",
       "league": "Bundesliga",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Iceland",
-      "canonical_competition_id": "ISL-0001",
-      "league": "Besta deild karla",
       "n": 1
     },
     {
@@ -1582,24 +1573,6 @@
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "IDENTITY_CONFLICT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000018874506422",
-      "provider": "oddspapi",
-      "football_day": "2026-10-16",
-      "league": "Besta deild karla",
-      "kickoff": "2026-10-16T19:15:00+00:00",
-      "home": "Breidablik Kopavogur",
-      "away": "Vikingur Reykjavik",
-      "status": "MISSING_FT",
-      "country": "Iceland",
-      "canonical_competition_id": "ISL-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
