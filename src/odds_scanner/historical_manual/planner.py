@@ -118,6 +118,8 @@ def build(root, start, end, times, bookmakers, now):
             if any(not row.get(k) for k in required):
                 raise ValueError('EXTERNAL_FIXTURE_EVIDENCE_INCOMPLETE')
             fid, book = row['fixture_id'], row['bookmaker']
+            if row.get('football_day') and row['football_day'] != football_day(row['kickoff']).isoformat():
+                raise ValueError('EXTERNAL_FOOTBALL_DAY_CONFLICT')
             if (not re.fullmatch(r'id\d+', fid) or book not in {'pinnacle', 'bet365'}
                     or not str(row['mapping_source']).startswith('ODDSPAPI_')
                     or not str(row['evidence_url']).startswith('https://')):
