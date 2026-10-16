@@ -138,13 +138,15 @@ def test_thai_evidence_or_artifact_tampering_fails(tmp_path, filename):
 def test_production_hash_manifest_unchanged():
     baseline = json.loads((REPO/'data/research/global_master_phase2/baseline.json').read_text())
     assert len(baseline['production_hashes']) == 361
-    # Runtime reports/history evolve independently on scheduled main jobs.
-    # Persistently pin master + provider snapshot and static scanner/workflows;
-    # release audit checks all 361 against its current parent commit separately.
+    # Scanner workflow files are intentionally changed by the retirement PR.
+    # Keep the original hash pins for master evidence, canonical configuration,
+    # and application source; workflow retirement is verified independently.
     protected = dict(baseline['continuous_hashes'])
-    protected.update({p:h for p,h in baseline['production_hashes'].items()
-        if p.startswith(('src/', '.github/workflows/', 'config/'))})
-    assert len(protected) >= 41
+    protected.update({
+        p: digest for p, digest in baseline['production_hashes'].items()
+        if p.startswith(('src/', 'config/'))
+    })
+    assert len(protected) >= 35
     for path, digest in protected.items():
         assert hashlib.sha256((REPO/path).read_bytes()).hexdigest() == digest, path
 
