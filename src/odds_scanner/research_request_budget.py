@@ -59,6 +59,27 @@ def allocation(path, ids, now, batch_size=5, *, prioritized=False, overhead=0, m
         raise ValueError('allocation requires an aware clock')
     now = now.astimezone(timezone.utc)
     daily, monthly = usage(path, now)
+    if manual:
+        # Manual observations are not canonical slots: no internal day/month,
+        # future-slot or per-run cap. Provider quota is checked by the collector.
+        batches = [ids[i:i+batch_size] for i in range(0, len(ids), batch_size)]
+        return list(ids), {
+            'request_budget_policy': 'MANUAL_PROVIDER_QUOTA_ONLY',
+            'research_requests_used_today': daily,
+            'research_requests_used_month': monthly,
+            'research_daily_limit': None, 'research_monthly_limit': None,
+            'research_run_limit': len(batches)+overhead,
+            'quota_utc_day': now.date().isoformat(),
+            'canonical_slots_in_football_day': len(utc_targets(now.date())),
+            'future_utc_slots': [], 'future_utc_requests_reserved': 0,
+            'current_canonical_requests_reserved': 0,
+            'future_month_requests_reserved': 0,
+            'canonical_request_reservation': 'NONE_FOR_MANUAL',
+            'budget_scope': 'ODDSPAPI_MANUAL_COLLECTOR_ONLY',
+            'coverage_mode': 'MANUAL_FULL_ELIGIBLE_SCOPE',
+            'schedule_requests_reserved': overhead,
+            'coverage_complete': True, 'coverage_tournament_ids': list(ids),
+        }
     slots = utc_targets(now.date())
     future = [t for t in slots if t > now]
     # One market call per future slot, plus the day's fixture discovery if the
