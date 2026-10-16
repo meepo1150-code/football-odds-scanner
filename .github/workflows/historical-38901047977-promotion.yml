@@ -1,0 +1,73 @@
+name: Historical 38901047977 Canonical AH Promotion
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/promote_historical_38901047977.py'
+      - '.github/workflows/historical-38901047977-promotion.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: historical-38901047977-canonical-promotion
+  cancel-in-progress: false
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: main}
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - name: Download reviewed manifest without OddsPapi requests
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p /tmp/historical-38901047977
+          gh run download 38901047977 -R "${{ github.repository }}" -n manual-historical-38901047977-1 -D /tmp/historical-38901047977
+          test -s /tmp/historical-38901047977/manifest.json
+      - name: Backup canonical snapshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: pre-historical-38901047977-${{ github.run_id }}
+          path: data/normalized/europe_pinnacle_research_v2_snapshots.jsonl
+          retention-days: 90
+          if-no-files-found: error
+      - name: Dry-run 105 reviewed AH slots
+        run: python scripts/promote_historical_38901047977.py --manifest /tmp/historical-38901047977/manifest.json --dry-run
+      - name: Replace exact slots and rebuild original statistics
+        run: |
+          set -euo pipefail
+          python -m pip install -e .
+          python scripts/promote_historical_38901047977.py --manifest /tmp/historical-38901047977/manifest.json
+          PYTHONPATH=src python -m odds_scanner.research_v2_movement
+          PYTHONPATH=src python -m odds_scanner.research_v2_pattern_stats
+          PYTHONPATH=src python -m odds_scanner.research_v2_evidence
+          PYTHONPATH=src python -m odds_scanner.research_v2_end_to_end_audit
+          PYTHONPATH=src python -m odds_scanner.dashboard_scope
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('reports/historical_38901047977_promotion.json').read_text())
+          assert p['historical_slots']==105 and p['api_requests']==0
+          rows=[json.loads(s) for s in Path('data/normalized/europe_pinnacle_research_v2_snapshots.jsonl').read_text().splitlines() if s.strip()]
+          assert sum(r.get('historical_provenance')=='ODDSPAPI_RECONSTRUCTED_FROM_RUN_38901047977' for r in rows)==105
+          assert len(rows)==p['canonical_rows_after']
+          PY
+      - name: Commit canonical source and existing statistics
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
+          git add -f reports/historical_38901047977_promotion.json reports/research_v2_pattern_statistics.json reports/research_v2_movement_status.json reports/research_v2_operational_audit.json reports/research_v2_end_to_end_audit.json reports/research_v2_fixture_identity.json reports/research_v2_missing_ft_ledger.json reports/dashboard_scope.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'data: promote reviewed historical AH to canonical source [skip ci]'
+          git pull --rebase origin main
+          git push origin HEAD:main
+      - name: Deploy existing Dashboard
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml -R "${{ github.repository }}" --ref main
