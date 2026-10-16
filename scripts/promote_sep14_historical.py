@@ -83,7 +83,7 @@ def plan(report, manifest, originals):
             hp, ap = float(home["price"]), float(away["price"])
             ht, at = dt(home["quote_at_utc"]), dt(away["quote_at_utc"])
             slot_time, kickoff = dt(slot["slot_utc"]), dt(c["kickoff"])
-            if (selected.get("quality_status") != "COMPLETE" or
+            if (selected.get("status") != "COMPLETE" or
                 selected.get("fixture_id") != fid or
                 selected.get("bookmaker") != c["bookmaker"] or
                 selected.get("line_selection") != "BALANCED_LINE" or
