@@ -1,0 +1,43 @@
+name: Research Offline Historical Matrix Audit
+on:
+  push:
+    branches:
+      - research/full-historical-gap-audit-20261016
+    paths:
+      - .github/workflows/research-offline-historical-matrix.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  offline-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate pinned source and run isolated offline reports
+        run: |
+          python -m unittest discover -s research/full_gap_audit -p 'test_fixture_round_report.py' -v
+          python -m unittest discover -s research/full_gap_audit -p 'test_silent_slot_expansion.py' -v
+          bash research/full_gap_audit/run_offline_round_report.sh
+      - name: Print actual counts from generated reports
+        run: |
+          python - <<'PY'
+          import csv,json
+          p='research/full_gap_audit/results/fixture-round-report-20261016.csv'
+          with open(p,encoding='utf-8') as f:
+              rows=list(csv.DictReader(f))
+          print('fixture_day_rows',len(rows))
+          for k in ('expected_proven','complete','scan_failed','no_price','unmatched','expected_unknown_ah','unknown_membership'):
+              print(k,sum(int(r[k]) for r in rows))
+          print(json.load(open('research/full_gap_audit/results/silent-slot-triage-20261016.json')))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: research-offline-fixture-round-report
+          path: |
+            research/full_gap_audit/results/fixture-round-report-20261016.csv
+            research/full_gap_audit/results/silent-slot-triage-20261016.json
+          retention-days: 30
