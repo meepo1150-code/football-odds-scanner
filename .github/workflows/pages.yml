@@ -25,6 +25,7 @@ on:
       - '.github/workflows/pages.yml'
   workflow_run:
     workflows:
+      - 'Manual Current-Day Odds Observation'
       - 'Automatic Four-Round Odds Observation'
       - 'Research V2 Offline Evidence Audit'
       - 'Research V2 Free Result Backfill'
@@ -46,7 +47,7 @@ jobs:
       (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
       (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
       (github.event_name == 'workflow_run' &&
-       (github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.name == 'Automatic Four-Round Odds Observation') &&
+       (github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.name == 'Automatic Four-Round Odds Observation' || github.event.workflow_run.name == 'Manual Current-Day Odds Observation') &&
        github.event.workflow_run.head_branch == 'main' &&
        github.event.workflow_run.event != 'pull_request' &&
        github.event.workflow_run.event != 'pull_request_target' &&
