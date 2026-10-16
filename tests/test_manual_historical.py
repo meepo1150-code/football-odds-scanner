@@ -358,3 +358,37 @@ def test_workflow_is_manual_readonly_and_inputs_not_shell_interpolated():
     assert workflow['jobs']['historical']['environment'] == 'historical-research'
     assert any(s.get('run') == 'git diff --exit-code -- data reports config'
                and s.get('if') == 'always()' for s in workflow['jobs']['historical']['steps'])
+
+
+def test_external_verified_fixture_before_first_live_scan(tmp_path):
+    p = tmp_path / planner.EXTERNAL_FIXTURE_SOURCE
+    p.parent.mkdir(parents=True, exist_ok=True)
+    row = dict(fixture_id='id987654', bookmaker='pinnacle',
+        home='Historical Home', away='Historical Away', league='Verified League',
+        kickoff='2026-09-13T15:00:00Z', football_day='2026-09-13',
+        mapping_source='ODDSPAPI_EXTERNALPROVIDERS_EXACT_IDS',
+        evidence_url='https://example.org/verified/fixture/987654')
+    p.write_text(json.dumps(row) + '\n')
+    manifest = planner.build(tmp_path, '2026-09-13', '2026-09-13',
+        '15:00,18:00,21:00,00:00', 'pinnacle', NOW)
+    assert manifest['unique_fixtures'] == 1
+    assert manifest['candidates'][0]['fixture_id'] == 'id987654'
+    assert manifest['candidates'][0]['observations'] == []
+    result = runner.execute(args(start_day='2026-09-13', end_day='2026-09-13'),
+        root=tmp_path, clock=lambda: NOW,
+        client_factory=lambda *_: pytest.fail('HTTP forbidden'))
+    assert result['status'] == 'PLANNED'
+    assert result['plan']['planned_historical_requests'] == 1
+    assert result['total_http_requests'] == 0
+
+
+def test_external_fixture_rejects_incorrect_football_day(tmp_path):
+    p = tmp_path / planner.EXTERNAL_FIXTURE_SOURCE
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(dict(fixture_id='id987654', bookmaker='pinnacle',
+        home='Home', away='Away', league='League',
+        kickoff='2026-09-13T15:00:00Z', football_day='2026-09-12',
+        mapping_source='ODDSPAPI_EXACT', evidence_url='https://example.org/evidence')) + '\n')
+    with pytest.raises(ValueError, match='EXTERNAL_FOOTBALL_DAY_CONFLICT'):
+        planner.build(tmp_path, '2026-09-13', '2026-09-13',
+            '15:00', 'pinnacle', NOW)
