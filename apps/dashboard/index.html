@@ -60,7 +60,7 @@ async function load(){let[snaps,audit,slotLedger,results,verifiedResults,status,
  for(const r of ledger.fixtures){
   if(r.retired_from_active_queue||['RETIRED_UNRESOLVED','POSTPONED','CANCELLED','ABANDONED','IDENTITY_CONFLICT'].includes(r.status))continue;
   const raw=String(r.kickoff||''),ko=Date.parse(raw);
-  if(!/(?:Z|[+-]\\d{2}:\\d{2})$/.test(raw)||!Number.isFinite(ko)){unknown++;continue}
+  if(!/(?:Z|[+-]\d{2}:\d{2})$/.test(raw)||!Number.isFinite(ko)){unknown++;continue}
   if(now-ko>=3*3600000)overdue++;else recent++;
  }
  const settled=Number(stat.settled_fixtures),denominator=settled+overdue;
