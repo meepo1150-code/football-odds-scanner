@@ -203,31 +203,11 @@ def run(root=Path('.')):
     report['quota_remaining_before']=q.get('request_remaining')
     try: remaining=int(q.get('request_remaining'))
     except (TypeError,ValueError): remaining=-1
-    if not master_mode and 0 <= remaining <= LOW_QUOTA_THRESHOLD:
-        selected=[x for x in selected if int(x.get('tournament_id') or -1) in LOW_QUOTA_CORE_IDS]
-        ids=[x.get('tournament_id') for x in selected]
-        normal=(len(ids)+BATCH_SIZE-1)//BATCH_SIZE
-        maxplan=normal*MAX_ATTEMPTS_PER_BATCH
-        report.update(coverage_mode='LOW_QUOTA_BIG5_TOP_FLIGHT',resolved_competitions=len(ids),planned_requests=normal,max_planned_requests_with_retries=maxplan,coverage_tournament_ids=ids)
-    # The reserve protects future canonical observations, not the current canonical
-    # observation itself. Once quota falls to the reserve, spend it only on a current
-    # canonical slot; background/history workflows remain responsible for yielding.
-    effective_reserve = ACCOUNT_RESERVE + budget['future_utc_requests_reserved']
-    month_minimum = (budget['future_month_requests_reserved']
-                     + budget['future_utc_requests_reserved'] + overhead + 1)
-    report['account_safety_reserve'] = ACCOUNT_RESERVE
-    report['account_minimum_requests_through_month_end'] = month_minimum
-    report['account_month_capacity_shortfall'] = max(0, month_minimum + ACCOUNT_RESERVE - remaining)
-    # Breadth is optional. Keep the minimum market call available today even
-    # when earlier account usage makes all remaining days impossible to fund.
-    if fixed is None and normal > 1 and remaining - normal - overhead < ACCOUNT_RESERVE + month_minimum - overhead - 1:
-        ids = ids[:BATCH_SIZE]
-        selected = [x for x in selected if x.get('tournament_id') in ids]
-        normal = 1
-        report.update(planned_requests=normal, coverage_tournament_ids=ids,
-                      account_optional_breadth_deferred=True)
-    report['effective_quota_reserve']=effective_reserve
-    if not ids or remaining-normal-overhead < effective_reserve:report.update(status='SKIPPED_QUOTA',quota_skip_reason='ACCOUNT_CAPACITY_RESERVED_OR_EXHAUSTED',requests_used=0);return _write(report,root)
+    # Full-coverage mode: do not drop tournaments based on account balance.
+    # A provider 429 or explicit quota rejection is still handled below.
+    report['account_safety_reserve'] = 0
+    report['effective_quota_reserve'] = 0
+    report['account_optional_breadth_deferred'] = False
     try:
         ids, budget, reservation_id, grant = reserve(root, ids, datetime.now(timezone.utc), overhead=overhead, manual=manual)
     except ResearchQuotaBlocked as exc:
