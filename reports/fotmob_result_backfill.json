@@ -1,8 +1,8 @@
 {
   "schema_version": "1.0",
   "classification": "FOTMOB_EXACT_RESULT_BACKFILL",
-  "missing_before": 2,
-  "missing_after": 2,
+  "missing_before": 5,
+  "missing_after": 5,
   "verified_bridge_matches": 0,
   "days_requested": [
     "2026-10-14",
@@ -13,7 +13,7 @@
   "exact_results_added": 0,
   "ambiguous_exact_matches_rejected": 0,
   "exact_identity_unfinished": 0,
-  "no_exact_identity": 2,
+  "no_exact_identity": 5,
   "kickoff_candidate_only": 2,
   "kickoff_candidate_samples": [
     {
@@ -459,11 +459,11 @@
   "matching_policy": "EXACT_ALIAS_OR_SAFE_CLUB_TOKEN_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY",
   "fuzzy_matching_used": false,
   "promotion_eligible": false,
-  "retired_included": false,
+  "retired_included": true,
   "deferred_days": [],
-  "generated_at": "2026-10-16T12:24:35.670001+00:00",
-  "requests_used": 2,
-  "cache_hits": 1,
+  "generated_at": "2026-10-16T13:01:12.595893+00:00",
+  "requests_used": 0,
+  "cache_hits": 3,
   "stale_cache_fallbacks": 0,
   "fetch_evidence": [
     {
@@ -474,15 +474,15 @@
     },
     {
       "day": "2026-10-15",
-      "source": "NETWORK",
+      "source": "CACHE",
       "fetched_at": "2026-10-16T12:24:34.870139+00:00",
-      "requests": 1
+      "requests": 0
     },
     {
       "day": "2026-10-16",
-      "source": "NETWORK",
+      "source": "CACHE",
       "fetched_at": "2026-10-16T12:24:35.197289+00:00",
-      "requests": 1
+      "requests": 0
     }
   ],
   "existing_results_revalidated": 24,
