@@ -1,82 +1,15 @@
-name: Global Expansion Matchday Price Probe
+name: Retired - global-expansion-matchday-probe.yml
+# Scanner clean rebuild: legacy data acquisition is disabled.
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ['Daily Preparation Scan']
-    types: [completed]
-permissions:
-  contents: write
-concurrency:
-  group: research-v2-collectors
-  cancel-in-progress: false
-env:
-  RESEARCH_QUOTA_DURABLE: 'true'
+    inputs:
+      retired:
+        description: 'Disabled pending scanner rebuild'
+        type: boolean
+        default: false
 jobs:
-  probe:
-    if: >-
-      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
-      (github.event_name == 'workflow_run' &&
-       github.event.workflow_run.conclusion == 'success' &&
-       github.event.workflow_run.event == 'schedule' &&
-       github.event.workflow_run.run_attempt == 1 &&
-       github.event.workflow_run.head_branch == 'main' &&
-       github.event.workflow_run.head_repository.full_name == github.repository)
+  retired:
+    if: ${{ false }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v6
-        with: {ref: main}
-      - name: One-off authorized matchday only
-        id: day
-        run: |
-          if test "$(TZ=Asia/Bangkok date +%F)" = '2026-10-15'; then
-            echo 'enabled=true' >> "$GITHUB_OUTPUT"
-          else
-            echo 'enabled=false' >> "$GITHUB_OUTPUT"
-          fi
-      - uses: actions/setup-python@v6
-        if: steps.day.outputs.enabled == 'true'
-        with: {python-version: '3.12'}
-      - run: python -m pip install -e .
-        if: steps.day.outputs.enabled == 'true'
-      - name: Verify staged identity evidence before any price request
-        if: steps.day.outputs.enabled == 'true'
-        run: python data/research/global_expansion_readiness/build.py
-      - name: Audit all leagues against the actual 15:00 fixture receipt
-        if: steps.day.outputs.enabled == 'true'
-        run: python data/research/global_expansion_readiness/audit.py --football-day 2026-10-15
-      - name: At most one price request after matchday identity and shared quota gates
-        if: steps.day.outputs.enabled == 'true'
-        env:
-          ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
-        run: python data/research/global_expansion_readiness/probe.py
-      - uses: actions/upload-artifact@v4
-        if: always() && steps.day.outputs.enabled == 'true'
-        with:
-          name: global-expansion-matchday-probe-${{ github.run_id }}
-          path: |
-            reports/global_expansion_readiness.json
-            reports/global_expansion_matchday_probe.json
-            data/research/global_expansion_probe/*.json
-          retention-days: 30
-      - name: Publish only the probe report; preserve all production histories
-        if: steps.day.outputs.enabled == 'true'
-        run: |
-          set -euo pipefail
-          report=reports/global_expansion_matchday_probe.json
-          test -f "$report" || exit 0
-          cp "$report" /tmp/global-expansion-probe.json
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          for attempt in 1 2 3; do
-            git fetch origin main
-            git reset --hard origin/main
-            cp /tmp/global-expansion-probe.json "$report"
-            git add -- "$report"
-            git diff --cached --quiet && exit 0
-            git commit -m 'data: bounded expansion matchday probe report [skip ci]'
-            git push origin HEAD:main && exit 0
-          done
-          exit 1
-# No new activation, scan scheduler changes or production price/FT/fixture writes.
-# The shared quota reservation is committed before any metered request. No retries.
+      - run: echo 'Retired; no data acquisition'

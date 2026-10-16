@@ -30,10 +30,10 @@ def test_real_failed_request_spacing_uses_completion_time():
     assert due(datetime.fromisoformat('2026-10-12T21:31:00+07:00'),{},ledger_rows=ledger)
 
 
-def test_legacy_pinnwire_trigger_uses_same_coordinator_and_new_schedule():
-    text=Path('.github/workflows/pinnwire-probe.yml').read_text()
-    assert 'python -m odds_scanner.research_v2_slot_recovery' in text
+def test_legacy_pinnwire_trigger_cannot_collect_or_use_provider_secrets():
+    text = Path('.github/workflows/pinnwire-probe.yml').read_text()
+    assert 'python -m odds_scanner.research_v2_slot_recovery' not in text
     assert 'python -m odds_scanner.pinnwire_probe' not in text
-    assert "'odds_scanner.propline_research_v2'" not in text
-    assert 'ODDSPAPI_KEY:' in text
+    assert 'secrets.ODDSPAPI_KEY' not in text
     assert '  schedule:' not in text
+    assert 'if: ${{ false }}' in text

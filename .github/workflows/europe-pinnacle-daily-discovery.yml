@@ -1,120 +1,21 @@
 name: Europe Pinnacle Research V2
+# Retired legacy scanner: no event triggers. Preserved for migration audit.
 on:
   workflow_dispatch:
     inputs:
-      force_run:
-        description: 'Recover an explicit canonical slot within the 150-minute window'
-        required: false
-        default: 'false'
-        type: choice
-        options: ['false','true']
-      force_target_at:
-        description: 'Canonical target in ISO-8601, e.g. 2026-09-17T21:00:00+07:00'
-        required: false
-        type: string
-  push:
-    branches: [main]
-    paths: ['controls/europe_pinnacle_research_v2_run_token.txt']
-  schedule:
-    # UTC 08/11/14/17 = Bangkok 15/18/21/00; shared collector and evidence gate.
-    # Avoid minute-zero congestion; actual observation times remain authoritative.
-    - cron: '3 8,11,14,17 * * *'
-env: {RESEARCH_QUOTA_DURABLE: 'true'}
+      retired_scanner_disabled:
+        description: 'Retired legacy scanner; execution is blocked'
+        required: true
+        type: boolean
+        default: false
+
 permissions: {contents: write}
 concurrency:
   group: research-v2-collectors
   cancel-in-progress: false
 jobs:
-  scan:
+  retired:
+    if: ${{ false }}
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v6
-        with: {ref: main}
-      - name: Check whether a canonical slot needs collection
-        id: due
-        env:
-          SCAN_EVENT: ${{ github.event_name }}
-          SCAN_FINALIZE_MISSED: 'true'
-          PYTHONPATH: src
-        run: python -m odds_scanner.research_v2_scan_due >> "$GITHUB_OUTPUT"
-      - uses: actions/setup-python@v6
-        if: steps.due.outputs.collect == 'true'
-        with: {python-version: '3.12'}
-      - run: python -m pip install -e '.[dev]'
-        if: steps.due.outputs.collect == 'true'
-      - name: Resolve Research V2 recovery controls
-        if: steps.due.outputs.collect == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [[ "${{ github.event_name }}" == "push" ]]; then
-            TARGET="$(head -n 1 controls/europe_pinnacle_research_v2_run_token.txt | tr -d '\r\n')"
-            if [[ "$TARGET" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}[+-][0-9]{2}:[0-9]{2}$ ]]; then
-              echo "RESEARCH_V2_FORCE_RUN=true" >> "$GITHUB_ENV"
-              echo "RESEARCH_V2_FORCE_TARGET_AT=$TARGET" >> "$GITHUB_ENV"
-            else
-              echo "Invalid recovery token. Expected exact ISO-8601 target only, e.g. 2026-09-17T21:00:00+07:00" >&2
-              exit 1
-            fi
-          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "RESEARCH_V2_FORCE_RUN=${{ inputs.force_run }}" >> "$GITHUB_ENV"
-            echo "RESEARCH_V2_FORCE_TARGET_AT=${{ inputs.force_target_at }}" >> "$GITHUB_ENV"
-          else
-            echo "RESEARCH_V2_FORCE_RUN=false" >> "$GITHUB_ENV"
-            echo "RESEARCH_V2_FORCE_TARGET_AT=" >> "$GITHUB_ENV"
-          fi
-      - name: Collect canonical-slot football-day research population
-        if: steps.due.outputs.collect == 'true'
-        env:
-          ODDSPAPI_KEY: '${{ secrets.ODDSPAPI_KEY }}'
-          PROPLINE_API_KEY: '${{ secrets.PROPLINE_API_KEY }}'
-        run: python -m odds_scanner.research_v2_slot_recovery
-      - name: Build current movement features
-        if: steps.due.outputs.collect == 'true'
-        run: python -m odds_scanner.research_v2_movement
-      - name: Persist raw evidence and rebuild against latest main
-        if: steps.due.outputs.collect == 'true'
-        run: |
-          set -euo pipefail
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          stage=$(mktemp -d)
-          paths=(data/normalized/research_v2_quota_reservations.jsonl data/normalized/scan_health_history.jsonl data/normalized/research_v2_provider_responses.jsonl data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/normalized/europe_pinnacle_research_v2_audit.jsonl data/normalized/research_v2_slot_ledger.jsonl reports/pinnwire_research_v2_status.json reports/propline_research_v2_status.json reports/europe_pinnacle_research_v2_status.json)
-          for f in "${paths[@]}"; do if test -f "$f"; then mkdir -p "$stage/$(dirname "$f")"; cp "$f" "$stage/$f"; fi; done
-          for attempt in 1 2 3; do
-            git fetch origin main
-            git reset --hard origin/main
-            python -m odds_scanner.research_v2_persistence "$stage"
-            python -m odds_scanner.research_v2_movement
-            python -m odds_scanner.research_v2_pattern_stats
-            python -m odds_scanner.legacy_propline_recovery
-            python -m odds_scanner.research_v2_evidence
-            git add -f reports/scan_health_latest.json reports/scan_health_monitor.json reports/dashboard_scope.json reports/research_v2_end_to_end_audit.json reports/oddspapi_history_audit.json reports/research_v2_pattern_statistics.json reports/research_v2_operational_audit.json reports/research_v2_movement_status.json reports/research_v2_missing_ft_ledger.json reports/research_v2_fixture_identity.json data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
-            git add -f data/normalized reports
-            git diff --cached --quiet && exit 0
-            git commit -m 'data: merge Research V2 evidence and rebuild [skip ci]'
-            git push origin HEAD:main && exit 0
-            sleep 3
-          done
-          echo 'Failed to persist Research V2 output' >&2
-          exit 1
-
-      - name: Enforce collector business health
-        if: steps.due.outputs.collect == 'true'
-        shell: bash
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          r=json.loads(Path('reports/research_v2_operational_audit.json').read_text())
-          if not r.get('data_assertions_passed'):
-              raise SystemExit(f"Data integrity failed: {r.get('assertion_failures')}")
-          print(f"Collection status: {r.get('status')} missing={r.get('collection_failures')}")
-          PY
-# Canonical observations: every day 15:00/18:00/21:00/00:00; midnight closes the previous football day.
-# Primary wakes at +3 minutes; independent watchdog at +13; guarded recovery at +23/+53/+83/+113.
-# Recovery window is 150 minutes and actual lag/timing is retained for QA.
-# Push-token recovery is an independent fallback: the token's first line must be the exact canonical ISO target.
-# _slot_done remains authoritative, so fallback recovery cannot duplicate an already-observed slot.
-# MATCH/NOT_MATCH and movement are research metadata, never betting recommendations, edge, CLV, or profit claims.
+      - run: echo 'Legacy scanner retired; no API calls'

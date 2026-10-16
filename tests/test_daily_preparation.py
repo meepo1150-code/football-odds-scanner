@@ -63,12 +63,12 @@ def test_source_failure_does_not_skip_other_sources_or_consume_odds(tmp_path,mon
     assert r['status']=='PARTIAL_SOURCE_FAILURE' and r['public_requests_used']==2
 
 
-def test_preparation_jobs_independent_locks_and_zero_odds_result_credentials():
+def test_preparation_keeps_result_sync_without_odds_collector_or_credentials():
     import yaml
-    workflow=yaml.safe_load(Path('.github/workflows/daily-preparation-scan.yml').read_text())
-    jobs=workflow['jobs']
-    assert jobs['previous-day-results']['concurrency']['group']=='research-v2-result-sync'
-    assert jobs['first-odds-snapshot']['concurrency']['group']=='research-v2-collectors'
-    assert 'needs' not in jobs['first-odds-snapshot']
+    workflow = yaml.safe_load(Path('.github/workflows/daily-preparation-scan.yml').read_text())
+    jobs = workflow['jobs']
+    assert 'first-odds-snapshot' not in jobs
+    assert jobs['previous-day-results']['concurrency']['group'] == 'research-v2-result-sync'
     assert 'ODDSPAPI_KEY' not in json.dumps(jobs['previous-day-results'])
-    assert any('daily_preparation' in s.get('run','') for s in jobs['previous-day-results']['steps'])
+    assert 'PROPLINE_API_KEY' not in json.dumps(jobs['previous-day-results'])
+    assert any('daily_preparation' in step.get('run', '') for step in jobs['previous-day-results']['steps'])

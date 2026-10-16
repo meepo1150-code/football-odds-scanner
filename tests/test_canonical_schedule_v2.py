@@ -100,15 +100,14 @@ def test_old_empty_receipt_after_cutover_is_scope_unknown_not_full_scope_pass():
     assert ledger[0]['state']=='ZERO_FIXTURES'
 
 
-def test_every_day_midnight_has_utc_schedule_and_recovery_heartbeats():
+def test_historical_midnight_slots_remain_interpretable_after_scheduler_retirement():
     for offset in range(7):
-        day=date(2026,10,14)+timedelta(days=offset)
-        target=targets(day)[-1]
-        assert target.hour==0 and target.date()==day+timedelta(days=1)
-        assert _football_day_bounds(target+timedelta(minutes=10))[2]==day.isoformat()
-        assert due(target+timedelta(minutes=10),{},ledger_rows=[],snapshots=[])
-    primary=yaml.safe_load(Path('.github/workflows/europe-pinnacle-daily-discovery.yml').read_text())
-    crons=[r['cron'].split() for r in primary.get('on',primary.get(True))['schedule']]
-    for day in range(7):
-        for hour in (8,11,14,17):
-            assert any(c[0]=='3' and str(hour) in c[1].split(',') and c[4]=='*' for c in crons)
+        day = date(2026, 10, 14) + timedelta(days=offset)
+        target = targets(day)[-1]
+        assert target.hour == 0 and target.date() == day + timedelta(days=1)
+        assert _football_day_bounds(target + timedelta(minutes=10))[2] == day.isoformat()
+        assert due(target + timedelta(minutes=10), {}, ledger_rows=[], snapshots=[])
+    primary = yaml.safe_load(Path('.github/workflows/europe-pinnacle-daily-discovery.yml').read_text())
+    triggers = primary.get('on', primary.get(True, {}))
+    assert 'schedule' not in triggers
+    assert all(str(job.get('if', '')).strip() == '${{ false }}' for job in primary['jobs'].values())

@@ -1,44 +1,15 @@
-name: Europe 15-League Discovery
+name: Retired - europe-discovery.yml
+# Legacy provider scan/probe intentionally disabled for clean rebuild.
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: ['controls/europe_discovery_run_token.txt']
-permissions:
-  contents: write
-concurrency:
-  group: europe-15-league-discovery
-  cancel-in-progress: false
+    inputs:
+      disabled:
+        description: 'Retired workflow; no scan is executed'
+        type: boolean
+        default: false
 jobs:
-  scan:
+  retired:
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-        with: {ref: main}
-      - uses: actions/setup-python@v6
-        with: {python-version: '3.12'}
-      - run: python -m pip install -e '.[dev]'
-      - run: pytest -q tests/test_europe_discovery.py tests/test_europe_discovery_summary.py tests/test_europe_discovery_movement.py tests/test_europe_discovery_movement_research.py tests/test_discovery_workflow_contract.py
-      - name: Scan 15 European discovery leagues
-        env:
-          ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
-        run: python -m odds_scanner.europe_discovery
-      - name: Build descriptive discovery summary
-        run: python -m odds_scanner.europe_discovery_summary
-      - name: Build descriptive discovery movement
-        run: python -m odds_scanner.europe_discovery_movement
-      - name: Build descriptive movement-pattern research
-        run: python -m odds_scanner.europe_discovery_movement_research
-      - name: Persist discovery evidence
-        run: |
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add reports/europe_discovery_tournaments.json reports/europe_discovery_status.json reports/europe_discovery_summary.json reports/europe_discovery_movement.json reports/europe_discovery_movement_research.json data/normalized/europe_discovery_snapshots.jsonl
-          git diff --cached --quiet && exit 0
-          git commit -m 'data: update Europe discovery [skip ci]'
-          git push
-# Bet365 15-league expansion collection is manual-only after live evidence showed 0/134 strict snapshots due to absent active full-time AH coverage.
-# Discovery remains outside frozen Validation v2 and can still be run explicitly for diagnostics.
-# /account preflight is unmetered and preserves the frozen core scanner's quota reserve.
-# Summary, movement, and movement-pattern reports are descriptive only and cannot promote patterns or alter frozen validation gates.
-# Updating controls/europe_discovery_run_token.txt intentionally triggers one diagnostic scan; evidence commits do not retrigger this workflow.
+      - run: echo 'Retired scanner - no provider requests'

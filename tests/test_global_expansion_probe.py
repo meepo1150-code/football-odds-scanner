@@ -118,13 +118,15 @@ def test_strict_price_parser_is_used_and_never_promotes(tmp_path,ready,monkeypat
     assert r['identity_counts']['returned_fixtures']==1
 
 
-def test_workflow_serializes_with_canonical_collector_and_does_not_change_schedule():
-    p=Path(__file__).resolve().parents[1]/'.github/workflows/global-expansion-matchday-probe.yml';s=p.read_text()
-    assert 'group: research-v2-collectors' in s and "RESEARCH_QUOTA_DURABLE: 'true'" in s
-    assert "event == 'schedule'" in s and 'run_attempt == 1' in s
-    assert 'cron:' not in s and '2026-10-15' in s
-    assert 'git add -- "$report"' in s
-    assert 'git add -f data/normalized' not in s
+def test_retired_global_expansion_probe_cannot_run_or_mutate_snapshots():
+    import yaml
+    p = Path(__file__).resolve().parents[1] / '.github/workflows/global-expansion-matchday-probe.yml'
+    workflow = yaml.safe_load(p.read_text())
+    triggers = workflow.get('on', workflow.get(True, {}))
+    assert 'schedule' not in triggers
+    assert 'push' not in triggers
+    assert all(str(job.get('if', '')).strip() == '${{ false }}' for job in workflow['jobs'].values())
+    assert 'git add -f data/normalized' not in p.read_text()
 
 
 def test_local_quota_skip_is_not_api_failure(tmp_path,ready):
