@@ -1,0 +1,87 @@
+name: Import Preserved Historical AH Artifact (One-Time)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/historical-import-existing-artifact.yml'
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: one-time-historical-artifact-12058416772
+  cancel-in-progress: false
+jobs:
+  import:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - run: python -m pip install -e '.[dev]'
+      - name: Fetch completed artifact directly by immutable ID (no API provider access)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl --fail-with-body --silent --show-error --location --retry 2 \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/12058416772/zip" \
+            -o /tmp/manual-historical-12058416772.zip
+          mkdir -p manual-publish-artifact
+          unzip -q /tmp/manual-historical-12058416772.zip -d manual-publish-artifact
+          test -s manual-publish-artifact/report.json
+          test -s manual-publish-artifact/manifest.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('manual-publish-artifact/report.json').read_text())
+          manifest=json.loads(Path('manual-publish-artifact/manifest.json').read_text())
+          assert report['status']=='COMPLETED' and report['historical_requests']==29
+          assert report['run_url'].endswith('/38928502371')
+          assert len(report['results'])==len(manifest['candidates'])==29
+          assert report['production_writes']==0 and report['research_only'] is True
+          print('Verified original run #38928502371: 29 fixtures, no new requests')
+          PY
+      - name: Validate and import historical slots; rebuild Research V2 evidence
+        run: |
+          set -euo pipefail
+          python scripts/publish_manual_historical.py --artifact-dir manual-publish-artifact
+          python -m odds_scanner.research_v2_evidence
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path('reports/manual_historical_promotion_latest.json').read_text())
+          assert x['api_requests']==0 and x['production_live_observations_modified']==0
+          assert x['conflicts']==0 and x['added']+x['unchanged']>0
+          print('Verified offline import:', x)
+          PY
+      - name: Commit historical records and regenerated evidence to main
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add data/normalized/europe_pinnacle_research_v2_snapshots.jsonl \
+            data/normalized/research_v2_pattern_outcomes.jsonl \
+            reports/research_v2_pattern_statistics.json \
+            reports/manual_historical_promotion_latest.json \
+            reports/dashboard_scope.json \
+            reports/research_v2_missing_ft_ledger.json \
+            reports/research_v2_fixture_identity.json
+          if git diff --cached --quiet; then
+            echo 'No changes to commit (idempotent replay)'
+          else
+            git commit -m "data: import preserved Sep 9-13 historical AH and rebuild statistics [skip ci]"
+            git push origin HEAD:main
+          fi
+      - name: Explicitly deploy Dashboard
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run pages.yml --ref main
