@@ -1,6 +1,12 @@
 name: Global Expansion Matchday Price Probe
 on:
   workflow_dispatch:
+    inputs:
+      mode:
+        description: Research-only mode; expansion requires cache calibration PASS
+        type: choice
+        options: [revalidate, expand]
+        default: revalidate
   workflow_run:
     workflows: ['Daily Preparation Scan']
     types: [completed]
@@ -88,7 +94,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/research/historical-backfill-isolated-20261015'
     environment: historical-research
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     env:
       PYTHONPATH: src:.
       PILOT_ENVIRONMENT: historical-research
@@ -109,12 +115,50 @@ jobs:
           fail-on-cache-miss: true
       - name: Replay all ten calibration fixtures without provider calls
         run: python -m research.historical_backfill.revalidate
+      - uses: actions/checkout@v6
+        if: inputs.mode == 'expand'
+        with:
+          ref: main
+          path: production-state
+          persist-credentials: false
+      - name: Install research dependencies
+        if: inputs.mode == 'expand'
+        run: python -m pip install -e .
+      - name: Fresh read-only production health safety gate
+        if: inputs.mode == 'expand'
+        run: python -m research.historical_backfill.health_preflight
+      - name: Production identity and quota baseline; account only
+        id: production_baseline
+        if: inputs.mode == 'expand'
+        env:
+          ACCOUNT_PROBE_KEY: ${{ secrets.ODDSPAPI_KEY }}
+        run: python -m research.historical_backfill.actions_pilot production-before
+      - name: Controlled expansion to 100; ten calibration fixtures cache-only
+        if: inputs.mode == 'expand'
+        env:
+          HISTORICAL_ODDSPAPI_KEY: ${{ secrets.HISTORICAL_ODDSPAPI_KEY }}
+          PILOT_ALLOW_EXPANSION: 'true'
+        run: python -m research.historical_backfill.actions_pilot pilot --expand
+      - name: Verify production quota unchanged
+        if: always() && inputs.mode == 'expand' && steps.production_baseline.outcome == 'success'
+        env:
+          ACCOUNT_PROBE_KEY: ${{ secrets.ODDSPAPI_KEY }}
+        run: python -m research.historical_backfill.actions_pilot production-after
+      - name: Preserve immutable cache even after partial stop
+        if: always() && inputs.mode == 'expand' && hashFiles('research/historical_backfill/data/cache/*.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            research/historical_backfill/data/raw
+            research/historical_backfill/data/cache
+          key: historical-pilot-v1-${{ github.run_id }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: historical-price-quality-${{ github.run_id }}
           path: |
             research/historical_backfill/data/quality
+            research/historical_backfill/data/actions/*.json
             research/historical_backfill/data/raw
             research/historical_backfill/data/cache
           retention-days: 30
