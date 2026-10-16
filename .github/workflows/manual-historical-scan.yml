@@ -1,0 +1,104 @@
+name: Manual Historical Scan (Thai Time)
+on:
+  workflow_dispatch:
+    inputs:
+      start_day:
+        description: 'Football day start in Thailand (YYYY-MM-DD); 00:00-05:59 belongs to previous day'
+        type: string
+        required: true
+      end_day:
+        description: 'Football day end in Thailand (YYYY-MM-DD), inclusive, maximum 7 days'
+        type: string
+        required: true
+      times_thai:
+        description: 'Thai target times HH:MM, comma-separated; early morning means next calendar day'
+        type: string
+        default: '15:00,18:00,21:00,00:00'
+        required: true
+      bookmakers:
+        description: 'Verified native bookmaker evidence only'
+        type: choice
+        options: [pinnacle, bet365, 'pinnacle,bet365']
+        default: pinnacle
+      mode:
+        description: 'Plan never calls provider; recover fetches only cache misses'
+        type: choice
+        options: [plan, cache-only, recover]
+        default: plan
+      max_new_requests:
+        description: 'Hard cap for new historical requests (0-50); excess blocks before any request'
+        type: number
+        default: 25
+      confirm_live_requests:
+        description: 'Authorize dedicated historical-key requests; never publish production'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: historical-research-isolated-manual
+  cancel-in-progress: false
+jobs:
+  historical:
+    if: github.ref == 'refs/heads/main'
+    environment: historical-research
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PILOT_ENVIRONMENT: historical-research
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - run: python -m pip install -e '.[dev]'
+      - name: Offline time and safety tests; no provider secrets
+        run: python -m pytest -q tests/test_manual_historical.py
+      - uses: actions/cache/restore@v4
+        id: history_cache
+        with:
+          path: |
+            research/historical_backfill/data/raw
+            research/historical_backfill/data/cache
+          key: historical-manual-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: historical-manual-v1-
+      - name: Bootstrap reviewed prior experiment cache when no manual cache exists
+        if: steps.history_cache.outputs.cache-matched-key == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh run download 38867737713 -R "$GITHUB_REPOSITORY" -n sep15-17-football-day-recovery-38867737713-football-day -D historical-seed
+          python -m odds_scanner.historical_manual.seed --directory historical-seed
+      - name: Plan or recover with Thai targets; historical key only
+        env:
+          HISTORICAL_ODDSPAPI_KEY: ${{ inputs.mode == 'recover' && inputs.confirm_live_requests && secrets.HISTORICAL_ODDSPAPI_KEY || '' }}
+          ACCOUNT_PROBE_KEY: ${{ inputs.mode == 'recover' && inputs.confirm_live_requests && secrets.ODDSPAPI_KEY || '' }}
+          INPUT_START: ${{ inputs.start_day }}
+          INPUT_END: ${{ inputs.end_day }}
+          INPUT_TIMES: ${{ inputs.times_thai }}
+          INPUT_BOOKS: ${{ inputs.bookmakers }}
+          INPUT_MODE: ${{ inputs.mode }}
+          INPUT_CAP: ${{ inputs.max_new_requests }}
+          INPUT_CONFIRM: ${{ inputs.confirm_live_requests }}
+        run: |
+          set -euo pipefail
+          confirm=()
+          if [ "$INPUT_CONFIRM" = true ]; then confirm+=(--confirm-live-requests); fi
+          python -m odds_scanner.historical_manual.runner --start-day "$INPUT_START" --end-day "$INPUT_END" --times "$INPUT_TIMES" --bookmakers "$INPUT_BOOKS" --mode "$INPUT_MODE" --max-requests "$INPUT_CAP" "${confirm[@]}"
+      - uses: actions/cache/save@v4
+        if: always() && hashFiles('research/historical_backfill/data/cache/*.json') != '' && (steps.history_cache.outputs.cache-matched-key == '' || hashFiles('research/manual_historical/output/new_cache/cache/*.json') != '')
+        with:
+          path: |
+            research/historical_backfill/data/raw
+            research/historical_backfill/data/cache
+          key: historical-manual-v1-${{ github.run_id }}-${{ github.run_attempt }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-historical-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            research/manual_historical/output
+          retention-days: 90
+          if-no-files-found: warn
