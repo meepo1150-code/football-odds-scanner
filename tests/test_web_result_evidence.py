@@ -155,3 +155,17 @@ def test_existing_verified_web_provenance_repair_is_audited_and_idempotent(tmp_p
     before=audit.read_bytes()
     assert import_evidence(tmp_path)['provenance_rows_corrected']==0
     assert audit.read_bytes()==before
+
+
+def test_urgent_reviewed_official_ft_evidence_passes_strict_source_schema():
+    from pathlib import Path
+    from odds_scanner.web_result_evidence import _quality
+    from odds_scanner.web_result_recovery import validate_evidence
+    path=Path('data/research/web_result_evidence_20261017_urgent.jsonl')
+    rows=[json.loads(x) for x in path.read_text().splitlines() if x.strip()]
+    assert len(rows)==10
+    assert len({x['fixture_id'] for x in rows})==10
+    for evidence in rows:
+        assert validate_evidence(evidence)==(True,'VALID')
+        assert _quality(evidence)[0] is True
+        assert evidence['recovery_batch_id']=='URGENT_OFFICIAL_FT_20261017'
