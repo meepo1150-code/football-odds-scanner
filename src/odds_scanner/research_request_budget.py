@@ -75,28 +75,24 @@ def allocation(path, ids, now, batch_size=5, *, prioritized=False, overhead=0, m
     # day; optional second batches yield before reaching 180/month.
     future_month_reserve = sum(len(utc_targets(now.date() + timedelta(days=i))) + 1
         for i in range(1, calendar.monthrange(now.year, now.month)[1] - now.day + 1))
-    run_limit = RUN_LIMIT
-    # One odds batch defines the daily cohort, even if discovery is cached.
-    # This keeps every repeat observation affordable under the future-slot minimum.
-    if now.date().isoformat() >= '2026-10-14' and not manual and slots and slots[0] <= now <= slots[0]+timedelta(minutes=150):
-        run_limit = min(RUN_LIMIT, overhead+1)
-    available = max(0, min(run_limit, DAILY_LIMIT-daily-protected_reserve,
-                          MONTHLY_LIMIT-monthly-protected_reserve-future_month_reserve))
-    remaining = max(0, available-overhead)
+    # No locally imposed request ceiling: provider entitlement and rate-limit responses
+    # remain authoritative in the collector.
+    run_limit = (len(ids) + batch_size - 1) // batch_size + overhead
+    remaining = max(0, run_limit - overhead)
     batches = [ids[i:i+batch_size] for i in range(0, len(ids), batch_size)]
     chosen = [batches[i if prioritized else (now.date().toordinal()+i)%len(batches)]
               for i in range(min(remaining, len(batches)))] if batches else []
     return [x for b in chosen for x in b], {
-        'request_budget_policy': 'RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH',
+        'request_budget_policy': 'PROVIDER_ENFORCED_ONLY',
         'research_requests_used_today': daily, 'research_requests_used_month': monthly,
         'research_daily_limit': DAILY_LIMIT, 'research_monthly_limit': MONTHLY_LIMIT,
         'research_run_limit': run_limit, 'quota_utc_day': now.date().isoformat(),
         'canonical_slots_in_football_day': len(slots),
         'future_utc_slots': [t.isoformat() for t in future],
-        'future_utc_requests_reserved': protected_reserve,
-        'current_canonical_requests_reserved': current_reserve,
-        'future_month_requests_reserved': future_month_reserve,
-        'canonical_request_reservation': 'UTC_FUTURE_SLOTS_PLUS_DISCOVERY; MANUAL_AND_RECOVERY_YIELD; FAILED_ATTEMPTS_COUNT',
+        'future_utc_requests_reserved': 0,
+        'current_canonical_requests_reserved': 0,
+        'future_month_requests_reserved': 0,
+        'canonical_request_reservation': 'NONE_INTERNAL; PROVIDER_ENFORCED',
         'budget_scope': 'ODDSPAPI_RESEARCH_COLLECTOR_ONLY',
         'coverage_mode': 'MASTER_SCHEDULE_PRIORITIZED' if prioritized else 'DAILY_STABLE_COHORT_WITH_REPEAT_OBSERVATIONS',
         'schedule_requests_reserved': overhead,
