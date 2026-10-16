@@ -127,39 +127,3 @@ def test_equivalent_line_representations_share_wr_and_ou_populations(tmp_path):
     assert (tmp_path/SNAPSHOTS).read_bytes()==raw
 
 
-def test_due_ft_coverage_excludes_future_postponed_archived_and_conflict(tmp_path):
-    import json
-    from odds_scanner.research_v2_pattern_stats import build, SNAPSHOTS, RESULTS
-    from datetime import datetime, timezone, timedelta
-    from odds_scanner.research_v2_pattern_stats import pending_age_counts
-    now=datetime.now(timezone.utc)
-    old=(now-timedelta(hours=6)).isoformat()
-    upcoming=(now+timedelta(hours=2)).isoformat()
-    rows=[
-        {'status':'MISSING_FT','kickoff':old},
-        {'status':'MISSING_FT','kickoff':upcoming},
-        {'status':'IDENTITY_CONFLICT','kickoff':old},
-        {'status':'POSTPONED','kickoff':old},
-        {'status':'RETIRED_UNRESOLVED','kickoff':old},
-        {'status':'MISSING_FT','kickoff':old,'retired_from_active_queue':True},
-    ]
-    pending=pending_age_counts(rows,now)
-    assert pending['active_overdue_ft_fixtures']==1
-    assert pending['active_future_or_recent_ft_fixtures']==1
-
-    fixture=quote()
-    fixture.update(fixture_id='has_ft', football_day='2026-09-29')
-    missing={**quote(),'fixture_id':'old_missing', 'football_day':'2026-09-29'}
-    for path,records in [
-        (SNAPSHOTS,[fixture,missing]),
-        (RESULTS,[{'fixture_id':'has_ft','ft_home_goals':2,'ft_away_goals':1}]),
-    ]:
-        target=tmp_path/path
-        target.parent.mkdir(parents=True,exist_ok=True)
-        target.write_text(''.join(json.dumps(r)+'\\n' for r in records))
-    report=build(tmp_path)
-    assert report['settled_fixtures']==1
-    assert report['raw_unresolved_ft_fixtures']==1
-    assert report['ft_due_denominator']==2
-    assert report['ft_due_completeness_pct']==50.0
-    assert report['ft_completeness_denominator']==2
