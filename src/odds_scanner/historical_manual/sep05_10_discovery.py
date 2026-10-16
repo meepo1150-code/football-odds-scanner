@@ -9,7 +9,7 @@ import os
 import urllib.error
 import urllib.parse
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from odds_scanner.historical_manual.planner import build, football_day, stamp
@@ -91,6 +91,16 @@ def account(key, books, now, factory):
     return summarize_account(json.loads(raw), books, now)
 
 
+def checked_health_at(report, started):
+    """Avoid comparing a freshly regenerated health timestamp to an earlier clock."""
+    generated = stamp(report["generated_at"])
+    # A future-dated file is not evidence of health. Only small runner clock
+    # skew/regeneration latency is permitted.
+    if (generated - started).total_seconds() > 120:
+        raise StopPilot("DISCOVERY_HEALTH_FUTURE_TIMESTAMP")
+    return max(started, generated)
+
+
 def execute(*, root=Path("."), now=None, factory=FixturesClient, env=None,
             health_reader=None):
     now = now or datetime.now(timezone.utc)
@@ -126,7 +136,7 @@ def execute(*, root=Path("."), now=None, factory=FixturesClient, env=None,
                      research=research["subscription_fingerprint"])
     read_health = health_reader or (lambda: fresh_health(root))
     baseline = read_health()
-    health_check(baseline, baseline, now, account_isolation=isolation)
+    health_check(baseline, baseline, checked_health_at(baseline, now), account_isolation=isolation)
     # One and only one billable discovery call, never on production credentials.
     status, _, raw = factory(history_key)("/fixtures", PARAMS)
     if status != 200:
@@ -142,7 +152,8 @@ def execute(*, root=Path("."), now=None, factory=FixturesClient, env=None,
     if (prod["subscription_fingerprint"] != after_prod["subscription_fingerprint"]
             or after_prod["request_count"] < prod["request_count"]):
         raise StopPilot("DISCOVERY_PRODUCTION_ACCOUNT_CHANGED")
-    health_check(read_health(), baseline, now, account_isolation=isolation)
+    followup = read_health()
+    health_check(followup, baseline, checked_health_at(followup, now), account_isolation=isolation)
     receipt_file.parent.mkdir(parents=True, exist_ok=True)
     with receipt_file.open("a") as out:
         out.write(json.dumps(receipt, ensure_ascii=False, separators=(",", ":")) + "\n")
