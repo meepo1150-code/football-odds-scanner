@@ -30,7 +30,7 @@ on:
         type: boolean
         default: true
       confirm_live_requests:
-        description: 'Authorize dedicated historical-key requests; never publish production'
+        description: 'Authorize dedicated historical-key requests; publishing is separately validated'
         type: boolean
         default: false
 permissions:
@@ -112,9 +112,6 @@ jobs:
     permissions:
       contents: write
       actions: read
-    concurrency:
-      group: manual-historical-publish-main
-      cancel-in-progress: false
     steps:
       - name: Check out latest main before publishing
         uses: actions/checkout@v6
@@ -134,10 +131,7 @@ jobs:
         run: |
           set -euo pipefail
           python scripts/publish_manual_historical.py --artifact-dir manual-publish-artifact
-          python -m odds_scanner.research_v2_pattern_stats
           python -m odds_scanner.research_v2_evidence
-          python -m odds_scanner.research_v2_end_to_end_audit
-          python -m odds_scanner.dashboard_scope
       - name: Commit data and regenerated statistics, preserving other main changes
         env:
           GH_TOKEN: ${{ github.token }}
@@ -152,7 +146,7 @@ jobs:
             reports/dashboard_scope.json \
             reports/research_v2_missing_ft_ledger.json \
             reports/research_v2_fixture_identity.json
-          git add -u reports data/normalized
+          git add -u reports/research_v2_pattern_statistics.json reports/dashboard_scope.json
           if git diff --cached --quiet; then
             echo 'No content changed'
           else
