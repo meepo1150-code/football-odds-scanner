@@ -74,8 +74,18 @@ def cached_response(root, endpoint, params, target, now):
         observed = stamp(row.get('observed_at'))
         if (row.get('endpoint') == endpoint and row.get('params') == params and observed
             and target <= observed <= now):
+            if endpoint == '/odds-by-tournaments' and not valid_cached_batch(row):
+                continue
             return row
     return None
+
+
+def valid_cached_batch(row):
+    try:
+        batch = set(str(row.get('params', {}).get('tournamentIds', '')).split(','))
+        return all(str(f.get('tournamentId')) in batch for f in items(row['payload']))
+    except (ValueError, KeyError, TypeError):
+        return False
 
 
 def request_batches(root, ids, target, now, size=5):
@@ -85,6 +95,8 @@ def request_batches(root, ids, target, now, size=5):
     for row in reversed(rows(root/RAW_PATH)):
         observed = stamp(row.get('observed_at'))
         if row.get('endpoint') != '/odds-by-tournaments' or not observed or not target <= observed <= now:
+            continue
+        if not valid_cached_batch(row):
             continue
         params = row.get('params', {})
         batch = str(params.get('tournamentIds', '')).split(',')

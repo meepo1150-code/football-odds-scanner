@@ -132,7 +132,7 @@ def test_quota_exhaustion_stops_before_paid_request(tmp_path,monkeypatch):
 def test_cached_response_preserves_time_and_never_crosses_slot(tmp_path):
     target=datetime(2026,10,16,8,tzinfo=timezone.utc);params={'tournamentIds':'17'}
     observed=target.replace(minute=1)
-    planner.retain(tmp_path,'/odds-by-tournaments',params,[{'fixtureId':'x'}],observed)
+    planner.retain(tmp_path,'/odds-by-tournaments',params,[{'fixtureId':'x','tournamentId':17}],observed)
     r=manifest.cached_response(tmp_path,'/odds-by-tournaments',params,target,target.replace(minute=8))
     assert r['observed_at']==observed.isoformat()
     assert manifest.cached_response(tmp_path,'/odds-by-tournaments',params,target.replace(hour=11),target.replace(hour=11,minute=1)) is None
@@ -178,3 +178,15 @@ def test_publication_preserves_existing_raw_bytes(tmp_path):
     append_union(p,q);assert p.read_bytes().startswith(original)
     assert len(p.read_text().splitlines())==2
     before=p.read_bytes();append_union(p,q);assert p.read_bytes()==before
+
+
+def test_local_failures_are_not_reported_as_api_errors(tmp_path):
+    r=auto.run(tmp_path,now=datetime(2026,10,16,11,2,tzinfo=timezone.utc))
+    assert r['scan_health']=='FAIL' and r['api_errors']==0 and r['actual_scan_time'] is None
+
+
+def test_invalid_cached_payload_does_not_prevent_real_retry(tmp_path):
+    target=datetime(2026,10,16,8,tzinfo=timezone.utc);params=dict(tournamentIds='17')
+    planner.retain(tmp_path,'/odds-by-tournaments',params,{'error':'invalid'},target.replace(minute=1))
+    assert manifest.cached_response(tmp_path,'/odds-by-tournaments',params,target,target.replace(minute=2)) is None
+    assert manifest.request_batches(tmp_path,[17],target,target.replace(minute=2))==[[17]]

@@ -35,7 +35,7 @@ def run(root=Path('.'), *, dry_run=False, now=None):
         return dict(slot, dry_run=True, requests_used=0, status='DRY_RUN',
                     manifest_available=cohort(root, slot['football_day']) is not None,
                     request_policy='AUTO_PROVIDER_QUOTA_ONLY')
-    report = dict(slot, generated_at=now.isoformat(), requests_used=0, errors=[],
+    report = dict(slot, generated_at=now.isoformat(), requests_used=0, api_errors=0, errors=[],
                   recovery_status='RECOVERY' if prior or slot['lag_minutes'] > 5 else 'PRIMARY',
                   run_url=f"https://github.com/{os.getenv('GITHUB_REPOSITORY', 'meepo1150-code/football-odds-scanner')}/actions/runs/{os.getenv('GITHUB_RUN_ID', '')}")
     if slot['lag_minutes'] > 30:
@@ -52,6 +52,8 @@ def run(root=Path('.'), *, dry_run=False, now=None):
         try:
             from .automatic_scan_collector import run as collect
             report.update(collect(root))
+            if report.get('status') in {'API_REQUEST_FAILED', 'SCHEDULE_REQUEST_FAILED', 'SKIPPED_QUOTA_HEALTH_UNAVAILABLE', 'PROVIDER_RESPONSE_REJECTED'}:
+                report['api_errors'] = len(report.get('errors', []))
             if slot['target_at'][11:13] == '15':
                 manifest = freeze(root, report)
             else:
@@ -71,10 +73,9 @@ def run(root=Path('.'), *, dry_run=False, now=None):
     report['total_fixtures'] = report.get('daily_cohort_fixture_count', 0)
     report['priced_fixtures'] = sum(bool(r['quote_persisted']) for r in report.get('daily_cohort_fixtures', []))
     report['no_price_fixtures'] = report['total_fixtures']-report['priced_fixtures']
-    report['api_errors'] = len(report.get('errors', []))
-    report['actual_scan_time'] = report.get('actual_observed_at')
+    report['actual_scan_time'] = report.get('actual_observed_at') if 'collection_started_at' in report else None
     report['complete'] = bool(report.get('manifest_id') and report.get('coverage_complete') is True
-                              and report.get('daily_cohort_query_complete') is True and not report['api_errors'])
+                              and report.get('daily_cohort_query_complete') is True and not report.get('errors') and not report['api_errors'])
     report['scan_health'] = ('PASS' if not report['no_price_fixtures'] else 'WARNING') if report['complete'] else 'FAIL'
     observed = datetime.fromisoformat(report['actual_scan_time']) if report.get('actual_scan_time') else now
     report['delay_minutes'] = round((observed-datetime.fromisoformat(slot['target_at'])).total_seconds()/60, 2)
