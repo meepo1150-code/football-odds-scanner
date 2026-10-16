@@ -59,8 +59,24 @@ def produce(report, manifest, original):
         if len(sides) > 1:
             raise ValueError("MISSING_OR_AMBIGUOUS_FAVORITE_IDENTITY")
         if not sides:
-            if not any(e.get("mapping_source", "").startswith("ODDSPAPI_") and (e.get("evidence_url", "").startswith("https://") or (e.get("mapping_source") == "ODDSPAPI_NATIVE_FIXTURES_RECEIPT" and e.get("response_id") and e.get("sha256"))) for e in c.get("evidence", [])):
-                raise ValueError("NEW_FIXTURE_REQUIRES_EXTERNAL_PROVIDER_EVIDENCE")
+            # Native exact-ID observations from pinned manifest sources may
+            # not yet exist in the published Research V2 dataset.
+            native = bool(c.get('observations')) and any(
+                e.get('path') in {
+                    'data/normalized/europe_pinnacle_research_v2_snapshots.jsonl',
+                    'data/normalized/v2_mainline_snapshots.jsonl',
+                    'data/research/pre_sep14_historical_originals.jsonl',
+                    'data/research/pre_sep15_17_historical_originals.jsonl',
+                } and e.get('sha256') and e.get('line')
+                for e in c.get('evidence', []))
+            external = any(
+                e.get('mapping_source', '').startswith('ODDSPAPI_') and (
+                    e.get('evidence_url', '').startswith('https://') or (
+                        e.get('mapping_source') == 'ODDSPAPI_NATIVE_FIXTURES_RECEIPT'
+                        and e.get('response_id') and e.get('sha256')))
+                for e in c.get('evidence', []))
+            if not (native or external):
+                raise ValueError('NEW_FIXTURE_REQUIRES_EXTERNAL_PROVIDER_EVIDENCE')
             templates[key] = None
         else:
             templates[key] = matches[-1]
