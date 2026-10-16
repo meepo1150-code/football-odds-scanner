@@ -19,6 +19,8 @@ class FixtureRoundReportTests(unittest.TestCase):
         self.assertEqual(x['complete'],1)
         self.assertEqual(x['scan_failed'],1)
         self.assertEqual(x['unknown_membership'],1)
+        self.assertEqual(len(__import__('json').loads(x['round_status_detail'])),3)
+        self.assertEqual(x['observed_ah_quote_records'],0)
         self.assertIn('11:00',x['candidate_deficit_slots'])
         self.assertIn('14:00',x['needs_evidence_slots'])
 
