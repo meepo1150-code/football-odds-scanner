@@ -126,16 +126,20 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          # A re-run of only this job has no artifact for the new attempt.
-          # Select the latest existing artifact for this exact run ID, not a
-          # different run, and never trigger another provider collection.
-          artifact_name="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" --paginate --jq '.artifacts[].name' | grep -E "^manual-historical-$GITHUB_RUN_ID-[0-9]+$" | sort -t- -k3,3nr | head -n1)"
-          if [ -z "$artifact_name" ]; then
-            echo "::error::No historical artifact found for run $GITHUB_RUN_ID"
+          # The artifact is attached to the first successful historical job
+          # attempt. Rerunning only publish does not create another artifact.
+          # GitHub's gh run download may scope artifact names to the current
+          # attempt, so download the immutable artifact by its numeric ID.
+          artifact_id="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" --paginate --jq '.artifacts[] | select(.expired == false) | [.name, (.id|tostring)] | @tsv' | awk -F '\t' -v run="$GITHUB_RUN_ID" '$1 ~ ("^manual-historical-" run "-[0-9]+$") {print $2}' | head -n1)"
+          if [ -z "$artifact_id" ]; then
+            echo "::error::No unexpired historical artifact for run $GITHUB_RUN_ID"
             exit 1
           fi
-          echo "Restoring verified historical artifact: $artifact_name"
-          gh run download "$GITHUB_RUN_ID" -R "$GITHUB_REPOSITORY" -n "$artifact_name" -D manual-publish-artifact
+          echo "Restoring artifact ID $artifact_id for run $GITHUB_RUN_ID"
+          gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact_id/zip" > historical-artifact.zip
+          unzip -q historical-artifact.zip -d manual-publish-artifact
+          test -s manual-publish-artifact/report.json
+          test -s manual-publish-artifact/manifest.json
       - name: Validate, import, and rebuild main statistics (offline)
         run: |
           set -euo pipefail
