@@ -1,0 +1,152 @@
+name: Sep05-10 Historical Recovery - All Verified Fixtures in Shards
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sep05-10-sharded-recovery.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+# Wait behind the already-running all-fixture manual scan; never run overlapping
+# research HTTP with it, and never cancel a scan while it is collecting.
+concurrency:
+  group: historical-research-isolated-manual
+  cancel-in-progress: false
+jobs:
+  recover:
+    strategy:
+      fail-fast: true
+      max-parallel: 1
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+    runs-on: ubuntu-24.04
+    environment: historical-research
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+    env:
+      PILOT_ENVIRONMENT: historical-research
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e '.[dev]'
+      - name: Offline validation of deterministic shards
+        run: python -m pytest -q tests/test_historical_fixture_shards.py tests/test_manual_historical.py
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            research/historical_backfill/data/raw
+            research/historical_backfill/data/cache
+          key: historical-shard-sep05-10-${{ github.run_id }}-${{ matrix.shard }}
+          restore-keys: |
+            historical-shard-sep05-10-
+            historical-manual-v1-
+      - name: Recover exactly this deterministic shard, all approved pairings
+        env:
+          HISTORICAL_ODDSPAPI_KEY: ${{ secrets.HISTORICAL_ODDSPAPI_KEY }}
+          ACCOUNT_PROBE_KEY: ${{ secrets.ODDSPAPI_KEY }}
+        run: |
+          set -euo pipefail
+          python -m odds_scanner.historical_manual.runner \
+            --start-day 2026-09-05 --end-day 2026-09-10 \
+            --times 15:00,18:00,21:00,00:00 \
+            --bookmakers pinnacle,bet365 --mode recover --confirm-live-requests \
+            --fixture-shard ${{ matrix.shard }} --fixture-shards 16
+      - name: Preserve production inputs
+        if: always()
+        run: git diff --exit-code -- data reports config
+      - uses: actions/cache/save@v4
+        if: always() && hashFiles('research/historical_backfill/data/cache/*.json') != ''
+        with:
+          path: |
+            research/historical_backfill/data/raw
+            research/historical_backfill/data/cache
+          key: historical-shard-sep05-10-${{ github.run_id }}-${{ matrix.shard }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sep05-10-shard-${{ matrix.shard }}
+          path: research/manual_historical/output
+          retention-days: 90
+          if-no-files-found: warn
+
+  publish:
+    needs: recover
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          persist-credentials: true
+          fetch-depth: 0
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -e '.[dev]'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: sep05-10-shard-*
+          path: /tmp/sep05-10-verified
+          merge-multiple: false
+      - name: Verify and import all 16 non-overlapping shards, rebuild Research V2
+        run: |
+          set -euo pipefail
+          for shard in $(seq 0 15); do
+            dir="/tmp/sep05-10-verified/sep05-10-shard-$shard"
+            test -s "$dir/manifest.json"
+            test -s "$dir/report.json"
+            python - "$dir/report.json" "$shard" <<'PYVERIFY'
+          import json,sys
+          report=json.load(open(sys.argv[1]))
+          plan=report.get('plan') or {}
+          if (report.get('status') not in ('COMPLETED','NO_VERIFIED_FIXTURES')
+                  or plan.get('fixture_shard') != int(sys.argv[2])
+                  or plan.get('fixture_shards') != 16
+                  or report.get('research_only') is not True):
+              raise SystemExit('INVALID_OR_INCOMPLETE_SHARD')
+          PYVERIFY
+            if python - "$dir/report.json" <<'PYEMPTY'
+          import json,sys
+          r=json.load(open(sys.argv[1]))
+          raise SystemExit(0 if r['status']=='NO_VERIFIED_FIXTURES' else 1)
+          PYEMPTY
+            then
+              echo "Empty deterministic shard $shard: verified skip"
+            else
+              python scripts/publish_manual_historical.py --artifact-dir "$dir"
+            fi
+          done
+          python -m odds_scanner.research_v2_evidence
+      - name: Commit only verifiable reconstructed AH and recomputed statistics
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add data/normalized/europe_pinnacle_research_v2_snapshots.jsonl \
+            data/normalized/research_v2_pattern_outcomes.jsonl \
+            reports/research_v2_pattern_statistics.json \
+            reports/manual_historical_promotion_latest.json \
+            reports/dashboard_scope.json \
+            reports/research_v2_missing_ft_ledger.json \
+            reports/research_v2_fixture_identity.json
+          if ! git diff --cached --quiet; then
+            git commit -m "data: recover verified Sep05-10 AH history and refresh stats [skip ci]"
+            git push origin HEAD:main
+          fi
+      - name: Deploy Pages explicitly after history data commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref main
