@@ -1,0 +1,74 @@
+name: Sep15-17 Historical Production Promotion
+on:
+  push:
+    branches: [main]
+    paths:
+      - scripts/promote_sep15_17_historical.py
+      - .github/workflows/sep15-17-historical-promotion.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: sep15-17-historical-production-promotion
+  cancel-in-progress: false
+jobs:
+  promote:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONPATH: src:.
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - name: Download pinned reviewed artifact; zero provider requests
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/sep15-17-input
+          gh run download 38867737713 -R "${{ github.repository }}" -n sep15-17-football-day-recovery-38867737713-football-day -D /tmp/sep15-17-input
+          (cd /tmp/sep15-17-input && zip -q -r /tmp/sep15-17-reviewed.zip sep15_17_matchdays)
+      - name: Apply on latest main with compare-and-swap push; retain concurrent scans
+        run: |
+          set -euo pipefail
+          mkdir -p promotion-output
+          for attempt in 1 2 3; do
+            git fetch origin main
+            task_tree=$(mktemp -d /tmp/sep15-17-promotion.XXXXXX)
+            git worktree add --detach "$task_tree" FETCH_HEAD
+            cp "$task_tree/data/normalized/europe_pinnacle_research_v2_snapshots.jsonl" promotion-output/before.jsonl
+            (
+              cd "$task_tree"
+              export PYTHONPATH="$task_tree/src:$task_tree"
+              python scripts/promote_sep15_17_historical.py --artifact /tmp/sep15-17-reviewed.zip --dry-run
+              python scripts/promote_sep15_17_historical.py --artifact /tmp/sep15-17-reviewed.zip
+              python -m odds_scanner.research_v2_evidence
+              git config user.name 'github-actions[bot]'
+              git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+              git add -f data/normalized/europe_pinnacle_research_v2_snapshots.jsonl data/research/pre_sep15_17_historical_originals.jsonl reports/sep15_17_historical_promotion.json
+              git add -f data/normalized/research_v2_pattern_outcomes.jsonl data/normalized/research_v2_movement_features.jsonl
+              git add -f reports/research_v2_pattern_statistics.json reports/research_v2_movement_status.json reports/research_v2_operational_audit.json reports/research_v2_end_to_end_audit.json reports/research_v2_fixture_identity.json reports/research_v2_missing_ft_ledger.json reports/dashboard_scope.json reports/oddspapi_history_audit.json reports/scan_health_latest.json reports/scan_health_monitor.json
+              git diff --cached --quiet || git commit -m 'data: promote Sep15-17 historical AH with original archive [skip ci]'
+            )
+            cp "$task_tree/reports/sep15_17_historical_promotion.json" promotion-output/receipt.json
+            if git -C "$task_tree" push origin HEAD:main; then
+              git -C "$task_tree" rev-parse HEAD > promotion-output/production-sha.txt
+              exit 0
+            fi
+            echo "Main advanced; recomputing from latest main without force push (attempt $attempt)"
+          done
+          exit 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sep15-17-production-backup-${{ github.run_id }}
+          path: promotion-output
+          retention-days: 90
+          if-no-files-found: error
+      - name: Publish current production data through existing Pages workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml -R "${{ github.repository }}" --ref main
