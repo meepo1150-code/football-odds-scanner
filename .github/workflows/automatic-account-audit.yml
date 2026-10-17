@@ -1,0 +1,33 @@
+name: Automatic Scanner Account Audit
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['controls/automatic_account_audit.txt']
+permissions:
+  contents: read
+concurrency:
+  group: research-v2-collectors
+  cancel-in-progress: false
+jobs:
+  audit:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: main, persist-credentials: false}
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - name: Account-only checks; secondary current transport remains disabled
+        env:
+          PYTHONPATH: src
+          ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
+          HISTORICAL_ODDSPAPI_KEY: ${{ secrets.HISTORICAL_ODDSPAPI_KEY }}
+        run: python -m odds_scanner.automatic_account_audit
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: automatic-account-audit-${{ github.run_id }}
+          path: reports/automatic_account_audit.json
+          retention-days: 30

@@ -41,6 +41,15 @@ def merge(root, staged):
         if existing and existing != record:
             raise ValueError('Refuse conflicting manifest publication')
     for relative in PATHS:
+        for path in (root/relative, staged/relative):
+            if any(not isinstance(record, dict) for record in rows(path)):
+                raise ValueError('Forensic record must be an object')
+    for relative in (REPORT, Path('reports/europe_pinnacle_research_v2_status.json')):
+        for base in (root, staged):
+            path = base/relative
+            if path.exists() and not isinstance(json.loads(path.read_text()), dict):
+                raise ValueError('Report must be an object')
+    for relative in PATHS:
         if (staged/relative).exists():
             append_union(root/relative, staged/relative)
     from .scan_health import write_latest

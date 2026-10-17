@@ -40,6 +40,7 @@ def test_no_background_provider_probe_outside_slots():
 
 
 def test_pinnwire_includes_after_midnight_in_previous_football_day(tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)  # Isolate health history as well as the provider report.
     from odds_scanner import master_scan_scope as scope
     monkeypatch.setattr(scope,'forward_mappings',lambda:{('pinnwire','1001'):'ENG-0001'})
     class Clock(datetime):

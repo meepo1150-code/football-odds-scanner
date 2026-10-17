@@ -46,6 +46,7 @@ def test_five_dollar_unmapped_provider_stops_before_fixture_and_odds_calls(tmp_p
 
 
 def test_pinnwire_unmapped_provider_stops_before_global_prematch_fetch(tmp_path,monkeypatch):
+    monkeypatch.chdir(tmp_path)  # Isolate health history as well as the provider report.
     from odds_scanner import pinnwire_probe as p
     monkeypatch.setattr(p,'_fetch_payload',forbidden);monkeypatch.setattr(p,'REPORT',tmp_path/'report.json')
     report=p.collect()
