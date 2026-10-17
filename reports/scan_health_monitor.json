@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-17T11:58:41.741633+00:00",
+  "generated_at": "2026-10-17T12:37:52.643700+00:00",
   "football_day": "2026-10-17",
   "status": "FAIL",
   "issues": [
@@ -35,7 +35,7 @@
       "recovered": false
     }
   ],
-  "ft_delay_count": 3,
+  "ft_delay_count": 6,
   "ft_delay": [
     {
       "fixture_id": "id1000003572513242",
@@ -62,6 +62,48 @@
       "status": "IDENTITY_CONFLICT",
       "country": "Spain",
       "canonical_competition_id": null,
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000017868214848",
+      "provider": "oddspapi",
+      "football_day": "2026-10-17",
+      "league": "Meistriliiga",
+      "kickoff": "2026-10-17T09:30:00+00:00",
+      "home": "FC Nomme United",
+      "away": "Nomme Kalju FC",
+      "status": "MISSING_FT",
+      "country": "Estonia",
+      "canonical_competition_id": "EST-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000056273086656",
+      "provider": "oddspapi",
+      "football_day": "2026-10-17",
+      "league": "Liga II",
+      "kickoff": "2026-10-17T09:30:00+00:00",
+      "home": "Scm Ramnicu Valcea",
+      "away": "Stinta Poli Timisoara",
+      "status": "MISSING_FT",
+      "country": "Romania",
+      "canonical_competition_id": "ROU-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000069172550268",
+      "provider": "oddspapi",
+      "football_day": "2026-10-17",
+      "league": "Ukrainian First League",
+      "kickoff": "2026-10-17T09:00:00+00:00",
+      "home": "FC Kolos Kovalivka 2",
+      "away": "FC Ucsa Tarasivka",
+      "status": "MISSING_FT",
+      "country": "Ukraine",
+      "canonical_competition_id": "UKR-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false
     },
@@ -165,26 +207,25 @@
     "prematch_forecast_at": "2026-10-17T21:03:00+07:00",
     "unconfirmed_grants": [],
     "blocked_reasons": [
-      "FIXED_COHORT_UNAVAILABLE",
-      "ACCOUNT_CAPACITY_UNCONFIRMED_OR_INSUFFICIENT"
+      "FIXED_COHORT_UNAVAILABLE"
     ],
     "pending_fixture_ids": [],
     "required_market_requests": 0,
     "allocated_tournament_ids": [],
     "quota_utc_day": "2026-10-17",
     "research_usage": {
-      "day": 20,
-      "month": 191
+      "day": 40,
+      "month": 211
     },
-    "account_remaining_estimate": 11,
-    "account_observed_before": null,
+    "account_remaining_estimate": 229,
+    "account_observed_before": "2026-10-17T12:01:14.657275+00:00",
     "account_estimate_limitation": "OTHER_ACCOUNT_CONSUMERS_AFTER_OBSERVATION_NOT_MEASURED; RECHECK_UNMETERED_ACCOUNT_AT_COLLECTION",
     "fixture_set_policy": null,
     "schedule_response_id": null,
     "budget": {
       "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
-      "research_requests_used_today": 20,
-      "research_requests_used_month": 191,
+      "research_requests_used_today": 40,
+      "research_requests_used_month": 211,
       "research_daily_limit": 6,
       "research_monthly_limit": 180,
       "research_run_limit": 2,
