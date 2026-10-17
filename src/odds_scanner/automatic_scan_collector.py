@@ -178,6 +178,21 @@ def run(root=Path('.')):
                           strict_snapshots_this_run=0, coverage_complete=True)
             _record_slot(root/SLOT_LEDGER_PATH, report, 'ZERO_FIXTURES')
             return _write(report, root)
+    # A complete retained schedule can narrow the grant BEFORE quota preflight.
+    # Otherwise all master tournaments were reserved even for a one-match day.
+    if master_mode and cached is not None and fixed is None:
+        schedule_rows = schedule.items(cached['payload'])
+        schedule_complete = isinstance(cached['payload'], list) and len(schedule_rows) < schedule.SCHEDULE_LIMIT
+        if schedule_complete:
+            selected, scope = schedule.plan(schedule_rows, ws, we, now, complete=True)
+            report.update(scope, schedule_response_id=cached['response_id'],
+                          schedule_observed_at=cached['observed_at'])
+            if not selected:
+                report.update(status='ZERO_USABLE_FIXTURES', requests_used=0,
+                              football_day_fixtures=0, strict_snapshots_this_run=0,
+                              coverage_complete=True, coverage_tournament_ids=[])
+                _record_slot(root/SLOT_LEDGER_PATH, report, 'ZERO_FIXTURES')
+                return _write(report, root)
     report['master_scope_excluded_targets'] = original_count - len(selected)
     ids=[x.get('tournament_id') for x in selected if isinstance(x,dict) and x.get('tournament_id') is not None]
     if original_count and not selected:
@@ -321,7 +336,7 @@ def run(root=Path('.')):
                 report.update(generated_at=failed_at.isoformat(),actual_observed_at=failed_at.astimezone(BANGKOK).isoformat(),request_completed_at=failed_at.isoformat())
                 if getattr(e,'code',None)==429:
                     report.update(data_source_health='RATE_LIMITED', rate_limit_cooldown_until=_rate_limit_until(e, failed_at))
-                report.update(status='API_REQUEST_FAILED',requests_used=used,rate_limit_retries=retries,errors=[f'{type(e).__name__}: {e}'])
+                report.update(status='API_REQUEST_FAILED',requests_used=used,rate_limit_retries=retries,errors=[type(e).__name__])
                 request_failed=True
                 break
         if request_failed:break
@@ -337,7 +352,7 @@ def run(root=Path('.')):
             _record_slot(root/SLOT_LEDGER_PATH,report,'FAILED');return _write(report,root)
         report.update(status='RECOVERY_WINDOW_EXPIRED_BEFORE_ODDS',requests_used=used,actual_observed_at=None,generated_at=datetime.now(timezone.utc).isoformat())
         _record_slot(root/SLOT_LEDGER_PATH,report,'MISSED');return _write(report,root)
-    observed_at=payloads[-1][1]
+    observed_at=max(response_at for _, response_at, _ in payloads)
     lag=round((observed_at-target).total_seconds()/60,2)
     report.update(generated_at=datetime.now(timezone.utc).isoformat(),actual_observed_at=observed_at.astimezone(BANGKOK).isoformat(),
         schedule_lag_minutes=lag,observation_timing='ON_TIME' if lag<=30 else 'LATE' if lag<=RECOVERY_WINDOW_MINUTES else 'OUTSIDE_WINDOW',

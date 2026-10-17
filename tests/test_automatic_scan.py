@@ -190,3 +190,48 @@ def test_invalid_cached_payload_does_not_prevent_real_retry(tmp_path):
     planner.retain(tmp_path,'/odds-by-tournaments',params,{'error':'invalid'},target.replace(minute=1))
     assert manifest.cached_response(tmp_path,'/odds-by-tournaments',params,target,target.replace(minute=2)) is None
     assert manifest.request_batches(tmp_path,[17],target,target.replace(minute=2))==[[17]]
+
+
+def test_cached_schedule_budget_uses_only_actual_fixture_tournaments(tmp_path, monkeypatch):
+    clock, f = configure(tmp_path, monkeypatch)
+    monkeypatch.setattr(planner, 'registry', lambda: [dict(tournament_id=n, country='England', tournament_name='Premier League') for n in range(1, 93)])
+    monkeypatch.setattr(clone, 'summarize_account', lambda _: dict(request_remaining=11))
+    start, end, _ = clone._football_day_bounds(clock.current)
+    planner.retain(tmp_path, '/fixtures', dict(sportId=10, **{'from':start.isoformat(), 'to':end.isoformat()}, limit=1000, language='en'), [f], clock.current)
+    calls = []
+    def get(endpoint, *args):
+        calls.append(endpoint)
+        return {} if endpoint == '/account' else [f]
+    monkeypatch.setattr(clone, '_get', get)
+    report = auto.run(tmp_path, now=clock.current)
+    assert report['complete'], report
+    assert report['requests_used'] == 1
+    assert calls == ['/account', '/odds-by-tournaments']
+    assert report['research_requests_reserved_this_run'] == 1
+
+
+def test_auto_provider_exception_does_not_publish_credential_url(tmp_path, monkeypatch):
+    clock, f = configure(tmp_path, monkeypatch)
+    def get(endpoint, *args):
+        if endpoint == '/account': return {}
+        if endpoint == '/fixtures': return [f]
+        raise OSError('https://api.oddspapi.io/v4/odds?apiKey=DO_NOT_PUBLISH')
+    monkeypatch.setattr(clone, '_get', get)
+    report = auto.run(tmp_path, now=clock.current)
+    assert not report['complete']
+    for path in tmp_path.rglob('*'):
+        if path.is_file(): assert 'DO_NOT_PUBLISH' not in path.read_text()
+
+
+def test_malformed_incoming_tail_cannot_partially_append_history(tmp_path):
+    from odds_scanner.automatic_scan_persistence import merge, PATHS
+    root, stage = tmp_path/'root', tmp_path/'stage'
+    first, last = PATHS[0], PATHS[-1]
+    target = root/first; target.parent.mkdir(parents=True)
+    target.write_text('{"original":true}\n'); before = target.read_bytes()
+    incoming = stage/first; incoming.parent.mkdir(parents=True)
+    incoming.write_text('{"new":true}\n')
+    malformed = stage/last; malformed.parent.mkdir(parents=True, exist_ok=True)
+    malformed.write_text('{broken\n')
+    with pytest.raises(ValueError): merge(root, stage)
+    assert target.read_bytes() == before
