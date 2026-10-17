@@ -194,6 +194,7 @@ def test_invalid_cached_payload_does_not_prevent_real_retry(tmp_path):
 
 def test_cached_schedule_budget_uses_only_actual_fixture_tournaments(tmp_path, monkeypatch):
     clock, f = configure(tmp_path, monkeypatch)
+    monkeypatch.setattr(clone, 'filter_scan_targets', lambda rows: rows)
     monkeypatch.setattr(planner, 'registry', lambda: [dict(tournament_id=n, country='England', tournament_name='Premier League') for n in range(1, 93)])
     monkeypatch.setattr(clone, 'summarize_account', lambda _: dict(request_remaining=11))
     start, end, _ = clone._football_day_bounds(clock.current)
@@ -235,3 +236,39 @@ def test_malformed_incoming_tail_cannot_partially_append_history(tmp_path):
     malformed.write_text('{broken\n')
     with pytest.raises(ValueError): merge(root, stage)
     assert target.read_bytes() == before
+
+
+def test_first_discovery_with_low_quota_is_bounded_by_actual_capacity(tmp_path, monkeypatch):
+    clock, f=configure(tmp_path, monkeypatch)
+    monkeypatch.setattr(clone, 'filter_scan_targets', lambda rows: rows)
+    monkeypatch.setattr(planner, 'registry', lambda: [dict(tournament_id=n, country='England', tournament_name='Premier League') for n in range(1,93)])
+    monkeypatch.setattr(clone, 'summarize_account', lambda _: dict(request_remaining=25))
+    calls=[]
+    def get(endpoint, *args):
+        calls.append(endpoint)
+        return {} if endpoint=='/account' else [f]
+    monkeypatch.setattr(clone, '_get', get)
+    r=auto.run(tmp_path, now=clock.current)
+    assert r['complete'],r
+    assert r['requests_used']==2 and r['research_requests_reserved_this_run']==15
+    assert calls==['/account','/fixtures','/odds-by-tournaments']
+
+
+def test_discovered_scope_exceeds_grant_retains_schedule_without_price_calls(tmp_path, monkeypatch):
+    clock, f=configure(tmp_path, monkeypatch)
+    monkeypatch.setattr(clone, 'filter_scan_targets', lambda rows: rows)
+    monkeypatch.setattr(planner, 'scan_scope_reason', lambda *a, **k: None)
+    monkeypatch.setattr(planner, 'registry', lambda: [dict(tournament_id=n, country='England', tournament_name='Premier League') for n in range(1,7)])
+    monkeypatch.setattr(clone, 'summarize_account', lambda _: dict(request_remaining=12))
+    calls=[]
+    def get(endpoint, *args):
+        calls.append(endpoint)
+        if endpoint=='/account': return {}
+        if endpoint=='/fixtures': return [{**f,'fixtureId':str(n),'tournamentId':n} for n in range(1,7)]
+        pytest.fail('Insufficient exact-scope grant must stop before odds')
+    monkeypatch.setattr(clone, '_get', get)
+    r=auto.run(tmp_path, now=clock.current)
+    assert not r['complete'] and r['requests_used']==1
+    assert calls==['/account','/fixtures']
+    assert (tmp_path/planner.RAW_PATH).exists()
+    assert not (tmp_path/manifest.MANIFESTS).exists()

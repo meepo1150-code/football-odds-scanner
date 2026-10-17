@@ -248,9 +248,14 @@ def run(root=Path('.')):
         report.update(planned_requests=normal, coverage_tournament_ids=ids,
                       account_optional_breadth_deferred=True)
     report['effective_quota_reserve']=ACCOUNT_RESERVE
-    if not ids or remaining < 0 or (not unrestricted_manual and remaining-normal-overhead < effective_reserve) or (unrestricted_manual and remaining-normal-overhead < ACCOUNT_RESERVE):report.update(status='SKIPPED_QUOTA',quota_skip_reason='PROVIDER_CAPACITY_INSUFFICIENT' if unrestricted_manual else 'ACCOUNT_CAPACITY_RESERVED_OR_EXHAUSTED',requests_used=0);return _write(report,root)
+    discovery_needed = master_mode and cached is None
+    required_before_discovery = overhead + 1 if discovery_needed else normal + overhead
+    if not ids or remaining < 0 or remaining-required_before_discovery < ACCOUNT_RESERVE:
+        report.update(status='SKIPPED_QUOTA', quota_skip_reason='PROVIDER_CAPACITY_INSUFFICIENT', requests_used=0)
+        return _write(report, root)
     try:
-        ids, budget, reservation_id, grant = reserve(root, ids, datetime.now(timezone.utc), overhead=overhead, manual=manual)
+        ids, budget, reservation_id, grant = reserve(root, ids, datetime.now(timezone.utc), overhead=overhead, manual=manual,
+                max_requests=remaining-ACCOUNT_RESERVE if discovery_needed else None)
     except ResearchQuotaBlocked as exc:
         report.update(status='SKIPPED_QUOTA', quota_skip_reason=str(exc), requests_used=0, planned_requests=0)
         return _write(report, root)
@@ -300,7 +305,16 @@ def run(root=Path('.')):
                 # The follow-up cannot rotate into unseen tournaments.
                 selected = [r for r in selected if str(r['tournament_id']) in pending]
                 selected.sort(key=lambda r: r['tournament_id'])
-            ids=[x['tournament_id'] for x in selected][:max(0,grant-used)*BATCH_SIZE]
+            needed = (len(selected)+BATCH_SIZE-1)//BATCH_SIZE
+            if needed > grant-used:
+                # The discovery result is retained for a later quota-safe attempt.
+                # Do not partially collect prices and freeze an incomplete set.
+                report.update(status='SKIPPED_QUOTA', quota_skip_reason='DISCOVERED_SCOPE_EXCEEDS_SAFE_GRANT',
+                              requests_used=used, coverage_complete=False,
+                              required_market_requests=needed, remaining_run_grant=grant-used)
+                _record_slot(root/SLOT_LEDGER_PATH, report, 'SKIPPED_QUOTA')
+                return _write(report, root)
+            ids=[x['tournament_id'] for x in selected]
             report['coverage_tournament_ids']=ids
             selected=[x for x in selected if x['tournament_id'] in ids]
             report.update(resolved_competitions=len(ids),planned_requests=used+(len(ids)+BATCH_SIZE-1)//BATCH_SIZE,coverage_tournament_ids=ids)
