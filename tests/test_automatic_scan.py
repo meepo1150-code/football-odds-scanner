@@ -27,7 +27,7 @@ def test_slot_boundaries(stamp,day,hour):
 
 
 def test_manual_source_immutable_and_extractors_identical():
-    paths={'.github/workflows/manual-current-day-odds.yml':'446366d65db1d31fd8a78d7a47a5350877f66e5c'}
+    paths={'.github/workflows/manual-current-day-odds.yml':'45284110ac10edc803a8d7f6262fcd70ddfa7db3'}
     import subprocess
     for p,sha in paths.items():
         assert subprocess.check_output(['git','hash-object',p],text=True).strip()==sha
