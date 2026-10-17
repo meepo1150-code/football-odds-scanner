@@ -18,7 +18,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     env:
-      ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
+      ODDSPAPI_KEY: ${{ secrets.HISTORICAL_ODDSPAPI_KEY }}
+      MANUAL_ODDSPAPI_ACCOUNT: 'historical'
       RESEARCH_QUOTA_DURABLE: 'true'
       RESEARCH_V2_MANUAL_UNRESTRICTED: 'true'
     steps:
@@ -30,6 +31,9 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install -e .
+      - name: Require dedicated historical account key
+        run: |
+          if [ -z "$ODDSPAPI_KEY" ]; then echo '::error::HISTORICAL_ODDSPAPI_KEY is unavailable'; exit 1; fi
       - name: Collect current eligible slot only (never backdate prices)
         run: |
           set -euo pipefail
