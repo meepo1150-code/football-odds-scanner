@@ -55,7 +55,7 @@ def _publish(root, base):
         return _git(root, 'push', 'origin', f'{commit}:refs/heads/main', check=False).returncode == 0
 
 
-def reserve(root, ids, now, *, overhead=0, manual=False):
+def reserve(root, ids, now, *, overhead=0, manual=False, max_requests=None):
     durable = os.getenv('RESEARCH_QUOTA_DURABLE') == 'true'
     from .automatic_scan import slot_at
     target = slot_at(now)['target_at']
@@ -86,6 +86,11 @@ def reserve(root, ids, now, *, overhead=0, manual=False):
             if not chosen:
                 raise ResearchQuotaBlocked('UTC research capacity reserved or exhausted')
             count = overhead + (len(chosen)+4)//5
+            if max_requests is not None:
+                if type(max_requests) is not int or max_requests <= overhead:
+                    raise ResearchQuotaBlocked('Insufficient capacity for discovery and odds')
+                count = min(count, max_requests)
+            budget['research_run_limit'] = count
             receipt = {'reservation_id': reservation_id, 'provider': 'oddspapi',
                        'finalized_at': now.astimezone(timezone.utc).isoformat(),
                        'requests_used': count, 'state': 'RESERVED_BEFORE_TRANSPORT',

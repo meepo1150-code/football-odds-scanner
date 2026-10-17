@@ -51,3 +51,30 @@ No fallback route is wired into Manual or Auto by this maintenance patch. Benefi
 7. P2: unknown durable grant outcomes deliberately prevent retry; this trades coverage for avoiding duplicate paid requests.
 
 Frozen research validation, Manual modules, historical raw data, schedule targets and provider secret values are unchanged. No billable odds API call is authorized by this audit workflow.
+
+## Verified execution and quota follow-up
+
+- Maintenance PR: https://github.com/meepo1150-code/football-odds-scanner/pull/420
+- Merged commit: `3d0df39ad5586c679712b6d72cd8150e14e3d491`.
+- CI: https://github.com/meepo1150-code/football-odds-scanner/actions/runs/38991782245 — 969 tests and 27 master tests passed.
+- Independent master QA: https://github.com/meepo1150-code/football-odds-scanner/actions/runs/38991782251 — success.
+- Post-merge offline rebuild: https://github.com/meepo1150-code/football-odds-scanner/actions/runs/38991952510 — success.
+- Post-merge Pages deployment: https://github.com/meepo1150-code/football-odds-scanner/actions/runs/38992058502 — success.
+- Account-only audit: https://github.com/meepo1150-code/football-odds-scanner/actions/runs/38991952456 — two account calls, zero metered calls, observed 2026-10-17 08:42 Bangkok.
+  Primary: 225/250 used, 25 remaining then; secondary: 1/250 used, 249 remaining then.
+  Active subscription fingerprints differ. Independent metering and current endpoint
+  entitlement remain unverified; fallback remains disabled. Repository-level credentials
+  were tested, not the potentially different environment-scoped credential.
+- Live Dashboard displayed fixture odds, actual observations, FT settlement and OU2.5
+  statistics. Live Monitor displayed Oct16 Auto failures and missing 18:00 receipt.
+  Neither UI claimed automatic collection success.
+
+The fresh primary balance exposed a further false rejection for preparation with no
+schedule cache: all 92 competitions required a 20-request grant before discovery,
+although only 15 requests were spendable above the reserve. Auto now bounds the
+durable grant by fresh available capacity, discovers fixtures, then checks the exact
+market request count before collecting prices. If the discovered scope exceeds the
+grant, it retains discovery evidence and stops before odds; it never freezes a partial
+manifest. Complete cached schedules still use the exact preflight. Manual is unchanged.
+Tests cover a 92-competition registry with a one-fixture day and an insufficient
+discovered scope. The allowance is not a promise that today's actual fixtures fit.
