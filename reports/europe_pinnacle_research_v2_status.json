@@ -1,28 +1,28 @@
 {
   "schema_version": "2.9",
-  "generated_at": "2026-10-16T17:01:17.057319+00:00",
+  "generated_at": "2026-10-17T08:08:44.106118+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "bookmaker": "pinnacle",
-  "football_day": "2026-10-16",
+  "football_day": "2026-10-17",
   "football_day_timezone": "Asia/Bangkok",
-  "football_day_window_start": "2026-10-16T05:00:00+00:00",
-  "football_day_window_end": "2026-10-16T23:00:00+00:00",
-  "scheduled_target_at": "2026-10-17T00:00:58+07:00",
-  "actual_observed_at": "2026-10-17T00:01:17.023624+07:00",
-  "schedule_lag_minutes": 0.32,
+  "football_day_window_start": "2026-10-17T05:00:00+00:00",
+  "football_day_window_end": "2026-10-17T23:00:00+00:00",
+  "scheduled_target_at": "2026-10-17T15:08:06+07:00",
+  "actual_observed_at": "2026-10-17T15:08:44.095701+07:00",
+  "schedule_lag_minutes": 0.63,
   "recovery_window_minutes": 150,
   "observation_timing": "ON_TIME",
   "force_run": true,
-  "force_target_at": "2026-10-16T17:00:58Z",
+  "force_target_at": "2026-10-17T08:08:06Z",
   "research_only": true,
   "production_promotion_allowed": false,
   "core_quota_reserve": 3,
   "manual_supplementary_scan": true,
   "master_competitions_considered": 92,
-  "schedule_response_complete": true,
-  "scheduled_approved_fixtures": 85,
-  "scheduled_approved_competitions": 43,
-  "remaining_prematch_competitions": 23,
+  "schedule_response_complete": false,
+  "scheduled_approved_fixtures": 277,
+  "scheduled_approved_competitions": 65,
+  "remaining_prematch_competitions": 65,
   "schedule_scope_rejections": {},
   "competition_coverage": [
     {
@@ -35,7 +35,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -46,30 +46,24 @@
       "tournament_id": 131,
       "tournament_name": "Eerste Divisie",
       "country": "Netherlands",
-      "scheduled_fixtures": 4,
-      "remaining_prematch_fixtures": 4,
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
       "scheduled_fixture_ids": [
-        "id1000013172044730",
-        "id1000013172044732",
-        "id1000013172044734",
-        "id1000013172044736"
+        "id1000013172044738"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000013172044730",
-        "id1000013172044732",
-        "id1000013172044734",
-        "id1000013172044736"
+        "id1000013172044738"
       ],
-      "next_kickoff": "2026-10-16T18:00:00+00:00",
+      "next_kickoff": "2026-10-17T14:30:00+00:00",
       "reason": "OBSERVED",
-      "fixtures_captured_today": 4,
+      "fixtures_captured_today": 1,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:07.967278+00:00",
-      "odds_fixture_rows": 4,
-      "strict_snapshots": 4,
+      "last_market_request_at": "2026-10-17T08:08:41.645422+00:00",
+      "odds_fixture_rows": 1,
+      "strict_snapshots": 1,
       "market_reason_counts": {
-        "OK": 4
+        "OK": 1
       }
     },
     {
@@ -77,43 +71,60 @@
       "tournament_id": 1339,
       "tournament_name": "Nemzeti Bajnoksag II",
       "country": "Hungary",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 0,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-13T14:29:54.724329+00:00"
+      "scheduled_fixtures": 5,
+      "remaining_prematch_fixtures": 4,
+      "scheduled_fixture_ids": [
+        "id1000133972501168",
+        "id1000133972501170",
+        "id1000133972501176",
+        "id1000133972501178",
+        "id1000133972501182"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000133972501168",
+        "id1000133972501170",
+        "id1000133972501176",
+        "id1000133972501182"
+      ],
+      "next_kickoff": "2026-10-17T11:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 3,
+      "scheduled_fixtures_without_snapshot": 2,
+      "uncaptured_remaining_prematch_fixtures": 1,
+      "last_market_request_at": "2026-10-17T08:08:23.811268+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
+      "market_reason_counts": {
+        "OK": 3
+      }
     },
     {
       "canonical_competition_id": "AUT-0002",
       "tournament_id": 135,
       "tournament_name": "Austrian 2 Liga",
       "country": "Austria",
-      "scheduled_fixtures": 4,
-      "remaining_prematch_fixtures": 1,
+      "scheduled_fixtures": 3,
+      "remaining_prematch_fixtures": 3,
       "scheduled_fixture_ids": [
-        "id1000013572440704",
-        "id1000013572440708",
-        "id1000013572440714",
-        "id1000013572440716"
+        "id1000013572440702",
+        "id1000013572440706",
+        "id1000013572440712"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000013572440716"
+        "id1000013572440702",
+        "id1000013572440706",
+        "id1000013572440712"
       ],
-      "next_kickoff": "2026-10-16T18:30:00+00:00",
+      "next_kickoff": "2026-10-17T13:30:00+00:00",
       "reason": "OBSERVED",
-      "fixtures_captured_today": 4,
+      "fixtures_captured_today": 3,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:17.023624+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 1,
+      "last_market_request_at": "2026-10-17T08:08:31.597889+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
       "market_reason_counts": {
-        "OK": 1
+        "OK": 3
       }
     },
     {
@@ -121,16 +132,25 @@
       "tournament_id": 14189,
       "tournament_name": "Football Superleague of Kosovo",
       "country": "Kosovo",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "scheduled_fixture_ids": [
+        "id1001418975598244"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1001418975598244"
+      ],
+      "next_kickoff": "2026-10-17T12:00:00+00:00",
+      "reason": "NO_MARKET",
       "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 0,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-14T11:37:42.338548+00:00"
+      "scheduled_fixtures_without_snapshot": 1,
+      "uncaptured_remaining_prematch_fixtures": 1,
+      "last_market_request_at": "2026-10-17T08:08:44.095701+00:00",
+      "odds_fixture_rows": 1,
+      "strict_snapshots": 0,
+      "market_reason_counts": {
+        "AMBIGUOUS_OR_MISSING_1X2": 1
+      }
     },
     {
       "canonical_competition_id": "ROU-0001",
@@ -138,24 +158,25 @@
       "tournament_name": "Liga I",
       "country": "Romania",
       "scheduled_fixtures": 2,
-      "remaining_prematch_fixtures": 1,
+      "remaining_prematch_fixtures": 2,
       "scheduled_fixture_ids": [
-        "id1000015272388034",
-        "id1000015272388040"
+        "id1000015272388038",
+        "id1000015272388042"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000015272388040"
+        "id1000015272388038",
+        "id1000015272388042"
       ],
-      "next_kickoff": "2026-10-16T18:00:00+00:00",
+      "next_kickoff": "2026-10-17T14:15:00+00:00",
       "reason": "OBSERVED",
       "fixtures_captured_today": 2,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:07.967278+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 1,
+      "last_market_request_at": "2026-10-17T08:08:39.101038+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
       "market_reason_counts": {
-        "OK": 1
+        "OK": 2
       }
     },
     {
@@ -163,145 +184,230 @@
       "tournament_id": 154,
       "tournament_name": "Montenegrin First League",
       "country": "Montenegro",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "scheduled_fixture_ids": [
+        "id1000015472304310"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000015472304310"
+      ],
+      "next_kickoff": "2026-10-17T12:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 1,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:41.645422+00:00",
+      "odds_fixture_rows": 1,
+      "strict_snapshots": 1,
+      "market_reason_counts": {
+        "OK": 1
+      }
     },
     {
       "canonical_competition_id": "GIB-0001",
       "tournament_id": 1542,
       "tournament_name": "Gibraltar Football League",
       "country": "Gibraltar",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 1,
-      "scheduled_fixture_ids": [
-        "id1000154273544986"
-      ],
-      "remaining_prematch_fixture_ids": [
-        "id1000154273544986"
-      ],
-      "next_kickoff": "2026-10-16T19:00:00+00:00",
-      "reason": "NO_MARKET_RESPONSE",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "scheduled_fixture_ids": [],
+      "remaining_prematch_fixture_ids": [],
+      "next_kickoff": null,
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 1,
-      "uncaptured_remaining_prematch_fixtures": 1,
-      "last_market_request_at": "2026-10-16T17:01:04.950221+00:00",
-      "odds_fixture_rows": 0,
-      "strict_snapshots": 0,
-      "market_reason_counts": {}
+      "scheduled_fixtures_without_snapshot": 0,
+      "uncaptured_remaining_prematch_fixtures": 0,
+      "last_market_request_at": null
     },
     {
       "canonical_competition_id": "ENG-0001",
       "tournament_id": 17,
       "tournament_name": "Premier League",
       "country": "England",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
+      "scheduled_fixtures": 5,
+      "remaining_prematch_fixtures": 5,
+      "scheduled_fixture_ids": [
+        "id1000001772221314",
+        "id1000001772221318",
+        "id1000001772221320",
+        "id1000001772221324",
+        "id1000001772221326"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000001772221314",
+        "id1000001772221318",
+        "id1000001772221320",
+        "id1000001772221324",
+        "id1000001772221326"
+      ],
+      "next_kickoff": "2026-10-17T11:30:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 5,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:18.526596+00:00",
+      "odds_fixture_rows": 5,
+      "strict_snapshots": 5,
+      "market_reason_counts": {
+        "OK": 5
+      }
     },
     {
       "canonical_competition_id": "HRV-0001",
       "tournament_id": 170,
       "tournament_name": "HNL",
       "country": "Croatia",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 0,
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 2,
       "scheduled_fixture_ids": [
-        "id1000017071913092"
+        "id1000017071913098",
+        "id1000017071913100"
       ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
-      "fixtures_captured_today": 1,
+      "remaining_prematch_fixture_ids": [
+        "id1000017071913098",
+        "id1000017071913100"
+      ],
+      "next_kickoff": "2026-10-17T13:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 2,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:36.485051+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
     },
     {
       "canonical_competition_id": "CYP-0001",
       "tournament_id": 171,
       "tournament_name": "Cypriot First Division",
       "country": "Cyprus",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 2,
+      "scheduled_fixture_ids": [
+        "id1000017173160420",
+        "id1000017173160428"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000017173160420",
+        "id1000017173160428"
+      ],
+      "next_kickoff": "2026-10-17T15:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 2,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:39.101038+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
     },
     {
       "canonical_competition_id": "CZE-0001",
       "tournament_id": 172,
       "tournament_name": "Czech First League",
       "country": "Czechia",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 0,
+      "scheduled_fixtures": 5,
+      "remaining_prematch_fixtures": 4,
+      "scheduled_fixture_ids": [
+        "id1000017272608012",
+        "id1000017272608014",
+        "id1000017272608018",
+        "id1000017272608022",
+        "id1000017272608024"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000017272608014",
+        "id1000017272608018",
+        "id1000017272608022",
+        "id1000017272608024"
+      ],
+      "next_kickoff": "2026-10-17T13:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 4,
+      "scheduled_fixtures_without_snapshot": 1,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-14T11:37:42.338548+00:00"
+      "last_market_request_at": "2026-10-17T08:08:26.365332+00:00",
+      "odds_fixture_rows": 5,
+      "strict_snapshots": 4,
+      "market_reason_counts": {
+        "NOT_PREMATCH_WITH_ODDS": 1,
+        "OK": 4
+      }
     },
     {
       "canonical_competition_id": "EST-0001",
       "tournament_id": 178,
       "tournament_name": "Meistriliiga",
       "country": "Estonia",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "scheduled_fixture_ids": [
+        "id1000017868214848"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000017868214848"
+      ],
+      "next_kickoff": "2026-10-17T09:30:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 1,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-14T11:37:42.338548+00:00"
+      "last_market_request_at": "2026-10-17T08:08:44.095701+00:00",
+      "odds_fixture_rows": 1,
+      "strict_snapshots": 1,
+      "market_reason_counts": {
+        "OK": 1
+      }
     },
     {
       "canonical_competition_id": "ENG-0002",
       "tournament_id": 18,
       "tournament_name": "Championship",
       "country": "England",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 1,
+      "scheduled_fixtures": 11,
+      "remaining_prematch_fixtures": 11,
       "scheduled_fixture_ids": [
-        "id1000001872339916"
+        "id1000001872339912",
+        "id1000001872339914",
+        "id1000001872339918",
+        "id1000001872339920",
+        "id1000001872339922",
+        "id1000001872339924",
+        "id1000001872339926",
+        "id1000001872339928",
+        "id1000001872339930",
+        "id1000001872339932",
+        "id1000001872339934"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000001872339916"
+        "id1000001872339912",
+        "id1000001872339914",
+        "id1000001872339918",
+        "id1000001872339920",
+        "id1000001872339922",
+        "id1000001872339924",
+        "id1000001872339926",
+        "id1000001872339928",
+        "id1000001872339930",
+        "id1000001872339932",
+        "id1000001872339934"
       ],
-      "next_kickoff": "2026-10-16T19:00:00+00:00",
+      "next_kickoff": "2026-10-17T11:30:00+00:00",
       "reason": "OBSERVED",
-      "fixtures_captured_today": 1,
+      "fixtures_captured_today": 11,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:14.191493+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 1,
+      "last_market_request_at": "2026-10-17T08:08:12.924963+00:00",
+      "odds_fixture_rows": 11,
+      "strict_snapshots": 11,
       "market_reason_counts": {
-        "OK": 1
+        "OK": 11
       }
     },
     {
@@ -309,32 +415,28 @@
       "tournament_id": 182,
       "tournament_name": "Ligue 2",
       "country": "France",
-      "scheduled_fixtures": 5,
-      "remaining_prematch_fixtures": 5,
+      "scheduled_fixtures": 3,
+      "remaining_prematch_fixtures": 3,
       "scheduled_fixture_ids": [
-        "id1000018272037380",
-        "id1000018272037382",
-        "id1000018272037384",
-        "id1000018272037386",
-        "id1000018272037394"
+        "id1000018272037388",
+        "id1000018272037390",
+        "id1000018272037392"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000018272037380",
-        "id1000018272037382",
-        "id1000018272037384",
-        "id1000018272037386",
-        "id1000018272037394"
+        "id1000018272037388",
+        "id1000018272037390",
+        "id1000018272037392"
       ],
-      "next_kickoff": "2026-10-16T18:00:00+00:00",
+      "next_kickoff": "2026-10-17T12:00:00+00:00",
       "reason": "OBSERVED",
-      "fixtures_captured_today": 5,
+      "fixtures_captured_today": 3,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:17.023624+00:00",
-      "odds_fixture_rows": 5,
-      "strict_snapshots": 5,
+      "last_market_request_at": "2026-10-17T08:08:31.597889+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
       "market_reason_counts": {
-        "OK": 5
+        "OK": 3
       }
     },
     {
@@ -342,56 +444,82 @@
       "tournament_id": 185,
       "tournament_name": "Super League Greece",
       "country": "Greece",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 0,
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 1,
+      "scheduled_fixture_ids": [
+        "id1000018572936078",
+        "id1000018572936084"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000018572936084"
+      ],
+      "next_kickoff": "2026-10-17T14:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 1,
+      "scheduled_fixtures_without_snapshot": 1,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:41.645422+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 1,
+      "market_reason_counts": {
+        "OK": 1,
+        "NOT_PREMATCH_WITH_ODDS": 1
+      }
     },
     {
       "canonical_competition_id": "GRC-0002",
       "tournament_id": 186,
       "tournament_name": "Super League Greece 2",
       "country": "Greece",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 2,
+      "scheduled_fixture_ids": [
+        "id1000018674172466",
+        "id1000018674172480"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000018674172466",
+        "id1000018674172480"
+      ],
+      "next_kickoff": "2026-10-17T11:45:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 2,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-14T11:37:42.338548+00:00"
+      "last_market_request_at": "2026-10-17T08:08:39.101038+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
     },
     {
       "canonical_competition_id": "HUN-0001",
       "tournament_id": 187,
       "tournament_name": "Nemzeti Bajnoksag I",
       "country": "Hungary",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 1,
+      "scheduled_fixtures": 3,
+      "remaining_prematch_fixtures": 3,
       "scheduled_fixture_ids": [
-        "id1000018772302638"
+        "id1000018772302636",
+        "id1000018772302644",
+        "id1000018772302646"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000018772302638"
+        "id1000018772302636",
+        "id1000018772302644",
+        "id1000018772302646"
       ],
-      "next_kickoff": "2026-10-16T18:00:00+00:00",
+      "next_kickoff": "2026-10-17T12:30:00+00:00",
       "reason": "OBSERVED",
-      "fixtures_captured_today": 1,
+      "fixtures_captured_today": 3,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:07.967278+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 1,
+      "last_market_request_at": "2026-10-17T08:08:28.914827+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
       "market_reason_counts": {
-        "OK": 1
+        "OK": 3
       }
     },
     {
@@ -399,25 +527,28 @@
       "tournament_id": 188,
       "tournament_name": "Besta deild karla",
       "country": "Iceland",
-      "scheduled_fixtures": 2,
-      "remaining_prematch_fixtures": 1,
+      "scheduled_fixtures": 3,
+      "remaining_prematch_fixtures": 3,
       "scheduled_fixture_ids": [
-        "id1000018874506422",
-        "id1000018874506544"
+        "id1000018874506426",
+        "id1000018874506540",
+        "id1000018874506542"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000018874506422"
+        "id1000018874506426",
+        "id1000018874506540",
+        "id1000018874506542"
       ],
-      "next_kickoff": "2026-10-16T19:15:00+00:00",
+      "next_kickoff": "2026-10-17T12:00:00+00:00",
       "reason": "OBSERVED",
-      "fixtures_captured_today": 1,
-      "scheduled_fixtures_without_snapshot": 1,
+      "fixtures_captured_today": 3,
+      "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:11.136256+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 1,
+      "last_market_request_at": "2026-10-17T08:08:26.365332+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
       "market_reason_counts": {
-        "OK": 1
+        "OK": 3
       }
     },
     {
@@ -425,46 +556,111 @@
       "tournament_id": 19,
       "tournament_name": "FA Cup",
       "country": "England",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "scheduled_fixtures": 32,
+      "remaining_prematch_fixtures": 32,
+      "scheduled_fixture_ids": [
+        "id1000001975368558",
+        "id1000001975368560",
+        "id1000001975368562",
+        "id1000001975368564",
+        "id1000001975368566",
+        "id1000001975368568",
+        "id1000001975368570",
+        "id1000001975368572",
+        "id1000001975368574",
+        "id1000001975368576",
+        "id1000001975368578",
+        "id1000001975368580",
+        "id1000001975368582",
+        "id1000001975368584",
+        "id1000001975368586",
+        "id1000001975368588",
+        "id1000001975368590",
+        "id1000001975368592",
+        "id1000001975368594",
+        "id1000001975368596",
+        "id1000001975368598",
+        "id1000001975368600",
+        "id1000001975368602",
+        "id1000001975368604",
+        "id1000001975368606",
+        "id1000001975368608",
+        "id1000001975368610",
+        "id1000001975368612",
+        "id1000001975368614",
+        "id1000001975368616",
+        "id1000001975368618",
+        "id1000001975368620"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000001975368558",
+        "id1000001975368560",
+        "id1000001975368562",
+        "id1000001975368564",
+        "id1000001975368566",
+        "id1000001975368568",
+        "id1000001975368570",
+        "id1000001975368572",
+        "id1000001975368574",
+        "id1000001975368576",
+        "id1000001975368578",
+        "id1000001975368580",
+        "id1000001975368582",
+        "id1000001975368584",
+        "id1000001975368586",
+        "id1000001975368588",
+        "id1000001975368590",
+        "id1000001975368592",
+        "id1000001975368594",
+        "id1000001975368596",
+        "id1000001975368598",
+        "id1000001975368600",
+        "id1000001975368602",
+        "id1000001975368604",
+        "id1000001975368606",
+        "id1000001975368608",
+        "id1000001975368610",
+        "id1000001975368612",
+        "id1000001975368614",
+        "id1000001975368616",
+        "id1000001975368618",
+        "id1000001975368620"
+      ],
+      "next_kickoff": "2026-10-17T11:30:00+00:00",
+      "reason": "UNMAPPED",
       "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 0,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "scheduled_fixtures_without_snapshot": 32,
+      "uncaptured_remaining_prematch_fixtures": 32,
+      "last_market_request_at": "2026-10-17T08:08:12.924963+00:00",
+      "odds_fixture_rows": 30,
+      "strict_snapshots": 0,
+      "market_reason_counts": {
+        "MASTER_CLUB_UNMAPPED": 30
+      }
     },
     {
       "canonical_competition_id": "IRL-0001",
       "tournament_id": 192,
       "tournament_name": "League of Ireland Premier Division",
       "country": "Ireland",
-      "scheduled_fixtures": 4,
-      "remaining_prematch_fixtures": 4,
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
       "scheduled_fixture_ids": [
-        "id1000019266854216",
-        "id1000019266854218",
-        "id1000019266854220",
-        "id1000019266854222"
+        "id1000019266854224"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000019266854216",
-        "id1000019266854218",
-        "id1000019266854220",
-        "id1000019266854222"
+        "id1000019266854224"
       ],
-      "next_kickoff": "2026-10-16T18:45:00+00:00",
+      "next_kickoff": "2026-10-17T18:45:00+00:00",
       "reason": "OBSERVED",
-      "fixtures_captured_today": 4,
+      "fixtures_captured_today": 1,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:11.136256+00:00",
-      "odds_fixture_rows": 4,
-      "strict_snapshots": 4,
+      "last_market_request_at": "2026-10-17T08:08:44.095701+00:00",
+      "odds_fixture_rows": 1,
+      "strict_snapshots": 1,
       "market_reason_counts": {
-        "OK": 4
+        "OK": 1
       }
     },
     {
@@ -472,28 +668,153 @@
       "tournament_id": 193,
       "tournament_name": "League of Ireland First Division",
       "country": "Ireland",
+      "scheduled_fixtures": 0,
+      "remaining_prematch_fixtures": 0,
+      "scheduled_fixture_ids": [],
+      "remaining_prematch_fixture_ids": [],
+      "next_kickoff": null,
+      "reason": "NO_SCHEDULE_EVIDENCE",
+      "fixtures_captured_today": 0,
+      "scheduled_fixtures_without_snapshot": 0,
+      "uncaptured_remaining_prematch_fixtures": 0,
+      "last_market_request_at": "2026-10-16T08:18:22.077251+00:00"
+    },
+    {
+      "canonical_competition_id": "LVA-0001",
+      "tournament_id": 197,
+      "tournament_name": "Latvian Higher League",
+      "country": "Latvia",
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 1,
+      "scheduled_fixture_ids": [
+        "id1000019768492722",
+        "id1000019768492724"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000019768492722"
+      ],
+      "next_kickoff": "2026-10-17T11:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 1,
+      "scheduled_fixtures_without_snapshot": 1,
+      "uncaptured_remaining_prematch_fixtures": 0,
+      "last_market_request_at": "2026-10-17T08:08:44.095701+00:00",
+      "odds_fixture_rows": 1,
+      "strict_snapshots": 1,
+      "market_reason_counts": {
+        "OK": 1
+      }
+    },
+    {
+      "canonical_competition_id": "LTU-0001",
+      "tournament_id": 198,
+      "tournament_name": "A Lyga",
+      "country": "Lithuania",
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 2,
+      "scheduled_fixture_ids": [
+        "id1000019871901900",
+        "id1000019871901902"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000019871901900",
+        "id1000019871901902"
+      ],
+      "next_kickoff": "2026-10-17T11:15:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 2,
+      "scheduled_fixtures_without_snapshot": 0,
+      "uncaptured_remaining_prematch_fixtures": 0,
+      "last_market_request_at": "2026-10-17T08:08:34.037641+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "canonical_competition_id": "MKD-0001",
+      "tournament_id": 199,
+      "tournament_name": "Macedonian First Football League",
+      "country": "North Macedonia",
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 2,
+      "scheduled_fixture_ids": [
+        "id1000019972045788",
+        "id1000019972045796"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000019972045788",
+        "id1000019972045796"
+      ],
+      "next_kickoff": "2026-10-17T10:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 2,
+      "scheduled_fixtures_without_snapshot": 0,
+      "uncaptured_remaining_prematch_fixtures": 0,
+      "last_market_request_at": "2026-10-17T08:08:34.037641+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "canonical_competition_id": "NOR-0001",
+      "tournament_id": 20,
+      "tournament_name": "Eliteserien",
+      "country": "Norway",
+      "scheduled_fixtures": 3,
+      "remaining_prematch_fixtures": 3,
+      "scheduled_fixture_ids": [
+        "id1000002067015418",
+        "id1000002067015420",
+        "id1000002067015430"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000002067015418",
+        "id1000002067015420",
+        "id1000002067015430"
+      ],
+      "next_kickoff": "2026-10-17T12:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 3,
+      "scheduled_fixtures_without_snapshot": 0,
+      "uncaptured_remaining_prematch_fixtures": 0,
+      "last_market_request_at": "2026-10-17T08:08:26.365332+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
+      "market_reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "canonical_competition_id": "NIR-0001",
+      "tournament_id": 200,
+      "tournament_name": "NIFL Premiership",
+      "country": "Northern Ireland",
       "scheduled_fixtures": 5,
       "remaining_prematch_fixtures": 5,
       "scheduled_fixture_ids": [
-        "id1000019366854956",
-        "id1000019366854958",
-        "id1000019366854960",
-        "id1000019366854962",
-        "id1000019366854964"
+        "id1000020072346362",
+        "id1000020072346364",
+        "id1000020072346366",
+        "id1000020072346368",
+        "id1000020072346370"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000019366854956",
-        "id1000019366854958",
-        "id1000019366854960",
-        "id1000019366854962",
-        "id1000019366854964"
+        "id1000020072346362",
+        "id1000020072346364",
+        "id1000020072346366",
+        "id1000020072346368",
+        "id1000020072346370"
       ],
-      "next_kickoff": "2026-10-16T18:45:00+00:00",
+      "next_kickoff": "2026-10-17T14:00:00+00:00",
       "reason": "OBSERVED",
       "fixtures_captured_today": 5,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:17.023624+00:00",
+      "last_market_request_at": "2026-10-17T08:08:18.526596+00:00",
       "odds_fixture_rows": 5,
       "strict_snapshots": 5,
       "market_reason_counts": {
@@ -501,118 +822,32 @@
       }
     },
     {
-      "canonical_competition_id": "LVA-0001",
-      "tournament_id": 197,
-      "tournament_name": "Latvian Higher League",
-      "country": "Latvia",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 0,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-15T11:20:12.244180+00:00"
-    },
-    {
-      "canonical_competition_id": "LTU-0001",
-      "tournament_id": 198,
-      "tournament_name": "A Lyga",
-      "country": "Lithuania",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 0,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
-    },
-    {
-      "canonical_competition_id": "MKD-0001",
-      "tournament_id": 199,
-      "tournament_name": "Macedonian First Football League",
-      "country": "North Macedonia",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 0,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
-    },
-    {
-      "canonical_competition_id": "NOR-0001",
-      "tournament_id": 20,
-      "tournament_name": "Eliteserien",
-      "country": "Norway",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 0,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
-    },
-    {
-      "canonical_competition_id": "NIR-0001",
-      "tournament_id": 200,
-      "tournament_name": "NIFL Premiership",
-      "country": "Northern Ireland",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 1,
-      "scheduled_fixture_ids": [
-        "id1000020072346372"
-      ],
-      "remaining_prematch_fixture_ids": [
-        "id1000020072346372"
-      ],
-      "next_kickoff": "2026-10-16T18:45:00+00:00",
-      "reason": "OBSERVED",
-      "fixtures_captured_today": 1,
-      "scheduled_fixtures_without_snapshot": 0,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:11.136256+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 1,
-      "market_reason_counts": {
-        "OK": 1
-      }
-    },
-    {
       "canonical_competition_id": "POL-0001",
       "tournament_id": 202,
       "tournament_name": "Ekstraklasa",
       "country": "Poland",
-      "scheduled_fixtures": 2,
-      "remaining_prematch_fixtures": 1,
+      "scheduled_fixtures": 3,
+      "remaining_prematch_fixtures": 3,
       "scheduled_fixture_ids": [
-        "id1000020272043200",
-        "id1000020272043206"
+        "id1000020272043198",
+        "id1000020272043202",
+        "id1000020272043204"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000020272043206"
+        "id1000020272043198",
+        "id1000020272043202",
+        "id1000020272043204"
       ],
-      "next_kickoff": "2026-10-16T18:30:00+00:00",
+      "next_kickoff": "2026-10-17T12:45:00+00:00",
       "reason": "OBSERVED",
-      "fixtures_captured_today": 2,
+      "fixtures_captured_today": 3,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:14.191493+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 1,
+      "last_market_request_at": "2026-10-17T08:08:31.597889+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
       "market_reason_counts": {
-        "OK": 1
+        "OK": 3
       }
     },
     {
@@ -620,20 +855,13 @@
       "tournament_id": 205,
       "tournament_name": "Czech National Football League",
       "country": "Czechia",
-      "scheduled_fixtures": 6,
+      "scheduled_fixtures": 0,
       "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [
-        "id1000020572300816",
-        "id1000020572300824",
-        "id1000020572300826",
-        "id1000020572300828",
-        "id1000020572300830",
-        "id1000020572587358"
-      ],
+      "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
-      "fixtures_captured_today": 6,
+      "reason": "NO_SCHEDULE_EVIDENCE",
+      "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
       "last_market_request_at": "2026-10-16T08:18:22.077251+00:00"
@@ -643,24 +871,30 @@
       "tournament_id": 206,
       "tournament_name": "Scottish Championship",
       "country": "Scotland",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 1,
+      "scheduled_fixtures": 4,
+      "remaining_prematch_fixtures": 4,
       "scheduled_fixture_ids": [
-        "id1000020672202690"
+        "id1000020672202692",
+        "id1000020672202694",
+        "id1000020672202696",
+        "id1000020672202698"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000020672202690"
+        "id1000020672202692",
+        "id1000020672202694",
+        "id1000020672202696",
+        "id1000020672202698"
       ],
-      "next_kickoff": "2026-10-16T18:30:00+00:00",
+      "next_kickoff": "2026-10-17T14:00:00+00:00",
       "reason": "OBSERVED",
-      "fixtures_captured_today": 1,
+      "fixtures_captured_today": 4,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:14.191493+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 1,
+      "last_market_request_at": "2026-10-17T08:08:23.811268+00:00",
+      "odds_fixture_rows": 4,
+      "strict_snapshots": 4,
       "market_reason_counts": {
-        "OK": 1
+        "OK": 4
       }
     },
     {
@@ -673,7 +907,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -684,52 +918,85 @@
       "tournament_id": 210,
       "tournament_name": "Serbian SuperLiga",
       "country": "Serbia",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 0,
+      "scheduled_fixtures": 3,
+      "remaining_prematch_fixtures": 3,
       "scheduled_fixture_ids": [
-        "id1000021072083088"
+        "id1000021072083082",
+        "id1000021072083086",
+        "id1000021072083094"
       ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
-      "fixtures_captured_today": 1,
+      "remaining_prematch_fixture_ids": [
+        "id1000021072083082",
+        "id1000021072083086",
+        "id1000021072083094"
+      ],
+      "next_kickoff": "2026-10-17T13:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 3,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:28.914827+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
+      "market_reason_counts": {
+        "OK": 3
+      }
     },
     {
       "canonical_competition_id": "SVK-0001",
       "tournament_id": 211,
       "tournament_name": "Slovak Super Liga",
       "country": "Slovakia",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
+      "scheduled_fixtures": 3,
+      "remaining_prematch_fixtures": 3,
+      "scheduled_fixture_ids": [
+        "id1000021172042290",
+        "id1000021172042292",
+        "id1000021172042294"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000021172042290",
+        "id1000021172042292",
+        "id1000021172042294"
+      ],
+      "next_kickoff": "2026-10-17T13:30:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 3,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:28.914827+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
+      "market_reason_counts": {
+        "OK": 3
+      }
     },
     {
       "canonical_competition_id": "SVN-0001",
       "tournament_id": 212,
       "tournament_name": "Slovenian PrvaLiga",
       "country": "Slovenia",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 0,
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 2,
       "scheduled_fixture_ids": [
-        "id1000021272278500"
+        "id1000021272278502",
+        "id1000021272278504"
       ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
-      "fixtures_captured_today": 1,
+      "remaining_prematch_fixture_ids": [
+        "id1000021272278502",
+        "id1000021272278504"
+      ],
+      "next_kickoff": "2026-10-17T13:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 2,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:36.485051+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
     },
     {
       "canonical_competition_id": "CHE-0001",
@@ -741,7 +1008,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -757,7 +1024,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -773,7 +1040,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -784,18 +1051,29 @@
       "tournament_id": 218,
       "tournament_name": "Ukrainian Premier League",
       "country": "Ukraine",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 0,
+      "scheduled_fixtures": 3,
+      "remaining_prematch_fixtures": 3,
       "scheduled_fixture_ids": [
-        "id1000021872409738"
+        "id1000021872409730",
+        "id1000021872409734",
+        "id1000021872409736"
       ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 1,
+      "remaining_prematch_fixture_ids": [
+        "id1000021872409730",
+        "id1000021872409734",
+        "id1000021872409736"
+      ],
+      "next_kickoff": "2026-10-17T10:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 3,
+      "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:26.365332+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
+      "market_reason_counts": {
+        "OK": 3
+      }
     },
     {
       "canonical_competition_id": "NOR-0002",
@@ -807,7 +1085,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -818,61 +1096,86 @@
       "tournament_id": 222,
       "tournament_name": "Premier League of Bosnia and Herzegovina",
       "country": "Bosnia and Herzegovina",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 0,
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 2,
       "scheduled_fixture_ids": [
-        "id1000022275604992"
+        "id1000022275604994",
+        "id1000022275604996"
       ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
-      "fixtures_captured_today": 1,
+      "remaining_prematch_fixture_ids": [
+        "id1000022275604994",
+        "id1000022275604996"
+      ],
+      "next_kickoff": "2026-10-17T11:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 2,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:34.037641+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
     },
     {
       "canonical_competition_id": "SVK-0002",
       "tournament_id": 224,
       "tournament_name": "2 Liga",
       "country": "Slovakia",
-      "scheduled_fixtures": 2,
-      "remaining_prematch_fixtures": 0,
+      "scheduled_fixtures": 4,
+      "remaining_prematch_fixtures": 4,
       "scheduled_fixture_ids": [
-        "id1000022472305256",
-        "id1000022472305258"
+        "id1000022472305260",
+        "id1000022472305262",
+        "id1000022472305264",
+        "id1000022472305266"
       ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
-      "fixtures_captured_today": 2,
+      "remaining_prematch_fixture_ids": [
+        "id1000022472305260",
+        "id1000022472305262",
+        "id1000022472305264",
+        "id1000022472305266"
+      ],
+      "next_kickoff": "2026-10-17T12:30:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 4,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:23.811268+00:00",
+      "odds_fixture_rows": 4,
+      "strict_snapshots": 4,
+      "market_reason_counts": {
+        "OK": 4
+      }
     },
     {
       "canonical_competition_id": "ITA-0001",
       "tournament_id": 23,
       "tournament_name": "Serie A",
       "country": "Italy",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 1,
+      "scheduled_fixtures": 3,
+      "remaining_prematch_fixtures": 3,
       "scheduled_fixture_ids": [
-        "id1000002371945310"
+        "id1000002371945306",
+        "id1000002371945320",
+        "id1000002371945324"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000002371945310"
+        "id1000002371945306",
+        "id1000002371945320",
+        "id1000002371945324"
       ],
-      "next_kickoff": "2026-10-16T18:45:00+00:00",
+      "next_kickoff": "2026-10-17T13:00:00+00:00",
       "reason": "OBSERVED",
-      "fixtures_captured_today": 1,
+      "fixtures_captured_today": 3,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:14.191493+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 1,
+      "last_market_request_at": "2026-10-17T08:08:31.597889+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
       "market_reason_counts": {
-        "OK": 1
+        "OK": 3
       }
     },
     {
@@ -885,7 +1188,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -901,7 +1204,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -912,16 +1215,45 @@
       "tournament_id": 24,
       "tournament_name": "League One",
       "country": "England",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
+      "scheduled_fixtures": 11,
+      "remaining_prematch_fixtures": 11,
+      "scheduled_fixture_ids": [
+        "id1000002472341262",
+        "id1000002472341264",
+        "id1000002472341266",
+        "id1000002472341268",
+        "id1000002472341272",
+        "id1000002472341274",
+        "id1000002472341276",
+        "id1000002472341278",
+        "id1000002472341280",
+        "id1000002472341282",
+        "id1000002472341284"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000002472341262",
+        "id1000002472341264",
+        "id1000002472341266",
+        "id1000002472341268",
+        "id1000002472341272",
+        "id1000002472341274",
+        "id1000002472341276",
+        "id1000002472341278",
+        "id1000002472341280",
+        "id1000002472341282",
+        "id1000002472341284"
+      ],
+      "next_kickoff": "2026-10-17T11:30:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 11,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-15T17:09:28.466624+00:00"
+      "last_market_request_at": "2026-10-17T08:08:12.924963+00:00",
+      "odds_fixture_rows": 11,
+      "strict_snapshots": 11,
+      "market_reason_counts": {
+        "OK": 11
+      }
     },
     {
       "canonical_competition_id": "BGR-0001",
@@ -933,7 +1265,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -944,16 +1276,47 @@
       "tournament_id": 25,
       "tournament_name": "League Two",
       "country": "England",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
+      "scheduled_fixtures": 12,
+      "remaining_prematch_fixtures": 12,
+      "scheduled_fixture_ids": [
+        "id1000002572342186",
+        "id1000002572342190",
+        "id1000002572342194",
+        "id1000002572342198",
+        "id1000002572342202",
+        "id1000002572342206",
+        "id1000002572342210",
+        "id1000002572342214",
+        "id1000002572342218",
+        "id1000002572342222",
+        "id1000002572342226",
+        "id1000002572342228"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000002572342186",
+        "id1000002572342190",
+        "id1000002572342194",
+        "id1000002572342198",
+        "id1000002572342202",
+        "id1000002572342206",
+        "id1000002572342210",
+        "id1000002572342214",
+        "id1000002572342218",
+        "id1000002572342222",
+        "id1000002572342226",
+        "id1000002572342228"
+      ],
+      "next_kickoff": "2026-10-17T11:30:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 12,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:12.924963+00:00",
+      "odds_fixture_rows": 12,
+      "strict_snapshots": 12,
+      "market_reason_counts": {
+        "OK": 12
+      }
     },
     {
       "canonical_competition_id": "WAL-0001",
@@ -965,7 +1328,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -976,16 +1339,33 @@
       "tournament_id": 266,
       "tournament_name": "Israeli Premier League",
       "country": "Israel",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
+      "scheduled_fixtures": 5,
+      "remaining_prematch_fixtures": 5,
+      "scheduled_fixture_ids": [
+        "id1000026672225276",
+        "id1000026672225288",
+        "id1000026672225292",
+        "id1000026672225300",
+        "id1000026672225312"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000026672225276",
+        "id1000026672225288",
+        "id1000026672225292",
+        "id1000026672225300",
+        "id1000026672225312"
+      ],
+      "next_kickoff": "2026-10-17T15:45:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 5,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:21.228176+00:00",
+      "odds_fixture_rows": 5,
+      "strict_snapshots": 5,
+      "market_reason_counts": {
+        "OK": 5
+      }
     },
     {
       "canonical_competition_id": "ITA-0003",
@@ -997,7 +1377,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -1013,7 +1393,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -1029,7 +1409,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -1045,7 +1425,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -1054,26 +1434,50 @@
     {
       "canonical_competition_id": "PRT-0003",
       "tournament_id": 336,
-      "tournament_name": "Ta\u00e7a de Portugal",
+      "tournament_name": "Taça de Portugal",
       "country": "Portugal",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 1,
+      "scheduled_fixtures": 12,
+      "remaining_prematch_fixtures": 12,
       "scheduled_fixture_ids": [
-        "id1000033675024390"
+        "id1000033675023904",
+        "id1000033675023906",
+        "id1000033675023908",
+        "id1000033675023910",
+        "id1000033675023920",
+        "id1000033675024374",
+        "id1000033675024382",
+        "id1000033675024384",
+        "id1000033675024386",
+        "id1000033675024388",
+        "id1000033675024394",
+        "id1000033675141886"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000033675024390"
+        "id1000033675023904",
+        "id1000033675023906",
+        "id1000033675023908",
+        "id1000033675023910",
+        "id1000033675023920",
+        "id1000033675024374",
+        "id1000033675024382",
+        "id1000033675024384",
+        "id1000033675024386",
+        "id1000033675024388",
+        "id1000033675024394",
+        "id1000033675141886"
       ],
-      "next_kickoff": "2026-10-16T19:00:00+00:00",
-      "reason": "UNMAPPED",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 1,
-      "uncaptured_remaining_prematch_fixtures": 1,
-      "last_market_request_at": "2026-10-16T17:01:04.950221+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 0,
+      "next_kickoff": "2026-10-17T13:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 2,
+      "scheduled_fixtures_without_snapshot": 10,
+      "uncaptured_remaining_prematch_fixtures": 10,
+      "last_market_request_at": "2026-10-17T08:08:12.924963+00:00",
+      "odds_fixture_rows": 12,
+      "strict_snapshots": 2,
       "market_reason_counts": {
-        "MASTER_CLUB_UNMAPPED": 1
+        "AMBIGUOUS_OR_MISSING_1X2": 1,
+        "MASTER_CLUB_UNMAPPED": 9,
+        "OK": 2
       }
     },
     {
@@ -1081,24 +1485,28 @@
       "tournament_id": 34,
       "tournament_name": "Ligue 1",
       "country": "France",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 1,
+      "scheduled_fixtures": 3,
+      "remaining_prematch_fixtures": 3,
       "scheduled_fixture_ids": [
-        "id1000003472036224"
+        "id1000003472036226",
+        "id1000003472036234",
+        "id1000003472036236"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000003472036224"
+        "id1000003472036226",
+        "id1000003472036234",
+        "id1000003472036236"
       ],
-      "next_kickoff": "2026-10-16T18:45:00+00:00",
+      "next_kickoff": "2026-10-17T15:15:00+00:00",
       "reason": "OBSERVED",
-      "fixtures_captured_today": 1,
+      "fixtures_captured_today": 3,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:11.136256+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 1,
+      "last_market_request_at": "2026-10-17T08:08:31.597889+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
       "market_reason_counts": {
-        "OK": 1
+        "OK": 3
       }
     },
     {
@@ -1111,7 +1519,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -1122,24 +1530,34 @@
       "tournament_id": 35,
       "tournament_name": "Bundesliga",
       "country": "Germany",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 1,
+      "scheduled_fixtures": 6,
+      "remaining_prematch_fixtures": 6,
       "scheduled_fixture_ids": [
-        "id1000003572513242"
+        "id1000003572513238",
+        "id1000003572513244",
+        "id1000003572513248",
+        "id1000003572513250",
+        "id1000003572513252",
+        "id1000003572513254"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000003572513242"
+        "id1000003572513238",
+        "id1000003572513244",
+        "id1000003572513248",
+        "id1000003572513250",
+        "id1000003572513252",
+        "id1000003572513254"
       ],
-      "next_kickoff": "2026-10-16T18:30:00+00:00",
+      "next_kickoff": "2026-10-17T13:30:00+00:00",
       "reason": "OBSERVED",
-      "fixtures_captured_today": 1,
+      "fixtures_captured_today": 6,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:07.967278+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 1,
+      "last_market_request_at": "2026-10-17T08:08:15.826473+00:00",
+      "odds_fixture_rows": 6,
+      "strict_snapshots": 6,
       "market_reason_counts": {
-        "OK": 1
+        "OK": 6
       }
     },
     {
@@ -1147,40 +1565,61 @@
       "tournament_id": 36,
       "tournament_name": "Scottish Premiership",
       "country": "Scotland",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
+      "scheduled_fixtures": 5,
+      "remaining_prematch_fixtures": 5,
+      "scheduled_fixture_ids": [
+        "id1000003672201658",
+        "id1000003672201662",
+        "id1000003672201664",
+        "id1000003672201666",
+        "id1000003672201668"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000003672201658",
+        "id1000003672201662",
+        "id1000003672201664",
+        "id1000003672201666",
+        "id1000003672201668"
+      ],
+      "next_kickoff": "2026-10-17T14:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 5,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:18.526596+00:00",
+      "odds_fixture_rows": 5,
+      "strict_snapshots": 5,
+      "market_reason_counts": {
+        "OK": 5
+      }
     },
     {
       "canonical_competition_id": "NLD-0001",
       "tournament_id": 37,
       "tournament_name": "Eredivisie",
       "country": "Netherlands",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 1,
+      "scheduled_fixtures": 3,
+      "remaining_prematch_fixtures": 3,
       "scheduled_fixture_ids": [
-        "id1000003772041176"
+        "id1000003772041178",
+        "id1000003772041182",
+        "id1000003772041184"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000003772041176"
+        "id1000003772041178",
+        "id1000003772041182",
+        "id1000003772041184"
       ],
-      "next_kickoff": "2026-10-16T18:00:00+00:00",
+      "next_kickoff": "2026-10-17T14:30:00+00:00",
       "reason": "OBSERVED",
-      "fixtures_captured_today": 1,
+      "fixtures_captured_today": 3,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:04.950221+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 1,
+      "last_market_request_at": "2026-10-17T08:08:28.914827+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
       "market_reason_counts": {
-        "OK": 1
+        "OK": 3
       }
     },
     {
@@ -1193,7 +1632,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -1204,15 +1643,13 @@
       "tournament_id": 39,
       "tournament_name": "Danish Superliga",
       "country": "Denmark",
-      "scheduled_fixtures": 1,
+      "scheduled_fixtures": 0,
       "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [
-        "id1000003971925054"
-      ],
+      "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
-      "fixtures_captured_today": 1,
+      "reason": "NO_SCHEDULE_EVIDENCE",
+      "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
       "last_market_request_at": null
@@ -1223,72 +1660,19 @@
       "tournament_name": "Allsvenskan",
       "country": "Sweden",
       "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [
-        "id1000004067126812"
-      ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
-      "fixtures_captured_today": 1,
-      "scheduled_fixtures_without_snapshot": 0,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-12T15:31:04.951721+00:00"
-    },
-    {
-      "canonical_competition_id": "FIN-0001",
-      "tournament_id": 41,
-      "tournament_name": "Veikkausliiga",
-      "country": "Finland",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 0,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
-    },
-    {
-      "canonical_competition_id": "DEU-0002",
-      "tournament_id": 44,
-      "tournament_name": "2. Bundesliga",
-      "country": "Germany",
-      "scheduled_fixtures": 2,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [
-        "id1000004472513916",
-        "id1000004472513922"
-      ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
-      "fixtures_captured_today": 2,
-      "scheduled_fixtures_without_snapshot": 0,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
-    },
-    {
-      "canonical_competition_id": "AUT-0001",
-      "tournament_id": 45,
-      "tournament_name": "Austrian Bundesliga",
-      "country": "Austria",
-      "scheduled_fixtures": 1,
       "remaining_prematch_fixtures": 1,
       "scheduled_fixture_ids": [
-        "id1000004572345536"
+        "id1000004067126806"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000004572345536"
+        "id1000004067126806"
       ],
-      "next_kickoff": "2026-10-16T17:30:00+00:00",
+      "next_kickoff": "2026-10-17T15:30:00+00:00",
       "reason": "OBSERVED",
       "fixtures_captured_today": 1,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:04.950221+00:00",
+      "last_market_request_at": "2026-10-17T08:08:44.095701+00:00",
       "odds_fixture_rows": 1,
       "strict_snapshots": 1,
       "market_reason_counts": {
@@ -1296,82 +1680,218 @@
       }
     },
     {
+      "canonical_competition_id": "FIN-0001",
+      "tournament_id": 41,
+      "tournament_name": "Veikkausliiga",
+      "country": "Finland",
+      "scheduled_fixtures": 5,
+      "remaining_prematch_fixtures": 5,
+      "scheduled_fixture_ids": [
+        "id1000004174299658",
+        "id1000004174299660",
+        "id1000004174299662",
+        "id1000004174299694",
+        "id1000004174299696"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000004174299658",
+        "id1000004174299660",
+        "id1000004174299662",
+        "id1000004174299694",
+        "id1000004174299696"
+      ],
+      "next_kickoff": "2026-10-17T11:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 5,
+      "scheduled_fixtures_without_snapshot": 0,
+      "uncaptured_remaining_prematch_fixtures": 0,
+      "last_market_request_at": "2026-10-17T08:08:15.826473+00:00",
+      "odds_fixture_rows": 5,
+      "strict_snapshots": 5,
+      "market_reason_counts": {
+        "OK": 5
+      }
+    },
+    {
+      "canonical_competition_id": "DEU-0002",
+      "tournament_id": 44,
+      "tournament_name": "2. Bundesliga",
+      "country": "Germany",
+      "scheduled_fixtures": 4,
+      "remaining_prematch_fixtures": 4,
+      "scheduled_fixture_ids": [
+        "id1000004472513906",
+        "id1000004472513908",
+        "id1000004472513910",
+        "id1000004472513920"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000004472513906",
+        "id1000004472513908",
+        "id1000004472513910",
+        "id1000004472513920"
+      ],
+      "next_kickoff": "2026-10-17T11:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 4,
+      "scheduled_fixtures_without_snapshot": 0,
+      "uncaptured_remaining_prematch_fixtures": 0,
+      "last_market_request_at": "2026-10-17T08:08:21.228176+00:00",
+      "odds_fixture_rows": 4,
+      "strict_snapshots": 4,
+      "market_reason_counts": {
+        "OK": 4
+      }
+    },
+    {
+      "canonical_competition_id": "AUT-0001",
+      "tournament_id": 45,
+      "tournament_name": "Austrian Bundesliga",
+      "country": "Austria",
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 2,
+      "scheduled_fixture_ids": [
+        "id1000004572345538",
+        "id1000004572345542"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000004572345538",
+        "id1000004572345542"
+      ],
+      "next_kickoff": "2026-10-17T15:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 2,
+      "scheduled_fixtures_without_snapshot": 0,
+      "uncaptured_remaining_prematch_fixtures": 0,
+      "last_market_request_at": "2026-10-17T08:08:39.101038+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
+    },
+    {
       "canonical_competition_id": "SWE-0002",
       "tournament_id": 46,
       "tournament_name": "Superettan",
       "country": "Sweden",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
+      "scheduled_fixtures": 4,
+      "remaining_prematch_fixtures": 4,
+      "scheduled_fixture_ids": [
+        "id1000004667126406",
+        "id1000004667126408",
+        "id1000004667126412",
+        "id1000004667126416"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000004667126406",
+        "id1000004667126408",
+        "id1000004667126412",
+        "id1000004667126416"
+      ],
+      "next_kickoff": "2026-10-17T11:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 4,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-13T14:29:54.724329+00:00"
+      "last_market_request_at": "2026-10-17T08:08:23.811268+00:00",
+      "odds_fixture_rows": 4,
+      "strict_snapshots": 4,
+      "market_reason_counts": {
+        "OK": 4
+      }
     },
     {
       "canonical_competition_id": "DNK-0002",
       "tournament_id": 47,
       "tournament_name": "Danish 1st Division",
       "country": "Denmark",
-      "scheduled_fixtures": 3,
-      "remaining_prematch_fixtures": 0,
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 2,
       "scheduled_fixture_ids": [
-        "id1000004772044364",
-        "id1000004772044366",
-        "id1000004772044368"
+        "id1000004772044358",
+        "id1000004772044360"
       ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
-      "fixtures_captured_today": 3,
+      "remaining_prematch_fixture_ids": [
+        "id1000004772044358",
+        "id1000004772044360"
+      ],
+      "next_kickoff": "2026-10-17T11:30:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 2,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:34.037641+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
     },
     {
       "canonical_competition_id": "TUR-0001",
       "tournament_id": 52,
       "tournament_name": "Super Lig",
       "country": "Turkey",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 0,
+      "scheduled_fixtures": 4,
+      "remaining_prematch_fixtures": 4,
       "scheduled_fixture_ids": [
-        "id1000005272723260"
+        "id1000005272723256",
+        "id1000005272723258",
+        "id1000005272723262",
+        "id1000005272723266"
       ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
-      "fixtures_captured_today": 1,
+      "remaining_prematch_fixture_ids": [
+        "id1000005272723256",
+        "id1000005272723258",
+        "id1000005272723262",
+        "id1000005272723266"
+      ],
+      "next_kickoff": "2026-10-17T10:30:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 4,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:21.228176+00:00",
+      "odds_fixture_rows": 4,
+      "strict_snapshots": 4,
+      "market_reason_counts": {
+        "OK": 4
+      }
     },
     {
       "canonical_competition_id": "ITA-0002",
       "tournament_id": 53,
       "tournament_name": "Serie B",
       "country": "Italy",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 1,
+      "scheduled_fixtures": 6,
+      "remaining_prematch_fixtures": 6,
       "scheduled_fixture_ids": [
-        "id1000005373092990"
+        "id1000005373092972",
+        "id1000005373092974",
+        "id1000005373092976",
+        "id1000005373092982",
+        "id1000005373092984",
+        "id1000005373092986"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000005373092990"
+        "id1000005373092972",
+        "id1000005373092974",
+        "id1000005373092976",
+        "id1000005373092982",
+        "id1000005373092984",
+        "id1000005373092986"
       ],
-      "next_kickoff": "2026-10-16T18:30:00+00:00",
+      "next_kickoff": "2026-10-17T13:00:00+00:00",
       "reason": "OBSERVED",
-      "fixtures_captured_today": 1,
+      "fixtures_captured_today": 6,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:07.967278+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 1,
+      "last_market_request_at": "2026-10-17T08:08:15.826473+00:00",
+      "odds_fixture_rows": 6,
+      "strict_snapshots": 6,
       "market_reason_counts": {
-        "OK": 1
+        "OK": 6
       }
     },
     {
@@ -1380,43 +1900,58 @@
       "tournament_name": "Slovenian Second League",
       "country": "Slovenia",
       "scheduled_fixtures": 3,
-      "remaining_prematch_fixtures": 0,
+      "remaining_prematch_fixtures": 3,
       "scheduled_fixture_ids": [
-        "id1000053272281394",
-        "id1000053272281400",
-        "id1000053272281404"
+        "id1000053272281396",
+        "id1000053272281406",
+        "id1000053272281408"
       ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+      "remaining_prematch_fixture_ids": [
+        "id1000053272281396",
+        "id1000053272281406",
+        "id1000053272281408"
+      ],
+      "next_kickoff": "2026-10-17T13:30:00+00:00",
+      "reason": "OBSERVED",
       "fixtures_captured_today": 3,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:28.914827+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
+      "market_reason_counts": {
+        "OK": 3
+      }
     },
     {
       "canonical_competition_id": "ESP-0002",
       "tournament_id": 54,
       "tournament_name": "LaLiga 2",
       "country": "Spain",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 1,
+      "scheduled_fixtures": 4,
+      "remaining_prematch_fixtures": 4,
       "scheduled_fixture_ids": [
-        "id1000005472477506"
+        "id1000005472477500",
+        "id1000005472477508",
+        "id1000005472477510",
+        "id1000005472477512"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000005472477506"
+        "id1000005472477500",
+        "id1000005472477508",
+        "id1000005472477510",
+        "id1000005472477512"
       ],
-      "next_kickoff": "2026-10-16T18:30:00+00:00",
+      "next_kickoff": "2026-10-17T12:00:00+00:00",
       "reason": "OBSERVED",
-      "fixtures_captured_today": 1,
+      "fixtures_captured_today": 4,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:14.191493+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 1,
+      "last_market_request_at": "2026-10-17T08:08:23.811268+00:00",
+      "odds_fixture_rows": 4,
+      "strict_snapshots": 4,
       "market_reason_counts": {
-        "OK": 1
+        "OK": 4
       }
     },
     {
@@ -1424,57 +1959,96 @@
       "tournament_id": 55,
       "tournament_name": "Ykkosliiga",
       "country": "Finland",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
+      "scheduled_fixtures": 5,
+      "remaining_prematch_fixtures": 5,
+      "scheduled_fixture_ids": [
+        "id1000005567605010",
+        "id1000005567605012",
+        "id1000005567605014",
+        "id1000005567605016",
+        "id1000005567605018"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000005567605010",
+        "id1000005567605012",
+        "id1000005567605014",
+        "id1000005567605016",
+        "id1000005567605018"
+      ],
+      "next_kickoff": "2026-10-17T13:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 5,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:18.526596+00:00",
+      "odds_fixture_rows": 5,
+      "strict_snapshots": 5,
+      "market_reason_counts": {
+        "OK": 5
+      }
     },
     {
       "canonical_competition_id": "ROU-0002",
       "tournament_id": 562,
       "tournament_name": "Liga II",
       "country": "Romania",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 0,
+      "scheduled_fixtures": 10,
+      "remaining_prematch_fixtures": 1,
+      "scheduled_fixture_ids": [
+        "id1000056273086654",
+        "id1000056273086656",
+        "id1000056273086658",
+        "id1000056273086660",
+        "id1000056273086664",
+        "id1000056273086666",
+        "id1000056273086668",
+        "id1000056273086672",
+        "id1000056273086674",
+        "id1000056273323806"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000056273086656"
+      ],
+      "next_kickoff": "2026-10-17T09:30:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 1,
+      "scheduled_fixtures_without_snapshot": 9,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:41.645422+00:00",
+      "odds_fixture_rows": 9,
+      "strict_snapshots": 1,
+      "market_reason_counts": {
+        "KICKOFF_NOT_FUTURE": 8,
+        "OK": 1
+      }
     },
     {
       "canonical_competition_id": "MLT-0001",
       "tournament_id": 629,
       "tournament_name": "Maltese Premier League",
       "country": "Malta",
-      "scheduled_fixtures": 2,
-      "remaining_prematch_fixtures": 1,
+      "scheduled_fixtures": 3,
+      "remaining_prematch_fixtures": 2,
       "scheduled_fixture_ids": [
-        "id1000062972498274",
-        "id1000062975653846"
+        "id1000062972498272",
+        "id1000062972498280",
+        "id1000062975653850"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000062975653846"
+        "id1000062972498280",
+        "id1000062975653850"
       ],
-      "next_kickoff": "2026-10-16T18:00:00+00:00",
-      "reason": "NO_MARKET",
-      "fixtures_captured_today": 0,
+      "next_kickoff": "2026-10-17T13:30:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 1,
       "scheduled_fixtures_without_snapshot": 2,
       "uncaptured_remaining_prematch_fixtures": 1,
-      "last_market_request_at": "2026-10-16T17:01:04.950221+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 0,
+      "last_market_request_at": "2026-10-17T08:08:39.101038+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 1,
       "market_reason_counts": {
-        "NOT_PREMATCH_WITH_ODDS": 1
+        "NOT_PREMATCH_WITH_ODDS": 1,
+        "OK": 1
       }
     },
     {
@@ -1483,18 +2057,26 @@
       "tournament_name": "Armenian Premier League",
       "country": "Armenia",
       "scheduled_fixtures": 2,
-      "remaining_prematch_fixtures": 0,
+      "remaining_prematch_fixtures": 2,
       "scheduled_fixture_ids": [
-        "id1000067175028972",
-        "id1000067175028974"
+        "id1000067175028976",
+        "id1000067175028978"
       ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+      "remaining_prematch_fixture_ids": [
+        "id1000067175028976",
+        "id1000067175028978"
+      ],
+      "next_kickoff": "2026-10-17T14:00:00+00:00",
+      "reason": "OBSERVED",
       "fixtures_captured_today": 2,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:36.485051+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
     },
     {
       "canonical_competition_id": "FRO-0001",
@@ -1506,7 +2088,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -1522,7 +2104,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -1533,32 +2115,58 @@
       "tournament_id": 682,
       "tournament_name": "Kazakhstan Premier League",
       "country": "Kazakhstan",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 0,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-14T12:14:10.176422+00:00"
+      "scheduled_fixtures": 4,
+      "remaining_prematch_fixtures": 4,
+      "scheduled_fixture_ids": [
+        "id1000068274070704",
+        "id1000068274070710",
+        "id1000068274070712",
+        "id1000068274070718"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000068274070704",
+        "id1000068274070710",
+        "id1000068274070712",
+        "id1000068274070718"
+      ],
+      "next_kickoff": "2026-10-17T10:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 3,
+      "scheduled_fixtures_without_snapshot": 1,
+      "uncaptured_remaining_prematch_fixtures": 1,
+      "last_market_request_at": "2026-10-17T08:08:26.365332+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
+      "market_reason_counts": {
+        "OK": 3
+      }
     },
     {
       "canonical_competition_id": "MDA-0001",
       "tournament_id": 685,
       "tournament_name": "Moldovan Super Liga",
       "country": "Moldova",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 2,
+      "scheduled_fixture_ids": [
+        "id1000068573866568",
+        "id1000068573866570"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000068573866568",
+        "id1000068573866570"
+      ],
+      "next_kickoff": "2026-10-17T12:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 2,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:36.485051+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
     },
     {
       "canonical_competition_id": "LUX-0001",
@@ -1570,7 +2178,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -1581,36 +2189,67 @@
       "tournament_id": 691,
       "tournament_name": "Ukrainian First League",
       "country": "Ukraine",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 0,
+      "scheduled_fixtures": 5,
+      "remaining_prematch_fixtures": 4,
       "scheduled_fixture_ids": [
-        "id1000069172550264"
+        "id1000069172550260",
+        "id1000069172550262",
+        "id1000069172550264",
+        "id1000069172550266",
+        "id1000069172550268"
       ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 1,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "remaining_prematch_fixture_ids": [
+        "id1000069172550260",
+        "id1000069172550264",
+        "id1000069172550266",
+        "id1000069172550268"
+      ],
+      "next_kickoff": "2026-10-17T08:30:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 3,
+      "scheduled_fixtures_without_snapshot": 2,
+      "uncaptured_remaining_prematch_fixtures": 1,
+      "last_market_request_at": "2026-10-17T08:08:21.228176+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 3,
+      "market_reason_counts": {
+        "OK": 3
+      }
     },
     {
       "canonical_competition_id": "CYP-0002",
       "tournament_id": 692,
       "tournament_name": "Cypriot Second Division",
       "country": "Cyprus",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 0,
+      "scheduled_fixtures": 6,
+      "remaining_prematch_fixtures": 6,
       "scheduled_fixture_ids": [
-        "id1000069274084534"
+        "id1000069274084524",
+        "id1000069274084526",
+        "id1000069274084528",
+        "id1000069274084530",
+        "id1000069274084532",
+        "id1000069274084536"
       ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+      "remaining_prematch_fixture_ids": [
+        "id1000069274084524",
+        "id1000069274084526",
+        "id1000069274084528",
+        "id1000069274084530",
+        "id1000069274084532",
+        "id1000069274084536"
+      ],
+      "next_kickoff": "2026-10-17T12:30:00+00:00",
+      "reason": "NO_MARKET",
       "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 1,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "scheduled_fixtures_without_snapshot": 6,
+      "uncaptured_remaining_prematch_fixtures": 6,
+      "last_market_request_at": "2026-10-17T08:08:15.826473+00:00",
+      "odds_fixture_rows": 6,
+      "strict_snapshots": 0,
+      "market_reason_counts": {
+        "AMBIGUOUS_OR_MISSING_1X2": 6
+      }
     },
     {
       "canonical_competition_id": "INT-0001",
@@ -1622,7 +2261,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -1633,16 +2272,28 @@
       "tournament_id": 704,
       "tournament_name": "Erovnuli Liga",
       "country": "Georgia",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 0,
+      "scheduled_fixtures": 3,
+      "remaining_prematch_fixtures": 2,
+      "scheduled_fixture_ids": [
+        "id1000070467912836",
+        "id1000070467912840",
+        "id1000070467912842"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000070467912836",
+        "id1000070467912840"
+      ],
+      "next_kickoff": "2026-10-17T11:30:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 2,
+      "scheduled_fixtures_without_snapshot": 1,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "last_market_request_at": "2026-10-17T08:08:34.037641+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
     },
     {
       "canonical_competition_id": "ALB-0001",
@@ -1650,78 +2301,107 @@
       "tournament_name": "Kategoria Superiore",
       "country": "Albania",
       "scheduled_fixtures": 2,
-      "remaining_prematch_fixtures": 0,
+      "remaining_prematch_fixtures": 2,
       "scheduled_fixture_ids": [
-        "id1000072072814250",
-        "id1000072072814256"
+        "id1000072072814254",
+        "id1000072072814258"
       ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+      "remaining_prematch_fixture_ids": [
+        "id1000072072814254",
+        "id1000072072814258"
+      ],
+      "next_kickoff": "2026-10-17T11:30:00+00:00",
+      "reason": "NO_MARKET",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 2,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "uncaptured_remaining_prematch_fixtures": 2,
+      "last_market_request_at": "2026-10-17T08:08:36.485051+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 0,
+      "market_reason_counts": {
+        "AMBIGUOUS_OR_MISSING_1X2": 2
+      }
     },
     {
       "canonical_competition_id": "SRB-0002",
       "tournament_id": 721,
       "tournament_name": "Serbian First League",
       "country": "Serbia",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 0,
+      "scheduled_fixtures": 6,
+      "remaining_prematch_fixtures": 5,
       "scheduled_fixture_ids": [
-        "id1000072172120958"
+        "id1000072172120944",
+        "id1000072172120946",
+        "id1000072172120948",
+        "id1000072172120950",
+        "id1000072172120954",
+        "id1000072173221942"
       ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+      "remaining_prematch_fixture_ids": [
+        "id1000072172120944",
+        "id1000072172120946",
+        "id1000072172120950",
+        "id1000072172120954",
+        "id1000072173221942"
+      ],
+      "next_kickoff": "2026-10-17T12:00:00+00:00",
+      "reason": "OBSERVED",
       "fixtures_captured_today": 1,
-      "scheduled_fixtures_without_snapshot": 0,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "scheduled_fixtures_without_snapshot": 5,
+      "uncaptured_remaining_prematch_fixtures": 4,
+      "last_market_request_at": "2026-10-17T08:08:18.526596+00:00",
+      "odds_fixture_rows": 1,
+      "strict_snapshots": 1,
+      "market_reason_counts": {
+        "OK": 1
+      }
     },
     {
       "canonical_competition_id": "HRV-0002",
       "tournament_id": 724,
       "tournament_name": "Prva NL",
       "country": "Croatia",
-      "scheduled_fixtures": 2,
-      "remaining_prematch_fixtures": 0,
+      "scheduled_fixtures": 5,
+      "remaining_prematch_fixtures": 5,
       "scheduled_fixture_ids": [
-        "id1000072473070150",
-        "id1000072473070158"
+        "id1000072473070152",
+        "id1000072473070156",
+        "id1000072473070160",
+        "id1000072473070162",
+        "id1000072473070164"
       ],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
-      "fixtures_captured_today": 2,
-      "scheduled_fixtures_without_snapshot": 0,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "remaining_prematch_fixture_ids": [
+        "id1000072473070152",
+        "id1000072473070156",
+        "id1000072473070160",
+        "id1000072473070162",
+        "id1000072473070164"
+      ],
+      "next_kickoff": "2026-10-17T10:45:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 4,
+      "scheduled_fixtures_without_snapshot": 1,
+      "uncaptured_remaining_prematch_fixtures": 1,
+      "last_market_request_at": "2026-10-17T08:08:15.826473+00:00",
+      "odds_fixture_rows": 4,
+      "strict_snapshots": 4,
+      "market_reason_counts": {
+        "OK": 4
+      }
     },
     {
       "canonical_competition_id": "ISR-0002",
       "tournament_id": 727,
       "tournament_name": "Liga Leumit",
       "country": "Israel",
-      "scheduled_fixtures": 8,
+      "scheduled_fixtures": 0,
       "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [
-        "id1000072772284132",
-        "id1000072772284134",
-        "id1000072772284136",
-        "id1000072772284138",
-        "id1000072772284140",
-        "id1000072772284142",
-        "id1000072772284144",
-        "id1000072772284146"
-      ],
+      "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
-      "fixtures_captured_today": 5,
-      "scheduled_fixtures_without_snapshot": 3,
+      "reason": "NO_SCHEDULE_EVIDENCE",
+      "fixtures_captured_today": 0,
+      "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
       "last_market_request_at": "2026-10-16T08:18:22.077251+00:00"
     },
@@ -1735,7 +2415,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -1746,24 +2426,30 @@
       "tournament_id": 8,
       "tournament_name": "LaLiga",
       "country": "Spain",
-      "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 1,
+      "scheduled_fixtures": 4,
+      "remaining_prematch_fixtures": 4,
       "scheduled_fixture_ids": [
-        "id1000000872478630"
+        "id1000000872478626",
+        "id1000000872478632",
+        "id1000000872478642",
+        "id1000000872478644"
       ],
       "remaining_prematch_fixture_ids": [
-        "id1000000872478630"
+        "id1000000872478626",
+        "id1000000872478632",
+        "id1000000872478642",
+        "id1000000872478644"
       ],
-      "next_kickoff": "2026-10-16T19:00:00+00:00",
+      "next_kickoff": "2026-10-17T12:00:00+00:00",
       "reason": "OBSERVED",
-      "fixtures_captured_today": 1,
+      "fixtures_captured_today": 4,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-16T17:01:11.136256+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 1,
+      "last_market_request_at": "2026-10-17T08:08:21.228176+00:00",
+      "odds_fixture_rows": 4,
+      "strict_snapshots": 4,
       "market_reason_counts": {
-        "OK": 1
+        "OK": 4
       }
     },
     {
@@ -1776,7 +2462,7 @@
       "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "reason": "NO_SCHEDULE_EVIDENCE",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
@@ -1787,32 +2473,43 @@
       "tournament_id": 98,
       "tournament_name": "TFF 1 Lig",
       "country": "Turkey",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
-      "fixtures_captured_today": 0,
+      "scheduled_fixtures": 2,
+      "remaining_prematch_fixtures": 2,
+      "scheduled_fixture_ids": [
+        "id1000009872735844",
+        "id1000009872735846"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000009872735844",
+        "id1000009872735846"
+      ],
+      "next_kickoff": "2026-10-17T13:00:00+00:00",
+      "reason": "OBSERVED",
+      "fixtures_captured_today": 2,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-15T14:40:01.084483+00:00"
+      "last_market_request_at": "2026-10-17T08:08:41.645422+00:00",
+      "odds_fixture_rows": 2,
+      "strict_snapshots": 2,
+      "market_reason_counts": {
+        "OK": 2
+      }
     }
   ],
   "forward_scope_policy": "VERIFIED_ACTIVE_MASTER_81_DIVISIONS_PLUS_8_DOMESTIC_CUPS_AND_3_UEFA_CLUB_COMPETITIONS",
   "master_scope_rejections": [],
   "master_scope_excluded_targets": 0,
-  "resolved_competitions": 23,
-  "planned_requests": 5,
+  "resolved_competitions": 65,
+  "planned_requests": 14,
   "max_planned_requests_with_retries": 19,
   "coverage_mode": "MANUAL_FULL_ELIGIBLE_SCOPE",
   "request_budget_policy": "MANUAL_PROVIDER_QUOTA_ONLY",
-  "research_requests_used_today": 59,
-  "research_requests_used_month": 152,
+  "research_requests_used_today": 0,
+  "research_requests_used_month": 171,
   "research_daily_limit": null,
   "research_monthly_limit": null,
-  "research_run_limit": 19,
-  "quota_utc_day": "2026-10-16",
+  "research_run_limit": 20,
+  "quota_utc_day": "2026-10-17",
   "canonical_slots_in_football_day": 4,
   "future_utc_slots": [],
   "future_utc_requests_reserved": 0,
@@ -1820,184 +2517,192 @@
   "future_month_requests_reserved": 0,
   "canonical_request_reservation": "NONE_FOR_MANUAL",
   "budget_scope": "ODDSPAPI_MANUAL_COLLECTOR_ONLY",
-  "schedule_requests_reserved": 0,
-  "coverage_complete": true,
+  "schedule_requests_reserved": 1,
+  "coverage_complete": false,
   "coverage_tournament_ids": [
+    19,
+    25,
     336,
-    1542,
-    629,
-    45,
-    37,
-    131,
-    152,
-    187,
-    35,
+    18,
+    24,
+    692,
     53,
-    34,
-    192,
+    35,
+    724,
+    41,
+    17,
+    721,
+    55,
+    36,
     200,
+    266,
+    691,
+    52,
+    44,
     8,
-    188,
+    224,
     54,
+    46,
+    1339,
+    206,
+    172,
+    682,
+    218,
+    20,
+    188,
+    187,
+    210,
+    211,
+    532,
+    37,
+    34,
     202,
     23,
-    206,
-    18,
     182,
     135,
-    193
+    199,
+    222,
+    198,
+    47,
+    704,
+    720,
+    685,
+    170,
+    212,
+    671,
+    152,
+    45,
+    171,
+    186,
+    629,
+    98,
+    562,
+    154,
+    185,
+    131,
+    192,
+    40,
+    178,
+    14189,
+    197
   ],
   "account_requests_attempted": 1,
   "account_endpoint_metered": false,
   "account_transient_failures": [],
-  "quota_remaining_before": 30,
+  "quota_remaining_before": 25,
   "account_safety_reserve": 10,
-  "account_minimum_requests_through_month_end": 1,
+  "account_minimum_requests_through_month_end": 2,
   "account_month_capacity_shortfall": 0,
   "effective_quota_reserve": 0,
-  "budget_reservation_id": "9c80af982ddf40db9c9439edf3014d37",
-  "research_requests_reserved_this_run": 19,
-  "schedule_response_id": "699f190a7fe82cf20e0a6a4cd0ce78af923ed667b791f45b07c0cdff88493b2f",
-  "schedule_observed_at": "2026-10-16T08:18:20.459331+00:00",
-  "schedule_requests_used": 0,
-  "fixtures_captured_today": 72,
-  "scheduled_fixtures_without_snapshot": 13,
-  "market_requests_required_all_remaining_competitions": 5,
-  "request_completed_at": "2026-10-16T17:01:17.023624+00:00",
-  "collection_started_at": "2026-10-16T17:00:59.050240+00:00",
+  "budget_reservation_id": "308cb5ca531a4904bdbe2f167ba20f50",
+  "research_requests_reserved_this_run": 20,
+  "request_completed_at": "2026-10-17T08:08:44.095701+00:00",
+  "schedule_response_id": "e96da776137adbeaf608381f6bc0c702dfd61471cbb82c047fa626afc0a60f6a",
+  "schedule_observed_at": "2026-10-17T08:08:11.010444+00:00",
+  "schedule_requests_used": 1,
+  "fixtures_captured_today": 200,
+  "scheduled_fixtures_without_snapshot": 77,
+  "market_requests_required_all_remaining_competitions": 13,
+  "collection_started_at": "2026-10-17T08:08:06.442077+00:00",
   "excluded_unrequested_scope_fixtures": 0,
   "invalid_payload_batches": 0,
   "status": "RESEARCH_V2_OBSERVED",
-  "requests_used": 5,
+  "requests_used": 14,
   "rate_limit_retries": 0,
-  "api_fixtures_returned": 212,
-  "excluded_outside_football_day": 176,
-  "football_day_fixtures": 36,
-  "strict_snapshots_this_run": 34,
-  "persisted_snapshot_rows": 2699,
-  "persisted_audit_rows": 1717,
-  "fixtures_seen": 36,
-  "bookmaker_active_fixtures": 36,
-  "fixtures_with_exactly_one_main_ah": 36,
-  "fixtures_with_exactly_one_main_ou": 36,
-  "fixtures_with_both_exact_mainlines": 36,
-  "strict_snapshots": 34,
+  "api_fixtures_returned": 446,
+  "excluded_outside_football_day": 186,
+  "football_day_fixtures": 260,
+  "strict_snapshots_this_run": 200,
+  "persisted_snapshot_rows": 2899,
+  "persisted_audit_rows": 1977,
+  "fixtures_seen": 260,
+  "bookmaker_active_fixtures": 259,
+  "fixtures_with_exactly_one_main_ah": 258,
+  "fixtures_with_exactly_one_main_ou": 258,
+  "fixtures_with_both_exact_mainlines": 258,
+  "strict_snapshots": 200,
   "rejection_counts": {
-    "MASTER_CLUB_UNMAPPED": 1,
-    "NOT_PREMATCH_WITH_ODDS": 1,
-    "OK": 34
+    "AMBIGUOUS_OR_MISSING_1X2": 10,
+    "KICKOFF_NOT_FUTURE": 8,
+    "MASTER_CLUB_UNMAPPED": 39,
+    "NOT_PREMATCH_WITH_ODDS": 3,
+    "OK": 200
   },
   "league_coverage": [
     {
-      "league": "Austria \u00b7 Austrian 2 Liga",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
+      "league": "Albania · Kategoria Superiore",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 0,
       "reason_counts": {
-        "OK": 1
+        "AMBIGUOUS_OR_MISSING_1X2": 2
       }
     },
     {
-      "league": "Austria \u00b7 Austrian Bundesliga",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
+      "league": "Armenia · Armenian Premier League",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
       "reason_counts": {
-        "OK": 1
+        "OK": 2
       }
     },
     {
-      "league": "England \u00b7 Championship",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
+      "league": "Austria · Austrian 2 Liga",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
       "reason_counts": {
-        "OK": 1
+        "OK": 3
       }
     },
     {
-      "league": "France \u00b7 Ligue 1",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
+      "league": "Austria · Austrian Bundesliga",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
       "reason_counts": {
-        "OK": 1
+        "OK": 2
       }
     },
     {
-      "league": "France \u00b7 Ligue 2",
-      "fixtures": 5,
-      "bookmaker_active": 5,
-      "ah_main_exactly_one": 5,
-      "ou_main_exactly_one": 5,
-      "both_main_exactly_one": 5,
-      "strict_snapshots": 5,
+      "league": "Bosnia and Herzegovina · Premier League of Bosnia and Herzegovina",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
       "reason_counts": {
-        "OK": 5
+        "OK": 2
       }
     },
     {
-      "league": "Germany \u00b7 Bundesliga",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
+      "league": "Croatia · HNL",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
       "reason_counts": {
-        "OK": 1
+        "OK": 2
       }
     },
     {
-      "league": "Hungary \u00b7 Nemzeti Bajnoksag I",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "OK": 1
-      }
-    },
-    {
-      "league": "Iceland \u00b7 Besta deild karla",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "OK": 1
-      }
-    },
-    {
-      "league": "Ireland \u00b7 League of Ireland First Division",
-      "fixtures": 5,
-      "bookmaker_active": 5,
-      "ah_main_exactly_one": 5,
-      "ou_main_exactly_one": 5,
-      "both_main_exactly_one": 5,
-      "strict_snapshots": 5,
-      "reason_counts": {
-        "OK": 5
-      }
-    },
-    {
-      "league": "Ireland \u00b7 League of Ireland Premier Division",
+      "league": "Croatia · Prva NL",
       "fixtures": 4,
       "bookmaker_active": 4,
       "ah_main_exactly_one": 4,
@@ -2009,43 +2714,188 @@
       }
     },
     {
-      "league": "Italy \u00b7 Serie A",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
+      "league": "Cyprus · Cypriot First Division",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
       "reason_counts": {
-        "OK": 1
+        "OK": 2
       }
     },
     {
-      "league": "Italy \u00b7 Serie B",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "OK": 1
-      }
-    },
-    {
-      "league": "Malta \u00b7 Maltese Premier League",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
+      "league": "Cyprus · Cypriot Second Division",
+      "fixtures": 6,
+      "bookmaker_active": 6,
+      "ah_main_exactly_one": 6,
+      "ou_main_exactly_one": 6,
+      "both_main_exactly_one": 6,
       "strict_snapshots": 0,
       "reason_counts": {
-        "NOT_PREMATCH_WITH_ODDS": 1
+        "AMBIGUOUS_OR_MISSING_1X2": 6
       }
     },
     {
-      "league": "Netherlands \u00b7 Eerste Divisie",
+      "league": "Czechia · Czech First League",
+      "fixtures": 5,
+      "bookmaker_active": 4,
+      "ah_main_exactly_one": 4,
+      "ou_main_exactly_one": 4,
+      "both_main_exactly_one": 4,
+      "strict_snapshots": 4,
+      "reason_counts": {
+        "NOT_PREMATCH_WITH_ODDS": 1,
+        "OK": 4
+      }
+    },
+    {
+      "league": "Denmark · Danish 1st Division",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
+      "reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "league": "England · Championship",
+      "fixtures": 11,
+      "bookmaker_active": 11,
+      "ah_main_exactly_one": 11,
+      "ou_main_exactly_one": 11,
+      "both_main_exactly_one": 11,
+      "strict_snapshots": 11,
+      "reason_counts": {
+        "OK": 11
+      }
+    },
+    {
+      "league": "England · FA Cup",
+      "fixtures": 30,
+      "bookmaker_active": 30,
+      "ah_main_exactly_one": 30,
+      "ou_main_exactly_one": 30,
+      "both_main_exactly_one": 30,
+      "strict_snapshots": 0,
+      "reason_counts": {
+        "MASTER_CLUB_UNMAPPED": 30
+      }
+    },
+    {
+      "league": "England · League One",
+      "fixtures": 11,
+      "bookmaker_active": 11,
+      "ah_main_exactly_one": 11,
+      "ou_main_exactly_one": 11,
+      "both_main_exactly_one": 11,
+      "strict_snapshots": 11,
+      "reason_counts": {
+        "OK": 11
+      }
+    },
+    {
+      "league": "England · League Two",
+      "fixtures": 12,
+      "bookmaker_active": 12,
+      "ah_main_exactly_one": 12,
+      "ou_main_exactly_one": 12,
+      "both_main_exactly_one": 12,
+      "strict_snapshots": 12,
+      "reason_counts": {
+        "OK": 12
+      }
+    },
+    {
+      "league": "England · Premier League",
+      "fixtures": 5,
+      "bookmaker_active": 5,
+      "ah_main_exactly_one": 5,
+      "ou_main_exactly_one": 5,
+      "both_main_exactly_one": 5,
+      "strict_snapshots": 5,
+      "reason_counts": {
+        "OK": 5
+      }
+    },
+    {
+      "league": "Estonia · Meistriliiga",
+      "fixtures": 1,
+      "bookmaker_active": 1,
+      "ah_main_exactly_one": 1,
+      "ou_main_exactly_one": 1,
+      "both_main_exactly_one": 1,
+      "strict_snapshots": 1,
+      "reason_counts": {
+        "OK": 1
+      }
+    },
+    {
+      "league": "Finland · Veikkausliiga",
+      "fixtures": 5,
+      "bookmaker_active": 5,
+      "ah_main_exactly_one": 5,
+      "ou_main_exactly_one": 5,
+      "both_main_exactly_one": 5,
+      "strict_snapshots": 5,
+      "reason_counts": {
+        "OK": 5
+      }
+    },
+    {
+      "league": "Finland · Ykkosliiga",
+      "fixtures": 5,
+      "bookmaker_active": 5,
+      "ah_main_exactly_one": 5,
+      "ou_main_exactly_one": 5,
+      "both_main_exactly_one": 5,
+      "strict_snapshots": 5,
+      "reason_counts": {
+        "OK": 5
+      }
+    },
+    {
+      "league": "France · Ligue 1",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "France · Ligue 2",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Georgia · Erovnuli Liga",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
+      "reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "league": "Germany · 2. Bundesliga",
       "fixtures": 4,
       "bookmaker_active": 4,
       "ah_main_exactly_one": 4,
@@ -2057,7 +2907,80 @@
       }
     },
     {
-      "league": "Netherlands \u00b7 Eredivisie",
+      "league": "Germany · Bundesliga",
+      "fixtures": 6,
+      "bookmaker_active": 6,
+      "ah_main_exactly_one": 6,
+      "ou_main_exactly_one": 6,
+      "both_main_exactly_one": 6,
+      "strict_snapshots": 6,
+      "reason_counts": {
+        "OK": 6
+      }
+    },
+    {
+      "league": "Greece · Super League Greece",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 1,
+      "ou_main_exactly_one": 1,
+      "both_main_exactly_one": 1,
+      "strict_snapshots": 1,
+      "reason_counts": {
+        "NOT_PREMATCH_WITH_ODDS": 1,
+        "OK": 1
+      }
+    },
+    {
+      "league": "Greece · Super League Greece 2",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
+      "reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "league": "Hungary · Nemzeti Bajnoksag I",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Hungary · Nemzeti Bajnoksag II",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Iceland · Besta deild karla",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Ireland · League of Ireland Premier Division",
       "fixtures": 1,
       "bookmaker_active": 1,
       "ah_main_exactly_one": 1,
@@ -2069,31 +2992,55 @@
       }
     },
     {
-      "league": "Northern Ireland \u00b7 NIFL Premiership",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
+      "league": "Israel · Israeli Premier League",
+      "fixtures": 5,
+      "bookmaker_active": 5,
+      "ah_main_exactly_one": 5,
+      "ou_main_exactly_one": 5,
+      "both_main_exactly_one": 5,
+      "strict_snapshots": 5,
       "reason_counts": {
-        "OK": 1
+        "OK": 5
       }
     },
     {
-      "league": "Poland \u00b7 Ekstraklasa",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
+      "league": "Italy · Serie A",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
       "reason_counts": {
-        "OK": 1
+        "OK": 3
       }
     },
     {
-      "league": "Portugal \u00b7 Ta\u00e7a de Portugal",
+      "league": "Italy · Serie B",
+      "fixtures": 6,
+      "bookmaker_active": 6,
+      "ah_main_exactly_one": 6,
+      "ou_main_exactly_one": 6,
+      "both_main_exactly_one": 6,
+      "strict_snapshots": 6,
+      "reason_counts": {
+        "OK": 6
+      }
+    },
+    {
+      "league": "Kazakhstan · Kazakhstan Premier League",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Kosovo · Football Superleague of Kosovo",
       "fixtures": 1,
       "bookmaker_active": 1,
       "ah_main_exactly_one": 1,
@@ -2101,11 +3048,11 @@
       "both_main_exactly_one": 1,
       "strict_snapshots": 0,
       "reason_counts": {
-        "MASTER_CLUB_UNMAPPED": 1
+        "AMBIGUOUS_OR_MISSING_1X2": 1
       }
     },
     {
-      "league": "Romania \u00b7 Liga I",
+      "league": "Latvia · Latvian Higher League",
       "fixtures": 1,
       "bookmaker_active": 1,
       "ah_main_exactly_one": 1,
@@ -2117,7 +3064,44 @@
       }
     },
     {
-      "league": "Scotland \u00b7 Scottish Championship",
+      "league": "Lithuania · A Lyga",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
+      "reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "league": "Malta · Maltese Premier League",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 1,
+      "reason_counts": {
+        "NOT_PREMATCH_WITH_ODDS": 1,
+        "OK": 1
+      }
+    },
+    {
+      "league": "Moldova · Moldovan Super Liga",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
+      "reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "league": "Montenegro · Montenegrin First League",
       "fixtures": 1,
       "bookmaker_active": 1,
       "ah_main_exactly_one": 1,
@@ -2129,7 +3113,7 @@
       }
     },
     {
-      "league": "Spain \u00b7 LaLiga",
+      "league": "Netherlands · Eerste Divisie",
       "fixtures": 1,
       "bookmaker_active": 1,
       "ah_main_exactly_one": 1,
@@ -2141,7 +3125,130 @@
       }
     },
     {
-      "league": "Spain \u00b7 LaLiga 2",
+      "league": "Netherlands · Eredivisie",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "North Macedonia · Macedonian First Football League",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
+      "reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "league": "Northern Ireland · NIFL Premiership",
+      "fixtures": 5,
+      "bookmaker_active": 5,
+      "ah_main_exactly_one": 5,
+      "ou_main_exactly_one": 5,
+      "both_main_exactly_one": 5,
+      "strict_snapshots": 5,
+      "reason_counts": {
+        "OK": 5
+      }
+    },
+    {
+      "league": "Norway · Eliteserien",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Poland · Ekstraklasa",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Portugal · Taça de Portugal",
+      "fixtures": 12,
+      "bookmaker_active": 12,
+      "ah_main_exactly_one": 12,
+      "ou_main_exactly_one": 12,
+      "both_main_exactly_one": 12,
+      "strict_snapshots": 2,
+      "reason_counts": {
+        "AMBIGUOUS_OR_MISSING_1X2": 1,
+        "MASTER_CLUB_UNMAPPED": 9,
+        "OK": 2
+      }
+    },
+    {
+      "league": "Romania · Liga I",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
+      "reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "league": "Romania · Liga II",
+      "fixtures": 9,
+      "bookmaker_active": 9,
+      "ah_main_exactly_one": 9,
+      "ou_main_exactly_one": 9,
+      "both_main_exactly_one": 9,
+      "strict_snapshots": 1,
+      "reason_counts": {
+        "KICKOFF_NOT_FUTURE": 8,
+        "OK": 1
+      }
+    },
+    {
+      "league": "Scotland · Scottish Championship",
+      "fixtures": 4,
+      "bookmaker_active": 4,
+      "ah_main_exactly_one": 4,
+      "ou_main_exactly_one": 4,
+      "both_main_exactly_one": 4,
+      "strict_snapshots": 4,
+      "reason_counts": {
+        "OK": 4
+      }
+    },
+    {
+      "league": "Scotland · Scottish Premiership",
+      "fixtures": 5,
+      "bookmaker_active": 5,
+      "ah_main_exactly_one": 5,
+      "ou_main_exactly_one": 5,
+      "both_main_exactly_one": 5,
+      "strict_snapshots": 5,
+      "reason_counts": {
+        "OK": 5
+      }
+    },
+    {
+      "league": "Serbia · Serbian First League",
       "fixtures": 1,
       "bookmaker_active": 1,
       "ah_main_exactly_one": 1,
@@ -2150,16 +3257,170 @@
       "strict_snapshots": 1,
       "reason_counts": {
         "OK": 1
+      }
+    },
+    {
+      "league": "Serbia · Serbian SuperLiga",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Slovakia · 2 Liga",
+      "fixtures": 4,
+      "bookmaker_active": 4,
+      "ah_main_exactly_one": 4,
+      "ou_main_exactly_one": 4,
+      "both_main_exactly_one": 4,
+      "strict_snapshots": 4,
+      "reason_counts": {
+        "OK": 4
+      }
+    },
+    {
+      "league": "Slovakia · Slovak Super Liga",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Slovenia · Slovenian PrvaLiga",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
+      "reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "league": "Slovenia · Slovenian Second League",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Spain · LaLiga",
+      "fixtures": 4,
+      "bookmaker_active": 4,
+      "ah_main_exactly_one": 4,
+      "ou_main_exactly_one": 4,
+      "both_main_exactly_one": 4,
+      "strict_snapshots": 4,
+      "reason_counts": {
+        "OK": 4
+      }
+    },
+    {
+      "league": "Spain · LaLiga 2",
+      "fixtures": 4,
+      "bookmaker_active": 4,
+      "ah_main_exactly_one": 4,
+      "ou_main_exactly_one": 4,
+      "both_main_exactly_one": 4,
+      "strict_snapshots": 4,
+      "reason_counts": {
+        "OK": 4
+      }
+    },
+    {
+      "league": "Sweden · Allsvenskan",
+      "fixtures": 1,
+      "bookmaker_active": 1,
+      "ah_main_exactly_one": 1,
+      "ou_main_exactly_one": 1,
+      "both_main_exactly_one": 1,
+      "strict_snapshots": 1,
+      "reason_counts": {
+        "OK": 1
+      }
+    },
+    {
+      "league": "Sweden · Superettan",
+      "fixtures": 4,
+      "bookmaker_active": 4,
+      "ah_main_exactly_one": 4,
+      "ou_main_exactly_one": 4,
+      "both_main_exactly_one": 4,
+      "strict_snapshots": 4,
+      "reason_counts": {
+        "OK": 4
+      }
+    },
+    {
+      "league": "Turkey · Super Lig",
+      "fixtures": 4,
+      "bookmaker_active": 4,
+      "ah_main_exactly_one": 4,
+      "ou_main_exactly_one": 4,
+      "both_main_exactly_one": 4,
+      "strict_snapshots": 4,
+      "reason_counts": {
+        "OK": 4
+      }
+    },
+    {
+      "league": "Turkey · TFF 1 Lig",
+      "fixtures": 2,
+      "bookmaker_active": 2,
+      "ah_main_exactly_one": 2,
+      "ou_main_exactly_one": 2,
+      "both_main_exactly_one": 2,
+      "strict_snapshots": 2,
+      "reason_counts": {
+        "OK": 2
+      }
+    },
+    {
+      "league": "Ukraine · Ukrainian First League",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
+      }
+    },
+    {
+      "league": "Ukraine · Ukrainian Premier League",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 3,
+      "reason_counts": {
+        "OK": 3
       }
     }
   ],
   "competition_reason_counts": {
-    "NO_MATCHES": 49,
-    "OBSERVED": 20,
-    "NO_MARKET_RESPONSE": 1,
-    "KICKOFF_PASSED_OR_NOT_PREMATCH": 20,
-    "UNMAPPED": 1,
-    "NO_MARKET": 1
+    "NO_SCHEDULE_EVIDENCE": 27,
+    "OBSERVED": 61,
+    "NO_MARKET": 3,
+    "UNMAPPED": 1
   },
   "additional_market_requests_required": 0
 }
