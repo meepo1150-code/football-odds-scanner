@@ -1,19 +1,19 @@
 {
-  "generated_at": "2026-10-17T19:23:52.464222+00:00",
+  "generated_at": "2026-10-17T21:28:55.149601+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 1170,
+  "settled_fixtures": 1184,
   "movement_classification_counts": {
     "SINGLE_OBSERVATION": 608,
     "FAVORITE_SWITCH": 14,
     "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 64,
-    "AH_LINE_UNCHANGED__PRICE_DOWN": 163,
-    "AH_LINE_UNCHANGED__PRICE_UP": 148,
-    "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 28,
+    "AH_LINE_UNCHANGED__PRICE_DOWN": 172,
+    "AH_LINE_UNCHANGED__PRICE_UP": 151,
+    "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 29,
     "AH_FAVORITE_LINE_WEAKER__PRICE_UP": 3,
     "AH_LINE_UNCHANGED__PRICE_FLAT": 75,
     "SOURCE_SWITCH__INSUFFICIENT_OBSERVATIONS": 19,
-    "AH_FAVORITE_LINE_STRONGER__PRICE_DOWN": 6,
+    "AH_FAVORITE_LINE_STRONGER__PRICE_DOWN": 7,
     "INSUFFICIENT_OBSERVATIONS": 42
   },
   "movement_evaluation": {
@@ -21,47 +21,47 @@
     "evaluation": "RETROSPECTIVE_VIEWED_DATA_CHRONOLOGICAL_WALK_FORWARD_BY_FOOTBALL_DAY",
     "untouched_holdout": false,
     "promotion_allowed": false,
-    "unique_eligible_fixtures": 501,
-    "unique_evaluated_fixtures": 238,
+    "unique_eligible_fixtures": 515,
+    "unique_evaluated_fixtures": 247,
     "metric": "BASELINE_MSE_MINUS_MOVEMENT_MSE; POSITIVE_IS_BETTER",
-    "mean_squared_error_improvement": 0.007981887067240127,
+    "mean_squared_error_improvement": 0.0075993804406456495,
     "improvement_bootstrap95": [
-      -0.014292,
-      0.029806
+      -0.015398,
+      0.030099
     ],
     "baseline": "MARKET_SIDE + AH_LINE + PRICE_BUCKET; TRAIN_MIN_5; PRIOR_DAYS_MIN_20",
     "movement_model": "SAME_BASELINE + MOVEMENT; SHRINKAGE_10_BASELINE_OBSERVATIONS",
     "multiple_testing_policy": "ONE_PREDEFINED_INCREMENTAL_COMPARISON; SUBGROUPS_DESCRIPTIVE_ONLY; NO_PROMOTION_OR_EDGE_CLAIMS; NEW_UNVIEWED_PERIOD_REQUIRED",
     "observation_gap_minutes": {
-      "n": 501,
+      "n": 515,
       "min": 0.713,
-      "median": 251.661,
+      "median": 308.223,
       "max": 649.593
     },
     "first_minutes_before_kickoff": {
-      "n": 501,
+      "n": 515,
       "min": 43.721,
-      "median": 439.972,
+      "median": 447.721,
       "max": 940.905
     },
     "last_minutes_before_kickoff": {
-      "n": 501,
+      "n": 515,
       "min": 0.501,
-      "median": 118.222,
+      "median": 117.82,
       "max": 577.827
     },
     "descriptive_families": [
       {
         "movement": "AH_FAVORITE_LINE_STRONGER__PRICE_DOWN",
-        "unique_fixture_n": 6,
-        "roi_pct": -68.6,
+        "unique_fixture_n": 7,
+        "roi_pct": -46.486,
         "profit_mean_bootstrap95": [
           -1.0,
-          -0.058
+          0.076571
         ],
         "settlements": {
           "FULL_LOSS": 5,
-          "FULL_WIN": 1
+          "FULL_WIN": 2
         }
       },
       {
@@ -82,18 +82,18 @@
       },
       {
         "movement": "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN",
-        "unique_fixture_n": 28,
-        "roi_pct": 6.71,
+        "unique_fixture_n": 29,
+        "roi_pct": 4.754,
         "profit_mean_bootstrap95": [
-          -0.216186,
-          0.356062
+          -0.221802,
+          0.319333
         ],
         "settlements": {
           "FULL_WIN": 11,
           "FULL_LOSS": 8,
           "PUSH": 4,
           "HALF_WIN": 3,
-          "HALF_LOSS": 2
+          "HALF_LOSS": 3
         }
       },
       {
@@ -111,17 +111,17 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_DOWN",
-        "unique_fixture_n": 163,
-        "roi_pct": -3.577,
+        "unique_fixture_n": 172,
+        "roi_pct": -3.598,
         "profit_mean_bootstrap95": [
-          -0.16948,
-          0.098239
+          -0.16597,
+          0.095318
         ],
         "settlements": {
           "HALF_LOSS": 10,
-          "FULL_LOSS": 65,
-          "FULL_WIN": 68,
-          "PUSH": 15,
+          "FULL_LOSS": 69,
+          "FULL_WIN": 72,
+          "PUSH": 16,
           "HALF_WIN": 5
         }
       },
@@ -143,17 +143,17 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_UP",
-        "unique_fixture_n": 148,
-        "roi_pct": -0.509,
+        "unique_fixture_n": 151,
+        "roi_pct": 0.466,
         "profit_mean_bootstrap95": [
-          -0.150642,
-          0.149851
+          -0.143639,
+          0.15854
         ],
         "settlements": {
-          "FULL_WIN": 65,
+          "FULL_WIN": 67,
           "FULL_LOSS": 60,
           "PUSH": 5,
-          "HALF_LOSS": 13,
+          "HALF_LOSS": 14,
           "HALF_WIN": 5
         }
       },
@@ -2552,6 +2552,96 @@
         "movement_return_prediction": 0.3833694207027541,
         "realized_profit_units": 0.917,
         "squared_error_improvement": 0.08188360560858537
+      },
+      {
+        "fixture_id": "id1000001772221326",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 15,
+        "movement_train_n": 2,
+        "baseline_return_prediction": 0.06562303008498369,
+        "movement_return_prediction": -0.1119808082625136,
+        "realized_profit_units": -1.0,
+        "squared_error_improvement": 0.3469743573534031
+      },
+      {
+        "fixture_id": "id1000005472477512",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 11,
+        "movement_train_n": 0,
+        "baseline_return_prediction": -0.2518181818181818,
+        "movement_return_prediction": -0.2518181818181818,
+        "realized_profit_units": 1.0299999999999998,
+        "squared_error_improvement": 0.0
+      },
+      {
+        "fixture_id": "id1000020072346368",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 8,
+        "movement_train_n": 2,
+        "baseline_return_prediction": -0.3378125,
+        "movement_return_prediction": -0.2862604166666667,
+        "realized_profit_units": -1.0,
+        "squared_error_improvement": -0.07093190766059038
+      },
+      {
+        "fixture_id": "id1000021072083082",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 9,
+        "movement_train_n": 1,
+        "baseline_return_prediction": -0.1611111111111111,
+        "movement_return_prediction": -0.19191919191919188,
+        "realized_profit_units": -0.5,
+        "squared_error_improvement": 0.019931894704621964
+      },
+      {
+        "fixture_id": "id1000004572345538",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 13,
+        "movement_train_n": 4,
+        "baseline_return_prediction": -0.06243589743589744,
+        "movement_return_prediction": -0.2588827838827839,
+        "realized_profit_units": 0.8400000000000001,
+        "squared_error_improvement": -0.3931528237330436
+      },
+      {
+        "fixture_id": "id1000005373092986",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 6,
+        "movement_train_n": 2,
+        "baseline_return_prediction": 0.31583333333333335,
+        "movement_return_prediction": 0.25419444444444445,
+        "realized_profit_units": 0.847,
+        "squared_error_improvement": -0.06928039891975318
+      },
+      {
+        "fixture_id": "id1000018772302646",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 15,
+        "movement_train_n": 2,
+        "baseline_return_prediction": 0.06562303008498369,
+        "movement_return_prediction": -0.1119808082625136,
+        "realized_profit_units": -1.0,
+        "squared_error_improvement": 0.3469743573534031
+      },
+      {
+        "fixture_id": "id1000018272037392",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 12,
+        "movement_train_n": 6,
+        "baseline_return_prediction": 0.06116666666666667,
+        "movement_return_prediction": -0.02845833333333333,
+        "realized_profit_units": 0.952,
+        "squared_error_improvement": -0.16771451562500017
+      },
+      {
+        "fixture_id": "id1000020272043202",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 13,
+        "movement_train_n": 5,
+        "baseline_return_prediction": 0.032168690958164645,
+        "movement_return_prediction": 0.19099199280251913,
+        "realized_profit_units": 0.0,
+        "squared_error_improvement": -0.035443116636715614
       }
     ],
     "limitations": [
@@ -2564,7 +2654,7 @@
   },
   "ft_triage_counts": {
     "POSTPONED": 1,
-    "FUTURE_OR_RECENT": 25,
+    "FUTURE_OR_RECENT": 11,
     "ACTIVE_OVERDUE": 3,
     "IDENTITY_CONFLICT": 2
   },
@@ -2596,30 +2686,6 @@
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
-      "country": "Austria",
-      "canonical_competition_id": "AUT-0001",
-      "league": "Austrian Bundesliga",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Denmark",
-      "canonical_competition_id": "DNK-0002",
-      "league": "Danish 1st Division",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "England",
-      "canonical_competition_id": "ENG-0001",
-      "league": "Premier League",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
       "country": "France",
       "canonical_competition_id": "FRA-0001",
       "league": "Ligue 1",
@@ -2628,33 +2694,9 @@
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
-      "country": "France",
-      "canonical_competition_id": "FRA-0002",
-      "league": "Ligue 2",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Germany",
-      "canonical_competition_id": "DEU-0001",
-      "league": "Bundesliga",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
       "country": "Germany",
       "canonical_competition_id": "DEU-0002",
       "league": "2. Bundesliga",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Hungary",
-      "canonical_competition_id": "HUN-0001",
-      "league": "Nemzeti Bajnoksag I",
       "n": 1
     },
     {
@@ -2668,14 +2710,6 @@
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
-      "country": "Israel",
-      "canonical_competition_id": "ISR-0001",
-      "league": "Israeli Premier League",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
       "country": "Italy",
       "canonical_competition_id": "ITA-0001",
       "league": "Serie A",
@@ -2684,33 +2718,9 @@
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
-      "country": "Italy",
-      "canonical_competition_id": "ITA-0002",
-      "league": "Serie B",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
       "country": "Netherlands",
       "canonical_competition_id": "NLD-0001",
       "league": "Eredivisie",
-      "n": 2
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Northern Ireland",
-      "canonical_competition_id": "NIR-0001",
-      "league": "NIFL Premiership",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Poland",
-      "canonical_competition_id": "POL-0001",
-      "league": "Ekstraklasa",
       "n": 1
     },
     {
@@ -2740,18 +2750,10 @@
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
-      "country": "Serbia",
-      "canonical_competition_id": "SRB-0001",
-      "league": "Serbian SuperLiga",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
       "country": "Spain",
       "canonical_competition_id": "ESP-0001",
       "league": "LaLiga",
-      "n": 2
+      "n": 1
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -2759,7 +2761,7 @@
       "country": "Spain",
       "canonical_competition_id": "ESP-0002",
       "league": "LaLiga 2",
-      "n": 2
+      "n": 1
     },
     {
       "lifecycle": "IDENTITY_CONFLICT",
@@ -2807,24 +2809,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000000872478626",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "LaLiga",
-      "kickoff": "2026-10-17T16:30:00+00:00",
-      "home": "Real Betis Seville",
-      "away": "FC Barcelona",
-      "status": "MISSING_FT",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000000872478642",
       "provider": "oddspapi",
       "football_day": "2026-10-17",
@@ -2835,24 +2819,6 @@
       "status": "MISSING_FT",
       "country": "Spain",
       "canonical_competition_id": "ESP-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000001772221326",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Premier League",
-      "kickoff": "2026-10-17T16:30:00+00:00",
-      "home": "Newcastle United",
-      "away": "Aston Villa",
-      "status": "MISSING_FT",
-      "country": "England",
-      "canonical_competition_id": "ENG-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "FUTURE_OR_RECENT",
@@ -2915,24 +2881,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000003572513238",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Bundesliga",
-      "kickoff": "2026-10-17T16:30:00+00:00",
-      "home": "Bayern Munich",
-      "away": "RB Leipzig",
-      "status": "MISSING_FT",
-      "country": "Germany",
-      "canonical_competition_id": "DEU-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000003572513242",
       "provider": "oddspapi",
       "football_day": "2026-10-16",
@@ -2961,24 +2909,6 @@
       "status": "MISSING_FT",
       "country": "Scotland",
       "canonical_competition_id": "SCO-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000003772041182",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Eredivisie",
-      "kickoff": "2026-10-17T18:00:00+00:00",
-      "home": "SC Telstar",
-      "away": "Feyenoord Rotterdam",
-      "status": "MISSING_FT",
-      "country": "Netherlands",
-      "canonical_competition_id": "NLD-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "FUTURE_OR_RECENT",
@@ -3041,60 +2971,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000004572345538",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Austrian Bundesliga",
-      "kickoff": "2026-10-17T17:30:00+00:00",
-      "home": "SV Ried",
-      "away": "FK Austria Wien",
-      "status": "MISSING_FT",
-      "country": "Austria",
-      "canonical_competition_id": "AUT-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000004772044358",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Danish 1st Division",
-      "kickoff": "2026-10-17T16:30:00+00:00",
-      "home": "FC Fredericia",
-      "away": "Hobro IK",
-      "status": "MISSING_FT",
-      "country": "Denmark",
-      "canonical_competition_id": "DNK-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000005373092986",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Serie B",
-      "kickoff": "2026-10-17T17:30:00+00:00",
-      "home": "Pisa SC",
-      "away": "US Cremonese",
-      "status": "MISSING_FT",
-      "country": "Italy",
-      "canonical_competition_id": "ITA-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000005472477468",
       "provider": "oddspapi",
       "football_day": "2026-10-04",
@@ -3120,24 +2996,6 @@
       "kickoff": "2026-10-17T19:00:00+00:00",
       "home": "UD Las Palmas",
       "away": "CD Castellon",
-      "status": "MISSING_FT",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000005472477512",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "LaLiga 2",
-      "kickoff": "2026-10-17T16:30:00+00:00",
-      "home": "Sporting Gijon",
-      "away": "Albacete Balompie",
       "status": "MISSING_FT",
       "country": "Spain",
       "canonical_competition_id": "ESP-0002",
@@ -3185,42 +3043,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000018272037392",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Ligue 2",
-      "kickoff": "2026-10-17T18:00:00+00:00",
-      "home": "Red Star FC",
-      "away": "AS Saint-Etienne",
-      "status": "MISSING_FT",
-      "country": "France",
-      "canonical_competition_id": "FRA-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000018772302646",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Nemzeti Bajnoksag I",
-      "kickoff": "2026-10-17T17:30:00+00:00",
-      "home": "Ujpest FC Budapest",
-      "away": "Puskas Akademia FC Felcsut",
-      "status": "MISSING_FT",
-      "country": "Hungary",
-      "canonical_competition_id": "HUN-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000019266854224",
       "provider": "oddspapi",
       "football_day": "2026-10-17",
@@ -3231,78 +3053,6 @@
       "status": "MISSING_FT",
       "country": "Ireland",
       "canonical_competition_id": "IRL-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000020072346368",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "NIFL Premiership",
-      "kickoff": "2026-10-17T17:00:00+00:00",
-      "home": "Cliftonville FC",
-      "away": "Portadown FC",
-      "status": "MISSING_FT",
-      "country": "Northern Ireland",
-      "canonical_competition_id": "NIR-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000020272043202",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Ekstraklasa",
-      "kickoff": "2026-10-17T18:15:00+00:00",
-      "home": "KS Cracovia Krakow",
-      "away": "Legia Warszawa",
-      "status": "MISSING_FT",
-      "country": "Poland",
-      "canonical_competition_id": "POL-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000021072083082",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Serbian SuperLiga",
-      "kickoff": "2026-10-17T17:00:00+00:00",
-      "home": "FK Macva Sabac",
-      "away": "OFK Beograd",
-      "status": "MISSING_FT",
-      "country": "Serbia",
-      "canonical_competition_id": "SRB-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000026672225276",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Israeli Premier League",
-      "kickoff": "2026-10-17T16:30:00+00:00",
-      "home": "Maccabi Petah Tikva FC",
-      "away": "Maccabi Haifa FC",
-      "status": "MISSING_FT",
-      "country": "Israel",
-      "canonical_competition_id": "ISR-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "FUTURE_OR_RECENT",
