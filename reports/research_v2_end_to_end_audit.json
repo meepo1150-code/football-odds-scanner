@@ -1,17 +1,17 @@
 {
-  "generated_at": "2026-10-17T21:28:55.149601+00:00",
+  "generated_at": "2026-10-17T22:18:25.142116+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 1184,
+  "settled_fixtures": 1195,
   "movement_classification_counts": {
     "SINGLE_OBSERVATION": 608,
     "FAVORITE_SWITCH": 14,
     "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 64,
-    "AH_LINE_UNCHANGED__PRICE_DOWN": 172,
-    "AH_LINE_UNCHANGED__PRICE_UP": 151,
+    "AH_LINE_UNCHANGED__PRICE_DOWN": 179,
+    "AH_LINE_UNCHANGED__PRICE_UP": 154,
     "AH_FAVORITE_LINE_WEAKER__PRICE_DOWN": 29,
     "AH_FAVORITE_LINE_WEAKER__PRICE_UP": 3,
-    "AH_LINE_UNCHANGED__PRICE_FLAT": 75,
+    "AH_LINE_UNCHANGED__PRICE_FLAT": 76,
     "SOURCE_SWITCH__INSUFFICIENT_OBSERVATIONS": 19,
     "AH_FAVORITE_LINE_STRONGER__PRICE_DOWN": 7,
     "INSUFFICIENT_OBSERVATIONS": 42
@@ -21,33 +21,33 @@
     "evaluation": "RETROSPECTIVE_VIEWED_DATA_CHRONOLOGICAL_WALK_FORWARD_BY_FOOTBALL_DAY",
     "untouched_holdout": false,
     "promotion_allowed": false,
-    "unique_eligible_fixtures": 515,
-    "unique_evaluated_fixtures": 247,
+    "unique_eligible_fixtures": 526,
+    "unique_evaluated_fixtures": 256,
     "metric": "BASELINE_MSE_MINUS_MOVEMENT_MSE; POSITIVE_IS_BETTER",
-    "mean_squared_error_improvement": 0.0075993804406456495,
+    "mean_squared_error_improvement": 0.007306206577266934,
     "improvement_bootstrap95": [
-      -0.015398,
-      0.030099
+      -0.012538,
+      0.029341
     ],
     "baseline": "MARKET_SIDE + AH_LINE + PRICE_BUCKET; TRAIN_MIN_5; PRIOR_DAYS_MIN_20",
     "movement_model": "SAME_BASELINE + MOVEMENT; SHRINKAGE_10_BASELINE_OBSERVATIONS",
     "multiple_testing_policy": "ONE_PREDEFINED_INCREMENTAL_COMPARISON; SUBGROUPS_DESCRIPTIVE_ONLY; NO_PROMOTION_OR_EDGE_CLAIMS; NEW_UNVIEWED_PERIOD_REQUIRED",
     "observation_gap_minutes": {
-      "n": 515,
+      "n": 526,
       "min": 0.713,
-      "median": 308.223,
+      "median": 342.782,
       "max": 649.593
     },
     "first_minutes_before_kickoff": {
-      "n": 515,
+      "n": 526,
       "min": 43.721,
-      "median": 447.721,
+      "median": 456.6815,
       "max": 940.905
     },
     "last_minutes_before_kickoff": {
-      "n": 515,
+      "n": 526,
       "min": 0.501,
-      "median": 117.82,
+      "median": 118.222,
       "max": 577.827
     },
     "descriptive_families": [
@@ -111,47 +111,47 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_DOWN",
-        "unique_fixture_n": 172,
-        "roi_pct": -3.598,
+        "unique_fixture_n": 179,
+        "roi_pct": -2.67,
         "profit_mean_bootstrap95": [
-          -0.16597,
-          0.095318
+          -0.157269,
+          0.0945
         ],
         "settlements": {
-          "HALF_LOSS": 10,
-          "FULL_LOSS": 69,
-          "FULL_WIN": 72,
-          "PUSH": 16,
+          "HALF_LOSS": 11,
+          "FULL_LOSS": 70,
+          "FULL_WIN": 75,
+          "PUSH": 18,
           "HALF_WIN": 5
         }
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_FLAT",
-        "unique_fixture_n": 75,
-        "roi_pct": -11.286,
+        "unique_fixture_n": 76,
+        "roi_pct": -9.729,
         "profit_mean_bootstrap95": [
-          -0.31977,
-          0.090147
+          -0.297857,
+          0.104591
         ],
         "settlements": {
           "HALF_LOSS": 7,
           "FULL_LOSS": 33,
-          "FULL_WIN": 29,
+          "FULL_WIN": 30,
           "PUSH": 3,
           "HALF_WIN": 3
         }
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_UP",
-        "unique_fixture_n": 151,
-        "roi_pct": 0.466,
+        "unique_fixture_n": 154,
+        "roi_pct": -0.173,
         "profit_mean_bootstrap95": [
-          -0.143639,
-          0.15854
+          -0.147921,
+          0.142437
         ],
         "settlements": {
-          "FULL_WIN": 67,
-          "FULL_LOSS": 60,
+          "FULL_WIN": 68,
+          "FULL_LOSS": 62,
           "PUSH": 5,
           "HALF_LOSS": 14,
           "HALF_WIN": 5
@@ -2642,6 +2642,96 @@
         "movement_return_prediction": 0.19099199280251913,
         "realized_profit_units": 0.0,
         "squared_error_improvement": -0.035443116636715614
+      },
+      {
+        "fixture_id": "id1000004472513908",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 13,
+        "movement_train_n": 4,
+        "baseline_return_prediction": -0.06243589743589744,
+        "movement_return_prediction": -0.2588827838827839,
+        "realized_profit_units": 0.0,
+        "squared_error_improvement": -0.06312205450227429
+      },
+      {
+        "fixture_id": "id1000015272388042",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 8,
+        "movement_train_n": 1,
+        "baseline_return_prediction": 0.14125000000000004,
+        "movement_return_prediction": 0.12840909090909094,
+        "realized_profit_units": 1.0099999999999998,
+        "squared_error_improvement": -0.02247596849173572
+      },
+      {
+        "fixture_id": "id1000002371945320",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 8,
+        "movement_train_n": 1,
+        "baseline_return_prediction": 0.14125000000000004,
+        "movement_return_prediction": 0.12840909090909094,
+        "realized_profit_units": 1.0,
+        "squared_error_improvement": -0.0222191503099175
+      },
+      {
+        "fixture_id": "id1000003472036226",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 11,
+        "movement_train_n": 0,
+        "baseline_return_prediction": -0.2518181818181818,
+        "movement_return_prediction": -0.2518181818181818,
+        "realized_profit_units": -1.0,
+        "squared_error_improvement": 0.0
+      },
+      {
+        "fixture_id": "id1000003472036236",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 10,
+        "movement_train_n": 3,
+        "baseline_return_prediction": 0.7509999910801891,
+        "movement_return_prediction": 0.7984691477463755,
+        "realized_profit_units": 0.8999999999999999,
+        "squared_error_improvement": 0.011892488698756379
+      },
+      {
+        "fixture_id": "id1000000872478642",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 12,
+        "movement_train_n": 6,
+        "baseline_return_prediction": 0.06116666666666667,
+        "movement_return_prediction": -0.02845833333333333,
+        "realized_profit_units": -0.5,
+        "squared_error_improvement": 0.09255648437500003
+      },
+      {
+        "fixture_id": "id1000003772041184",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 10,
+        "movement_train_n": 3,
+        "baseline_return_prediction": -0.01731262135922329,
+        "movement_return_prediction": 0.059913368185212854,
+        "realized_profit_units": 0.0,
+        "squared_error_improvement": -0.0032898848289690413
+      },
+      {
+        "fixture_id": "id1000005472477508",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 8,
+        "movement_train_n": 0,
+        "baseline_return_prediction": -0.74125,
+        "movement_return_prediction": -0.74125,
+        "realized_profit_units": 1.0699999999999998,
+        "squared_error_improvement": 0.0
+      },
+      {
+        "fixture_id": "id1000033675024388",
+        "football_day": "2026-10-17",
+        "baseline_train_n": 11,
+        "movement_train_n": 0,
+        "baseline_return_prediction": -0.2518181818181818,
+        "movement_return_prediction": -0.2518181818181818,
+        "realized_profit_units": 1.0299999999999998,
+        "squared_error_improvement": 0.0
       }
     ],
     "limitations": [
@@ -2654,7 +2744,6 @@
   },
   "ft_triage_counts": {
     "POSTPONED": 1,
-    "FUTURE_OR_RECENT": 11,
     "ACTIVE_OVERDUE": 3,
     "IDENTITY_CONFLICT": 2
   },
@@ -2681,86 +2770,6 @@
       "country": "Germany",
       "canonical_competition_id": "DEU-0001",
       "league": "Bundesliga",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "France",
-      "canonical_competition_id": "FRA-0001",
-      "league": "Ligue 1",
-      "n": 2
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Germany",
-      "canonical_competition_id": "DEU-0002",
-      "league": "2. Bundesliga",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Ireland",
-      "canonical_competition_id": "IRL-0001",
-      "league": "League of Ireland Premier Division",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Italy",
-      "canonical_competition_id": "ITA-0001",
-      "league": "Serie A",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Netherlands",
-      "canonical_competition_id": "NLD-0001",
-      "league": "Eredivisie",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Portugal",
-      "canonical_competition_id": "PRT-0003",
-      "league": "Taça de Portugal",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Romania",
-      "canonical_competition_id": "ROU-0001",
-      "league": "Liga I",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Scotland",
-      "canonical_competition_id": "SCO-0001",
-      "league": "Scottish Premiership",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0001",
-      "league": "LaLiga",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0002",
-      "league": "LaLiga 2",
       "n": 1
     },
     {
@@ -2809,78 +2818,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000000872478642",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "LaLiga",
-      "kickoff": "2026-10-17T19:00:00+00:00",
-      "home": "Valencia CF",
-      "away": "Athletic Bilbao",
-      "status": "MISSING_FT",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000002371945320",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Serie A",
-      "kickoff": "2026-10-17T18:45:00+00:00",
-      "home": "AS Roma",
-      "away": "Genoa CFC",
-      "status": "MISSING_FT",
-      "country": "Italy",
-      "canonical_competition_id": "ITA-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000003472036226",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Ligue 1",
-      "kickoff": "2026-10-17T18:45:00+00:00",
-      "home": "Lille OSC",
-      "away": "Stade Brest 29",
-      "status": "MISSING_FT",
-      "country": "France",
-      "canonical_competition_id": "FRA-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000003472036236",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Ligue 1",
-      "kickoff": "2026-10-17T18:45:00+00:00",
-      "home": "ESTAC Troyes",
-      "away": "Racing Club De Lens",
-      "status": "MISSING_FT",
-      "country": "France",
-      "canonical_competition_id": "FRA-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000003572513242",
       "provider": "oddspapi",
       "football_day": "2026-10-16",
@@ -2894,42 +2831,6 @@
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "ACTIVE_OVERDUE",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000003672201662",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Scottish Premiership",
-      "kickoff": "2026-10-17T19:00:00+00:00",
-      "home": "Dundee FC",
-      "away": "Glasgow Rangers",
-      "status": "MISSING_FT",
-      "country": "Scotland",
-      "canonical_competition_id": "SCO-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000003772041184",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Eredivisie",
-      "kickoff": "2026-10-17T19:00:00+00:00",
-      "home": "Sparta Rotterdam",
-      "away": "Willem II Tilburg",
-      "status": "MISSING_FT",
-      "country": "Netherlands",
-      "canonical_competition_id": "NLD-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -2953,24 +2854,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000004472513908",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "2. Bundesliga",
-      "kickoff": "2026-10-17T18:30:00+00:00",
-      "home": "Hannover 96",
-      "away": "FC St. Pauli",
-      "status": "MISSING_FT",
-      "country": "Germany",
-      "canonical_competition_id": "DEU-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000005472477468",
       "provider": "oddspapi",
       "football_day": "2026-10-04",
@@ -2989,42 +2872,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000005472477508",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "LaLiga 2",
-      "kickoff": "2026-10-17T19:00:00+00:00",
-      "home": "UD Las Palmas",
-      "away": "CD Castellon",
-      "status": "MISSING_FT",
-      "country": "Spain",
-      "canonical_competition_id": "ESP-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000015272388042",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Liga I",
-      "kickoff": "2026-10-17T18:30:00+00:00",
-      "home": "Rapid Bucuresti 1923",
-      "away": "FC Corvinul Hunedoara 1921",
-      "status": "MISSING_FT",
-      "country": "Romania",
-      "canonical_competition_id": "ROU-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000018272037388",
       "provider": "oddspapi",
       "football_day": "2026-10-17",
@@ -3038,42 +2885,6 @@
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "ACTIVE_OVERDUE",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000019266854224",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "League of Ireland Premier Division",
-      "kickoff": "2026-10-17T18:45:00+00:00",
-      "home": "Sligo Rovers FC",
-      "away": "Dundalk FC",
-      "status": "MISSING_FT",
-      "country": "Ireland",
-      "canonical_competition_id": "IRL-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000033675024388",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Taça de Portugal",
-      "kickoff": "2026-10-17T19:15:00+00:00",
-      "home": "Academica de Coimbra",
-      "away": "Amarante FC",
-      "status": "MISSING_FT",
-      "country": "Portugal",
-      "canonical_competition_id": "PRT-0003",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
