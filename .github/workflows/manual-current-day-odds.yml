@@ -34,6 +34,9 @@ jobs:
       - name: Require dedicated historical account key
         run: |
           if [ -z "$ODDSPAPI_KEY" ]; then echo '::error::HISTORICAL_ODDSPAPI_KEY is unavailable'; exit 1; fi
+      - name: Confirm isolated manual account configuration
+        run: |
+          echo 'Manual scan uses dedicated historical account; provider balance and quota are validated by collector before transport.'
       - name: Collect current eligible slot only (never backdate prices)
         run: |
           set -euo pipefail
