@@ -7,7 +7,7 @@ import yaml
 from odds_scanner.research_v2_slots import targets, coverage, schedule_version
 from odds_scanner.research_v2_scan_due import due, needs_finalization
 from odds_scanner.europe_pinnacle_discovery import _football_day_bounds, _schedule_timing
-from odds_scanner import research_v2_slot_recovery as recovery
+from odds_scanner.research_v2_slots import read_ledger
 
 
 def dt(value):
@@ -48,29 +48,8 @@ def test_daily_midnight_and_no_retroactive_old_missing_slots():
     assert [r['target_time'][11:16] for r in report['canonical_slots']]==['15:00','18:00','21:00','00:00']
 
 
-@pytest.mark.parametrize("football_day", ["2026-10-14", "2026-10-18"])
-def test_zero_receipt_midnight_blocks_duplicate_provider_calls(tmp_path,monkeypatch,football_day):
-    from odds_scanner.europe_pinnacle_discovery import _record_slot,SLOT_LEDGER_PATH
-    target=targets(football_day)[-1];now=target+timedelta(minutes=20)
-    _record_slot(tmp_path/SLOT_LEDGER_PATH,{'scheduled_target_at':target.isoformat(),
-        'actual_observed_at':(target+timedelta(minutes=5)).isoformat(),
-        'football_day':football_day,'generated_at':now.isoformat(),
-        'status':'ZERO_USABLE_FIXTURES','football_day_fixtures':0,'requests_used':1},'ZERO_FIXTURES')
-    def forbidden(*a,**kw):raise AssertionError('duplicate provider request')
-    monkeypatch.setattr(recovery,'primary',forbidden);monkeypatch.setattr(recovery,'fallback',forbidden)
-    assert not due(now,{},ledger_rows=recovery.read_ledger(tmp_path),snapshots=[])
-    assert recovery.run(tmp_path,now)==[]
 
 
-def test_missing_midnight_is_finalized_after_150_minutes_without_fetch(tmp_path,monkeypatch):
-    now=dt('2026-10-19T02:31:00+07:00')
-    assert needs_finalization(now,[],[])
-    def forbidden(*a,**kw):raise AssertionError('expired provider request')
-    monkeypatch.setattr(recovery,'primary',forbidden);monkeypatch.setattr(recovery,'fallback',forbidden)
-    recovery.run(tmp_path,now)
-    rows=recovery.read_ledger(tmp_path)
-    assert len(rows)==4 and all(r['state']=='MISSED' and r['requests_used']==0 for r in rows)
-    assert all(r['football_day']=='2026-10-18' and r['schedule_version']=='BKK_28_SLOTS_V4' for r in rows)
 
 
 def test_partial_cohort_empty_receipt_blocks_duplicates_but_never_certifies_full_scope(tmp_path):
@@ -81,7 +60,7 @@ def test_partial_cohort_empty_receipt_blocks_duplicates_but_never_certifies_full
         'football_day':'2026-10-17','generated_at':now.isoformat(),
         'status':'RESEARCH_V2_OBSERVED','football_day_fixtures':0,'requests_used':1,
         'strict_snapshots_this_run':0,'coverage_complete':False,'coverage_tournament_ids':[17]},'ZERO_FIXTURES')
-    ledger=recovery.read_ledger(tmp_path)
+    ledger=read_ledger(tmp_path)
     assert ledger[-1]['state']=='ZERO_COHORT'
     assert not due(now,{},ledger_rows=ledger,snapshots=[])
     report=coverage(now,'2026-10-17',ledger,[])
@@ -107,7 +86,4 @@ def test_historical_midnight_slots_remain_interpretable_after_scheduler_retireme
         assert target.hour == 0 and target.date() == day + timedelta(days=1)
         assert _football_day_bounds(target + timedelta(minutes=10))[2] == day.isoformat()
         assert due(target + timedelta(minutes=10), {}, ledger_rows=[], snapshots=[])
-    primary = yaml.safe_load(Path('.github/workflows/europe-pinnacle-daily-discovery.yml').read_text())
-    triggers = primary.get('on', primary.get(True, {}))
-    assert 'schedule' not in triggers
-    assert all(str(job.get('if', '')).strip() == '${{ false }}' for job in primary['jobs'].values())
+    assert not Path('.github/workflows/europe-pinnacle-daily-discovery.yml').exists()

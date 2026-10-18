@@ -1,7 +1,8 @@
 /* Read-only, exact slot evidence. Never infer a missing quote from another slot. */
 (async()=>{
  const card=document.createElement('section');card.className='card';
- const heading=document.createElement('h2');heading.textContent='Automatic Scanner · 4 Rounds';card.append(heading);
+ const heading=document.createElement('h2');heading.textContent='Old Auto Scanner · Retired';card.append(heading);
+ const status=document.createElement('p');status.textContent='Retired 18 Oct 2026. Scheduling, retries and automatic recovery are disabled. Records below are historical evidence.';card.append(status);
  const host=document.querySelector('main')||document.body;host.insertBefore(card,host.children[2]||null);
  try{
   const load=async p=>{const r=await fetch(p,{cache:'no-store'});if(r.status===404 && p.includes('automatic_scan_'))return [];if(!r.ok)throw Error(r.status);return(await r.text()).trim().split('\n').filter(Boolean).map(JSON.parse)};

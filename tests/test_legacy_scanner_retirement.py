@@ -26,6 +26,8 @@ RETIRED = (
 
 def test_retired_workflows_have_no_runnable_jobs_or_schedules():
     for filename in RETIRED:
+        if not (WORKFLOWS / filename).exists():
+            continue  # Deleted entrypoint cannot execute.
         workflow = yaml.safe_load((WORKFLOWS / filename).read_text())
         events = workflow.get("on", workflow.get(True, {}))
         assert "schedule" not in events, filename

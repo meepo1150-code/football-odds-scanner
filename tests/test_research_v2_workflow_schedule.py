@@ -21,6 +21,8 @@ RETIRED = (
 
 def test_all_legacy_scanner_entrypoints_are_disabled():
     for name in RETIRED:
+        if not Path(".github/workflows", name + ".yml").exists():
+            continue  # Deleted entrypoint cannot execute.
         workflow = yaml.safe_load(Path(".github/workflows", name + ".yml").read_text())
         triggers = workflow.get("on", workflow.get(True, {}))
         assert "schedule" not in triggers, name
@@ -34,6 +36,8 @@ def test_all_legacy_scanner_entrypoints_are_disabled():
 
 def test_legacy_scanner_has_no_provider_credentials_or_collector_commands():
     for name in RETIRED:
+        if not Path(".github/workflows", name + ".yml").exists():
+            continue
         text = Path(".github/workflows", name + ".yml").read_text()
         for forbidden in (
             "secrets.ODDSPAPI_KEY",
