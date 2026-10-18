@@ -1,11 +1,12 @@
 {
-  "generated_at": "2026-10-18T05:53:47.402768+00:00",
+  "generated_at": "2026-10-18T06:54:08.525141+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 1223,
+  "settled_fixtures": 1224,
   "movement_classification_counts": {
     "SINGLE_OBSERVATION": 619,
     "AH_LINE_UNCHANGED__PRICE_UP": 158,
+    "AH_FAVORITE_LINE_STRONGER__PRICE_DOWN": 8,
     "FAVORITE_SWITCH": 14,
     "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 68,
     "AH_LINE_UNCHANGED__PRICE_DOWN": 183,
@@ -13,7 +14,6 @@
     "AH_FAVORITE_LINE_WEAKER__PRICE_UP": 3,
     "AH_LINE_UNCHANGED__PRICE_FLAT": 77,
     "SOURCE_SWITCH__INSUFFICIENT_OBSERVATIONS": 22,
-    "AH_FAVORITE_LINE_STRONGER__PRICE_DOWN": 7,
     "INSUFFICIENT_OBSERVATIONS": 42
   },
   "movement_evaluation": {
@@ -21,7 +21,7 @@
     "evaluation": "RETROSPECTIVE_VIEWED_DATA_CHRONOLOGICAL_WALK_FORWARD_BY_FOOTBALL_DAY",
     "untouched_holdout": false,
     "promotion_allowed": false,
-    "unique_eligible_fixtures": 540,
+    "unique_eligible_fixtures": 541,
     "unique_evaluated_fixtures": 268,
     "metric": "BASELINE_MSE_MINUS_MOVEMENT_MSE; POSITIVE_IS_BETTER",
     "mean_squared_error_improvement": 0.0049141472244423855,
@@ -33,19 +33,19 @@
     "movement_model": "SAME_BASELINE + MOVEMENT; SHRINKAGE_10_BASELINE_OBSERVATIONS",
     "multiple_testing_policy": "ONE_PREDEFINED_INCREMENTAL_COMPARISON; SUBGROUPS_DESCRIPTIVE_ONLY; NO_PROMOTION_OR_EDGE_CLAIMS; NEW_UNVIEWED_PERIOD_REQUIRED",
     "observation_gap_minutes": {
-      "n": 540,
+      "n": 541,
       "min": 0.713,
       "median": 342.782,
       "max": 649.593
     },
     "first_minutes_before_kickoff": {
-      "n": 540,
+      "n": 541,
       "min": 43.721,
-      "median": 456.6815,
+      "median": 456.717,
       "max": 940.905
     },
     "last_minutes_before_kickoff": {
-      "n": 540,
+      "n": 541,
       "min": 0.501,
       "median": 118.222,
       "max": 577.827
@@ -53,15 +53,15 @@
     "descriptive_families": [
       {
         "movement": "AH_FAVORITE_LINE_STRONGER__PRICE_DOWN",
-        "unique_fixture_n": 7,
-        "roi_pct": -46.486,
+        "unique_fixture_n": 8,
+        "roi_pct": -29.9,
         "profit_mean_bootstrap95": [
-          -1.0,
-          0.076571
+          -0.76725,
+          0.402
         ],
         "settlements": {
-          "FULL_LOSS": 5,
-          "FULL_WIN": 2
+          "FULL_WIN": 3,
+          "FULL_LOSS": 5
         }
       },
       {
@@ -2863,7 +2863,7 @@
     ]
   },
   "ft_triage_counts": {
-    "ACTIVE_OVERDUE": 37,
+    "ACTIVE_OVERDUE": 36,
     "POSTPONED": 1,
     "FUTURE_OR_RECENT": 156,
     "IDENTITY_CONFLICT": 2
@@ -3011,7 +3011,7 @@
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
       "league": "UEFA Champions League",
-      "n": 5
+      "n": 4
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -3523,24 +3523,6 @@
       "kickoff": "2026-09-10T19:00:00+00:00",
       "home": "Bayern Munich",
       "away": "Bodoe/Glimt",
-      "status": "MISSING_FT",
-      "country": "UNRESOLVED_COUNTRY",
-      "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
-      "exclusion_reason": null,
-      "identity_status": "UNRESOLVED_IDENTITY",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000000774165900",
-      "provider": "oddspapi",
-      "football_day": "2026-09-10",
-      "league": "UEFA Champions League",
-      "kickoff": "2026-09-10T19:00:00+00:00",
-      "home": "Manchester United",
-      "away": "Sabah Masazir",
       "status": "MISSING_FT",
       "country": "UNRESOLVED_COUNTRY",
       "canonical_competition_id": "UNRESOLVED_CANONICAL_COMPETITION",
