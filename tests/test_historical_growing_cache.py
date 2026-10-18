@@ -8,7 +8,7 @@ from pathlib import Path
 import pytest
 import yaml
 
-from odds_scanner.historical_manual import current_account, planner, runner
+from odds_scanner.historical_manual import planner, runner
 from odds_scanner.historical_manual.safety import StopPilot, digest
 from test_manual_historical import args, native, source, payload, account_payload, ENV
 
@@ -164,40 +164,10 @@ def test_non_prematch_slots_keep_identity_for_safe_noop_publication(tmp_path):
     assert incoming == {} and counts == {'NOT_PREMATCH_SLOT': 1}
 
 
-@pytest.mark.parametrize('fingerprint,probed_at,expected', [
-    (digest('test-historical'), NOW.isoformat(), 'SHARED_CURRENT_SCAN_SUBSCRIPTION'),
-    (digest('current-manual'), '2026-10-17T10:00:00+00:00', 'CURRENT_SCAN_ACCOUNT_PROBE_INVALID_OR_STALE'),
-])
-def test_actual_current_account_isolation_blocks_unsafe_or_stale_probe(tmp_path, fingerprint, probed_at, expected):
-    setup(tmp_path)
-    opts = options()
-    opts.current_scan_fingerprint, opts.current_scan_probed_at = fingerprint, probed_at
-    report, calls = execute(tmp_path, opts)
-    assert expected in report['errors']
-    assert not any(p == '/historical-odds' for _, p in calls)
 
 
-def test_distinct_actual_manual_subscription_allows_history_and_counts_probe(tmp_path):
-    setup(tmp_path)
-    opts = options()
-    opts.current_scan_fingerprint, opts.current_scan_probed_at = digest('current-manual'), NOW.isoformat()
-    report, _ = execute(tmp_path, opts)
-    assert report['status'] == 'COMPLETED'
-    assert report['current_scan_isolation'] == 'DISTINCT_ACTIVE_SUBSCRIPTIONS_VERIFIED'
-    assert report['external_account_requests'] == 1 and report['total_http_requests'] == 7
 
 
-def test_current_probe_uses_only_account_and_returns_no_credential():
-    calls = []
-    def factory(key):
-        def call(path, params):
-            calls.append(path)
-            return 200, {}, json.dumps(account_payload(key)).encode()
-        return call
-    result = current_account.probe('private-current-key', client_factory=factory, now=NOW)
-    assert calls == ['/account']
-    assert result == {'fingerprint': digest('private-current-key'), 'probed_at': NOW.isoformat()}
-    assert 'private-current-key' not in json.dumps(result)
 
 
 def test_runtime_budget_stops_before_next_request_and_keeps_completed_cache(tmp_path):
@@ -229,17 +199,13 @@ def test_runtime_budget_stops_before_next_request_and_keeps_completed_cache(tmp_
     assert len(report['results']) == 1
 
 
-def test_historical_workflow_checks_actual_current_key_without_environment_override():
+def test_historical_workflow_keeps_credentials_and_retries_only_offline_publication():
     workflow = yaml.safe_load(Path('.github/workflows/manual-historical-scan.yml').read_text())
-    probe = workflow['jobs']['current_account']
-    assert 'environment' not in probe
-    step = next(s for s in probe['steps'] if s.get('id') == 'current')
-    assert step['env']['CURRENT_SCAN_KEY'] == '${{ secrets.HISTORICAL_ODDSPAPI_KEY }}'
-    assert step['if'] == '${{ inputs.mode == \'recover\' && inputs.confirm_live_requests }}'
     historical = workflow['jobs']['historical']
-    assert historical['needs'] == 'current_account'
+    assert historical['environment'] == 'historical-research'
     command = next(s['run'] for s in historical['steps'] if s.get('name', '').startswith('Plan or recover'))
-    assert '--allow-growing-history' in command and '--current-scan-fingerprint' in command
+    assert '--allow-growing-history' in command and '--max-runtime-seconds 1200' in command
+    assert '--fixture-shard' not in command
     publication = next(s['run'] for s in workflow['jobs']['publish']['steps'] if s.get('name', '').startswith('Commit data'))
     assert 'for attempt in 1 2 3' in publication
     assert publication.index('git reset --hard origin/main') < publication.index('python scripts/publish_manual_historical.py')

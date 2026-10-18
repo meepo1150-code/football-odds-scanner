@@ -66,16 +66,17 @@ The baseline seed remains in its original reviewed artifact; no permanent/free
 storage guarantee is made. Monitor GitHub storage before large repeated recovery.
 
 New historical requests use only `HISTORICAL_ODDSPAPI_KEY` in environment
-`historical-research`. The `ODDSPAPI_KEY` probe remains account-only. Because current
-Manual/Auto now reference the repository `HISTORICAL_ODDSPAPI_KEY`, a prerequisite
-job outside the historical environment probes that actual current account once.
-Only its safe subscription fingerprint and check time cross the job boundary.
-Historical credentials must differ from both probed subscriptions before any
-history request. A matching current subscription fails with
-`SHARED_CURRENT_SCAN_SUBSCRIPTION`; it requires a genuinely separate historical
-account, not a code workaround or guessed key. The current-account probe must be
-no older than 15 minutes. No secret value is printed, persisted or passed as output.
-This isolated manual workflow has **no production clock
+`historical-research`. The `ODDSPAPI_KEY` probe remains account-only, and the
+existing distinct-subscription check against that reference account remains.
+Current Manual/Auto now reference repository `HISTORICAL_ODDSPAPI_KEY`; environment
+secrets can override the same name, so the old probe does **not** prove separation
+from the actual current scanner. Reports explicitly label that limitation.
+This repair does not change either key, add account failover, or impose a new
+credential requirement. The historical transport allows only `/account` and
+`/historical-odds`, both unmetered per provider documentation. Before/after account
+checks remain; any usage change stops further history calls without claiming
+the change came from historical requests. No secret value is printed or persisted.
+This manual workflow has **no production clock
 blackout**: the pilot's target-minus-15 / target-plus-150-minute rule unnecessarily
 blocked independent manual research (e.g. run `38894926278` at 18:37 BKK).
 
@@ -94,10 +95,8 @@ data/reports/config inputs unchanged after every run; repository write permissio
 is still absent. No automatic retries after 429 or transport/provider errors.
 
 Actual HTTP accounting is separate from quota usage. For H new historical calls
-in one successful runner: H historical + (2H+3) account = **3H+3 HTTP**, plus the
-workflow's one current-account probe for a confirmed recover run. A confirmed
-recover run performs that one probe even if all history is cached; selecting
-`cache-only` or `plan` performs zero provider calls. The documented historical/account endpoints are not
+in one successful runner: H historical + (2H+3) account = **3H+3 HTTP**. Cached-only
+replay, `cache-only` and `plan` perform zero provider calls. The documented historical/account endpoints are not
 monthly-quota-billable; this does not waive entitlement/rate limits. Attempts
 are recorded before transport, including failures; tests inject fake transport
 and never count as live provider evidence.

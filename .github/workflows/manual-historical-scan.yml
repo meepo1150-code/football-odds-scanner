@@ -40,30 +40,7 @@ concurrency:
   group: historical-research-isolated-manual
   cancel-in-progress: false
 jobs:
-  current_account:
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-    permissions:
-      contents: read
-    outputs:
-      fingerprint: ${{ steps.current.outputs.fingerprint }}
-      probed_at: ${{ steps.current.outputs.probed_at }}
-    steps:
-      - uses: actions/checkout@v6
-        with: {ref: main, persist-credentials: false}
-      - uses: actions/setup-python@v6
-        with: {python-version: '3.12'}
-      - name: Verify actual Manual/Auto account outside historical environment
-        id: current
-        if: ${{ inputs.mode == 'recover' && inputs.confirm_live_requests }}
-        env:
-          PYTHONPATH: src
-          CURRENT_SCAN_KEY: ${{ secrets.HISTORICAL_ODDSPAPI_KEY }}
-        run: python -m odds_scanner.historical_manual.current_account
-
   historical:
-    needs: current_account
     if: github.ref == 'refs/heads/main'
     environment: historical-research
     runs-on: ubuntu-24.04
@@ -105,13 +82,11 @@ jobs:
           INPUT_BOOKS: ${{ inputs.bookmakers }}
           INPUT_MODE: ${{ inputs.mode }}
           INPUT_CONFIRM: ${{ inputs.confirm_live_requests }}
-          CURRENT_SCAN_FINGERPRINT: ${{ needs.current_account.outputs.fingerprint }}
-          CURRENT_SCAN_PROBED_AT: ${{ needs.current_account.outputs.probed_at }}
         run: |
           set -euo pipefail
           confirm=()
           if [ "$INPUT_CONFIRM" = true ]; then confirm+=(--confirm-live-requests); fi
-          python -m odds_scanner.historical_manual.runner --start-day "$INPUT_START" --end-day "$INPUT_END" --times "$INPUT_TIMES" --bookmakers "$INPUT_BOOKS" --mode "$INPUT_MODE" --allow-growing-history --max-runtime-seconds 1200 --current-scan-fingerprint "$CURRENT_SCAN_FINGERPRINT" --current-scan-probed-at "$CURRENT_SCAN_PROBED_AT" "${confirm[@]}"
+          python -m odds_scanner.historical_manual.runner --start-day "$INPUT_START" --end-day "$INPUT_END" --times "$INPUT_TIMES" --bookmakers "$INPUT_BOOKS" --mode "$INPUT_MODE" --allow-growing-history --max-runtime-seconds 1200 "${confirm[@]}"
       - name: Verify production checkout inputs remain unchanged
         if: always()
         run: git diff --exit-code -- data reports config

@@ -197,11 +197,9 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
     report = dict(status='BLOCKED', historical_requests=0, account_requests=0, cache_hits=0,
         errors=[], results=[], requests=[], production_writes=0, research_only=True,
         run_url=f"https://github.com/{env.get('GITHUB_REPOSITORY', '')}/actions/runs/{env.get('GITHUB_RUN_ID', '')}")
-    if getattr(args, 'current_scan_fingerprint', None) and getattr(args, 'current_scan_probed_at', None):
-        report['external_account_requests'] = 1
     production = None
     def save():
-        report.update(generated_at=clock().isoformat(), total_http_requests=report['historical_requests']+report['account_requests']+report.get('external_account_requests', 0))
+        report.update(generated_at=clock().isoformat(), total_http_requests=report['historical_requests']+report['account_requests'])
         write_json(out/'report.json', report)
     def account(key, books):
         if not key:
@@ -288,25 +286,13 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
                 books = {c['bookmaker'] for c in uncached}
                 production = account(env.get('ACCOUNT_PROBE_KEY'), set())
                 research = account(env.get('HISTORICAL_ODDSPAPI_KEY'), books)
-                current_fingerprint = getattr(args, 'current_scan_fingerprint', None)
-                current_probed_at = getattr(args, 'current_scan_probed_at', None)
-                if current_fingerprint is not None or current_probed_at is not None:
-                    if (not isinstance(current_fingerprint, str) or len(current_fingerprint) != 64
-                            or any(c not in '0123456789abcdef' for c in current_fingerprint)
-                            or not current_probed_at
-                            or not 0 <= (clock()-stamp(current_probed_at)).total_seconds() <= 900):
-                        raise StopPilot('CURRENT_SCAN_ACCOUNT_PROBE_INVALID_OR_STALE')
-                    if current_fingerprint == research['subscription_fingerprint']:
-                        raise StopPilot('SHARED_CURRENT_SCAN_SUBSCRIPTION')
-                    report['current_scan_subscription_fingerprint'] = current_fingerprint
-                    report['current_scan_isolation'] = 'DISTINCT_ACTIVE_SUBSCRIPTIONS_VERIFIED'
-                    report['external_account_requests'] = 1
                 if production['subscription_fingerprint'] == research['subscription_fingerprint']:
                     raise StopPilot('SHARED_PRODUCTION_SUBSCRIPTION')
                 isolation = dict(research=research['subscription_fingerprint'],
                                  production=production['subscription_fingerprint'])
                 health_check(baseline, baseline, clock(), account_isolation=isolation)
                 report.update(production_before=production, research_before=research,
+                    account_probe_binding='ODDSPAPI_KEY_REFERENCE_NOT_CURRENT_SCAN_ISOLATION_PROOF',
                     credential_isolation='DISTINCT_ACTIVE_SUBSCRIPTIONS_VERIFIED',
                     time_policy='ISOLATED_MANUAL_NO_PRODUCTION_CLOCK_BLACKOUT',
                     production_health_baseline={k: baseline[k] for k in ('generated_at', 'status', 'issues')})
@@ -397,8 +383,6 @@ def main():
     p.add_argument('--mode', choices=['plan', 'cache-only', 'recover'], default='plan')
     p.add_argument('--confirm-live-requests', action='store_true')
     p.add_argument('--allow-growing-history', action='store_true')
-    p.add_argument('--current-scan-fingerprint')
-    p.add_argument('--current-scan-probed-at')
     p.add_argument('--max-runtime-seconds', type=int)
     p.add_argument('--fixture-shard', type=int)
     p.add_argument('--fixture-shards', type=int)
