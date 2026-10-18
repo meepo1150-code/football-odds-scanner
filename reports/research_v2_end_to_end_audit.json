@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-10-18T11:23:13.154292+00:00",
+  "generated_at": "2026-10-18T12:27:31.339659+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 1373,
+  "settled_fixtures": 1374,
   "movement_classification_counts": {
     "SINGLE_OBSERVATION": 661,
-    "AH_LINE_UNCHANGED__PRICE_DOWN": 228,
+    "AH_LINE_UNCHANGED__PRICE_DOWN": 229,
     "AH_LINE_UNCHANGED__PRICE_UP": 183,
     "AH_LINE_UNCHANGED__PRICE_FLAT": 87,
     "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 82,
@@ -21,33 +21,33 @@
     "evaluation": "RETROSPECTIVE_VIEWED_DATA_CHRONOLOGICAL_WALK_FORWARD_BY_FOOTBALL_DAY",
     "untouched_holdout": false,
     "promotion_allowed": false,
-    "unique_eligible_fixtures": 648,
-    "unique_evaluated_fixtures": 355,
+    "unique_eligible_fixtures": 649,
+    "unique_evaluated_fixtures": 356,
     "metric": "BASELINE_MSE_MINUS_MOVEMENT_MSE; POSITIVE_IS_BETTER",
-    "mean_squared_error_improvement": 0.004155072875152005,
+    "mean_squared_error_improvement": 0.0040293358719446495,
     "improvement_bootstrap95": [
-      -0.016301,
-      0.023251
+      -0.016146,
+      0.02323
     ],
     "baseline": "MARKET_SIDE + AH_LINE + PRICE_BUCKET; TRAIN_MIN_5; PRIOR_DAYS_MIN_20",
     "movement_model": "SAME_BASELINE + MOVEMENT; SHRINKAGE_10_BASELINE_OBSERVATIONS",
     "multiple_testing_policy": "ONE_PREDEFINED_INCREMENTAL_COMPARISON; SUBGROUPS_DESCRIPTIVE_ONLY; NO_PROMOTION_OR_EDGE_CLAIMS; NEW_UNVIEWED_PERIOD_REQUIRED",
     "observation_gap_minutes": {
-      "n": 648,
+      "n": 649,
       "min": 0.713,
       "median": 343.018,
       "max": 649.593
     },
     "first_minutes_before_kickoff": {
-      "n": 648,
+      "n": 649,
       "min": 43.721,
       "median": 469.972,
       "max": 940.905
     },
     "last_minutes_before_kickoff": {
-      "n": 648,
+      "n": 649,
       "min": 0.501,
-      "median": 118.244,
+      "median": 118.222,
       "max": 577.827
     },
     "descriptive_families": [
@@ -111,14 +111,14 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_DOWN",
-        "unique_fixture_n": 228,
-        "roi_pct": 0.21,
+        "unique_fixture_n": 229,
+        "roi_pct": -0.228,
         "profit_mean_bootstrap95": [
-          -0.110271,
-          0.119857
+          -0.11445,
+          0.11095
         ],
         "settlements": {
-          "FULL_LOSS": 85,
+          "FULL_LOSS": 86,
           "FULL_WIN": 97,
           "HALF_WIN": 11,
           "HALF_LOSS": 15,
@@ -3722,6 +3722,16 @@
         "movement_return_prediction": -0.016333333333333342,
         "realized_profit_units": -0.5,
         "squared_error_improvement": 0.017669115555555615
+      },
+      {
+        "fixture_id": "id1000013572440710",
+        "football_day": "2026-10-18",
+        "baseline_train_n": 24,
+        "movement_train_n": 15,
+        "baseline_return_prediction": 0.08466666666666665,
+        "movement_return_prediction": 0.10322666666666665,
+        "realized_profit_units": -1.0,
+        "squared_error_improvement": -0.04060730026666648
       }
     ],
     "limitations": [
@@ -3734,10 +3744,27 @@
   },
   "ft_triage_counts": {
     "POSTPONED": 1,
-    "FUTURE_OR_RECENT": 157,
-    "IDENTITY_CONFLICT": 2
+    "FUTURE_OR_RECENT": 154,
+    "IDENTITY_CONFLICT": 2,
+    "ACTIVE_OVERDUE": 2
   },
   "ft_triage_groups": [
+    {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "oddspapi",
+      "country": "Malta",
+      "canonical_competition_id": "MLT-0001",
+      "league": "Maltese Premier League",
+      "n": 1
+    },
+    {
+      "lifecycle": "ACTIVE_OVERDUE",
+      "provider": "oddspapi",
+      "country": "Slovakia",
+      "canonical_competition_id": "SVK-0002",
+      "league": "2 Liga",
+      "n": 1
+    },
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
@@ -3753,14 +3780,6 @@
       "canonical_competition_id": "AUT-0001",
       "league": "Austrian Bundesliga",
       "n": 3
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Austria",
-      "canonical_competition_id": "AUT-0002",
-      "league": "Austrian 2 Liga",
-      "n": 1
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -3984,7 +4003,7 @@
       "country": "Malta",
       "canonical_competition_id": "MLT-0001",
       "league": "Maltese Premier League",
-      "n": 3
+      "n": 2
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -4105,14 +4124,6 @@
       "canonical_competition_id": "SVK-0001",
       "league": "Slovak Super Liga",
       "n": 3
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Slovakia",
-      "canonical_competition_id": "SVK-0002",
-      "league": "2 Liga",
-      "n": 1
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -5582,24 +5593,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000013572440710",
-      "provider": "oddspapi",
-      "football_day": "2026-10-18",
-      "league": "Austrian 2 Liga",
-      "kickoff": "2026-10-18T08:30:00+00:00",
-      "home": "SK Sturm Graz II",
-      "away": "Kapfenberger SV",
-      "status": "MISSING_FT",
-      "country": "Austria",
-      "canonical_competition_id": "AUT-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000015272388036",
       "provider": "oddspapi",
       "football_day": "2026-10-18",
@@ -6458,7 +6451,7 @@
       "canonical_competition_id": "SVK-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -6602,7 +6595,7 @@
       "canonical_competition_id": "MLT-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"

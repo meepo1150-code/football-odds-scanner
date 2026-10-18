@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-18T11:23:14.405261+00:00",
+  "generated_at": "2026-10-18T12:27:32.353108+00:00",
   "football_day": "2026-10-18",
   "status": "FAIL",
   "issues": [
@@ -35,7 +35,7 @@
       "recovered": false
     }
   ],
-  "ft_delay_count": 2,
+  "ft_delay_count": 4,
   "ft_delay": [
     {
       "fixture_id": "id1000005472477468",
@@ -48,6 +48,34 @@
       "status": "IDENTITY_CONFLICT",
       "country": "Spain",
       "canonical_competition_id": null,
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000022472305270",
+      "provider": "oddspapi",
+      "football_day": "2026-10-18",
+      "league": "2 Liga",
+      "kickoff": "2026-10-18T08:30:00+00:00",
+      "home": "FC Petrzalka",
+      "away": "Slovan Bratislava B",
+      "status": "MISSING_FT",
+      "country": "Slovakia",
+      "canonical_competition_id": "SVK-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000062972498282",
+      "provider": "oddspapi",
+      "football_day": "2026-10-18",
+      "league": "Maltese Premier League",
+      "kickoff": "2026-10-18T09:00:00+00:00",
+      "home": "Gzira United FC",
+      "away": "Hamrun Spartans FC",
+      "status": "MISSING_FT",
+      "country": "Malta",
+      "canonical_competition_id": "MLT-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false
     },
