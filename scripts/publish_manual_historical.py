@@ -144,22 +144,24 @@ def produce(report, manifest, original, reference=()):
                 prices.append(price)
             home, away = prices
             base = templates[key]
-            # No fabricated pre-match favorite: for a new verified fixture the
-            # negative AH side is the handicap favorite; level ball is unknown.
-            if base is None:
-                if hl == 0:
-                    fav = reference_sides.get(key)
-                    if fav not in ('H', 'A'):
-                        raise ValueError("LEVEL_BALL_FAVORITE_UNRESOLVED")
-                    favorite_basis = "VERIFIED_NATIVE_MAINLINE_SNAPSHOT"
-                else:
-                    fav = "H" if hl < 0 else "A"
-                    favorite_basis = "HISTORICAL_NEGATIVE_AH_HANDICAP"
-                row = {k: c[k] for k in ("fixture_id", "home", "away", "league", "kickoff")}
+            # At level ball, use this verified historical slot's lower price.
+            # An observed cohort favorite at another time must not override it.
+            if hl == 0:
+                if home == away:
+                    counts['LEVEL_BALL_EQUAL_PRICE_SKIPPED'] += 1
+                    continue
+                fav = 'H' if home < away else 'A'
+                favorite_basis = 'HISTORICAL_LEVEL_BALL_LOWER_DECIMAL_PRICE'
+            elif base is None:
+                fav = "H" if hl < 0 else "A"
+                favorite_basis = "HISTORICAL_NEGATIVE_AH_HANDICAP"
             else:
                 fav = base["favorite_side"]
-                row = dict(base)
                 favorite_basis = "VERIFIED_OBSERVED_COHORT"
+            if base is None:
+                row = {k: c[k] for k in ("fixture_id", "home", "away", "league", "kickoff")}
+            else:
+                row = dict(base)
             row.update(provider="oddspapi", bookmaker=c["bookmaker"], football_day=c["football_day"],
                 observed_at=max(times).isoformat(), scheduled_target_at=target.isoformat(),
                 historical_target_slot_at=target.isoformat(), historical_quote_home_at=times[0].isoformat(),
