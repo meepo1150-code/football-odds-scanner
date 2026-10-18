@@ -204,7 +204,7 @@ def test_historical_workflow_keeps_credentials_and_retries_only_offline_publicat
     historical = workflow['jobs']['historical']
     assert historical['environment'] == 'historical-research'
     command = next(s['run'] for s in historical['steps'] if s.get('name', '').startswith('Plan or recover'))
-    assert '--allow-growing-history' in command and '--max-runtime-seconds 1200' in command
+    assert '--allow-growing-history' in command and '--max-runtime-seconds 8400' in command
     assert '--fixture-shard' not in command
     publication = next(s['run'] for s in workflow['jobs']['publish']['steps'] if s.get('name', '').startswith('Commit data'))
     assert 'for attempt in 1 2 3' in publication
