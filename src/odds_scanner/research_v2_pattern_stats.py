@@ -136,6 +136,13 @@ def pending_age_counts(rows, now):
 
 def build(root=Path('.')):
     raw_snaps=_rows(root/SNAPSHOTS)
+    # Never replace established statistics with a partial FT import when the
+    # canonical price-snapshot population is absent. This is a hard safety gate.
+    previous_path = root/REPORT
+    if not raw_snaps and previous_path.exists():
+        previous = json.loads(previous_path.read_text(encoding='utf-8'))
+        if int(previous.get('settled_fixtures') or 0) > 0:
+            return previous
     snaps=[x for x in raw_snaps if trusted_snapshot(x)];quarantined_snapshots=len(raw_snaps)-len(snaps);audits=_rows(root/AUDIT);results,ambiguous=_result_index(_rows(root/RESULTS));ag={(str(x.get('fixture_id')),str(x.get('observed_at'))):x for x in audits};grouped=defaultdict(list)
     scope_excluded=[x for x in snaps if not in_scope(x)]
     snaps=[x for x in snaps if in_scope(x)]
