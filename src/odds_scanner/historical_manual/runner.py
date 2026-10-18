@@ -32,19 +32,16 @@ def write_json(path, value):
     path.write_text(text)
 
 
-def cache_read(root, candidate):
-    index = root/'cache'/(digest(candidate['request'])+'.json')
-    if not index.exists():
-        return None
+def _cache_payload(root, candidate, index, required_through):
     if index.is_symlink() or index.resolve().parent != (root/'cache').resolve():
-        raise StopPilot('CACHE_PATH_INVALID')
+        revisions = root/'cache'/'revisions'/digest(candidate['request'])
+        if index.is_symlink() or index.resolve().parent != revisions.resolve() or revisions.is_symlink():
+            raise StopPilot('CACHE_PATH_INVALID')
     receipt = json.loads(index.read_text())
     if receipt.get('request') != candidate['request']:
         raise StopPilot('CACHE_REQUEST_MISMATCH')
-    # Only finalized matches may reuse immutable history indefinitely. Planner
-    # additionally requires all targets to be past; live retrieval requires KO past.
     fetched = stamp(receipt['fetched_at'])
-    if fetched < stamp(candidate['kickoff']):
+    if fetched < required_through:
         return None
     if receipt.get('origin') == 'LIVE_HTTP_404':
         return {'fixtureId': candidate['fixture_id'], 'bookmakers': {}}
@@ -63,7 +60,31 @@ def cache_read(root, candidate):
     return payload
 
 
-def cache_store(root, c, status, raw, now):
+def cache_read(root, candidate, *, allow_growing=False):
+    """A growing response is reusable only through its actual fetch timestamp."""
+    required = stamp(candidate['kickoff'])
+    if allow_growing:
+        pending = [stamp(t['target_utc']) for t in candidate['targets'] if t['status'] == 'PENDING']
+        if not pending:
+            return None
+        required = max(pending)
+    key = digest(candidate['request'])
+    original = root/'cache'/(key+'.json')
+    revision_dir = root/'cache'/'revisions'/key
+    if revision_dir.is_symlink() or (root/'cache'/'revisions').is_symlink():
+        raise StopPilot('CACHE_PATH_INVALID')
+    indexes = ([original] if original.exists() else []) + sorted(revision_dir.glob('*.json'))
+    # Validate each usable receipt and its immutable raw bytes. Reuse the latest
+    # complete-through-target response; never treat a partial 404 as permanent.
+    available = []
+    for index in indexes:
+        payload = _cache_payload(root, candidate, index, required)
+        if payload is not None:
+            available.append((stamp(json.loads(index.read_text())['fetched_at']), payload))
+    return max(available, key=lambda item: item[0])[1] if available else None
+
+
+def cache_store(root, c, status, raw, now, *, allow_growing=False):
     root.mkdir(parents=True, exist_ok=True)
     receipt = dict(request=c['request'], fetched_at=now.isoformat(), http_status=status,
                    origin='LIVE_HTTP_'+str(status))
@@ -87,13 +108,23 @@ def cache_store(root, c, status, raw, now):
             with dest.open('xb') as f:
                 f.write(raw)
         receipt['raw_sha256'] = sha
-    # A growing prematch cache is not silently overwritten/refetched. Manual
-    # operator must review invalidation; all finished valid receipts are reused.
+    # Keep every old receipt and raw response. A later target may require a new
+    # response; store it as an immutable revision instead of replacing history.
     index = root/'cache'/(digest(c['request'])+'.json')
     index.parent.mkdir(parents=True, exist_ok=True)
     if index.exists():
-        raise StopPilot('EXISTING_CACHE_REQUIRES_REVIEW')
+        if not allow_growing:
+            raise StopPilot('EXISTING_CACHE_REQUIRES_REVIEW')
+        revision_dir = index.parent/'revisions'/digest(c['request'])
+        if (index.parent/'revisions').is_symlink() or revision_dir.is_symlink():
+            raise StopPilot('CACHE_PATH_INVALID')
+        index = revision_dir/(digest(receipt)+'.json')
+        if index.exists():
+            if index.is_symlink() or json.loads(index.read_text()) != receipt:
+                raise StopPilot('CACHE_RECEIPT_CONFLICT')
+            return index
     write_json(index, receipt)
+    return index
 
 
 def fresh_health(root):
@@ -166,9 +197,11 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
     report = dict(status='BLOCKED', historical_requests=0, account_requests=0, cache_hits=0,
         errors=[], results=[], requests=[], production_writes=0, research_only=True,
         run_url=f"https://github.com/{env.get('GITHUB_REPOSITORY', '')}/actions/runs/{env.get('GITHUB_RUN_ID', '')}")
+    if getattr(args, 'current_scan_fingerprint', None) and getattr(args, 'current_scan_probed_at', None):
+        report['external_account_requests'] = 1
     production = None
     def save():
-        report.update(generated_at=clock().isoformat(), total_http_requests=report['historical_requests']+report['account_requests'])
+        report.update(generated_at=clock().isoformat(), total_http_requests=report['historical_requests']+report['account_requests']+report.get('external_account_requests', 0))
         write_json(out/'report.json', report)
     def account(key, books):
         if not key:
@@ -186,6 +219,11 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
     try:
         if args.mode not in {'plan', 'cache-only', 'recover'}:
             raise StopPilot('INVALID_MODE')
+        runtime = getattr(args, 'max_runtime_seconds', None)
+        if runtime is not None and (type(runtime) is not int or runtime <= 0):
+            raise StopPilot('INVALID_RUNTIME_BUDGET')
+        started_at = clock()
+        report['runtime_budget_seconds'] = runtime
         raw_catalog = CATALOG.read_bytes()
         if hashlib.sha256(raw_catalog).hexdigest() != CATALOG_SHA:
             raise StopPilot('REVIEWED_CATALOG_CHANGED')
@@ -210,15 +248,18 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
             manifest['all_candidate_pairs_before_sharding'] = len(complete)
             manifest['fixture_shard'] = shard
             manifest['fixture_shards'] = count
-        # No new requests for a growing/prematch fixture history.
-        if any(stamp(c['kickoff']) >= clock() for c in manifest['candidates']):
+        # Opt-in for this manual workflow only. Other isolated research runners
+        # retain their original finalized-history admission policy.
+        growing = getattr(args, 'allow_growing_history', False)
+        if not growing and any(stamp(c['kickoff']) >= clock() for c in manifest['candidates']):
             raise StopPilot('FIXTURE_HAS_NOT_KICKED_OFF')
+        report['history_policy'] = 'PAST_TARGETS_WITH_GROWING_CACHE' if growing else 'POST_KICKOFF_ONLY'
         payloads, uncached = {}, []
         for c in manifest['candidates']:
             if not any(t['status'] == 'PENDING' for t in c['targets']):
                 continue
             key = c['fixture_id'], c['bookmaker']
-            payload = cache_read(cache, c)
+            payload = cache_read(cache, c, allow_growing=growing)
             if payload is None:
                 uncached.append(c)
             else:
@@ -247,6 +288,19 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
                 books = {c['bookmaker'] for c in uncached}
                 production = account(env.get('ACCOUNT_PROBE_KEY'), set())
                 research = account(env.get('HISTORICAL_ODDSPAPI_KEY'), books)
+                current_fingerprint = getattr(args, 'current_scan_fingerprint', None)
+                current_probed_at = getattr(args, 'current_scan_probed_at', None)
+                if current_fingerprint is not None or current_probed_at is not None:
+                    if (not isinstance(current_fingerprint, str) or len(current_fingerprint) != 64
+                            or any(c not in '0123456789abcdef' for c in current_fingerprint)
+                            or not current_probed_at
+                            or not 0 <= (clock()-stamp(current_probed_at)).total_seconds() <= 900):
+                        raise StopPilot('CURRENT_SCAN_ACCOUNT_PROBE_INVALID_OR_STALE')
+                    if current_fingerprint == research['subscription_fingerprint']:
+                        raise StopPilot('SHARED_CURRENT_SCAN_SUBSCRIPTION')
+                    report['current_scan_subscription_fingerprint'] = current_fingerprint
+                    report['current_scan_isolation'] = 'DISTINCT_ACTIVE_SUBSCRIPTIONS_VERIFIED'
+                    report['external_account_requests'] = 1
                 if production['subscription_fingerprint'] == research['subscription_fingerprint']:
                     raise StopPilot('SHARED_PRODUCTION_SUBSCRIPTION')
                 isolation = dict(research=research['subscription_fingerprint'],
@@ -258,6 +312,8 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
                     production_health_baseline={k: baseline[k] for k in ('generated_at', 'status', 'issues')})
                 client = client_factory(env['HISTORICAL_ODDSPAPI_KEY'])
                 for c in uncached:
+                    if runtime is not None and (clock()-started_at).total_seconds() >= runtime:
+                        raise StopPilot('MANUAL_RUNTIME_BUDGET_REACHED_REUSE_SAVED_CACHE')
                     health_check(reader(), baseline, clock(), account_isolation=isolation)
                     before = account(env['HISTORICAL_ODDSPAPI_KEY'], books)
                     sleeper(5.2)
@@ -269,13 +325,13 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
                     receipt['http_status'] = status
                     if status not in (200, 404):
                         raise StopPilot('HISTORY_HTTP_'+str(status)+'_STOP_NO_RETRY')
-                    cache_store(cache, c, status, raw, clock())
+                    index = cache_store(cache, c, status, raw, clock(), allow_growing=growing)
                     # Artifacts retain only newly fetched bytes, not another full
                     # copy of the 1GB reviewed seed on every cache-only replay.
-                    index = cache/'cache'/(digest(c['request'])+'.json')
                     archive = out/'new_cache'
-                    (archive/'cache').mkdir(parents=True, exist_ok=True)
-                    shutil.copyfile(index, archive/'cache'/index.name)
+                    saved_index = archive/index.relative_to(cache)
+                    saved_index.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copyfile(index, saved_index)
                     entry = json.loads(index.read_text())
                     if entry.get('raw_sha256'):
                         (archive/'raw').mkdir(parents=True, exist_ok=True)
@@ -284,7 +340,7 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
                     after = account(env['HISTORICAL_ODDSPAPI_KEY'], books)
                     if before != after:
                         raise StopPilot('RESEARCH_QUOTA_OR_SUBSCRIPTION_CHANGED')
-                    payloads[c['fixture_id'], c['bookmaker']] = cache_read(cache, c)
+                    payloads[c['fixture_id'], c['bookmaker']] = cache_read(cache, c, allow_growing=growing)
                     report['results'].append(reconstruct(c, payloads[c['fixture_id'], c['bookmaker']], catalog))
                     save()
             for c in manifest['candidates']:
@@ -297,12 +353,17 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
                     report['results'].append(reconstruct(c, payload, catalog))
                 else:
                     report['results'].append(dict(fixture_id=c['fixture_id'], bookmaker=c['bookmaker'],
-                        football_day=c['football_day'], slots=[{**t, 'status': t['status'] if t['status'] != 'PENDING'
+                        football_day=c['football_day'], home=c['home'], away=c['away'], kickoff=c['kickoff'],
+                        slots=[{**t, 'status': t['status'] if t['status'] != 'PENDING'
                         else 'CACHE_MISS_NO_REQUEST', 'selected': None} for t in c['targets']]))
                 save()
             report['status'] = 'PARTIAL_CACHE_MISS' if args.mode == 'cache-only' and uncached else 'COMPLETED'
     except (StopPilot, ValueError, KeyError, TypeError, OSError) as exc:
-        report['errors'].append(str(exc) if isinstance(exc, StopPilot) else type(exc).__name__)
+        input_codes = {'DATES_REQUIRE_YYYY_MM_DD', 'RANGE_MUST_BE_1_TO_7_DAYS',
+                       'SELECT_1_TO_8_TIMES', 'TIMES_REQUIRE_HH_MM', 'DUPLICATE_TARGET_TIME',
+                       'TARGETS_MUST_BE_IN_THE_PAST', 'UNSUPPORTED_BOOKMAKER', 'EXACT_IDENTITY_CONFLICT'}
+        report['errors'].append(str(exc) if isinstance(exc, StopPilot) or (
+            isinstance(exc, ValueError) and str(exc) in input_codes) else type(exc).__name__)
         report['status'] = 'STOPPED' if report['historical_requests'] else 'BLOCKED'
     finally:
         if production is not None:
@@ -335,6 +396,10 @@ def main():
     p.add_argument('--bookmakers', default='pinnacle')
     p.add_argument('--mode', choices=['plan', 'cache-only', 'recover'], default='plan')
     p.add_argument('--confirm-live-requests', action='store_true')
+    p.add_argument('--allow-growing-history', action='store_true')
+    p.add_argument('--current-scan-fingerprint')
+    p.add_argument('--current-scan-probed-at')
+    p.add_argument('--max-runtime-seconds', type=int)
     p.add_argument('--fixture-shard', type=int)
     p.add_argument('--fixture-shards', type=int)
     args = p.parse_args()
