@@ -10,6 +10,10 @@ on:
         description: 'Import only verified results from a runtime-budget stop; preserve incomplete scan status'
         type: boolean
         default: false
+      replay_saved_cache:
+        description: 'Offline: reconstruct all usable responses in the exact source run cache before import'
+        type: boolean
+        default: false
 permissions:
   contents: write
   actions: write
@@ -25,6 +29,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       SOURCE_RUN: ${{ inputs.source_run_id }}
       ALLOW_PARTIAL: ${{ inputs.allow_runtime_partial }}
+      ARTIFACT_DIR: retained-history
     steps:
       - uses: actions/checkout@v6
         with: {ref: main, fetch-depth: 0}
@@ -32,6 +37,7 @@ jobs:
         with: {python-version: '3.12'}
       - run: python -m pip install -e '.[dev]'
       - name: Download retained source artifact; no collector or provider credentials
+        id: source
         run: |
           set -euo pipefail
           [[ "$SOURCE_RUN" =~ ^[0-9]+$ ]]
@@ -39,18 +45,45 @@ jobs:
           test "$source_path" = '.github/workflows/manual-historical-scan.yml'
           artifact_id="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN/artifacts" --paginate --jq '.artifacts[] | select(.expired == false) | [.name, (.id | tostring)] | @tsv' | awk -F '\t' -v run="$SOURCE_RUN" '$1 ~ ("^manual-historical-" run "-[0-9]+$") {print $2}' | head -n1)"
           test -n "$artifact_id"
+          artifact_name="$(gh api "repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact_id" --jq '.name')"
+          source_attempt="${artifact_name##*-}"
+          [[ "$source_attempt" =~ ^[0-9]+$ ]]
+          echo "cache_key=historical-manual-v1-$SOURCE_RUN-$source_attempt" >> "$GITHUB_OUTPUT"
           curl --fail-with-body --silent --show-error --location --retry 2 \
             -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
             "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact_id/zip" \
             -o /tmp/retained-history.zip
           mkdir retained-history
           unzip -q /tmp/retained-history.zip -d retained-history
+      - name: Restore exact saved cache from the source run
+        id: saved_cache
+        if: inputs.replay_saved_cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            research/historical_backfill/data/raw
+            research/historical_backfill/data/cache
+          key: ${{ steps.source.outputs.cache_key }}
+      - name: Reconstruct every usable saved response offline
+        if: inputs.replay_saved_cache
+        env:
+          MATCHED_CACHE_KEY: ${{ steps.saved_cache.outputs.cache-matched-key }}
+          SOURCE_CACHE_KEY: ${{ steps.source.outputs.cache_key }}
+        run: |
+          set -euo pipefail
+          test "$ALLOW_PARTIAL" = true
+          test "$MATCHED_CACHE_KEY" = "$SOURCE_CACHE_KEY"
+          python -m odds_scanner.historical_manual.replay_cache \
+            --artifact-dir retained-history --cache-root research/historical_backfill/data \
+            --output-dir retained-history/offline-cache-replay \
+            --expected-run-url "https://github.com/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN"
+          echo 'ARTIFACT_DIR=retained-history/offline-cache-replay' >> "$GITHUB_ENV"
       - name: Validate and import retained results offline
         run: |
           set -euo pipefail
           flags=()
           if [ "$ALLOW_PARTIAL" = true ]; then flags+=(--allow-runtime-partial); fi
-          python scripts/publish_manual_historical.py --artifact-dir retained-history \
+          python scripts/publish_manual_historical.py --artifact-dir "$ARTIFACT_DIR" \
             --expected-run-url "https://github.com/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN" "${flags[@]}"
           python -m odds_scanner.research_v2_evidence
       - name: Publish on fresh main without overwriting concurrent observations
@@ -71,7 +104,7 @@ jobs:
             if [ "$attempt" = 3 ]; then exit 1; fi
             git fetch origin main
             git reset --hard origin/main
-            python scripts/publish_manual_historical.py --artifact-dir retained-history \
+            python scripts/publish_manual_historical.py --artifact-dir "$ARTIFACT_DIR" \
               --expected-run-url "https://github.com/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN" "${flags[@]}"
             python -m odds_scanner.research_v2_evidence
           done

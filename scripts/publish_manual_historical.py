@@ -235,6 +235,8 @@ def publish(report, manifest, root=Path("."), *, allow_runtime_partial=False):
                        source_candidate_pairs=len(manifest['candidates']),
                        processed_candidate_pairs=len(report['results']),
                        unprocessed_candidate_pairs=len(manifest['candidates'])-len(report['results']))
+        if report.get('offline_cache_replay'):
+            receipt['offline_cache_replay'] = report['offline_cache_replay']
     if add:
         with path.open("a", encoding="utf-8") as fh:
             for row in sorted(add, key=_key):
