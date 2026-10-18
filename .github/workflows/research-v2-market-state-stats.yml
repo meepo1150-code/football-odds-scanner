@@ -40,19 +40,19 @@ jobs:
             cp reports/research_v2_pattern_statistics.json /tmp/ft_previous_stats.json
             cp data/normalized/research_v2_pattern_outcomes.jsonl /tmp/ft_previous_outcomes.jsonl
             PYTHONPATH=src python -m odds_scanner.research_v2_pattern_stats > /tmp/ft_rebuild_result.json
-            python - <<'PYFT'
-            import json
-            from pathlib import Path
-            before=json.loads(Path('/tmp/ft_previous_stats.json').read_text())
-            after=json.loads(Path('reports/research_v2_pattern_statistics.json').read_text())
-            def ids(path):
-                return {str(row['fixture_id']) for line in Path(path).read_text().splitlines() if (row:=json.loads(line)).get('fixture_id') is not None}
-            old=ids('/tmp/ft_previous_outcomes.jsonl')
-            new=ids('data/normalized/research_v2_pattern_outcomes.jsonl')
-            if after.get('settled_fixtures',0)<before.get('settled_fixtures',0) or not old.issubset(new) or len(new)<len(old):
-                raise SystemExit(f'BLOCKED FT rebuild: settled {before.get("settled_fixtures")} -> {after.get("settled_fixtures")}, lost IDs {len(old-new)}')
-            print(f'FT rebuild verified: {before.get("settled_fixtures")} -> {after.get("settled_fixtures")}; missing {before.get("raw_unresolved_ft_fixtures")} -> {after.get("raw_unresolved_ft_fixtures")}')
-            PYFT
+          python - <<'PYFT'
+          import json
+          from pathlib import Path
+          before=json.loads(Path('/tmp/ft_previous_stats.json').read_text())
+          after=json.loads(Path('reports/research_v2_pattern_statistics.json').read_text())
+          def ids(path):
+              return {str(row['fixture_id']) for line in Path(path).read_text().splitlines() if (row:=json.loads(line)).get('fixture_id') is not None}
+          old=ids('/tmp/ft_previous_outcomes.jsonl')
+          new=ids('data/normalized/research_v2_pattern_outcomes.jsonl')
+          if after.get('settled_fixtures',0)<before.get('settled_fixtures',0) or not old.issubset(new) or len(new)<len(old):
+              raise SystemExit(f'BLOCKED FT rebuild: settled {before.get("settled_fixtures")} -> {after.get("settled_fixtures")}, lost IDs {len(old-new)}')
+          print(f'FT rebuild verified: {before.get("settled_fixtures")} -> {after.get("settled_fixtures")}; missing {before.get("raw_unresolved_ft_fixtures")} -> {after.get("raw_unresolved_ft_fixtures")}')
+          PYFT
             python -m odds_scanner.legacy_propline_recovery
             python -m odds_scanner.research_v2_evidence
             git add -f reports/scan_health_latest.json reports/scan_health_monitor.json reports/dashboard_scope.json reports/research_v2_end_to_end_audit.json reports/oddspapi_history_audit.json reports/research_v2_operational_audit.json reports/research_v2_movement_status.json reports/research_v2_fixture_identity.json data/normalized/research_v2_movement_features.jsonl
