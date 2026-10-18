@@ -260,5 +260,10 @@ def build(root=Path('.')):
     payload['line_grouping_semantics']='EXACT_NUMERIC_QUARTER_LINE; INT_FLOAT_STRING_AND_SIGNED_ZERO_EQUIVALENT; NO_INVALID_LINE_ROUNDING'
     payload['price_bucket_intervals']=['[1.80,1.90)','[1.90,2.00)','[2.00,2.10)','[2.10,2.20]']
     payload.update(pending_age_counts(missing_rows,datetime.now(timezone.utc)))
+    # Monotonic FT safety: partial result imports must never reduce settled coverage.
+    if (root/REPORT).exists():
+        prior=json.loads((root/REPORT).read_text(encoding='utf-8'))
+        if int(prior.get('settled_fixtures') or 0)>int(payload.get('settled_fixtures') or 0):
+            return prior
     q=root/REPORT;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8');return payload
 if __name__=='__main__':print(json.dumps(build(),ensure_ascii=False))
