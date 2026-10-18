@@ -10,29 +10,38 @@ from .safety import StopPilot, digest
 
 def seed(directory, destination=CACHE):
     count = 0
-    for index in sorted(directory.rglob('cache/*.json')):
+    for index in sorted(directory.rglob('*.json')):
+        if index.parent.name == 'cache':
+            cache_dir = index.parent
+            revision = False
+        elif index.parent.parent.name == 'revisions' and index.parents[2].name == 'cache':
+            cache_dir = index.parents[2]
+            revision = True
+        else:
+            continue
         if index.is_symlink():
             raise StopPilot('SEED_SYMLINK')
         receipt = json.loads(index.read_text())
         request = receipt['request']
         if (request.get('endpoint') != '/v4/historical-odds'
                 or set(request['params']) != {'fixtureId', 'bookmakers'}
-                or index.stem != digest(request)):
+                or (not revision and index.stem != digest(request))
+                or (revision and (index.parent.name != digest(request) or index.stem != digest(receipt)))):
             raise StopPilot('SEED_REQUEST_INVALID')
         candidate = dict(fixture_id=request['params']['fixtureId'], request=request,
                          kickoff='2026-01-01T00:00:00+00:00')
         # Timestamp check here is structural; actual kickoff freshness is checked
         # against exact native source evidence by the planner/cache reader later.
         stamp(receipt['fetched_at'])
-        cache_read(index.parent.parent.resolve(), candidate)
-        dest = destination/'cache'/index.name
+        cache_read(cache_dir.parent.resolve(), candidate)
+        dest = destination/'cache'/index.relative_to(cache_dir)
         dest.parent.mkdir(parents=True, exist_ok=True)
         if dest.exists() and dest.read_bytes() != index.read_bytes():
             raise StopPilot('SEED_CACHE_CONFLICT')
         if not dest.exists():
             shutil.copyfile(index, dest)
         if receipt.get('raw_sha256'):
-            raw = index.parent.parent/'raw'/(receipt['raw_sha256']+'.json')
+            raw = cache_dir.parent/'raw'/(receipt['raw_sha256']+'.json')
             output = destination/'raw'/raw.name
             output.parent.mkdir(parents=True, exist_ok=True)
             if output.exists() and output.read_bytes() != raw.read_bytes():

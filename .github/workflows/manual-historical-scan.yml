@@ -11,7 +11,7 @@ on:
         type: string
         required: true
       times_thai:
-        description: 'Thai target times HH:MM, comma-separated; early morning means next calendar day'
+        description: 'Past Thai times HH:MM, comma-separated; 00:00-05:59 means next calendar day. Fixtures need not have kicked off.'
         type: string
         default: '15:00,18:00,21:00,00:00'
         required: true
@@ -21,7 +21,7 @@ on:
         options: [pinnacle, bet365, 'pinnacle,bet365']
         default: pinnacle
       mode:
-        description: 'Plan never calls provider; recover fetches only cache misses'
+        description: 'plan = preview only; cache-only = saved data only; recover = fetch missing history (requires confirmation)'
         type: choice
         options: [plan, cache-only, recover]
         default: plan
@@ -55,9 +55,10 @@ jobs:
         with: {python-version: '3.12'}
       - run: python -m pip install -e '.[dev]'
       - name: Offline time and safety tests; no provider secrets
-        run: python -m pytest -q tests/test_manual_historical.py
+        run: python -m pytest -q tests/test_manual_historical.py tests/test_historical_growing_cache.py
       - uses: actions/cache/restore@v4
         id: history_cache
+        if: inputs.mode != 'plan'
         with:
           path: |
             research/historical_backfill/data/raw
@@ -65,7 +66,7 @@ jobs:
           key: historical-manual-v1-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: historical-manual-v1-
       - name: Bootstrap reviewed prior experiment cache when no manual cache exists
-        if: steps.history_cache.outputs.cache-matched-key == ''
+        if: inputs.mode != 'plan' && steps.history_cache.outputs.cache-matched-key == ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -85,12 +86,12 @@ jobs:
           set -euo pipefail
           confirm=()
           if [ "$INPUT_CONFIRM" = true ]; then confirm+=(--confirm-live-requests); fi
-          python -m odds_scanner.historical_manual.runner --start-day "$INPUT_START" --end-day "$INPUT_END" --times "$INPUT_TIMES" --bookmakers "$INPUT_BOOKS" --mode "$INPUT_MODE" "${confirm[@]}"
+          python -m odds_scanner.historical_manual.runner --start-day "$INPUT_START" --end-day "$INPUT_END" --times "$INPUT_TIMES" --bookmakers "$INPUT_BOOKS" --mode "$INPUT_MODE" --allow-growing-history --max-runtime-seconds 1200 "${confirm[@]}"
       - name: Verify production checkout inputs remain unchanged
         if: always()
         run: git diff --exit-code -- data reports config
       - uses: actions/cache/save@v4
-        if: always() && hashFiles('research/historical_backfill/data/cache/*.json') != '' && (steps.history_cache.outputs.cache-matched-key == '' || hashFiles('research/manual_historical/output/new_cache/cache/*.json') != '')
+        if: always() && hashFiles('research/historical_backfill/data/cache/**/*.json') != '' && (steps.history_cache.outputs.cache-matched-key == '' || hashFiles('research/manual_historical/output/new_cache/cache/**/*.json') != '')
         with:
           path: |
             research/historical_backfill/data/raw
@@ -161,19 +162,28 @@ jobs:
           set -euo pipefail
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add data/normalized/europe_pinnacle_research_v2_snapshots.jsonl \
-            data/normalized/research_v2_pattern_outcomes.jsonl \
-            reports/research_v2_pattern_statistics.json \
-            reports/manual_historical_promotion_latest.json \
-            reports/dashboard_scope.json \
-            reports/research_v2_missing_ft_ledger.json \
-            reports/research_v2_fixture_identity.json
-          if git diff --cached --quiet; then
-            echo 'No content changed'
-          else
+          for attempt in 1 2 3; do
+            git add data/normalized/europe_pinnacle_research_v2_snapshots.jsonl \
+              data/normalized/research_v2_pattern_outcomes.jsonl \
+              reports/research_v2_pattern_statistics.json \
+              reports/manual_historical_promotion_latest.json \
+              reports/dashboard_scope.json \
+              reports/research_v2_missing_ft_ledger.json \
+              reports/research_v2_fixture_identity.json
+            if git diff --cached --quiet; then
+              echo 'No content changed'
+              exit 0
+            fi
             git commit -m "data: publish manual historical reconstruction and refreshed stats [skip ci]"
-            git push origin HEAD:main
-          fi
+            if git push origin HEAD:main; then exit 0; fi
+            if [ "$attempt" = 3 ]; then exit 1; fi
+            # Re-import the same verified artifact on fresh main. Never copy a
+            # stale snapshot file over concurrent live observations or rerun HTTP.
+            git fetch origin main
+            git reset --hard origin/main
+            python scripts/publish_manual_historical.py --artifact-dir manual-publish-artifact
+            python -m odds_scanner.research_v2_evidence
+          done
       - name: Explicitly dispatch Pages deployment after publish
         if: steps.artifact_gate.outputs.publish == 'true'
         env:

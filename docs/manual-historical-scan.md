@@ -1,9 +1,10 @@
 # Manual Historical Scan — Thai time
 
 GitHub Actions → **Manual Historical Scan (Thai Time)** → **Run workflow**.
-No scheduler. The original Manual Current-Day Odds Observation and Auto collector
-are unchanged. This workflow has read-only repository permissions; it cannot
-publish or replace production snapshots. Publication is a separate reviewed task.
+No scheduler. Manual Current-Day Odds Observation and Auto Scan are unchanged.
+Collection has read-only repository permissions and creates an artifact. A separate
+write-enabled publication job validates that artifact, appends verified historical
+rows and rebuilds statistics/Dashboard when `publish_to_dashboard` is selected.
 
 ## Inputs and calendar semantics
 
@@ -17,8 +18,9 @@ publish or replace production snapshots. Publication is a separate reviewed task
 - Fixture membership is based on the timezone-converted **kickoff**, not UTC date,
   collection date, or an unverified legacy day label. Differences from original
   `football_day` values are recorded, never rewritten in the source data.
-- Targets must be past; fixture kickoff must also be past. This version does not
-  refresh growing histories for upcoming matches.
+- Targets must be past and strictly before each fixture's kickoff. The manual
+  workflow can recover a past target even when the match has not kicked off yet.
+  A target at/after kickoff is `NOT_PREMATCH_SLOT`, never an in-play price.
 
 ## API semantics
 
@@ -46,7 +48,14 @@ Coverage is **known native fixtures**, not every fixture that existed that day.
   cache and per-candidate progress allow a later manual rerun to avoid refetching.
   This change does not add automatic continuation or discover unmapped fixtures.
 
-Finished-fixture cache is hash checked and reused. The first run bootstraps the
+Historical cache is hash checked and reused when it covers the requested targets.
+For growing history, `fetched_at` must be at or after every requested prematch
+target. A later target requires a fresh response only if no receipt covers it;
+the old receipt and raw bytes remain intact, and a new immutable revision is added.
+A pre-kickoff 404 is not permanent for later target times. Legacy research runners
+without `--allow-growing-history` retain their old post-kickoff-only policy.
+
+The first non-plan run bootstraps the
 reviewed September 15–17 artifact from run `38867737713` (90-day retention), then
 subsequent runs use main-branch Actions cache. An unavailable seed fails closed;
 it must not silently refetch previously recovered history. Actions cache can be
@@ -57,9 +66,17 @@ The baseline seed remains in its original reviewed artifact; no permanent/free
 storage guarantee is made. Monitor GitHub storage before large repeated recovery.
 
 New historical requests use only `HISTORICAL_ODDSPAPI_KEY` in environment
-`historical-research`. Production key is restricted to account-only baseline and
-postcheck. Active subscription fingerprints must differ, verified live before
-any historical request. This isolated manual workflow has **no production clock
+`historical-research`. The `ODDSPAPI_KEY` probe remains account-only, and the
+existing distinct-subscription check against that reference account remains.
+Current Manual/Auto now reference repository `HISTORICAL_ODDSPAPI_KEY`; environment
+secrets can override the same name, so the old probe does **not** prove separation
+from the actual current scanner. Reports explicitly label that limitation.
+This repair does not change either key, add account failover, or impose a new
+credential requirement. The historical transport allows only `/account` and
+`/historical-odds`, both unmetered per provider documentation. Before/after account
+checks remain; any usage change stops further history calls without claiming
+the change came from historical requests. No secret value is printed or persisted.
+This manual workflow has **no production clock
 blackout**: the pilot's target-minus-15 / target-plus-150-minute rule unnecessarily
 blocked independent manual research (e.g. run `38894926278` at 18:37 BKK).
 
@@ -78,8 +95,8 @@ data/reports/config inputs unchanged after every run; repository write permissio
 is still absent. No automatic retries after 429 or transport/provider errors.
 
 Actual HTTP accounting is separate from quota usage. For H new historical calls
-in one successful run: H historical + (2H+3) account = **3H+3 HTTP**. Cached-only
-replay performs zero calls. The documented historical/account endpoints are not
+in one successful runner: H historical + (2H+3) account = **3H+3 HTTP**. Cached-only
+replay, `cache-only` and `plan` perform zero provider calls. The documented historical/account endpoints are not
 monthly-quota-billable; this does not waive entitlement/rate limits. Attempts
 are recorded before transport, including failures; tests inject fake transport
 and never count as live provider evidence.
@@ -103,6 +120,49 @@ all exact reconstructed AH lines, actual per-side history-entry timestamps,
 original-price comparisons at actual observation times, status/coverage counts,
 request receipts, raw cache and run URL. A history-entry creation timestamp is
 not guaranteed bookmaker-change time or a live observation at the target.
+
+## 18 October repair and usage
+
+Run `39028824886` selected 17 October 18:00 at 18:28 Bangkok. Its first failure was
+`FIXTURE_HAS_NOT_KICKED_OFF`, with zero historical and account requests. One
+upcoming fixture caused the previous runner to reject the entire football day.
+The manual workflow now opts into target-covered growing cache instead; its old
+offline research callers keep their original default.
+
+To collect: choose `start_day`/`end_day`, `times_thai`, bookmaker, **recover**, and
+tick `confirm_live_requests`; keep `publish_to_dashboard` enabled to publish.
+Default **plan** only previews the request manifest and will not collect prices.
+Plan no longer depends on the old seed artifact/cache being downloadable.
+
+Each selected target must already be past. For example football day 17 October
+and `18:00` means 17 October 18:00; `00:00` means 18 October 00:00. A run before
+that midnight must not request it yet. Input failures now expose fixed actionable
+codes such as `TARGETS_MUST_BE_IN_THE_PAST`, without provider exception text.
+
+The manual runner stops further requests after a 20-minute runtime budget,
+leaving time inside the 30-minute job for cache/artifact saving. A stopped run
+remains STOPPED, is not published as complete, and can be rerun manually with the
+same inputs to reuse completed requests. This is a time budget, not a fixture
+count cap or an automatic retry; other research runners have no new default limit.
+
+The publication job preserves exact identities even for excluded/non-prematch
+slots, so one excluded slot cannot break import of other verified rows. If main
+advances while publishing, it rebuilds offline from the **same artifact** on fresh
+main, up to three push attempts. It never copies stale raw files over new live
+observations and never reruns the historical collector during a publish retry.
+
+Provider references checked 18 October 2026:
+- https://oddspapi.io/us/docs/get-historical-odds — upcoming/live history grows;
+  only finished/cancelled responses have deterministic ETags; 5-second cooldown.
+- https://oddspapi.io/us/docs/requests-and-quota — historical calls are free,
+  account calls unmetered; exhausted subscriptions can still be rejected for history.
+
+Remaining limits: known verified fixture IDs only; full-time AH balanced-line
+reconstruction only (not Current Odds, Official Mainline, OU or 1X2 recovery).
+Missing/unqualified source history stays explicit. Cache/seed artifact retention,
+account separation/entitlements, rate limits and the 30-minute workflow timeout
+remain genuine external constraints. A passing mock/CI run does not prove a live
+historical scan or actual current/historical account separation.
 
 ## Verification
 
