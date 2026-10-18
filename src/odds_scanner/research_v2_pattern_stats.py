@@ -214,6 +214,18 @@ def build(root=Path('.')):
         except (TypeError,ValueError):pass
         price=ah.get('selected_side_price');market_side='HOME_FAVORITE' if fav=='H' else 'AWAY_FAVORITE' if fav=='A' else 'UNKNOWN'
         outcomes.append({'fixture_id':fid,'football_day':s.get('football_day'),'league':s.get('league'),'home':s.get('home'),'away':s.get('away'),'favorite_side':fav,'market_side':market_side,'favorite_team':s.get('home') if fav=='H' else s.get('away') if fav=='A' else None,'underdog_team':s.get('away') if fav=='H' else s.get('home') if fav=='A' else None,'favorite_1x2_price':one.get('home') if fav=='H' else one.get('away') if fav=='A' else None,'favorite_fair_probability':s.get('favorite_fair_probability'),'favorite_probability_bucket':_prob_bucket(s.get('favorite_fair_probability')),'ah_line':ah.get('selected_side_line'),'ah_price':price,'ah_price_bucket':_price_bucket(price),'ah_core_price':_core(price),'scan_count':len(ss),'first_ah_line':(ss[0].get('ah') or {}).get('selected_side_line'),'first_ah_price':(ss[0].get('ah') or {}).get('selected_side_price'),**describe(ss),'kickoff':s.get('kickoff'),'last_observed_at':s.get('observed_at'),'match_status':au.get('eligibility_status','UNCLASSIFIED'),'ft_home_goals':h,'ft_away_goals':a,'favorite_ah_settlement':settle,'favorite_profit_units':profit_units,'underdog_profit_units':dog_profit_units,'price_result':_price_result(settle),'price_winner_side':'FAVORITE' if settle in ('FULL_WIN','HALF_WIN') else 'UNDERDOG' if settle in ('FULL_LOSS','HALF_LOSS') else 'PUSH' if settle=='PUSH' else 'UNSETTLED','price_winner_home_away':('HOME' if fav=='H' else 'AWAY') if settle in ('FULL_WIN','HALF_WIN') else ('AWAY' if fav=='H' else 'HOME') if settle in ('FULL_LOSS','HALF_LOSS') else 'PUSH' if settle=='PUSH' else 'UNSETTLED','source_fixture_id':s.get('source_fixture_id'),'source_provider':s.get('provider'),'result_source_fixture_id':r.get('source_fixture_id'),'result_join':'VERIFIED_CROSS_PROVIDER_IDENTITY' if fid in cross_provider_ids else 'VERIFIED_PROVIDER_FALLBACK_ALIAS' if fid in duplicate_ids else 'EXACT_FIXTURE_ID_ONLY','research_only':True,**_ou25(s,h,a)})
+    # Preserve previously settled fixtures when a fresh snapshot selection is partial.
+    # New verified FT results use the existing settlement logic above; no new formula.
+    prior_outcomes=_rows(root/OUTCOMES)
+    current_by_id={str(row['fixture_id']):row for row in outcomes}
+    for old in prior_outcomes:
+        fid=str(old.get('fixture_id') or '')
+        if fid and fid not in current_by_id:
+            current_by_id[fid]=old
+    outcomes=list(current_by_id.values())
+    settled_ids=set(current_by_id)
+    missing_rows=[row for row in missing_rows if str(row['fixture_id']) not in settled_ids]
+    missing=len(missing_rows)
     retired_missing=sorted(r['fixture_id'] for r in missing_rows if r['fixture_id'] in retired)
     ledger=root/MISSING_LEDGER;ledger.parent.mkdir(parents=True,exist_ok=True);ledger.write_text(json.dumps({'schema_version':'1.0','missing_ft_count':len(missing_rows),'excluded_derivative_markets':excluded_derivative,'fixtures':missing_rows},ensure_ascii=False,indent=2),encoding='utf-8')
     p=root/OUTCOMES;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(''.join(json.dumps(x,ensure_ascii=False,separators=(',',':'))+'\n' for x in outcomes),encoding='utf-8')
