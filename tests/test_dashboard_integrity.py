@@ -183,11 +183,11 @@ def test_ah_sample_n_badge_color_tiers():
     if not node:pytest.skip('Node unavailable')
     html=Path('apps/dashboard/index.html').read_text()
     assert 'ahSampleTier(signalStats(s,st).ah?.settled_n)' in html
-    assert '.round-ah-n.n-low' in html and '.round-ah-n.n-large' in html
+    assert all(f'.round-price-top .round-ah-n.{tier}' in html for tier in ('n-tiny', 'n-early', 'n-developing', 'n-moderate', 'n-large'))
     script=html.split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
     checks='''
 const assert=require('assert');
-for(const [n,tier] of [[null,'n-unknown'],[0,'n-unknown'],[8,'n-low'],[14,'n-low'],[15,'n-limited'],[29,'n-limited'],[30,'n-good'],[59,'n-good'],[60,'n-large'],[100,'n-large']])assert.equal(ahSampleTier(n),tier);
+for(const [n,tier] of [[null,'n-unknown'],[0,'n-unknown'],[8,'n-tiny'],[19,'n-tiny'],[20,'n-early'],[39,'n-early'],[40,'n-developing'],[59,'n-developing'],[60,'n-moderate'],[99,'n-moderate'],[100,'n-large']])assert.equal(ahSampleTier(n),tier);
 '''
     result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
