@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-18T08:00:05.179693+00:00",
+  "generated_at": "2026-10-18T11:23:14.405261+00:00",
   "football_day": "2026-10-18",
   "status": "FAIL",
   "issues": [
@@ -10,10 +10,21 @@
     "UNMATCHED_IDENTITY_CANDIDATES",
     "LATEST_SCAN_WARNING"
   ],
-  "scan_missing_count": 1,
+  "scan_missing_count": 2,
   "scan_missing": [
     {
       "target_time": "2026-10-18T15:00:00+07:00",
+      "state": "MISSED",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "MISSED",
+      "recovered": false
+    },
+    {
+      "target_time": "2026-10-18T18:00:00+07:00",
       "state": "MISSING",
       "provider": null,
       "observed_at": null,
@@ -24,36 +35,8 @@
       "recovered": false
     }
   ],
-  "ft_delay_count": 5,
+  "ft_delay_count": 2,
   "ft_delay": [
-    {
-      "fixture_id": "id1000003572513242",
-      "provider": "oddspapi",
-      "football_day": "2026-10-16",
-      "league": "Bundesliga",
-      "kickoff": "2026-10-16T18:30:00+00:00",
-      "home": "Eintracht Frankfurt",
-      "away": "1. FC Cologne",
-      "status": "MISSING_FT",
-      "country": "Germany",
-      "canonical_competition_id": "DEU-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
-    },
-    {
-      "fixture_id": "id1000004174299658",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Veikkausliiga",
-      "kickoff": "2026-10-17T11:00:00+00:00",
-      "home": "FC Lahti",
-      "away": "Turun Palloseura",
-      "status": "MISSING_FT",
-      "country": "Finland",
-      "canonical_competition_id": "FIN-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
-    },
     {
       "fixture_id": "id1000005472477468",
       "provider": "oddspapi",
@@ -65,20 +48,6 @@
       "status": "IDENTITY_CONFLICT",
       "country": "Spain",
       "canonical_competition_id": null,
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
-    },
-    {
-      "fixture_id": "id1000018272037388",
-      "provider": "oddspapi",
-      "football_day": "2026-10-17",
-      "league": "Ligue 2",
-      "kickoff": "2026-10-17T12:00:00+00:00",
-      "home": "FC Metz",
-      "away": "Sochaux-Montbeliard",
-      "status": "MISSING_FT",
-      "country": "France",
-      "canonical_competition_id": "FRA-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false
     },
@@ -127,6 +96,17 @@
   "canonical_slots": [
     {
       "target_time": "2026-10-18T15:00:00+07:00",
+      "state": "MISSED",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "MISSED",
+      "recovered": false
+    },
+    {
+      "target_time": "2026-10-18T18:00:00+07:00",
       "state": "MISSING",
       "provider": null,
       "observed_at": null,
@@ -134,17 +114,6 @@
       "valid_snapshot_count": 0,
       "canonical_fixture_count": 0,
       "observation_timing": "MISSING",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-10-18T18:00:00+07:00",
-      "state": "UPCOMING",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "UPCOMING",
       "recovered": false
     },
     {
@@ -174,12 +143,12 @@
   "raw_deleted": 0,
   "approved_unresolved_fixtures_retained": true,
   "next_slot_readiness": {
-    "target_at": "2026-10-18T18:00:00+07:00",
+    "target_at": "2026-10-18T21:00:00+07:00",
     "football_day": "2026-10-18",
     "status": "UNVERIFIED_OR_CAPACITY_BLOCKED",
     "fixture_set_size": null,
     "remaining_prematch_at_target": 0,
-    "prematch_forecast_at": "2026-10-18T18:03:00+07:00",
+    "prematch_forecast_at": "2026-10-18T21:03:00+07:00",
     "unconfirmed_grants": [],
     "blocked_reasons": [
       "FIXED_COHORT_UNAVAILABLE"
@@ -189,28 +158,27 @@
     "allocated_tournament_ids": [],
     "quota_utc_day": "2026-10-18",
     "research_usage": {
-      "day": 20,
-      "month": 271
+      "day": 80,
+      "month": 331
     },
-    "account_remaining_estimate": 200,
-    "account_observed_before": "2026-10-18T05:14:07.530121+00:00",
+    "account_remaining_estimate": 159,
+    "account_observed_before": "2026-10-18T11:05:53.370023+00:00",
     "account_estimate_limitation": "OTHER_ACCOUNT_CONSUMERS_AFTER_OBSERVATION_NOT_MEASURED; RECHECK_UNMETERED_ACCOUNT_AT_COLLECTION",
     "fixture_set_policy": null,
     "schedule_response_id": null,
     "budget": {
       "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
-      "research_requests_used_today": 20,
-      "research_requests_used_month": 271,
+      "research_requests_used_today": 80,
+      "research_requests_used_month": 331,
       "research_daily_limit": 6,
       "research_monthly_limit": 180,
       "research_run_limit": 2,
       "quota_utc_day": "2026-10-18",
       "canonical_slots_in_football_day": 4,
       "future_utc_slots": [
-        "2026-10-18T14:00:00+00:00",
         "2026-10-18T17:00:00+00:00"
       ],
-      "future_utc_requests_reserved": 2,
+      "future_utc_requests_reserved": 1,
       "current_canonical_requests_reserved": 0,
       "future_month_requests_reserved": 65,
       "canonical_request_reservation": "UTC_FUTURE_SLOTS_PLUS_DISCOVERY; MANUAL_AND_RECOVERY_YIELD; FAILED_ATTEMPTS_COUNT",
