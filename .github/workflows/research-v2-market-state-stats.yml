@@ -29,6 +29,11 @@ jobs:
           for attempt in 1 2 3; do
             git fetch origin main
             git reset --hard origin/main
+            # A missing canonical snapshot set must never overwrite retained FT statistics.
+            if ! test -s data/normalized/europe_pinnacle_research_v2_snapshots.jsonl; then
+              echo 'BLOCKED: canonical snapshot file empty; preserving committed statistics'
+              exit 0
+            fi
             python -m odds_scanner.research_v2_movement
             python -m odds_scanner.research_v2_pattern_stats
             python -m odds_scanner.legacy_propline_recovery
