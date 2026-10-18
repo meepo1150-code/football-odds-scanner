@@ -44,7 +44,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     environment: historical-research
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 150
     env:
       PILOT_ENVIRONMENT: historical-research
     steps:
@@ -86,7 +86,7 @@ jobs:
           set -euo pipefail
           confirm=()
           if [ "$INPUT_CONFIRM" = true ]; then confirm+=(--confirm-live-requests); fi
-          python -m odds_scanner.historical_manual.runner --start-day "$INPUT_START" --end-day "$INPUT_END" --times "$INPUT_TIMES" --bookmakers "$INPUT_BOOKS" --mode "$INPUT_MODE" --allow-growing-history --max-runtime-seconds 1200 "${confirm[@]}"
+          python -m odds_scanner.historical_manual.runner --start-day "$INPUT_START" --end-day "$INPUT_END" --times "$INPUT_TIMES" --bookmakers "$INPUT_BOOKS" --mode "$INPUT_MODE" --allow-growing-history --max-runtime-seconds 8400 "${confirm[@]}"
       - name: Verify production checkout inputs remain unchanged
         if: always()
         run: git diff --exit-code -- data reports config
