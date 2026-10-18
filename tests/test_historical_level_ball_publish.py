@@ -4,7 +4,7 @@ import json
 
 import pytest
 
-from scripts.publish_manual_historical import produce, publish, SNAPSHOTS
+from scripts.publish_manual_historical import produce, publish, SNAPSHOTS, RUNTIME_STOP
 
 
 def artifact(home=1.9, away=2.1):
@@ -84,3 +84,90 @@ def test_replaying_artifact_is_idempotent_and_preserves_live_rows(tmp_path):
     assert replay['added'] == 0 and replay['unchanged'] == 1
     assert replay['api_requests'] == 0
     assert path.read_bytes() == first
+
+
+def partial_artifact():
+    report, manifest = artifact()
+    report.update(status='STOPPED', errors=[RUNTIME_STOP])
+    pending = copy.deepcopy(manifest['candidates'][0])
+    pending['fixture_id'] = 'not-yet-processed'
+    manifest['candidates'].append(pending)
+    return report, manifest
+
+
+def test_runtime_partial_requires_explicit_opt_in():
+    report, manifest = partial_artifact()
+    with pytest.raises(ValueError, match='SCAN_NOT_COMPLETED'):
+        produce(report, manifest, [])
+    incoming, _ = produce(report, manifest, [], allow_runtime_partial=True)
+    assert len(incoming) == 1
+    assert report['status'] == 'STOPPED' and report['errors'] == [RUNTIME_STOP]
+
+
+@pytest.mark.parametrize('errors', [[], ['HISTORY_HTTP_429_STOP_NO_RETRY'],
+    ['RESEARCH_QUOTA_OR_SUBSCRIPTION_CHANGED'], [RUNTIME_STOP, 'PRODUCTION_POSTCHECK_FAILED']])
+def test_partial_rejects_other_failure_reasons(errors):
+    report, manifest = partial_artifact()
+    report['errors'] = errors
+    with pytest.raises(ValueError, match='SCAN_NOT_COMPLETED'):
+        produce(report, manifest, [], allow_runtime_partial=True)
+
+
+def test_partial_rejects_duplicate_results():
+    report, manifest = partial_artifact()
+    report['results'] *= 2
+    with pytest.raises(ValueError, match='DUPLICATE_RESULT'):
+        produce(report, manifest, [], allow_runtime_partial=True)
+
+
+def test_partial_still_requires_every_target_for_processed_fixture():
+    report, manifest = partial_artifact()
+    manifest['candidates'][0]['targets'].append(dict(target_utc='2026-09-10T09:00:00Z'))
+    with pytest.raises(ValueError, match='SLOT_MANIFEST_MISMATCH'):
+        produce(report, manifest, [], allow_runtime_partial=True)
+
+
+def test_partial_receipt_is_honest_and_replay_is_idempotent(tmp_path):
+    report, manifest = partial_artifact()
+    p = tmp_path/SNAPSHOTS
+    p.parent.mkdir(parents=True)
+    p.touch()
+    receipt = publish(report, manifest, tmp_path, allow_runtime_partial=True)
+    assert receipt['status'] == 'PARTIAL_PROMOTED'
+    assert receipt['source_scan_status'] == 'STOPPED'
+    assert receipt['processed_candidate_pairs'] == 1
+    assert receipt['unprocessed_candidate_pairs'] == 1
+    assert receipt['api_requests'] == 0
+    first = p.read_bytes()
+    replay = publish(report, manifest, tmp_path, allow_runtime_partial=True)
+    assert replay['status'] == 'PARTIAL_NO_NEW_ROWS'
+    assert replay['unchanged'] == 1 and p.read_bytes() == first
+
+
+def test_partial_cli_requires_source_run_binding(tmp_path, monkeypatch):
+    from scripts.publish_manual_historical import main
+    report, manifest = partial_artifact()
+    (tmp_path/'report.json').write_text(json.dumps(report))
+    (tmp_path/'manifest.json').write_text(json.dumps(manifest))
+    monkeypatch.setattr('sys.argv', ['publish', '--artifact-dir', str(tmp_path), '--allow-runtime-partial'])
+    with pytest.raises(ValueError, match='PARTIAL_PUBLICATION_REQUIRES_SOURCE_RUN'):
+        main()
+    monkeypatch.setattr('sys.argv', ['publish', '--artifact-dir', str(tmp_path), '--allow-runtime-partial',
+                                    '--expected-run-url', 'https://github.com/wrong/repo/actions/runs/16'])
+    with pytest.raises(ValueError, match='HISTORICAL_ARTIFACT_RUN_MISMATCH'):
+        main()
+
+
+def test_replay_workflow_has_no_collector_and_requires_main():
+    from pathlib import Path
+    import yaml
+    w = yaml.safe_load(Path('.github/workflows/publish-retained-historical.yml').read_text())
+    job = w['jobs']['publish']
+    assert job['if'] == "github.ref == 'refs/heads/main'"
+    commands = '\n'.join(s.get('run','') for s in job['steps'])
+    assert 'manual-historical-scan.yml' in commands
+    assert '--expected-run-url' in commands and '--allow-runtime-partial' in commands
+    assert 'historical_manual.runner' not in commands
+    assert 'secrets.' not in str(w)
+    assert 'git reset --hard origin/main' in commands
+    assert 'gh workflow run pages.yml --ref main' in commands

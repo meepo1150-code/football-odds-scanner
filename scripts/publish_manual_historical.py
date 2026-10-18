@@ -27,8 +27,12 @@ def _slot(row):
 def _key(row):
     return (*_identity(row), _slot(row))
 
-def _validate(report, manifest):
-    if report.get("status") != "COMPLETED" or report.get("errors"):
+RUNTIME_STOP = 'MANUAL_RUNTIME_BUDGET_REACHED_REUSE_SAVED_CACHE'
+
+def _validate(report, manifest, *, allow_runtime_partial=False):
+    partial = (allow_runtime_partial and report.get('status') == 'STOPPED'
+               and report.get('errors') == [RUNTIME_STOP])
+    if not partial and (report.get("status") != "COMPLETED" or report.get("errors")):
         raise ValueError("SCAN_NOT_COMPLETED")
     if report.get("production_writes") != 0 or report.get("research_only") is not True:
         raise ValueError("UNTRUSTED_REPORT_ORIGIN")
@@ -40,12 +44,21 @@ def _validate(report, manifest):
         if key in candidates:
             raise ValueError("DUPLICATE_CANDIDATE")
         candidates[key] = c
+    result_keys = [_identity(r) for r in report['results']]
+    if len(set(result_keys)) != len(result_keys):
+        raise ValueError('DUPLICATE_RESULT')
+    if not set(result_keys).issubset(candidates):
+        raise ValueError('RESULT_MANIFEST_MISMATCH')
+    if partial:
+        if not result_keys:
+            raise ValueError('NO_VERIFIED_PARTIAL_RESULTS')
+        return {k:candidates[k] for k in result_keys}
     if len(candidates) != len(report["results"]):
         raise ValueError("INCOMPLETE_RESULT_SET")
     return candidates
 
-def produce(report, manifest, original, reference=()):
-    candidates = _validate(report, manifest)
+def produce(report, manifest, original, reference=(), *, allow_runtime_partial=False):
+    candidates = _validate(report, manifest, allow_runtime_partial=allow_runtime_partial)
     templates = {}
     reference_sides = {}
     for c in candidates.values():
@@ -185,11 +198,12 @@ def produce(report, manifest, original, reference=()):
             incoming[k] = row
     return incoming, dict(counts)
 
-def publish(report, manifest, root=Path(".")):
+def publish(report, manifest, root=Path("."), *, allow_runtime_partial=False):
     path = root/SNAPSHOTS
     original = _rows(path)
     reference = _rows(root/'data/normalized/v2_mainline_snapshots.jsonl')
-    incoming, counts = produce(report, manifest, original, reference)
+    incoming, counts = produce(report, manifest, original, reference,
+                               allow_runtime_partial=allow_runtime_partial)
     prior = {}
     for row in original:
         k = _key(row)
@@ -214,6 +228,13 @@ def publish(report, manifest, root=Path(".")):
                "conflicts": 0, "before":len(original),"after":len(original)+len(add),
                "historical_market": "AH_BALANCED_LINE_NOT_OFFICIAL_MAINLINE",
                "production_live_observations_modified":0,"api_requests":0}
+    if report.get('status') == 'STOPPED':
+        receipt.update(status='PARTIAL_PROMOTED' if add else 'PARTIAL_NO_NEW_ROWS',
+                       publication_scope='VERIFIED_RUNTIME_PARTIAL',
+                       source_scan_status=report['status'], source_errors=report['errors'],
+                       source_candidate_pairs=len(manifest['candidates']),
+                       processed_candidate_pairs=len(report['results']),
+                       unprocessed_candidate_pairs=len(manifest['candidates'])-len(report['results']))
     if add:
         with path.open("a", encoding="utf-8") as fh:
             for row in sorted(add, key=_key):
@@ -226,11 +247,18 @@ def publish(report, manifest, root=Path(".")):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--artifact-dir",type=Path,required=True)
+    p.add_argument('--allow-runtime-partial', action='store_true')
+    p.add_argument('--expected-run-url')
     a = p.parse_args()
     base = a.artifact_dir
     report = json.loads((base/"report.json").read_text())
     manifest = json.loads((base/"manifest.json").read_text())
-    print(json.dumps(publish(report, manifest),ensure_ascii=False,indent=2))
+    if a.allow_runtime_partial and not a.expected_run_url:
+        raise ValueError('PARTIAL_PUBLICATION_REQUIRES_SOURCE_RUN')
+    if a.expected_run_url and report.get('run_url') != a.expected_run_url:
+        raise ValueError('HISTORICAL_ARTIFACT_RUN_MISMATCH')
+    print(json.dumps(publish(report, manifest,
+                            allow_runtime_partial=a.allow_runtime_partial),ensure_ascii=False,indent=2))
 
 if __name__ == "__main__":
     main()
