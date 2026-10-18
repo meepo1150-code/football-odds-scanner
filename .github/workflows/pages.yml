@@ -70,10 +70,10 @@ jobs:
           from pathlib import Path
           Path("apps/dashboard/deployment.json").write_text(json.dumps({"source_sha": subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(), "run_id": os.environ["GITHUB_RUN_ID"]}))
           PYBUILD
-          PYTHONPATH=src python -m odds_scanner.research_v2_movement > /dev/null
+          # Keep committed movement evidence unchanged during FT rollback.
           # Publish the committed verified statistics; never rebuild from an empty snapshot cache during deployment.
-          PYTHONPATH=src python -m odds_scanner.research_v2_evidence > /dev/null
-          PYTHONPATH=src python -m odds_scanner.research_v2_end_to_end_audit > /dev/null
+          # Preserve restored verified evidence during FT rollback.
+          # Do not rebuild cross-report audit during FT rollback.
           PYTHONPATH=src python -m odds_scanner.oddspapi_history_audit > /dev/null
           PYTHONPATH=src python -m odds_scanner.dashboard_scope > /dev/null
           mkdir -p site/reports site/data/normalized site/discovery
