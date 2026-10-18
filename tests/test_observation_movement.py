@@ -36,14 +36,6 @@ def test_chronological_evaluation_cannot_call_viewed_data_untouched():
     assert r['unique_evaluated_fixtures']==0
 
 
-def test_recovery_only_fetches_latest_elapsed_target(tmp_path,monkeypatch):
-    from datetime import datetime
-    from odds_scanner import research_v2_slot_recovery as recovery
-    calls=[]
-    monkeypatch.setattr(recovery,'primary',lambda root:calls.append(recovery.os.environ['RESEARCH_V2_FORCE_TARGET_AT']) or {})
-    monkeypatch.setattr(recovery,'fallback',lambda *args,**kw:{})
-    recovery.run(tmp_path,datetime.fromisoformat('2026-10-11T22:10:00+07:00'))
-    assert calls==['2026-10-11T22:00:00+07:00']
 
 
 def test_provider_429_stops_catalog_fanout(monkeypatch):

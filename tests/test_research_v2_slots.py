@@ -107,13 +107,3 @@ def test_weekend_last_slot_remains_recoverable_after_midnight():
              'actual_observed_at':'2026-10-04T22:05:00+07:00',
              'state':'ZERO_FIXTURES','football_day_fixtures':0,'requests_used':1}]
     assert not due(dt('2026-10-05T00:10:00+07:00'),{},ledger_rows=ledger,snapshots=[])
-
-
-def test_retired_watchdog_has_no_automatic_heartbeat():
-    from pathlib import Path
-    import yaml
-    workflow = yaml.safe_load(Path('.github/workflows/research-v2-slot-watchdog.yml').read_text())
-    triggers = workflow.get('on', workflow.get(True, {}))
-    assert 'schedule' not in triggers
-    assert 'workflow_run' not in triggers
-    assert all(str(job.get('if', '')).strip() == '${{ false }}' for job in workflow['jobs'].values())

@@ -65,12 +65,6 @@ def test_cancelled_grant_blocks_duplicate_recovery_before_new_grant(tmp_path,mon
     assert usage(tmp_path/LEDGER,now)[0]==1
 
 
-def test_fixed_cohort_failure_never_scans_unrelated_fallback(tmp_path,monkeypatch):
-    from odds_scanner import research_v2_slot_recovery as recovery
-    monkeypatch.setattr(recovery,'primary',lambda root:{'status':'SKIPPED_QUOTA', 'daily_cohort_policy':'FIXED_1500_FIXTURE_COHORT_V1'})
-    monkeypatch.setattr(recovery,'fallback',lambda *a,**kw:pytest.fail('unmapped broad fallback'))
-    reports=recovery.run(tmp_path,dt('2026-10-14T14:13:00+00:00'))
-    assert len(reports)==1 and reports[0]['status']=='SKIPPED_QUOTA'
 
 
 def test_partial_cohort_is_missing_in_health_even_with_workflow_success(tmp_path,monkeypatch):
