@@ -2,42 +2,42 @@
   "schema_version": "1.0",
   "classification": "VALIDATION_V2_FORWARD_READINESS",
   "status": "COLLECTING_FORWARD_EVIDENCE",
-  "generated_at": "2026-10-18T06:54:05.355585+00:00",
+  "generated_at": "2026-10-18T06:59:24.919291+00:00",
   "candidate_count": 3,
   "forward_start": "2026-09-10T13:25:00Z",
   "scheduled_cadence_hours": 12,
   "entry_status": "COLLECTING_FORWARD_EVIDENCE",
   "clv_status": "COLLECTING_FORWARD_CLV",
-  "performance_status": "FORWARD_PERFORMANCE_AVAILABLE",
+  "performance_status": "WAITING_FOR_EXACT_RESULTS",
   "candidates": [
     {
       "candidate_id": "FD_AH_4E30F9F2EC34",
       "status": "COLLECTING_FORWARD_EVIDENCE",
       "entries_recorded": 16,
-      "settled_entries": 12,
-      "remaining_to_minimum_settled_entries": 138,
+      "settled_entries": 0,
+      "remaining_to_minimum_settled_entries": 150,
       "gates": [
         {
           "gate": "minimum_settled_entries",
-          "value": 12,
+          "value": 0,
           "threshold": 150,
           "status": "FAIL"
         },
         {
           "gate": "minimum_distinct_leagues",
-          "value": 5,
+          "value": 0,
           "threshold": 3,
           "status": "PENDING"
         },
         {
           "gate": "minimum_positive_league_share",
-          "value": 0.2,
+          "value": null,
           "threshold": 0.6,
           "status": "PENDING"
         },
         {
           "gate": "positive_flat_stake_roi",
-          "value": 0.1466666666666667,
+          "value": null,
           "threshold": "> 0",
           "status": "PENDING"
         },
@@ -55,25 +55,25 @@
         },
         {
           "gate": "bootstrap_roi_ci95_lower_above_zero",
-          "value": -0.35041666666666665,
+          "value": null,
           "threshold": "> 0",
           "status": "PENDING"
         },
         {
           "gate": "maximum_single_league_profit_concentration",
-          "value": 0.6483979763912311,
+          "value": null,
           "threshold": "<= 0.6",
           "status": "PENDING"
         },
         {
           "gate": "empirical_drawdown_report",
-          "value": -2.035,
+          "value": null,
           "threshold": "reported",
           "status": "PENDING"
         },
         {
           "gate": "longest_losing_streak_report",
-          "value": 2,
+          "value": null,
           "threshold": "reported",
           "status": "PENDING"
         },
@@ -98,30 +98,30 @@
       "candidate_id": "FD_AH_1D65F429F6A5",
       "status": "COLLECTING_FORWARD_EVIDENCE",
       "entries_recorded": 9,
-      "settled_entries": 8,
-      "remaining_to_minimum_settled_entries": 142,
+      "settled_entries": 0,
+      "remaining_to_minimum_settled_entries": 150,
       "gates": [
         {
           "gate": "minimum_settled_entries",
-          "value": 8,
+          "value": 0,
           "threshold": 150,
           "status": "FAIL"
         },
         {
           "gate": "minimum_distinct_leagues",
-          "value": 3,
+          "value": 0,
           "threshold": 3,
           "status": "PENDING"
         },
         {
           "gate": "minimum_positive_league_share",
-          "value": 0.3333333333333333,
+          "value": null,
           "threshold": 0.6,
           "status": "PENDING"
         },
         {
           "gate": "positive_flat_stake_roi",
-          "value": -0.161875,
+          "value": null,
           "threshold": "> 0",
           "status": "PENDING"
         },
@@ -139,25 +139,25 @@
         },
         {
           "gate": "bootstrap_roi_ci95_lower_above_zero",
-          "value": -0.70625,
+          "value": null,
           "threshold": "> 0",
           "status": "PENDING"
         },
         {
           "gate": "maximum_single_league_profit_concentration",
-          "value": 0.7407407407407408,
+          "value": null,
           "threshold": "<= 0.6",
           "status": "PENDING"
         },
         {
           "gate": "empirical_drawdown_report",
-          "value": -2.0,
+          "value": null,
           "threshold": "reported",
           "status": "PENDING"
         },
         {
           "gate": "longest_losing_streak_report",
-          "value": 2,
+          "value": null,
           "threshold": "reported",
           "status": "PENDING"
         },
