@@ -9,6 +9,8 @@ REMOVED = (
     'canonical-slot-deadline-audit', 'scan-health-monitor', 'live-scan',
     'scanner', 'free-research-v2-scanner', 'europe-pinnacle-daily-discovery',
     'master-schedule-manual-recovery', 'v2-pipeline-health',
+    'v2-mainline-observer', 'europe-discovery', 'five-dollar-live-research-v2',
+    'propline-probe', 'pinnwire-probe',
 )
 PROTECTED = {
     '.github/workflows/manual-current-day-odds.yml': '7dde145da2fa86d70eab2c431d1241fa9592b7334c1fd93d6c0222307df9a169',

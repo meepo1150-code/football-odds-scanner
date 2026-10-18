@@ -15,9 +15,4 @@ def test_real_failed_request_spacing_uses_completion_time():
 
 
 def test_legacy_pinnwire_trigger_cannot_collect_or_use_provider_secrets():
-    text = Path('.github/workflows/pinnwire-probe.yml').read_text()
-    assert 'python -m odds_scanner.research_v2_slot_recovery' not in text
-    assert 'python -m odds_scanner.pinnwire_probe' not in text
-    assert 'secrets.ODDSPAPI_KEY' not in text
-    assert '  schedule:' not in text
-    assert 'if: ${{ false }}' in text
+    assert not Path('.github/workflows/pinnwire-probe.yml').exists()

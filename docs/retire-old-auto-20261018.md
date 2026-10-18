@@ -15,6 +15,7 @@ collector, request budgets and transport are unchanged.
 | Independent Slot Watchdog | Legacy independent wakeups/recovery | Disabled workflow deleted |
 | Canonical Slot Deadline Audit, Scan Health Monitor, Pipeline Health | Legacy deadline/monitor orchestration | Disabled workflow entrypoints deleted |
 | Legacy Live/Validated/Free/Europe odds scanners and Master Schedule Manual Recovery | Retired scanner entrypoints | Disabled workflow entrypoints deleted |
+| Mainline Observer, Europe Discovery, Five Dollar Live Research, Propline/Pinnwire probes | Obsolete disabled collection/probe buttons | Workflow entrypoints and obsolete scanner control tokens deleted; shared normalization/research libraries retained |
 | Football Scanner Scan Alerts | ChatGPT check at +30 minutes | Disabled on 18 October; no replacement recovery automation |
 | PR #421 | Unmerged low-quota improvement for old Auto | Closed without merge |
 | Dashboard/Monitor | Display old Auto evidence | Labelled retired; historical receipts and manifests remain published |
