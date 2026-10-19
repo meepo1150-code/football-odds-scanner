@@ -7,10 +7,10 @@ import shutil
 import tempfile
 import time
 from collections import Counter
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta, time as day_time, date
 from pathlib import Path
 
-from .planner import BKK, build, stamp
+from .planner import BKK, build, stamp, parse_days
 from .normalizer import normalize
 from .reconstruct import reconstruct_slot
 from .representative import select
@@ -195,11 +195,11 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
     env = os.environ if environ is None else environ
     out, cache = root/OUT, root/CACHE
     report = dict(status='BLOCKED', historical_requests=0, account_requests=0, cache_hits=0,
-        errors=[], results=[], requests=[], production_writes=0, research_only=True,
+        errors=[], results=[], requests=[], fixture_discovery_requests=0,\n        fixture_discovery_days=[], production_writes=0, research_only=True,
         run_url=f"https://github.com/{env.get('GITHUB_REPOSITORY', '')}/actions/runs/{env.get('GITHUB_RUN_ID', '')}")
     production = None
     def save():
-        report.update(generated_at=clock().isoformat(), total_http_requests=report['historical_requests']+report['account_requests'])
+        report.update(generated_at=clock().isoformat(), total_http_requests=report['historical_requests']+report['account_requests']+report['fixture_discovery_requests'])
         write_json(out/'report.json', report)
     def account(key, books):
         if not key:
@@ -227,6 +227,73 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
             raise StopPilot('REVIEWED_CATALOG_CHANGED')
         catalog = json.loads(raw_catalog)
         manifest = build(root, args.start_day, args.end_day, args.times, args.bookmakers, clock())
+        # Existing evidence has priority. Only confirmed recover runs may
+        # discover otherwise missing exact IDs through the provider's native
+        # /fixtures endpoint. Never infer IDs from names or historical prices.
+        if not manifest['candidates'] and args.mode == 'recover' and args.confirm_live_requests:
+            if (env.get('GITHUB_EVENT_NAME') != 'workflow_dispatch'
+                    or env.get('GITHUB_REF') != 'refs/heads/main'
+                    or env.get('PILOT_ENVIRONMENT') != 'historical-research'):
+                raise StopPilot('MAIN_MANUAL_HISTORICAL_ENVIRONMENT_REQUIRED')
+            from odds_scanner.master_schedule_plan import items, registry
+            receipts = cache/'fixture_discovery_receipts'
+            requested_days = parse_days(args.start_day, args.end_day)
+            pending_days = [day for day in requested_days if not (
+                receipts/(day.isoformat()+'.json')).exists()]
+            report['fixture_discovery_cached_days'] = len(requested_days)-len(pending_days)
+            if pending_days:
+                reader = health_reader or (lambda: fresh_health(root))
+                baseline = reader()
+                production = account(env.get('ACCOUNT_PROBE_KEY'), set())
+                research = account(env.get('HISTORICAL_ODDSPAPI_KEY'), set(args.bookmakers.split(',')))
+                if production['subscription_fingerprint'] == research['subscription_fingerprint']:
+                    raise StopPilot('SHARED_PRODUCTION_SUBSCRIPTION')
+                isolation = dict(research=research['subscription_fingerprint'],
+                                 production=production['subscription_fingerprint'])
+                health_check(baseline, baseline, clock(), account_isolation=isolation)
+                if research['request_count'] + len(pending_days) >= research['request_limit']:
+                    raise StopPilot('FIXTURE_DISCOVERY_QUOTA_HEADROOM_REQUIRED')
+                report.update(production_before=production, research_before=research,
+                    credential_isolation='DISTINCT_ACTIVE_SUBSCRIPTIONS_VERIFIED')
+                approved_ids = {str(t['tournament_id']) for t in registry()}
+                client = client_factory(env['HISTORICAL_ODDSPAPI_KEY'])
+                for day in pending_days:
+                    if runtime is not None and (clock()-started_at).total_seconds() >= runtime:
+                        raise StopPilot('MANUAL_RUNTIME_BUDGET_REACHED_REUSE_SAVED_CACHE')
+                    health_check(reader(), baseline, clock(), account_isolation=isolation)
+                    start = datetime.combine(day, day_time(6, 0), BKK).astimezone(timezone.utc)
+                    end = start + timedelta(days=1)
+                    params = dict(sportId=10,
+                        **{'from':start.isoformat().replace('+00:00','Z'),
+                           'to':end.isoformat().replace('+00:00','Z')},
+                        statusId=2, limit=1000, language='en')
+                    sleeper(5.2)
+                    report['fixture_discovery_requests'] += 1
+                    save()
+                    status, _, raw = client('/fixtures', params)
+                    if status != 200:
+                        raise StopPilot('FIXTURE_DISCOVERY_HTTP_'+str(status)+'_STOP_NO_RETRY')
+                    payload = json.loads(raw)
+                    rows = items(payload)
+                    if len(rows) >= 1000:
+                        raise StopPilot('FIXTURE_DISCOVERY_TRUNCATED_REQUIRES_REVIEW')
+                    # Native identities and their response digest survive the
+                    # run, independent of the historical odds request cache.
+                    record = dict(provider='oddspapi', endpoint='/fixtures',
+                                  params=params, observed_at=clock().isoformat(), payload=payload)
+                    record['response_id'] = hashlib.sha256(json.dumps(
+                        record, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+                    write_json(receipts/(day.isoformat()+'.json'), record)
+                    write_json(out/'discovery_receipts'/(day.isoformat()+'.json'), record)
+                    report['fixture_discovery_days'].append(dict(day=day.isoformat(),
+                        returned=len(rows), approved_finished=sum(
+                            str(row.get('tournamentId')) in approved_ids
+                            and row.get('statusId') == 2 for row in rows)))
+                    save()
+                report['research_after_discovery'] = account(
+                    env['HISTORICAL_ODDSPAPI_KEY'], set(args.bookmakers.split(',')))
+            manifest = build(root, args.start_day, args.end_day,
+                             args.times, args.bookmakers, clock())
         # Opt-in deterministic fixture sharding for isolated, bounded jobs.
         # The original manual workflow passes neither option and is unchanged.
         shard = getattr(args, 'fixture_shard', None)
