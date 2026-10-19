@@ -19,11 +19,11 @@ ENV = {
 
 
 def options(**kwargs):
-    return argparse.Namespace(**dict(
+    return argparse.Namespace(**dict(dict(
         start_day='2026-09-04', end_day='2026-09-04',
         times='15:00,18:00,21:00,00:00', bookmakers='pinnacle',
         mode='recover', confirm_live_requests=True,
-        allow_growing_history=True, max_runtime_seconds=8400,
+        allow_growing_history=True, max_runtime_seconds=8400),
         **kwargs))
 
 
