@@ -109,18 +109,24 @@ def build(root, start, end, times, bookmakers, now):
     # fixture IDs from names, match results, or bookmaker pricing.
     from odds_scanner.master_schedule_plan import registry, items
     approved = {str(r['tournament_id']): r for r in registry()}
-    for relative in (
+    # Persisted day-scoped, hash-bound /fixtures receipts provide native
+    # identity evidence for dates without original current-day observations.
+    discovery_dir = root / 'research/historical_backfill/data/fixture_discovery_receipts'
+    receipt_sources = (
         'data/normalized/research_v2_provider_responses.jsonl',
         'data/research/manual_historical_provider_receipts.jsonl',
-    ):
+    ) + tuple(str(p.relative_to(root)) for p in sorted(discovery_dir.glob('*.json')))
+    for relative in receipt_sources:
         receipts = root / relative
         if not receipts.exists():
             continue
-        is_research_receipt = relative.startswith('data/research/')
-        for number, line in enumerate(receipts.read_text().splitlines(), 1):
-            if not line.strip():
-                continue
-            receipt = json.loads(line)
+        from_discovery_cache = relative.startswith('research/historical_backfill/data/fixture_discovery_receipts/')
+        is_research_receipt = relative.startswith('data/research/') or from_discovery_cache
+        records = ([(1, receipts.read_text(), json.loads(receipts.read_text()))]
+                   if from_discovery_cache else
+                   [(number, line, json.loads(line)) for number, line in
+                    enumerate(receipts.read_text().splitlines(), 1) if line.strip()])
+        for number, line, receipt in records:
             if receipt.get('provider') != 'oddspapi' or receipt.get('endpoint') != '/fixtures':
                 continue
             if not receipt.get('response_id') or not receipt.get('observed_at'):

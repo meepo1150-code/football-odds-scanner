@@ -55,7 +55,7 @@ jobs:
         with: {python-version: '3.12'}
       - run: python -m pip install -e '.[dev]'
       - name: Offline time and safety tests; no provider secrets
-        run: python -m pytest -q tests/test_manual_historical.py tests/test_historical_growing_cache.py
+        run: python -m pytest -q tests/test_manual_historical.py tests/test_historical_growing_cache.py tests/test_manual_historical_fixture_discovery.py
       - uses: actions/cache/restore@v4
         id: history_cache
         if: inputs.mode != 'plan'
@@ -63,6 +63,7 @@ jobs:
           path: |
             research/historical_backfill/data/raw
             research/historical_backfill/data/cache
+            research/historical_backfill/data/fixture_discovery_receipts
           key: historical-manual-v1-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: historical-manual-v1-
       - name: Bootstrap reviewed prior experiment cache when no manual cache exists
@@ -91,11 +92,12 @@ jobs:
         if: always()
         run: git diff --exit-code -- data reports config
       - uses: actions/cache/save@v4
-        if: always() && hashFiles('research/historical_backfill/data/cache/**/*.json') != '' && (steps.history_cache.outputs.cache-matched-key == '' || hashFiles('research/manual_historical/output/new_cache/cache/**/*.json') != '')
+        if: always() && ((hashFiles('research/historical_backfill/data/cache/**/*.json') != '' && (steps.history_cache.outputs.cache-matched-key == '' || hashFiles('research/manual_historical/output/new_cache/cache/**/*.json') != '')) || hashFiles('research/manual_historical/output/discovery_receipts/*.json') != '')
         with:
           path: |
             research/historical_backfill/data/raw
             research/historical_backfill/data/cache
+            research/historical_backfill/data/fixture_discovery_receipts
           key: historical-manual-v1-${{ github.run_id }}-${{ github.run_attempt }}
       - uses: actions/upload-artifact@v4
         if: always()
