@@ -122,9 +122,11 @@ def build(root, start, end, times, bookmakers, now):
             continue
         from_discovery_cache = relative.startswith('research/historical_backfill/data/fixture_discovery_receipts/')
         is_research_receipt = relative.startswith('data/research/') or from_discovery_cache
-        records = ([json.loads(receipts.read_text())] if from_discovery_cache else
-                   [json.loads(line) for line in receipts.read_text().splitlines() if line.strip()])
-        for number, receipt in enumerate(records, 1):
+        records = ([(1, receipts.read_text(), json.loads(receipts.read_text()))]
+                   if from_discovery_cache else
+                   [(number, line, json.loads(line)) for number, line in
+                    enumerate(receipts.read_text().splitlines(), 1) if line.strip()])
+        for number, line, receipt in records:
             if receipt.get('provider') != 'oddspapi' or receipt.get('endpoint') != '/fixtures':
                 continue
             if not receipt.get('response_id') or not receipt.get('observed_at'):
