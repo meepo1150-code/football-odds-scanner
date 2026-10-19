@@ -1,20 +1,23 @@
 {
   "schema_version": "1.0",
   "classification": "FOTMOB_EXACT_RESULT_BACKFILL",
-  "missing_before": 1,
-  "missing_after": 1,
+  "missing_before": 2,
+  "missing_after": 2,
   "verified_bridge_matches": 0,
   "days_requested": [
     "2026-09-05",
     "2026-09-06",
-    "2026-09-07"
+    "2026-09-07",
+    "2026-10-18",
+    "2026-10-19",
+    "2026-10-20"
   ],
-  "events_fetched": 1442,
+  "events_fetched": 2319,
   "exact_results_added": 0,
   "ambiguous_exact_matches_rejected": 0,
   "exact_identity_unfinished": 0,
-  "no_exact_identity": 1,
-  "kickoff_candidate_only": 1,
+  "no_exact_identity": 2,
+  "kickoff_candidate_only": 2,
   "kickoff_candidate_samples": [
     {
       "fixture_id": "id1000062972498232",
@@ -124,6 +127,27 @@
           "league": "Liga 1"
         }
       ]
+    },
+    {
+      "fixture_id": "id1000021872409728",
+      "snapshot": {
+        "home": "FC Kharkiv",
+        "away": "FC Livyi Bereh Kyiv",
+        "kickoff": "2026-10-19T10:00:00+00:00"
+      },
+      "fotmob_candidates": [
+        {
+          "id": 5909177,
+          "home": "FC Kharkiv",
+          "away": "Liviy Bereh",
+          "finished": true,
+          "score": [
+            2,
+            1
+          ],
+          "league": "Premier League"
+        }
+      ]
     }
   ],
   "request_failures": [],
@@ -132,8 +156,8 @@
   "promotion_eligible": false,
   "retired_included": false,
   "deferred_days": [],
-  "generated_at": "2026-10-19T08:32:19.423323+00:00",
-  "requests_used": 0,
+  "generated_at": "2026-10-19T14:40:27.078095+00:00",
+  "requests_used": 3,
   "cache_hits": 3,
   "stale_cache_fallbacks": 0,
   "fetch_evidence": [
@@ -154,9 +178,27 @@
       "source": "CACHE",
       "fetched_at": "2026-10-18T16:32:05.265932+00:00",
       "requests": 0
+    },
+    {
+      "day": "2026-10-18",
+      "source": "NETWORK",
+      "fetched_at": "2026-10-19T14:40:25.867668+00:00",
+      "requests": 1
+    },
+    {
+      "day": "2026-10-19",
+      "source": "NETWORK",
+      "fetched_at": "2026-10-19T14:40:26.440672+00:00",
+      "requests": 1
+    },
+    {
+      "day": "2026-10-20",
+      "source": "NETWORK",
+      "fetched_at": "2026-10-19T14:40:26.744185+00:00",
+      "requests": 1
     }
   ],
-  "existing_results_revalidated": 71,
+  "existing_results_revalidated": 124,
   "invalid_ft_results_quarantined": 0,
   "invalid_ft_fixture_ids": []
 }
