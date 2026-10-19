@@ -80,7 +80,7 @@ class HttpClient:
         self.opener=urllib.request.build_opener(NoRedirect())
 
     def __call__(self,path,params):
-        if path not in ('/account','/historical-odds'):raise StopPilot('ENDPOINT_NOT_ALLOWED')
+        if path not in ('/account','/historical-odds','/fixtures'):raise StopPilot('ENDPOINT_NOT_ALLOWED')
         if 'apiKey' in params:raise StopPilot('KEY_IN_REQUEST_MANIFEST')
         url='https://api.oddspapi.io/v4'+path+'?'+urllib.parse.urlencode({**params,'apiKey':self.key})
         try:
