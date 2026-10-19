@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-10-19T08:32:19.447781+00:00",
+  "generated_at": "2026-10-19T15:17:23.023359+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 1851,
+  "settled_fixtures": 1855,
   "movement_classification_counts": {
-    "SINGLE_OBSERVATION": 754,
+    "SINGLE_OBSERVATION": 758,
     "AH_LINE_UNCHANGED__PRICE_DOWN": 359,
     "AH_LINE_UNCHANGED__PRICE_UP": 314,
     "AH_LINE_UNCHANGED__PRICE_FLAT": 110,
@@ -7278,7 +7278,7 @@
   },
   "ft_triage_counts": {
     "POSTPONED": 1,
-    "FUTURE_OR_RECENT": 42,
+    "FUTURE_OR_RECENT": 39,
     "IDENTITY_CONFLICT": 2,
     "ACTIVE_OVERDUE": 1
   },
@@ -7330,14 +7330,6 @@
       "canonical_competition_id": "GEO-0001",
       "league": "Erovnuli Liga",
       "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Greece",
-      "canonical_competition_id": "GRC-0002",
-      "league": "Super League Greece 2",
-      "n": 2
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -7422,14 +7414,6 @@
     {
       "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
-      "country": "North Macedonia",
-      "canonical_competition_id": "MKD-0001",
-      "league": "Macedonian First Football League",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
       "country": "Poland",
       "canonical_competition_id": "POL-0001",
       "league": "Ekstraklasa",
@@ -7450,6 +7434,14 @@
       "canonical_competition_id": "ROU-0001",
       "league": "Liga I",
       "n": 2
+    },
+    {
+      "lifecycle": "FUTURE_OR_RECENT",
+      "provider": "oddspapi",
+      "country": "Serbia",
+      "canonical_competition_id": "SRB-0002",
+      "league": "Serbian First League",
+      "n": 1
     },
     {
       "lifecycle": "FUTURE_OR_RECENT",
@@ -7506,14 +7498,6 @@
       "canonical_competition_id": "TUR-0002",
       "league": "TFF 1 Lig",
       "n": 4
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Ukraine",
-      "canonical_competition_id": "UKR-0001",
-      "league": "Ukrainian Premier League",
-      "n": 1
     },
     {
       "lifecycle": "IDENTITY_CONFLICT",
@@ -7993,42 +7977,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000018674172474",
-      "provider": "oddspapi",
-      "football_day": "2026-10-19",
-      "league": "Super League Greece 2",
-      "kickoff": "2026-10-19T12:00:00+00:00",
-      "home": "PAOK Thessaloniki B",
-      "away": "Apollon Kalamarias",
-      "status": "MISSING_FT",
-      "country": "Greece",
-      "canonical_competition_id": "GRC-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000018674172478",
-      "provider": "oddspapi",
-      "football_day": "2026-10-19",
-      "league": "Super League Greece 2",
-      "kickoff": "2026-10-19T11:45:00+00:00",
-      "home": "Niki Volou 1924 PAE",
-      "away": "Panionios Athens",
-      "status": "MISSING_FT",
-      "country": "Greece",
-      "canonical_competition_id": "GRC-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000018874506424",
       "provider": "oddspapi",
       "football_day": "2026-10-19",
@@ -8137,24 +8085,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000019972045790",
-      "provider": "oddspapi",
-      "football_day": "2026-10-19",
-      "league": "Macedonian First Football League",
-      "kickoff": "2026-10-19T12:00:00+00:00",
-      "home": "FK Arsimi 1973",
-      "away": "GFK Tikvesh 1930",
-      "status": "MISSING_FT",
-      "country": "North Macedonia",
-      "canonical_competition_id": "MKD-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000020272043212",
       "provider": "oddspapi",
       "football_day": "2026-10-19",
@@ -8165,24 +8095,6 @@
       "status": "MISSING_FT",
       "country": "Poland",
       "canonical_competition_id": "POL-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
-      "fixture_id": "id1000021872409728",
-      "provider": "oddspapi",
-      "football_day": "2026-10-19",
-      "league": "Ukrainian Premier League",
-      "kickoff": "2026-10-19T10:00:00+00:00",
-      "home": "FC Kharkiv",
-      "away": "FC Livyi Bereh Kyiv",
-      "status": "MISSING_FT",
-      "country": "Ukraine",
-      "canonical_competition_id": "UKR-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "FUTURE_OR_RECENT",
@@ -8273,6 +8185,24 @@
       "status": "MISSING_FT",
       "country": "Georgia",
       "canonical_competition_id": "GEO-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
+      "fixture_id": "id1000072172120952",
+      "provider": "oddspapi",
+      "football_day": "2026-10-19",
+      "league": "Serbian First League",
+      "kickoff": "2026-10-19T16:00:00+00:00",
+      "home": "FK Spartak Subotica",
+      "away": "FK Borac Cacak",
+      "status": "MISSING_FT",
+      "country": "Serbia",
+      "canonical_competition_id": "SRB-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false,
       "lifecycle": "FUTURE_OR_RECENT",
