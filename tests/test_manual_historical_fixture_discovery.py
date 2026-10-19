@@ -42,7 +42,7 @@ def fake_accounts(key):
         bookmakers={'pinnacle': {}, 'bet365': {}})])
 
 
-def run(tmp_path, *, mode='recover', confirm=True, provider_rows=None, monkeypatch=None):
+def run(tmp_path, *, mode='recover', confirm=True, provider_rows=None, monkeypatch=None, **selected):
     if monkeypatch is not None:
         from odds_scanner import master_schedule_plan
         monkeypatch.setattr(master_schedule_plan, 'registry', lambda: [
@@ -63,7 +63,7 @@ def run(tmp_path, *, mode='recover', confirm=True, provider_rows=None, monkeypat
             raise AssertionError('Unexpected HTTP endpoint: '+path)
         return request
 
-    report = runner.execute(options(mode=mode, confirm_live_requests=confirm),
+    report = runner.execute(options(mode=mode, confirm_live_requests=confirm, **selected),
         root=tmp_path, clock=lambda: NOW, sleeper=lambda _: None,
         client_factory=factory,
         health_reader=lambda: dict(generated_at=NOW.isoformat(),
@@ -150,3 +150,24 @@ def test_transport_allows_only_explicit_read_endpoints():
     client = HttpClient('dummy')
     with pytest.raises(StopPilot, match='ENDPOINT_NOT_ALLOWED'):
         client('/odds', {})
+
+
+def test_multi_day_discovers_only_days_without_existing_evidence(tmp_path, monkeypatch):
+    original = tmp_path / planner.SOURCES[0]
+    original.parent.mkdir(parents=True, exist_ok=True)
+    original.write_text(json.dumps(dict(
+        fixture_id='id987', bookmaker='pinnacle', home='Home7', away='Away7',
+        league='Verified League', kickoff='2026-09-07T18:00:00Z',
+        observed_at='2026-09-07T07:00:00Z',
+        source_semantics='CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED'))+'\n')
+    report, calls = run(tmp_path, monkeypatch=monkeypatch,
+                        end_day='2026-09-07')
+    fixture_calls = [params for _, path, params in calls if path == '/fixtures']
+    assert len(fixture_calls) == 3
+    assert {params['from'] for params in fixture_calls} == {
+        '2026-09-03T23:00:00Z',
+        '2026-09-04T23:00:00Z',
+        '2026-09-05T23:00:00Z',
+    }
+    assert report['fixture_discovery_existing_evidence_days'] == 1
+    assert report['plan']['unique_fixtures'] == 2
