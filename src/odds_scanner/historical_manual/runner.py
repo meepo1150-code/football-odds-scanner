@@ -195,7 +195,8 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
     env = os.environ if environ is None else environ
     out, cache = root/OUT, root/CACHE
     report = dict(status='BLOCKED', historical_requests=0, account_requests=0, cache_hits=0,
-        errors=[], results=[], requests=[], fixture_discovery_requests=0,\n        fixture_discovery_days=[], production_writes=0, research_only=True,
+        errors=[], results=[], requests=[], fixture_discovery_requests=0,
+        fixture_discovery_days=[], production_writes=0, research_only=True,
         run_url=f"https://github.com/{env.get('GITHUB_REPOSITORY', '')}/actions/runs/{env.get('GITHUB_RUN_ID', '')}")
     production = None
     def save():
