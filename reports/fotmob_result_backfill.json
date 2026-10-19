@@ -1,124 +1,127 @@
 {
   "schema_version": "1.0",
   "classification": "FOTMOB_EXACT_RESULT_BACKFILL",
-  "missing_before": 78,
-  "missing_after": 78,
+  "missing_before": 1,
+  "missing_after": 1,
   "verified_bridge_matches": 0,
   "days_requested": [
-    "2026-10-18",
-    "2026-10-19"
+    "2026-09-05",
+    "2026-09-06",
+    "2026-09-07"
   ],
-  "events_fetched": 758,
+  "events_fetched": 1442,
   "exact_results_added": 0,
   "ambiguous_exact_matches_rejected": 0,
   "exact_identity_unfinished": 0,
-  "no_exact_identity": 78,
-  "kickoff_candidate_only": 3,
+  "no_exact_identity": 1,
+  "kickoff_candidate_only": 1,
   "kickoff_candidate_samples": [
     {
-      "fixture_id": "id1000018674172478",
+      "fixture_id": "id1000062972498232",
       "snapshot": {
-        "home": "Niki Volou 1924 PAE",
-        "away": "Panionios Athens",
-        "kickoff": "2026-10-19T11:45:00+00:00"
+        "home": "Hamrun Spartans FC",
+        "away": "Zabbar Saint Patrick FC",
+        "kickoff": "2026-09-06T18:30:00+00:00"
       },
       "fotmob_candidates": [
         {
-          "id": 6140232,
-          "home": "Niki Volou",
-          "away": "Panionios",
-          "finished": true,
-          "score": [
-            1,
-            1
-          ],
-          "league": "Super League 2"
-        }
-      ]
-    },
-    {
-      "fixture_id": "id1000018674172474",
-      "snapshot": {
-        "home": "PAOK Thessaloniki B",
-        "away": "Apollon Kalamarias",
-        "kickoff": "2026-10-19T12:00:00+00:00"
-      },
-      "fotmob_candidates": [
-        {
-          "id": 5804949,
-          "home": "Arsimi",
-          "away": "GFK Tikves Kavadarci",
-          "finished": true,
-          "score": [
-            1,
-            1
-          ],
-          "league": "Prva Liga"
-        },
-        {
-          "id": 6140234,
-          "home": "PAOK Thessaloniki B",
-          "away": "Kalamaria",
-          "finished": true,
-          "score": [
-            2,
-            1
-          ],
-          "league": "Super League 2"
-        },
-        {
-          "id": 1000021991,
-          "home": "Mes Shahr Babak",
-          "away": "Persepolis",
+          "id": 5978450,
+          "home": "CA Bartolome Mitre",
+          "away": "Gimnasia y Esgrima de Chivilcoy",
           "finished": true,
           "score": [
             0,
-            3
+            1
           ],
-          "league": "Persian Gulf"
-        }
-      ]
-    },
-    {
-      "fixture_id": "id1000019972045790",
-      "snapshot": {
-        "home": "FK Arsimi 1973",
-        "away": "GFK Tikvesh 1930",
-        "kickoff": "2026-10-19T12:00:00+00:00"
-      },
-      "fotmob_candidates": [
+          "league": "Federal A Promotion Zona A"
+        },
         {
-          "id": 5804949,
-          "home": "Arsimi",
-          "away": "GFK Tikves Kavadarci",
+          "id": 5978487,
+          "home": "Huracán Las Heras",
+          "away": "Argentino Monte Maíz",
+          "finished": true,
+          "score": [
+            1,
+            2
+          ],
+          "league": "Federal A Promotion Zona B"
+        },
+        {
+          "id": 5978489,
+          "home": "Olimpo",
+          "away": "Club Cipolletti",
           "finished": true,
           "score": [
             1,
             1
           ],
-          "league": "Prva Liga"
+          "league": "Federal A Promotion Zona B"
         },
         {
-          "id": 6140234,
-          "home": "PAOK Thessaloniki B",
-          "away": "Kalamaria",
-          "finished": true,
-          "score": [
-            2,
-            1
-          ],
-          "league": "Super League 2"
-        },
-        {
-          "id": 1000021991,
-          "home": "Mes Shahr Babak",
-          "away": "Persepolis",
+          "id": 5882279,
+          "home": "Real Madrid (W)",
+          "away": "Eibar (W)",
           "finished": true,
           "score": [
             0,
-            3
+            0
           ],
-          "league": "Persian Gulf"
+          "league": "Liga F"
+        },
+        {
+          "id": 5883249,
+          "home": "Zamora",
+          "away": "Logroñés",
+          "finished": true,
+          "score": [
+            1,
+            2
+          ],
+          "league": "Primera Federacion - Group 1"
+        },
+        {
+          "id": 5113058,
+          "home": "Almagro",
+          "away": "Gimnasia Jujuy",
+          "finished": true,
+          "score": [
+            1,
+            2
+          ],
+          "league": "Primera Nacional"
+        },
+        {
+          "id": 5113063,
+          "home": "San Martín San Juan",
+          "away": "CA Ferrocarril Midland",
+          "finished": true,
+          "score": [
+            3,
+            2
+          ],
+          "league": "Primera Nacional"
+        },
+        {
+          "id": 5943244,
+          "home": "Panathinaikos",
+          "away": "PAOK Thessaloniki",
+          "finished": true,
+          "score": [
+            3,
+            1
+          ],
+          "league": "Super League"
+        },
+        {
+          "id": 1000017223,
+          "home": "Deportivo Garcilaso",
+          "away": "Atlético Grau",
+          "finished": true,
+          "score": [
+            4,
+            2
+          ],
+          "league": "Liga 1"
         }
       ]
     }
@@ -127,27 +130,33 @@
   "matching_policy": "EXACT_ALIAS_OR_SAFE_CLUB_TOKEN_HOME_AWAY_AND_EXACT_UTC_KICKOFF_UNIQUE_ONLY",
   "fuzzy_matching_used": false,
   "promotion_eligible": false,
-  "retired_included": true,
+  "retired_included": false,
   "deferred_days": [],
-  "generated_at": "2026-10-19T15:17:11.002242+00:00",
+  "generated_at": "2026-10-19T15:35:56.632922+00:00",
   "requests_used": 0,
-  "cache_hits": 2,
+  "cache_hits": 3,
   "stale_cache_fallbacks": 0,
   "fetch_evidence": [
     {
-      "day": "2026-10-18",
+      "day": "2026-09-05",
       "source": "CACHE",
-      "fetched_at": "2026-10-19T14:40:25.867668+00:00",
+      "fetched_at": "2026-10-19T06:12:42.365870+00:00",
       "requests": 0
     },
     {
-      "day": "2026-10-19",
+      "day": "2026-09-06",
       "source": "CACHE",
-      "fetched_at": "2026-10-19T14:40:26.440672+00:00",
+      "fetched_at": "2026-10-19T06:12:43.406567+00:00",
+      "requests": 0
+    },
+    {
+      "day": "2026-09-07",
+      "source": "CACHE",
+      "fetched_at": "2026-10-18T16:32:05.265932+00:00",
       "requests": 0
     }
   ],
-  "existing_results_revalidated": 53,
+  "existing_results_revalidated": 71,
   "invalid_ft_results_quarantined": 0,
   "invalid_ft_fixture_ids": []
 }
