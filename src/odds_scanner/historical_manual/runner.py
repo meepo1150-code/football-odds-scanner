@@ -7,7 +7,7 @@ import shutil
 import tempfile
 import time
 from collections import Counter
-from datetime import datetime, timezone, timedelta, time as day_time, date
+from datetime import datetime, timezone, timedelta, time as day_time
 from pathlib import Path
 
 from .planner import BKK, build, stamp, parse_days
@@ -231,18 +231,23 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
         # Existing evidence has priority. Only confirmed recover runs may
         # discover otherwise missing exact IDs through the provider's native
         # /fixtures endpoint. Never infer IDs from names or historical prices.
-        if not manifest['candidates'] and args.mode == 'recover' and args.confirm_live_requests:
-            if (env.get('GITHUB_EVENT_NAME') != 'workflow_dispatch'
-                    or env.get('GITHUB_REF') != 'refs/heads/main'
-                    or env.get('PILOT_ENVIRONMENT') != 'historical-research'):
-                raise StopPilot('MAIN_MANUAL_HISTORICAL_ENVIRONMENT_REQUIRED')
+        if args.mode == 'recover' and args.confirm_live_requests:
             from odds_scanner.master_schedule_plan import items, registry
             receipts = cache/'fixture_discovery_receipts'
             requested_days = parse_days(args.start_day, args.end_day)
-            pending_days = [day for day in requested_days if not (
-                receipts/(day.isoformat()+'.json')).exists()]
-            report['fixture_discovery_cached_days'] = len(requested_days)-len(pending_days)
+            covered_days = {c['football_day'] for c in manifest['candidates']}
+            pending_days = [day for day in requested_days if
+                day.isoformat() not in covered_days and
+                not (receipts/(day.isoformat()+'.json')).exists()]
+            report['fixture_discovery_cached_days'] = sum(
+                (receipts/(day.isoformat()+'.json')).exists()
+                for day in requested_days)
+            report['fixture_discovery_existing_evidence_days'] = len(covered_days)
             if pending_days:
+                if (env.get('GITHUB_EVENT_NAME') != 'workflow_dispatch'
+                        or env.get('GITHUB_REF') != 'refs/heads/main'
+                        or env.get('PILOT_ENVIRONMENT') != 'historical-research'):
+                    raise StopPilot('MAIN_MANUAL_HISTORICAL_ENVIRONMENT_REQUIRED')
                 reader = health_reader or (lambda: fresh_health(root))
                 baseline = reader()
                 production = account(env.get('ACCOUNT_PROBE_KEY'), set())
