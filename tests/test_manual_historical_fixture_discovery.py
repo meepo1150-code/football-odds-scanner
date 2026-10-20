@@ -181,7 +181,7 @@ def test_thousand_row_discovery_is_split_and_only_completed_rows_become_candidat
     calls = []
     oversized = [fixture(fixtureId='id'+str(10000+i), tournamentId=999)
                  for i in range(1000)]
-    approved = fixture()
+    approved = fixture(startTime='2026-08-30T19:00:00Z')
     def factory(key):
         def request(path, params):
             calls.append((key, path, params))
