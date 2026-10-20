@@ -1,8 +1,5 @@
 name: Auto Scan
 on:
-  schedule:
-    - cron: '0 8,11,14,17 * * *' # Bangkok daily 15:00/18:00/21:00/00:00
-    - cron: '0 5 * * 6,0' # Bangkok Saturday/Sunday 12:00
   workflow_dispatch:
     inputs:
       confirm_live_requests:
@@ -17,7 +14,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   observe:
-    if: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'schedule' || inputs.confirm_live_requests == true) }}
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'workflow_dispatch' && inputs.confirm_live_requests == true }}
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     env:
