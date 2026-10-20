@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-19T15:17:25.037163+00:00",
-  "football_day": "2026-10-19",
+  "generated_at": "2026-10-20T09:03:36.209397+00:00",
+  "football_day": "2026-10-20",
   "status": "FAIL",
   "issues": [
     "SCAN_MISSING",
@@ -10,32 +10,10 @@
     "UNMATCHED_IDENTITY_CANDIDATES",
     "LATEST_SCAN_WARNING"
   ],
-  "scan_missing_count": 3,
+  "scan_missing_count": 1,
   "scan_missing": [
     {
-      "target_time": "2026-10-19T15:00:00+07:00",
-      "state": "MISSED",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "MISSED",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-10-19T18:00:00+07:00",
-      "state": "MISSED",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "MISSED",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-10-19T21:00:00+07:00",
+      "target_time": "2026-10-20T15:00:00+07:00",
       "state": "MISSING",
       "provider": null,
       "observed_at": null,
@@ -70,11 +48,11 @@
       "kickoff": "2026-09-06T18:30:00+00:00",
       "home": "Hamrun Spartans FC",
       "away": "Zabbar Saint Patrick FC",
-      "status": "MISSING_FT",
+      "status": "RETIRED_UNRESOLVED",
       "country": null,
       "canonical_competition_id": null,
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
+      "retired_from_active_queue": true
     },
     {
       "fixture_id": "pinnwire:1637096650",
@@ -120,29 +98,7 @@
   "history_report_count": 30,
   "canonical_slots": [
     {
-      "target_time": "2026-10-19T15:00:00+07:00",
-      "state": "MISSED",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "MISSED",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-10-19T18:00:00+07:00",
-      "state": "MISSED",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "MISSED",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-10-19T21:00:00+07:00",
+      "target_time": "2026-10-20T15:00:00+07:00",
       "state": "MISSING",
       "provider": null,
       "observed_at": null,
@@ -153,7 +109,29 @@
       "recovered": false
     },
     {
-      "target_time": "2026-10-20T00:00:00+07:00",
+      "target_time": "2026-10-20T18:00:00+07:00",
+      "state": "UPCOMING",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "UPCOMING",
+      "recovered": false
+    },
+    {
+      "target_time": "2026-10-20T21:00:00+07:00",
+      "state": "UPCOMING",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "UPCOMING",
+      "recovered": false
+    },
+    {
+      "target_time": "2026-10-21T00:00:00+07:00",
       "state": "UPCOMING",
       "provider": null,
       "observed_at": null,
@@ -168,12 +146,12 @@
   "raw_deleted": 0,
   "approved_unresolved_fixtures_retained": true,
   "next_slot_readiness": {
-    "target_at": "2026-10-20T00:00:00+07:00",
-    "football_day": "2026-10-19",
+    "target_at": "2026-10-20T18:00:00+07:00",
+    "football_day": "2026-10-20",
     "status": "UNVERIFIED_OR_CAPACITY_BLOCKED",
     "fixture_set_size": null,
     "remaining_prematch_at_target": 0,
-    "prematch_forecast_at": "2026-10-20T00:03:00+07:00",
+    "prematch_forecast_at": "2026-10-20T18:03:00+07:00",
     "unconfirmed_grants": [],
     "blocked_reasons": [
       "FIXED_COHORT_UNAVAILABLE"
@@ -181,29 +159,32 @@
     "pending_fixture_ids": [],
     "required_market_requests": 0,
     "allocated_tournament_ids": [],
-    "quota_utc_day": "2026-10-19",
+    "quota_utc_day": "2026-10-20",
     "research_usage": {
-      "day": 40,
-      "month": 431
+      "day": 20,
+      "month": 491
     },
-    "account_remaining_estimate": 111,
-    "account_observed_before": "2026-10-19T14:11:06.890411+00:00",
+    "account_remaining_estimate": 92,
+    "account_observed_before": "2026-10-20T08:15:48.759238+00:00",
     "account_estimate_limitation": "OTHER_ACCOUNT_CONSUMERS_AFTER_OBSERVATION_NOT_MEASURED; RECHECK_UNMETERED_ACCOUNT_AT_COLLECTION",
     "fixture_set_policy": null,
     "schedule_response_id": null,
     "budget": {
       "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
-      "research_requests_used_today": 40,
-      "research_requests_used_month": 431,
+      "research_requests_used_today": 20,
+      "research_requests_used_month": 491,
       "research_daily_limit": 6,
       "research_monthly_limit": 180,
       "research_run_limit": 2,
-      "quota_utc_day": "2026-10-19",
+      "quota_utc_day": "2026-10-20",
       "canonical_slots_in_football_day": 4,
-      "future_utc_slots": [],
-      "future_utc_requests_reserved": 0,
+      "future_utc_slots": [
+        "2026-10-20T14:00:00+00:00",
+        "2026-10-20T17:00:00+00:00"
+      ],
+      "future_utc_requests_reserved": 2,
       "current_canonical_requests_reserved": 0,
-      "future_month_requests_reserved": 60,
+      "future_month_requests_reserved": 55,
       "canonical_request_reservation": "UTC_FUTURE_SLOTS_PLUS_DISCOVERY; MANUAL_AND_RECOVERY_YIELD; FAILED_ATTEMPTS_COUNT",
       "budget_scope": "ODDSPAPI_RESEARCH_COLLECTOR_ONLY",
       "coverage_mode": "MASTER_SCHEDULE_PRIORITIZED",
