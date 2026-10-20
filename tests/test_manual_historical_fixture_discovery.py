@@ -188,7 +188,8 @@ def test_thousand_row_discovery_is_split_and_only_completed_rows_become_candidat
             if path == '/account':
                 return 200, {}, json.dumps(fake_accounts(key)).encode()
             if path == '/fixtures':
-                if params['from'] == '2026-08-29T23:00:00Z':
+                if (params['from'] == '2026-08-29T23:00:00Z' and
+                        params['to'] == '2026-08-30T23:00:00Z'):
                     return 200, {}, json.dumps(oversized).encode()
                 if params['from'] == '2026-08-30T11:00:00Z':
                     return 200, {}, json.dumps([approved]).encode()
