@@ -1,4 +1,4 @@
-"""Auto is the proven Manual job plus cron, not a different collector."""
+"""External scheduling dispatches the unchanged proven Auto collection job."""
 from copy import deepcopy
 from datetime import datetime, timedelta, timezone
 import json
@@ -26,7 +26,7 @@ def test_auto_job_is_manual_copy_with_only_trigger_and_publication_names_changed
         assert auto[key] == manual[key]
     assert auto['concurrency']['cancel-in-progress'] is False
     assert events(auto)['workflow_dispatch'] == events(manual)['workflow_dispatch']
-    assert set(events(auto)) == {'schedule', 'workflow_dispatch'}
+    assert set(events(auto)) == {'workflow_dispatch'}
     copied = deepcopy(auto['jobs'])
     copied['observe']['if'] = manual['jobs']['observe']['if']
     publication = copied['observe']['steps'][-1]
@@ -36,23 +36,32 @@ def test_auto_job_is_manual_copy_with_only_trigger_and_publication_names_changed
     assert copied == manual['jobs']
     condition = auto['jobs']['observe']['if']
     assert "github.ref == 'refs/heads/main'" in condition
-    assert "github.event_name == 'schedule' || inputs.confirm_live_requests == true" in condition
+    assert "github.event_name == 'workflow_dispatch' && inputs.confirm_live_requests == true" in condition
     assert auto['jobs']['observe']['env']['ODDSPAPI_KEY'] == '${{ secrets.HISTORICAL_ODDSPAPI_KEY }}'
 
 
-def test_utc_cron_yields_exact_bangkok_rounds_including_weekend_noon():
-    schedules = events(workflow('auto-scan.yml'))['schedule']
-    assert {item['cron'] for item in schedules} == {'0 8,11,14,17 * * *', '0 5 * * 6,0'}
+def test_external_schedule_yields_exact_bangkok_rounds_including_weekend_noon():
+    jobs = json.loads(Path('config/auto-scan-external-schedules.json').read_text())['jobs']
+    assert len(jobs) == 2
+    assert all(job['enabled'] is False for job in jobs)
+    assert all(job['requestMethod'] == 1 for job in jobs)
+    for job in jobs:
+        assert job['url'] == 'https://api.github.com/repos/meepo1150-code/football-odds-scanner/actions/workflows/auto-scan.yml/dispatches'
+        assert json.loads(job['extendedData']['body']) == {'ref': 'main', 'inputs': {'confirm_live_requests': True}}
+        assert job['extendedData']['headers']['Authorization'] == 'Bearer REPLACE_IN_SCHEDULER_ONLY'
+        assert job['schedule']['timezone'] == 'Asia/Bangkok'
+        assert job['schedule']['minutes'] == [0]
+        assert job['schedule']['mdays'] == job['schedule']['months'] == [-1]
     bkk = ZoneInfo('Asia/Bangkok')
     start = datetime(2026, 10, 19, tzinfo=bkk)
     slots = []
     for hour in range(7*24):
         utc = start.astimezone(timezone.utc) + timedelta(hours=hour)
-        for item in schedules:
-            minute, hours, day, month, weekdays = item['cron'].split()
-            assert minute == '0' and day == month == '*'
-            if str(utc.hour) in hours.split(',') and (weekdays == '*' or str((utc.weekday()+1)%7) in weekdays.split(',')):
-                slots.append(utc.astimezone(bkk))
+        local = utc.astimezone(bkk)
+        for job in jobs:
+            schedule = job['schedule']
+            if local.hour in schedule['hours'] and (schedule['wdays'] == [-1] or (local.weekday()+1)%7 in schedule['wdays']):
+                slots.append(local)
     assert len(slots) == len(set(slots)) == 30
     for day in range(7):
         date = (start + timedelta(days=day)).date()
