@@ -171,3 +171,76 @@ def test_multi_day_discovers_only_days_without_existing_evidence(tmp_path, monke
     }
     assert report['fixture_discovery_existing_evidence_days'] == 1
     assert report['plan']['unique_fixtures'] == 2
+
+
+def test_thousand_row_discovery_is_split_and_only_completed_rows_become_candidates(
+        tmp_path, monkeypatch):
+    from odds_scanner import master_schedule_plan
+    monkeypatch.setattr(master_schedule_plan, 'registry', lambda: [
+        dict(tournament_id=17, tournament_name='Verified League')])
+    calls = []
+    oversized = [fixture(fixtureId='id'+str(10000+i), tournamentId=999)
+                 for i in range(1000)]
+    approved = fixture()
+    def factory(key):
+        def request(path, params):
+            calls.append((key, path, params))
+            if path == '/account':
+                return 200, {}, json.dumps(fake_accounts(key)).encode()
+            if path == '/fixtures':
+                if params['from'] == '2026-08-29T23:00:00Z':
+                    return 200, {}, json.dumps(oversized).encode()
+                if params['from'] == '2026-08-30T11:00:00Z':
+                    return 200, {}, json.dumps([approved]).encode()
+                return 200, {}, json.dumps([approved]).encode()
+            if path == '/historical-odds':
+                return 200, {}, json.dumps(dict(
+                    fixtureId=params['fixtureId'], bookmakers={})).encode()
+            raise AssertionError(path)
+        return request
+    result = runner.execute(options(start_day='2026-08-30',
+        end_day='2026-08-30'), root=tmp_path, clock=lambda: NOW,
+        sleeper=lambda _: None, client_factory=factory,
+        health_reader=lambda: dict(generated_at=NOW.isoformat(),
+                                   status='PASS', issues=[]),
+        environ=ENV)
+    assert result['status'] == 'COMPLETED'
+    assert result['fixture_discovery_requests'] == 3
+    assert result['historical_requests'] == 1
+    assert result['plan']['unique_fixtures'] == 1
+    assert len(result['fixture_discovery_split_windows']) == 1
+    assert len([p for _, p, _ in calls if p == '/fixtures']) == 3
+    receipt = json.loads((tmp_path / runner.CACHE /
+        'fixture_discovery_receipts/2026-08-30.json').read_text())
+    assert receipt['completeness'] == 'SPLIT_WINDOWS_BELOW_1000_ROWS'
+    assert len(receipt['payload']) == 1
+    assert (tmp_path / runner.OUT / 'discovery_receipts/2026-08-30.json').exists()
+
+
+def test_provider_still_truncated_at_short_window_stops_without_publishing(tmp_path, monkeypatch):
+    from odds_scanner import master_schedule_plan
+    monkeypatch.setattr(master_schedule_plan, 'registry', lambda: [
+        dict(tournament_id=17, tournament_name='Verified League')])
+    huge = [fixture(fixtureId='id'+str(10000+i), tournamentId=999)
+            for i in range(1000)]
+    calls = []
+    def factory(key):
+        def request(path, params):
+            calls.append(path)
+            if path == '/account':
+                return 200, {}, json.dumps(fake_accounts(key)).encode()
+            if path == '/fixtures':
+                return 200, {}, json.dumps(huge).encode()
+            raise AssertionError(path)
+        return request
+    result = runner.execute(options(), root=tmp_path, clock=lambda: NOW,
+        sleeper=lambda _: None, client_factory=factory,
+        health_reader=lambda: dict(generated_at=NOW.isoformat(),
+                                   status='PASS', issues=[]),
+        environ=ENV)
+    assert result['status'] == 'BLOCKED'
+    assert result['errors'] == ['FIXTURE_DISCOVERY_WINDOW_STILL_TRUNCATED']
+    assert result['historical_requests'] == 0
+    assert result['fixture_discovery_requests'] <= 6
+    assert not (tmp_path / runner.CACHE /
+                'fixture_discovery_receipts/2026-09-04.json').exists()
