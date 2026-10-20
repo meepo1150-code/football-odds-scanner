@@ -11,6 +11,7 @@ on:
       - 'data/normalized/scan_health_history.jsonl'
       - 'reports/europe_pinnacle_research_v2_status.json'
       - 'src/odds_scanner/api_football_provider.py'
+      - 'src/odds_scanner/dashboard_ft_refresh.py'
       - 'reports/propline_research_v2_status.json'
       - 'reports/oddspapi_quota_health.json'
       - 'reports/research_v2_pattern_statistics.json'
@@ -71,7 +72,9 @@ jobs:
           Path("apps/dashboard/deployment.json").write_text(json.dumps({"source_sha": subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(), "run_id": os.environ["GITHUB_RUN_ID"]}))
           PYBUILD
           # Keep committed movement evidence unchanged during FT rollback.
-          # Publish the committed verified statistics; never rebuild from an empty snapshot cache during deployment.
+          # Refresh FT coverage after scans. The builder preserves retained FT
+          # outcomes and refuses to replace statistics from an empty snapshot cache.
+          PYTHONPATH=src python -m odds_scanner.dashboard_ft_refresh
           # Preserve restored verified evidence during FT rollback.
           # Do not rebuild cross-report audit during FT rollback.
           PYTHONPATH=src python -m odds_scanner.oddspapi_history_audit > /dev/null
@@ -89,6 +92,7 @@ jobs:
           for f in automatic_scan_latest.json scan_health_latest.json scan_health_monitor.json daily_preparation_status.json pinnwire_web_result_recovery_queue.json dashboard_scope.json research_v2_end_to_end_audit.json oddspapi_history_audit.json research_v2_operational_audit.json legacy_propline_recovery.json research_v2_daily_sync_status.json research_v2_movement_status.json propline_research_v2_status.json europe_pinnacle_research_v2_status.json oddspapi_quota_health.json research_v2_pattern_statistics.json pinnwire_result_join_status.json pinnwire_research_v2_status.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
+          test -f reports/research_v2_missing_ft_ledger.json && cp reports/research_v2_missing_ft_ledger.json site/reports/research_v2_missing_ft_ledger.json
           for f in automatic_scan_slots.jsonl automatic_scan_manifests.jsonl scan_health_history.jsonl europe_pinnacle_research_v2_snapshots.jsonl europe_pinnacle_research_v2_audit.jsonl research_v2_slot_ledger.jsonl oddspapi_finished_results.conflicts.jsonl oddspapi_finished_results.jsonl dashboard_verified_results.jsonl; do
             test -f "data/normalized/$f" && cp "data/normalized/$f" "site/data/normalized/$f" || true
           done
@@ -139,11 +143,15 @@ jobs:
               if Path('site/reports/research_v2_pattern_statistics.json').exists():
                   expected = json.loads(Path('site/reports/research_v2_pattern_statistics.json').read_text())
                   current = json.loads(read_live('reports/research_v2_pattern_statistics.json'))
-                  for key in ('raw_snapshot_rows', 'snapshot_rows', 'settled_fixtures'):
+                  for key in ('raw_snapshot_rows', 'snapshot_rows', 'settled_fixtures',
+                              'ft_completeness_denominator', 'raw_unresolved_ft_fixtures'):
                       if current.get(key) != expected.get(key):
                           raise RuntimeError(
                               f'Stale published statistics {key}: '
                               f"expected {expected.get(key)}, received {current.get(key)}")
+                  ledger = json.loads(read_live('reports/research_v2_missing_ft_ledger.json'))
+                  if ledger['missing_ft_count'] != current['raw_unresolved_ft_fixtures']:
+                      raise RuntimeError('Published FT ledger and statistics disagree')
               if Path('site/reports/automatic_scan_latest.json').exists():
                   expected = json.loads(Path('site/reports/automatic_scan_latest.json').read_text())
                   current = json.loads(read_live('reports/automatic_scan_latest.json'))
