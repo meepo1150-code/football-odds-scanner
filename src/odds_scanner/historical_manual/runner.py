@@ -269,24 +269,76 @@ def execute(args, *, root=Path('.'), clock=lambda: datetime.now(timezone.utc), s
                     health_check(reader(), baseline, clock(), account_isolation=isolation)
                     start = datetime.combine(day, day_time(6, 0), BKK).astimezone(timezone.utc)
                     end = start + timedelta(days=1)
-                    params = dict(sportId=10,
-                        **{'from':start.isoformat().replace('+00:00','Z'),
-                           'to':end.isoformat().replace('+00:00','Z')},
-                        statusId=2, limit=1000, language='en')
-                    sleeper(5.2)
-                    report['fixture_discovery_requests'] += 1
-                    save()
-                    status, _, raw = client('/fixtures', params)
-                    if status != 200:
-                        raise StopPilot('FIXTURE_DISCOVERY_HTTP_'+str(status)+'_STOP_NO_RETRY')
-                    payload = json.loads(raw)
-                    rows = items(payload)
-                    if len(rows) >= 1000:
-                        raise StopPilot('FIXTURE_DISCOVERY_TRUNCATED_REQUIRES_REVIEW')
-                    # Native identities and their response digest survive the
-                    # run, independent of the historical odds request cache.
+                    # The provider does not document a pagination cursor or
+                    # 'limit' parameter for /fixtures. A 1,000-row response is
+                    # potentially incomplete, so bisect the *time window* and
+                    # only publish a complete set of narrow responses.
+                    def discover_window(begin, finish, depth=0):
+                        if runtime is not None and (clock()-started_at).total_seconds() >= runtime:
+                            raise StopPilot('MANUAL_RUNTIME_BUDGET_REACHED_REUSE_SAVED_CACHE')
+                        health_check(reader(), baseline, clock(), account_isolation=isolation)
+                        balance = account(env['HISTORICAL_ODDSPAPI_KEY'],
+                                          set(args.bookmakers.split(',')))
+                        if balance['subscription_fingerprint'] != isolation['research']:
+                            raise StopPilot('RESEARCH_SUBSCRIPTION_CHANGED')
+                        if balance['request_count'] + 1 >= balance['request_limit']:
+                            raise StopPilot('FIXTURE_DISCOVERY_QUOTA_HEADROOM_REQUIRED')
+                        params = dict(sportId=10,
+                            **{'from':begin.isoformat().replace('+00:00','Z'),
+                               'to':finish.isoformat().replace('+00:00','Z')},
+                            statusId=2, language='en')
+                        sleeper(5.2)
+                        report['fixture_discovery_requests'] += 1
+                        save()
+                        status, _, raw = client('/fixtures', params)
+                        if status != 200:
+                            raise StopPilot('FIXTURE_DISCOVERY_HTTP_'+str(status)+'_STOP_NO_RETRY')
+                        for key in ('HISTORICAL_ODDSPAPI_KEY', 'ACCOUNT_PROBE_KEY'):
+                            secret = env.get(key)
+                            if secret and secret.encode() in raw:
+                                raise StopPilot('SECRET_IN_FIXTURE_DISCOVERY_RESPONSE')
+                        payload = json.loads(raw)
+                        rows = items(payload)
+                        if len(rows) >= 1000:
+                            # Keep a diagnostic receipt, but never promote this
+                            # potentially truncated response as complete evidence.
+                            report.setdefault('fixture_discovery_split_windows', []).append(
+                                dict(day=day.isoformat(), from_utc=params['from'],
+                                     to_utc=params['to'], returned=len(rows)))
+                            write_json(out/'discovery_incomplete'/
+                                       (day.isoformat()+'-'+str(depth)+'-'+
+                                        str(report['fixture_discovery_requests'])+'.json'),
+                                       dict(params=params, observed_at=clock().isoformat(),
+                                            returned=len(rows)))
+                            if (finish-begin) <= timedelta(hours=1) or depth >= 5:
+                                raise StopPilot('FIXTURE_DISCOVERY_WINDOW_STILL_TRUNCATED')
+                            middle = begin + (finish-begin)/2
+                            return (discover_window(begin, middle, depth+1) +
+                                    discover_window(middle, finish, depth+1))
+                        return rows
+                    all_rows = discover_window(start, end)
+                    by_id = {}
+                    for fixture in all_rows:
+                        fid = str(fixture.get('fixtureId') or '')
+                        if not fid:
+                            continue
+                        if fid in by_id and by_id[fid] != fixture:
+                            # Different payload records may carry different
+                            # updatedAt/status metadata; identity may not.
+                            keys = ('tournamentId','participant1Name',
+                                    'participant2Name','startTime')
+                            if any(by_id[fid].get(k) != fixture.get(k) for k in keys):
+                                raise StopPilot('FIXTURE_DISCOVERY_NATIVE_IDENTITY_CONFLICT')
+                        by_id[fid] = fixture
+                    rows = list(by_id.values())
                     record = dict(provider='oddspapi', endpoint='/fixtures',
-                                  params=params, observed_at=clock().isoformat(), payload=payload)
+                                  params=dict(sportId=10,
+                                      **{'from':start.isoformat().replace('+00:00','Z'),
+                                         'to':end.isoformat().replace('+00:00','Z')},
+                                      statusId=2, language='en'),
+                                  observed_at=clock().isoformat(), payload=rows,
+                                  discovery_requests=report['fixture_discovery_requests'],
+                                  completeness='SPLIT_WINDOWS_BELOW_1000_ROWS')
                     record['response_id'] = hashlib.sha256(json.dumps(
                         record, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
                     write_json(receipts/(day.isoformat()+'.json'), record)
