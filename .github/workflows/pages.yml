@@ -84,7 +84,6 @@ jobs:
           cp ah-public-demo.html site/ah-public-demo.html
           cp apps/dashboard/monitor.html site/monitor.html
           cp apps/dashboard/collection-health.js site/collection-health.js
-          cp apps/dashboard/automatic-rounds.js site/automatic-rounds.js
           cp apps/dashboard/deployment.json site/deployment.json
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery.html || true
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery/index.html || true

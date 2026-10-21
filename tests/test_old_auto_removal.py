@@ -34,17 +34,12 @@ def test_working_manual_is_byte_identical():
         assert hashlib.sha256(Path(name).read_bytes()).hexdigest() == digest, name
 
 
-def test_only_the_manual_copy_can_schedule_odds_collection_without_recovery():
+def test_no_workflow_can_schedule_current_odds_collection_or_legacy_recovery():
     for path in Path('.github/workflows').glob('*.yml'):
         text = path.read_text()
         workflow = yaml.safe_load(text)
         events = workflow.get('on', workflow.get(True, {}))
         if 'schedule' in events:
-            if path.name == 'auto-scan.yml':
-                assert workflow['name'] == 'Auto Scan'
-                assert 'odds_scanner.europe_pinnacle_discovery' in text
-                assert 'odds_scanner.research_v2_slot_recovery' not in text
-                continue
             for command in ('odds_scanner.automatic_scan', 'odds_scanner.europe_pinnacle_discovery',
                             'odds_scanner.research_v2_slot_recovery', 'odds_scanner.propline_research_v2'):
                 assert command not in text, path
