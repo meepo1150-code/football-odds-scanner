@@ -290,6 +290,11 @@ def build(root=Path('.')):
     if (root/REPORT).exists():
         prior=json.loads((root/REPORT).read_text(encoding='utf-8'))
         if int(prior.get('settled_fixtures') or 0)>int(payload.get('settled_fixtures') or 0):
-            return prior
+            # Retain partial-load protection, but never resurrect a previously
+            # settled fixture newly quarantined for contradictory FT evidence.
+            prior_conflicts=int(prior.get('identity_conflict_ft_fixtures') or 0)
+            verified_conflicts=int(payload.get('identity_conflict_ft_fixtures') or 0)
+            if verified_conflicts<=prior_conflicts:
+                return prior
     q=root/REPORT;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8');return payload
 if __name__=='__main__':print(json.dumps(build(),ensure_ascii=False))
