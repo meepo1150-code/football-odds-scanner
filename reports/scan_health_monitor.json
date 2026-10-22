@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-22T10:26:05.789377+00:00",
+  "generated_at": "2026-10-22T13:27:48.629753+00:00",
   "football_day": "2026-10-22",
   "status": "FAIL",
   "issues": [
@@ -10,10 +10,21 @@
     "UNMATCHED_IDENTITY_CANDIDATES",
     "LATEST_SCAN_WARNING"
   ],
-  "scan_missing_count": 1,
+  "scan_missing_count": 2,
   "scan_missing": [
     {
       "target_time": "2026-10-22T15:00:00+07:00",
+      "state": "MISSED",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "MISSED",
+      "recovered": false
+    },
+    {
+      "target_time": "2026-10-22T18:00:00+07:00",
       "state": "MISSING",
       "provider": null,
       "observed_at": null,
@@ -99,6 +110,17 @@
   "canonical_slots": [
     {
       "target_time": "2026-10-22T15:00:00+07:00",
+      "state": "MISSED",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "MISSED",
+      "recovered": false
+    },
+    {
+      "target_time": "2026-10-22T18:00:00+07:00",
       "state": "MISSING",
       "provider": null,
       "observed_at": null,
@@ -106,17 +128,6 @@
       "valid_snapshot_count": 0,
       "canonical_fixture_count": 0,
       "observation_timing": "MISSING",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-10-22T18:00:00+07:00",
-      "state": "UPCOMING",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "UPCOMING",
       "recovered": false
     },
     {
@@ -146,12 +157,12 @@
   "raw_deleted": 0,
   "approved_unresolved_fixtures_retained": true,
   "next_slot_readiness": {
-    "target_at": "2026-10-22T18:00:00+07:00",
+    "target_at": "2026-10-22T21:00:00+07:00",
     "football_day": "2026-10-22",
     "status": "UNVERIFIED_OR_CAPACITY_BLOCKED",
     "fixture_set_size": null,
     "remaining_prematch_at_target": 0,
-    "prematch_forecast_at": "2026-10-22T18:03:00+07:00",
+    "prematch_forecast_at": "2026-10-22T21:03:00+07:00",
     "unconfirmed_grants": [],
     "blocked_reasons": [
       "FIXED_COHORT_UNAVAILABLE"
@@ -161,28 +172,27 @@
     "allocated_tournament_ids": [],
     "quota_utc_day": "2026-10-22",
     "research_usage": {
-      "day": 20,
-      "month": 651
+      "day": 40,
+      "month": 671
     },
-    "account_remaining_estimate": 56,
-    "account_observed_before": "2026-10-22T08:00:42.066701+00:00",
+    "account_remaining_estimate": 53,
+    "account_observed_before": "2026-10-22T11:00:36.643713+00:00",
     "account_estimate_limitation": "OTHER_ACCOUNT_CONSUMERS_AFTER_OBSERVATION_NOT_MEASURED; RECHECK_UNMETERED_ACCOUNT_AT_COLLECTION",
     "fixture_set_policy": null,
     "schedule_response_id": null,
     "budget": {
       "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
-      "research_requests_used_today": 20,
-      "research_requests_used_month": 651,
+      "research_requests_used_today": 40,
+      "research_requests_used_month": 671,
       "research_daily_limit": 6,
       "research_monthly_limit": 180,
       "research_run_limit": 2,
       "quota_utc_day": "2026-10-22",
       "canonical_slots_in_football_day": 4,
       "future_utc_slots": [
-        "2026-10-22T14:00:00+00:00",
         "2026-10-22T17:00:00+00:00"
       ],
-      "future_utc_requests_reserved": 2,
+      "future_utc_requests_reserved": 1,
       "current_canonical_requests_reserved": 0,
       "future_month_requests_reserved": 45,
       "canonical_request_reservation": "UTC_FUTURE_SLOTS_PLUS_DISCOVERY; MANUAL_AND_RECOVERY_YIELD; FAILED_ATTEMPTS_COUNT",

@@ -1,16 +1,16 @@
 {
   "schema_version": "1.0",
   "classification": "ALL_PROVIDER_WEB_RESULT_RECOVERY_QUEUE",
-  "generated_at": "2026-10-21T13:26:35.885998+00:00",
-  "unresolved_total": 93,
-  "active_unresolved_total": 18,
+  "generated_at": "2026-10-22T13:27:40.498365+00:00",
+  "unresolved_total": 115,
+  "active_unresolved_total": 40,
   "retired_unresolved_total": 75,
   "retired_included": true,
   "skipped_retired": 0,
-  "unique_match_identities": 63,
+  "unique_match_identities": 85,
   "duplicate_fixture_ids_collapsed": 29,
   "skipped_non_match_market": 1,
-  "queued": 63,
+  "queued": 85,
   "api_requests_used": 0,
   "validation_relaxed": false,
   "rows": [
@@ -1481,17 +1481,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000017868214872",
+      "fixture_id": "id1000056273086684",
       "fixture_ids": [
-        "id1000017868214872"
+        "id1000056273086684"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Harju JK Laagri",
-      "away": "Tallinna FC Flora",
-      "kickoff": "2026-10-21T15:00:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Harju JK Laagri\" \"Tallinna FC Flora\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Harju+JK+Laagri%22+%22Tallinna+FC+Flora%22+2026-10-21+football+result",
+      "home": "FC Bihor Oradea",
+      "away": "ACSM Resita",
+      "kickoff": "2026-10-22T13:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"FC Bihor Oradea\" \"ACSM Resita\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22FC+Bihor+Oradea%22+%22ACSM+Resita%22+2026-10-22+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -1503,23 +1503,23 @@
       ],
       "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
       "provider": null,
-      "league": "Meistriliiga",
-      "country": "Estonia",
+      "league": "Liga II",
+      "country": "Romania",
       "retired_fixture_ids": [],
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000004175721516",
+      "fixture_id": "id1000015472304320",
       "fixture_ids": [
-        "id1000004175721516"
+        "id1000015472304320"
       ],
       "duplicate_fixture_ids": [],
-      "home": "PK-35 Helsinki",
-      "away": "FF Jaro",
-      "kickoff": "2026-10-21T15:30:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"PK-35 Helsinki\" \"FF Jaro\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22PK-35+Helsinki%22+%22FF+Jaro%22+2026-10-21+football+result",
+      "home": "FK Mornar Bar",
+      "away": "OFK Mladost DG",
+      "kickoff": "2026-10-22T13:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"FK Mornar Bar\" \"OFK Mladost DG\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22FK+Mornar+Bar%22+%22OFK+Mladost+DG%22+2026-10-22+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -1531,23 +1531,555 @@
       ],
       "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
       "provider": null,
-      "league": "Veikkausliiga",
-      "country": "Finland",
+      "league": "Montenegrin First League",
+      "country": "Montenegro",
       "retired_fixture_ids": [],
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000062972498288",
+      "fixture_id": "id1003448074173212",
       "fixture_ids": [
-        "id1000062972498288"
+        "id1003448074173212"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Hamrun Spartans FC",
-      "away": "Balzan FC",
-      "kickoff": "2026-10-21T16:00:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Hamrun Spartans FC\" \"Balzan FC\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Hamrun+Spartans+FC%22+%22Balzan+FC%22+2026-10-21+football+result",
+      "home": "FC Kairat Almaty",
+      "away": "Panathinaikos Athens",
+      "kickoff": "2026-10-22T14:30:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"FC Kairat Almaty\" \"Panathinaikos Athens\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22FC+Kairat+Almaty%22+%22Panathinaikos+Athens%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Conference League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000067175028988",
+      "fixture_ids": [
+        "id1000067175028988"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "Sardarapat FC",
+      "away": "FC Urartu Yerevan",
+      "kickoff": "2026-10-22T15:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"Sardarapat FC\" \"FC Urartu Yerevan\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22Sardarapat+FC%22+%22FC+Urartu+Yerevan%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "Armenian Premier League",
+      "country": "Armenia",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000015472304328",
+      "fixture_ids": [
+        "id1000015472304328"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "FK Buducnost",
+      "away": "FK Arsenal Tivat",
+      "kickoff": "2026-10-22T16:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"FK Buducnost\" \"FK Arsenal Tivat\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22FK+Buducnost%22+%22FK+Arsenal+Tivat%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "Montenegrin First League",
+      "country": "Montenegro",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000067974172986",
+      "fixture_ids": [
+        "id1000067974172986"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "FC Ararat-Armenia",
+      "away": "AZ Alkmaar",
+      "kickoff": "2026-10-22T16:45:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"FC Ararat-Armenia\" \"AZ Alkmaar\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22FC+Ararat-Armenia%22+%22AZ+Alkmaar%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Europa League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1003448074173216",
+      "fixture_ids": [
+        "id1003448074173216"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "FC Iberia 1999",
+      "away": "Mjallby AIF",
+      "kickoff": "2026-10-22T16:45:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"FC Iberia 1999\" \"Mjallby AIF\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22FC+Iberia+1999%22+%22Mjallby+AIF%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Conference League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1003448074173220",
+      "fixture_ids": [
+        "id1003448074173220"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "FC Nordsjaelland",
+      "away": "PFC CSKA Sofia",
+      "kickoff": "2026-10-22T16:45:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"FC Nordsjaelland\" \"PFC CSKA Sofia\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22FC+Nordsjaelland%22+%22PFC+CSKA+Sofia%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Conference League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000067974172988",
+      "fixture_ids": [
+        "id1000067974172988"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "Ferencvarosi Budapest",
+      "away": "SCU Torreense",
+      "kickoff": "2026-10-22T16:45:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"Ferencvarosi Budapest\" \"SCU Torreense\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22Ferencvarosi+Budapest%22+%22SCU+Torreense%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Europa League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1003448074173224",
+      "fixture_ids": [
+        "id1003448074173224"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "FK Crvena Zvezda Belgrade",
+      "away": "FC Copenhagen",
+      "kickoff": "2026-10-22T16:45:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"FK Crvena Zvezda Belgrade\" \"FC Copenhagen\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22FK+Crvena+Zvezda+Belgrade%22+%22FC+Copenhagen%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Conference League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1003448074173228",
+      "fixture_ids": [
+        "id1003448074173228"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "FK Jablonec",
+      "away": "Brighton & Hove Albion",
+      "kickoff": "2026-10-22T16:45:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"FK Jablonec\" \"Brighton & Hove Albion\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22FK+Jablonec%22+%22Brighton+%26+Hove+Albion%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Conference League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1003448074173232",
+      "fixture_ids": [
+        "id1003448074173232"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "FK Kauno Zalgiris",
+      "away": "SK Brann",
+      "kickoff": "2026-10-22T16:45:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"FK Kauno Zalgiris\" \"SK Brann\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22FK+Kauno+Zalgiris%22+%22SK+Brann%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Conference League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1003448074173236",
+      "fixture_ids": [
+        "id1003448074173236"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "Getafe CF",
+      "away": "FC Lugano",
+      "kickoff": "2026-10-22T16:45:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"Getafe CF\" \"FC Lugano\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22Getafe+CF%22+%22FC+Lugano%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Conference League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000067974172990",
+      "fixture_ids": [
+        "id1000067974172990"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "GNK Dinamo Zagreb",
+      "away": "NEC Nijmegen",
+      "kickoff": "2026-10-22T16:45:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"GNK Dinamo Zagreb\" \"NEC Nijmegen\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22GNK+Dinamo+Zagreb%22+%22NEC+Nijmegen%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Europa League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000067974172992",
+      "fixture_ids": [
+        "id1000067974172992"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "Juventus Turin",
+      "away": "Stade Rennais FC",
+      "kickoff": "2026-10-22T16:45:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"Juventus Turin\" \"Stade Rennais FC\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22Juventus+Turin%22+%22Stade+Rennais+FC%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Europa League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000067974172994",
+      "fixture_ids": [
+        "id1000067974172994"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "KKS Lech Poznan",
+      "away": "Sunderland AFC",
+      "kickoff": "2026-10-22T16:45:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"KKS Lech Poznan\" \"Sunderland AFC\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22KKS+Lech+Poznan%22+%22Sunderland+AFC%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Europa League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000067974172996",
+      "fixture_ids": [
+        "id1000067974172996"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "OFI Crete",
+      "away": "Bayer Leverkusen",
+      "kickoff": "2026-10-22T16:45:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"OFI Crete\" \"Bayer Leverkusen\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22OFI+Crete%22+%22Bayer+Leverkusen%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Europa League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1003448074173242",
+      "fixture_ids": [
+        "id1003448074173242"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "Pafos FC",
+      "away": "Riga FC",
+      "kickoff": "2026-10-22T16:45:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"Pafos FC\" \"Riga FC\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22Pafos+FC%22+%22Riga+FC%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Conference League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000067974173000",
+      "fixture_ids": [
+        "id1000067974173000"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "SK Sturm Graz",
+      "away": "Olympique Marseille",
+      "kickoff": "2026-10-22T16:45:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"SK Sturm Graz\" \"Olympique Marseille\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22SK+Sturm+Graz%22+%22Olympique+Marseille%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Europa League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1003448074173246",
+      "fixture_ids": [
+        "id1003448074173246"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "Trabzonspor",
+      "away": "Heart of Midlothian FC",
+      "kickoff": "2026-10-22T16:45:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"Trabzonspor\" \"Heart of Midlothian FC\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22Trabzonspor%22+%22Heart+of+Midlothian+FC%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Conference League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000067974172998",
+      "fixture_ids": [
+        "id1000067974172998"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "Union Saint-Gilloise",
+      "away": "Hapoel Be`er Sheva FC",
+      "kickoff": "2026-10-22T16:45:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"Union Saint-Gilloise\" \"Hapoel Be`er Sheva FC\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22Union+Saint-Gilloise%22+%22Hapoel+Be%60er+Sheva+FC%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Europa League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000062972498290",
+      "fixture_ids": [
+        "id1000062972498290"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "Hibernians FC Paola",
+      "away": "Gzira United FC",
+      "kickoff": "2026-10-22T18:30:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"Hibernians FC Paola\" \"Gzira United FC\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22Hibernians+FC+Paola%22+%22Gzira+United+FC%22+2026-10-22+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -1565,17 +2097,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000062972498292",
+      "fixture_id": "id1000067974173018",
       "fixture_ids": [
-        "id1000062972498292"
+        "id1000067974173018"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Marsaxlokk FC",
-      "away": "Birzebbuga St. Peters FC",
-      "kickoff": "2026-10-21T16:00:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Marsaxlokk FC\" \"Birzebbuga St. Peters FC\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Marsaxlokk+FC%22+%22Birzebbuga+St.+Peters+FC%22+2026-10-21+football+result",
+      "home": "AC Omonia Nicosia",
+      "away": "SL Benfica",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"AC Omonia Nicosia\" \"SL Benfica\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22AC+Omonia+Nicosia%22+%22SL+Benfica%22+2026-10-22+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -1587,51 +2119,23 @@
       ],
       "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
       "provider": null,
-      "league": "Maltese Premier League",
-      "country": "Malta",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000000774165958",
-      "fixture_ids": [
-        "id1000000774165958"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Como 1907",
-      "away": "Manchester United",
-      "kickoff": "2026-10-21T16:45:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Como 1907\" \"Manchester United\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Como+1907%22+%22Manchester+United%22+2026-10-21+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "UEFA Champions League",
+      "league": "UEFA Europa League",
       "country": "International",
       "retired_fixture_ids": [],
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000000774165960",
+      "fixture_id": "id1000067974173002",
       "fixture_ids": [
-        "id1000000774165960"
+        "id1000067974173002"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Lille OSC",
-      "away": "Galatasaray Istanbul",
-      "kickoff": "2026-10-21T16:45:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Lille OSC\" \"Galatasaray Istanbul\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Lille+OSC%22+%22Galatasaray+Istanbul%22+2026-10-21+football+result",
+      "home": "AFC Bournemouth",
+      "away": "AC Milan",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"AFC Bournemouth\" \"AC Milan\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22AFC+Bournemouth%22+%22AC+Milan%22+2026-10-22+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -1643,23 +2147,23 @@
       ],
       "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
       "provider": null,
-      "league": "UEFA Champions League",
+      "league": "UEFA Europa League",
       "country": "International",
       "retired_fixture_ids": [],
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000002274858068",
+      "fixture_id": "id1003448074173254",
       "fixture_ids": [
-        "id1000002274858068"
+        "id1003448074173254"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Sogndal Fotball",
-      "away": "Raufoss IL",
-      "kickoff": "2026-10-21T17:00:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Sogndal Fotball\" \"Raufoss IL\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Sogndal+Fotball%22+%22Raufoss+IL%22+2026-10-21+football+result",
+      "home": "AGF Aarhus",
+      "away": "KF Egnatia Rrogozhine",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"AGF Aarhus\" \"KF Egnatia Rrogozhine\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22AGF+Aarhus%22+%22KF+Egnatia+Rrogozhine%22+2026-10-22+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -1671,135 +2175,23 @@
       ],
       "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
       "provider": null,
-      "league": "Norwegian First Division",
-      "country": "Norway",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000000874801144",
-      "fixture_ids": [
-        "id1000000874801144"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Levante UD",
-      "away": "Athletic Bilbao",
-      "kickoff": "2026-10-21T18:00:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Levante UD\" \"Athletic Bilbao\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Levante+UD%22+%22Athletic+Bilbao%22+2026-10-21+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "LaLiga",
-      "country": "Spain",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000062972498286",
-      "fixture_ids": [
-        "id1000062972498286"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Mosta FC",
-      "away": "Valletta FC",
-      "kickoff": "2026-10-21T18:30:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Mosta FC\" \"Valletta FC\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Mosta+FC%22+%22Valletta+FC%22+2026-10-21+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "Maltese Premier League",
-      "country": "Malta",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000062972498284",
-      "fixture_ids": [
-        "id1000062972498284"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Zabbar Saint Patrick FC",
-      "away": "Sliema Wanderers",
-      "kickoff": "2026-10-21T18:30:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Zabbar Saint Patrick FC\" \"Sliema Wanderers\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Zabbar+Saint+Patrick+FC%22+%22Sliema+Wanderers%22+2026-10-21+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "Maltese Premier League",
-      "country": "Malta",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000000774165962",
-      "fixture_ids": [
-        "id1000000774165962"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Aston Villa",
-      "away": "Viking FK",
-      "kickoff": "2026-10-21T19:00:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Aston Villa\" \"Viking FK\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Aston+Villa%22+%22Viking+FK%22+2026-10-21+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "UEFA Champions League",
+      "league": "UEFA Conference League",
       "country": "International",
       "retired_fixture_ids": [],
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000000774165966",
+      "fixture_id": "id1003448074173250",
       "fixture_ids": [
-        "id1000000774165966"
+        "id1003448074173250"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Bayern Munich",
-      "away": "Arsenal FC",
-      "kickoff": "2026-10-21T19:00:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Bayern Munich\" \"Arsenal FC\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Bayern+Munich%22+%22Arsenal+FC%22+2026-10-21+football+result",
+      "home": "Ajax Amsterdam",
+      "away": "Atalanta BC",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"Ajax Amsterdam\" \"Atalanta BC\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22Ajax+Amsterdam%22+%22Atalanta+BC%22+2026-10-22+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -1811,23 +2203,23 @@
       ],
       "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
       "provider": null,
-      "league": "UEFA Champions League",
+      "league": "UEFA Conference League",
       "country": "International",
       "retired_fixture_ids": [],
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000000774165964",
+      "fixture_id": "id1003448074173258",
       "fixture_ids": [
-        "id1000000774165964"
+        "id1003448074173258"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Club Brugge",
-      "away": "Racing Club De Lens",
-      "kickoff": "2026-10-21T19:00:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Club Brugge\" \"Racing Club De Lens\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Club+Brugge%22+%22Racing+Club+De+Lens%22+2026-10-21+football+result",
+      "home": "AS Monaco",
+      "away": "SC Freiburg",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"AS Monaco\" \"SC Freiburg\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22AS+Monaco%22+%22SC+Freiburg%22+2026-10-22+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -1839,23 +2231,23 @@
       ],
       "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
       "provider": null,
-      "league": "UEFA Champions League",
+      "league": "UEFA Conference League",
       "country": "International",
       "retired_fixture_ids": [],
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000000774165968",
+      "fixture_id": "id1000067974173004",
       "fixture_ids": [
-        "id1000000774165968"
+        "id1000067974173004"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Inter Milano",
-      "away": "FC Shakhtar Donetsk",
-      "kickoff": "2026-10-21T19:00:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Inter Milano\" \"FC Shakhtar Donetsk\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Inter+Milano%22+%22FC+Shakhtar+Donetsk%22+2026-10-21+football+result",
+      "home": "Besiktas Istanbul",
+      "away": "Crystal Palace",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"Besiktas Istanbul\" \"Crystal Palace\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22Besiktas+Istanbul%22+%22Crystal+Palace%22+2026-10-22+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -1867,23 +2259,23 @@
       ],
       "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
       "provider": null,
-      "league": "UEFA Champions League",
+      "league": "UEFA Europa League",
       "country": "International",
       "retired_fixture_ids": [],
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000002472341308",
+      "fixture_id": "id1000067974173006",
       "fixture_ids": [
-        "id1000002472341308"
+        "id1000067974173006"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Reading FC",
-      "away": "Leyton Orient London",
-      "kickoff": "2026-10-21T19:00:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Reading FC\" \"Leyton Orient London\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Reading+FC%22+%22Leyton+Orient+London%22+2026-10-21+football+result",
+      "home": "Celtic Glasgow",
+      "away": "RC Celta de Vigo",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"Celtic Glasgow\" \"RC Celta de Vigo\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22Celtic+Glasgow%22+%22RC+Celta+de+Vigo%22+2026-10-22+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -1895,51 +2287,23 @@
       ],
       "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
       "provider": null,
-      "league": "League One",
-      "country": "England",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000000774165972",
-      "fixture_ids": [
-        "id1000000774165972"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Real Betis Seville",
-      "away": "Feyenoord Rotterdam",
-      "kickoff": "2026-10-21T19:00:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Real Betis Seville\" \"Feyenoord Rotterdam\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Real+Betis+Seville%22+%22Feyenoord+Rotterdam%22+2026-10-21+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "UEFA Champions League",
+      "league": "UEFA Europa League",
       "country": "International",
       "retired_fixture_ids": [],
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000000774165970",
+      "fixture_id": "id1003448074173262",
       "fixture_ids": [
-        "id1000000774165970"
+        "id1003448074173262"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Real Madrid",
-      "away": "RB Leipzig",
-      "kickoff": "2026-10-21T19:00:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Real Madrid\" \"RB Leipzig\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Real+Madrid%22+%22RB+Leipzig%22+2026-10-21+football+result",
+      "home": "FC Midtjylland",
+      "away": "St. Truidense VV",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"FC Midtjylland\" \"St. Truidense VV\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22FC+Midtjylland%22+%22St.+Truidense+VV%22+2026-10-22+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -1951,23 +2315,23 @@
       ],
       "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
       "provider": null,
-      "league": "UEFA Champions League",
+      "league": "UEFA Conference League",
       "country": "International",
       "retired_fixture_ids": [],
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000000774165974",
+      "fixture_id": "id1003448074173266",
       "fixture_ids": [
-        "id1000000774165974"
+        "id1003448074173266"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Sporting CP",
-      "away": "LASK Linz",
-      "kickoff": "2026-10-21T19:00:00+00:00",
-      "football_day": "2026-10-21",
-      "search_query": "\"Sporting CP\" \"LASK Linz\" 2026-10-21 football result",
-      "search_url": "https://www.google.com/search?q=%22Sporting+CP%22+%22LASK+Linz%22+2026-10-21+football+result",
+      "home": "FC Thun",
+      "away": "HNK Hajduk Split",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"FC Thun\" \"HNK Hajduk Split\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22FC+Thun%22+%22HNK+Hajduk+Split%22+2026-10-22+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -1979,7 +2343,259 @@
       ],
       "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
       "provider": null,
-      "league": "UEFA Champions League",
+      "league": "UEFA Conference League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000067974173008",
+      "fixture_ids": [
+        "id1000067974173008"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "FC Viktoria Plzen",
+      "away": "PFC Levski Sofia",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"FC Viktoria Plzen\" \"PFC Levski Sofia\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22FC+Viktoria+Plzen%22+%22PFC+Levski+Sofia%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Europa League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1003448074173270",
+      "fixture_ids": [
+        "id1003448074173270"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "FK Borac Banja Luka",
+      "away": "Kuopion Palloseura",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"FK Borac Banja Luka\" \"Kuopion Palloseura\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22FK+Borac+Banja+Luka%22+%22Kuopion+Palloseura%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Conference League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000067974173010",
+      "fixture_ids": [
+        "id1000067974173010"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "Jagiellonia Bialystok",
+      "away": "RSC Anderlecht",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"Jagiellonia Bialystok\" \"RSC Anderlecht\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22Jagiellonia+Bialystok%22+%22RSC+Anderlecht%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Europa League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000067974173012",
+      "fixture_ids": [
+        "id1000067974173012"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "Lillestroem SK",
+      "away": "Real Sociedad San Sebastian",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"Lillestroem SK\" \"Real Sociedad San Sebastian\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22Lillestroem+SK%22+%22Real+Sociedad+San+Sebastian%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Europa League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1003448074173272",
+      "fixture_ids": [
+        "id1003448074173272"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "Lincoln Red Imps",
+      "away": "FC Twente Enschede",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"Lincoln Red Imps\" \"FC Twente Enschede\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22Lincoln+Red+Imps%22+%22FC+Twente+Enschede%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Conference League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000067974173014",
+      "fixture_ids": [
+        "id1000067974173014"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "NK Celje",
+      "away": "FC Salzburg",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"NK Celje\" \"FC Salzburg\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22NK+Celje%22+%22FC+Salzburg%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Europa League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000067974173016",
+      "fixture_ids": [
+        "id1000067974173016"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "Olympiacos Piraeus",
+      "away": "Sparta Prague",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"Olympiacos Piraeus\" \"Sparta Prague\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22Olympiacos+Piraeus%22+%22Sparta+Prague%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Europa League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1003448074173274",
+      "fixture_ids": [
+        "id1003448074173274"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "SC Braga",
+      "away": "KAA Gent",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"SC Braga\" \"KAA Gent\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22SC+Braga%22+%22KAA+Gent%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Conference League",
+      "country": "International",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000067974173020",
+      "fixture_ids": [
+        "id1000067974173020"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "TSG Hoffenheim",
+      "away": "Olympique Lyon",
+      "kickoff": "2026-10-22T19:00:00+00:00",
+      "football_day": "2026-10-22",
+      "search_query": "\"TSG Hoffenheim\" \"Olympique Lyon\" 2026-10-22 football result",
+      "search_url": "https://www.google.com/search?q=%22TSG+Hoffenheim%22+%22Olympique+Lyon%22+2026-10-22+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "UEFA Europa League",
       "country": "International",
       "retired_fixture_ids": [],
       "status": "WEB_EVIDENCE_REQUIRED"
