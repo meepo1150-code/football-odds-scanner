@@ -102,6 +102,8 @@ def _result_index(rows):
         scores={_score(x) for x in items}
         if len(scores)==1:idx[fid]=items[-1]
         else:ambiguous.add(fid)
+    for fid in ambiguous:
+        idx.pop(fid, None)  # Conflicted provider IDs must never settle a canonical fixture.
     return idx,ambiguous
 def _price_result(s):return {'FULL_WIN':'WIN','HALF_WIN':'HALF_WIN','PUSH':'PUSH','HALF_LOSS':'HALF_LOSS','FULL_LOSS':'LOSS'}.get(s,'UNSETTLED')
 def _movement(first,last):
@@ -169,6 +171,20 @@ def build(root=Path('.')):
     cross_provider_ids = {b['canonical_fixture_id'] for b in identity_report['bridges']
                           if len({r['provider'] for r in b['members']}) > 1}
     duplicate_ids = {b['canonical_fixture_id'] for b in identity_report['bridges']} - cross_provider_ids
+    # Explicitly quarantine a verified identity bridge if its source provider IDs
+    # report incompatible FT scores. Never accept whichever alias is first/last.
+    raw_ft_scores=defaultdict(set)
+    for ft in _rows(root/RESULTS):
+        score=_score(ft)
+        if score is not None and ft.get('fixture_id'):
+            raw_ft_scores[str(ft['fixture_id'])].add(score)
+    verified_bridge_ft_conflicts=set()
+    for bridge in identity_report['bridges']:
+        member_scores=set().union(*(raw_ft_scores.get(str(member['fixture_id']),set())
+                                    for member in bridge['members']))
+        if len(member_scores)>1:
+            verified_bridge_ft_conflicts.add(str(bridge['canonical_fixture_id']))
+            blocked_results.add(str(bridge['canonical_fixture_id']))
     snaps = project(snaps, mapping)
     from .verified_fixture_lifecycle import verified_statuses
     lifecycle = {mapping.get(fid,fid):r for fid,r in verified_statuses(root,raw_snaps).items()}
@@ -220,7 +236,9 @@ def build(root=Path('.')):
     current_by_id={str(row['fixture_id']):row for row in outcomes}
     for old in prior_outcomes:
         fid=str(old.get('fixture_id') or '')
-        if fid and fid not in current_by_id:
+        # Previous settlement cannot override newly verified FT conflicts.
+        # Preserve missing-but-not-conflicted historical fixtures as before.
+        if fid and fid not in current_by_id and fid not in ambiguous and fid not in blocked_results:
             current_by_id[fid]=old
     outcomes=list(current_by_id.values())
     settled_ids=set(current_by_id)
@@ -276,6 +294,11 @@ def build(root=Path('.')):
     if (root/REPORT).exists():
         prior=json.loads((root/REPORT).read_text(encoding='utf-8'))
         if int(prior.get('settled_fixtures') or 0)>int(payload.get('settled_fixtures') or 0):
-            return prior
+            # Retain partial-load protection, but never resurrect a previously
+            # settled fixture newly quarantined for contradictory FT evidence.
+            prior_conflicts=int(prior.get('identity_conflict_ft_fixtures') or 0)
+            verified_conflicts=int(payload.get('identity_conflict_ft_fixtures') or 0)
+            if verified_conflicts<=prior_conflicts and not ambiguous and not verified_bridge_ft_conflicts:
+                return prior
     q=root/REPORT;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8');return payload
 if __name__=='__main__':print(json.dumps(build(),ensure_ascii=False))
