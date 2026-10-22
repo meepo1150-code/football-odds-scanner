@@ -102,6 +102,8 @@ def _result_index(rows):
         scores={_score(x) for x in items}
         if len(scores)==1:idx[fid]=items[-1]
         else:ambiguous.add(fid)
+    for fid in ambiguous:
+        idx.pop(fid, None)  # Conflicted provider IDs must never settle a canonical fixture.
     return idx,ambiguous
 def _price_result(s):return {'FULL_WIN':'WIN','HALF_WIN':'HALF_WIN','PUSH':'PUSH','HALF_LOSS':'HALF_LOSS','FULL_LOSS':'LOSS'}.get(s,'UNSETTLED')
 def _movement(first,last):
