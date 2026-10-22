@@ -60,20 +60,16 @@ def test_result_on_either_id_and_conflicts_fail_closed(tmp_path):
     write(tmp_path,rows,[dict(fixture_id='pinnwire:1',ft_home_goals=1,ft_away_goals=0),dict(fixture_id='propline:2',ft_home_goals=2,ft_away_goals=0)])
     diagnostics=build(tmp_path)
     assert diagnostics['settled_fixtures']==0, (
-        'settled', diagnostics['settled_fixtures'],
-        'conflicts', diagnostics.get('identity_conflict_ft_fixtures'),
-        'raw_unresolved', diagnostics.get('raw_unresolved_ft_fixtures'),
-        'bridgecount', len(diagnostics.get('fixture_identity_bridges', [])),
-        'missing_first', (json.loads((tmp_path/'reports/research_v2_missing_ft_ledger.json').read_text()).get('fixtures') or [{}])[0].get('status'))
+        (json.loads((tmp_path/'reports/research_v2_missing_ft_ledger.json').read_text()).get('fixtures') or [{}])[0].get('status'),
+        diagnostics.get('identity_conflict_ft_fixtures'),
+        diagnostics.get('raw_unresolved_ft_fixtures'))
 
     write(tmp_path,rows,[dict(fixture_id='pinnwire:1',ft_home_goals=1,ft_away_goals=0)],[dict(fixture_id='propline:2')])
     diagnostics=build(tmp_path)
     assert diagnostics['settled_fixtures']==0, (
-        'settled', diagnostics['settled_fixtures'],
-        'conflicts', diagnostics.get('identity_conflict_ft_fixtures'),
-        'raw_unresolved', diagnostics.get('raw_unresolved_ft_fixtures'),
-        'bridgecount', len(diagnostics.get('fixture_identity_bridges', [])),
-        'missing_first', (json.loads((tmp_path/'reports/research_v2_missing_ft_ledger.json').read_text()).get('fixtures') or [{}])[0].get('status'))
+        (json.loads((tmp_path/'reports/research_v2_missing_ft_ledger.json').read_text()).get('fixtures') or [{}])[0].get('status'),
+        diagnostics.get('identity_conflict_ft_fixtures'),
+        diagnostics.get('raw_unresolved_ft_fixtures'))
 
 
 def native_and_fallback():
@@ -99,11 +95,9 @@ def test_reproduced_fallback_alias_is_derived_and_settles_once(tmp_path):
     write(tmp_path,rows,[dict(fixture_id=r['fixture_id'],ft_home_goals=i,ft_away_goals=0) for i,r in enumerate(rows)])
     diagnostics=build(tmp_path)
     assert diagnostics['settled_fixtures']==0, (
-        'settled', diagnostics['settled_fixtures'],
-        'conflicts', diagnostics.get('identity_conflict_ft_fixtures'),
-        'raw_unresolved', diagnostics.get('raw_unresolved_ft_fixtures'),
-        'bridgecount', len(diagnostics.get('fixture_identity_bridges', [])),
-        'missing_first', (json.loads((tmp_path/'reports/research_v2_missing_ft_ledger.json').read_text()).get('fixtures') or [{}])[0].get('status'))
+        (json.loads((tmp_path/'reports/research_v2_missing_ft_ledger.json').read_text()).get('fixtures') or [{}])[0].get('status'),
+        diagnostics.get('identity_conflict_ft_fixtures'),
+        diagnostics.get('raw_unresolved_ft_fixtures'))
 
 
 def test_same_teams_different_date_reschedule_and_unproven_ids_remain_unmatched():
