@@ -238,7 +238,9 @@ def build(root=Path('.')):
     current_by_id={str(row['fixture_id']):row for row in outcomes}
     for old in prior_outcomes:
         fid=str(old.get('fixture_id') or '')
-        if fid and fid not in current_by_id:
+        # Previous settlement cannot override newly verified FT conflicts.
+        # Preserve missing-but-not-conflicted historical fixtures as before.
+        if fid and fid not in current_by_id and fid not in ambiguous and fid not in blocked_results:
             current_by_id[fid]=old
     outcomes=list(current_by_id.values())
     settled_ids=set(current_by_id)
