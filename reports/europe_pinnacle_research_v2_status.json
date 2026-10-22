@@ -1,19 +1,19 @@
 {
   "schema_version": "2.9",
-  "generated_at": "2026-10-22T08:00:50.926963+00:00",
+  "generated_at": "2026-10-22T11:00:44.761786+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "bookmaker": "pinnacle",
   "football_day": "2026-10-22",
   "football_day_timezone": "Asia/Bangkok",
   "football_day_window_start": "2026-10-22T05:00:00+00:00",
   "football_day_window_end": "2026-10-22T23:00:00+00:00",
-  "scheduled_target_at": "2026-10-22T15:00:41+07:00",
-  "actual_observed_at": "2026-10-22T15:00:50.924991+07:00",
-  "schedule_lag_minutes": 0.17,
+  "scheduled_target_at": "2026-10-22T18:00:36+07:00",
+  "actual_observed_at": "2026-10-22T18:00:44.719031+07:00",
+  "schedule_lag_minutes": 0.15,
   "recovery_window_minutes": 150,
   "observation_timing": "ON_TIME",
   "force_run": true,
-  "force_target_at": "2026-10-22T08:00:41Z",
+  "force_target_at": "2026-10-22T11:00:36Z",
   "research_only": true,
   "production_promotion_allowed": false,
   "core_quota_reserve": 3,
@@ -141,7 +141,7 @@
       "fixtures_captured_today": 2,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-22T08:00:48.625029+00:00",
+      "last_market_request_at": "2026-10-22T11:00:42.183713+00:00",
       "odds_fixture_rows": 2,
       "strict_snapshots": 2,
       "market_reason_counts": {
@@ -968,7 +968,7 @@
       "fixtures_captured_today": 17,
       "scheduled_fixtures_without_snapshot": 1,
       "uncaptured_remaining_prematch_fixtures": 1,
-      "last_market_request_at": "2026-10-22T08:00:48.625029+00:00",
+      "last_market_request_at": "2026-10-22T11:00:42.183713+00:00",
       "odds_fixture_rows": 18,
       "strict_snapshots": 17,
       "market_reason_counts": {
@@ -1230,14 +1230,16 @@
         "id1000005575756038"
       ],
       "next_kickoff": "2026-10-22T15:00:00+00:00",
-      "reason": "NO_MARKET_RESPONSE",
+      "reason": "UNMAPPED",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 1,
       "uncaptured_remaining_prematch_fixtures": 1,
-      "last_market_request_at": "2026-10-22T08:00:50.924991+00:00",
-      "odds_fixture_rows": 0,
+      "last_market_request_at": "2026-10-22T11:00:42.183713+00:00",
+      "odds_fixture_rows": 1,
       "strict_snapshots": 0,
-      "market_reason_counts": {}
+      "market_reason_counts": {
+        "MASTER_CLUB_UNMAPPED": 1
+      }
     },
     {
       "canonical_competition_id": "ROU-0002",
@@ -1257,7 +1259,7 @@
       "fixtures_captured_today": 1,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-22T08:00:48.625029+00:00",
+      "last_market_request_at": "2026-10-22T11:00:42.183713+00:00",
       "odds_fixture_rows": 1,
       "strict_snapshots": 1,
       "market_reason_counts": {
@@ -1285,7 +1287,7 @@
       "fixtures_captured_today": 1,
       "scheduled_fixtures_without_snapshot": 2,
       "uncaptured_remaining_prematch_fixtures": 1,
-      "last_market_request_at": "2026-10-22T08:00:48.625029+00:00",
+      "last_market_request_at": "2026-10-22T11:00:42.183713+00:00",
       "odds_fixture_rows": 2,
       "strict_snapshots": 1,
       "market_reason_counts": {
@@ -1311,7 +1313,7 @@
       "fixtures_captured_today": 1,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-22T08:00:50.924991+00:00",
+      "last_market_request_at": "2026-10-22T11:00:44.719031+00:00",
       "odds_fixture_rows": 1,
       "strict_snapshots": 1,
       "market_reason_counts": {
@@ -1386,7 +1388,7 @@
       "fixtures_captured_today": 18,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-10-22T08:00:48.625029+00:00",
+      "last_market_request_at": "2026-10-22T11:00:44.719031+00:00",
       "odds_fixture_rows": 18,
       "strict_snapshots": 18,
       "market_reason_counts": {
@@ -1642,8 +1644,8 @@
   "max_planned_requests_with_retries": 19,
   "coverage_mode": "MANUAL_FULL_ELIGIBLE_SCOPE",
   "request_budget_policy": "MANUAL_PROVIDER_QUOTA_ONLY",
-  "research_requests_used_today": 0,
-  "research_requests_used_month": 631,
+  "research_requests_used_today": 20,
+  "research_requests_used_month": 651,
   "research_daily_limit": null,
   "research_monthly_limit": null,
   "research_run_limit": 20,
@@ -1658,51 +1660,51 @@
   "schedule_requests_reserved": 1,
   "coverage_complete": true,
   "coverage_tournament_ids": [
-    34480,
-    679,
-    154,
-    629,
-    562,
     55,
-    671
+    629,
+    34480,
+    154,
+    562,
+    671,
+    679
   ],
   "account_requests_attempted": 1,
   "account_endpoint_metered": false,
   "account_transient_failures": [],
-  "quota_remaining_before": 76,
+  "quota_remaining_before": 73,
   "account_safety_reserve": 10,
   "account_minimum_requests_through_month_end": 2,
   "account_month_capacity_shortfall": 0,
   "effective_quota_reserve": 0,
-  "budget_reservation_id": "d6f4915b4e8c4dbe86cfa8c9e3c4246e",
+  "budget_reservation_id": "63eaddf073694541a68bc19c9d672a99",
   "research_requests_reserved_this_run": 20,
-  "request_completed_at": "2026-10-22T08:00:50.924991+00:00",
-  "schedule_response_id": "b26a520d40c8592b7e423cebffb9ca5e651bbb00a7c9e0fa6b53280fd32ff644",
-  "schedule_observed_at": "2026-10-22T08:00:46.694275+00:00",
+  "request_completed_at": "2026-10-22T11:00:44.719031+00:00",
+  "schedule_response_id": "ecde3e0bfc8d44e14873e24a98430ce0b80f8473f00904b7ea2f852512d717ef",
+  "schedule_observed_at": "2026-10-22T11:00:40.615367+00:00",
   "schedule_requests_used": 1,
   "fixtures_captured_today": 40,
   "scheduled_fixtures_without_snapshot": 4,
   "market_requests_required_all_remaining_competitions": 2,
-  "collection_started_at": "2026-10-22T08:00:42.066701+00:00",
+  "collection_started_at": "2026-10-22T11:00:36.643713+00:00",
   "excluded_unrequested_scope_fixtures": 0,
   "invalid_payload_batches": 0,
   "status": "RESEARCH_V2_OBSERVED",
   "requests_used": 3,
   "rate_limit_retries": 0,
-  "api_fixtures_returned": 46,
+  "api_fixtures_returned": 47,
   "excluded_outside_football_day": 4,
-  "football_day_fixtures": 42,
+  "football_day_fixtures": 43,
   "strict_snapshots_this_run": 40,
-  "persisted_snapshot_rows": 5539,
-  "persisted_audit_rows": 3587,
-  "fixtures_seen": 42,
-  "bookmaker_active_fixtures": 42,
-  "fixtures_with_exactly_one_main_ah": 42,
-  "fixtures_with_exactly_one_main_ou": 42,
-  "fixtures_with_both_exact_mainlines": 42,
+  "persisted_snapshot_rows": 5579,
+  "persisted_audit_rows": 3630,
+  "fixtures_seen": 43,
+  "bookmaker_active_fixtures": 43,
+  "fixtures_with_exactly_one_main_ah": 43,
+  "fixtures_with_exactly_one_main_ou": 43,
+  "fixtures_with_both_exact_mainlines": 43,
   "strict_snapshots": 40,
   "rejection_counts": {
-    "MASTER_CLUB_UNMAPPED": 1,
+    "MASTER_CLUB_UNMAPPED": 2,
     "NOT_PREMATCH_WITH_ODDS": 1,
     "OK": 40
   },
@@ -1717,6 +1719,18 @@
       "strict_snapshots": 1,
       "reason_counts": {
         "OK": 1
+      }
+    },
+    {
+      "league": "Finland · Ykkosliiga",
+      "fixtures": 1,
+      "bookmaker_active": 1,
+      "ah_main_exactly_one": 1,
+      "ou_main_exactly_one": 1,
+      "both_main_exactly_one": 1,
+      "strict_snapshots": 0,
+      "reason_counts": {
+        "MASTER_CLUB_UNMAPPED": 1
       }
     },
     {
@@ -1785,7 +1799,7 @@
   "competition_reason_counts": {
     "NO_MATCHES": 85,
     "OBSERVED": 6,
-    "NO_MARKET_RESPONSE": 1
+    "UNMAPPED": 1
   },
   "additional_market_requests_required": 0
 }
