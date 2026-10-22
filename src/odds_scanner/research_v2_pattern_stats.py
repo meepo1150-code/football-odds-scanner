@@ -294,7 +294,7 @@ def build(root=Path('.')):
             # settled fixture newly quarantined for contradictory FT evidence.
             prior_conflicts=int(prior.get('identity_conflict_ft_fixtures') or 0)
             verified_conflicts=int(payload.get('identity_conflict_ft_fixtures') or 0)
-            if verified_conflicts<=prior_conflicts:
+            if verified_conflicts<=prior_conflicts and not ambiguous:
                 return prior
     q=root/REPORT;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8');return payload
 if __name__=='__main__':print(json.dumps(build(),ensure_ascii=False))
