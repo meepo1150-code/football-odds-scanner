@@ -193,8 +193,6 @@ def build(root=Path('.')):
     results, ambiguous = _result_index(project(_rows(root/RESULTS), mapping))
     blocked_results = {mapping.get(fid, fid) for fid in blocked_results}
     for fid in blocked_results:results.pop(fid,None)
-    if len(raw_snaps)==2 and len(_rows(root/RESULTS))==2:
-        print("FT_DEBUG_JOIN", {'mapping':mapping,'blocked':sorted(blocked_results),'ambiguous':sorted(ambiguous),'result_keys':sorted(results),'bridge_conflict':sorted(verified_bridge_ft_conflicts)}, flush=True)
     ip = root/'reports/research_v2_fixture_identity.json'
     ip.parent.mkdir(parents=True,exist_ok=True)
     ip.write_text(json.dumps(identity_report,ensure_ascii=False,indent=2)+'\n')
@@ -292,8 +290,6 @@ def build(root=Path('.')):
     payload['line_grouping_semantics']='EXACT_NUMERIC_QUARTER_LINE; INT_FLOAT_STRING_AND_SIGNED_ZERO_EQUIVALENT; NO_INVALID_LINE_ROUNDING'
     payload['price_bucket_intervals']=['[1.80,1.90)','[1.90,2.00)','[2.00,2.10)','[2.10,2.20]']
     payload.update(pending_age_counts(missing_rows,datetime.now(timezone.utc)))
-    if len(raw_snaps)==2 and len(_rows(root/RESULTS))==2:
-        print("FT_DEBUG_PAYLOAD", {'outcomes':len(outcomes),'missing':missing,'conflicts':payload.get('identity_conflict_ft_fixtures'),'ambiguous':sorted(ambiguous)}, flush=True)
     # Monotonic FT safety: partial result imports must never reduce settled coverage.
     if (root/REPORT).exists():
         prior=json.loads((root/REPORT).read_text(encoding='utf-8'))
@@ -302,8 +298,6 @@ def build(root=Path('.')):
             # settled fixture newly quarantined for contradictory FT evidence.
             prior_conflicts=int(prior.get('identity_conflict_ft_fixtures') or 0)
             verified_conflicts=int(payload.get('identity_conflict_ft_fixtures') or 0)
-            if root != Path('.'):
-                print('FT_GUARD_DEBUG', {'prior':prior.get('settled_fixtures'),'new':payload.get('settled_fixtures'),'prior_conflicts':prior_conflicts,'new_conflicts':verified_conflicts,'ambiguous':sorted(ambiguous),'blocked':sorted(blocked_results),'bridge_conflicts':sorted(verified_bridge_ft_conflicts),'mapping':mapping,'result_ids':list(results)}, flush=True)
             if verified_conflicts<=prior_conflicts and not ambiguous and not verified_bridge_ft_conflicts:
                 return prior
     q=root/REPORT;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8');return payload
