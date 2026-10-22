@@ -160,7 +160,7 @@ def test_production_hash_manifest_unchanged():
     }
     for path, blob_sha in approved_evolved_blobs.items():
         raw = (REPO/path).read_bytes()
-        assert hashlib.sha1(b'blob ' + str(len(raw)).encode() + b'\\0' + raw).hexdigest() == blob_sha, path
+        assert hashlib.sha1(b'blob ' + str(len(raw)).encode() + b'\0' + raw).hexdigest() == blob_sha, path
     for path, digest in protected.items():
         if path in approved_evolved_blobs:
             continue
