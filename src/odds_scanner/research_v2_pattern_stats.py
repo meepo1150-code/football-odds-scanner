@@ -296,6 +296,8 @@ def build(root=Path('.')):
             # settled fixture newly quarantined for contradictory FT evidence.
             prior_conflicts=int(prior.get('identity_conflict_ft_fixtures') or 0)
             verified_conflicts=int(payload.get('identity_conflict_ft_fixtures') or 0)
+            if root != Path('.'):
+                print('FT_GUARD_DEBUG', {'prior':prior.get('settled_fixtures'),'new':payload.get('settled_fixtures'),'prior_conflicts':prior_conflicts,'new_conflicts':verified_conflicts,'ambiguous':sorted(ambiguous),'blocked':sorted(blocked_results),'bridge_conflicts':sorted(verified_bridge_ft_conflicts),'mapping':mapping,'result_ids':list(results)}, flush=True)
             if verified_conflicts<=prior_conflicts and not ambiguous and not verified_bridge_ft_conflicts:
                 return prior
     q=root/REPORT;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8');return payload
