@@ -58,22 +58,10 @@ def test_result_on_either_id_and_conflicts_fail_closed(tmp_path):
         write(tmp_path,rows,[dict(fixture_id=fid,ft_home_goals=1,ft_away_goals=0)])
         assert build(tmp_path)['settled_fixtures']==1
     write(tmp_path,rows,[dict(fixture_id='pinnwire:1',ft_home_goals=1,ft_away_goals=0),dict(fixture_id='propline:2',ft_home_goals=2,ft_away_goals=0)])
-    diagnostics=build(tmp_path)
-    from odds_scanner.research_v2_pattern_stats import _rows, _result_index
-    m,_=build_bridge(_rows(tmp_path/SNAPSHOTS))
-    direct,ambiguous=_result_index(project(_rows(tmp_path/RESULTS),m))
-    assert diagnostics['settled_fixtures']==0, (
-        len(_rows(tmp_path/SNAPSHOTS)), len(_rows(tmp_path/RESULTS)),
-        len(m),len(direct),len(ambiguous))
+    assert build(tmp_path)['settled_fixtures']==0
 
     write(tmp_path,rows,[dict(fixture_id='pinnwire:1',ft_home_goals=1,ft_away_goals=0)],[dict(fixture_id='propline:2')])
-    diagnostics=build(tmp_path)
-    from odds_scanner.research_v2_pattern_stats import _rows, _result_index
-    m,_=build_bridge(_rows(tmp_path/SNAPSHOTS))
-    direct,ambiguous=_result_index(project(_rows(tmp_path/RESULTS),m))
-    assert diagnostics['settled_fixtures']==0, (
-        len(_rows(tmp_path/SNAPSHOTS)), len(_rows(tmp_path/RESULTS)),
-        len(m),len(direct),len(ambiguous))
+    assert build(tmp_path)['settled_fixtures']==0
 
 
 def native_and_fallback():
@@ -97,13 +85,7 @@ def test_reproduced_fallback_alias_is_derived_and_settles_once(tmp_path):
     assert outcome['result_join']=='VERIFIED_PROVIDER_FALLBACK_ALIAS'
     assert rows==original
     write(tmp_path,rows,[dict(fixture_id=r['fixture_id'],ft_home_goals=i,ft_away_goals=0) for i,r in enumerate(rows)])
-    diagnostics=build(tmp_path)
-    from odds_scanner.research_v2_pattern_stats import _rows, _result_index
-    m,_=build_bridge(_rows(tmp_path/SNAPSHOTS))
-    direct,ambiguous=_result_index(project(_rows(tmp_path/RESULTS),m))
-    assert diagnostics['settled_fixtures']==0, (
-        len(_rows(tmp_path/SNAPSHOTS)), len(_rows(tmp_path/RESULTS)),
-        len(m),len(direct),len(ambiguous))
+    assert build(tmp_path)['settled_fixtures']==0
 
 
 def test_same_teams_different_date_reschedule_and_unproven_ids_remain_unmatched():
