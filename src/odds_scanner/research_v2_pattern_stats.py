@@ -171,6 +171,18 @@ def build(root=Path('.')):
     cross_provider_ids = {b['canonical_fixture_id'] for b in identity_report['bridges']
                           if len({r['provider'] for r in b['members']}) > 1}
     duplicate_ids = {b['canonical_fixture_id'] for b in identity_report['bridges']} - cross_provider_ids
+    # Explicitly quarantine a verified identity bridge if its source provider IDs
+    # report incompatible FT scores. Never accept whichever alias is first/last.
+    raw_ft_scores=defaultdict(set)
+    for ft in _rows(root/RESULTS):
+        score=_score(ft)
+        if score is not None and ft.get('fixture_id'):
+            raw_ft_scores[str(ft['fixture_id'])].add(score)
+    for bridge in identity_report['bridges']:
+        member_scores=set().union(*(raw_ft_scores.get(str(member['fixture_id']),set())
+                                    for member in bridge['members']))
+        if len(member_scores)>1:
+            blocked_results.add(str(bridge['canonical_fixture_id']))
     snaps = project(snaps, mapping)
     from .verified_fixture_lifecycle import verified_statuses
     lifecycle = {mapping.get(fid,fid):r for fid,r in verified_statuses(root,raw_snaps).items()}
