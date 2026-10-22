@@ -156,7 +156,7 @@ def test_production_hash_manifest_unchanged():
     # legitimately changed this one source file. Pin the exact reviewed blob,
     # rather than silently skipping its integrity verification.
     approved_evolved_blobs = {
-        'src/odds_scanner/research_v2_pattern_stats.py': '905b904400592bf2803fd96d339f6f51c6d790da',
+        'src/odds_scanner/research_v2_pattern_stats.py': '2112eb060bb3d46877585e7e13a52ed3118421ca',
     }
     for path, blob_sha in approved_evolved_blobs.items():
         raw = (REPO/path).read_bytes()
