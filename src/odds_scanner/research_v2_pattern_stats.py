@@ -178,10 +178,12 @@ def build(root=Path('.')):
         score=_score(ft)
         if score is not None and ft.get('fixture_id'):
             raw_ft_scores[str(ft['fixture_id'])].add(score)
+    verified_bridge_ft_conflicts=set()
     for bridge in identity_report['bridges']:
         member_scores=set().union(*(raw_ft_scores.get(str(member['fixture_id']),set())
                                     for member in bridge['members']))
         if len(member_scores)>1:
+            verified_bridge_ft_conflicts.add(str(bridge['canonical_fixture_id']))
             blocked_results.add(str(bridge['canonical_fixture_id']))
     snaps = project(snaps, mapping)
     from .verified_fixture_lifecycle import verified_statuses
@@ -294,7 +296,7 @@ def build(root=Path('.')):
             # settled fixture newly quarantined for contradictory FT evidence.
             prior_conflicts=int(prior.get('identity_conflict_ft_fixtures') or 0)
             verified_conflicts=int(payload.get('identity_conflict_ft_fixtures') or 0)
-            if verified_conflicts<=prior_conflicts and not ambiguous:
+            if verified_conflicts<=prior_conflicts and not ambiguous and not verified_bridge_ft_conflicts:
                 return prior
     q=root/REPORT;q.parent.mkdir(parents=True,exist_ok=True);q.write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8');return payload
 if __name__=='__main__':print(json.dumps(build(),ensure_ascii=False))
