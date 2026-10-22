@@ -42,7 +42,8 @@ const pushFixture=[make(1.925,-1,'08:00','push'),make(1.877,-1,'11:00','push')];
 const pushing=buildTransitionStats(pushFixture,new Map([['push',{ft_home_goals:1,ft_away_goals:0}]]));
 const push=pushing.get(transitionKey('PRICE_CHANGE',pushFixture[0],pushFixture[1]));
 assert.equal(push.n,1);assert.equal(push.wins,0);assert.equal(push.push,1);
-assert(!html.includes('สถิติย้อนหลังเท่านั้น ·'));
+
 """
     result = subprocess.run([node, "-e", script + checks], capture_output=True, text=True)
     assert result.returncode == 0, result.stderr
+    assert "สถิติย้อนหลังเท่านั้น ·" not in html
