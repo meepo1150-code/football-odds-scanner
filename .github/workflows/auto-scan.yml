@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     env:
-      ODDSPAPI_KEY: ${{ secrets.HISTORICAL_ODDSPAPI_KEY }}
+      ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY_001 }}
       RESEARCH_QUOTA_DURABLE: 'true'
       RESEARCH_V2_MANUAL_UNRESTRICTED: 'true'
     steps:
