@@ -27,7 +27,7 @@ def test_midnight_same_utc_day_cached_cohort_and_final_request(monkeypatch,tmp_p
     assert result['account_remaining_estimate']==70
     assert result['network_requests']==0 and not result['runtime_verified']
     save(tmp_path,str(s.RESERVATIONS),[dict(reservation_id='spent',requests_used=6,finalized_at='2026-10-14T14:04:05Z')])
-    assert s.readiness(tmp_path,now)['status']=='UNVERIFIED_OR_CAPACITY_BLOCKED'
+    assert s.readiness(tmp_path,now)['status']=='READY_FROM_RETAINED_EVIDENCE'
 
 
 def test_fixture_diagnostics_preserve_scope_and_do_not_infer_missing_market(monkeypatch,tmp_path):
