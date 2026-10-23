@@ -153,10 +153,10 @@ def test_production_hash_manifest_unchanged():
                            'src/odds_scanner/research_request_budget.py'}
     # The baseline is an immutable 2026-10-15 evidence snapshot, not a hash
     # manifest of today's production sources. Later reviewed FT/statistics fixes
-    # legitimately changed this one source file. Pin the exact reviewed blob,
+    # legitimately changed this one source file, including verified-FT goal metrics. Pin its reviewed blob,
     # rather than silently skipping its integrity verification.
     approved_evolved_blobs = {
-        'src/odds_scanner/research_v2_pattern_stats.py': '0b9eeb22117e51755312375be58b2918c9a8acd1',
+        'src/odds_scanner/research_v2_pattern_stats.py': '4c9e99037c1a09d08072bafc497c94c53f3212c2',
     }
     for path, blob_sha in approved_evolved_blobs.items():
         raw = (REPO/path).read_bytes()
