@@ -162,7 +162,7 @@ def test_avg_total_goals_by_ah_price_bucket_uses_verified_ft_once(tmp_path):
     for path, rows in ((SNAPSHOTS, snapshots), (RESULTS, results)):
         file = tmp_path / path
         file.parent.mkdir(parents=True, exist_ok=True)
-        file.write_text(''.join(json.dumps(item) + '\\n' for item in rows))
+        file.write_text(''.join(json.dumps(item) + '\n' for item in rows))
     report = build(tmp_path)
     by_price = {item['ah_price_bucket']: item for item in report['over_under_2_5_by_ah_line_price']}
     mid = by_price['1.90-1.99']
@@ -190,7 +190,7 @@ def test_goal_metrics_exclude_missing_invalid_ft_rows(tmp_path):
                                   {'fixture_id': 'no_ft', 'ft_home_goals': True, 'ft_away_goals': 1}])):
         file = tmp_path / path
         file.parent.mkdir(parents=True, exist_ok=True)
-        file.write_text(''.join(json.dumps(item) + '\\n' for item in rows))
+        file.write_text(''.join(json.dumps(item) + '\n' for item in rows))
     report = build(tmp_path)
     assert report['settled_fixtures'] == 1
     row = report['over_under_2_5_by_ah_line_price'][0]
