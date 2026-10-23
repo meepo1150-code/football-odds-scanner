@@ -127,3 +127,72 @@ def test_equivalent_line_representations_share_wr_and_ou_populations(tmp_path):
     assert (tmp_path/SNAPSHOTS).read_bytes()==raw
 
 
+
+
+def test_avg_total_goals_by_ah_price_bucket_uses_verified_ft_once(tmp_path):
+    """A late prematch quote supersedes early quotes; missing/ambiguous FT never enters means."""
+    import json
+    from odds_scanner.research_v2_pattern_stats import build, SNAPSHOTS, RESULTS
+
+    snapshots = []
+    results = []
+    for fid, price, goals in [
+        ('three_goals', 1.90, (2, 1)),
+        ('one_goal', 1.91, (1, 0)),
+        ('five_goals', 1.95, (3, 2)),
+        ('other_bucket', 2.05, (0, 0)),
+        ('conflicted', 1.93, (4, 0)),
+    ]:
+        row = quote()
+        row.update(fixture_id=fid, football_day='2026-09-29')
+        row['ah']['home_price'] = price
+        row['ah']['selected_side_price'] = price
+        snapshots.append(row)
+        results.append({'fixture_id': fid, 'ft_home_goals': goals[0], 'ft_away_goals': goals[1]})
+    old = quote()
+    old.update(fixture_id='three_goals', football_day='2026-09-29', observed_at='2026-09-29T09:00:00Z')
+    old['ah']['home_price'] = 2.05
+    old['ah']['selected_side_price'] = 2.05
+    snapshots.append(old)
+    missing = quote()
+    missing.update(fixture_id='missing', football_day='2026-09-29')
+    snapshots.append(missing)
+    results.append({'fixture_id': 'conflicted', 'ft_home_goals': 0, 'ft_away_goals': 0})
+
+    for path, rows in ((SNAPSHOTS, snapshots), (RESULTS, results)):
+        file = tmp_path / path
+        file.parent.mkdir(parents=True, exist_ok=True)
+        file.write_text(''.join(json.dumps(item) + '\n' for item in rows))
+    report = build(tmp_path)
+    by_price = {item['ah_price_bucket']: item for item in report['over_under_2_5_by_ah_line_price']}
+    mid = by_price['1.90-1.99']
+    assert report['settled_fixtures'] == 4
+    assert mid['n'] == mid['goals_n'] == 3
+    assert mid['total_goals'] == 9
+    assert mid['avg_total_goals'] == 3.0
+    assert mid['over_3_5_n'] == 1
+    assert mid['over_3_5_pct'] == 33.33
+    outer = by_price['2.00-2.09']
+    assert outer['n'] == outer['goals_n'] == 1
+    assert outer['avg_total_goals'] == 0
+    assert outer['over_3_5_pct'] == 0
+
+
+def test_goal_metrics_exclude_missing_invalid_ft_rows(tmp_path):
+    import json
+    from odds_scanner.research_v2_pattern_stats import build, SNAPSHOTS, RESULTS
+    good = quote()
+    good.update(fixture_id='valid', football_day='2026-09-29')
+    missing = quote()
+    missing.update(fixture_id='no_ft', football_day='2026-09-29')
+    for path, rows in ((SNAPSHOTS, [good, missing]),
+                       (RESULTS, [{'fixture_id': 'valid', 'ft_home_goals': 2, 'ft_away_goals': 2},
+                                  {'fixture_id': 'no_ft', 'ft_home_goals': True, 'ft_away_goals': 1}])):
+        file = tmp_path / path
+        file.parent.mkdir(parents=True, exist_ok=True)
+        file.write_text(''.join(json.dumps(item) + '\n' for item in rows))
+    report = build(tmp_path)
+    assert report['settled_fixtures'] == 1
+    row = report['over_under_2_5_by_ah_line_price'][0]
+    assert row['goals_n'] == 1 and row['avg_total_goals'] == 4
+    assert row['over_3_5_n'] == 1 and row['over_3_5_pct'] == 100
