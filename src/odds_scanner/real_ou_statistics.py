@@ -239,7 +239,48 @@ def aggregate_real_ou(outcomes):
         })
     standalone.sort(key=lambda row: (-row["n"], row["ou_line"], row["over_price_bucket"]))
 
-    return {"real_ou_quote_status_counts": dict(quote_statuses),
+    # Joint AH x O/U LINE ONLY: preserve favorite-side direction and both
+    # handicap/total lines, but DO NOT split by either market's decimal odds.
+    # Sum the already-exclusive same-fixture quote groups; half settlements and
+    # whole-line pushes retain their exact settlement semantics.
+    joint_by_lines = defaultdict(list)
+    for group_key, group_rows in paired_groups.items():
+        market_side, ah_line, _, ou_line, _ = group_key
+        joint_by_lines[(market_side, ah_line, ou_line)].extend(group_rows)
+    joint_line_groups = []
+    for (market_side, ah_line, ou_line), rows in joint_by_lines.items():
+        n = len(rows)
+        states_over = Counter(r["ou_real_over_settlement"] for r in rows)
+        states_under = Counter(r["ou_real_under_settlement"] for r in rows)
+        ow = states_over["FULL_WIN"] + states_over["HALF_WIN"]
+        uw = states_under["FULL_WIN"] + states_under["HALF_WIN"]
+        push = states_over["PUSH"]
+        if push != states_under["PUSH"] or ow + uw + push != n:
+            raise ValueError("Inconsistent AH x O/U line-only outcome aggregation")
+        if len({str(r["fixture_id"]) for r in rows}) != n:
+            raise ValueError("AH x O/U line-only group double-counted fixture")
+        joint_line_groups.append({
+            "market_side": market_side, "ah_line": ah_line, "ou_line": ou_line,
+            "n": n, "over_win_n": ow, "under_win_n": uw, "push_n": push,
+            "over_win_pct": round(100*ow/n, 2),
+            "under_win_pct": round(100*uw/n, 2),
+            "push_pct": round(100*push/n, 2),
+            "over_full_win": states_over["FULL_WIN"],
+            "over_half_win": states_over["HALF_WIN"],
+            "over_half_loss": states_over["HALF_LOSS"],
+            "over_full_loss": states_over["FULL_LOSS"],
+            "under_full_win": states_under["FULL_WIN"],
+            "under_half_win": states_under["HALF_WIN"],
+            "under_half_loss": states_under["HALF_LOSS"],
+            "under_full_loss": states_under["FULL_LOSS"],
+            "over_roi_pct": round(100*sum(r["ou_real_over_profit_units"] for r in rows)/n, 2),
+            "mainline_verified_n": sum(r.get("ou_real_mainline_verified") is True for r in rows),
+        })
+    joint_line_groups.sort(key=lambda r: (-r["n"], r["market_side"], r["ah_line"], r["ou_line"]))
+
+    return {"real_ou_combo_by_ah_line_and_ou_line": joint_line_groups,
+            "real_ou_combo_grouping": "AH_FAVORITE_SIDE_AH_LINE_AND_REAL_OU_LINE_ONLY; NO_AH_OR_OU_PRICE_BUCKET",
+            "real_ou_quote_status_counts": dict(quote_statuses),
             "real_ou_paired_by_line_over_price_bucket": standalone,
             "real_ou_independent_grouping": "ACTUAL_OU_LINE_AND_OVER_DECIMAL_ODDS_BUCKET_ONLY; ALL_TRUSTED_SETTLED_PREMATCH_FIXTURES_WITH_PAIRED_QUOTE; NO_AH_CONDITION",
             "real_ou_paired_by_ah_line_price_ou_line_price_buckets": paired,
