@@ -185,7 +185,7 @@ assert(splitTimeline.includes('Over 2.75')&&splitTimeline.includes('1.850'));
 assert(splitTimeline.includes('Under')&&!splitTimeline.includes('1.950'));
 assert(!splitTimeline.includes('ค่าน้ำ Over ช่วง'));
 assert(!splitTimeline.includes('Under @')&&!splitTimeline.includes('Under FW/HW'));
-assert(splitTimeline.includes('ไม่มีข้อมูล O/U รอบนี้')&&splitTimeline.includes('N=8'));
+assert(splitTimeline.includes('ไม่มีราคา O/U ที่ยืนยัน')&&splitTimeline.includes('N=8'));
 assert(splitTimeline.includes('Scan ')&&splitTimeline.includes('market-section market-ou'));
 assert(!metrics.includes('market-section market-ou'));
 assert(ouTransitionKinds(s,{...s,observed_at:'2026-10-13T09:00:00Z',ou:{line:3.0,over_price:1.93,under_price:1.87}}).includes('LINE_CHANGE'));
