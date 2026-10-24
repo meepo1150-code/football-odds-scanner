@@ -114,16 +114,18 @@ def test_shared_scope_receipt_matches_backend_real_offline_data(tmp_path):
     assert result.returncode==0,result.stderr
 
 
-def test_ou_table_uses_frequency_and_priced_returns_without_ah_columns():
+def test_ou_table_uses_actual_ou_quote_prices_and_split_settlement():
     node=shutil.which('node')
     if not node:pytest.skip('Node unavailable')
     script=Path('apps/dashboard/index.html').read_text().split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
     checks='''
 const assert=require('assert');
-const rendered=ouTable([{market_side:'HOME_FAVORITE',ah_line:-.75,ah_price_bucket:'1.90-1.99',n:10,over_2_5_n:6,under_2_5_n:4,over_2_5_pct:60,under_2_5_pct:40,ou25_priced_n:3,over_2_5_roi_pct:23.5,under_2_5_roi_pct:-30,sample_label:'VERY_LOW'}]);
+const rendered=ouTable([{market_side:'HOME_FAVORITE',ah_line:-.75,ah_price_bucket:'1.90-1.99',ou_line:'2.75',selection:'OVER',ou_price_bucket:'1.80-1.89',n:10,price_win_pct:60,push_pct:10,roi_pct:12.5,full_win:4,half_win:2,push:1,half_loss:1,full_loss:2,mainline_verified_n:9,avg_total_goals:3.15,sample_label:'TINY'}]);
 assert(!rendered.includes('undefined'));
-assert(!rendered.includes('FW / HW'));
-assert(rendered.includes('O/U priced N')&&rendered.includes('6/10')&&rendered.includes('23.5%'));
+assert(rendered.includes('FW / HW / P / HL / FL'));
+assert(rendered.includes('2.75')&&rendered.includes('OVER')&&rendered.includes('60.0%')&&rendered.includes('12.5%'));
+assert(rendered.includes('4/2/1/1/2')&&rendered.includes('9/10'));
+assert(!rendered.includes('Over 2.5'));
 const ah=statsTable([{settled_n:1,full_win:0,half_win:1,push:0,half_loss:0,full_loss:0}]);
 assert(ah.includes('FW / HW / P / HL / FL')&&ah.includes('0/1/0/0/0'));
 '''
@@ -146,7 +148,7 @@ assert.equal(providerLabel({source_semantics:'CURRENT_ODDSPAPI_MAINLINE_TRUE_OBS
     assert result.returncode==0,result.stderr
 
 
-def test_mobile_round_labels_and_complementary_ou_split():
+def test_mobile_round_labels_and_actual_ou_pair_per_scan():
     node=shutil.which('node')
     if not node:pytest.skip('Node unavailable')
     script=Path('apps/dashboard/index.html').read_text().split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
@@ -155,12 +157,14 @@ const assert=require('assert');
 assert.equal(scanLabel({scheduled_target_at:'2026-10-13T08:00:00Z'},0),'Scan 15:00');
 assert.equal(scanLabel({scheduled_target_at:'2026-10-13T11:00:00Z'},1),'Scan 18:00');
 assert.equal(scanLabel({scheduled_target_at:null},2),'r3');
-const split=ouSplitBar({n:8,over_2_5_pct:25,under_2_5_pct:75});
+const s={provider:'oddspapi',bookmaker:'pinnacle',source_semantics:'CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED',observed_at:'2026-10-13T08:00:00Z',kickoff:'2026-10-13T12:00:00Z',ou:{line:2.75,over_price:1.85,under_price:1.95}};
+assert.deepEqual(realOuQuote(s),{line:2.75,over:1.85,under:1.95,mainline:true});
+const split=realOuBox(s,{n:8,price_win_pct:25,push:0,full_win:1,half_win:1,half_loss:0,full_loss:6,roi_pct:-12.5},{n:8,price_win_pct:75,push:0,full_win:6,half_win:0,half_loss:2,full_loss:0,roi_pct:23});
+assert(split.includes('Over 2.75')&&split.includes('Under 2.75'));
 assert(split.includes('25.0%')&&split.includes('75.0%'));
-assert(split.includes('width:25%')&&split.includes('width:75%'));
-assert(split.includes('N=8')&&split.includes('ou-segment under'));
+assert(split.includes('1.850')&&split.includes('1.950'));
 assert(!split.includes('NaN'));
-assert(ouSplitBar({n:0}).includes('ไม่มีข้อมูล')||ouSplitBar({n:0}).includes('ยังไม่มี'));
+assert(realOuBox({...s,ou:null},null,null).includes('ไม่มีข้อมูล O/U รอบนี้'));
 const timeline=miniTimeline([{scheduled_target_at:'2026-10-13T08:00:00Z',observed_at:'2026-10-13T08:03:00Z',ah:{selected_side_line:-.25,selected_side_price:2.13}},{scheduled_target_at:'2026-10-13T11:00:00Z',observed_at:'2026-10-13T11:03:00Z',ah:{selected_side_line:-.25,selected_side_price:2.15}}]);
 assert(timeline.includes('Scan 15:00')&&timeline.includes('Scan 18:00'));
 '''
