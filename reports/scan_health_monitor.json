@@ -1,64 +1,60 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-23T17:12:04.537437+00:00",
-  "football_day": "2026-10-23",
-  "status": "FAIL",
+  "generated_at": "2026-10-24T05:35:21.878258+00:00",
+  "football_day": "2026-10-24",
+  "status": "WARNING",
   "issues": [
-    "SCAN_MISSING",
     "FT_DELAY",
     "FT_IDENTITY_CONFLICT",
     "UNMATCHED_IDENTITY_CANDIDATES",
     "LATEST_SCAN_WARNING"
   ],
-  "scan_missing_count": 4,
-  "scan_missing": [
-    {
-      "target_time": "2026-10-23T15:00:00+07:00",
-      "state": "MISSED",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "MISSED",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-10-23T18:00:00+07:00",
-      "state": "MISSED",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "MISSED",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-10-23T21:00:00+07:00",
-      "state": "MISSED",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "MISSED",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-10-24T00:00:00+07:00",
-      "state": "MISSING",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "MISSING",
-      "recovered": false
-    }
-  ],
-  "ft_delay_count": 5,
+  "scan_missing_count": 0,
+  "scan_missing": [],
+  "ft_delay_count": 7,
   "ft_delay": [
+    {
+      "fixture_id": "id1000000972302180",
+      "provider": "oddspapi",
+      "football_day": "2026-10-23",
+      "league": "Challenger Pro League",
+      "kickoff": "2026-10-23T18:00:00+00:00",
+      "home": "RSC Anderlecht Futures",
+      "away": "Koninklijke Lierse Sportkring",
+      "status": "MISSING_FT",
+      "country": "Belgium",
+      "canonical_competition_id": "BEL-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000000972302182",
+      "provider": "oddspapi",
+      "football_day": "2026-10-23",
+      "league": "Challenger Pro League",
+      "kickoff": "2026-10-23T18:00:00+00:00",
+      "home": "Royal Francs Borains",
+      "away": "FCV Dender EH",
+      "status": "MISSING_FT",
+      "country": "Belgium",
+      "canonical_competition_id": "BEL-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000003872366408",
+      "provider": "oddspapi",
+      "football_day": "2026-10-23",
+      "league": "Belgian Pro League",
+      "kickoff": "2026-10-23T18:45:00+00:00",
+      "home": "KV Kortrijk",
+      "away": "Yellow-Red KV Mechelen",
+      "status": "MISSING_FT",
+      "country": "Belgium",
+      "canonical_competition_id": "BEL-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
     {
       "fixture_id": "id1000005472477468",
       "provider": "oddspapi",
@@ -70,6 +66,20 @@
       "status": "IDENTITY_CONFLICT",
       "country": "Spain",
       "canonical_competition_id": null,
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000025472522132",
+      "provider": "oddspapi",
+      "football_day": "2026-10-23",
+      "league": "Cymru Premier",
+      "kickoff": "2026-10-23T18:45:00+00:00",
+      "home": "Holywell Town",
+      "away": "Pen-y-Bont FC",
+      "status": "MISSING_FT",
+      "country": "Wales",
+      "canonical_competition_id": "WAL-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false
     },
@@ -86,34 +96,6 @@
       "canonical_competition_id": null,
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": true
-    },
-    {
-      "fixture_id": "id1000070467912844",
-      "provider": "oddspapi",
-      "football_day": "2026-10-23",
-      "league": "Erovnuli Liga",
-      "kickoff": "2026-10-23T14:00:00+00:00",
-      "home": "FC Spaeri",
-      "away": "FC Gagra",
-      "status": "MISSING_FT",
-      "country": "Georgia",
-      "canonical_competition_id": "GEO-0001",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
-    },
-    {
-      "fixture_id": "id1000072173221944",
-      "provider": "oddspapi",
-      "football_day": "2026-10-23",
-      "league": "Serbian First League",
-      "kickoff": "2026-10-23T14:00:00+00:00",
-      "home": "Gfk Dubocica",
-      "away": "FK Smederevo 1924",
-      "status": "MISSING_FT",
-      "country": "Serbia",
-      "canonical_competition_id": "SRB-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
     },
     {
       "fixture_id": "pinnwire:1637096650",
@@ -159,47 +141,47 @@
   "history_report_count": 30,
   "canonical_slots": [
     {
-      "target_time": "2026-10-23T15:00:00+07:00",
-      "state": "MISSED",
+      "target_time": "2026-10-24T15:00:00+07:00",
+      "state": "UPCOMING",
       "provider": null,
       "observed_at": null,
       "lag_minutes": null,
       "valid_snapshot_count": 0,
       "canonical_fixture_count": 0,
-      "observation_timing": "MISSED",
+      "observation_timing": "UPCOMING",
       "recovered": false
     },
     {
-      "target_time": "2026-10-23T18:00:00+07:00",
-      "state": "MISSED",
+      "target_time": "2026-10-24T18:00:00+07:00",
+      "state": "UPCOMING",
       "provider": null,
       "observed_at": null,
       "lag_minutes": null,
       "valid_snapshot_count": 0,
       "canonical_fixture_count": 0,
-      "observation_timing": "MISSED",
+      "observation_timing": "UPCOMING",
       "recovered": false
     },
     {
-      "target_time": "2026-10-23T21:00:00+07:00",
-      "state": "MISSED",
+      "target_time": "2026-10-24T21:00:00+07:00",
+      "state": "UPCOMING",
       "provider": null,
       "observed_at": null,
       "lag_minutes": null,
       "valid_snapshot_count": 0,
       "canonical_fixture_count": 0,
-      "observation_timing": "MISSED",
+      "observation_timing": "UPCOMING",
       "recovered": false
     },
     {
-      "target_time": "2026-10-24T00:00:00+07:00",
-      "state": "MISSING",
+      "target_time": "2026-10-25T00:00:00+07:00",
+      "state": "UPCOMING",
       "provider": null,
       "observed_at": null,
       "lag_minutes": null,
       "valid_snapshot_count": 0,
       "canonical_fixture_count": 0,
-      "observation_timing": "MISSING",
+      "observation_timing": "UPCOMING",
       "recovered": false
     }
   ],
@@ -222,7 +204,7 @@
     "allocated_tournament_ids": [],
     "quota_utc_day": "2026-10-24",
     "research_usage": {
-      "day": 80,
+      "day": 0,
       "month": 791
     },
     "account_remaining_estimate": 230,
