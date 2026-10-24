@@ -300,3 +300,32 @@ def test_ah_rounds_omit_redundant_team_names_but_fixture_heading_keeps_both():
     assert 'let rounds=ss.map((s,i)=>{let w=s.ah?.selected_side_price' in html
     assert '<div class="teams fixture-title">' in html
     assert '${esc(first.home)}' in html and '${esc(first.away)}' in html
+
+
+def test_three_distinct_market_panels_no_movement_wr_and_push_color():
+    html=Path('apps/dashboard/index.html').read_text()
+    assert '3 · AH × Over — วิเคราะห์สองตลาดร่วมกัน' in html
+    assert '2 · Over/Under — ไลน์จริง' in html
+    assert '1 · Asian Handicap (AH)' in html
+    assert '${i?movementStatBox(ss[i-1],s):\'\'}' not in html
+    assert '.ou-segment.push{background:#e2e8f0}' in html
+    assert 'class="ou-segment push"' in html
+    node=shutil.which('node')
+    if not node:pytest.skip('Node unavailable')
+    script=html.split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
+    checks="""
+const assert=require('assert');
+scopeReceipt={excluded_fixture_reasons:{},untrusted_observations:[]};
+const s={fixture_id:'x',provider:'oddspapi',bookmaker:'pinnacle',favorite_side:'H',source_semantics:'CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED',observed_at:'2026-10-13T08:00:00Z',scheduled_target_at:'2026-10-13T08:00:00Z',kickoff:'2026-10-13T12:00:00Z',ah:{selected_side_line:-0.75,selected_side_price:1.95},ou:{line:2.75,over_price:1.85,under_price:1.95}};
+const agg={n:6,over_win_n:3,under_win_n:2,push_n:1,over_full_win:2,over_half_win:1,over_roi_pct:8,mainline_verified_n:6};
+const stats={real_ou_paired_by_line_over_price_bucket:[{ou_line:'2.75',over_price_bucket:'1.80-1.89',n:75,over_win_n:38,under_win_n:32,push_n:5,over_full_win:30,over_half_win:8,over_roi_pct:7,mainline_verified_n:75}],real_ou_paired_by_ah_line_price_ou_line_price_buckets:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ah_price_bucket:'1.90-1.99',ou_line:'2.75',over_price_bucket:'1.80-1.89',...agg}]};
+assert.equal(ahOverComboStats(s,stats).n,6);
+assert.equal(signalStats(s,stats).ouPair.n,75);
+assert.equal(ahOverComboStats({...s,ah:{selected_side_line:-1,selected_side_price:1.95}},stats),null);
+assert(ahOverComboTimeline([s],stats).includes('AH × Over'));
+const bar=realOuBox(s,agg);
+assert(bar.includes('ou-segment over')&&bar.includes('ou-segment push')&&bar.includes('ou-segment under'));
+assert(bar.includes('Push 1 (16.7%)'));
+"""
+    result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
+    assert result.returncode==0,result.stderr
