@@ -201,20 +201,19 @@ assert(timeline.includes('Scan 15:00')&&timeline.includes('Scan 18:00'));
 
 def test_round_header_price_specific_ah_sample_n():
     html=Path('apps/dashboard/index.html').read_text()
-    assert 'class="round-price-top"' in html
-    assert 'AH ${esc(s.ah?.selected_side_line)}' in html
-    assert 'signalStats(s,st).ah?.settled_n' in html
-    assert 'class="round-ah-n ${ahSampleTier(signalStats(s,st).ah?.settled_n)}"' in html
-    assert 'N=${Number(signalStats(s,st).ah?.settled_n)>0' in html
-    assert '.round-price-top{display:flex' in html
+    assert "function compactRoundHeader(" in html
+    assert "compactRoundHeader(s,i,'AH',s.ah?.selected_side_line,w,signalStats(s,st).ah?.settled_n)" in html
+    assert 'compact-market-quote' in html
+    assert 'compact-sample' in html
+    assert 'N=' in html
 
 
 def test_ah_sample_n_badge_color_tiers():
     node=shutil.which('node')
     if not node:pytest.skip('Node unavailable')
     html=Path('apps/dashboard/index.html').read_text()
-    assert 'ahSampleTier(signalStats(s,st).ah?.settled_n)' in html
-    assert all(f'.round-price-top .round-ah-n.{tier}' in html for tier in ('n-tiny', 'n-early', 'n-developing', 'n-moderate', 'n-large'))
+    assert 'ahSampleTier(count)' in html
+    assert '.compact-sample.n-low' in html and '.compact-sample.n-high' in html
     script=html.split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
     checks='''
 const assert=require('assert');
