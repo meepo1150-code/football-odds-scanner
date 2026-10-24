@@ -329,3 +329,32 @@ assert(bar.includes('Push 1 (16.7%)'));
 """
     result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
+
+
+def test_single_quote_header_and_mobile_overflow_in_all_three_sections():
+    html=Path('apps/dashboard/index.html').read_text()
+    assert "function compactRoundHeader(" in html
+    assert "compactRoundHeader(s,i,'AH'" in html
+    assert "compactRoundHeader(s,i,'Over'" in html
+    assert "compactRoundHeader(s,i,'AH × Over'" in html
+    assert '${miniTimeline(ss)}' not in html
+    assert "'+miniOuTimeline(ss)+'" not in html
+    assert '.compact-market-quote{min-width:0;width:100%;display:grid' in html
+    assert '.fixture .market-section{min-width:0;max-width:100%;box-sizing:border-box;overflow:hidden}' in html
+    node=shutil.which('node')
+    if not node:pytest.skip('Node unavailable')
+    script=html.split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
+    check="""
+const assert=require('assert');
+const s={scheduled_target_at:'2026-10-13T08:00:00Z'};
+const result=compactRoundHeader(s,0,'AH',-.25,1.917,105);
+assert(result.includes('Scan 15:00'));
+assert(result.includes('AH')&&result.includes('-0.25')&&result.includes('1.917')&&result.includes('N=105'));
+assert(!result.includes('21 ต.ค.')&&!result.includes('round-meta')&&!result.includes('round-heading'));
+const over=compactRoundHeader(s,0,'Over',3,2.080,44);
+assert(over.includes('Over')&&over.includes('3')&&over.includes('2.080')&&over.includes('N=44'));
+const combo=compactRoundHeader(s,0,'AH × Over','-0.25 / 3',2.080,8);
+assert(combo.includes('AH × Over')&&combo.includes('-0.25 / 3')&&combo.includes('N=8'));
+"""
+    result=subprocess.run([node,'-e',script+check],capture_output=True,text=True)
+    assert result.returncode==0,result.stderr
