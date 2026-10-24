@@ -247,6 +247,26 @@ def aggregate_real_ou(outcomes):
     for group_key, group_rows in paired_groups.items():
         market_side, ah_line, _, ou_line, _ = group_key
         joint_by_lines[(market_side, ah_line, ou_line)].extend(group_rows)
+    # AH baseline uses the SAME trusted, verified-FT paired-O/U population,
+    # grouped by AH favorite side and line; this controls quote availability.
+    ah_baseline_groups = defaultdict(list)
+    for (market_side, ah_line, _), rows in joint_by_lines.items():
+        ah_baseline_groups[(market_side, ah_line)].extend(rows)
+    valid_ah_states = {"FULL_WIN", "HALF_WIN", "PUSH", "HALF_LOSS", "FULL_LOSS"}
+    def ah_split(rows):
+        valid = [r for r in rows if r.get("favorite_ah_settlement") in valid_ah_states]
+        states = Counter(r["favorite_ah_settlement"] for r in valid)
+        n = len(valid)
+        fav = states["FULL_WIN"] + states["HALF_WIN"]
+        dog = states["FULL_LOSS"] + states["HALF_LOSS"]
+        push = states["PUSH"]
+        if n and fav + dog + push != n:
+            raise ValueError("Joint AH settlements not complementary")
+        return {"ah_n": n, "ah_favorite_win_n": fav,
+                "ah_underdog_win_n": dog, "ah_push_n": push,
+                "ah_favorite_win_pct": round(100*fav/n,2) if n else None,
+                "ah_underdog_win_pct": round(100*dog/n,2) if n else None,
+                "ah_push_pct": round(100*push/n,2) if n else None}
     joint_line_groups = []
     for (market_side, ah_line, ou_line), rows in joint_by_lines.items():
         n = len(rows)
@@ -259,8 +279,16 @@ def aggregate_real_ou(outcomes):
             raise ValueError("Inconsistent AH x O/U line-only outcome aggregation")
         if len({str(r["fixture_id"]) for r in rows}) != n:
             raise ValueError("AH x O/U line-only group double-counted fixture")
+        ah_stats = ah_split(rows)
+        ah_base = ah_split(ah_baseline_groups[(market_side, ah_line)])
         joint_line_groups.append({
             "market_side": market_side, "ah_line": ah_line, "ou_line": ou_line,
+            **ah_stats,
+            "ah_baseline_n": ah_base["ah_n"],
+            "ah_baseline_favorite_win_pct": ah_base["ah_favorite_win_pct"],
+            "ah_delta_vs_line_baseline_pp": (round(ah_stats["ah_favorite_win_pct"]-
+                  ah_base["ah_favorite_win_pct"],2) if ah_stats["ah_favorite_win_pct"] is not None
+                  and ah_base["ah_favorite_win_pct"] is not None else None),
             "n": n, "over_win_n": ow, "under_win_n": uw, "push_n": push,
             "over_win_pct": round(100*ow/n, 2),
             "under_win_pct": round(100*uw/n, 2),
