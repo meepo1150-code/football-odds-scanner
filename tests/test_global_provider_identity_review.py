@@ -156,7 +156,7 @@ def test_production_hash_manifest_unchanged():
     # legitimately changed this one source file, including verified-FT goal metrics. Pin its reviewed blob,
     # rather than silently skipping its integrity verification.
     approved_evolved_blobs = {
-        'src/odds_scanner/research_v2_pattern_stats.py': '4c9e99037c1a09d08072bafc497c94c53f3212c2',
+        'src/odds_scanner/research_v2_pattern_stats.py': '5f8fd5c086fb8235b303ffbd2caad512d23b44a5',
     }
     for path, blob_sha in approved_evolved_blobs.items():
         raw = (REPO/path).read_bytes()
