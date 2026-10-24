@@ -157,7 +157,7 @@ const assert=require('assert');
 assert.equal(scanLabel({scheduled_target_at:'2026-10-13T08:00:00Z'},0),'Scan 15:00');
 assert.equal(scanLabel({scheduled_target_at:'2026-10-13T11:00:00Z'},1),'Scan 18:00');
 assert.equal(scanLabel({scheduled_target_at:null},2),'r3');
-const s={provider:'oddspapi',bookmaker:'pinnacle',source_semantics:'CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED',observed_at:'2026-10-13T08:00:00Z',kickoff:'2026-10-13T12:00:00Z',ou:{line:2.75,over_price:1.85,under_price:1.95},ah:{selected_side_line:-.75,selected_side_price:1.95},favorite_side:'H'};
+const s={provider:'oddspapi',bookmaker:'pinnacle',source_semantics:'CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED',observed_at:'2026-10-13T08:00:00Z',scheduled_target_at:'2026-10-13T08:00:00Z',kickoff:'2026-10-13T12:00:00Z',ou:{line:2.75,over_price:1.85,under_price:1.95},ah:{selected_side_line:-.75,selected_side_price:1.95},favorite_side:'H'};
 assert.deepEqual(realOuQuote(s),{line:2.75,over:1.85,under:1.95,mainline:true});
 const sample={n:8,over_2_5_n:2,under_2_5_n:6,goals_n:8,avg_total_goals:2.75};
 const freq=ou25GoalBar(sample);
