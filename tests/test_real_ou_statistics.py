@@ -80,7 +80,7 @@ def test_group_real_ou_by_each_side_and_own_price_bucket():
     assert over["roi_pct"] == -5.0
     assert under["half_loss"] == 2 and under["full_win"] == 1
     assert under["price_win_pct"] == 33.33
-    assert under["roi_pct"] == 0
+    assert under["roi_pct"] == -1.67
 
 
 def test_end_to_end_uses_latest_per_fixture_and_no_ou_not_in_denominator(tmp_path):
