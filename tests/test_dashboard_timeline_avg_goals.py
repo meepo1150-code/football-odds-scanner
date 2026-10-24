@@ -15,12 +15,12 @@ def _script():
     assert "function realOuQuote(" in text
     assert "function realOuBox(" in text
     assert "function signalStats(" in text
-    assert "stats.real_ou_paired_by_ah_line_price_ou_line_price_buckets" in text
-    assert "r.market_side===ms" in text
+    assert "stats.real_ou_paired_by_line_over_price_bucket" in text
     assert "lineKey(r.ah_line)===ln" in text
     assert "r.ah_price_bucket" in text
     assert "r.over_price_bucket" in text
     assert "r.under_price_bucket" not in text
+    assert "lineKey(r.ou_line)===lineKey(q.line)" in text
     assert "function miniOuTimeline(" in text
     assert "function ouScanTimeline(" in text
     assert "market-section market-ah" in text and "market-section market-ou" in text
@@ -28,7 +28,7 @@ def _script():
     assert "function ou25GoalBar(" in text
     assert "function realOuBox(" in text
     assert "stats.over_under_2_5_by_ah_line_price" in text
-    assert "stats.real_ou_paired_by_ah_line_price_ou_line_price_buckets" in text
+    assert "stats.real_ou_paired_by_line_over_price_bucket" in text
     return text.split("<script>", 1)[1].split("</script>", 1)[0].rsplit("load();", 1)[0]
 
 
@@ -56,8 +56,8 @@ scopeReceipt={excluded_fixture_reasons:{},untrusted_observations:[]};
 const stats={
  market_state_by_side_line_price:[],
  over_under_2_5_by_ah_line_price:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ah_price_bucket:'1.90-1.99',n:35,over_2_5_n:21,under_2_5_n:14}],
- real_ou_paired_by_ah_line_price_ou_line_price_buckets:[
- {market_side:'HOME_FAVORITE',ah_line:'-0.75',ah_price_bucket:'1.90-1.99',ou_line:'2.75',over_price_bucket:'1.80-1.89',n:35,over_win_n:20,under_win_n:12,push_n:3,over_win_pct:57.14,under_win_pct:34.29}
+ real_ou_paired_by_line_over_price_bucket:[
+ {ou_line:'2.75',over_price_bucket:'1.80-1.89',n:35,over_win_n:20,under_win_n:12,push_n:3,over_win_pct:57.14,under_win_pct:34.29}
  ]};
 const grouped=signalStats(snap,stats);
 assert.equal(grouped.ouOver.price_win_pct,57.14);
