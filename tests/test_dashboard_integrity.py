@@ -177,7 +177,17 @@ const stats={market_state_by_side_line_price:[],over_under_2_5_by_ah_line_price:
 const metrics=wrBox(s,stats);
 assert(metrics.includes('AH · Win Rate'));
 assert(metrics.includes('Over 2.5')&&metrics.includes('Under 2.5'));
-assert(metrics.includes('Over 2.75')&&metrics.includes('Under 2.75'));
+assert(!metrics.includes('Over 2.75')&&!metrics.includes('Under 2.75')); // Price market belongs to a separate timeline
+const splitTimeline=ouScanTimeline([s,{...s,ou:null,observed_at:'2026-10-13T09:00:00Z'}],stats);
+assert(splitTimeline.includes('Over 2.75')&&splitTimeline.includes('1.850'));
+assert(splitTimeline.includes('Under 2.75')&&splitTimeline.includes('1.950'));
+assert(splitTimeline.includes('ไม่มีข้อมูล O/U รอบนี้')&&splitTimeline.includes('N=8'));
+assert(splitTimeline.includes('Scan ')&&splitTimeline.includes('market-section market-ou'));
+assert(!metrics.includes('market-section market-ou'));
+assert(ouTransitionKinds(s,{...s,observed_at:'2026-10-13T09:00:00Z',ou:{line:3.0,over_price:1.93,under_price:1.87}}).includes('LINE_CHANGE'));
+assert.deepEqual(ouTransitionKinds(s,{...s,observed_at:'2026-10-13T09:00:00Z',bookmaker:'other'}),[]);
+const ouMini=miniOuTimeline([s,{...s,observed_at:'2026-10-13T09:00:00Z',ou:null}]);
+assert(ouMini.includes('ไม่มีราคา O/U'));
 const timeline=miniTimeline([{scheduled_target_at:'2026-10-13T08:00:00Z',observed_at:'2026-10-13T08:03:00Z',ah:{selected_side_line:-.25,selected_side_price:2.13}},{scheduled_target_at:'2026-10-13T11:00:00Z',observed_at:'2026-10-13T11:03:00Z',ah:{selected_side_line:-.25,selected_side_price:2.15}}]);
 assert(timeline.includes('Scan 15:00')&&timeline.includes('Scan 18:00'));
 '''
