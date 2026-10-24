@@ -231,3 +231,31 @@ def test_global_over_grouping_has_separate_actual_lines_and_over_price_ranges():
     assert lookup[("2.5","1.90-1.99")]["over_win_pct"]==50
     assert lookup[("2.75","1.90-1.99")]["n"]==1
     assert lookup[("2.5","2.00-2.09")]["n"]==1
+
+
+def test_joint_ah_over_line_only_ignores_both_odds_buckets():
+    rows=[]
+    for fid, side, ahline, ahwater, overline, overwater, score in [
+        ("one", "HOME_FAVORITE", -.75, 1.85, 2.75, 1.85, (2, 1)),
+        ("two", "HOME_FAVORITE", -.75, 2.15, 2.75, 2.05, (2, 1)),
+        ("three", "HOME_FAVORITE", -.75, 1.92, 2.75, 1.95, (1, 1)),
+        ("away", "AWAY_FAVORITE", -.75, 1.92, 2.75, 1.95, (2, 1)),
+        ("other_line", "HOME_FAVORITE", -.75, 1.92, 3.0, 1.95, (2, 1)),
+    ]:
+        r=snapshot(fid=fid,line=overline,op=overwater,up=1.93)
+        r["ah"]["selected_side_line"]=ahline
+        r["ah"]["selected_side_price"]=ahwater
+        r.update(market_side=side,ah_line=ahline,
+                 ah_price_bucket="1.80-1.89" if ahwater<1.90 else "2.10-2.20",
+                 ft_home_goals=score[0],ft_away_goals=score[1])
+        rows.append({**r,**real_ou_outcome(r,*score)})
+    d=aggregate_real_ou(rows)
+    new=d["real_ou_combo_by_ah_line_and_ou_line"]
+    group=next(x for x in new if x["market_side"]=="HOME_FAVORITE"
+               and x["ah_line"]=="-0.75" and x["ou_line"]=="2.75")
+    assert group["n"]==3
+    assert group["over_win_n"]==2 and group["under_win_n"]==1
+    assert group["over_win_pct"]==66.67
+    assert "ah_price_bucket" not in group and "over_price_bucket" not in group
+    assert len(new)==3
+    assert d["real_ou_combo_grouping"].endswith("NO_AH_OR_OU_PRICE_BUCKET")
