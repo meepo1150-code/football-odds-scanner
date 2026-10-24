@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
   "football_day": "2026-10-24",
-  "generated_at": "2026-10-24T12:57:14.258511+00:00",
+  "generated_at": "2026-10-24T13:41:17.277050+00:00",
   "workflow_success_is_not_data_source_health": true,
   "status": "DEGRADED_DATA_COVERAGE",
   "data_assertions_passed": true,
@@ -11,7 +11,7 @@
     "CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE"
   ],
   "collection": {
-    "bangkok_now": "2026-10-24T19:57:14.258511+07:00",
+    "bangkok_now": "2026-10-24T20:41:17.277050+07:00",
     "canonical_slots": [
       {
         "target_time": "2026-10-24T15:00:00+07:00",
@@ -26,13 +26,13 @@
       },
       {
         "target_time": "2026-10-24T18:00:00+07:00",
-        "state": "MISSING",
+        "state": "MISSED",
         "provider": null,
         "observed_at": null,
         "lag_minutes": null,
         "valid_snapshot_count": 0,
         "canonical_fixture_count": 0,
-        "observation_timing": "MISSING",
+        "observation_timing": "MISSED",
         "recovered": false
       },
       {
@@ -71,7 +71,8 @@
     "collection_state": "DEGRADED",
     "recovered_slots": [],
     "missed_slots": [
-      "2026-10-24T15:00:00+07:00"
+      "2026-10-24T15:00:00+07:00",
+      "2026-10-24T18:00:00+07:00"
     ]
   },
   "counts": {
@@ -93,10 +94,10 @@
     "observed_slots": 0,
     "missing_elapsed_slots": 2,
     "coverage_fraction": 0.0,
-    "unresolved_matured_3h_fixtures": 50,
-    "unresolved_future_or_recent_fixtures": 233,
+    "unresolved_matured_3h_fixtures": 63,
+    "unresolved_future_or_recent_fixtures": 220,
     "retired_unresolved_ft_fixtures": 46,
-    "active_unresolved_matured_3h_fixtures": 4
+    "active_unresolved_matured_3h_fixtures": 17
   },
   "providers": {
     "pinnwire": {
@@ -104,7 +105,7 @@
       "capability": "RESEARCH_ONLY",
       "usable_recent_output": false,
       "fresh": false,
-      "report_age_hours": 286.7,
+      "report_age_hours": 287.44,
       "partial_rows_usable": false,
       "generated_at": "2026-10-12T14:15:08.613986+00:00",
       "errors": [],
@@ -115,7 +116,7 @@
       "capability": "FALLBACK",
       "usable_recent_output": false,
       "fresh": false,
-      "report_age_hours": 257.59,
+      "report_age_hours": 258.32,
       "partial_rows_usable": false,
       "generated_at": "2026-10-13T19:21:51.020194+00:00",
       "errors": [
