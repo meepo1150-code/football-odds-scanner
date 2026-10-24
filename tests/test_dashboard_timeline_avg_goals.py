@@ -15,7 +15,7 @@ def _script():
     assert "function realOuQuote(" in text
     assert "function realOuBox(" in text
     assert "function signalStats(" in text
-    assert "stats.real_ou_by_ah_line_price_ou_line_price" in text
+    assert "stats.real_ou_paired_by_ah_line_price_ou_line_price_buckets" in text
     assert "r.market_side===ms" in text
     assert "lineKey(r.ah_line)===ln" in text
     assert "r.ah_price_bucket" in text
