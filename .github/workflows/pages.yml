@@ -83,12 +83,13 @@ jobs:
           cp apps/dashboard/index.html site/index.html
           cp ah-public-demo.html site/ah-public-demo.html
           cp apps/dashboard/monitor.html site/monitor.html
+          cp apps/dashboard/research-lab.html site/research-lab.html
           cp apps/dashboard/collection-health.js site/collection-health.js
           cp apps/dashboard/deployment.json site/deployment.json
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery.html || true
           test -f apps/dashboard/discovery.html && cp apps/dashboard/discovery.html site/discovery/index.html || true
           test -f apps/dashboard/404.html && cp apps/dashboard/404.html site/404.html || true
-          for f in automatic_scan_latest.json scan_health_latest.json scan_health_monitor.json daily_preparation_status.json pinnwire_web_result_recovery_queue.json dashboard_scope.json research_v2_end_to_end_audit.json oddspapi_history_audit.json research_v2_operational_audit.json legacy_propline_recovery.json research_v2_daily_sync_status.json research_v2_movement_status.json propline_research_v2_status.json europe_pinnacle_research_v2_status.json oddspapi_quota_health.json research_v2_pattern_statistics.json pinnwire_result_join_status.json pinnwire_research_v2_status.json; do
+          for f in automatic_scan_latest.json scan_health_latest.json scan_health_monitor.json daily_preparation_status.json pinnwire_web_result_recovery_queue.json dashboard_scope.json research_v2_end_to_end_audit.json oddspapi_history_audit.json oddspapi_result_join.json oddspapi_settled_history.json research_v2_operational_audit.json legacy_propline_recovery.json research_v2_daily_sync_status.json research_v2_movement_status.json propline_research_v2_status.json europe_pinnacle_research_v2_status.json oddspapi_quota_health.json research_v2_pattern_statistics.json pinnwire_result_join_status.json pinnwire_research_v2_status.json; do
             test -f "reports/$f" && cp "reports/$f" "site/reports/$f" || true
           done
           test -f reports/research_v2_missing_ft_ledger.json && cp reports/research_v2_missing_ft_ledger.json site/reports/research_v2_missing_ft_ledger.json
