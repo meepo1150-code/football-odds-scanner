@@ -130,23 +130,25 @@ def test_paired_ou_uses_identical_cohort_and_complementary_percentages():
     out = aggregate_real_ou(rows)
     pairs = out["real_ou_paired_by_ah_line_price_ou_line_price_buckets"]
     primary = next(p for p in pairs if p["ou_line"] == "2.75"
-                   and p["under_price_bucket"] == "1.90-1.99")
-    assert primary["n"] == 3
-    assert primary["over_win_n"] == 2
+                   and p["over_price_bucket"] == "1.80-1.89")
+    # Under water varied between 1.95 and 2.05. All four fixtures must be
+    # included in one Over-price cohort; Under quote is NOT an extra filter.
+    assert primary["n"] == 4
+    assert primary["over_win_n"] == 3
     assert primary["under_win_n"] == 1
     assert primary["push_n"] == 0
-    assert primary["over_win_pct"] == 66.67
-    assert primary["under_win_pct"] == 33.33
-    assert primary["over_half_win"] == 2
-    assert primary["under_half_loss"] == 2
+    assert primary["over_win_pct"] == 75
+    assert primary["under_win_pct"] == 25
+    assert primary["over_half_win"] == 3
+    assert primary["under_half_loss"] == 3
+    assert "under_price_bucket" not in primary
     push = next(p for p in pairs if p["ou_line"] == "3")
     assert push["n"] == 1 and push["push_n"] == 1
     assert push["over_win_n"] == push["under_win_n"] == 0
     assert push["over_win_pct"] == push["under_win_pct"] == 0
     assert push["push_pct"] == 100
-    other = next(p for p in pairs if p["ou_line"] == "2.75"
-                 and p["under_price_bucket"] == "2.00-2.09")
-    assert other["n"] == 1
+    assert len(pairs) == 2
+    assert out["real_ou_paired_price_grouping"].endswith("UNDER_ODDS_NOT_A_GROUPING_FILTER")
     assert all(p["over_win_n"] + p["under_win_n"] + p["push_n"] == p["n"]
                for p in pairs)
 
@@ -172,8 +174,10 @@ def test_end_to_end_paired_same_price_population(tmp_path):
     report = build(tmp_path)
     pairs = report["real_ou_paired_by_ah_line_price_ou_line_price_buckets"]
     assert sum(p["n"] for p in pairs) == 3
-    by_under = {p["under_price_bucket"]: p for p in pairs}
-    assert by_under["1.90-1.99"]["n"] == 2
-    assert by_under["1.90-1.99"]["over_win_n"] == 1
-    assert by_under["1.90-1.99"]["under_win_n"] == 1
-    assert by_under["2.00-2.09"]["n"] == 1
+    assert len(pairs) == 1
+    # These 3 rows share Over water 1.85/1.86 regardless of Under 1.95/2.05.
+    assert pairs[0]["n"] == 3
+    assert pairs[0]["over_win_n"] == 2
+    assert pairs[0]["under_win_n"] == 1
+    assert pairs[0]["over_price_bucket"] == "1.80-1.89"
+    assert "under_price_bucket" not in pairs[0]

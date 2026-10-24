@@ -100,7 +100,8 @@ def aggregate_real_ou(outcomes):
     """At most one outcome per canonical fixture, evaluated on a real O/U quote.
 
     WR = (FULL_WIN + HALF_WIN) / all settled bets including PUSH, exactly like AH.
-    Each side is independently grouped by its own price bucket; no unpriced FT rows.
+    Legacy single-side rows retain their own price bucket; paired O/U win-rate
+    rows group on the actual Over price bucket ONLY (Under price not a filter).
     """
     groups = defaultdict(list)
     paired_groups = defaultdict(list)
@@ -115,9 +116,9 @@ def aggregate_real_ou(outcomes):
         if not fixture_id or fixture_id in matched_fixtures:
             continue
         matched_fixtures.add(fixture_id)
-        # Paired markets must share the exact same fixture population to support
-        # one complementary Over / Push / Under bar. Never combine separate
-        # marginal price-bucket groups with different denominators.
+        # Paired markets share the same FT fixture population for one Over / Push /
+        # Under bar. Split by actual Over line and Over price bucket only; the
+        # Under quote is validated but never used to partition this population.
         statuses = {"FULL_WIN", "HALF_WIN", "PUSH", "HALF_LOSS", "FULL_LOSS"}
         op, up = (_num(row.get(f"ou_real_{side}_price")) for side in ("over", "under"))
         os, us = (row.get(f"ou_real_{side}_settlement") for side in ("over", "under"))
@@ -127,7 +128,7 @@ def aggregate_real_ou(outcomes):
                 and opr is not None and upr is not None):
             pair_key = (row.get("market_side"), str(row.get("ah_line")),
                         row.get("ah_price_bucket"), format(line, ".15g"),
-                        _bucket(op), _bucket(up))
+                        _bucket(op))
             paired_groups[pair_key].append(row)
         for selection, prefix in (("OVER", "over"), ("UNDER", "under")):
             price = _num(row.get(f"ou_real_{prefix}_price"))
@@ -178,7 +179,7 @@ def aggregate_real_ou(outcomes):
             raise ValueError("Inconsistent paired Asian O/U settlement outcomes")
         paired.append(dict(
             zip(("market_side", "ah_line", "ah_price_bucket", "ou_line",
-                 "over_price_bucket", "under_price_bucket"), key),
+                 "over_price_bucket"), key),
             n=n, over_win_n=over_wins, under_win_n=under_wins, push_n=pushes,
             over_win_pct=round(100 * over_wins / n, 2),
             under_win_pct=round(100 * under_wins / n, 2),
@@ -198,6 +199,7 @@ def aggregate_real_ou(outcomes):
     paired.sort(key=lambda row: (-row["n"], row["ou_line"], str(row["market_side"])))
     return {"real_ou_quote_status_counts": dict(quote_statuses),
             "real_ou_paired_by_ah_line_price_ou_line_price_buckets": paired,
+            "real_ou_paired_price_grouping": "AH_SIDE_AH_LINE_AH_BUCKET_REAL_OU_LINE_OVER_PRICE_BUCKET_ONLY; UNDER_ODDS_NOT_A_GROUPING_FILTER",
             "real_ou_settled_fixtures_with_paired_quote": len(matched_fixtures),
             "real_ou_by_ah_line_price_ou_line_price": grouped,
             "real_ou_win_rate_definition":
