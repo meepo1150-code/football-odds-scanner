@@ -1,64 +1,61 @@
-"""Scan Timeline displays the FT goal average for its exact AH/price state.
+"""Scan Timeline uses actual same-snapshot O/U quotes and separate priced WR.
 
-The dashboard already looks up both its O/U bar and the verified FT goal average
-from the same canonical market_side x AH line x AH price bucket report row.
+This replaces the old fixed Over-2.5 goal-frequency regression contract.
 """
 from pathlib import Path
-import json
-import re
 import shutil
 import subprocess
-
 import pytest
 
 HTML = Path(__file__).resolve().parents[1] / "apps/dashboard/index.html"
 
 
-def _js_functions():
-    page = HTML.read_text(encoding="utf-8")
-    start = page.index("function ouAverageLabel(")
-    end = page.index("function miniTimeline(", start)
-    functions = page[start:end]
-    assert "function ouSplitBar(" in functions
-    assert "N=${count} · FT ที่ยืนยัน</div>${ouAverageLabel(ou,count)}" in functions
-    assert ".ou-goal-avg{" in page
-    # Regression: lookup remains the existing exact side/line/decimal-price bucket.
-    sig = page[page.index("function signalStats("):page.index("function signalKinds(")]
-    assert "stats.over_under_2_5_by_ah_line_price" in sig
-    assert "r.market_side===ms" in sig
-    assert "lineKey(r.ah_line)===ln" in sig
-    assert "r.ah_price_bucket" in sig
-    return functions
+def _script():
+    text = HTML.read_text(encoding="utf-8")
+    assert "function realOuQuote(" in text
+    assert "function realOuBox(" in text
+    assert "function signalStats(" in text
+    assert "stats.real_ou_by_ah_line_price_ou_line_price" in text
+    assert "r.market_side===ms" in text
+    assert "lineKey(r.ah_line)===ln" in text
+    assert "r.ah_price_bucket" in text
+    assert "r.selection==='OVER'" in text and "r.selection==='UNDER'" in text
+    assert "ราคาและ WR จริง" in text
+    assert "Over 2.5" not in text
+    return text.split("<script>", 1)[1].split("</script>", 1)[0].rsplit("load();", 1)[0]
 
 
-def test_goal_average_attached_below_scan_timeline_ou_bar():
-    _js_functions()
+def test_ou_real_line_is_referenced_for_timeline_and_historical():
+    _script()
 
 
 @pytest.mark.skipif(shutil.which("node") is None, reason="Node.js unavailable")
-def test_goal_average_renders_only_when_verified_ft_sample_matches():
-    helper = _js_functions()
-    js = """const n=(v,d=2)=>Number(v).toFixed(d);
-const metricBar=()=>'<div>ไม่มี FT ที่ยืนยัน</div>';
-""" + helper + """
-const valid={n:34,goals_n:34,avg_total_goals:2.73,over_2_5_pct:55.88,under_2_5_pct:44.12};
-const empty={n:0,goals_n:0,avg_total_goals:null,over_2_5_pct:null,under_2_5_pct:null};
-const old={...valid,avg_total_goals:undefined};
-const mismatch={...valid,goals_n:33};
-const zero={...valid,avg_total_goals:0};
-console.log(JSON.stringify({
-  full:ouSplitBar(valid),
-  empty:ouSplitBar(empty),
-  old:ouSplitBar(old),
-  mismatch:ouSplitBar(mismatch),
-  zero:ouSplitBar(zero)
-}));"""
-    out = subprocess.run(["node", "-e", js], capture_output=True, text=True, check=True)
-    rendered = json.loads(out.stdout)
-    assert "N=34 · FT ที่ยืนยัน</div><div class=\"ou-goal-avg\"" in rendered["full"]
-    assert "2.73</strong> ลูก/คู่" in rendered["full"]
-    assert "Over 2.5" in rendered["full"] and "Under 2.5" in rendered["full"]
-    assert "ou-goal-avg" not in rendered["empty"]
-    assert "ou-goal-avg" not in rendered["old"]
-    assert "ou-goal-avg" not in rendered["mismatch"]
-    assert "0.00</strong> ลูก/คู่" in rendered["zero"]
+def test_ou_real_per_scan_quote_requires_prematch_and_no_carry_forward():
+    script = _script()
+    checks = """
+const assert=require('assert');
+const snap={provider:'oddspapi',fixture_id:'x',bookmaker:'pinnacle',favorite_side:'H',
+  source_semantics:'CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED',
+  observed_at:'2026-10-13T08:00:00Z',kickoff:'2026-10-13T12:00:00Z',
+  ah:{selected_side_line:-.75,selected_side_price:1.95},
+  ou:{line:2.75,over_price:1.85,under_price:1.95}};
+assert.equal(realOuQuote(snap).line,2.75);
+assert.equal(realOuQuote({...snap,ou:{}}),null);
+assert.equal(realOuQuote({...snap,ou:null}),null);
+assert.equal(realOuQuote({...snap,observed_at:snap.kickoff}),null);
+assert.equal(realOuQuote({...snap,ou:{...snap.ou,line:2.6}}),null);
+assert(realOuBox({...snap,ou:null},null,null).includes('ไม่มีข้อมูล O/U รอบนี้'));
+scopeReceipt={excluded_fixture_reasons:{},untrusted_observations:[]};
+const stats={
+ market_state_by_side_line_price:[],
+ real_ou_by_ah_line_price_ou_line_price:[
+ {market_side:'HOME_FAVORITE',ah_line:'-0.75',ah_price_bucket:'1.90-1.99',ou_line:'2.75',selection:'OVER',ou_price_bucket:'1.80-1.89',n:35,price_win_pct:57.14},
+ {market_side:'HOME_FAVORITE',ah_line:'-0.75',ah_price_bucket:'1.90-1.99',ou_line:'2.75',selection:'UNDER',ou_price_bucket:'1.90-1.99',n:35,price_win_pct:34.29}
+ ]};
+const grouped=signalStats(snap,stats);
+assert.equal(grouped.ouOver.price_win_pct,57.14);
+assert.equal(grouped.ouUnder.price_win_pct,34.29);
+assert.equal(signalStats({...snap,ou:null},stats).ouOver,null);
+"""
+    out = subprocess.run(["node", "-e", script + checks], capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr

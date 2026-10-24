@@ -1,0 +1,158 @@
+"""Research-only O/U statistics from the same quoted snapshot as the AH line.
+
+Do not substitute a fixed total line or infer an O/U quote from final scores.
+One canonical fixture contributes once: the latest prematch snapshot selected
+by research_v2_pattern_stats. Both O and U are settled with split-quarter stakes.
+"""
+from __future__ import annotations
+
+from collections import Counter, defaultdict
+from datetime import datetime
+import math
+
+from .asian_settlement import settle_asian_total
+
+
+def _num(value):
+    try:
+        v = float(value)
+    except (TypeError, ValueError):
+        return None
+    return v if math.isfinite(v) else None
+
+
+def _bucket(value):
+    v = _num(value)
+    if v is None:
+        return "UNKNOWN"
+    if v < 1.80:
+        return "<1.80"
+    if v > 2.20:
+        return ">2.20"
+    if v < 1.90:
+        return "1.80-1.89"
+    if v < 2.00:
+        return "1.90-1.99"
+    if v < 2.10:
+        return "2.00-2.09"
+    return "2.10-2.20"
+
+
+def _quote(s):
+    ou = s.get("ou") or s.get("over_under_2_5") or s.get("ou_2_5")
+    if not isinstance(ou, dict) or not ou:
+        return None, "MISSING_OU"
+    line = _num(ou.get("line"))
+    over = _num(ou.get("over_price", ou.get("over")))
+    under = _num(ou.get("under_price", ou.get("under")))
+    if line is None or line < 0 or abs(line * 4 - round(line * 4)) > 1e-8:
+        return None, "INVALID_OU_LINE"
+    if over is None or under is None or over <= 1 or under <= 1:
+        return None, "INVALID_OU_TWO_SIDED_PRICE"
+    try:
+        observed = datetime.fromisoformat(str(s["observed_at"]).replace("Z", "+00:00"))
+        kickoff = datetime.fromisoformat(str(s["kickoff"]).replace("Z", "+00:00"))
+        if observed.tzinfo is None or kickoff.tzinfo is None or not observed < kickoff:
+            return None, "NOT_PREMATCH"
+    except (KeyError, TypeError, ValueError):
+        return None, "INVALID_QUOTE_TIMESTAMP"
+    if not s.get("bookmaker") or not s.get("source_semantics"):
+        return None, "MISSING_PRICE_PROVENANCE"
+    verified = bool(s.get("mainline_verified") is True or
+                    s.get("source_semantics") == "CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED")
+    return {
+        "line": line, "over_price": over, "under_price": under,
+        "observed_at": s["observed_at"], "bookmaker": s["bookmaker"],
+        "source_semantics": s["source_semantics"],
+        "mainline_verified": verified,
+    }, "VERIFIED_MAINLINE" if verified else "PAIRED_QUOTE_MAINLINE_UNVERIFIED"
+
+
+def real_ou_outcome(s, home_goals, away_goals):
+    """Return settlement fields for one actual same-snapshot O/U pair."""
+    quote, status = _quote(s)
+    result = {"ou_real_quote_status": status, "ou_real_line": None,
+              "ou_real_over_price": None, "ou_real_under_price": None,
+              "ou_real_over_settlement": None, "ou_real_under_settlement": None,
+              "ou_real_over_profit_units": None, "ou_real_under_profit_units": None,
+              "ou_real_over_price_bucket": None, "ou_real_under_price_bucket": None,
+              "ou_real_mainline_verified": False}
+    if quote is None:
+        return result
+    over = settle_asian_total(home_goals, away_goals, quote["line"], quote["over_price"], "O")
+    under = settle_asian_total(home_goals, away_goals, quote["line"], quote["under_price"], "U")
+    result.update({
+        "ou_real_line": quote["line"],
+        "ou_real_over_price": quote["over_price"],
+        "ou_real_under_price": quote["under_price"],
+        "ou_real_over_price_bucket": _bucket(quote["over_price"]),
+        "ou_real_under_price_bucket": _bucket(quote["under_price"]),
+        "ou_real_over_settlement": over.settlement.value,
+        "ou_real_under_settlement": under.settlement.value,
+        "ou_real_over_profit_units": over.profit_units,
+        "ou_real_under_profit_units": under.profit_units,
+        "ou_real_mainline_verified": quote["mainline_verified"],
+    })
+    return result
+
+
+def aggregate_real_ou(outcomes):
+    """At most one outcome per canonical fixture, evaluated on a real O/U quote.
+
+    WR = (FULL_WIN + HALF_WIN) / all settled bets including PUSH, exactly like AH.
+    Each side is independently grouped by its own price bucket; no unpriced FT rows.
+    """
+    groups = defaultdict(list)
+    quote_statuses = Counter()
+    matched_fixtures = set()
+    for row in outcomes:
+        quote_statuses[row.get("ou_real_quote_status") or "NOT_EVALUATED"] += 1
+        line = _num(row.get("ou_real_line"))
+        if line is None:
+            continue
+        fixture_id = str(row.get("fixture_id") or "")
+        if not fixture_id or fixture_id in matched_fixtures:
+            continue
+        matched_fixtures.add(fixture_id)
+        for selection, prefix in (("OVER", "over"), ("UNDER", "under")):
+            price = _num(row.get(f"ou_real_{prefix}_price"))
+            state = row.get(f"ou_real_{prefix}_settlement")
+            profit = _num(row.get(f"ou_real_{prefix}_profit_units"))
+            if price is None or price <= 1 or profit is None or state not in {
+                "FULL_WIN", "HALF_WIN", "PUSH", "HALF_LOSS", "FULL_LOSS"
+            }:
+                continue
+            group_key = (row.get("market_side"), str(row.get("ah_line")),
+                         row.get("ah_price_bucket"), format(line, ".15g"),
+                         selection, _bucket(price))
+            groups[group_key].append((row, state, profit))
+    grouped = []
+    for key, entries in groups.items():
+        states = Counter(state for _, state, _ in entries)
+        n = len(entries)
+        wins = states["FULL_WIN"] + states["HALF_WIN"]
+        profit = sum(p for _, _, p in entries)
+        total_goals = sum(int(r["ft_home_goals"]) + int(r["ft_away_goals"]) for r, _, _ in entries)
+        grouped.append(dict(
+            zip(("market_side", "ah_line", "ah_price_bucket", "ou_line",
+                 "selection", "ou_price_bucket"), key),
+            n=n, full_win=states["FULL_WIN"], half_win=states["HALF_WIN"],
+            push=states["PUSH"], half_loss=states["HALF_LOSS"],
+            full_loss=states["FULL_LOSS"], price_win_n=wins,
+            price_win_pct=round(100*wins/n, 2),
+            push_pct=round(100*states["PUSH"]/n, 2),
+            profit_units=round(profit, 4), roi_pct=round(100*profit/n, 2),
+            avg_total_goals=round(total_goals/n, 2),
+            mainline_verified_n=sum(r.get("ou_real_mainline_verified") is True
+                                    for r, _, _ in entries),
+            sample_label="TINY" if n < 20 else "EARLY" if n < 40 else
+            "DEVELOPING" if n < 60 else "MODERATE" if n < 100 else "LARGE",
+        ))
+    grouped.sort(key=lambda r: (-r["n"], str(r["market_side"]), r["ou_line"], r["selection"]))
+    return {"real_ou_quote_status_counts": dict(quote_statuses),
+            "real_ou_settled_fixtures_with_paired_quote": len(matched_fixtures),
+            "real_ou_by_ah_line_price_ou_line_price": grouped,
+            "real_ou_win_rate_definition":
+            "(FULL_WIN + HALF_WIN) / ALL_SETTLED_INCLUDING_PUSH; ASIAN_QUARTER_LINE; ROI_EXACT_STAKE_RETURN",
+            "real_ou_population_policy":
+            "LATEST_VERIFIED_PREMATCH_AH_SNAPSHOT_PER_CANONICAL_FIXTURE_WITH_REAL_PAIRED_OU_AND_FT; NO_FIXED_LINE" }
