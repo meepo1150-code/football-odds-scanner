@@ -181,3 +181,53 @@ def test_end_to_end_paired_same_price_population(tmp_path):
     assert pairs[0]["under_win_n"] == 1
     assert pairs[0]["over_price_bucket"] == "1.80-1.89"
     assert "under_price_bucket" not in pairs[0]
+
+
+def test_global_over_cohort_ignores_all_ah_dimensions_and_under_odds():
+    # Same real O/U line + Over water; fixtures have different AH directions,
+    # lines, buckets, and also include an AH price outside the AH core range.
+    definitions = [
+        ("f1", "HOME_FAVORITE", -0.75, "1.90-1.99", 1.95, 2.75, 1.95, (2, 1)),
+        ("f2", "AWAY_FAVORITE", -1.5, "1.80-1.89", 1.85, 2.05, 1.95, (1, 1)),
+        ("f3", "HOME_FAVORITE", -0.25, "<1.80", 1.60, 2.15, 1.95, (2, 1)),
+    ]
+    rows=[]
+    for fid, market, ahline, ah_bucket, ah_price, under_price, over_price, score in definitions:
+        snap=snapshot(fid=fid, line=2.5, op=over_price, up=under_price)
+        snap["ah"]["selected_side_line"]=ahline
+        snap["ah"]["selected_side_price"]=ah_price
+        snap.update(market_side=market, ah_line=ahline,
+                    ah_price_bucket=ah_bucket, ah_core_price=1.8 <= ah_price <= 2.2,
+                    ft_home_goals=score[0], ft_away_goals=score[1])
+        rows.append({**snap, **real_ou_outcome(snap, *score)})
+    report=aggregate_real_ou(rows)
+    independent=report["real_ou_paired_by_line_over_price_bucket"]
+    assert len(independent)==1
+    group=independent[0]
+    assert group["ou_line"]=="2.5"
+    assert group["over_price_bucket"]=="1.90-1.99"
+    assert group["n"]==3
+    assert group["over_win_n"]==2 and group["under_win_n"]==1 and group["push_n"]==0
+    assert group["over_win_pct"]==66.67
+    assert group["under_win_pct"]==33.33
+    assert not any(k.startswith("ah_") or k=="market_side" for k in group)
+    assert len(report["real_ou_paired_by_ah_line_price_ou_line_price_buckets"])==3
+    assert report["real_ou_independent_grouping"].endswith("NO_AH_CONDITION")
+
+
+def test_global_over_grouping_has_separate_actual_lines_and_over_price_ranges():
+    cases=[("a",2.5,1.93, (2,1)),("b",2.5,1.98,(1,1)),
+           ("c",2.75,1.92,(2,1)),("d",2.5,2.04,(2,1))]
+    rows=[]
+    for fid,line,op,score in cases:
+        snap=snapshot(fid=fid,line=line,op=op,up=1.98)
+        snap.update(market_side="AWAY_FAVORITE",ah_line=-1,
+                    ah_price_bucket=">2.20",
+                    ft_home_goals=score[0],ft_away_goals=score[1])
+        rows.append({**snap,**real_ou_outcome(snap,*score)})
+    groups=aggregate_real_ou(rows)["real_ou_paired_by_line_over_price_bucket"]
+    lookup={(g["ou_line"],g["over_price_bucket"]):g for g in groups}
+    assert lookup[("2.5","1.90-1.99")]["n"]==2
+    assert lookup[("2.5","1.90-1.99")]["over_win_pct"]==50
+    assert lookup[("2.75","1.90-1.99")]["n"]==1
+    assert lookup[("2.5","2.00-2.09")]["n"]==1

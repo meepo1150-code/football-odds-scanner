@@ -197,7 +197,51 @@ def aggregate_real_ou(outcomes):
             mainline_verified_n=sum(r.get("ou_real_mainline_verified") is True for r in rows),
         ))
     paired.sort(key=lambda row: (-row["n"], row["ou_line"], str(row["market_side"])))
+    # Completely independent O/U statistical population: neither AH side,
+    # AH line, AH decimal price, nor AH core-price eligibility is a key.
+    # Rows are the same exact one-per-fixture prematch Over quote and verified FT
+    # outcomes; under_price is NOT used as a selection/grouping field.
+    independent_groups = defaultdict(list)
+    for group_key, rows in paired_groups.items():
+        ou_line, over_bucket = group_key[-2:]
+        independent_groups[(ou_line, over_bucket)].extend(rows)
+    standalone = []
+    for (ou_line, over_bucket), rows in independent_groups.items():
+        n = len(rows)
+        over_states = Counter(r["ou_real_over_settlement"] for r in rows)
+        under_states = Counter(r["ou_real_under_settlement"] for r in rows)
+        ow = over_states["FULL_WIN"] + over_states["HALF_WIN"]
+        uw = under_states["FULL_WIN"] + under_states["HALF_WIN"]
+        push = over_states["PUSH"]
+        if push != under_states["PUSH"] or ow + uw + push != n:
+            raise ValueError("O/U standalone win-rate group has inconsistent settlements")
+        fixture_ids = {str(r["fixture_id"]) for r in rows}
+        if len(fixture_ids) != n:
+            raise ValueError("O/U standalone win-rate group counted one fixture more than once")
+        standalone.append({
+            "ou_line": ou_line, "over_price_bucket": over_bucket,
+            "n": n, "over_win_n": ow, "under_win_n": uw, "push_n": push,
+            "over_win_pct": round(100 * ow / n, 2),
+            "under_win_pct": round(100 * uw / n, 2),
+            "push_pct": round(100 * push / n, 2),
+            "over_full_win": over_states["FULL_WIN"],
+            "over_half_win": over_states["HALF_WIN"],
+            "over_half_loss": over_states["HALF_LOSS"],
+            "over_full_loss": over_states["FULL_LOSS"],
+            "under_full_win": under_states["FULL_WIN"],
+            "under_half_win": under_states["HALF_WIN"],
+            "under_half_loss": under_states["HALF_LOSS"],
+            "under_full_loss": under_states["FULL_LOSS"],
+            "over_roi_pct": round(100 * sum(r["ou_real_over_profit_units"] for r in rows) / n, 2),
+            "mainline_verified_n": sum(r.get("ou_real_mainline_verified") is True for r in rows),
+            "sample_label": "TINY" if n < 20 else "EARLY" if n < 40 else
+            "DEVELOPING" if n < 60 else "MODERATE" if n < 100 else "LARGE",
+        })
+    standalone.sort(key=lambda row: (-row["n"], row["ou_line"], row["over_price_bucket"]))
+
     return {"real_ou_quote_status_counts": dict(quote_statuses),
+            "real_ou_paired_by_line_over_price_bucket": standalone,
+            "real_ou_independent_grouping": "ACTUAL_OU_LINE_AND_OVER_DECIMAL_ODDS_BUCKET_ONLY; ALL_TRUSTED_SETTLED_PREMATCH_FIXTURES_WITH_PAIRED_QUOTE; NO_AH_CONDITION",
             "real_ou_paired_by_ah_line_price_ou_line_price_buckets": paired,
             "real_ou_paired_price_grouping": "AH_SIDE_AH_LINE_AH_BUCKET_REAL_OU_LINE_OVER_PRICE_BUCKET_ONLY; UNDER_ODDS_NOT_A_GROUPING_FILTER",
             "real_ou_settled_fixtures_with_paired_quote": len(matched_fixtures),

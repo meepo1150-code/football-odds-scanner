@@ -175,7 +175,7 @@ assert(!split.includes('Under @')&&!split.includes('Under FW/HW'));
 assert(!split.includes('NaN'));
 assert(realOuBox({...s,ou:null},null).includes('ไม่มีข้อมูล O/U รอบนี้'));
 scopeReceipt={excluded_fixture_reasons:{},untrusted_observations:[]};
-const stats={market_state_by_side_line_price:[],over_under_2_5_by_ah_line_price:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ah_price_bucket:'1.90-1.99',...sample}],real_ou_paired_by_ah_line_price_ou_line_price_buckets:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ah_price_bucket:'1.90-1.99',ou_line:'2.75',over_price_bucket:'1.80-1.89',...paired}]};
+const stats={market_state_by_side_line_price:[],over_under_2_5_by_ah_line_price:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ah_price_bucket:'1.90-1.99',...sample}],real_ou_paired_by_line_over_price_bucket:[{ou_line:'2.75',over_price_bucket:'1.80-1.89',...paired}]};
 const metrics=wrBox(s,stats);
 assert(metrics.includes('AH · Win Rate'));
 assert(metrics.includes('Over 2.5')&&metrics.includes('Under 2.5'));
