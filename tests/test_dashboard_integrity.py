@@ -384,3 +384,34 @@ assert(!wrFilterMatches([],null,'OVER',0,100,1,'ANY'));
 """
     result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
+
+
+def test_fourth_joint_ah_win_rate_panel_and_compact_ou_sections():
+    html=Path('apps/dashboard/index.html').read_text()
+    assert "4 · AH × Over → AH Win Rate" in html
+    assert "function ahWinComboTimeline(" in html
+    assert "${ahWinComboTimeline(ss,st)}" in html
+    assert "function compactOuStats(" in html
+    assert "compactOuStats(s,paired)" in html and "compactOuStats(s,combo)" in html
+    assert "function ahJointStatsBox(" in html
+    assert 'value="AH_JOINT"' in html
+    node=shutil.which('node')
+    if not node:pytest.skip('Node unavailable')
+    script=html.split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
+    checks="""
+const assert=require('assert');
+scopeReceipt={excluded_fixture_reasons:{},untrusted_observations:[]};
+const s={fixture_id:'x',provider:'oddspapi',bookmaker:'pinnacle',favorite_side:'H',source_semantics:'CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED',observed_at:'2026-10-13T08:00:00Z',scheduled_target_at:'2026-10-13T08:00:00Z',kickoff:'2026-10-13T12:00:00Z',ah:{selected_side_line:-.75,selected_side_price:1.95},ou:{line:2.75,over_price:1.85,under_price:1.95}};
+const combo={market_side:'HOME_FAVORITE',ah_line:'-0.75',ou_line:'2.75',n:30,over_win_n:17,under_win_n:12,push_n:1,ah_n:30,ah_favorite_win_n:18,ah_underdog_win_n:9,ah_push_n:3,ah_favorite_win_pct:60,ah_baseline_favorite_win_pct:53,ah_baseline_n:90,ah_delta_vs_line_baseline_pp:7};
+const stats={real_ou_combo_by_ah_line_and_ou_line:[combo]};
+assert.equal(ahOverComboStats(s,stats).ah_n,30);
+assert(ahWinComboTimeline([s],stats).includes('N=30'));
+const text=ahJointStatsBox(combo);
+assert(text.includes('60.0%')&&text.includes('30.0%')&&text.includes('Push 10.0%'));
+assert(text.includes('+7.0 pp'));
+assert(!compactOuStats(s,combo).includes('ROI'));
+assert(!compactOuStats(s,combo).includes('Mainline'));
+assert.equal(wrEvidence(s,stats,'AH_JOINT').pct,60);
+"""
+    result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
+    assert result.returncode==0,result.stderr
