@@ -112,3 +112,68 @@ def test_end_to_end_uses_latest_per_fixture_and_no_ou_not_in_denominator(tmp_pat
                       if x["selection"] == "OVER" and x["ou_line"] == "3")
     assert over_three["push"] == 1 and over_three["price_win_pct"] == 0
     assert d["real_ou_quote_status_counts"]["MISSING_OU"] == 1
+
+def test_paired_ou_uses_identical_cohort_and_complementary_percentages():
+    rows = []
+    for fid, line, over_price, under_price, score in [
+        ("win_half", 2.75, 1.85, 1.95, (2, 1)),
+        ("push", 3.0, 1.85, 1.95, (2, 1)),
+        ("lose", 2.75, 1.85, 1.95, (1, 1)),
+        ("other_under_bucket", 2.75, 1.85, 2.05, (2, 1)),
+        ("win_half_2", 2.75, 1.85, 1.95, (2, 1)),
+    ]:
+        q = snapshot(fid, line, over_price, under_price)
+        q.update(market_side="HOME_FAVORITE", ah_line=-.75,
+                 ah_price_bucket="1.90-1.99",
+                 ft_home_goals=score[0], ft_away_goals=score[1])
+        rows.append({**q, **real_ou_outcome(q, *score)})
+    out = aggregate_real_ou(rows)
+    pairs = out["real_ou_paired_by_ah_line_price_ou_line_price_buckets"]
+    primary = next(p for p in pairs if p["ou_line"] == "2.75"
+                   and p["under_price_bucket"] == "1.90-1.99")
+    assert primary["n"] == 3
+    assert primary["over_win_n"] == 2
+    assert primary["under_win_n"] == 1
+    assert primary["push_n"] == 0
+    assert primary["over_win_pct"] == 66.67
+    assert primary["under_win_pct"] == 33.33
+    assert primary["over_half_win"] == 2
+    assert primary["under_half_loss"] == 2
+    push = next(p for p in pairs if p["ou_line"] == "3")
+    assert push["n"] == 1 and push["push_n"] == 1
+    assert push["over_win_n"] == push["under_win_n"] == 0
+    assert push["over_win_pct"] == push["under_win_pct"] == 0
+    assert push["push_pct"] == 100
+    other = next(p for p in pairs if p["ou_line"] == "2.75"
+                 and p["under_price_bucket"] == "2.00-2.09")
+    assert other["n"] == 1
+    assert all(p["over_win_n"] + p["under_win_n"] + p["push_n"] == p["n"]
+               for p in pairs)
+
+
+def test_end_to_end_paired_same_price_population(tmp_path):
+    observations = [
+        snapshot("a", line=2.75, op=1.85, up=1.95),
+        snapshot("b", line=2.75, op=1.86, up=1.95),
+        snapshot("c", line=2.75, op=1.85, up=2.05),
+        snapshot("missing", line=2.75),
+    ]
+    observations[-1]["ou"] = {}
+    results = [
+        dict(fixture_id="a", ft_home_goals=2, ft_away_goals=1),
+        dict(fixture_id="b", ft_home_goals=1, ft_away_goals=1),
+        dict(fixture_id="c", ft_home_goals=2, ft_away_goals=1),
+        dict(fixture_id="missing", ft_home_goals=1, ft_away_goals=1),
+    ]
+    for path, data in ((SNAPSHOTS, observations), (RESULTS, results)):
+        target = tmp_path / path
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text("".join(json.dumps(row) + "\n" for row in data))
+    report = build(tmp_path)
+    pairs = report["real_ou_paired_by_ah_line_price_ou_line_price_buckets"]
+    assert sum(p["n"] for p in pairs) == 3
+    by_under = {p["under_price_bucket"]: p for p in pairs}
+    assert by_under["1.90-1.99"]["n"] == 2
+    assert by_under["1.90-1.99"]["over_win_n"] == 1
+    assert by_under["1.90-1.99"]["under_win_n"] == 1
+    assert by_under["2.00-2.09"]["n"] == 1
