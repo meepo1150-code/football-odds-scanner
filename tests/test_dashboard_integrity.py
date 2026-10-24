@@ -475,3 +475,31 @@ assert.equal(sectionSignal(snap,{market_state_by_side_line_price:[]},'S1'),null)
 """
     result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
+
+
+def test_highlight_colors_match_each_market_outcome_bar():
+    html=Path('apps/dashboard/index.html').read_text()
+    assert "const high=x.level==='HIGH',isAH=section==='S1'||section==='S4'" in html
+    for color in (
+        '.section-signal.section-signal-ah-favorite',
+        '.section-signal.section-signal-ah-underdog',
+        '.section-signal.section-signal-ou-over',
+        '.section-signal.section-signal-ou-under',
+    ):
+        assert color in html
+    assert '#ef5264' in html and '#f4f7fc' in html
+    assert '#ffb45e' in html and '#68aefa' in html
+    node=shutil.which('node')
+    if not node: pytest.skip('Node unavailable')
+    script=html.split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
+    checks="""
+const assert=require('assert');
+scopeReceipt={excluded_fixture_reasons:{},untrusted_observations:[]};
+const s={fixture_id:'x',provider:'oddspapi',bookmaker:'pinnacle',favorite_side:'H',source_semantics:'CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED',observed_at:'2026-10-13T08:00:00Z',scheduled_target_at:'2026-10-13T08:00:00Z',kickoff:'2026-10-13T12:00:00Z',ah:{selected_side_line:-.75,selected_side_price:1.95},ou:{line:2.75,over_price:1.85,under_price:1.95}};
+const stats={market_state_by_side_line_price:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ah_price_bucket:'1.90-1.99',settled_n:1,favorite_price_win_pct:70}],real_ou_paired_by_line_over_price_bucket:[{ou_line:'2.75',over_price_bucket:'1.80-1.89',n:2,over_win_pct:30}],real_ou_combo_by_ah_line_and_ou_line:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ou_line:'2.75',n:3,over_win_pct:66,ah_n:4,ah_favorite_win_pct:34}]};
+for(const [section,color] of [['S1','ah-favorite'],['S2','ou-under'],['S3','ou-over'],['S4','ah-underdog']])assert(sectionHighlightBadge(s,stats,section).includes('section-signal-'+color));
+assert(sectionHighlightBadge(s,stats,'S1').includes('N=1'));
+assert(sectionHighlightBadge(s,stats,'S4').includes('N=4'));
+"""
+    result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
+    assert result.returncode==0,result.stderr
