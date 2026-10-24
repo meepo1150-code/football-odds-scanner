@@ -394,7 +394,7 @@ def test_fourth_joint_ah_win_rate_panel_and_compact_ou_sections():
     assert "function compactOuStats(" in html
     assert "compactOuStats(s,paired)" in html and "compactOuStats(s,combo)" in html
     assert "function ahJointStatsBox(" in html
-    assert 'value="AH_JOINT"' in html
+    assert 'value="S4"' in html
     node=shutil.which('node')
     if not node:pytest.skip('Node unavailable')
     script=html.split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
