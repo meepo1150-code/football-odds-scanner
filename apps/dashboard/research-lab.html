@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Research Lab · Football Odds Scanner</title>
+<style>
+:root{color-scheme:dark;--bg:#08101d;--panel:#111b2b;--panel2:#0c1524;--border:#26354d;--text:#edf3fb;--muted:#a6b7cc;--blue:#8db8ff;--good:#81e6ae;--warn:#f2cc60}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:1160px;margin:0 auto;padding:24px 16px 60px}h1{font-size:30px;line-height:1.15;margin:14px 0 6px}h2{font-size:20px;margin:0 0 12px}p{margin:8px 0}a{color:var(--blue)}.muted,.small{color:var(--muted)}.small{font-size:12px}.nav{display:flex;flex-wrap:wrap;gap:14px;align-items:center}.pill{display:inline-block;border:1px solid #78612b;background:#302816;color:var(--warn);border-radius:20px;padding:4px 9px;font-size:11px;font-weight:700;letter-spacing:.03em}
+.card{background:var(--panel);border:1px solid var(--border);padding:18px;border-radius:14px;margin-top:16px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px}.metric{background:var(--panel2);padding:13px;border-radius:10px;border:1px solid var(--border)}.metric .num{font-size:29px;font-weight:800;line-height:1.3;font-variant-numeric:tabular-nums}.metric .label{font-size:12px;color:var(--muted)}.good{color:var(--good)}.warn{color:var(--warn)}
+table{border-collapse:collapse;width:100%;min-width:770px}th,td{padding:10px;text-align:left;border-bottom:1px solid var(--border)}th{color:var(--muted);font-size:12px}td{text-wrap:nowrap}.scroll{overflow:auto}.filters{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:15px 0}label{display:grid;gap:6px;color:var(--muted);font-size:12px}select,input{background:var(--panel2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:10px;min-height:42px}input{max-width:250px}button{background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:10px;min-height:42px;cursor:pointer}.notice{border-left:3px solid var(--warn);padding:8px 12px;background:var(--panel2);border-radius:5px}.bar{display:flex;overflow:hidden;border-radius:8px;height:13px;background:#1c2940;margin:12px 0}.bar div{min-width:0}.stats{display:flex;flex-wrap:wrap;gap:12px}.stats span{padding:5px 9px;background:var(--panel2);border-radius:8px}.right{text-align:right}.foot{margin-top:25px}
+@media(max-width:640px){h1{font-size:25px}.card{padding:14px}.metric .num{font-size:24px}main{padding:18px 12px 45px}}
+</style>
+</head>
+<body>
+<main>
+  <div class="nav"><a href="./">← Scan Timeline / Historical</a><a href="monitor.html">System Monitor</a><span class="pill">EXPLORATORY · NOT BETTING SIGNALS</span></div>
+  <h1>Research Lab <span class="muted">/ AH + Over–Under</span></h1>
+  <p class="muted">หน้าแยกสำหรับศึกษาโครงสร้างราคาและคุณภาพข้อมูล ใช้รายงานเดิมแบบอ่านอย่างเดียว ไม่มีการยิง API เพิ่ม ไม่แก้ Scanner หรือ Production Registry</p>
+  <div class="notice">WR / ROI ด้านล่างเป็นข้อมูลย้อนหลัง ไม่ใช่โอกาสชนะของนัดถัดไป และไม่ยืนยันความคุ้มค่าของการเดิมพัน · ไม่มีการจัด Top Picks จากข้อมูลที่ยังไม่ผ่าน Validation</div>
+  <section class="card">
+    <h2>Coverage · Research V2 (ราคาสดที่ระบบเคยสแกน)</h2>
+    <p class="small" id="v2-time">กำลังอ่านรายงาน...</p>
+    <div class="grid">
+      <div class="metric"><div class="num" id="settled">—</div><div class="label">คู่มี FT ยืนยันสำหรับสถิติ</div></div>
+      <div class="metric"><div class="num good" id="priced">—</div><div class="label">O/U 2.5 สองฝั่งที่ผ่านเกณฑ์ Quote</div></div>
+      <div class="metric"><div class="num" id="nonexact">—</div><div class="label">ไม่ได้ Quote ไลน์ 2.5 ตามเกณฑ์</div></div>
+      <div class="metric"><div class="num" id="missing">—</div><div class="label">ไม่มี O/U Quote ที่ประเมินได้</div></div>
+    </div>
+    <div class="bar" aria-label="O/U 2.5 price coverage"><div id="bar-priced" style="background:#389d75;width:0"></div><div id="bar-nonexact" style="background:#8295af;width:0"></div><div id="bar-missing" style="background:#ad8054;width:0"></div></div>
+    <p class="small" id="coverage-desc">หมายเหตุ: NOT_EXACT_2_5 ไม่ได้ยืนยันว่าเป็นค่าน้ำสองฝั่งที่ใช้ได้สำหรับไลน์อื่น</p>
+  </section>
+  <section class="card">
+    <h2>อีกชุดข้อมูล: OddsPapi Historical Archive</h2>
+    <p class="small">คลังราคาย้อนหลังเป็นคนละประชากรกับ Research V2 ข้างบน ห้ามนำตัวเลขสองชุดบวกกันเป็นจำนวนคู่ใหม่</p>
+    <div class="grid">
+      <div class="metric"><div class="num" id="history-fixtures">—</div><div class="label">คู่ใน Historical Archive</div></div>
+      <div class="metric"><div class="num" id="history-ou">—</div><div class="label">คู่ที่พบ AH + O/U ใน Archive</div></div>
+      <div class="metric"><div class="num" id="history-joined">—</div><div class="label">คู่ที่ Join FT ได้แบบ exact ID</div></div>
+      <div class="metric"><div class="num" id="history-obs">—</div><div class="label">O/U Settled Observations (ไม่ใช่จำนวนคู่)</div></div>
+    </div>
+    <p class="small" id="history-lines"></p>
+    <p class="small">ราคา “Opening” ในชุดประวัติหมายถึง Tick แรกที่เก็บไว้ก่อนแข่ง ไม่จำเป็นต้องเป็นราคาเปิดตัวจริงจากเจ้ามือ; ตลาด O/U ที่มีหลาย Alternate Lines ไม่ถือเป็น Mainline โดยอัตโนมัติ</p>
+  </section>
+  <section class="card">
+    <h2>AH / O/U Historical Condition Explorer</h2>
+    <p class="small">กรองกลุ่มเพื่อดูจำนวนตัวอย่างและผลย้อนหลัง กฎคัดเลือก Top 3 ยังไม่ได้รับการทดสอบแบบ Out-of-Sample</p>
+    <div class="filters">
+      <label>มุมมอง<select id="market"><option value="ah">AH Line × Price</option><option value="move">AH × Price × Movement</option><option value="ou">Over 2.5 × AH Line × Price</option></select></label>
+      <label>ฝั่งทีมต่อ<select id="side"><option value="all">ทั้งหมด</option><option value="HOME_FAVORITE">เจ้าบ้าน</option><option value="AWAY_FAVORITE">ทีมเยือน</option></select></label>
+      <label>ตัวอย่างขั้นต่ำ<select id="minN"><option value="30">N ≥ 30</option><option value="50">N ≥ 50</option><option value="100">N ≥ 100</option><option value="1">ทั้งหมด (เชิงสำรวจ)</option></select></label>
+      <label>เรียงตาม<select id="order"><option value="n">จำนวนตัวอย่าง</option><option value="wr">Win Rate / Over frequency</option><option value="roi">ROI (สำรวจเท่านั้น)</option></select></label>
+      <label>ค้นหา Line / Movement<input id="search" type="search" placeholder="เช่น -0.75, PRICE_DOWN"></label>
+    </div>
+    <div class="stats"><span id="row-count">—</span><span id="mode-note" class="small"></span></div>
+    <div class="scroll"><table><thead id="header"></thead><tbody id="rows"></tbody></table></div>
+    <p id="empty" class="muted" hidden>ไม่มีแถวตรงเงื่อนไขที่เลือก</p>
+    <p class="small">O/U frequency ใช้ FT ของกลุ่ม AH; O/U ROI คำนวณเฉพาะคู่ที่มีราคา O/U 2.5 สองฝั่งตรวจสอบแล้ว และมี N ของราคาจริงแยกจากจำนวน FT · กรณี AH −0.75 ชนะครึ่งจะนับเป็น WR เชิงบวก แต่จ่ายผลตอบแทนเพียงครึ่งหนึ่ง</p>
+  </section>
+  <section class="card">
+    <h2>Movement: ทดสอบแล้วเพิ่มความแม่นยำหรือไม่?</h2>
+    <div class="grid">
+      <div class="metric"><div class="num" id="move-eligible">—</div><div class="label">คู่ที่เปรียบเทียบโมเดลจริง</div></div>
+      <div class="metric"><div class="num" id="move-improve">—</div><div class="label">Baseline MSE − Movement MSE</div></div>
+      <div class="metric"><div class="num" id="move-ci">—</div><div class="label">Bootstrap 95% interval</div></div>
+    </div>
+    <p id="movement-verdict" class="small"></p>
+  </section>
+  <p class="small foot">Data sources: reports/research_v2_pattern_statistics.json · reports/oddspapi_history_audit.json · reports/oddspapi_result_join.json · reports/oddspapi_settled_history.json · reports/research_v2_end_to_end_audit.json · อัปเดตตามรอบเผยแพร่ GitHub Pages</p>
+</main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const fmt=n=>Number.isFinite(Number(n))?Number(n).toLocaleString('en-US'):'—';
+const pct=n=>Number.isFinite(Number(n))?Number(n).toFixed(2)+'%':'—';
+const esc=s=>String(s===null||s===undefined?'—':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function read(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw new Error(path+' HTTP '+response.status);return response.json();}
+let stats;
+function coverage(s){
+  const c=s.ou25_quote_status_counts||{},n=Number(s.settled_fixtures)||0,priced=c.VERIFIED_EXACT_2_5_PREMATCH||0,other=c.NOT_EXACT_2_5||0,missing=c.MISSING_QUOTE||0;
+  $('v2-time').textContent='รายงานสร้างเมื่อ: '+(s.generated_at||'ไม่ระบุ')+' · แยก FT frequency กับ priced O/U ROI';
+  $('settled').textContent=fmt(n);$('priced').textContent=fmt(priced);$('nonexact').textContent=fmt(other);$('missing').textContent=fmt(missing);
+  $('bar-priced').style.width=(n?100*priced/n:0)+'%';$('bar-nonexact').style.width=(n?100*other/n:0)+'%';$('bar-missing').style.width=(n?100*missing/n:0)+'%';
+  $('coverage-desc').textContent='ราคา O/U 2.5 ตรวจสอบได้ '+fmt(priced)+'/'+fmt(n)+' คู่ ('+(n?(priced*100/n).toFixed(1):'—')+'%). คู่ที่ไม่ใช่ไลน์ 2.5 อาจมีราคาไลน์อื่น แต่ต้องตรวจ Quote/Provenance อีกชั้น';
+}
+function history(a,j,h){
+  const c=a.coverage||{};
+  $('history-fixtures').textContent=fmt(a.unique_fixture_ids);$('history-ou').textContent=fmt(c.fixtures_with_1x2_ah_ou);$('history-joined').textContent=fmt(j.joined_fixtures);$('history-obs').textContent=fmt(h.ou_observations);
+  const lines=a.over_under_line_counts||{};
+  $('history-lines').textContent='ประเภทไลน์ O/U ที่พบใน Historical Audit: '+Object.keys(lines).length+' ไลน์ · เช่น 2.0 / 2.5 / 3.0 · จำนวนแต่ละไลน์ไม่ใช่จำนวนคู่ที่ Join FT ได้';
+}
+function render(){
+ if(!stats)return;
+ const mode=$('market').value,side=$('side').value,minN=Number($('minN').value),order=$('order').value,q=$('search').value.trim().toLowerCase();
+ let arr=(mode==='ah'?stats.market_state_by_side_line_price:mode==='move'?stats.market_state_by_side_line_price_movement:stats.over_under_2_5_by_ah_line_price)||[];
+ arr=arr.filter(r=>Number(r.n)>=minN&&(side==='all'||r.market_side===side)&&(!q||[r.ah_line,r.ah_price_bucket,r.movement].join(' ').toLowerCase().includes(q)));
+ function evidenceN(r){return mode==='ou'?Number(r.ou25_priced_n)||0:Number(r.n)||0;}
+ function roi(r){return mode==='ou'?r.over_2_5_roi_pct:r.favorite_roi_pct;}
+ function wr(r){return mode==='ou'?r.over_2_5_pct:r.favorite_price_win_pct;}
+ arr.sort((a,b)=>order==='wr'?(Number(wr(b))||-999)-(Number(wr(a))||-999):order==='roi'?((evidenceN(b)>=30?Number(roi(b)):-999)-(evidenceN(a)>=30?Number(roi(a)):-999)):(Number(b.n)||0)-(Number(a.n)||0));
+ const hs=['ฝั่งต่อ','AH Line','ช่วงน้ำ AH'].concat(mode==='move'?['การไหล']:[]).concat(['FT / N',mode==='ou'?'Over 2.5 (จาก FT)':'AH WR','ราคาจริง O/U','ROI ย้อนหลัง']);
+ $('header').innerHTML='<tr>'+hs.map(x=>'<th>'+esc(x)+'</th>').join('')+'</tr>';
+ const show=arr.slice(0,180);$('rows').innerHTML=show.map(r=>{
+  const cells=[r.market_side==='HOME_FAVORITE'?'เจ้าบ้าน':r.market_side==='AWAY_FAVORITE'?'ทีมเยือน':r.market_side,r.ah_line,r.ah_price_bucket];
+  if(mode==='move')cells.push(r.movement);
+  const pricedN=mode==='ou'?Number(r.ou25_priced_n)||0:null;
+  cells.push(r.n,pct(wr(r)),mode==='ou'?fmt(pricedN):'—',mode==='ou'?(pricedN?('Over '+pct(roi(r))+' · N='+pricedN):'ไม่มีราคา'):pct(roi(r)));
+  return '<tr>'+cells.map(x=>'<td>'+esc(x)+'</td>').join('')+'</tr>';
+ }).join('');
+ $('row-count').textContent='แสดง '+fmt(show.length)+' จาก '+fmt(arr.length)+' กลุ่ม';$('empty').hidden=arr.length>0;
+ $('mode-note').textContent=mode==='ou'?'คำเตือน: N ของ FT กับ N ที่มีราคาจริงแตกต่างกัน; ROI ของกลุ่มราคาน้อยเป็นตัวเลขไม่เสถียร':mode==='move'?'กลุ่มย่อย Movement มีโอกาส N ต่ำและ Overfit สูง':'AH WR รวม HALF_WIN; ROI คำนวณ Settlement จริง';
+}
+function movement(report){
+ const m=report.movement_evaluation||{};
+ $('move-eligible').textContent=fmt(m.unique_evaluated_fixtures);
+ const delta=m.mean_squared_error_improvement;
+ $('move-improve').textContent=Number.isFinite(delta)?delta.toFixed(5):'—';
+ const ci=m.improvement_bootstrap95||[];
+ $('move-ci').textContent=ci.length===2?Number(ci[0]).toFixed(3)+' → '+Number(ci[1]).toFixed(3):'—';
+ $('movement-verdict').textContent='สถานะ: '+(m.status||'ไม่พบ')+' · เป็นการทดสอบย้อนหลังที่เคยเปิดดูผลแล้ว ยังไม่ใช่ untouched holdout และยังไม่มีการยืนยัน incremental edge';
+}
+Promise.allSettled([
+ read('reports/research_v2_pattern_statistics.json'),
+ read('reports/oddspapi_history_audit.json'),
+ read('reports/oddspapi_result_join.json'),
+ read('reports/oddspapi_settled_history.json'),
+ read('reports/research_v2_end_to_end_audit.json')
+]).then(values=>{
+ const get=i=>values[i].status==='fulfilled'?values[i].value:null;
+ stats=get(0);
+ if(stats){coverage(stats);render();}else{$('v2-time').textContent='ไม่สามารถอ่านสถิติ Research V2 จากไฟล์ที่เผยแพร่ได้';}
+ if(get(1)&&get(2)&&get(3))history(get(1),get(2),get(3));
+ if(get(4))movement(get(4));
+});
+['market','side','minN','order','search'].forEach(id=>$(id).addEventListener(id==='search'?'input':'change',render));
+</script>
+</body></html>
