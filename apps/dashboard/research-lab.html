@@ -73,7 +73,7 @@ table{border-collapse:collapse;width:100%;min-width:770px}th,td{padding:10px;tex
 'use strict';
 const $=id=>document.getElementById(id);
 const fmt=n=>Number.isFinite(Number(n))?Number(n).toLocaleString('en-US'):'—';
-const pct=n=>Number.isFinite(Number(n))?Number(n).toFixed(2)+'%':'—';
+const pct=n=>n!==null&&n!==undefined&&n!==''&&Number.isFinite(Number(n))?Number(n).toFixed(2)+'%':'—';
 const esc=s=>String(s===null||s===undefined?'—':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 async function read(path){const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw new Error(path+' HTTP '+response.status);return response.json();}
 let stats;
