@@ -226,8 +226,8 @@ for(const [n,tier] of [[null,'n-unknown'],[0,'n-unknown'],[8,'n-tiny'],[19,'n-ti
 def test_favorite_ah_betting_win_label_is_clear():
     html=Path('apps/dashboard/index.html').read_text()
     assert "metricBar('เดิมพันฝั่งต่อชนะ'" in html
-    assert "signalBadge('เดิมพันฝั่งต่อชนะ'" in html
-    assert "signalBadge('เดิมพันฝั่งต่อชนะต่ำ'" in html
+    assert "sectionHighlightBadge(s,stats,section)" in html
+    assert "sectionSignal(s,stats,section)" in html
     assert "'AH WR ต่อ'" not in html
 
 
@@ -441,6 +441,37 @@ assert(!wrFilterMatches([s],stats,['S1','S2','S3','S4'],65,100,20,'ANY','ALL'));
 assert(wrFilterMatches([s],stats,['S1','S2','S3'],65,100,20,'ANY','2'));
 assert(!wrFilterMatches([s],stats,['S1','S2','S3'],65,100,50,'ANY','2'));
 assert(!wrFilterMatches([s,{...s,ou:null,observed_at:'2026-10-13T09:00:00Z'}],stats,['S1','S2','S3','S4'],65,100,20,'LATEST','3'));
+"""
+    result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
+    assert result.returncode==0,result.stderr
+
+
+def test_independent_high_low_highlights_ignore_sample_size():
+    html=Path('apps/dashboard/index.html').read_text()
+    assert '<select id="highlightFilter">' not in html
+    for section in ('S1','S2','S3','S4'):
+        assert f'data-highlight-section="{section}"' in html
+    assert 'function sectionHighlightMatches(' in html
+    assert "highlightSignals(s,stats,'COMBO')" in html
+    assert "highlightSignals(s,stats,'AH_JOINT')" in html
+    node=shutil.which('node')
+    if not node:pytest.skip('Node unavailable')
+    script=html.split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
+    checks="""
+const assert=require('assert');
+scopeReceipt={excluded_fixture_reasons:{},untrusted_observations:[]};
+const snap={fixture_id:'x',provider:'oddspapi',bookmaker:'pinnacle',favorite_side:'H',source_semantics:'CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED',observed_at:'2026-10-13T08:00:00Z',scheduled_target_at:'2026-10-13T08:00:00Z',kickoff:'2026-10-13T12:00:00Z',ah:{selected_side_line:-.75,selected_side_price:1.95},ou:{line:2.75,over_price:1.85,under_price:1.95}};
+const stats={market_state_by_side_line_price:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ah_price_bucket:'1.90-1.99',settled_n:1,favorite_price_win_pct:70}],real_ou_paired_by_line_over_price_bucket:[{ou_line:'2.75',over_price_bucket:'1.80-1.89',n:2,over_win_pct:30}],real_ou_combo_by_ah_line_and_ou_line:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ou_line:'2.75',n:3,over_win_pct:66,ah_n:4,ah_favorite_win_pct:34}]};
+assert.equal(sectionSignal(snap,stats,'S1').level,'HIGH');
+assert.equal(sectionSignal(snap,stats,'S2').level,'LOW');
+assert.equal(sectionSignal(snap,stats,'S3').level,'HIGH');
+assert.equal(sectionSignal(snap,stats,'S4').level,'LOW');
+assert(sectionHighlightMatches(snap,stats,{S1:'HIGH',S2:'LOW',S3:'HIGH',S4:'LOW'}));
+assert(!sectionHighlightMatches(snap,stats,{S1:'LOW'}));
+assert(sectionHighlightBadge(snap,stats,'S1').includes('N=1'));
+assert(sectionHighlightBadge(snap,stats,'S2').includes('N=2'));
+assert(!sectionHighlightBadge(snap,stats,'S1').includes('≥20'));
+assert.equal(sectionSignal(snap,{market_state_by_side_line_price:[]},'S1'),null);
 """
     result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
