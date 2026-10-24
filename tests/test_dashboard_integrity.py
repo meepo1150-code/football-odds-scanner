@@ -162,25 +162,29 @@ assert.deepEqual(realOuQuote(s),{line:2.75,over:1.85,under:1.95,mainline:true});
 const sample={n:8,over_2_5_n:2,under_2_5_n:6,goals_n:8,avg_total_goals:2.75};
 const freq=ou25GoalBar(sample);
 assert(freq.includes('Over 2.5')&&freq.includes('Under 2.5'));
-assert(freq.includes('25.0%')&&freq.includes('75.0%')&&freq.includes('N=8'));
+assert(freq.includes('25.0%')&&freq.includes('75.0%'));
+assert(!freq.includes('N=8')&&!freq.includes('FT มากกว่า 2.5:'));
 assert(freq.includes('width:25%')&&freq.includes('width:75%'));
 const paired={n:8,over_win_n:2,under_win_n:4,push_n:2,over_full_win:1,over_half_win:1,under_full_win:4,under_half_win:0,over_roi_pct:-12.5,under_roi_pct:23,mainline_verified_n:8};
 const split=realOuBox(s,paired);
 assert(split.includes('Over 2.75')&&split.includes('Under 2.75'));
 assert(split.includes('25.0%')&&split.includes('50.0%')&&split.includes('Push 2'));
 assert(split.includes('width:25%')&&split.includes('width:50%'));
-assert(split.includes('1.850')&&split.includes('1.950')&&split.includes('N=8'));
+assert(split.includes('1.850')&&!split.includes('1.950')&&split.includes('N=8'));
+assert(!split.includes('Under @')&&!split.includes('Under FW/HW'));
 assert(!split.includes('NaN'));
 assert(realOuBox({...s,ou:null},null).includes('ไม่มีข้อมูล O/U รอบนี้'));
 scopeReceipt={excluded_fixture_reasons:{},untrusted_observations:[]};
-const stats={market_state_by_side_line_price:[],over_under_2_5_by_ah_line_price:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ah_price_bucket:'1.90-1.99',...sample}],real_ou_paired_by_ah_line_price_ou_line_price_buckets:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ah_price_bucket:'1.90-1.99',ou_line:'2.75',over_price_bucket:'1.80-1.89',under_price_bucket:'1.90-1.99',...paired}]};
+const stats={market_state_by_side_line_price:[],over_under_2_5_by_ah_line_price:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ah_price_bucket:'1.90-1.99',...sample}],real_ou_paired_by_ah_line_price_ou_line_price_buckets:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ah_price_bucket:'1.90-1.99',ou_line:'2.75',over_price_bucket:'1.80-1.89',...paired}]};
 const metrics=wrBox(s,stats);
 assert(metrics.includes('AH · Win Rate'));
 assert(metrics.includes('Over 2.5')&&metrics.includes('Under 2.5'));
 assert(!metrics.includes('Over 2.75')&&!metrics.includes('Under 2.75')); // Price market belongs to a separate timeline
 const splitTimeline=ouScanTimeline([s,{...s,ou:null,observed_at:'2026-10-13T09:00:00Z'}],stats);
 assert(splitTimeline.includes('Over 2.75')&&splitTimeline.includes('1.850'));
-assert(splitTimeline.includes('Under 2.75')&&splitTimeline.includes('1.950'));
+assert(splitTimeline.includes('Under 2.75')&&!splitTimeline.includes('1.950'));
+assert(splitTimeline.includes('ค่าน้ำ Over ช่วง'));
+assert(!splitTimeline.includes('Under @')&&!splitTimeline.includes('Under FW/HW'));
 assert(splitTimeline.includes('ไม่มีข้อมูล O/U รอบนี้')&&splitTimeline.includes('N=8'));
 assert(splitTimeline.includes('Scan ')&&splitTimeline.includes('market-section market-ou'));
 assert(!metrics.includes('market-section market-ou'));
@@ -288,3 +292,11 @@ assert.equal(ftDueSummary(s,null,at),null);
 """
     r=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
     assert r.returncode==0,r.stderr
+
+
+def test_ah_rounds_omit_redundant_team_names_but_fixture_heading_keeps_both():
+    html=Path('apps/dashboard/index.html').read_text()
+    assert '<div class="round-side">${fav}${dog}</div>' not in html
+    assert 'let rounds=ss.map((s,i)=>{let w=s.ah?.selected_side_price' in html
+    assert '<div class="teams fixture-title">' in html
+    assert '${esc(first.home)}' in html and '${esc(first.away)}' in html
