@@ -1,6 +1,6 @@
 """Scan Timeline uses actual same-snapshot O/U quotes and separate priced WR.
 
-This replaces the old fixed Over-2.5 goal-frequency regression contract.
+AH keeps its original two summary bars; actual quote WR lives in the separate O/U timeline.
 """
 from pathlib import Path
 import shutil
@@ -20,7 +20,10 @@ def _script():
     assert "lineKey(r.ah_line)===ln" in text
     assert "r.ah_price_bucket" in text
     assert "r.over_price_bucket" in text and "r.under_price_bucket" in text
-    assert "ราคาและ WR จริง" in text
+    assert "function miniOuTimeline(" in text
+    assert "function ouScanTimeline(" in text
+    assert "market-section market-ah" in text and "market-section market-ou" in text
+    assert "ราคา Over จริง" in text
     assert "function ou25GoalBar(" in text
     assert "function realOuBox(" in text
     assert "stats.over_under_2_5_by_ah_line_price" in text
