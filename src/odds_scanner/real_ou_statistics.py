@@ -103,6 +103,7 @@ def aggregate_real_ou(outcomes):
     Each side is independently grouped by its own price bucket; no unpriced FT rows.
     """
     groups = defaultdict(list)
+    paired_groups = defaultdict(list)
     quote_statuses = Counter()
     matched_fixtures = set()
     for row in outcomes:
@@ -114,6 +115,20 @@ def aggregate_real_ou(outcomes):
         if not fixture_id or fixture_id in matched_fixtures:
             continue
         matched_fixtures.add(fixture_id)
+        # Paired markets must share the exact same fixture population to support
+        # one complementary Over / Push / Under bar. Never combine separate
+        # marginal price-bucket groups with different denominators.
+        statuses = {"FULL_WIN", "HALF_WIN", "PUSH", "HALF_LOSS", "FULL_LOSS"}
+        op, up = (_num(row.get(f"ou_real_{side}_price")) for side in ("over", "under"))
+        os, us = (row.get(f"ou_real_{side}_settlement") for side in ("over", "under"))
+        opr, upr = (_num(row.get(f"ou_real_{side}_profit_units")) for side in ("over", "under"))
+        if (op is not None and up is not None and op > 1 and up > 1
+                and os in statuses and us in statuses
+                and opr is not None and upr is not None):
+            pair_key = (row.get("market_side"), str(row.get("ah_line")),
+                        row.get("ah_price_bucket"), format(line, ".15g"),
+                        _bucket(op), _bucket(up))
+            paired_groups[pair_key].append(row)
         for selection, prefix in (("OVER", "over"), ("UNDER", "under")):
             price = _num(row.get(f"ou_real_{prefix}_price"))
             state = row.get(f"ou_real_{prefix}_settlement")
@@ -149,7 +164,40 @@ def aggregate_real_ou(outcomes):
             "DEVELOPING" if n < 60 else "MODERATE" if n < 100 else "LARGE",
         ))
     grouped.sort(key=lambda r: (-r["n"], str(r["market_side"]), r["ou_line"], r["selection"]))
+    paired = []
+    for key, rows in paired_groups.items():
+        n = len(rows)
+        over_states = Counter(r["ou_real_over_settlement"] for r in rows)
+        under_states = Counter(r["ou_real_under_settlement"] for r in rows)
+        over_wins = over_states["FULL_WIN"] + over_states["HALF_WIN"]
+        under_wins = under_states["FULL_WIN"] + under_states["HALF_WIN"]
+        pushes = over_states["PUSH"]
+        # The two selections on an Asian total are complementary including
+        # half-settlements, except that whole-number pushes belong to neither.
+        if pushes != under_states["PUSH"] or over_wins + under_wins + pushes != n:
+            raise ValueError("Inconsistent paired Asian O/U settlement outcomes")
+        paired.append(dict(
+            zip(("market_side", "ah_line", "ah_price_bucket", "ou_line",
+                 "over_price_bucket", "under_price_bucket"), key),
+            n=n, over_win_n=over_wins, under_win_n=under_wins, push_n=pushes,
+            over_win_pct=round(100 * over_wins / n, 2),
+            under_win_pct=round(100 * under_wins / n, 2),
+            push_pct=round(100 * pushes / n, 2),
+            over_full_win=over_states["FULL_WIN"],
+            over_half_win=over_states["HALF_WIN"],
+            over_half_loss=over_states["HALF_LOSS"],
+            over_full_loss=over_states["FULL_LOSS"],
+            under_full_win=under_states["FULL_WIN"],
+            under_half_win=under_states["HALF_WIN"],
+            under_half_loss=under_states["HALF_LOSS"],
+            under_full_loss=under_states["FULL_LOSS"],
+            over_roi_pct=round(100 * sum(r["ou_real_over_profit_units"] for r in rows) / n, 2),
+            under_roi_pct=round(100 * sum(r["ou_real_under_profit_units"] for r in rows) / n, 2),
+            mainline_verified_n=sum(r.get("ou_real_mainline_verified") is True for r in rows),
+        ))
+    paired.sort(key=lambda row: (-row["n"], row["ou_line"], str(row["market_side"])))
     return {"real_ou_quote_status_counts": dict(quote_statuses),
+            "real_ou_paired_by_ah_line_price_ou_line_price_buckets": paired,
             "real_ou_settled_fixtures_with_paired_quote": len(matched_fixtures),
             "real_ou_by_ah_line_price_ou_line_price": grouped,
             "real_ou_win_rate_definition":
