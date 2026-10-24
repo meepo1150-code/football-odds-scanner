@@ -19,9 +19,12 @@ def _script():
     assert "r.market_side===ms" in text
     assert "lineKey(r.ah_line)===ln" in text
     assert "r.ah_price_bucket" in text
-    assert "r.selection==='OVER'" in text and "r.selection==='UNDER'" in text
+    assert "r.over_price_bucket" in text and "r.under_price_bucket" in text
     assert "ราคาและ WR จริง" in text
-    assert "Over 2.5" not in text
+    assert "function ou25GoalBar(" in text
+    assert "function realOuBox(" in text
+    assert "stats.over_under_2_5_by_ah_line_price" in text
+    assert "stats.real_ou_paired_by_ah_line_price_ou_line_price_buckets" in text
     return text.split("<script>", 1)[1].split("</script>", 1)[0].rsplit("load();", 1)[0]
 
 
