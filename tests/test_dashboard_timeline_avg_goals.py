@@ -65,6 +65,13 @@ assert.equal(grouped.ouUnder.price_win_pct,34.29);
 assert.equal(grouped.goalFreq.over_2_5_n,21);
 assert.equal(grouped.ouPair.push_n,3);
 assert.equal(grouped.ouPair.n,35);
+// Same O/U line and Over odds must yield the SAME N even when AH changes.
+const unrelatedAH={...snap,favorite_side:'A',ah:{selected_side_line:-1.75,selected_side_price:2.65}};
+const independent=signalStats(unrelatedAH,stats);
+assert.equal(independent.ah,null);
+assert.equal(independent.goalFreq,null);
+assert.equal(independent.ouPair.n,35);
+assert.equal(independent.ouOver.price_win_pct,57.14);
 assert.equal(signalStats({...snap,ou:null},stats).ouOver,null);
 """
     out = subprocess.run(["node", "-e", script + checks], capture_output=True, text=True)
