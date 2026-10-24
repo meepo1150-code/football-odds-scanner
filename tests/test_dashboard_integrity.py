@@ -357,3 +357,30 @@ assert(combo.includes('AH × Over')&&combo.includes('-0.25 / 3')&&combo.includes
 """
     result=subprocess.run([node,'-e',script+check],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
+
+
+def test_advanced_wr_market_filter_and_floating_back_to_top():
+    html=Path('apps/dashboard/index.html').read_text()
+    for key in ('wrMarket','wrMin','wrMax','wrMinN','wrScanScope','backToTop'):
+        assert f'id="{key}"' in html
+    assert "window.scrollTo({top:0,behavior:'smooth'})" in html
+    assert "wrFilterMatches(ss,st,wrMarket,wrMin,wrMax,wrMinN,wrScanScope)" in html
+    node=shutil.which('node')
+    if not node:pytest.skip('Node unavailable')
+    script=html.split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
+    checks="""
+const assert=require('assert');
+assert(wrEvidenceMatches({pct:65,n:20},65,70,20));
+assert(!wrEvidenceMatches({pct:65,n:19},65,70,20));
+assert(!wrEvidenceMatches({pct:64.9,n:200},65,70,20));
+assert(!wrEvidenceMatches({pct:null,n:200},0,100,1));
+assert(!wrEvidenceMatches({pct:74,n:100},40,70,1));
+assert.strictEqual(numericWR(null),null);
+assert.strictEqual(numericWR(''),null);
+assert.strictEqual(numericWR(0),0);
+assert.strictEqual(numericWR(101),null);
+assert(wrFilterMatches([],null,'',0,100,1,'ANY'));
+assert(!wrFilterMatches([],null,'OVER',0,100,1,'ANY'));
+"""
+    result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
+    assert result.returncode==0,result.stderr
