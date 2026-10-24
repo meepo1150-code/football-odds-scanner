@@ -20,10 +20,10 @@ def snapshot(fid="x", line=2.75, op=1.85, up=1.95, when="2026-09-29T10:00:00Z"):
 
 
 def test_explicit_user_examples_lose_push_half_win():
-    # Over 2.25 (2 goals) => lose the full stake.
+    # Over 2.25 (2 goals) => HALF_LOSS: counted as loss for WR.
     r = real_ou_outcome(snapshot(line=2.25), 1, 1)
-    assert r["ou_real_over_settlement"] == "FULL_LOSS"
-    assert r["ou_real_over_profit_units"] == -1
+    assert r["ou_real_over_settlement"] == "HALF_LOSS"
+    assert r["ou_real_over_profit_units"] == -.5
     # Over 3.00 (3 goals) => a refunded stake, not a win.
     r = real_ou_outcome(snapshot(line=3.0), 2, 1)
     assert r["ou_real_over_settlement"] == "PUSH"
