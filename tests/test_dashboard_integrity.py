@@ -317,7 +317,7 @@ const assert=require('assert');
 scopeReceipt={excluded_fixture_reasons:{},untrusted_observations:[]};
 const s={fixture_id:'x',provider:'oddspapi',bookmaker:'pinnacle',favorite_side:'H',source_semantics:'CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED',observed_at:'2026-10-13T08:00:00Z',scheduled_target_at:'2026-10-13T08:00:00Z',kickoff:'2026-10-13T12:00:00Z',ah:{selected_side_line:-0.75,selected_side_price:1.95},ou:{line:2.75,over_price:1.85,under_price:1.95}};
 const agg={n:6,over_win_n:3,under_win_n:2,push_n:1,over_full_win:2,over_half_win:1,over_roi_pct:8,mainline_verified_n:6};
-const stats={real_ou_paired_by_line_over_price_bucket:[{ou_line:'2.75',over_price_bucket:'1.80-1.89',n:75,over_win_n:38,under_win_n:32,push_n:5,over_full_win:30,over_half_win:8,over_roi_pct:7,mainline_verified_n:75}],real_ou_paired_by_ah_line_price_ou_line_price_buckets:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ah_price_bucket:'1.90-1.99',ou_line:'2.75',over_price_bucket:'1.80-1.89',...agg}]};
+const stats={real_ou_paired_by_line_over_price_bucket:[{ou_line:'2.75',over_price_bucket:'1.80-1.89',n:75,over_win_n:38,under_win_n:32,push_n:5,over_full_win:30,over_half_win:8,over_roi_pct:7,mainline_verified_n:75}],real_ou_combo_by_ah_line_and_ou_line:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ou_line:'2.75',...agg}]};
 assert.equal(ahOverComboStats(s,stats).n,6);
 assert.equal(signalStats(s,stats).ouPair.n,75);
 assert.equal(ahOverComboStats({...s,ah:{selected_side_line:-1,selected_side_price:1.95}},stats),null);
