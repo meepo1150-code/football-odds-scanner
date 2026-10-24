@@ -182,8 +182,8 @@ assert(metrics.includes('Over 2.5')&&metrics.includes('Under 2.5'));
 assert(!metrics.includes('Over 2.75')&&!metrics.includes('Under 2.75')); // Price market belongs to a separate timeline
 const splitTimeline=ouScanTimeline([s,{...s,ou:null,observed_at:'2026-10-13T09:00:00Z'}],stats);
 assert(splitTimeline.includes('Over 2.75')&&splitTimeline.includes('1.850'));
-assert(splitTimeline.includes('Under 2.75')&&!splitTimeline.includes('1.950'));
-assert(splitTimeline.includes('ค่าน้ำ Over ช่วง'));
+assert(splitTimeline.includes('Under')&&!splitTimeline.includes('1.950'));
+assert(!splitTimeline.includes('ค่าน้ำ Over ช่วง'));
 assert(!splitTimeline.includes('Under @')&&!splitTimeline.includes('Under FW/HW'));
 assert(splitTimeline.includes('ไม่มีข้อมูล O/U รอบนี้')&&splitTimeline.includes('N=8'));
 assert(splitTimeline.includes('Scan ')&&splitTimeline.includes('market-section market-ou'));
