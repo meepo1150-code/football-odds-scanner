@@ -361,10 +361,10 @@ assert(combo.includes('AH × Over')&&combo.includes('-0.25 / 3')&&combo.includes
 
 def test_advanced_wr_market_filter_and_floating_back_to_top():
     html=Path('apps/dashboard/index.html').read_text()
-    for key in ('wrMarket','wrMin','wrMax','wrMinN','wrScanScope','backToTop'):
+    for key in ('wrSections','wrMin','wrMax','wrMinN','wrRequired','wrScanScope','backToTop'):
         assert f'id="{key}"' in html
     assert "window.scrollTo({top:0,behavior:'smooth'})" in html
-    assert "wrFilterMatches(ss,st,wrMarket,wrMin,wrMax,wrMinN,wrScanScope)" in html
+    assert "wrFilterMatches(ss,st,[...wrSections],wrMin,wrMax,wrMinN,wrScanScope,wrRequired)" in html
     node=shutil.which('node')
     if not node:pytest.skip('Node unavailable')
     script=html.split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
@@ -379,8 +379,8 @@ assert.strictEqual(numericWR(null),null);
 assert.strictEqual(numericWR(''),null);
 assert.strictEqual(numericWR(0),0);
 assert.strictEqual(numericWR(101),null);
-assert(wrFilterMatches([],null,'',0,100,1,'ANY'));
-assert(!wrFilterMatches([],null,'OVER',0,100,1,'ANY'));
+assert(wrFilterMatches([],null,[],0,100,1,'ANY'));
+assert(!wrFilterMatches([],null,['S2'],0,100,1,'ANY'));
 """
     result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
@@ -411,7 +411,36 @@ assert(text.includes('60.0%')&&text.includes('30.0%')&&text.includes('Push 10.0%
 assert(text.includes('+7.0 pp'));
 assert(!compactOuStats(s,combo).includes('ROI'));
 assert(!compactOuStats(s,combo).includes('Mainline'));
-assert.equal(wrEvidence(s,stats,'AH_JOINT').pct,60);
+assert.equal(wrEvidence(s,stats,'S4').pct,60);
+"""
+    result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
+    assert result.returncode==0,result.stderr
+
+
+def test_wr_four_sections_checkboxes_and_same_snapshot_concurrence():
+    html=Path('apps/dashboard/index.html').read_text()
+    assert '<select id="wrMarket">' not in html
+    for value in ('S1','S2','S3','S4'):
+        assert f'type="checkbox" value="{value}"' in html
+    node=shutil.which('node')
+    if not node:pytest.skip('Node unavailable')
+    script=html.split('<script>',1)[1].split('</script>',1)[0].rsplit('load();',1)[0]
+    checks="""
+const assert=require('assert');
+scopeReceipt={excluded_fixture_reasons:{},untrusted_observations:[]};
+const s={fixture_id:'x',provider:'oddspapi',bookmaker:'pinnacle',favorite_side:'H',source_semantics:'CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED',observed_at:'2026-10-13T08:00:00Z',scheduled_target_at:'2026-10-13T08:00:00Z',kickoff:'2026-10-13T12:00:00Z',ah:{selected_side_line:-.75,selected_side_price:1.95},ou:{line:2.75,over_price:1.85,under_price:1.95}};
+const stats={
+market_state_by_side_line_price:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ah_price_bucket:'1.90-1.99',settled_n:40,favorite_price_win_pct:70}],
+real_ou_paired_by_line_over_price_bucket:[{ou_line:'2.75',over_price_bucket:'1.80-1.89',n:80,over_win_pct:60}],
+real_ou_combo_by_ah_line_and_ou_line:[{market_side:'HOME_FAVORITE',ah_line:'-0.75',ou_line:'2.75',n:45,over_win_pct:67,ah_n:45,ah_favorite_win_pct:68}]
+};
+assert.deepEqual(['S1','S2','S3','S4'].map(k=>wrEvidence(s,stats,k).pct),[70,60,67,68]);
+assert.deepEqual(wrMatchedSections(s,stats,['S1','S2','S3','S4'],65,100,20),['S1','S3','S4']);
+assert(wrFilterMatches([s],stats,['S1','S2','S3','S4'],65,100,20,'ANY','3'));
+assert(!wrFilterMatches([s],stats,['S1','S2','S3','S4'],65,100,20,'ANY','ALL'));
+assert(wrFilterMatches([s],stats,['S1','S2','S3'],65,100,20,'ANY','2'));
+assert(!wrFilterMatches([s],stats,['S1','S2','S3'],65,100,50,'ANY','2'));
+assert(!wrFilterMatches([s,{...s,ou:null,observed_at:'2026-10-13T09:00:00Z'}],stats,['S1','S2','S3','S4'],65,100,20,'LATEST','3'));
 """
     result=subprocess.run([node,'-e',script+checks],capture_output=True,text=True)
     assert result.returncode==0,result.stderr
