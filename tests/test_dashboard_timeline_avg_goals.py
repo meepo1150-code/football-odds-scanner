@@ -24,7 +24,7 @@ def _script():
     assert "function miniOuTimeline(" in text
     assert "function ouScanTimeline(" in text
     assert "market-section market-ah" in text and "market-section market-ou" in text
-    assert "ราคา Over จริง" in text
+    assert "ช่วงค่าน้ำ Over (ไม่กรอง AH)" in text
     assert "function ou25GoalBar(" in text
     assert "function realOuBox(" in text
     assert "stats.over_under_2_5_by_ah_line_price" in text
