@@ -20,7 +20,7 @@ def _script():
     assert "lineKey(r.ah_line)===ln" in text
     assert "r.ah_price_bucket" in text
     assert "r.selection==='OVER'" in text and "r.selection==='UNDER'" in text
-    assert "ราคาจริง" in text
+    assert "ราคาและ WR จริง" in text
     assert "Over 2.5" not in text
     return text.split("<script>", 1)[1].split("</script>", 1)[0].rsplit("load();", 1)[0]
 
