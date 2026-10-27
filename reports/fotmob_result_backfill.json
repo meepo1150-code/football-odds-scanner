@@ -1,21 +1,23 @@
 {
   "schema_version": "1.0",
   "classification": "FOTMOB_EXACT_RESULT_BACKFILL",
-  "missing_before": 7,
-  "missing_after": 7,
+  "missing_before": 9,
+  "missing_after": 9,
   "verified_bridge_matches": 0,
   "days_requested": [
     "2026-10-23",
     "2026-10-24",
     "2026-10-25",
-    "2026-10-26"
+    "2026-10-26",
+    "2026-10-27",
+    "2026-10-28"
   ],
-  "events_fetched": 1540,
+  "events_fetched": 1916,
   "exact_results_added": 0,
   "ambiguous_exact_matches_rejected": 0,
-  "exact_identity_unfinished": 2,
-  "no_exact_identity": 5,
-  "kickoff_candidate_only": 5,
+  "exact_identity_unfinished": 0,
+  "no_exact_identity": 9,
+  "kickoff_candidate_only": 9,
   "kickoff_candidate_samples": [
     {
       "fixture_id": "id1000021572177092",
@@ -1188,6 +1190,156 @@
           "league": "Virsliga"
         }
       ]
+    },
+    {
+      "fixture_id": "id1000053272281418",
+      "snapshot": {
+        "home": "NK Dekani",
+        "away": "NK Brezice 1919",
+        "kickoff": "2026-10-27T13:00:00+00:00"
+      },
+      "fotmob_candidates": [
+        {
+          "id": 6093746,
+          "home": "Csikszereda Miercurea Ciuc",
+          "away": "FC Bihor Oradea",
+          "finished": true,
+          "score": [
+            1,
+            2
+          ],
+          "league": "Cup Grp. C"
+        },
+        {
+          "id": 6022313,
+          "home": "Burnley U18",
+          "away": "Manchester United U18",
+          "finished": true,
+          "score": [
+            0,
+            6
+          ],
+          "league": "Premier League U18"
+        }
+      ]
+    },
+    {
+      "fixture_id": "id1000053272281424",
+      "snapshot": {
+        "home": "Ilirija Ljubljana",
+        "away": "NK Bilje",
+        "kickoff": "2026-10-27T13:00:00+00:00"
+      },
+      "fotmob_candidates": [
+        {
+          "id": 6093746,
+          "home": "Csikszereda Miercurea Ciuc",
+          "away": "FC Bihor Oradea",
+          "finished": true,
+          "score": [
+            1,
+            2
+          ],
+          "league": "Cup Grp. C"
+        },
+        {
+          "id": 6022313,
+          "home": "Burnley U18",
+          "away": "Manchester United U18",
+          "finished": true,
+          "score": [
+            0,
+            6
+          ],
+          "league": "Premier League U18"
+        }
+      ]
+    },
+    {
+      "fixture_id": "id1000053272281422",
+      "snapshot": {
+        "home": "Krka Novo Mesto",
+        "away": "NK Vrhnika",
+        "kickoff": "2026-10-27T13:30:00+00:00"
+      },
+      "fotmob_candidates": [
+        {
+          "id": 6293249,
+          "home": "Foolad Khuzestan B",
+          "away": "Beasat Kermanshah",
+          "finished": true,
+          "score": [
+            0,
+            0
+          ],
+          "league": "Azadegan League"
+        },
+        {
+          "id": 5991457,
+          "home": "Inter U23",
+          "away": "Scafatese",
+          "finished": true,
+          "score": [
+            2,
+            1
+          ],
+          "league": "Serie C Grp. C"
+        }
+      ]
+    },
+    {
+      "fixture_id": "id1000024771998234",
+      "snapshot": {
+        "home": "PFC Cherno More Varna",
+        "away": "FK Septemvri Sofia",
+        "kickoff": "2026-10-27T15:00:00+00:00"
+      },
+      "fotmob_candidates": [
+        {
+          "id": 6420065,
+          "home": "Kocaelispor",
+          "away": "Mazıdağı Fosfat Spor",
+          "finished": true,
+          "score": [
+            3,
+            0
+          ],
+          "league": "Cup Qualification"
+        },
+        {
+          "id": 6093740,
+          "home": "Progresul Spartac",
+          "away": "Petrolul Ploiești",
+          "finished": true,
+          "score": [
+            0,
+            6
+          ],
+          "league": "Cup Grp. B"
+        },
+        {
+          "id": 5760513,
+          "home": "Cherno More Varna",
+          "away": "Septemvri Sofia",
+          "finished": true,
+          "score": [
+            2,
+            0
+          ],
+          "league": "First Professional League"
+        },
+        {
+          "id": 5851878,
+          "home": "Fakel",
+          "away": "FK Akhmat",
+          "finished": false,
+          "score": [
+            0,
+            0
+          ],
+          "league": "Cup Grp. B"
+        }
+      ]
     }
   ],
   "request_failures": [],
@@ -1196,8 +1348,8 @@
   "promotion_eligible": false,
   "retired_included": false,
   "deferred_days": [],
-  "generated_at": "2026-10-27T14:31:04.731287+00:00",
-  "requests_used": 1,
+  "generated_at": "2026-10-27T18:42:12.682532+00:00",
+  "requests_used": 3,
   "cache_hits": 3,
   "stale_cache_fallbacks": 0,
   "fetch_evidence": [
@@ -1222,11 +1374,23 @@
     {
       "day": "2026-10-26",
       "source": "NETWORK",
-      "fetched_at": "2026-10-27T14:31:04.352246+00:00",
+      "fetched_at": "2026-10-27T18:42:11.596784+00:00",
+      "requests": 1
+    },
+    {
+      "day": "2026-10-27",
+      "source": "NETWORK",
+      "fetched_at": "2026-10-27T18:42:12.000249+00:00",
+      "requests": 1
+    },
+    {
+      "day": "2026-10-28",
+      "source": "NETWORK",
+      "fetched_at": "2026-10-27T18:42:12.308942+00:00",
       "requests": 1
     }
   ],
-  "existing_results_revalidated": 152,
+  "existing_results_revalidated": 155,
   "invalid_ft_results_quarantined": 0,
   "invalid_ft_fixture_ids": []
 }
