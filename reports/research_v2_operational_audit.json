@@ -1,7 +1,7 @@
 {
   "schema_version": "1.2",
-  "football_day": "2026-10-27",
-  "generated_at": "2026-10-27T13:58:40.642655+00:00",
+  "football_day": "2026-10-28",
+  "generated_at": "2026-10-28T14:52:00.993478+00:00",
   "workflow_success_is_not_data_source_health": true,
   "status": "DEGRADED_DATA_COVERAGE",
   "data_assertions_passed": true,
@@ -11,10 +11,10 @@
     "CURRENT_DAY_SLOT_COVERAGE_INCOMPLETE"
   ],
   "collection": {
-    "bangkok_now": "2026-10-27T20:58:40.642655+07:00",
+    "bangkok_now": "2026-10-28T21:52:00.993478+07:00",
     "canonical_slots": [
       {
-        "target_time": "2026-10-27T15:00:00+07:00",
+        "target_time": "2026-10-28T15:00:00+07:00",
         "state": "MISSED",
         "provider": null,
         "observed_at": null,
@@ -25,7 +25,7 @@
         "recovered": false
       },
       {
-        "target_time": "2026-10-27T18:00:00+07:00",
+        "target_time": "2026-10-28T18:00:00+07:00",
         "state": "MISSED",
         "provider": null,
         "observed_at": null,
@@ -36,18 +36,18 @@
         "recovered": false
       },
       {
-        "target_time": "2026-10-27T21:00:00+07:00",
-        "state": "UPCOMING",
+        "target_time": "2026-10-28T21:00:00+07:00",
+        "state": "MISSING",
         "provider": null,
         "observed_at": null,
         "lag_minutes": null,
         "valid_snapshot_count": 0,
         "canonical_fixture_count": 0,
-        "observation_timing": "UPCOMING",
+        "observation_timing": "MISSING",
         "recovered": false
       },
       {
-        "target_time": "2026-10-28T00:00:00+07:00",
+        "target_time": "2026-10-29T00:00:00+07:00",
         "state": "UPCOMING",
         "provider": null,
         "observed_at": null,
@@ -64,40 +64,40 @@
     "late_slots": 0,
     "partial_scope_slots": 0,
     "on_time_coverage_fraction": 0.0,
-    "expected_elapsed_slots": 2,
+    "expected_elapsed_slots": 3,
     "observed_slots": 0,
-    "missing_elapsed_slots": 2,
+    "missing_elapsed_slots": 3,
     "coverage_fraction": 0.0,
     "collection_state": "DEGRADED",
     "recovered_slots": [],
     "missed_slots": [
-      "2026-10-27T15:00:00+07:00",
-      "2026-10-27T18:00:00+07:00"
+      "2026-10-28T15:00:00+07:00",
+      "2026-10-28T18:00:00+07:00"
     ]
   },
   "counts": {
-    "raw_snapshots": 7108,
-    "verified_snapshots": 7018,
+    "raw_snapshots": 7327,
+    "verified_snapshots": 7237,
     "quarantined_snapshots": 90,
     "recovered_legacy_snapshots": 0,
     "unresolved_ft_fixtures": 66,
-    "settled_statistical_fixtures": 2557,
-    "core_price_settled_fixtures": 2453,
-    "movement_fixtures": 1728,
-    "numeric_movement_deltas": 10593,
-    "current_day_valid_scans": 96,
-    "current_day_distinct_scan_times": 10,
+    "settled_statistical_fixtures": 2605,
+    "core_price_settled_fixtures": 2500,
+    "movement_fixtures": 1776,
+    "numeric_movement_deltas": 10969,
+    "current_day_valid_scans": 140,
+    "current_day_distinct_scan_times": 12,
     "scope_excluded_snapshots": 454,
     "current_day_canonical_fixtures": 48,
     "collapsed_provider_fixture_ids": 50,
-    "expected_elapsed_slots": 2,
+    "expected_elapsed_slots": 3,
     "observed_slots": 0,
-    "missing_elapsed_slots": 2,
+    "missing_elapsed_slots": 3,
     "coverage_fraction": 0.0,
     "unresolved_matured_3h_fixtures": 60,
     "unresolved_future_or_recent_fixtures": 48,
-    "retired_unresolved_ft_fixtures": 53,
-    "active_unresolved_matured_3h_fixtures": 7
+    "retired_unresolved_ft_fixtures": 58,
+    "active_unresolved_matured_3h_fixtures": 2
   },
   "providers": {
     "pinnwire": {
@@ -105,7 +105,7 @@
       "capability": "RESEARCH_ONLY",
       "usable_recent_output": false,
       "fresh": false,
-      "report_age_hours": 359.73,
+      "report_age_hours": 384.61,
       "partial_rows_usable": false,
       "generated_at": "2026-10-12T14:15:08.613986+00:00",
       "errors": [],
@@ -116,7 +116,7 @@
       "capability": "FALLBACK",
       "usable_recent_output": false,
       "fresh": false,
-      "report_age_hours": 330.61,
+      "report_age_hours": 355.5,
       "partial_rows_usable": false,
       "generated_at": "2026-10-13T19:21:51.020194+00:00",
       "errors": [
