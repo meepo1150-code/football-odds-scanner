@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-10-28T19:34:27.250762+00:00",
-  "matured_unresolved_total": 91,
+  "generated_at": "2026-10-28T23:14:25.299993+00:00",
+  "matured_unresolved_total": 92,
   "retired_from_active_queue": 91,
-  "active_matured_unresolved": 0,
+  "active_matured_unresolved": 1,
   "raw_deleted": 0,
   "settled_results_deleted": 0,
   "low_tier_scope_exclusions": 11,
@@ -11,5 +11,30 @@
   "minimum_sources": 2,
   "minimum_age_hours": 72,
   "minimum_attempt_span_hours": 24,
-  "pending": []
+  "pending": [
+    {
+      "fixture_id": "id1000003672201688",
+      "home": "Heart of Midlothian FC",
+      "away": "Glasgow Rangers",
+      "league": "Scottish Premiership",
+      "kickoff": "2026-10-28T20:00:00+00:00",
+      "attempt_count": 1,
+      "round_ids": [
+        "11bf565c965c15e2"
+      ],
+      "sources": [
+        "fotmob"
+      ],
+      "reviewed_at": "2026-10-28T23:14:25.299993+00:00",
+      "unmet_gates": [
+        "MINIMUM_DISTINCT_ROUNDS",
+        "MINIMUM_SOURCES",
+        "MINIMUM_AGE_72H",
+        "MINIMUM_ATTEMPT_SPAN_24H"
+      ],
+      "age_eligible_at": "2026-10-31T20:00:00+00:00",
+      "status": "ACTIVE_UNRESOLVED",
+      "reason": "RETIREMENT_EVIDENCE_OR_AGE_GATE_NOT_MET"
+    }
+  ]
 }
