@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
   "classification": "FOTMOB_EXACT_RESULT_BACKFILL",
-  "missing_before": 8,
-  "missing_after": 7,
-  "verified_bridge_matches": 1,
+  "missing_before": 3,
+  "missing_after": 3,
+  "verified_bridge_matches": 0,
   "days_requested": [
     "2026-10-27",
     "2026-10-28",
@@ -12,11 +12,11 @@
     "2026-10-31"
   ],
   "events_fetched": 1406,
-  "exact_results_added": 1,
+  "exact_results_added": 0,
   "ambiguous_exact_matches_rejected": 0,
   "exact_identity_unfinished": 0,
-  "no_exact_identity": 7,
-  "kickoff_candidate_only": 7,
+  "no_exact_identity": 3,
+  "kickoff_candidate_only": 3,
   "kickoff_candidate_samples": [
     {
       "fixture_id": "id1000003672201688",
@@ -377,156 +377,6 @@
           "league": "First Division B"
         }
       ]
-    },
-    {
-      "fixture_id": "id1000003472036258",
-      "snapshot": {
-        "home": "Lille OSC",
-        "away": "Racing Club De Lens",
-        "kickoff": "2026-10-30T20:05:00+00:00"
-      },
-      "fotmob_candidates": [
-        {
-          "id": 5802974,
-          "home": "Lille",
-          "away": "Lens",
-          "finished": true,
-          "score": [
-            1,
-            0
-          ],
-          "league": "Ligue 1"
-        }
-      ]
-    },
-    {
-      "fixture_id": "id1000023872530988",
-      "snapshot": {
-        "home": "Casa Pia Lisbon",
-        "away": "Sporting CP",
-        "kickoff": "2026-10-30T20:15:00+00:00"
-      },
-      "fotmob_candidates": [
-        {
-          "id": 5887666,
-          "home": "Casa Pia AC",
-          "away": "Sporting CP",
-          "finished": true,
-          "score": [
-            0,
-            2
-          ],
-          "league": "Liga Portugal"
-        }
-      ]
-    },
-    {
-      "fixture_id": "id1000001872339972",
-      "snapshot": {
-        "home": "Sheffield United",
-        "away": "Wrexham AFC",
-        "kickoff": "2026-10-30T20:00:00+00:00"
-      },
-      "fotmob_candidates": [
-        {
-          "id": 5868120,
-          "home": "Villarreal",
-          "away": "Espanyol",
-          "finished": true,
-          "score": [
-            0,
-            1
-          ],
-          "league": "LaLiga"
-        },
-        {
-          "id": 6487505,
-          "home": "Difaâ El Jadida",
-          "away": "Union Touarga Sport",
-          "finished": true,
-          "score": [
-            1,
-            1
-          ],
-          "league": "Botola Pro"
-        },
-        {
-          "id": 5991229,
-          "home": "AD Fafe",
-          "away": "Paços de Ferreira",
-          "finished": true,
-          "score": [
-            3,
-            1
-          ],
-          "league": "Liga 3 Zona A"
-        },
-        {
-          "id": 5901188,
-          "home": "Marseille (W)",
-          "away": "Nantes (W)",
-          "finished": true,
-          "score": [
-            1,
-            0
-          ],
-          "league": "Premiere Ligue"
-        },
-        {
-          "id": 5883709,
-          "home": "Atlético Madrileño",
-          "away": "Alcorcón",
-          "finished": true,
-          "score": [
-            1,
-            1
-          ],
-          "league": "Primera Federacion - Group 2"
-        },
-        {
-          "id": 5883716,
-          "home": "UD Ibiza",
-          "away": "CE Europa",
-          "finished": true,
-          "score": [
-            3,
-            0
-          ],
-          "league": "Primera Federacion - Group 2"
-        },
-        {
-          "id": 5836904,
-          "home": "Sheffield United",
-          "away": "Wrexham",
-          "finished": true,
-          "score": [
-            1,
-            0
-          ],
-          "league": "Championship"
-        }
-      ]
-    },
-    {
-      "fixture_id": "id1000073874748428",
-      "snapshot": {
-        "home": "SP Cailungo",
-        "away": "AC Juvenes/Dogana",
-        "kickoff": "2026-10-30T20:15:00+00:00"
-      },
-      "fotmob_candidates": [
-        {
-          "id": 5887666,
-          "home": "Casa Pia AC",
-          "away": "Sporting CP",
-          "finished": true,
-          "score": [
-            0,
-            2
-          ],
-          "league": "Liga Portugal"
-        }
-      ]
     }
   ],
   "request_failures": [],
@@ -535,22 +385,22 @@
   "promotion_eligible": false,
   "retired_included": false,
   "deferred_days": [],
-  "generated_at": "2026-10-30T23:45:47.892719+00:00",
+  "generated_at": "2026-10-31T05:39:38.013350+00:00",
   "requests_used": 2,
   "cache_hits": 3,
   "stale_cache_fallbacks": 0,
   "fetch_evidence": [
     {
       "day": "2026-10-27",
-      "source": "NETWORK",
+      "source": "CACHE",
       "fetched_at": "2026-10-30T23:45:47.009009+00:00",
-      "requests": 1
+      "requests": 0
     },
     {
       "day": "2026-10-28",
-      "source": "NETWORK",
+      "source": "CACHE",
       "fetched_at": "2026-10-30T23:45:47.381879+00:00",
-      "requests": 1
+      "requests": 0
     },
     {
       "day": "2026-10-29",
@@ -560,18 +410,18 @@
     },
     {
       "day": "2026-10-30",
-      "source": "CACHE",
-      "fetched_at": "2026-10-30T22:58:38.294594+00:00",
-      "requests": 0
+      "source": "NETWORK",
+      "fetched_at": "2026-10-31T05:39:36.481418+00:00",
+      "requests": 1
     },
     {
       "day": "2026-10-31",
-      "source": "CACHE",
-      "fetched_at": "2026-10-30T22:58:38.609658+00:00",
-      "requests": 0
+      "source": "NETWORK",
+      "fetched_at": "2026-10-31T05:39:36.787466+00:00",
+      "requests": 1
     }
   ],
-  "existing_results_revalidated": 53,
+  "existing_results_revalidated": 54,
   "invalid_ft_results_quarantined": 0,
   "invalid_ft_fixture_ids": []
 }
