@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-30T14:50:31.305271+00:00",
-  "football_day": "2026-10-30",
+  "generated_at": "2026-10-31T14:18:30.187261+00:00",
+  "football_day": "2026-10-31",
   "status": "FAIL",
   "issues": [
     "SCAN_MISSING",
@@ -13,7 +13,7 @@
   "scan_missing_count": 3,
   "scan_missing": [
     {
-      "target_time": "2026-10-30T15:00:00+07:00",
+      "target_time": "2026-10-31T15:00:00+07:00",
       "state": "MISSED",
       "provider": null,
       "observed_at": null,
@@ -24,7 +24,7 @@
       "recovered": false
     },
     {
-      "target_time": "2026-10-30T18:00:00+07:00",
+      "target_time": "2026-10-31T18:00:00+07:00",
       "state": "MISSED",
       "provider": null,
       "observed_at": null,
@@ -35,7 +35,7 @@
       "recovered": false
     },
     {
-      "target_time": "2026-10-30T21:00:00+07:00",
+      "target_time": "2026-10-31T21:00:00+07:00",
       "state": "MISSING",
       "provider": null,
       "observed_at": null,
@@ -46,7 +46,7 @@
       "recovered": false
     }
   ],
-  "ft_delay_count": 19,
+  "ft_delay_count": 21,
   "ft_delay": [
     {
       "fixture_id": "id1000000972302180",
@@ -157,6 +157,20 @@
       "status": "IDENTITY_CONFLICT",
       "country": "Spain",
       "canonical_competition_id": null,
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000018272037422",
+      "provider": "oddspapi",
+      "football_day": "2026-10-30",
+      "league": "Ligue 2",
+      "kickoff": "2026-10-30T19:00:00+00:00",
+      "home": "Stade Lavallois MFC",
+      "away": "US Boulogne",
+      "status": "MISSING_FT",
+      "country": "France",
+      "canonical_competition_id": "FRA-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false
     },
@@ -301,6 +315,20 @@
       "retired_from_active_queue": true
     },
     {
+      "fixture_id": "id1000069172550532",
+      "provider": "oddspapi",
+      "football_day": "2026-10-31",
+      "league": "Ukrainian First League",
+      "kickoff": "2026-10-31T10:00:00+00:00",
+      "home": "FC Viktoriya Sumy",
+      "away": "SC Poltava",
+      "status": "MISSING_FT",
+      "country": "Ukraine",
+      "canonical_competition_id": "UKR-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
       "fixture_id": "pinnwire:1637096650",
       "provider": "pinnwire",
       "football_day": "2026-09-26",
@@ -344,7 +372,7 @@
   "history_report_count": 30,
   "canonical_slots": [
     {
-      "target_time": "2026-10-30T15:00:00+07:00",
+      "target_time": "2026-10-31T15:00:00+07:00",
       "state": "MISSED",
       "provider": null,
       "observed_at": null,
@@ -355,7 +383,7 @@
       "recovered": false
     },
     {
-      "target_time": "2026-10-30T18:00:00+07:00",
+      "target_time": "2026-10-31T18:00:00+07:00",
       "state": "MISSED",
       "provider": null,
       "observed_at": null,
@@ -366,7 +394,7 @@
       "recovered": false
     },
     {
-      "target_time": "2026-10-30T21:00:00+07:00",
+      "target_time": "2026-10-31T21:00:00+07:00",
       "state": "MISSING",
       "provider": null,
       "observed_at": null,
@@ -377,7 +405,7 @@
       "recovered": false
     },
     {
-      "target_time": "2026-10-31T00:00:00+07:00",
+      "target_time": "2026-11-01T00:00:00+07:00",
       "state": "UPCOMING",
       "provider": null,
       "observed_at": null,
@@ -392,42 +420,43 @@
   "raw_deleted": 0,
   "approved_unresolved_fixtures_retained": true,
   "next_slot_readiness": {
-    "target_at": "2026-10-31T00:00:00+07:00",
-    "football_day": "2026-10-30",
+    "target_at": "2026-11-01T00:00:00+07:00",
+    "football_day": "2026-10-31",
     "status": "UNVERIFIED_OR_CAPACITY_BLOCKED",
     "fixture_set_size": null,
     "remaining_prematch_at_target": 0,
-    "prematch_forecast_at": "2026-10-31T00:03:00+07:00",
+    "prematch_forecast_at": "2026-11-01T00:03:00+07:00",
     "unconfirmed_grants": [],
     "blocked_reasons": [
-      "FIXED_COHORT_UNAVAILABLE"
+      "FIXED_COHORT_UNAVAILABLE",
+      "ACCOUNT_CAPACITY_UNCONFIRMED_OR_INSUFFICIENT"
     ],
     "pending_fixture_ids": [],
     "required_market_requests": 0,
     "allocated_tournament_ids": [],
-    "quota_utc_day": "2026-10-30",
+    "quota_utc_day": "2026-10-31",
     "research_usage": {
       "day": 60,
-      "month": 1331
+      "month": 1411
     },
-    "account_remaining_estimate": 44,
-    "account_observed_before": "2026-10-30T14:00:40.197912+00:00",
+    "account_remaining_estimate": 0,
+    "account_observed_before": "2026-10-31T14:00:36.801371+00:00",
     "account_estimate_limitation": "OTHER_ACCOUNT_CONSUMERS_AFTER_OBSERVATION_NOT_MEASURED; RECHECK_UNMETERED_ACCOUNT_AT_COLLECTION",
     "fixture_set_policy": null,
     "schedule_response_id": null,
     "budget": {
       "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
       "research_requests_used_today": 60,
-      "research_requests_used_month": 1331,
+      "research_requests_used_month": 1411,
       "research_daily_limit": 6,
       "research_monthly_limit": 180,
       "research_run_limit": 2,
-      "quota_utc_day": "2026-10-30",
+      "quota_utc_day": "2026-10-31",
       "canonical_slots_in_football_day": 4,
       "future_utc_slots": [],
       "future_utc_requests_reserved": 0,
       "current_canonical_requests_reserved": 0,
-      "future_month_requests_reserved": 5,
+      "future_month_requests_reserved": 0,
       "canonical_request_reservation": "UTC_FUTURE_SLOTS_PLUS_DISCOVERY; MANUAL_AND_RECOVERY_YIELD; FAILED_ATTEMPTS_COUNT",
       "budget_scope": "ODDSPAPI_RESEARCH_COLLECTOR_ONLY",
       "coverage_mode": "MASTER_SCHEDULE_PRIORITIZED",
