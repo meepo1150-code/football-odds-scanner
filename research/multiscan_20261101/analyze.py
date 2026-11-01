@@ -111,7 +111,7 @@ def slotrow(rows,h,grace=15):
 def audit(root,out):
     inventory=[]
     for p in sorted(root.glob('data/**/*')):
-        if p.is_file() and not p.name.startswith('.'):
+        if p.is_file() and not p.name.startswith('.') and '__pycache__' not in p.parts and p.suffix != '.pyc':
             inventory.append({'path':str(p.relative_to(root)),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
     csvout(out/'input_manifest.csv',inventory)
     inputs=['europe_pinnacle_research_v2_snapshots','v2_mainline_snapshots']
