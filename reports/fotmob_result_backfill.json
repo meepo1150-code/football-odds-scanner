@@ -1,22 +1,23 @@
 {
   "schema_version": "1.0",
   "classification": "FOTMOB_EXACT_RESULT_BACKFILL",
-  "missing_before": 5,
-  "missing_after": 5,
+  "missing_before": 9,
+  "missing_after": 9,
   "verified_bridge_matches": 0,
   "days_requested": [
     "2026-10-28",
     "2026-10-29",
     "2026-10-30",
     "2026-10-31",
-    "2026-11-01"
+    "2026-11-01",
+    "2026-11-02"
   ],
-  "events_fetched": 1830,
+  "events_fetched": 1999,
   "exact_results_added": 0,
   "ambiguous_exact_matches_rejected": 0,
   "exact_identity_unfinished": 0,
-  "no_exact_identity": 5,
-  "kickoff_candidate_only": 5,
+  "no_exact_identity": 9,
+  "kickoff_candidate_only": 8,
   "kickoff_candidate_samples": [
     {
       "fixture_id": "id1000004174299710",
@@ -1068,6 +1069,91 @@
           "league": "Premier League"
         }
       ]
+    },
+    {
+      "fixture_id": "id1000069172550302",
+      "snapshot": {
+        "home": "FC Kulykiv-Bilka",
+        "away": "FC Ucsa Tarasivka",
+        "kickoff": "2026-11-01T10:00:00+00:00"
+      },
+      "fotmob_candidates": [
+        {
+          "id": 5847220,
+          "home": "FC Orenburg",
+          "away": "CSKA Moscow",
+          "finished": true,
+          "score": [
+            0,
+            0
+          ],
+          "league": "Premier League"
+        },
+        {
+          "id": 5909197,
+          "home": "Liviy Bereh",
+          "away": "Bukovyna Chernivtsi",
+          "finished": false,
+          "score": [
+            0,
+            1
+          ],
+          "league": "Premier League"
+        },
+        {
+          "id": 5215564,
+          "home": "Isloch",
+          "away": "Slavia Mozyr",
+          "finished": true,
+          "score": [
+            3,
+            1
+          ],
+          "league": "Premier League"
+        }
+      ]
+    },
+    {
+      "fixture_id": "id1000056273086718",
+      "snapshot": {
+        "home": "CSM Slatina",
+        "away": "CS Concordia Chiajna",
+        "kickoff": "2026-11-01T09:00:00+00:00"
+      },
+      "fotmob_candidates": [
+        {
+          "id": 5976941,
+          "home": "CSM Slatina",
+          "away": "Concordia Chiajna",
+          "finished": true,
+          "score": [
+            1,
+            2
+          ],
+          "league": "Liga II"
+        }
+      ]
+    },
+    {
+      "fixture_id": "id1000020572300854",
+      "snapshot": {
+        "home": "FK Viktoria Zizkov",
+        "away": "Dukla Prague",
+        "kickoff": "2026-11-01T09:15:00+00:00"
+      },
+      "fotmob_candidates": [
+        {
+          "id": 1000015748,
+          "home": "Žižkov",
+          "away": "Dukla Praha",
+          "finished": true,
+          "score": [
+            0,
+            1
+          ],
+          "league": "FNL"
+        }
+      ]
     }
   ],
   "request_failures": [],
@@ -1076,8 +1162,8 @@
   "promotion_eligible": false,
   "retired_included": false,
   "deferred_days": [],
-  "generated_at": "2026-11-01T07:31:34.162097+00:00",
-  "requests_used": 2,
+  "generated_at": "2026-11-01T13:22:59.870073+00:00",
+  "requests_used": 3,
   "cache_hits": 3,
   "stale_cache_fallbacks": 0,
   "fetch_evidence": [
@@ -1102,13 +1188,19 @@
     {
       "day": "2026-10-31",
       "source": "NETWORK",
-      "fetched_at": "2026-11-01T07:31:32.708064+00:00",
+      "fetched_at": "2026-11-01T13:22:58.644089+00:00",
       "requests": 1
     },
     {
       "day": "2026-11-01",
       "source": "NETWORK",
-      "fetched_at": "2026-11-01T07:31:33.474810+00:00",
+      "fetched_at": "2026-11-01T13:22:59.276987+00:00",
+      "requests": 1
+    },
+    {
+      "day": "2026-11-02",
+      "source": "NETWORK",
+      "fetched_at": "2026-11-01T13:22:59.575944+00:00",
       "requests": 1
     }
   ],
