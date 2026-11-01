@@ -1,0 +1,232 @@
+{
+  "models": [
+    {
+      "experiment": "FIRST_LAST_CONTROLLED",
+      "market": "AH",
+      "n": 1497,
+      "train": 597,
+      "validation": 437,
+      "exploratory_test": 393,
+      "validation_start": "2026-10-23",
+      "test_start": "2026-10-27",
+      "status": "EXPLORATORY_RETROSPECTIVE_ONLY",
+      "label_availability": "FT join verified by exact ID; historical first-availability of every FT is NOT certified. No deployable trading simulation.",
+      "metrics": {
+        "A_BASELINE": {
+          "validation_mse": 3.169196497307385,
+          "test_mse": 3.578558260264944
+        },
+        "B_PLUS_MOVEMENT": {
+          "validation_mse": 3.1633015836548948,
+          "test_mse": 3.5809639150460497
+        },
+        "C_PLUS_PAST_SCANS": {
+          "validation_mse": 3.104682134069448,
+          "test_mse": 3.685091291868827
+        }
+      }
+    },
+    {
+      "experiment": "FIRST_LAST_CONTROLLED",
+      "market": "OU",
+      "n": 1497,
+      "train": 597,
+      "validation": 437,
+      "exploratory_test": 393,
+      "validation_start": "2026-10-23",
+      "test_start": "2026-10-27",
+      "status": "EXPLORATORY_RETROSPECTIVE_ONLY",
+      "label_availability": "FT join verified by exact ID; historical first-availability of every FT is NOT certified. No deployable trading simulation.",
+      "metrics": {
+        "A_BASELINE": {
+          "validation_mse": 3.1145753185759175,
+          "test_mse": 3.2154173685753165
+        },
+        "B_PLUS_MOVEMENT": {
+          "validation_mse": 3.1151090625738433,
+          "test_mse": 3.1873943169414147
+        },
+        "C_PLUS_PAST_SCANS": {
+          "validation_mse": 3.132972173575591,
+          "test_mse": 3.214758506685938
+        }
+      }
+    },
+    {
+      "experiment": "SETUP_DECISION",
+      "market": "AH",
+      "n": 1050,
+      "train": 629,
+      "validation": 48,
+      "exploratory_test": 297,
+      "validation_start": "2026-10-27",
+      "test_start": "2026-10-29",
+      "status": "EXPLORATORY_RETROSPECTIVE_ONLY",
+      "label_availability": "FT join verified by exact ID; historical first-availability of every FT is NOT certified. No deployable trading simulation.",
+      "metrics": {
+        "A_BASELINE": {
+          "validation_mse": 4.171693912191647,
+          "test_mse": 3.695489313536866
+        },
+        "B_PLUS_MOVEMENT": {
+          "validation_mse": 4.148485324546585,
+          "test_mse": 3.709653236079836
+        },
+        "C_PLUS_PAST_SCANS": {
+          "validation_mse": 4.282188264217396,
+          "test_mse": 3.7506418985959793
+        }
+      }
+    },
+    {
+      "experiment": "SETUP_DECISION",
+      "market": "OU",
+      "n": 1050,
+      "train": 629,
+      "validation": 48,
+      "exploratory_test": 297,
+      "validation_start": "2026-10-27",
+      "test_start": "2026-10-29",
+      "status": "EXPLORATORY_RETROSPECTIVE_ONLY",
+      "label_availability": "FT join verified by exact ID; historical first-availability of every FT is NOT certified. No deployable trading simulation.",
+      "metrics": {
+        "A_BASELINE": {
+          "validation_mse": 3.20289810496803,
+          "test_mse": 2.7778419690154745
+        },
+        "B_PLUS_MOVEMENT": {
+          "validation_mse": 3.2626298952913833,
+          "test_mse": 2.78386356966378
+        },
+        "C_PLUS_PAST_SCANS": {
+          "validation_mse": 3.2511562396640947,
+          "test_mse": 2.8206074070625036
+        }
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "n": 393,
+      "mean_difference": -0.0024056547811054977,
+      "ci95": [
+        -0.04023033794547625,
+        0.032934672387189515
+      ],
+      "p": 0.8855572213893054,
+      "sd": 0.36328681516278966,
+      "experiment": "FIRST_LAST_CONTROLLED",
+      "market": "AH",
+      "comparison": "B_PLUS_MOVEMENT_MSE_IMPROVEMENT",
+      "relative_lift": -0.0006722413346786915,
+      "q_bh": 0.9805097451274363
+    },
+    {
+      "n": 393,
+      "mean_difference": -0.1065330316038823,
+      "ci95": [
+        -0.18283593681142063,
+        -0.033493350566441524
+      ],
+      "p": 0.005997001499250375,
+      "sd": 0.7952397400276852,
+      "experiment": "FIRST_LAST_CONTROLLED",
+      "market": "AH",
+      "comparison": "C_PLUS_PAST_SCANS_MSE_IMPROVEMENT",
+      "relative_lift": -0.02976981897620279,
+      "q_bh": 0.047976011994003
+    },
+    {
+      "n": 393,
+      "mean_difference": 0.028023051633902327,
+      "ci95": [
+        -0.01561549637521237,
+        0.06953272899506964
+      ],
+      "p": 0.1934032983508246,
+      "sd": 0.42549829553593066,
+      "experiment": "FIRST_LAST_CONTROLLED",
+      "market": "OU",
+      "comparison": "B_PLUS_MOVEMENT_MSE_IMPROVEMENT",
+      "relative_lift": 0.008715214363079093,
+      "q_bh": 0.3094452773613193
+    },
+    {
+      "n": 393,
+      "mean_difference": 0.0006588618893787114,
+      "ci95": [
+        -0.056952239146996285,
+        0.05541148104467396
+      ],
+      "p": 0.9805097451274363,
+      "sd": 0.5686461247515991,
+      "experiment": "FIRST_LAST_CONTROLLED",
+      "market": "OU",
+      "comparison": "C_PLUS_PAST_SCANS_MSE_IMPROVEMENT",
+      "relative_lift": 0.00020490711278031704,
+      "q_bh": 0.9805097451274363
+    },
+    {
+      "n": 297,
+      "mean_difference": -0.014163922542970053,
+      "ci95": [
+        -0.03157533574219999,
+        0.004136462127642446
+      ],
+      "p": 0.12693653173413294,
+      "sd": 0.15819144678411448,
+      "experiment": "SETUP_DECISION",
+      "market": "AH",
+      "comparison": "B_PLUS_MOVEMENT_MSE_IMPROVEMENT",
+      "relative_lift": -0.003832759708189748,
+      "q_bh": 0.2538730634682659
+    },
+    {
+      "n": 297,
+      "mean_difference": -0.05515258505911275,
+      "ci95": [
+        -0.12209804452355219,
+        0.010150200069583238
+      ],
+      "p": 0.1184407796101949,
+      "sd": 0.603540285751211,
+      "experiment": "SETUP_DECISION",
+      "market": "AH",
+      "comparison": "C_PLUS_PAST_SCANS_MSE_IMPROVEMENT",
+      "relative_lift": -0.014924298348552911,
+      "q_bh": 0.2538730634682659
+    },
+    {
+      "n": 297,
+      "mean_difference": -0.00602160064830526,
+      "ci95": [
+        -0.031066088612719974,
+        0.018623245077781608
+      ],
+      "p": 0.6436781609195402,
+      "sd": 0.2128265953339849,
+      "experiment": "SETUP_DECISION",
+      "market": "OU",
+      "comparison": "B_PLUS_MOVEMENT_MSE_IMPROVEMENT",
+      "relative_lift": -0.002167726139741255,
+      "q_bh": 0.8582375478927203
+    },
+    {
+      "n": 297,
+      "mean_difference": -0.04276543804702867,
+      "ci95": [
+        -0.08887765532643013,
+        0.003503869878093861
+      ],
+      "p": 0.07446276861569215,
+      "sd": 0.40129221292470557,
+      "experiment": "SETUP_DECISION",
+      "market": "OU",
+      "comparison": "C_PLUS_PAST_SCANS_MSE_IMPROVEMENT",
+      "relative_lift": -0.015395201931586389,
+      "q_bh": 0.2538730634682659
+    }
+  ],
+  "meaning": "Positive MSE improvement means better FT goal-difference/total prediction on the exploratory chronological test. This is NOT positive betting EV, not causation and not untouched holdout evidence.",
+  "selection_policy": "Fixed ridge alpha 10; validation reported without tuning; no model-derived betting picks; frozen production registry has zero patterns."
+}

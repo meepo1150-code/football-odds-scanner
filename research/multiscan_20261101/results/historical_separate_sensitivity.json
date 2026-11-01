@@ -1,0 +1,36 @@
+{
+  "summaries": [
+    {
+      "market": "AH",
+      "fixture_line_side_pairs": 204,
+      "fixture_equal_weight_difference": {
+        "n": 133,
+        "mean_difference": 0.001644736842105263,
+        "ci95": [
+          -0.0025689223057644177,
+          0.006282111528822057
+        ],
+        "p": 0.496751624187906,
+        "sd": 0.027101602025686185
+      }
+    },
+    {
+      "market": "OU",
+      "fixture_line_side_pairs": 1051,
+      "fixture_equal_weight_difference": {
+        "n": 164,
+        "mean_difference": 0.0008710395295761153,
+        "ci95": [
+          -0.004108357116714585,
+          0.005747933345871608
+        ],
+        "p": 0.7331334332833583,
+        "sd": 0.03214903441979084
+      }
+    }
+  ],
+  "exclusions": {
+    "invalid_or_outside_price_scope": 22927
+  },
+  "warning": "Historical Bet365 change ticks; not live observations or verified execution/closing prices. Alternative lines and sides averaged within fixture; never pooled with primary Pinnacle study."
+}

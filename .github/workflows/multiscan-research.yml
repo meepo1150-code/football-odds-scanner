@@ -1,0 +1,26 @@
+name: Multiscan Research Reproducibility
+on:
+  pull_request:
+    paths:
+      - 'research/multiscan_20261101/**'
+      - '.github/workflows/multiscan-research.yml'
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - run: pip install -r research/multiscan_20261101/requirements.txt
+      - name: Research regressions and committed result invariants
+        run: python research/multiscan_20261101/verify.py
+      - name: Reproduce offline without provider requests
+        run: |
+          python research/multiscan_20261101/analyze.py --output /tmp/multiscan-results
+          python research/multiscan_20261101/compare_results.py research/multiscan_20261101/results /tmp/multiscan-results
