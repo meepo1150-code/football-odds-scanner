@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-11-02T17:49:55.218378+00:00",
-  "football_day": "2026-11-02",
+  "generated_at": "2026-11-03T15:49:49.343023+00:00",
+  "football_day": "2026-11-03",
   "status": "FAIL",
   "issues": [
     "SCAN_MISSING",
@@ -10,10 +10,10 @@
     "UNMATCHED_IDENTITY_CANDIDATES",
     "LATEST_SCAN_WARNING"
   ],
-  "scan_missing_count": 4,
+  "scan_missing_count": 3,
   "scan_missing": [
     {
-      "target_time": "2026-11-02T15:00:00+07:00",
+      "target_time": "2026-11-03T15:00:00+07:00",
       "state": "MISSED",
       "provider": null,
       "observed_at": null,
@@ -24,7 +24,7 @@
       "recovered": false
     },
     {
-      "target_time": "2026-11-02T18:00:00+07:00",
+      "target_time": "2026-11-03T18:00:00+07:00",
       "state": "MISSED",
       "provider": null,
       "observed_at": null,
@@ -35,18 +35,7 @@
       "recovered": false
     },
     {
-      "target_time": "2026-11-02T21:00:00+07:00",
-      "state": "MISSED",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "MISSED",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-11-03T00:00:00+07:00",
+      "target_time": "2026-11-03T21:00:00+07:00",
       "state": "MISSING",
       "provider": null,
       "observed_at": null,
@@ -57,7 +46,7 @@
       "recovered": false
     }
   ],
-  "ft_delay_count": 29,
+  "ft_delay_count": 33,
   "ft_delay": [
     {
       "fixture_id": "id1000000972302180",
@@ -186,6 +175,20 @@
       "retired_from_active_queue": false
     },
     {
+      "fixture_id": "id1000015472304346",
+      "provider": "oddspapi",
+      "football_day": "2026-11-03",
+      "league": "Montenegrin First League",
+      "kickoff": "2026-11-03T12:00:00+00:00",
+      "home": "FK Otrant-Olympic Ulcinj",
+      "away": "FK Arsenal Tivat",
+      "status": "MISSING_FT",
+      "country": "Montenegro",
+      "canonical_competition_id": "MNE-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
       "fixture_id": "id1000018272037422",
       "provider": "oddspapi",
       "football_day": "2026-10-30",
@@ -193,11 +196,11 @@
       "kickoff": "2026-10-30T19:00:00+00:00",
       "home": "Stade Lavallois MFC",
       "away": "US Boulogne",
-      "status": "MISSING_FT",
+      "status": "RETIRED_UNRESOLVED",
       "country": "France",
       "canonical_competition_id": "FRA-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
+      "retired_from_active_queue": true
     },
     {
       "fixture_id": "id1000019773321828",
@@ -240,6 +243,20 @@
       "canonical_competition_id": "SCO-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": true
+    },
+    {
+      "fixture_id": "id1000021072083118",
+      "provider": "oddspapi",
+      "football_day": "2026-11-02",
+      "league": "Serbian SuperLiga",
+      "kickoff": "2026-11-02T17:00:00+00:00",
+      "home": "FK Radnicki Nis",
+      "away": "FK Zeleznicar Pancevo",
+      "status": "MISSING_FT",
+      "country": "Serbia",
+      "canonical_competition_id": "SRB-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
     },
     {
       "fixture_id": "id1000021572177030",
@@ -438,6 +455,20 @@
       "retired_from_active_queue": true
     },
     {
+      "fixture_id": "id1000062972498316",
+      "provider": "oddspapi",
+      "football_day": "2026-11-02",
+      "league": "Maltese Premier League",
+      "kickoff": "2026-11-02T19:00:00+00:00",
+      "home": "Gzira United FC",
+      "away": "Marsaxlokk FC",
+      "status": "IDENTITY_CONFLICT",
+      "country": "Malta",
+      "canonical_competition_id": "MLT-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
       "fixture_id": "id1000069172550532",
       "provider": "oddspapi",
       "football_day": "2026-10-31",
@@ -445,9 +476,23 @@
       "kickoff": "2026-10-31T10:00:00+00:00",
       "home": "FC Viktoriya Sumy",
       "away": "SC Poltava",
-      "status": "MISSING_FT",
+      "status": "RETIRED_UNRESOLVED",
       "country": "Ukraine",
       "canonical_competition_id": "UKR-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": true
+    },
+    {
+      "fixture_id": "id1000113572466592",
+      "provider": "oddspapi",
+      "football_day": "2026-11-02",
+      "league": "Bulgarian Second League",
+      "kickoff": "2026-11-02T15:30:00+00:00",
+      "home": "PFC Dobrudzha Dobrich",
+      "away": "FC Fratria Varna",
+      "status": "MISSING_FT",
+      "country": "Bulgaria",
+      "canonical_competition_id": "BGR-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false
     },
@@ -533,7 +578,7 @@
   "history_report_count": 30,
   "canonical_slots": [
     {
-      "target_time": "2026-11-02T15:00:00+07:00",
+      "target_time": "2026-11-03T15:00:00+07:00",
       "state": "MISSED",
       "provider": null,
       "observed_at": null,
@@ -544,7 +589,7 @@
       "recovered": false
     },
     {
-      "target_time": "2026-11-02T18:00:00+07:00",
+      "target_time": "2026-11-03T18:00:00+07:00",
       "state": "MISSED",
       "provider": null,
       "observed_at": null,
@@ -555,18 +600,7 @@
       "recovered": false
     },
     {
-      "target_time": "2026-11-02T21:00:00+07:00",
-      "state": "MISSED",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "MISSED",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-11-03T00:00:00+07:00",
+      "target_time": "2026-11-03T21:00:00+07:00",
       "state": "MISSING",
       "provider": null,
       "observed_at": null,
@@ -575,18 +609,29 @@
       "canonical_fixture_count": 0,
       "observation_timing": "MISSING",
       "recovered": false
+    },
+    {
+      "target_time": "2026-11-04T00:00:00+07:00",
+      "state": "UPCOMING",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "UPCOMING",
+      "recovered": false
     }
   ],
   "api_requests_used": 0,
   "raw_deleted": 0,
   "approved_unresolved_fixtures_retained": true,
   "next_slot_readiness": {
-    "target_at": "2026-11-03T15:00:00+07:00",
+    "target_at": "2026-11-04T00:00:00+07:00",
     "football_day": "2026-11-03",
     "status": "UNVERIFIED_OR_CAPACITY_BLOCKED",
     "fixture_set_size": null,
     "remaining_prematch_at_target": 0,
-    "prematch_forecast_at": "2026-11-03T15:03:00+07:00",
+    "prematch_forecast_at": "2026-11-04T00:03:00+07:00",
     "unconfirmed_grants": [],
     "blocked_reasons": [
       "FIXED_COHORT_UNAVAILABLE"
@@ -596,29 +641,25 @@
     "allocated_tournament_ids": [],
     "quota_utc_day": "2026-11-03",
     "research_usage": {
-      "day": 80,
-      "month": 160
+      "day": 60,
+      "month": 220
     },
-    "account_remaining_estimate": 163,
-    "account_observed_before": "2026-11-02T17:00:46.592115+00:00",
+    "account_remaining_estimate": 151,
+    "account_observed_before": "2026-11-03T14:00:45.256655+00:00",
     "account_estimate_limitation": "OTHER_ACCOUNT_CONSUMERS_AFTER_OBSERVATION_NOT_MEASURED; RECHECK_UNMETERED_ACCOUNT_AT_COLLECTION",
     "fixture_set_policy": null,
     "schedule_response_id": null,
     "budget": {
       "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
-      "research_requests_used_today": 0,
-      "research_requests_used_month": 160,
+      "research_requests_used_today": 60,
+      "research_requests_used_month": 220,
       "research_daily_limit": 6,
       "research_monthly_limit": 180,
-      "research_run_limit": 1,
+      "research_run_limit": 2,
       "quota_utc_day": "2026-11-03",
       "canonical_slots_in_football_day": 4,
-      "future_utc_slots": [
-        "2026-11-03T11:00:00+00:00",
-        "2026-11-03T14:00:00+00:00",
-        "2026-11-03T17:00:00+00:00"
-      ],
-      "future_utc_requests_reserved": 3,
+      "future_utc_slots": [],
+      "future_utc_requests_reserved": 0,
       "current_canonical_requests_reserved": 0,
       "future_month_requests_reserved": 135,
       "canonical_request_reservation": "UTC_FUTURE_SLOTS_PLUS_DISCOVERY; MANUAL_AND_RECOVERY_YIELD; FAILED_ATTEMPTS_COUNT",
