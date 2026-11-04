@@ -1,4 +1,5 @@
 import copy
+import importlib.util
 import json
 import tempfile
 import unittest
@@ -86,8 +87,10 @@ class PredictionTests(unittest.TestCase):
             path=Path(tmp)/'ledger.jsonl'
             with self.assertRaises(ValueError):append_ledger(path,d,d['predictions'])
             self.assertFalse(path.exists())
+    @unittest.skipUnless(importlib.util.find_spec('PIL'), 'Optional video dependency; covered by dedicated video CI')
     def test_long_names_fit(self):
         with tempfile.TemporaryDirectory() as tmp:
             render_card(Path(tmp)/'card.png','TODAYS PREDICTIONS',['Borussia Monchengladbach vs Wolverhampton Wanderers'],'Bangkok UTC+7')
 
 if __name__=='__main__':unittest.main()
+
