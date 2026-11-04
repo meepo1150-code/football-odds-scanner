@@ -1,150 +1,162 @@
-"""Isolated visual-only football video MVP; never fabricates predictions or scores."""
+"""One-command isolated production. No scanner or provider calls."""
 import argparse
-import hashlib
+import asyncio
 import json
+import math
+import os
 import shutil
 import subprocess
 from datetime import datetime
 from pathlib import Path
+from .engine import TZ, append_ledger, fingerprint, iso_time, label, read_ledger, summarize, validate, verify_fixtures
 
 WIDTH, HEIGHT = 1920, 1080
 
-
 def read_json(path):
-    return json.loads(Path(path).read_text(encoding="utf-8"))
+    return json.loads(Path(path).read_text())
 
+def jsonl(path):
+    return [json.loads(s) for s in Path(path).read_text().splitlines() if s.strip()]
 
-def fingerprint(record):
-    return hashlib.sha256(json.dumps(record, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode()).hexdigest()
+def run(args, **kw):
+    subprocess.run(args, check=True, **kw)
 
+def probe(path):
+    return json.loads(subprocess.check_output(['ffprobe','-v','error','-show_streams','-show_format','-of','json',str(path)]))
 
-def iso_time(value):
-    result = datetime.fromisoformat(value)
-    if result.tzinfo is None or result.utcoffset() is None:
-        raise ValueError("All timestamps require UTC offsets")
-    return result
-
-
-def validate(data):
-    if not isinstance(data.get("predictions"), list) or not data.get("date"):
-        raise ValueError("date and predictions are required")
-    published = iso_time(data["published_at"])
-    seen = set()
-    for item in data["predictions"]:
-        required = ("id", "fixture_id", "kickoff", "home", "away", "market", "selection", "label")
-        if any(not str(item.get(field, "")).strip() for field in required):
-            raise ValueError("Incomplete prediction record")
-        if item["id"] in seen:
-            raise ValueError("Duplicate prediction id")
-        seen.add(item["id"])
-        if iso_time(item["kickoff"]) <= published:
-            raise ValueError("Prediction cannot be published at/after kickoff")
-        if item["market"] in ("AH", "OU") and not isinstance(item.get("line"), (int, float)):
-            raise ValueError("AH/OU requires numeric line")
-    if data.get("source_type") == "SYNTHETIC_DEMO_DO_NOT_PUBLISH":
-        return "DEMO"
-    if data.get("source_type") != "REVIEWED_PREDICTION":
-        raise ValueError("Only explicitly reviewed predictions accepted")
-    return "REVIEWED"
-
-
-def append_ledger(path, data):
-    path = Path(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    previous = {}
-    if path.exists():
-        for line in path.read_text(encoding="utf-8").splitlines():
-            if line.strip():
-                rec = json.loads(line)
-                if rec["id"] in previous and fingerprint(previous[rec["id"]]) != fingerprint(rec):
-                    raise ValueError("Existing ledger contains ID conflict")
-                previous[rec["id"]] = rec
-    to_add = []
-    for item in data["predictions"]:
-        rec = {**item, "published_at": data["published_at"], "source_type": data["source_type"]}
-        if rec["id"] in previous:
-            if fingerprint(rec) != fingerprint(previous[rec["id"]]):
-                raise ValueError("Immutable prediction conflict: " + rec["id"])
-        else:
-            to_add.append(rec)
-    if to_add:
-        with path.open("a", encoding="utf-8") as output:
-            for rec in to_add:
-                output.write(json.dumps(rec, ensure_ascii=False, sort_keys=True) + "\n")
-    return len(to_add)
-
-
-def render_card(path, heading, lines, label):
+def render_card(path, heading, lines, footer):
     from PIL import Image, ImageDraw, ImageFont
-    image = Image.new("RGB", (WIDTH, HEIGHT), (9, 20, 39))
-    draw = ImageDraw.Draw(image)
-    fonts = ["/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf"]
-    fontpath = next((f for f in fonts if Path(f).exists()), None)
-    if fontpath is None:
-        raise RuntimeError("A TrueType font is required")
-    headline = ImageFont.truetype(fontpath, 80)
-    body = ImageFont.truetype(fontpath, 47)
-    tiny = ImageFont.truetype(fontpath, 32)
-    draw.rounded_rectangle((65, 70, 1855, 1010), radius=32, outline=(58, 91, 137), width=5)
-    draw.text((115, 115), heading[:35], font=headline, fill=(250, 252, 255))
-    draw.line((115, 240, 1805, 240), fill=(57, 199, 175), width=7)
-    y = 290
-    for line in lines[:9]:
-        draw.text((120, y), str(line)[:61], font=body, fill=(222, 235, 246))
-        y += 78
-    draw.text((120, 930), label[:90], font=tiny, fill=(132, 169, 192))
+    fontpath = '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+    image = Image.new('RGB',(WIDTH,HEIGHT),(8,17,34)); d = ImageDraw.Draw(image)
+    for y in range(HEIGHT):
+        d.line((0,y,WIDTH,y),fill=(8+int(y/90),17+int(y/65),34+int(y/50)))
+    d.rounded_rectangle((72,70,1848,1008),radius=32,outline=(46,76,105),width=3)
+    d.rectangle((72,70,88,1008),fill=(60,220,183))
+    def fit(text, size, maxwidth):
+        while size >= 22:
+            f=ImageFont.truetype(fontpath,size)
+            if d.textbbox((0,0),text,font=f)[2] <= maxwidth: return f
+            size-=2
+        raise ValueError('Text too long to render safely')
+    d.text((125,120),heading,font=fit(heading,72,1640),fill='white')
+    d.line((125,225,1790,225),fill=(60,220,183),width=4)
+    if len(lines)>6: raise ValueError('Slide needs pagination')
+    for i,text in enumerate(lines):
+        d.text((130,290+i*92),text,font=fit(text,49,1630),fill=(224,236,246))
+    d.text((130,930),footer,font=fit(footer,29,1630),fill=(139,174,198))
     image.save(path)
 
+def scenes(data, summary):
+    result=[]
+    def add(heading,lines,speech): result.append(dict(heading=heading,lines=lines,speech=speech))
+    add('FOOTBALL DAILY',[data['date'],'Predictions & results','All kickoff times: Bangkok (UTC+7)'],f"Welcome to Football Daily for {data['date']}. Here is your football predictions and results briefing. All kickoff times are Bangkok time.")
+    if not summary['details']:
+        add("YESTERDAY'S RESULTS",['No archived predictions for '+summary['yesterday'],'Win rate: not available'],"There are no archived predictions for yesterday in this ledger. A win rate is not available.")
+    for p in summary['details']:
+        ft='Pending' if p['ft'] is None else f"{p['ft'][0]} - {p['ft'][1]}"
+        outcome=p['settlement'].replace('_',' ').title()
+        add("YESTERDAY'S RESULTS",[p['home']+' vs '+p['away'],label(p),'Full time: '+ft,outcome],f"{p['home']} versus {p['away']}. The archived pick was {label(p)}. Full time: {ft}. Result: {outcome}.")
+    if summary['details']:
+        lines=[]; words=[]
+        for market in ('AH','OU'):
+            for period in ('daily','cumulative'):
+                s=summary[period][market]; value='N/A' if s['wr'] is None else f"{100*s['wr']:.1f}%"
+                lines.append(f"{market} {period.title()} WR: {value}")
+                words.append(f"{market} {period} weighted win rate: {value}.")
+        add('RESULTS SCORECARD',lines,' '.join(words))
+    if not data['predictions']:
+        add("TODAY'S PREDICTIONS",['No reviewed predictions supplied','No picks added to the record'],"No reviewed predictions have been supplied for today's episode. We will not add unverified picks.")
+    for p in data['predictions']:
+        time=iso_time(p['kickoff']).astimezone(TZ).strftime('%d %b, %H:%M')
+        add("TODAY'S PREDICTIONS",[p['home']+' vs '+p['away'],'Kickoff: '+time+' Bangkok',label(p)],f"{p['home']} versus {p['away']}. Kickoff {time}, Bangkok time. The prediction is {label(p)}.")
+    picks=data['predictions']
+    for start in range(0,max(1,len(picks)),4):
+        group=picks[start:start+4]
+        lines=[p['home']+' vs '+p['away']+' | '+label(p) for p in group] or ['No picks in this episode']
+        speech='Today’s picks recap. '+(' '.join(p['home']+' versus '+p['away']+'. '+label(p)+'.' for p in group) if group else 'There are no picks in this episode.')
+        add('DAILY PICKS RECAP',lines,speech)
+    add('SEE YOU NEXT TIME',['Follow the picks. Track the results.','No guaranteed outcomes.'],"Thanks for watching. Join us for the next football briefing and the results of our recorded picks. No prediction guarantees an outcome.")
+    return result
 
-def make_video(out, slides):
-    ffmpeg = shutil.which("ffmpeg")
-    if not ffmpeg:
-        return False
-    concat = out / "frames.txt"
-    with concat.open("w", encoding="utf-8") as f:
-        for i, slide in enumerate(slides):
-            f.write("file '" + slide.name + "'\n")
-            f.write("duration " + ("4" if i else "3") + "\n")
-        f.write("file '" + slides[-1].name + "'\n")
-    subprocess.run([ffmpeg, "-y", "-hide_banner", "-loglevel", "error", "-safe", "0", "-f", "concat", "-i", str(concat), "-vf", "fps=30,format=yuv420p", "-c:v", "libx264", "-pix_fmt", "yuv420p", str(out / "video.mp4")], cwd=str(out), check=True)
-    return True
+def stamp(seconds):
+    n=round(seconds*1000); h,n=divmod(n,3600000); m,n=divmod(n,60000); s,ms=divmod(n,1000)
+    return f'{h:02}:{m:02}:{s:02},{ms:03}'
 
+async def speak(text,path,voice):
+    import edge_tts
+    # Extend trust with an explicitly configured corporate CA, never disable TLS.
+    if os.environ.get('SSL_CERT_FILE'):
+        import edge_tts.communicate
+        edge_tts.communicate._SSL_CTX.load_verify_locations(os.environ['SSL_CERT_FILE'])
+    async def generate():
+        boundaries=[]
+        with Path(path).open('wb') as output:
+            async for event in edge_tts.Communicate(text,voice,rate='-5%',boundary='WordBoundary').stream():
+                if event['type']=='audio': output.write(event['data'])
+                elif event['type']=='WordBoundary': boundaries.append(event)
+        if not boundaries: raise ValueError('TTS word timing missing')
+        return boundaries
+    return await asyncio.wait_for(generate(),timeout=90)
 
-def build(data, out, ledger):
-    status = validate(data)
-    out.mkdir(parents=True, exist_ok=True)
-    n = append_ledger(ledger, data)
-    results = data.get("results", [])
-    # Results are display-only pending a verified fixture-id settlement adapter.
-    if results:
-        raise ValueError("Results display blocked until verified settlement adapter is implemented")
-    slides = []
-    first = out / "slide-00.png"
-    render_card(first, "FOOTBALL PREDICTIONS", [data["date"], "Today's reviewed picks", str(len(data["predictions"])) + " matches"], "Prediction history is archived before kickoff")
-    slides.append(first)
-    intro = out / "slide-01.png"
-    render_card(intro, "YESTERDAY'S RESULTS", ["Results pending verified FT settlement"], "No unverified win-rate claims")
-    slides.append(intro)
-    for i, item in enumerate(data["predictions"], 2):
-        image = out / ("slide-%02d.png" % i)
-        render_card(image, "MATCH PREDICTION", [item["home"] + " vs " + item["away"], item["kickoff"], item["label"]], "Fixture: " + item["fixture_id"])
-        slides.append(image)
-    recap = out / ("slide-%02d.png" % len(slides))
-    render_card(recap, "TODAY'S PICKS RECAP", [p["home"] + " vs " + p["away"] + " | " + p["label"] for p in data["predictions"]], "Come back tomorrow for the results")
-    slides.append(recap)
-    shutil.copyfile(first, out / "thumbnail.png")
-    metadata = {"title": data.get("title", "Daily Football Predictions " + data["date"]), "description": "Daily football predictions. Individual results are independently verifiable from the archived picks. No guaranteed outcomes.", "privacyStatus": "private", "demo": status == "DEMO"}
-    (out / "metadata.json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
-    made_video = make_video(out, slides)
-    manifest = {"mode": status, "predictions": len(data["predictions"]), "ledger_records_appended": n, "video_created": made_video, "audio_created": False, "verified_results_created": False, "youtube_uploaded": False}
-    (out / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
-    return manifest
+def music(path,duration):
+    """Original procedural ambient score, no samples or third-party music."""
+    import numpy as np
+    import wave
+    rate=24000; t=np.arange(math.ceil(duration*rate))/rate
+    notes=[130.8128,164.8138,195.9977,146.8324]
+    audio=np.zeros(len(t))
+    for i,f in enumerate(notes): audio+=.022*np.sin(2*np.pi*f*t)*(.6+.4*np.sin(2*np.pi*.07*t+i))
+    audio*=np.minimum(t/2,1)*np.minimum((duration-t)/2,1)
+    with wave.open(str(path),'wb') as w:
+        w.setnchannels(1); w.setsampwidth(2); w.setframerate(rate); w.writeframes((audio*32767).astype('<i2').tobytes())
 
+def build(data,out,ledger,fixtures=(),results=(),voice='en-US-GuyNeural'):
+    validate(data); verify_fixtures(data,fixtures)
+    # Validate FT and old archive before any mutation.
+    old=read_ledger(ledger); summary=summarize(old,results,data['date'])
+    out=Path(out).resolve()
+    out.mkdir(parents=True,exist_ok=True)
+    if any(out.iterdir()): raise ValueError('Use a new empty output directory')
+    n=append_ledger(ledger,data,fixtures)
+    script=scenes(data,summary)
+    (out/'input.json').write_text(json.dumps(data,indent=2))
+    (out/'results.json').write_text(json.dumps(summary,indent=2))
+    (out/'script.json').write_text(json.dumps(script,indent=2))
+    report=['# Football Daily — '+data['date'], '', '## ผลเมื่อวาน',json.dumps(summary,ensure_ascii=False,indent=2),'','## วิเคราะห์วันนี้']
+    report += [p['home']+' vs '+p['away']+' — '+label(p)+' — '+iso_time(p['kickoff']).astimezone(TZ).strftime('%d/%m %H:%M')+' Bangkok' for p in data['predictions']] or ['ไม่มีข้อมูลคำทำนายที่ผ่านการตรวจส่งเข้ามาสำหรับวันนี้']
+    (out/'report.md').write_text('\n'.join(report))
+    elapsed=0; subtitles=[]; timeline=[]
+    for i,scene in enumerate(script):
+        stem=f'scene-{i:03}'
+        render_card(out/(stem+'.png'),scene['heading'],scene['lines'],'FOOTBALL DAILY  |  '+data['date']+'  |  Bangkok UTC+7')
+        boundaries=asyncio.run(speak(scene['speech'],out/(stem+'.mp3'),voice))
+        duration=math.ceil((float(probe(out/(stem+'.mp3'))['format']['duration'])+.6)*30)/30
+        for k in range(0,len(boundaries),8):
+            group=boundaries[k:k+8]
+            start=elapsed+group[0]['offset']/10000000
+            end=elapsed+(group[-1]['offset']+group[-1]['duration'])/10000000
+            chunk=' '.join(w['text'] for w in group)
+            subtitles.append(f'{len(subtitles)+1}\n{stamp(start)} --> {stamp(end)}\n{chunk}\n')
+        timeline.append(dict(start=elapsed,duration=duration,**scene)); elapsed+=duration
+        run(['ffmpeg','-y','-v','error','-loop','1','-i',str(out/(stem+'.png')),'-i',str(out/(stem+'.mp3')),'-t',str(duration),'-vf',"zoompan=z='min(zoom+0.000025,1.012)':d=1:s=1920x1080:fps=30,fade=t=in:st=0:d=0.3,format=yuv420p",'-af','apad,loudnorm=I=-16:TP=-1.5:LRA=11','-c:v','libx264','-preset','ultrafast','-crf','23','-threads','2','-c:a','aac','-ar','48000','-ac','2',str(out/(stem+'.mp4'))])
+    (out/'subtitles.srt').write_text('\n'.join(subtitles))
+    (out/'timeline.json').write_text(json.dumps(timeline,indent=2))
+    (out/'concat.txt').write_text(''.join(f"file 'scene-{i:03}.mp4'\n" for i in range(len(script))))
+    run(['ffmpeg','-y','-v','error','-f','concat','-safe','0','-i','concat.txt','-c','copy','joined.mp4'],cwd=out)
+    music(out/'music.wav',elapsed)
+    run(['ffmpeg','-y','-v','error','-i','joined.mp4','-i','music.wav','-filter_complex',"[0:a][1:a]amix=inputs=2:duration=first:weights='1 0.35'[a];[0:v]subtitles=subtitles.srt:force_style='FontSize=19,MarginV=58,Outline=2'[v]",'-map','[v]','-map','[a]','-c:v','libx264','-preset','fast','-crf','21','-threads','2','-c:a','aac','-movflags','+faststart','video.mp4'],cwd=out)
+    render_card(out/'thumbnail.png','FOOTBALL DAILY',[data['date'],f"{len(data['predictions'])} reviewed picks" if data['predictions'] else 'Daily briefing','Predictions + results'],'ENGLISH EDITION')
+    from PIL import Image
+    with Image.open(out/'thumbnail.png') as im: im.resize((1280,720)).save(out/'thumbnail.jpg',quality=92)
+    metadata=dict(title='Football Daily | '+data['date'],description='Reviewed football predictions and recorded results. All times Bangkok (UTC+7). No guaranteed outcomes. AI-generated narration. Original procedural background music. '+summary['wr_definition'],tags=['football','football predictions','daily football'],privacyStatus='private',defaultLanguage='en')
+    (out/'metadata.json').write_text(json.dumps(metadata,indent=2))
+    (out/'MUSIC_LICENSE.txt').write_text('Original procedural composition generated by youtube_prediction.pipeline.music. No samples, recordings, or third-party compositions used. Project owner may use this generated score in these videos.\n')
+    info=probe(out/'video.mp4'); video=next(s for s in info['streams'] if s['codec_type']=='video'); audio=next(s for s in info['streams'] if s['codec_type']=='audio')
+    if (video['width'],video['height'])!=(1920,1080) or abs(float(info['format']['duration'])-elapsed)>1: raise ValueError('Video QA failed')
+    run(['ffmpeg','-v','error','-i',str(out/'video.mp4'),'-f','null','-'])
+    manifest=dict(video_created=True,audio_created=True,qa_decode_passed=True,width=1920,height=1080,duration=float(info['format']['duration']),predictions=len(data['predictions']),ledger_records_appended=n,ledger_head=read_ledger(ledger)[-1]['hash'] if read_ledger(ledger) else None,voice=voice,youtube_uploaded=False,subtitle_timing='TTS word boundaries; human listening review required',files={p.name:__import__('hashlib').sha256(p.read_bytes()).hexdigest() for p in out.iterdir() if p.is_file()})
+    (out/'manifest.json').write_text(json.dumps(manifest,indent=2)); return manifest
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--input", required=True)
-    parser.add_argument("--output", required=True)
-    parser.add_argument("--ledger", required=True)
-    opts = parser.parse_args()
-    print(json.dumps(build(read_json(opts.input), Path(opts.output), Path(opts.ledger)), indent=2))
+if __name__=='__main__':
+    p=argparse.ArgumentParser(); p.add_argument('--input',required=True); p.add_argument('--output',required=True); p.add_argument('--ledger',required=True); p.add_argument('--fixtures',required=True); p.add_argument('--results',required=True); p.add_argument('--voice',default='en-US-GuyNeural'); a=p.parse_args()
+    print(json.dumps(build(read_json(a.input),Path(a.output),Path(a.ledger),jsonl(a.fixtures),jsonl(a.results),a.voice),indent=2))
