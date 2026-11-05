@@ -91,7 +91,7 @@ def render_video(ss,out,stem,voice,vertical=False):
  srt=out/(stem+'.srt');srt.write_text('\n'.join(f'{i+1}\n{stamp(a)} --> {stamp(b)}\n{v}\n' for i,(a,b,v) in enumerate(subs)))
  listing=temp/'concat.txt';listing.write_text('\n'.join("file '"+str(x.resolve())+"'" for x in parts));joined=temp/'joined.mp4';run(['ffmpeg','-y','-v','error','-f','concat','-safe','0','-i',listing,'-c','copy',joined])
  music=temp/'music.wav';soundtrack(music,elapsed)
- style=f"FontName=DejaVu Sans,FontSize={19 if vertical else 20},PrimaryColour=&H00FFFFFF,OutlineColour=&H0014201E,BorderStyle=3,Outline=2,Shadow=0,Alignment=2,MarginV={94 if vertical else 56},MarginL={42 if vertical else 44},MarginR={42 if vertical else 44}"
+ style=f"FontName=DejaVu Sans,FontSize={8 if vertical else 12},PrimaryColour=&H00FFFFFF,OutlineColour=&H0014201E,BorderStyle=3,Outline=2,Shadow=0,Alignment=2,MarginV={44 if vertical else 16},MarginL={18 if vertical else 32},MarginR={18 if vertical else 32}"
  final=out/(stem+'.mp4');run(['ffmpeg','-y','-v','error','-i',joined,'-i',music,'-filter_complex','[0:a][1:a]amix=inputs=2:duration=first:weights=1 0.15[a]','-map','0:v','-map','[a]','-vf',f"subtitles='{srt.resolve()}':force_style='{style}'",'-c:v','libx264','-preset','veryfast','-crf','22','-threads','2','-c:a','aac','-b:a','160k','-movflags','+faststart',final])
  run(['ffmpeg','-v','error','-xerror','-i',final,'-f','null','-']);info=probe(final);v=next(x for x in info['streams'] if x['codec_type']=='video');a=next(x for x in info['streams'] if x['codec_type']=='audio');assert (v['width'],v['height'],v['codec_name'],a['codec_name'])==(w,h,'h264','aac')
  (out/(stem+'-timeline.json')).write_text(json.dumps(timeline,indent=2));shutil.rmtree(temp)
