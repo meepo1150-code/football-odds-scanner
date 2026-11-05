@@ -41,7 +41,9 @@ def scenes(d,r):
 
 def graphic(s,path,vertical=False):
  w,h=(1080,1920) if vertical else (1920,1080);im=Image.new('RGB',(w,h),INK);dr=ImageDraw.Draw(im)
- margin=85;txt(dr,(margin,80 if vertical else 38),'MATCHLEDGER FOOTBALL',42 if vertical else 34,LIME,True,width=w-170)
+ margin=85
+ if not vertical:pitch(dr,(1040,350,1820,830),color='#20332C')
+ txt(dr,(margin,80 if vertical else 38),'MATCHLEDGER FOOTBALL',42 if vertical else 34,LIME,True,width=w-170)
  txt(dr,(margin,140 if vertical else 86),'Every Pick. Every Result.',27,PAPER,width=w-170)
  dr.line((margin,200 if vertical else 140,w-margin,200 if vertical else 140),fill=GREEN,width=3)
  txt(dr,(margin,235 if vertical else 173),'05 NOV 2026 / ALL TIMES UTC',28,LIME,True)
@@ -65,7 +67,7 @@ def graphic(s,path,vertical=False):
    for sub in textwrap.wrap(line,width=90):txt(dr,(margin,y),sub,39,PAPER,True,width=1720);y+=60
    y+=30
   if y>870:raise ValueError('Content invades caption area')
- txt(dr,(margin,h-65),'RESEARCH ONLY / NO GUARANTEED OUTCOMES',24,GREEN,True,width=w-170)
+ txt(dr,(margin,h-90),'RESEARCH ONLY / NO GUARANTEED OUTCOMES',24,GREEN,True,width=w-170)
  im.save(path)
 
 def render_video(ss,out,stem,voice,vertical=False):
@@ -85,7 +87,7 @@ def render_video(ss,out,stem,voice,vertical=False):
    groups=['\n'.join(chunks[j:j+2]) for j in range(0,len(chunks),2)];total=sum(len(v) for v in groups);cursor=c['start']
    for group in groups:
     end=cursor+(c['end']-c['start'])*len(group)/total;subs.append((elapsed+cursor,elapsed+end,group));cursor=end
-  vf=f"zoompan=z='1.003+0.002*sin(on/60)':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s={w}x{h}:fps=30,fade=t=in:d=0.2,format=yuv420p"
+  vf=f"zoompan=z='1.003+0.002*sin(on/60)':x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s={w}x{h}:fps=30,fade=t=in:d=0.2,drawtext=fontfile={FONT}:text='MATCHLEDGER / EVERY PICK. EVERY RESULT.':fontsize=24:fontcolor=0xD7FA55:x='w-mod(t*90,w+tw)':y=h-40,format=yuv420p"
   run(['ffmpeg','-y','-v','error','-loop','1','-i',png,'-i',wav,'-t',duration,'-vf',vf,'-af','apad,loudnorm=I=-16:TP=-1.5:LRA=9','-c:v','libx264','-preset','ultrafast','-crf','24','-threads','2','-c:a','aac','-ac','2','-ar','48000',mp4]);parts.append(mp4);timeline.append(dict(start=round(elapsed,3),duration=duration,title=s['title'],speech=s['speech']));elapsed+=duration
   print(stem,i,round(duration,2),flush=True)
  srt=out/(stem+'.srt');srt.write_text('\n'.join(f'{i+1}\n{stamp(a)} --> {stamp(b)}\n{v}\n' for i,(a,b,v) in enumerate(subs)))
