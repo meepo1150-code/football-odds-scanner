@@ -67,7 +67,7 @@ def graphic(s,path,vertical=False):
    for sub in textwrap.wrap(line,width=90):txt(dr,(margin,y),sub,39,PAPER,True,width=1720);y+=60
    y+=30
   if y>870:raise ValueError('Content invades caption area')
- txt(dr,(margin,h-90),'RESEARCH ONLY / NO GUARANTEED OUTCOMES',24,GREEN,True,width=w-170)
+ txt(dr,(margin,h-(90 if vertical else 190)),'RESEARCH ONLY / NO GUARANTEED OUTCOMES',24,GREEN,True,width=w-170)
  im.save(path)
 
 def render_video(ss,out,stem,voice,vertical=False):
