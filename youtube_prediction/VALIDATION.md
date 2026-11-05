@@ -22,21 +22,28 @@ Trusted existing FT cache: 3,252 distinct fixture IDs; explicit nonnegative scor
 Fixture cache: 7,351 rows / 7,336 IDs. 15 IDs have differing stored home/away/kickoff identity tuples. Selected conflicting identities are blocked; unrelated historical conflicts do not block an empty briefing. Production source records were not modified.
 No real prediction ledger existed in PR #463; its sole input was a synthetic example. That example was replaced with an empty input template. No retrospective predictions were invented.
 
+## Current edition: 4 November 2026
+
+The initial empty media test is superseded by a real reviewed edition: five pre-kickoff selections from the 15:00 Bangkok scan (08:00 UTC), plus all eight retrieved prior-chat selections with exact-ID FT evidence. Evidence, Thai analysis, and the new ledger are in `episodes/2026-11-04`. Yesterday's recap is explicitly separate from the new ledger; it is not retroactively inserted.
+
+Current production data inspected at main `4d2f01b2a2756ad8a389f4fa4d4a779f0e311859`. The scan was observed at 08:00:47–50 UTC and the historical statistics predate it. Selected names/kickoffs were cross-checked against fixture listings; no live odds requests were made.
+
 ## Executed checks
 
 `PYTHONPATH=src:. python -m pytest tests/test_youtube_prediction_pipeline.py tests/test_asian_settlement.py -q`
 
-18 passed (14 isolated pipeline tests + 4 existing Asian settlement tests).
+20 passed (16 isolated pipeline tests + 4 existing Asian settlement tests). Contract tests reject changes between the reviewed storyboard, ledger and recap.
 
-Real 1080p MP4 rendering executed with English en-US-GuyNeural narration, original procedural music, captions, five editorial sections and no fabricated picks. Full FFmpeg decode passed. Frame contact sheet inspected; subtitle/footer overlap found in first render and corrected by moving captions upward. Final render uses provider word-boundary subtitle timestamps.
+Actual final media: 181.9 seconds, 1920×1080, H.264/AAC, 16 scenes. Full FFmpeg decode passed. Frame inspection found subtitle interference; layouts were moved above the caption safe area and rendered again. Thumbnail is 1280×720. Captions derive from measured local narration sentence segments. Original procedural music and generic club-colour graphics avoid third-party footage and crests.
+
+Final narration uses Kokoro ONNX `bm_george` entirely locally. An external TTS attempt was blocked by automatic approval review, so no external TTS is required by this broadcast renderer. Local automated ASR sanity checking confirmed the numerical result and selection content; proper-name transcription is imperfect. This is not human listening certification.
 
 ## Remaining acceptance gates
 
-- Real approved pre-match predictions and independently anchored historical archive are absent. The rendered episode truthfully says no reviewed predictions supplied; this is a real media test, **not** a completed live prediction/results episode.
-- Current file hash chain is tamper-evident, not administrator-proof immutable storage. External append-only anchoring is still required.
-- Daily input adapter is strict but the football analysis/review step itself is not automated here. Frozen scanner gates remain unchanged.
-- OAuth consent/channel credentials unavailable; real private upload, thumbnail and caption API operations untested. No upload or public publication performed.
-- No claim of human listening/ASR pronunciation verification. Audio presence, duration and decode are tested; final editorial listening remains necessary.
-- Full existing repository suite not run; focused tests and existing settlement tests pass. No production code, data, old workflow, quota or dashboard edits.
+- Today's selections are editorial research leans, not validated predictive edges. Small and overlapping historical groups are disclosed in the Thai report. Frozen scanner validation gates are unchanged.
+- File hash chains are tamper-evident, not administrator-proof immutable storage. A GitHub commit anchors this edition; stronger external append-only storage remains future work.
+- The reviewed broadcast storyboard is date-specific and fails closed on different selections. Daily football analysis and editorial review are not yet fully automated; the general JSON renderer remains separate.
+- OAuth consent/channel credentials unavailable; real private upload, thumbnail and caption API operations remain untested. No upload or public publication performed.
+- Full existing repository suite not run; focused tests and existing settlement tests pass. No production scan code/data, old workflow, quota or dashboard edits.
 
 PR remains Draft. Do not merge as fully production-ready.

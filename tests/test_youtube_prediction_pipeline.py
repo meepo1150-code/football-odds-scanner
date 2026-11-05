@@ -67,6 +67,22 @@ class PredictionTests(unittest.TestCase):
         script=scenes(d,summarize([],[],d['date']))
         self.assertEqual(len(script),5)
         self.assertIn('No reviewed',script[2]['lines'][0])
+    def test_reviewed_edition_binding(self):
+        from youtube_prediction.edition_contract import validate_edition
+        root=Path(__file__).parents[1]/'youtube_prediction/episodes/2026-11-04'
+        data=json.loads((root/'daily.json').read_text())
+        recap=json.loads((root/'previous-chat-recap.json').read_text())['records']
+        ledger=read_ledger(root/'prediction-ledger.jsonl')
+        validate_edition(data,recap,ledger)
+        data['predictions'][0]['line']=2.5
+        with self.assertRaises(ValueError):validate_edition(data,recap,ledger)
+    def test_recap_evidence_cannot_be_changed(self):
+        from youtube_prediction.edition_contract import validate_edition
+        root=Path(__file__).parents[1]/'youtube_prediction/episodes/2026-11-04'
+        data=json.loads((root/'daily.json').read_text())
+        recap=json.loads((root/'previous-chat-recap.json').read_text())['records']
+        recap[0]['ft']=[9,0]
+        with self.assertRaises(ValueError):validate_edition(data,recap,read_ledger(root/'prediction-ledger.jsonl'))
     def test_upload_cannot_be_public(self):
         from youtube_prediction.upload import upload_body
         body=upload_body(dict(title='Test',description='Test',tags=[],defaultLanguage='en',privacyStatus='public'))
@@ -93,4 +109,3 @@ class PredictionTests(unittest.TestCase):
             render_card(Path(tmp)/'card.png','TODAYS PREDICTIONS',['Borussia Monchengladbach vs Wolverhampton Wanderers'],'Bangkok UTC+7')
 
 if __name__=='__main__':unittest.main()
-
