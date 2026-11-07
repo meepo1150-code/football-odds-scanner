@@ -1,0 +1,32 @@
+name: Multi-scan Research Validation
+on:
+  push:
+    branches: [research/multi-scan-value-20261101]
+    paths: ['research/multi_scan_20261101/**', '.github/workflows/multi-scan-research-validation.yml']
+permissions:
+  contents: read
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with: {python-version: '3.12'}
+      - run: python -m pip install -r research/multi_scan_20261101/requirements.txt
+      - name: Validate pinned observations and statistical invariants
+        run: python research/multi_scan_20261101/check_research.py -v
+      - name: Reproduce reports offline
+        env:
+          OPENBLAS_NUM_THREADS: '1'
+          OMP_NUM_THREADS: '1'
+        run: |
+          python research/multi_scan_20261101/run.py
+          git diff --exit-code -- data src apps config controls reports
+      - name: Upload reproduced research evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: multi-scan-research
+          path: research/multi_scan_20261101/
