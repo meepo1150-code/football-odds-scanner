@@ -1,0 +1,91 @@
+{
+  "base_commit": "3b055dd067629cc134dd834df7afcd4f331182dc",
+  "input_files_hashed": 343,
+  "source_rows": 8800,
+  "source_semantics": {
+    "CURRENT_ODDSPAPI_MAINLINE_TRUE_OBSERVED": 5727,
+    "CURRENT_API_FOOTBALL_PINNACLE_BALANCED_LINE_OBSERVED": 20,
+    "PINNWIRE_PREMATCH_FULL_SNAPSHOT": 983,
+    "None": 84,
+    "PROPLINE_PINNACLE_TWO_SIDED_CORE_MAINLINE": 384,
+    "HISTORICAL_BALANCED_LINE_AS_OF_SLOT": 1602
+  },
+  "cohorts": [
+    {
+      "cohort": "PRIMARY_PINNACLE_CURRENT",
+      "snapshots": 5137,
+      "fixtures": 1837,
+      "ft_fixtures": 1817,
+      "first": "2026-09-19T17:08:54.510865+00:00",
+      "last": "2026-10-31T14:01:04.281245+00:00"
+    },
+    {
+      "cohort": "ALL_ACCEPTED_SEPARATE_COHORTS",
+      "snapshots": 6638,
+      "fixtures": 2467,
+      "ft_fixtures": 2335,
+      "first": "2026-09-10T13:38:29.380715+00:00",
+      "last": "2026-10-31T14:01:04.281245+00:00"
+    }
+  ],
+  "exclusions": {
+    "MISSING_TEAMS": 20,
+    "SCOPE:YOUTH_OUT_OF_SCOPE": 124,
+    "SCOPE:USER_APPROVED_FT_UNMATCHED_OUTSIDE_SELECTED_MASTER_SCOPE": 196,
+    "SCOPE:WOMEN_OUT_OF_SCOPE": 93,
+    "UNTRUSTED_SNAPSHOT": 83,
+    "AT_OR_AFTER_KICKOFF": 7,
+    "SCOPE:USER_REVIEWED_FIXTURE_OUT_OF_SCOPE": 18,
+    "SCOPE:REVIEWED_LEAGUE_OUT_OF_SCOPE": 3,
+    "INCONSISTENT_FIXTURE_IDENTITY": 5,
+    "FUTURE_QUOTE_TIMESTAMP": 7,
+    "SCOPE:USER_REVIEWED_COMPETITION_OUT_OF_SCOPE": 4,
+    "HISTORICAL_RECOVERY_SEPARATE": 1602
+  },
+  "quality_flags": {
+    "QUOTE_CHANGE_AGE_UNAVAILABLE": 6275,
+    "CURRENT_ENDPOINT_FRESHNESS_CONTRACT_NOT_PER_ROW_RAW_REVERIFIED": 5718,
+    "FAVORITE_FROM_SOURCE_NO_1X2": 559,
+    "EXECUTION_FRESHNESS_UNPROVEN": 920,
+    "MISSING_FT": 348,
+    "MISSING_OR_INVALID_OU": 99,
+    "STORED_DAY_DIFFERS_FROM_KICKOFF_05_CUTOFF": 591
+  },
+  "historical_recovery_rows": 1602,
+  "historical_recovery_fixtures": 685,
+  "archives_separate": [
+    {
+      "file": "oddspapi_history_ticks",
+      "rows": 178,
+      "reason": "HISTORICAL_TICKS_OR_AGGREGATED_OPEN_CLOSE_NOT_LIVE_SCHEDULE_RECEIPTS"
+    },
+    {
+      "file": "oddspapi_prematch_joined",
+      "rows": 164,
+      "reason": "HISTORICAL_TICKS_OR_AGGREGATED_OPEN_CLOSE_NOT_LIVE_SCHEDULE_RECEIPTS"
+    },
+    {
+      "file": "oddspapi_settled_history",
+      "rows": 26240,
+      "reason": "HISTORICAL_TICKS_OR_AGGREGATED_OPEN_CLOSE_NOT_LIVE_SCHEDULE_RECEIPTS"
+    },
+    {
+      "file": "five_dollar_snapshots",
+      "rows": 297,
+      "reason": "HISTORICAL_TICKS_OR_AGGREGATED_OPEN_CLOSE_NOT_LIVE_SCHEDULE_RECEIPTS"
+    }
+  ],
+  "ledger_states": {
+    "OBSERVED": 177,
+    "MISSED": 35,
+    "ZERO_FIXTURES": 7,
+    "FAILED": 8,
+    "SKIPPED_QUOTA": 7
+  },
+  "result_conflict_ids": [
+    "pinnwire:1637178704",
+    "pinnwire:1637183976"
+  ],
+  "scope": "All committed data inventoried; historical git deletions and expired Actions artifacts not recovered; dashboard HTML returned HTTP 200 in separate verification; rendered UI and all deployed data not independently reconciled.",
+  "raw_receipts": 21
+}
