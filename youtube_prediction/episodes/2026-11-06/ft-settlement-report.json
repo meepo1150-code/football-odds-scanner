@@ -1,0 +1,103 @@
+{
+  "yesterday": "2026-11-05",
+  "details": [
+    {
+      "id": "20261105-id1000067974173028-AH",
+      "fixture_id": "id1000067974173028",
+      "home": "Lillestroem SK",
+      "away": "FC Viktoria Plzen",
+      "kickoff": "2026-11-05T17:45:00+00:00",
+      "market": "AH",
+      "selection": "AWAY",
+      "line": -0.25,
+      "ft": [
+        0,
+        1
+      ],
+      "settlement": "FULL_WIN"
+    },
+    {
+      "id": "20261105-id1003448074173292-AH",
+      "fixture_id": "id1003448074173292",
+      "home": "Trabzonspor",
+      "away": "SC Freiburg",
+      "kickoff": "2026-11-05T17:45:00+00:00",
+      "market": "AH",
+      "selection": "HOME",
+      "line": 0.0,
+      "ft": [
+        0,
+        1
+      ],
+      "settlement": "FULL_LOSS"
+    },
+    {
+      "id": "20261105-id1003448074173294-AH",
+      "fixture_id": "id1003448074173294",
+      "home": "AS Monaco",
+      "away": "FC Nordsjaelland",
+      "kickoff": "2026-11-05T20:00:00+00:00",
+      "market": "AH",
+      "selection": "HOME",
+      "line": -1.25,
+      "ft": [
+        2,
+        0
+      ],
+      "settlement": "FULL_WIN"
+    }
+  ],
+  "daily": {
+    "AH": {
+      "counts": {
+        "FULL_WIN": 2,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 1,
+        "PENDING": 0
+      },
+      "decisive_units": 3.0,
+      "wr": 0.6666666666666666
+    },
+    "OU": {
+      "counts": {
+        "FULL_WIN": 0,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 0,
+        "PENDING": 0
+      },
+      "decisive_units": 0.0,
+      "wr": null
+    }
+  },
+  "cumulative": {
+    "AH": {
+      "counts": {
+        "FULL_WIN": 4,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 2,
+        "PENDING": 0
+      },
+      "decisive_units": 6.0,
+      "wr": 0.6666666666666666
+    },
+    "OU": {
+      "counts": {
+        "FULL_WIN": 1,
+        "HALF_WIN": 0,
+        "PUSH": 0,
+        "HALF_LOSS": 0,
+        "FULL_LOSS": 1,
+        "PENDING": 0
+      },
+      "decisive_units": 2.0,
+      "wr": 0.5
+    }
+  },
+  "wr_definition": "(full wins + 0.5 half wins) / (full wins + 0.5 half wins + full losses + 0.5 half losses); pushes and pending excluded"
+}
