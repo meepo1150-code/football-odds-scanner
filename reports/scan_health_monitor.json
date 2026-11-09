@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-11-08T14:46:42.019030+00:00",
-  "football_day": "2026-11-08",
+  "generated_at": "2026-11-09T18:20:18.503001+00:00",
+  "football_day": "2026-11-09",
   "status": "FAIL",
   "issues": [
     "SCAN_MISSING",
@@ -10,10 +10,10 @@
     "UNMATCHED_IDENTITY_CANDIDATES",
     "LATEST_SCAN_WARNING"
   ],
-  "scan_missing_count": 3,
+  "scan_missing_count": 4,
   "scan_missing": [
     {
-      "target_time": "2026-11-08T15:00:00+07:00",
+      "target_time": "2026-11-09T15:00:00+07:00",
       "state": "MISSED",
       "provider": null,
       "observed_at": null,
@@ -24,7 +24,7 @@
       "recovered": false
     },
     {
-      "target_time": "2026-11-08T18:00:00+07:00",
+      "target_time": "2026-11-09T18:00:00+07:00",
       "state": "MISSED",
       "provider": null,
       "observed_at": null,
@@ -35,7 +35,18 @@
       "recovered": false
     },
     {
-      "target_time": "2026-11-08T21:00:00+07:00",
+      "target_time": "2026-11-09T21:00:00+07:00",
+      "state": "MISSED",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "MISSED",
+      "recovered": false
+    },
+    {
+      "target_time": "2026-11-10T00:00:00+07:00",
       "state": "MISSING",
       "provider": null,
       "observed_at": null,
@@ -46,7 +57,7 @@
       "recovered": false
     }
   ],
-  "ft_delay_count": 40,
+  "ft_delay_count": 50,
   "ft_delay": [
     {
       "fixture_id": "id1000000972302180",
@@ -75,6 +86,20 @@
       "canonical_competition_id": "BEL-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": true
+    },
+    {
+      "fixture_id": "id1000000972302206",
+      "provider": "oddspapi",
+      "football_day": "2026-11-08",
+      "league": "Challenger Pro League",
+      "kickoff": "2026-11-08T18:15:00+00:00",
+      "home": "KSC Lokeren-Temse",
+      "away": "FCV Dender EH",
+      "status": "MISSING_FT",
+      "country": "Belgium",
+      "canonical_competition_id": "BEL-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
     },
     {
       "fixture_id": "id1000001872340030",
@@ -145,6 +170,34 @@
       "canonical_competition_id": "FIN-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": true
+    },
+    {
+      "fixture_id": "id1000004174299720",
+      "provider": "oddspapi",
+      "football_day": "2026-11-08",
+      "league": "Veikkausliiga",
+      "kickoff": "2026-11-08T13:00:00+00:00",
+      "home": "IF Gnistan",
+      "away": "Vaasan Palloseura",
+      "status": "MISSING_FT",
+      "country": "Finland",
+      "canonical_competition_id": "FIN-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000004174299722",
+      "provider": "oddspapi",
+      "football_day": "2026-11-08",
+      "league": "Veikkausliiga",
+      "kickoff": "2026-11-08T13:00:00+00:00",
+      "home": "Kuopion Palloseura",
+      "away": "FC Inter Turku",
+      "status": "MISSING_FT",
+      "country": "Finland",
+      "canonical_competition_id": "FIN-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
     },
     {
       "fixture_id": "id1000004772044380",
@@ -241,6 +294,20 @@
       "status": "MISSING_FT",
       "country": "Greece",
       "canonical_competition_id": "GRC-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000018674172520",
+      "provider": "oddspapi",
+      "football_day": "2026-11-09",
+      "league": "Super League Greece 2",
+      "kickoff": "2026-11-09T13:00:00+00:00",
+      "home": "APS Zakynthos",
+      "away": "Niki Volou 1924 PAE",
+      "status": "MISSING_FT",
+      "country": "Greece",
+      "canonical_competition_id": "GRC-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": false
     },
@@ -483,6 +550,20 @@
       "retired_from_active_queue": true
     },
     {
+      "fixture_id": "id1000023872531008",
+      "provider": "oddspapi",
+      "football_day": "2026-11-08",
+      "league": "Primeira Liga",
+      "kickoff": "2026-11-08T15:30:00+00:00",
+      "home": "Nacional da Madeira",
+      "away": "Academico de Viseu FC",
+      "status": "IDENTITY_CONFLICT",
+      "country": "Portugal",
+      "canonical_competition_id": "PRT-0001",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
       "fixture_id": "id1000025472522132",
       "provider": "oddspapi",
       "football_day": "2026-10-23",
@@ -495,6 +576,34 @@
       "canonical_competition_id": "WAL-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": true
+    },
+    {
+      "fixture_id": "id1000056276121454",
+      "provider": "oddspapi",
+      "football_day": "2026-11-09",
+      "league": "Liga II",
+      "kickoff": "2026-11-09T12:30:00+00:00",
+      "home": "Stinta Poli Timisoara",
+      "away": "ACSM Resita",
+      "status": "MISSING_FT",
+      "country": "Romania",
+      "canonical_competition_id": "ROU-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000056276121458",
+      "provider": "oddspapi",
+      "football_day": "2026-11-09",
+      "league": "Liga II",
+      "kickoff": "2026-11-09T15:00:00+00:00",
+      "home": "CS Dinamo Bucuresti",
+      "away": "Scm Ramnicu Valcea",
+      "status": "MISSING_FT",
+      "country": "Romania",
+      "canonical_competition_id": "ROU-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
     },
     {
       "fixture_id": "id1000062972498232",
@@ -539,20 +648,6 @@
       "retired_from_active_queue": true
     },
     {
-      "fixture_id": "id1000069172550308",
-      "provider": "oddspapi",
-      "football_day": "2026-11-08",
-      "league": "Ukrainian First League",
-      "kickoff": "2026-11-08T11:00:00+00:00",
-      "home": "FC Oleksandriya",
-      "away": "SC Poltava",
-      "status": "MISSING_FT",
-      "country": "Ukraine",
-      "canonical_competition_id": "UKR-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
-    },
-    {
       "fixture_id": "id1000069172550318",
       "provider": "oddspapi",
       "football_day": "2026-11-07",
@@ -581,6 +676,20 @@
       "retired_from_active_queue": true
     },
     {
+      "fixture_id": "id1000072172121000",
+      "provider": "oddspapi",
+      "football_day": "2026-11-09",
+      "league": "Serbian First League",
+      "kickoff": "2026-11-09T15:00:00+00:00",
+      "home": "FK Napredak Krusevac",
+      "away": "FK Bor 1919",
+      "status": "MISSING_FT",
+      "country": "Serbia",
+      "canonical_competition_id": "SRB-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
       "fixture_id": "id1000113572466592",
       "provider": "oddspapi",
       "football_day": "2026-11-02",
@@ -593,6 +702,48 @@
       "canonical_competition_id": "BGR-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": true
+    },
+    {
+      "fixture_id": "id1000113572466610",
+      "provider": "oddspapi",
+      "football_day": "2026-11-09",
+      "league": "Bulgarian Second League",
+      "kickoff": "2026-11-09T12:30:00+00:00",
+      "home": "PFC CSKA SOFIA II",
+      "away": "PFC Rilski Sportist Samokov",
+      "status": "MISSING_FT",
+      "country": "Bulgaria",
+      "canonical_competition_id": "BGR-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000113572466614",
+      "provider": "oddspapi",
+      "football_day": "2026-11-09",
+      "league": "Bulgarian Second League",
+      "kickoff": "2026-11-09T12:30:00+00:00",
+      "home": "PFC Chernomorets Burgas",
+      "away": "FC Yantra Gabrovo",
+      "status": "MISSING_FT",
+      "country": "Bulgaria",
+      "canonical_competition_id": "BGR-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
+      "fixture_id": "id1000113572466622",
+      "provider": "oddspapi",
+      "football_day": "2026-11-09",
+      "league": "Bulgarian Second League",
+      "kickoff": "2026-11-09T15:00:00+00:00",
+      "home": "SFC Etar Veliko Tarnovo",
+      "away": "PFC Montana 1921",
+      "status": "MISSING_FT",
+      "country": "Bulgaria",
+      "canonical_competition_id": "BGR-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
     },
     {
       "fixture_id": "pinnwire:1637096650",
@@ -610,7 +761,7 @@
     }
   ],
   "verified_non_ft_lifecycle_count": 1,
-  "unmatched_count": 4,
+  "unmatched_count": 5,
   "unmatched": [
     {
       "fixture_id": "id1000005472477468",
@@ -646,6 +797,25 @@
           "home": "Tenerife CD",
           "away": "FC Andorra",
           "kickoff": "2026-11-02T13:00:00+00:00",
+          "league": "LaLiga 2"
+        }
+      ]
+    },
+    {
+      "fixture_id": "id1000005472477576",
+      "reason": "INCONSISTENT_IDENTITY",
+      "classification": "INSUFFICIENT_EVIDENCE",
+      "identities": [
+        {
+          "home": "UD Las Palmas",
+          "away": "Club Deportivo Eldense",
+          "kickoff": "2026-11-08T17:30:00+00:00",
+          "league": "LaLiga 2"
+        },
+        {
+          "home": "UD Las Palmas",
+          "away": "Club Deportivo Eldense",
+          "kickoff": "2026-11-09T19:30:00+00:00",
           "league": "LaLiga 2"
         }
       ]
@@ -695,7 +865,7 @@
   "history_report_count": 30,
   "canonical_slots": [
     {
-      "target_time": "2026-11-08T15:00:00+07:00",
+      "target_time": "2026-11-09T15:00:00+07:00",
       "state": "MISSED",
       "provider": null,
       "observed_at": null,
@@ -706,7 +876,7 @@
       "recovered": false
     },
     {
-      "target_time": "2026-11-08T18:00:00+07:00",
+      "target_time": "2026-11-09T18:00:00+07:00",
       "state": "MISSED",
       "provider": null,
       "observed_at": null,
@@ -717,7 +887,18 @@
       "recovered": false
     },
     {
-      "target_time": "2026-11-08T21:00:00+07:00",
+      "target_time": "2026-11-09T21:00:00+07:00",
+      "state": "MISSED",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "MISSED",
+      "recovered": false
+    },
+    {
+      "target_time": "2026-11-10T00:00:00+07:00",
       "state": "MISSING",
       "provider": null,
       "observed_at": null,
@@ -726,29 +907,18 @@
       "canonical_fixture_count": 0,
       "observation_timing": "MISSING",
       "recovered": false
-    },
-    {
-      "target_time": "2026-11-09T00:00:00+07:00",
-      "state": "UPCOMING",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "UPCOMING",
-      "recovered": false
     }
   ],
   "api_requests_used": 0,
   "raw_deleted": 0,
   "approved_unresolved_fixtures_retained": true,
   "next_slot_readiness": {
-    "target_at": "2026-11-09T00:00:00+07:00",
-    "football_day": "2026-11-08",
+    "target_at": "2026-11-10T15:00:00+07:00",
+    "football_day": "2026-11-10",
     "status": "UNVERIFIED_OR_CAPACITY_BLOCKED",
     "fixture_set_size": null,
     "remaining_prematch_at_target": 0,
-    "prematch_forecast_at": "2026-11-09T00:03:00+07:00",
+    "prematch_forecast_at": "2026-11-10T15:03:00+07:00",
     "unconfirmed_grants": [],
     "blocked_reasons": [
       "FIXED_COHORT_UNAVAILABLE"
@@ -756,29 +926,33 @@
     "pending_fixture_ids": [],
     "required_market_requests": 0,
     "allocated_tournament_ids": [],
-    "quota_utc_day": "2026-11-08",
+    "quota_utc_day": "2026-11-10",
     "research_usage": {
-      "day": 60,
-      "month": 620
+      "day": 80,
+      "month": 720
     },
-    "account_remaining_estimate": 13,
-    "account_observed_before": "2026-11-08T14:00:38.271678+00:00",
+    "account_remaining_estimate": 226,
+    "account_observed_before": "2026-11-09T17:00:57.164458+00:00",
     "account_estimate_limitation": "OTHER_ACCOUNT_CONSUMERS_AFTER_OBSERVATION_NOT_MEASURED; RECHECK_UNMETERED_ACCOUNT_AT_COLLECTION",
     "fixture_set_policy": null,
     "schedule_response_id": null,
     "budget": {
       "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
-      "research_requests_used_today": 60,
-      "research_requests_used_month": 620,
+      "research_requests_used_today": 0,
+      "research_requests_used_month": 720,
       "research_daily_limit": 6,
       "research_monthly_limit": 180,
-      "research_run_limit": 2,
-      "quota_utc_day": "2026-11-08",
+      "research_run_limit": 1,
+      "quota_utc_day": "2026-11-10",
       "canonical_slots_in_football_day": 4,
-      "future_utc_slots": [],
-      "future_utc_requests_reserved": 0,
+      "future_utc_slots": [
+        "2026-11-10T11:00:00+00:00",
+        "2026-11-10T14:00:00+00:00",
+        "2026-11-10T17:00:00+00:00"
+      ],
+      "future_utc_requests_reserved": 3,
       "current_canonical_requests_reserved": 0,
-      "future_month_requests_reserved": 110,
+      "future_month_requests_reserved": 100,
       "canonical_request_reservation": "UTC_FUTURE_SLOTS_PLUS_DISCOVERY; MANUAL_AND_RECOVERY_YIELD; FAILED_ATTEMPTS_COUNT",
       "budget_scope": "ODDSPAPI_RESEARCH_COLLECTOR_ONLY",
       "coverage_mode": "MASTER_SCHEDULE_PRIORITIZED",

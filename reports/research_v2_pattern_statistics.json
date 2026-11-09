@@ -415,8 +415,8 @@
     "REVIEWED_LEAGUE_OUT_OF_SCOPE": 3,
     "USER_REVIEWED_COMPETITION_OUT_OF_SCOPE": 4
   },
-  "provider_fixture_ids": 3838,
-  "raw_unresolved_provider_fixture_ids": 112,
+  "provider_fixture_ids": 3857,
+  "raw_unresolved_provider_fixture_ids": 131,
   "fixture_identity_bridges": [
     {
       "canonical_fixture_id": "pinnwire:1637098306",
@@ -1673,7 +1673,7 @@
   "snapshot_selection": "LATEST_VALID_STRICT_PREMATCH_OBSERVATION_UTC_THEN_PROVIDER_SOURCE_ID_TIEBREAK",
   "classification": "RESEARCH_V2_AH_MARKET_STATE_STATISTICS",
   "statistical_population_policy": "VERIFIED_FT_ONLY; RAW UNRESOLVED FIXTURES QUARANTINED AND EXCLUDED",
-  "generated_at": "2026-11-09T02:19:33.596406+00:00",
+  "generated_at": "2026-11-09T18:20:11.872484+00:00",
   "research_only": true,
   "recommendation_semantics": false,
   "signal_policy": "DESCRIPTIVE_ONLY; NO EDGE TEST FROM WIN RATE; FROZEN PROMOTION GATES UNCHANGED",
@@ -1697,16 +1697,16 @@
     "MISSING_QUOTE": 651,
     "VERIFIED_EXACT_2_5_PREMATCH": 857
   },
-  "snapshot_rows": 9918,
-  "raw_snapshot_rows": 10462,
+  "snapshot_rows": 9976,
+  "raw_snapshot_rows": 10520,
   "quarantined_snapshot_rows": 90,
   "quarantine_policy": "LEGACY_PROPLINE_EXCLUDED; VERIFIED_PINNACLE_TWO_SIDED_CORE_MAINLINE_ALLOWED",
-  "unique_snapshot_fixtures": 3788,
+  "unique_snapshot_fixtures": 3807,
   "settled_fixtures": 3742,
   "core_price_settled_fixtures": 3584,
   "missing_result_fixtures": 0,
-  "raw_unresolved_ft_fixtures": 45,
-  "active_unresolved_ft_fixtures": 14,
+  "raw_unresolved_ft_fixtures": 64,
+  "active_unresolved_ft_fixtures": 33,
   "retired_unresolved_ft_fixtures": 31,
   "retired_unresolved_fixture_ids": [
     "id1000000872478578",
@@ -1741,25 +1741,25 @@
     "id1000113572466592",
     "pinnwire:1637096650"
   ],
-  "excluded_missing_ft_from_statistical_population": 45,
+  "excluded_missing_ft_from_statistical_population": 64,
   "excluded_derivative_markets_from_ft_completeness": 1,
   "eligible_statistical_fixtures": 3742,
-  "ft_completeness_pct": 98.81,
+  "ft_completeness_pct": 98.32,
   "missing_result_fixtures_by_provider": {},
   "unique_snapshot_fixtures_by_provider": {
     "api_football": 4,
-    "oddspapi": 3283,
+    "oddspapi": 3302,
     "pinnwire": 370,
     "propline": 131
   },
   "pinnwire_missing_result_fixtures": 0,
   "non_pinnwire_missing_result_fixtures": 0,
   "raw_unresolved_ft_by_provider": {
-    "oddspapi": 44,
+    "oddspapi": 63,
     "pinnwire": 42
   },
   "raw_pinnwire_unresolved_ft": 42,
-  "raw_non_pinnwire_unresolved_ft": 3,
+  "raw_non_pinnwire_unresolved_ft": 22,
   "ambiguous_result_fixtures": 0,
   "baseline_by_market_side_line": [
     {
@@ -104796,10 +104796,10 @@
   "identity_group_semantics": "PROVIDER_LOCAL_FIXTURE_IDS_PLUS_VERIFIED_BRIDGES; UNLINKED_PROVIDER_IDS_MAY_REFER_TO_SAME_REAL_MATCH",
   "invalid_statistical_snapshot_rows": 0,
   "wr_definition": "(FULL_WIN + HALF_WIN) / ALL_SETTLED_INCLUDING_PUSH; HALF_WIN_IS_POSITIVE_RETURN_EVENT; SEE_SEPARATE_HALF_COUNTS_AND_ROI",
-  "ft_completeness_denominator": 3787,
+  "ft_completeness_denominator": 3806,
   "ft_completeness_population": "ALL_ELIGIBLE_IDENTITY_GROUPS_INCLUDING_RETIRED_AND_CONFLICTED; NOT_VERIFIED_SUBSET_ONLY",
   "statistical_subset_ft_completeness_pct": 100.0,
-  "identity_conflict_ft_fixtures": 5,
+  "identity_conflict_ft_fixtures": 6,
   "verified_non_ft_lifecycles": {
     "id1000000872478578": {
       "status": "POSTPONED",
@@ -104809,7 +104809,7 @@
   "postponed_cancelled_abandoned_fixtures": 1,
   "verified_cross_provider_canonical_fixtures": 8,
   "verified_same_provider_duplicate_fixtures": 42,
-  "unlinked_provider_fixture_groups": 3738,
+  "unlinked_provider_fixture_groups": 3757,
   "movement_classification_counts": {
     "SINGLE_OBSERVATION": 911,
     "AH_LINE_UNCHANGED__PRICE_DOWN": 900,
@@ -104832,7 +104832,7 @@
     "[2.00,2.10)",
     "[2.10,2.20]"
   ],
-  "active_overdue_ft_fixtures": 14,
-  "active_future_or_recent_ft_fixtures": 0,
+  "active_overdue_ft_fixtures": 20,
+  "active_future_or_recent_ft_fixtures": 13,
   "active_unknown_kickoff_ft_fixtures": 0
 }
