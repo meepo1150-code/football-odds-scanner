@@ -1,9 +1,9 @@
 {
   "schema_version": "1.0",
   "classification": "FOTMOB_EXACT_RESULT_BACKFILL",
-  "missing_before": 13,
-  "missing_after": 11,
-  "verified_bridge_matches": 2,
+  "missing_before": 10,
+  "missing_after": 10,
+  "verified_bridge_matches": 0,
   "days_requested": [
     "2026-11-06",
     "2026-11-07",
@@ -11,11 +11,11 @@
     "2026-11-09"
   ],
   "events_fetched": 1398,
-  "exact_results_added": 2,
+  "exact_results_added": 0,
   "ambiguous_exact_matches_rejected": 0,
   "exact_identity_unfinished": 1,
-  "no_exact_identity": 10,
-  "kickoff_candidate_only": 10,
+  "no_exact_identity": 9,
+  "kickoff_candidate_only": 9,
   "kickoff_candidate_samples": [
     {
       "fixture_id": "id1000001872340030",
@@ -735,60 +735,6 @@
             1
           ],
           "league": "Super Liga"
-        }
-      ]
-    },
-    {
-      "fixture_id": "id1000023872531002",
-      "snapshot": {
-        "home": "Estrela Amadora",
-        "away": "SL Benfica",
-        "kickoff": "2026-11-08T20:30:00+00:00"
-      },
-      "fotmob_candidates": [
-        {
-          "id": 5887673,
-          "home": "Estrela da Amadora",
-          "away": "Benfica",
-          "finished": true,
-          "score": [
-            2,
-            3
-          ],
-          "league": "Liga Portugal"
-        },
-        {
-          "id": 5887677,
-          "home": "Rio Ave",
-          "away": "Braga",
-          "finished": true,
-          "score": [
-            0,
-            1
-          ],
-          "league": "Liga Portugal"
-        },
-        {
-          "id": 1000017294,
-          "home": "Sport Boys",
-          "away": "CD UT Cajamarca",
-          "finished": true,
-          "score": [
-            0,
-            0
-          ],
-          "league": "Liga 1"
-        },
-        {
-          "id": 1000013263,
-          "home": "Unión La Calera",
-          "away": "Huachipato",
-          "finished": true,
-          "score": [
-            1,
-            0
-          ],
-          "league": "Primera División"
         }
       ]
     },
@@ -1785,9 +1731,9 @@
   "promotion_eligible": false,
   "retired_included": false,
   "deferred_days": [],
-  "generated_at": "2026-11-08T23:42:17.283540+00:00",
-  "requests_used": 0,
-  "cache_hits": 4,
+  "generated_at": "2026-11-09T06:25:39.558591+00:00",
+  "requests_used": 2,
+  "cache_hits": 2,
   "stale_cache_fallbacks": 0,
   "fetch_evidence": [
     {
@@ -1804,18 +1750,18 @@
     },
     {
       "day": "2026-11-08",
-      "source": "CACHE",
-      "fetched_at": "2026-11-08T22:53:22.299568+00:00",
-      "requests": 0
+      "source": "NETWORK",
+      "fetched_at": "2026-11-09T06:25:38.236271+00:00",
+      "requests": 1
     },
     {
       "day": "2026-11-09",
-      "source": "CACHE",
-      "fetched_at": "2026-11-08T22:53:22.687114+00:00",
-      "requests": 0
+      "source": "NETWORK",
+      "fetched_at": "2026-11-09T06:25:39.058787+00:00",
+      "requests": 1
     }
   ],
-  "existing_results_revalidated": 147,
+  "existing_results_revalidated": 149,
   "invalid_ft_results_quarantined": 0,
   "invalid_ft_fixture_ids": []
 }
