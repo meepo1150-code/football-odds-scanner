@@ -157,6 +157,9 @@ def test_production_hash_manifest_unchanged():
     # rather than silently skipping its integrity verification.
     approved_evolved_blobs = {
         'src/odds_scanner/research_v2_pattern_stats.py': '5f8fd5c086fb8235b303ffbd2caad512d23b44a5',
+        # Reviewed slot-second alignment (PR #466); exact Git blob pins, not bypasses.
+        'src/odds_scanner/research_v2_slots.py': '5239c977dd189a8395b2f67c668bf7195a399d38',
+        'src/odds_scanner/research_v2_scan_due.py': '4aa8c1bd1895ad4a0eb3c79a1e162c0f6ebc8104',
     }
     for path, blob_sha in approved_evolved_blobs.items():
         raw = (REPO/path).read_bytes()

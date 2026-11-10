@@ -83,3 +83,19 @@ def test_watchdog_finalizes_expired_slots_once_including_after_midnight():
     midnight = datetime.fromisoformat('2026-10-09T00:05:00+07:00')
     assert needs_finalization(midnight, [missed], [])
     assert not needs_finalization(midnight, [missed, {**missed, 'scheduled_target_at': '2026-10-08T21:00:00+07:00'}], [])
+
+
+def test_dispatch_second_offset_does_not_force_duplicate_requests():
+    """A finished canonical-minute observation should suppress redundant wakeups."""
+    now = datetime.fromisoformat('2026-11-10T18:20:00+07:00')
+    receipt = {
+        'scheduled_target_at': '2026-11-10T18:00:50+07:00',
+        'actual_observed_at': '2026-11-10T18:00:56+07:00',
+        'state': 'ZERO_FIXTURES', 'football_day_fixtures': 0,
+        'collection_succeeded': True, 'requests_used': 1,
+    }
+    assert not due(now, {}, ledger_rows=[receipt], snapshots=[])
+    # An unrelated 18:01 scan is not proof of completing the 18:00 slot.
+    shifted = dict(receipt, scheduled_target_at='2026-11-10T18:01:00+07:00',
+                   actual_observed_at='2026-11-10T18:01:06+07:00')
+    assert due(now, {}, ledger_rows=[shifted], snapshots=[])
