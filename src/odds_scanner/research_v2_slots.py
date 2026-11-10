@@ -23,6 +23,17 @@ def stamp(value):
         return None
 
 
+def canonical_target_matches(value, target):
+    """Accept seconds within a canonical scheduled minute, not arbitrary late runs.
+
+    A workflow_dispatch started at 15:00:50 belongs to the 15:00:00 Bangkok
+    slot. 15:01:00 or 15:20:00 does not. Actual quote freshness is still
+    enforced separately using observed_at and kickoff.
+    """
+    planned = stamp(value)
+    return planned is not None and planned.replace(second=0, microsecond=0) == target
+
+
 def targets(day):
     if isinstance(day, str):
         day = datetime.fromisoformat(day).date()
@@ -71,7 +82,7 @@ def provider_attempt_receipt(row):
 
 def valid_completion(row, target, now):
     observed = stamp(row.get('actual_observed_at') or row.get('observed_at'))
-    if stamp(row.get('scheduled_target_at')) != target or observed is None:
+    if not canonical_target_matches(row.get('scheduled_target_at'), target) or observed is None:
         return False
     if not target <= observed <= min(now, target + timedelta(minutes=RECOVERY_MINUTES)):
         return False
@@ -111,10 +122,11 @@ def collection_snapshot(row):
 def matched_snapshots(target, now, snapshots):
     matched = []
     day = target_football_day(target)
+    setup_target = datetime.fromisoformat(day + 'T15:00:00+07:00')
     baseline = {str(r.get('fixture_id')) for r in snapshots
-                if r.get('scheduled_target_at') == day+'T15:00:00+07:00'
+                if canonical_target_matches(r.get('scheduled_target_at'), setup_target)
                 or (r.get('daily_cohort_policy') == 'FIXED_1500_FIXTURE_COHORT_V1'
-                    and r.get('daily_cohort_setup_target_at') == day+'T15:00:00+07:00')}
+                    and canonical_target_matches(r.get('daily_cohort_setup_target_at'), setup_target))}
     for snap in snapshots:
         if day >= '2026-10-14' and target.hour != 15 and baseline and str(snap.get('fixture_id')) not in baseline:
             continue
@@ -125,7 +137,7 @@ def matched_snapshots(target, now, snapshots):
         if snap.get('provider') in {'propline', 'pinnwire'} and explicit == observed:
             prior = [t for t in targets(target_football_day(target)) if observed and t <= observed]
             explicit = max(prior) if prior else None
-        if explicit == target and observed and target <= observed <= min(now, target + timedelta(minutes=RECOVERY_MINUTES)):
+        if canonical_target_matches(explicit.isoformat() if explicit else None, target) and observed and target <= observed <= min(now, target + timedelta(minutes=RECOVERY_MINUTES)):
             matched.append(snap)
     return matched
 
@@ -148,15 +160,16 @@ def read_snapshots(root=Path('.')):
 
 def completed(target, now, ledger, snapshots):
     day = target_football_day(target)
-    baseline = [r for r in ledger if r.get('scheduled_target_at') == day+'T15:00:00+07:00'
+    setup_target = datetime.fromisoformat(day + 'T15:00:00+07:00')
+    baseline = [r for r in ledger if canonical_target_matches(r.get('scheduled_target_at'), setup_target)
                 and r.get('provider', 'oddspapi') == 'oddspapi' and r.get('collection_succeeded') is True]
     has_master_setup = any(r.get('master_competitions_considered') for r in baseline) or any(
-        r.get('scheduled_target_at') == day+'T15:00:00+07:00' and r.get('home_club_id') and r.get('away_club_id') for r in snapshots)
+        canonical_target_matches(r.get('scheduled_target_at'), setup_target) and r.get('home_club_id') and r.get('away_club_id') for r in snapshots)
     if day >= '2026-10-14' and target.hour != 15 and baseline and has_master_setup:
         # A few unrelated quotes cannot close a fixed-cohort follow-up slot.
         for row in ledger:
             observed = stamp(row.get('actual_observed_at'))
-            if (stamp(row.get('scheduled_target_at')) == target and observed
+            if (canonical_target_matches(row.get('scheduled_target_at'), target) and observed
                     and target <= observed <= min(now, target+timedelta(minutes=RECOVERY_MINUTES))
                     and row.get('daily_cohort_query_complete') is True):
                 return True
@@ -179,7 +192,7 @@ def coverage(now, day, ledger, snapshots):
                     and (r.get('state') in {'ZERO_FIXTURES','ZERO_COHORT'} or matched)]
         is_complete = completed(target, local, ledger, snapshots)
         latest = max((stamp(r.get('observed_at')) for r in matched), default=None)
-        cohort_checks = [r for r in ledger if stamp(r.get('scheduled_target_at')) == target
+        cohort_checks = [r for r in ledger if canonical_target_matches(r.get('scheduled_target_at'), target)
                          and r.get('daily_cohort_query_complete') is True
                          and stamp(r.get('actual_observed_at'))
                          and target <= stamp(r['actual_observed_at']) <= min(local, target+timedelta(minutes=RECOVERY_MINUTES))]
