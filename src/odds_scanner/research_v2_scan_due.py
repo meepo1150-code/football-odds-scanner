@@ -6,7 +6,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 BKK = ZoneInfo('Asia/Bangkok')
-from .research_v2_slots import targets as canonical_targets, read_ledger, read_snapshots, completed
+from .research_v2_slots import targets as canonical_targets, read_ledger, read_snapshots, completed, canonical_target_matches
 
 
 def due(now, report, event='schedule', fallback=None, ledger_rows=None, snapshots=None):
@@ -39,10 +39,10 @@ def due(now, report, event='schedule', fallback=None, ledger_rows=None, snapshot
     # 15-minute transport spacing above still applies.
     if ledger_rows is not None and max(targets).hour != 15 and local.date().isoformat() >= '2026-10-14':
         setup_target = canonical_targets(_football_day_bounds(now)[2])[0].isoformat()
-        master_setup = any(r.get('scheduled_target_at') == setup_target
+        master_setup = any(canonical_target_matches(r.get('scheduled_target_at'), datetime.fromisoformat(setup_target))
                            and r.get('collection_succeeded') is True
                            and r.get('master_competitions_considered') for r in ledger_rows)
-        master_setup = master_setup or any(r.get('scheduled_target_at') == setup_target
+        master_setup = master_setup or any(canonical_target_matches(r.get('scheduled_target_at'), datetime.fromisoformat(setup_target))
                                           and r.get('home_club_id') and r.get('away_club_id') for r in snapshots or [])
         if master_setup and report.get('daily_cohort_policy') != 'FIXED_1500_FIXTURE_COHORT_V1':
             return True
@@ -52,7 +52,7 @@ def due(now, report, event='schedule', fallback=None, ledger_rows=None, snapshot
         attempts = [stamp(r.get('request_completed_at') or r.get('actual_observed_at'))
                     for r in ledger_rows if provider_attempt_receipt(r)
                     and (r.get('requests_used', 0) or r.get('http_requests_attempted', 0))
-                    and stamp(r.get('scheduled_target_at')) == max(targets)]
+                    and canonical_target_matches(r.get('scheduled_target_at'), max(targets))]
         attempts = [t for t in attempts if t and max(targets) <= t <= now]
         if attempts and now - max(attempts) < timedelta(minutes=60):
             return False
@@ -60,7 +60,7 @@ def due(now, report, event='schedule', fallback=None, ledger_rows=None, snapshot
         attempted = datetime.fromisoformat(report['generated_at'].replace('Z', '+00:00'))
         if (attempted.tzinfo and max(targets) <= attempted <= now
                 and (ledger_rows is None or provider_attempt_receipt(report))
-                and (ledger_rows is None or report.get('scheduled_target_at') == max(targets).isoformat())):
+                and (ledger_rows is None or canonical_target_matches(report.get('scheduled_target_at'), max(targets)))):
             return now-attempted >= timedelta(minutes=60)
     except (ValueError, TypeError, KeyError):
         pass
