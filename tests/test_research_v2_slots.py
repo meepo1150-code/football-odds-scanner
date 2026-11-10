@@ -107,3 +107,80 @@ def test_weekend_last_slot_remains_recoverable_after_midnight():
              'actual_observed_at':'2026-10-04T22:05:00+07:00',
              'state':'ZERO_FIXTURES','football_day_fixtures':0,'requests_used':1}]
     assert not due(dt('2026-10-05T00:10:00+07:00'),{},ledger_rows=ledger,snapshots=[])
+
+
+def test_dispatched_same_minute_slot_evidence_is_recognized():
+    """15:00:50 dispatch counts as 15:00; later minutes never get backdated."""
+    row = {
+        'fixture_id': 'canonical-minute-example',
+        'provider': 'pinnwire',
+        'favorite_side': 'H',
+        'scheduled_target_at': '2026-11-10T15:00:50+07:00',
+        'observed_at': '2026-11-10T15:00:56+07:00',
+        'kickoff': '2026-11-10T18:30:00+07:00',
+        'ah': {
+            'home_line': -0.5, 'away_line': 0.5,
+            'home_price': 1.95, 'away_price': 1.95,
+            'selected_side_line': -0.5, 'selected_side_price': 1.95,
+        },
+    }
+    receipt = {
+        'scheduled_target_at': row['scheduled_target_at'],
+        'actual_observed_at': row['observed_at'],
+        'state': 'OBSERVED', 'strict_snapshots': 1,
+        'collection_succeeded': True,
+    }
+    now = dt('2026-11-10T15:20:00+07:00')
+    result = coverage(now, '2026-11-10', [receipt], [row])
+    first = result['canonical_slots'][0]
+    assert first['state'] == 'OBSERVED'
+    assert first['observation_timing'] == 'ON_TIME'
+    assert first['valid_snapshot_count'] == 1
+    assert result['observed_slots'] == 1
+
+    # A real 15:01 run must not be passed off as the 15:00 observation.
+    next_minute = dict(row, scheduled_target_at='2026-11-10T15:01:00+07:00',
+                       observed_at='2026-11-10T15:01:06+07:00')
+    next_receipt = dict(receipt, scheduled_target_at=next_minute['scheduled_target_at'],
+                        actual_observed_at=next_minute['observed_at'])
+    missing = coverage(now, '2026-11-10', [next_receipt], [next_minute])
+    assert missing['canonical_slots'][0]['state'] == 'MISSING'
+    assert missing['observed_slots'] == 0
+
+    # Preserve a late observation's true timing even with an aligned target.
+    late = dict(row, observed_at='2026-11-10T15:34:00+07:00')
+    late_receipt = dict(receipt, actual_observed_at=late['observed_at'])
+    result_late = coverage(dt('2026-11-10T15:40:00+07:00'),
+                           '2026-11-10', [late_receipt], [late])
+    assert result_late['canonical_slots'][0]['state'] == 'OBSERVED'
+    assert result_late['canonical_slots'][0]['observation_timing'] == 'LATE'
+
+
+def test_same_minute_baseline_keeps_followup_scope_conservative():
+    """15:00:50 evidence must not let unrelated 18:00 fixtures close a cohort."""
+    base = {
+        'fixture_id': 'baseline', 'provider': 'pinnwire',
+        'scheduled_target_at': '2026-11-10T15:00:50+07:00',
+        'observed_at': '2026-11-10T15:00:56+07:00',
+        'kickoff': '2026-11-10T22:00:00+07:00',
+        'favorite_side': 'H',
+        'ah': {'home_line': -.5, 'away_line': .5, 'home_price': 1.95,
+               'away_price': 1.95, 'selected_side_line': -.5,
+               'selected_side_price': 1.95},
+    }
+    later = dict(base, fixture_id='unrelated',
+                 scheduled_target_at='2026-11-10T18:00:50+07:00',
+                 observed_at='2026-11-10T18:00:56+07:00')
+    ledger = [
+        {'scheduled_target_at': base['scheduled_target_at'],
+         'actual_observed_at': base['observed_at'], 'state': 'OBSERVED',
+         'strict_snapshots': 1, 'collection_succeeded': True,
+         'master_competitions_considered': 92},
+        {'scheduled_target_at': later['scheduled_target_at'],
+         'actual_observed_at': later['observed_at'], 'state': 'OBSERVED',
+         'strict_snapshots': 1, 'collection_succeeded': True},
+    ]
+    result = coverage(dt('2026-11-10T18:20:00+07:00'),
+                      '2026-11-10', ledger, [base, later])
+    assert result['canonical_slots'][0]['state'] == 'OBSERVED'
+    assert result['canonical_slots'][1]['state'] == 'MISSING'
