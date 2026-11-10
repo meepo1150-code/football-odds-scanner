@@ -1,16 +1,40 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-11-10T08:48:15.200017+00:00",
+  "generated_at": "2026-11-10T16:06:41.513557+00:00",
   "football_day": "2026-11-10",
-  "status": "WARNING",
+  "status": "FAIL",
   "issues": [
+    "SCAN_MISSING",
     "FT_DELAY",
     "FT_IDENTITY_CONFLICT",
     "UNMATCHED_IDENTITY_CANDIDATES",
     "LATEST_SCAN_WARNING"
   ],
-  "scan_missing_count": 0,
-  "scan_missing": [],
+  "scan_missing_count": 2,
+  "scan_missing": [
+    {
+      "target_time": "2026-11-10T18:00:00+07:00",
+      "state": "PARTIAL",
+      "provider": "oddspapi",
+      "observed_at": "2026-11-10T18:00:51.710868+07:00",
+      "lag_minutes": 0.86,
+      "valid_snapshot_count": 1,
+      "canonical_fixture_count": 1,
+      "observation_timing": "ON_TIME",
+      "recovered": false
+    },
+    {
+      "target_time": "2026-11-10T21:00:00+07:00",
+      "state": "PARTIAL",
+      "provider": "oddspapi",
+      "observed_at": "2026-11-10T21:00:51.116653+07:00",
+      "lag_minutes": 0.85,
+      "valid_snapshot_count": 1,
+      "canonical_fixture_count": 1,
+      "observation_timing": "ON_TIME",
+      "recovered": false
+    }
+  ],
   "ft_delay_count": 44,
   "ft_delay": [
     {
@@ -63,11 +87,11 @@
       "kickoff": "2026-11-07T12:30:00+00:00",
       "home": "Wrexham AFC",
       "away": "Wolverhampton Wanderers",
-      "status": "MISSING_FT",
+      "status": "RETIRED_UNRESOLVED",
       "country": "England",
       "canonical_competition_id": "ENG-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
+      "retired_from_active_queue": true
     },
     {
       "fixture_id": "id1000003672201688",
@@ -301,11 +325,11 @@
       "kickoff": "2026-11-07T16:00:00+00:00",
       "home": "SK Hanacka Slavia Kromeriz",
       "away": "FK Fotbal Trinec",
-      "status": "MISSING_FT",
+      "status": "RETIRED_UNRESOLVED",
       "country": "Czechia",
       "canonical_competition_id": "CZE-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
+      "retired_from_active_queue": true
     },
     {
       "fixture_id": "id1000020672202700",
@@ -581,11 +605,11 @@
       "kickoff": "2026-11-07T09:00:00+00:00",
       "home": "FC Chernigiv",
       "away": "FC Kolos Kovalivka 2",
-      "status": "MISSING_FT",
+      "status": "RETIRED_UNRESOLVED",
       "country": "Ukraine",
       "canonical_competition_id": "UKR-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
+      "retired_from_active_queue": true
     },
     {
       "fixture_id": "id1000069172550532",
@@ -747,24 +771,24 @@
     },
     {
       "target_time": "2026-11-10T18:00:00+07:00",
-      "state": "UPCOMING",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "UPCOMING",
+      "state": "PARTIAL",
+      "provider": "oddspapi",
+      "observed_at": "2026-11-10T18:00:51.710868+07:00",
+      "lag_minutes": 0.86,
+      "valid_snapshot_count": 1,
+      "canonical_fixture_count": 1,
+      "observation_timing": "ON_TIME",
       "recovered": false
     },
     {
       "target_time": "2026-11-10T21:00:00+07:00",
-      "state": "UPCOMING",
-      "provider": null,
-      "observed_at": null,
-      "lag_minutes": null,
-      "valid_snapshot_count": 0,
-      "canonical_fixture_count": 0,
-      "observation_timing": "UPCOMING",
+      "state": "PARTIAL",
+      "provider": "oddspapi",
+      "observed_at": "2026-11-10T21:00:51.116653+07:00",
+      "lag_minutes": 0.85,
+      "valid_snapshot_count": 1,
+      "canonical_fixture_count": 1,
+      "observation_timing": "ON_TIME",
       "recovered": false
     },
     {
@@ -783,12 +807,12 @@
   "raw_deleted": 0,
   "approved_unresolved_fixtures_retained": true,
   "next_slot_readiness": {
-    "target_at": "2026-11-10T18:00:00+07:00",
+    "target_at": "2026-11-11T00:00:00+07:00",
     "football_day": "2026-11-10",
     "status": "UNVERIFIED_OR_CAPACITY_BLOCKED",
     "fixture_set_size": null,
     "remaining_prematch_at_target": 0,
-    "prematch_forecast_at": "2026-11-10T18:03:00+07:00",
+    "prematch_forecast_at": "2026-11-11T00:03:00+07:00",
     "unconfirmed_grants": [],
     "blocked_reasons": [
       "FIXED_COHORT_UNAVAILABLE"
@@ -798,28 +822,25 @@
     "allocated_tournament_ids": [],
     "quota_utc_day": "2026-11-10",
     "research_usage": {
-      "day": 20,
-      "month": 740
+      "day": 60,
+      "month": 780
     },
-    "account_remaining_estimate": 223,
-    "account_observed_before": "2026-11-10T08:00:50.591896+00:00",
+    "account_remaining_estimate": 219,
+    "account_observed_before": "2026-11-10T14:00:45.090729+00:00",
     "account_estimate_limitation": "OTHER_ACCOUNT_CONSUMERS_AFTER_OBSERVATION_NOT_MEASURED; RECHECK_UNMETERED_ACCOUNT_AT_COLLECTION",
     "fixture_set_policy": null,
     "schedule_response_id": null,
     "budget": {
       "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
-      "research_requests_used_today": 20,
-      "research_requests_used_month": 740,
+      "research_requests_used_today": 60,
+      "research_requests_used_month": 780,
       "research_daily_limit": 6,
       "research_monthly_limit": 180,
       "research_run_limit": 2,
       "quota_utc_day": "2026-11-10",
       "canonical_slots_in_football_day": 4,
-      "future_utc_slots": [
-        "2026-11-10T14:00:00+00:00",
-        "2026-11-10T17:00:00+00:00"
-      ],
-      "future_utc_requests_reserved": 2,
+      "future_utc_slots": [],
+      "future_utc_requests_reserved": 0,
       "current_canonical_requests_reserved": 0,
       "future_month_requests_reserved": 100,
       "canonical_request_reservation": "UTC_FUTURE_SLOTS_PLUS_DISCOVERY; MANUAL_AND_RECOVERY_YIELD; FAILED_ATTEMPTS_COUNT",
