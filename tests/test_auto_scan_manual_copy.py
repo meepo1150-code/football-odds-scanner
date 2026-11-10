@@ -40,7 +40,7 @@ def test_auto_job_is_manual_copy_with_only_trigger_and_publication_names_changed
     condition = auto['jobs']['observe']['if']
     assert "github.ref == 'refs/heads/main'" in condition
     assert "github.event_name == 'workflow_dispatch' && inputs.confirm_live_requests == true" in condition
-    assert auto['jobs']['observe']['env']['ODDSPAPI_KEY'] == '${{ secrets.ODDSPAPI_KEY_001 }}'
+    assert auto['jobs']['observe']['env']['ODDSPAPI_KEY'] == '${{ secrets.ODDSPAPI_KEY_002 }}'
 
 
 def test_external_schedule_yields_exact_bangkok_rounds_including_weekend_noon():
