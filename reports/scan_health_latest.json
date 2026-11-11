@@ -3,9 +3,9 @@
   "latest_scan": {
     "account_requests_attempted": 1,
     "account_transient_failures": [],
-    "actual_observed_at": "2026-11-11T18:00:45.396873+07:00",
-    "api_error_count": 1,
-    "budget_reservation_id": "744bac9772c54b51ab5d0bd822e8f2cf",
+    "actual_observed_at": "2026-11-11T21:00:46.614449+07:00",
+    "api_error_count": 0,
+    "budget_reservation_id": "022b8304be6e4e91894f3234985a2495",
     "competition_coverage": [
       {
         "canonical_competition_id": "BGR-0002",
@@ -364,12 +364,10 @@
         "country": "Latvia",
         "fixtures_captured_today": 0,
         "last_market_request_at": "2026-10-15T11:20:12.244180+00:00",
-        "next_kickoff": "2026-11-11T12:00:00+00:00",
-        "reason": "AWAITING_ODDS",
-        "remaining_prematch_fixture_ids": [
-          "id1000019776653244"
-        ],
-        "remaining_prematch_fixtures": 1,
+        "next_kickoff": null,
+        "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+        "remaining_prematch_fixture_ids": [],
+        "remaining_prematch_fixtures": 0,
         "scheduled_fixture_ids": [
           "id1000019776653244"
         ],
@@ -377,7 +375,7 @@
         "scheduled_fixtures_without_snapshot": 1,
         "tournament_id": 197,
         "tournament_name": "Latvian Higher League",
-        "uncaptured_remaining_prematch_fixtures": 1
+        "uncaptured_remaining_prematch_fixtures": 0
       },
       {
         "canonical_competition_id": "LTU-0001",
@@ -1494,17 +1492,14 @@
     "daily_cohort_query_complete": null,
     "data_source_health": null,
     "fixtures_found": 2,
-    "fixtures_returned_in_market_response": null,
-    "fixtures_unqueried": 1,
+    "fixtures_returned_in_market_response": 0,
+    "fixtures_unqueried": 0,
     "fixtures_with_valid_odds": 0,
     "fixtures_without_valid_odds": 2,
     "football_day": "2026-11-11",
     "future_utc_requests_reserved": 0,
-    "generated_at": "2026-11-11T11:00:45.396873+00:00",
+    "generated_at": "2026-11-11T14:00:46.614449+00:00",
     "issues": [
-      "API_OR_CONFIGURATION_FAILURE",
-      "QUOTA_OR_UNQUERIED_FIXTURES",
-      "COLLECTION_NOT_CONFIRMED",
       "FIXTURES_WITHOUT_VALID_CORE_ODDS"
     ],
     "provenance": "LIVE_REPORT",
@@ -1512,24 +1507,24 @@
     "quota_skip_reason": null,
     "quota_utc_day": "2026-11-11",
     "record_type": "SCAN_ATTEMPT",
-    "report_id": "263e793878b644c92a3da715bd7415557316eb3e238aead1cc108659d637e6b8",
-    "requests_used": 2,
-    "scan_status": "API_REQUEST_FAILED",
-    "schedule_response_id": "d298be41ed58902a8466a45ab879ede738695dc95cd1201a34abe1b8efb41524",
-    "scheduled_target_at": "2026-11-11T18:00:40+07:00",
+    "report_id": "47af5580db3d45e1bda280bf5564077ff7ee8833e75719b4186e3cde0c0d5c0f",
+    "requests_used": 1,
+    "scan_status": "ZERO_USABLE_FIXTURES",
+    "schedule_response_id": "0aa87ffd422abce43b5cd7079cafe32126a06c5607dcb1d43580b2c3c3eb1c78",
+    "scheduled_target_at": "2026-11-11T21:00:46+07:00",
     "schema_version": "1.0",
-    "source_or_configuration_error_count": 1,
-    "status": "FAIL",
+    "source_or_configuration_error_count": 0,
+    "status": "WARNING",
     "workflow_run_attempt": "1",
-    "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/43008303684"
+    "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/43034286789"
   },
   "recent_reports": [
     {
       "account_requests_attempted": 1,
       "account_transient_failures": [],
-      "actual_observed_at": "2026-11-11T18:00:45.396873+07:00",
-      "api_error_count": 1,
-      "budget_reservation_id": "744bac9772c54b51ab5d0bd822e8f2cf",
+      "actual_observed_at": "2026-11-11T21:00:46.614449+07:00",
+      "api_error_count": 0,
+      "budget_reservation_id": "022b8304be6e4e91894f3234985a2495",
       "competition_coverage": [
         {
           "canonical_competition_id": "BGR-0002",
@@ -1888,12 +1883,10 @@
           "country": "Latvia",
           "fixtures_captured_today": 0,
           "last_market_request_at": "2026-10-15T11:20:12.244180+00:00",
-          "next_kickoff": "2026-11-11T12:00:00+00:00",
-          "reason": "AWAITING_ODDS",
-          "remaining_prematch_fixture_ids": [
-            "id1000019776653244"
-          ],
-          "remaining_prematch_fixtures": 1,
+          "next_kickoff": null,
+          "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+          "remaining_prematch_fixture_ids": [],
+          "remaining_prematch_fixtures": 0,
           "scheduled_fixture_ids": [
             "id1000019776653244"
           ],
@@ -1901,7 +1894,7 @@
           "scheduled_fixtures_without_snapshot": 1,
           "tournament_id": 197,
           "tournament_name": "Latvian Higher League",
-          "uncaptured_remaining_prematch_fixtures": 1
+          "uncaptured_remaining_prematch_fixtures": 0
         },
         {
           "canonical_competition_id": "LTU-0001",
@@ -3018,17 +3011,14 @@
       "daily_cohort_query_complete": null,
       "data_source_health": null,
       "fixtures_found": 2,
-      "fixtures_returned_in_market_response": null,
-      "fixtures_unqueried": 1,
+      "fixtures_returned_in_market_response": 0,
+      "fixtures_unqueried": 0,
       "fixtures_with_valid_odds": 0,
       "fixtures_without_valid_odds": 2,
       "football_day": "2026-11-11",
       "future_utc_requests_reserved": 0,
-      "generated_at": "2026-11-11T11:00:45.396873+00:00",
+      "generated_at": "2026-11-11T14:00:46.614449+00:00",
       "issues": [
-        "API_OR_CONFIGURATION_FAILURE",
-        "QUOTA_OR_UNQUERIED_FIXTURES",
-        "COLLECTION_NOT_CONFIRMED",
         "FIXTURES_WITHOUT_VALID_CORE_ODDS"
       ],
       "provenance": "LIVE_REPORT",
@@ -3036,16 +3026,16 @@
       "quota_skip_reason": null,
       "quota_utc_day": "2026-11-11",
       "record_type": "SCAN_ATTEMPT",
-      "report_id": "263e793878b644c92a3da715bd7415557316eb3e238aead1cc108659d637e6b8",
-      "requests_used": 2,
-      "scan_status": "API_REQUEST_FAILED",
-      "schedule_response_id": "d298be41ed58902a8466a45ab879ede738695dc95cd1201a34abe1b8efb41524",
-      "scheduled_target_at": "2026-11-11T18:00:40+07:00",
+      "report_id": "47af5580db3d45e1bda280bf5564077ff7ee8833e75719b4186e3cde0c0d5c0f",
+      "requests_used": 1,
+      "scan_status": "ZERO_USABLE_FIXTURES",
+      "schedule_response_id": "0aa87ffd422abce43b5cd7079cafe32126a06c5607dcb1d43580b2c3c3eb1c78",
+      "scheduled_target_at": "2026-11-11T21:00:46+07:00",
       "schema_version": "1.0",
-      "source_or_configuration_error_count": 1,
-      "status": "FAIL",
+      "source_or_configuration_error_count": 0,
+      "status": "WARNING",
       "workflow_run_attempt": "1",
-      "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/43008303684"
+      "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/43034286789"
     },
     {
       "account_requests_attempted": 1,
