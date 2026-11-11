@@ -1,19 +1,19 @@
 {
   "schema_version": "2.9",
-  "generated_at": "2026-11-11T08:00:44.808860+00:00",
+  "generated_at": "2026-11-11T11:00:45.396873+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "bookmaker": "pinnacle",
   "football_day": "2026-11-11",
   "football_day_timezone": "Asia/Bangkok",
   "football_day_window_start": "2026-11-11T05:00:00+00:00",
   "football_day_window_end": "2026-11-11T23:00:00+00:00",
-  "scheduled_target_at": "2026-11-11T15:00:39+07:00",
-  "actual_observed_at": "2026-11-11T15:00:44.807860+07:00",
-  "schedule_lag_minutes": 0.1,
+  "scheduled_target_at": "2026-11-11T18:00:40+07:00",
+  "actual_observed_at": "2026-11-11T18:00:45.396873+07:00",
+  "schedule_lag_minutes": 0.01,
   "recovery_window_minutes": 150,
   "observation_timing": "ON_TIME",
   "force_run": true,
-  "force_target_at": "2026-11-11T08:00:39Z",
+  "force_target_at": "2026-11-11T11:00:40Z",
   "research_only": true,
   "production_promotion_allowed": false,
   "core_quota_reserve": 3,
@@ -22,7 +22,7 @@
   "schedule_response_complete": true,
   "scheduled_approved_fixtures": 2,
   "scheduled_approved_competitions": 2,
-  "remaining_prematch_competitions": 2,
+  "remaining_prematch_competitions": 1,
   "schedule_scope_rejections": {},
   "competition_coverage": [
     {
@@ -391,14 +391,11 @@
         "id1000019776653244"
       ],
       "next_kickoff": "2026-11-11T12:00:00+00:00",
-      "reason": "NO_MARKET_RESPONSE",
+      "reason": "AWAITING_ODDS",
       "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 1,
       "uncaptured_remaining_prematch_fixtures": 1,
-      "last_market_request_at": "2026-11-11T08:00:44.807860+00:00",
-      "odds_fixture_rows": 0,
-      "strict_snapshots": 0,
-      "market_reason_counts": {}
+      "last_market_request_at": "2026-10-15T11:20:12.244180+00:00"
     },
     {
       "canonical_competition_id": "LTU-0001",
@@ -1318,24 +1315,17 @@
       "tournament_name": "Ukrainian First League",
       "country": "Ukraine",
       "scheduled_fixtures": 1,
-      "remaining_prematch_fixtures": 1,
+      "remaining_prematch_fixtures": 0,
       "scheduled_fixture_ids": [
         "id1000069176678764"
       ],
-      "remaining_prematch_fixture_ids": [
-        "id1000069176678764"
-      ],
-      "next_kickoff": "2026-11-11T09:30:00+00:00",
-      "reason": "OBSERVED",
+      "remaining_prematch_fixture_ids": [],
+      "next_kickoff": null,
+      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
       "fixtures_captured_today": 1,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": "2026-11-11T08:00:44.807860+00:00",
-      "odds_fixture_rows": 1,
-      "strict_snapshots": 1,
-      "market_reason_counts": {
-        "OK": 1
-      }
+      "last_market_request_at": null
     },
     {
       "canonical_competition_id": "CYP-0002",
@@ -1517,13 +1507,13 @@
   "forward_scope_policy": "VERIFIED_ACTIVE_MASTER_81_DIVISIONS_PLUS_8_DOMESTIC_CUPS_AND_3_UEFA_CLUB_COMPETITIONS",
   "master_scope_rejections": [],
   "master_scope_excluded_targets": 0,
-  "resolved_competitions": 2,
+  "resolved_competitions": 1,
   "planned_requests": 2,
   "max_planned_requests_with_retries": 19,
   "coverage_mode": "MANUAL_FULL_ELIGIBLE_SCOPE",
   "request_budget_policy": "MANUAL_PROVIDER_QUOTA_ONLY",
-  "research_requests_used_today": 0,
-  "research_requests_used_month": 800,
+  "research_requests_used_today": 20,
+  "research_requests_used_month": 820,
   "research_daily_limit": null,
   "research_monthly_limit": null,
   "research_run_limit": 20,
@@ -1538,65 +1528,29 @@
   "schedule_requests_reserved": 1,
   "coverage_complete": true,
   "coverage_tournament_ids": [
-    691,
     197
   ],
   "account_requests_attempted": 1,
   "account_endpoint_metered": false,
   "account_transient_failures": [],
-  "quota_remaining_before": 235,
+  "quota_remaining_before": 233,
   "account_safety_reserve": 10,
   "account_minimum_requests_through_month_end": 2,
   "account_month_capacity_shortfall": 0,
   "effective_quota_reserve": 0,
-  "budget_reservation_id": "54c9609ce5e94ce0a9384fc8327845bd",
+  "budget_reservation_id": "744bac9772c54b51ab5d0bd822e8f2cf",
   "research_requests_reserved_this_run": 20,
-  "request_completed_at": "2026-11-11T08:00:44.807860+00:00",
-  "schedule_response_id": "f1a4295d4c0265e4b85febfb8433c2e769ee7cba793167e39d5ce48372ae76fa",
-  "schedule_observed_at": "2026-11-11T08:00:43.857558+00:00",
+  "request_completed_at": "2026-11-11T11:00:45.396873+00:00",
+  "schedule_response_id": "d298be41ed58902a8466a45ab879ede738695dc95cd1201a34abe1b8efb41524",
+  "schedule_observed_at": "2026-11-11T11:00:44.508918+00:00",
   "schedule_requests_used": 1,
   "fixtures_captured_today": 1,
   "scheduled_fixtures_without_snapshot": 1,
   "market_requests_required_all_remaining_competitions": 1,
-  "collection_started_at": "2026-11-11T08:00:39.660351+00:00",
-  "excluded_unrequested_scope_fixtures": 0,
-  "invalid_payload_batches": 0,
-  "status": "RESEARCH_V2_OBSERVED",
+  "status": "API_REQUEST_FAILED",
   "requests_used": 2,
   "rate_limit_retries": 0,
-  "api_fixtures_returned": 1,
-  "excluded_outside_football_day": 0,
-  "football_day_fixtures": 1,
-  "strict_snapshots_this_run": 1,
-  "persisted_snapshot_rows": 10525,
-  "persisted_audit_rows": 9307,
-  "fixtures_seen": 1,
-  "bookmaker_active_fixtures": 1,
-  "fixtures_with_exactly_one_main_ah": 1,
-  "fixtures_with_exactly_one_main_ou": 1,
-  "fixtures_with_both_exact_mainlines": 1,
-  "strict_snapshots": 1,
-  "rejection_counts": {
-    "OK": 1
-  },
-  "league_coverage": [
-    {
-      "league": "Ukraine · Ukrainian First League",
-      "fixtures": 1,
-      "bookmaker_active": 1,
-      "ah_main_exactly_one": 1,
-      "ou_main_exactly_one": 1,
-      "both_main_exactly_one": 1,
-      "strict_snapshots": 1,
-      "reason_counts": {
-        "OK": 1
-      }
-    }
-  ],
-  "competition_reason_counts": {
-    "NO_MATCHES": 90,
-    "NO_MARKET_RESPONSE": 1,
-    "OBSERVED": 1
-  },
-  "additional_market_requests_required": 0
+  "errors": [
+    "HTTPError: HTTP Error 404: Not Found"
+  ]
 }
