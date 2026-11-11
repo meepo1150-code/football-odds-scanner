@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-11-10T16:06:36.200220+00:00",
+  "generated_at": "2026-11-11T15:52:09.972960+00:00",
   "research_only": true,
   "raw_deleted": 0,
-  "settled_fixtures": 3761,
+  "settled_fixtures": 3762,
   "movement_classification_counts": {
     "SINGLE_OBSERVATION": 912,
     "AH_LINE_UNCHANGED__PRICE_DOWN": 903,
-    "AH_LINE_UNCHANGED__PRICE_UP": 813,
+    "AH_LINE_UNCHANGED__PRICE_UP": 814,
     "AH_LINE_UNCHANGED__PRICE_FLAT": 352,
     "AH_FAVORITE_LINE_STRONGER__PRICE_UP": 348,
     "AH_FAVORITE_LINE_STRONGER__PRICE_DOWN": 34,
@@ -23,31 +23,31 @@
     "evaluation": "RETROSPECTIVE_VIEWED_DATA_CHRONOLOGICAL_WALK_FORWARD_BY_FOOTBALL_DAY",
     "untouched_holdout": false,
     "promotion_allowed": false,
-    "unique_eligible_fixtures": 2785,
-    "unique_evaluated_fixtures": 2365,
+    "unique_eligible_fixtures": 2786,
+    "unique_evaluated_fixtures": 2366,
     "metric": "BASELINE_MSE_MINUS_MOVEMENT_MSE; POSITIVE_IS_BETTER",
-    "mean_squared_error_improvement": -0.01147158490282506,
+    "mean_squared_error_improvement": -0.011634892966612397,
     "improvement_bootstrap95": [
-      -0.018879,
-      -0.00368
+      -0.01947,
+      -0.00391
     ],
     "baseline": "MARKET_SIDE + AH_LINE + PRICE_BUCKET; TRAIN_MIN_5; PRIOR_DAYS_MIN_20",
     "movement_model": "SAME_BASELINE + MOVEMENT; SHRINKAGE_10_BASELINE_OBSERVATIONS",
     "multiple_testing_policy": "ONE_PREDEFINED_INCREMENTAL_COMPARISON; SUBGROUPS_DESCRIPTIVE_ONLY; NO_PROMOTION_OR_EDGE_CLAIMS; NEW_UNVIEWED_PERIOD_REQUIRED",
     "observation_gap_minutes": {
-      "n": 2785,
+      "n": 2786,
       "min": 0.713,
-      "median": 359.988,
+      "median": 359.9895,
       "max": 717.217
     },
     "first_minutes_before_kickoff": {
-      "n": 2785,
+      "n": 2786,
       "min": 43.721,
-      "median": 478.703,
+      "median": 478.7115,
       "max": 940.905
     },
     "last_minutes_before_kickoff": {
-      "n": 2785,
+      "n": 2786,
       "min": 0.501,
       "median": 118.882,
       "max": 577.827
@@ -178,16 +178,16 @@
       },
       {
         "movement": "AH_LINE_UNCHANGED__PRICE_UP",
-        "unique_fixture_n": 813,
-        "roi_pct": -0.635,
+        "unique_fixture_n": 814,
+        "roi_pct": -0.508,
         "profit_mean_bootstrap95": [
-          -0.067398,
-          0.057623
+          -0.066525,
+          0.054335
         ],
         "settlements": {
           "FULL_LOSS": 314,
           "HALF_LOSS": 78,
-          "FULL_WIN": 355,
+          "FULL_WIN": 356,
           "HALF_WIN": 21,
           "PUSH": 45
         }
@@ -23858,6 +23858,16 @@
         "movement_return_prediction": 0.21869698459763826,
         "realized_profit_units": -1.0,
         "squared_error_improvement": -0.5407976052147334
+      },
+      {
+        "fixture_id": "id1000056276121460",
+        "football_day": "2026-11-10",
+        "baseline_train_n": 98,
+        "movement_train_n": 30,
+        "baseline_return_prediction": -0.024704081632653085,
+        "movement_return_prediction": -0.1989260204081633,
+        "realized_profit_units": 1.0299999999999998,
+        "squared_error_improvement": -0.3978584638236671
       }
     ],
     "limitations": [
@@ -23870,10 +23880,9 @@
   },
   "ft_triage_counts": {
     "POSTPONED": 1,
-    "RETIRED_UNRESOLVED": 32,
-    "ACTIVE_OVERDUE": 6,
-    "IDENTITY_CONFLICT": 6,
-    "FUTURE_OR_RECENT": 1
+    "RETIRED_UNRESOLVED": 37,
+    "ACTIVE_OVERDUE": 2,
+    "IDENTITY_CONFLICT": 6
   },
   "ft_triage_groups": [
     {
@@ -23887,41 +23896,9 @@
     {
       "lifecycle": "ACTIVE_OVERDUE",
       "provider": "oddspapi",
-      "country": "Finland",
-      "canonical_competition_id": "FIN-0001",
-      "league": "Veikkausliiga",
-      "n": 2
-    },
-    {
-      "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "France",
-      "canonical_competition_id": "FRA-0002",
-      "league": "Ligue 2",
-      "n": 1
-    },
-    {
-      "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "Greece",
-      "canonical_competition_id": "GRC-0001",
-      "league": "Super League Greece",
-      "n": 1
-    },
-    {
-      "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "Netherlands",
-      "canonical_competition_id": "NLD-0002",
-      "league": "Eerste Divisie",
-      "n": 1
-    },
-    {
-      "lifecycle": "FUTURE_OR_RECENT",
-      "provider": "oddspapi",
-      "country": "Romania",
-      "canonical_competition_id": "ROU-0002",
-      "league": "Liga II",
+      "country": "Ukraine",
+      "canonical_competition_id": "UKR-0002",
+      "league": "Ukrainian First League",
       "n": 1
     },
     {
@@ -24018,7 +23995,7 @@
       "country": "Finland",
       "canonical_competition_id": "FIN-0001",
       "league": "Veikkausliiga",
-      "n": 2
+      "n": 4
     },
     {
       "lifecycle": "RETIRED_UNRESOLVED",
@@ -24026,6 +24003,14 @@
       "country": "France",
       "canonical_competition_id": "FRA-0002",
       "league": "Ligue 2",
+      "n": 2
+    },
+    {
+      "lifecycle": "RETIRED_UNRESOLVED",
+      "provider": "oddspapi",
+      "country": "Greece",
+      "canonical_competition_id": "GRC-0001",
+      "league": "Super League Greece",
       "n": 1
     },
     {
@@ -24042,6 +24027,14 @@
       "country": "Latvia",
       "canonical_competition_id": "LVA-0001",
       "league": "Latvian Higher League",
+      "n": 1
+    },
+    {
+      "lifecycle": "RETIRED_UNRESOLVED",
+      "provider": "oddspapi",
+      "country": "Netherlands",
+      "canonical_competition_id": "NLD-0002",
+      "league": "Eerste Divisie",
       "n": 1
     },
     {
@@ -24289,12 +24282,12 @@
       "kickoff": "2026-11-08T13:00:00+00:00",
       "home": "IF Gnistan",
       "away": "Vaasan Palloseura",
-      "status": "MISSING_FT",
+      "status": "RETIRED_UNRESOLVED",
       "country": "Finland",
       "canonical_competition_id": "FIN-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
+      "retired_from_active_queue": true,
+      "lifecycle": "RETIRED_UNRESOLVED",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -24307,12 +24300,12 @@
       "kickoff": "2026-11-08T13:00:00+00:00",
       "home": "Kuopion Palloseura",
       "away": "FC Inter Turku",
-      "status": "MISSING_FT",
+      "status": "RETIRED_UNRESOLVED",
       "country": "Finland",
       "canonical_competition_id": "FIN-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
+      "retired_from_active_queue": true,
+      "lifecycle": "RETIRED_UNRESOLVED",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -24397,12 +24390,12 @@
       "kickoff": "2026-11-08T11:15:00+00:00",
       "home": "Vitesse Arnhem",
       "away": "De Graafschap",
-      "status": "MISSING_FT",
+      "status": "RETIRED_UNRESOLVED",
       "country": "Netherlands",
       "canonical_competition_id": "NLD-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
+      "retired_from_active_queue": true,
+      "lifecycle": "RETIRED_UNRESOLVED",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -24433,12 +24426,12 @@
       "kickoff": "2026-11-07T19:00:00+00:00",
       "home": "AS Saint-Etienne",
       "away": "Stade Lavallois MFC",
-      "status": "MISSING_FT",
+      "status": "RETIRED_UNRESOLVED",
       "country": "France",
       "canonical_competition_id": "FRA-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
+      "retired_from_active_queue": true,
+      "lifecycle": "RETIRED_UNRESOLVED",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -24451,12 +24444,12 @@
       "kickoff": "2026-11-07T17:30:00+00:00",
       "home": "Aris Thessaloniki",
       "away": "Panaitolikos Agrinio",
-      "status": "MISSING_FT",
+      "status": "RETIRED_UNRESOLVED",
       "country": "Greece",
       "canonical_competition_id": "GRC-0001",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
+      "retired_from_active_queue": true,
+      "lifecycle": "RETIRED_UNRESOLVED",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -24804,24 +24797,6 @@
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
     },
     {
-      "fixture_id": "id1000056276121460",
-      "provider": "oddspapi",
-      "football_day": "2026-11-10",
-      "league": "Liga II",
-      "kickoff": "2026-11-10T17:30:00+00:00",
-      "home": "AFC Metalul Buzau",
-      "away": "Csa Steaua Bucuresti",
-      "status": "MISSING_FT",
-      "country": "Romania",
-      "canonical_competition_id": "ROU-0002",
-      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "FUTURE_OR_RECENT",
-      "exclusion_reason": null,
-      "identity_status": "EXACT_MASTER_COMPETITION",
-      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
-    },
-    {
       "fixture_id": "id1000062972498232",
       "provider": "oddspapi",
       "football_day": "2026-09-06",
@@ -24907,6 +24882,24 @@
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": true,
       "lifecycle": "RETIRED_UNRESOLVED",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
+      "fixture_id": "id1000069176678764",
+      "provider": "oddspapi",
+      "football_day": "2026-11-11",
+      "league": "Ukrainian First League",
+      "kickoff": "2026-11-11T09:30:00+00:00",
+      "home": "FC Chernigiv",
+      "away": "FC Ingulets Petrove",
+      "status": "MISSING_FT",
+      "country": "Ukraine",
+      "canonical_competition_id": "UKR-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "ACTIVE_OVERDUE",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
