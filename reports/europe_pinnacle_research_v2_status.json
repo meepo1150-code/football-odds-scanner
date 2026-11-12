@@ -1,28 +1,28 @@
 {
   "schema_version": "2.9",
-  "generated_at": "2026-11-11T17:00:44.649857+00:00",
+  "generated_at": "2026-11-12T08:00:44.669474+00:00",
   "classification": "PINNACLE_RESEARCH_V2",
   "bookmaker": "pinnacle",
-  "football_day": "2026-11-11",
+  "football_day": "2026-11-12",
   "football_day_timezone": "Asia/Bangkok",
-  "football_day_window_start": "2026-11-11T05:00:00+00:00",
-  "football_day_window_end": "2026-11-11T23:00:00+00:00",
-  "scheduled_target_at": "2026-11-12T00:00:44+07:00",
-  "actual_observed_at": "2026-11-12T00:00:44.649857+07:00",
-  "schedule_lag_minutes": 0.01,
+  "football_day_window_start": "2026-11-12T05:00:00+00:00",
+  "football_day_window_end": "2026-11-12T23:00:00+00:00",
+  "scheduled_target_at": "2026-11-12T15:00:40+07:00",
+  "actual_observed_at": "2026-11-12T15:00:44.665739+07:00",
+  "schedule_lag_minutes": 0.08,
   "recovery_window_minutes": 150,
   "observation_timing": "ON_TIME",
   "force_run": true,
-  "force_target_at": "2026-11-11T17:00:44Z",
+  "force_target_at": "2026-11-12T08:00:40Z",
   "research_only": true,
   "production_promotion_allowed": false,
   "core_quota_reserve": 3,
   "manual_supplementary_scan": true,
   "master_competitions_considered": 92,
   "schedule_response_complete": true,
-  "scheduled_approved_fixtures": 2,
+  "scheduled_approved_fixtures": 4,
   "scheduled_approved_competitions": 2,
-  "remaining_prematch_competitions": 0,
+  "remaining_prematch_competitions": 2,
   "schedule_scope_rejections": {},
   "competition_coverage": [
     {
@@ -382,16 +382,14 @@
       "tournament_id": 197,
       "tournament_name": "Latvian Higher League",
       "country": "Latvia",
-      "scheduled_fixtures": 1,
+      "scheduled_fixtures": 0,
       "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [
-        "id1000019776653244"
-      ],
+      "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+      "reason": "NO_MATCHES",
       "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 1,
+      "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
       "last_market_request_at": "2026-10-15T11:20:12.244180+00:00"
     },
@@ -832,16 +830,29 @@
       "tournament_id": 329,
       "tournament_name": "Copa del Rey",
       "country": "Spain",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "scheduled_fixtures": 3,
+      "remaining_prematch_fixtures": 3,
+      "scheduled_fixture_ids": [
+        "id1000032976162994",
+        "id1000032976489490",
+        "id1000032976516976"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000032976162994",
+        "id1000032976489490",
+        "id1000032976516976"
+      ],
+      "next_kickoff": "2026-11-12T17:30:00+00:00",
+      "reason": "UNMAPPED",
       "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 0,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "scheduled_fixtures_without_snapshot": 3,
+      "uncaptured_remaining_prematch_fixtures": 3,
+      "last_market_request_at": "2026-11-12T08:00:44.665739+00:00",
+      "odds_fixture_rows": 3,
+      "strict_snapshots": 0,
+      "market_reason_counts": {
+        "MASTER_CLUB_UNMAPPED": 3
+      }
     },
     {
       "canonical_competition_id": "NLD-0003",
@@ -864,16 +875,25 @@
       "tournament_id": 335,
       "tournament_name": "Coupe de France",
       "country": "France",
-      "scheduled_fixtures": 0,
-      "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [],
-      "remaining_prematch_fixture_ids": [],
-      "next_kickoff": null,
-      "reason": "NO_MATCHES",
+      "scheduled_fixtures": 1,
+      "remaining_prematch_fixtures": 1,
+      "scheduled_fixture_ids": [
+        "id1000033576171256"
+      ],
+      "remaining_prematch_fixture_ids": [
+        "id1000033576171256"
+      ],
+      "next_kickoff": "2026-11-12T18:00:00+00:00",
+      "reason": "UNMAPPED",
       "fixtures_captured_today": 0,
-      "scheduled_fixtures_without_snapshot": 0,
-      "uncaptured_remaining_prematch_fixtures": 0,
-      "last_market_request_at": null
+      "scheduled_fixtures_without_snapshot": 1,
+      "uncaptured_remaining_prematch_fixtures": 1,
+      "last_market_request_at": "2026-11-12T08:00:44.665739+00:00",
+      "odds_fixture_rows": 1,
+      "strict_snapshots": 0,
+      "market_reason_counts": {
+        "MASTER_CLUB_UNMAPPED": 1
+      }
     },
     {
       "canonical_competition_id": "PRT-0003",
@@ -1312,15 +1332,13 @@
       "tournament_id": 691,
       "tournament_name": "Ukrainian First League",
       "country": "Ukraine",
-      "scheduled_fixtures": 1,
+      "scheduled_fixtures": 0,
       "remaining_prematch_fixtures": 0,
-      "scheduled_fixture_ids": [
-        "id1000069176678764"
-      ],
+      "scheduled_fixture_ids": [],
       "remaining_prematch_fixture_ids": [],
       "next_kickoff": null,
-      "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
-      "fixtures_captured_today": 1,
+      "reason": "NO_MATCHES",
+      "fixtures_captured_today": 0,
       "scheduled_fixtures_without_snapshot": 0,
       "uncaptured_remaining_prematch_fixtures": 0,
       "last_market_request_at": null
@@ -1505,17 +1523,17 @@
   "forward_scope_policy": "VERIFIED_ACTIVE_MASTER_81_DIVISIONS_PLUS_8_DOMESTIC_CUPS_AND_3_UEFA_CLUB_COMPETITIONS",
   "master_scope_rejections": [],
   "master_scope_excluded_targets": 0,
-  "resolved_competitions": 0,
-  "planned_requests": 1,
+  "resolved_competitions": 2,
+  "planned_requests": 2,
   "max_planned_requests_with_retries": 19,
   "coverage_mode": "MANUAL_FULL_ELIGIBLE_SCOPE",
   "request_budget_policy": "MANUAL_PROVIDER_QUOTA_ONLY",
-  "research_requests_used_today": 60,
-  "research_requests_used_month": 860,
+  "research_requests_used_today": 0,
+  "research_requests_used_month": 880,
   "research_daily_limit": null,
   "research_monthly_limit": null,
   "research_run_limit": 20,
-  "quota_utc_day": "2026-11-11",
+  "quota_utc_day": "2026-11-12",
   "canonical_slots_in_football_day": 4,
   "future_utc_slots": [],
   "future_utc_requests_reserved": 0,
@@ -1525,31 +1543,77 @@
   "budget_scope": "ODDSPAPI_MANUAL_COLLECTOR_ONLY",
   "schedule_requests_reserved": 1,
   "coverage_complete": true,
-  "coverage_tournament_ids": [],
+  "coverage_tournament_ids": [
+    329,
+    335
+  ],
   "account_requests_attempted": 1,
   "account_endpoint_metered": false,
   "account_transient_failures": [],
-  "quota_remaining_before": 230,
+  "quota_remaining_before": 229,
   "account_safety_reserve": 10,
   "account_minimum_requests_through_month_end": 2,
   "account_month_capacity_shortfall": 0,
   "effective_quota_reserve": 0,
-  "budget_reservation_id": "207a6a04881c43d7b5c4ce1c00637236",
+  "budget_reservation_id": "c37ae6beeb0f4eb686951c32a09e058f",
   "research_requests_reserved_this_run": 20,
-  "request_completed_at": "2026-11-11T17:00:48.155556+00:00",
-  "schedule_response_id": "41c7e14aa3a0b159ac4a274ab067dc21bd112e098dd6f0a272e92d2bca7eb05d",
-  "schedule_observed_at": "2026-11-11T17:00:48.155556+00:00",
+  "request_completed_at": "2026-11-12T08:00:44.665739+00:00",
+  "schedule_response_id": "12528229c5132ab8630d956fc76f38e2b7bfde82236ac872445ba2884e45641d",
+  "schedule_observed_at": "2026-11-12T08:00:43.751478+00:00",
   "schedule_requests_used": 1,
-  "fixtures_captured_today": 1,
-  "scheduled_fixtures_without_snapshot": 1,
-  "market_requests_required_all_remaining_competitions": 0,
+  "fixtures_captured_today": 0,
+  "scheduled_fixtures_without_snapshot": 4,
+  "market_requests_required_all_remaining_competitions": 1,
+  "collection_started_at": "2026-11-12T08:00:40.506869+00:00",
+  "excluded_unrequested_scope_fixtures": 0,
+  "invalid_payload_batches": 0,
+  "status": "NO_VERIFIED_PREMATCH_QUOTES",
+  "requests_used": 2,
+  "rate_limit_retries": 0,
+  "api_fixtures_returned": 11,
+  "excluded_outside_football_day": 7,
+  "football_day_fixtures": 4,
+  "strict_snapshots_this_run": 0,
+  "persisted_snapshot_rows": 10525,
+  "persisted_audit_rows": 9311,
+  "fixtures_seen": 4,
+  "bookmaker_active_fixtures": 4,
+  "fixtures_with_exactly_one_main_ah": 4,
+  "fixtures_with_exactly_one_main_ou": 4,
+  "fixtures_with_both_exact_mainlines": 4,
+  "strict_snapshots": 0,
+  "rejection_counts": {
+    "MASTER_CLUB_UNMAPPED": 4
+  },
+  "league_coverage": [
+    {
+      "league": "France · Coupe de France",
+      "fixtures": 1,
+      "bookmaker_active": 1,
+      "ah_main_exactly_one": 1,
+      "ou_main_exactly_one": 1,
+      "both_main_exactly_one": 1,
+      "strict_snapshots": 0,
+      "reason_counts": {
+        "MASTER_CLUB_UNMAPPED": 1
+      }
+    },
+    {
+      "league": "Spain · Copa del Rey",
+      "fixtures": 3,
+      "bookmaker_active": 3,
+      "ah_main_exactly_one": 3,
+      "ou_main_exactly_one": 3,
+      "both_main_exactly_one": 3,
+      "strict_snapshots": 0,
+      "reason_counts": {
+        "MASTER_CLUB_UNMAPPED": 3
+      }
+    }
+  ],
   "competition_reason_counts": {
     "NO_MATCHES": 90,
-    "KICKOFF_PASSED_OR_NOT_PREMATCH": 2
+    "UNMAPPED": 2
   },
-  "status": "ZERO_USABLE_FIXTURES",
-  "quota_skip_reason": null,
-  "requests_used": 1,
-  "strict_snapshots_this_run": 0,
-  "football_day_fixtures": 0
+  "additional_market_requests_required": 0
 }

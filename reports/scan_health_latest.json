@@ -3,9 +3,9 @@
   "latest_scan": {
     "account_requests_attempted": 1,
     "account_transient_failures": [],
-    "actual_observed_at": "2026-11-12T00:00:44.649857+07:00",
+    "actual_observed_at": "2026-11-12T15:00:44.665739+07:00",
     "api_error_count": 0,
-    "budget_reservation_id": "207a6a04881c43d7b5c4ce1c00637236",
+    "budget_reservation_id": "c37ae6beeb0f4eb686951c32a09e058f",
     "competition_coverage": [
       {
         "canonical_competition_id": "BGR-0002",
@@ -365,14 +365,12 @@
         "fixtures_captured_today": 0,
         "last_market_request_at": "2026-10-15T11:20:12.244180+00:00",
         "next_kickoff": null,
-        "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+        "reason": "NO_MATCHES",
         "remaining_prematch_fixture_ids": [],
         "remaining_prematch_fixtures": 0,
-        "scheduled_fixture_ids": [
-          "id1000019776653244"
-        ],
-        "scheduled_fixtures": 1,
-        "scheduled_fixtures_without_snapshot": 1,
+        "scheduled_fixture_ids": [],
+        "scheduled_fixtures": 0,
+        "scheduled_fixtures_without_snapshot": 0,
         "tournament_id": 197,
         "tournament_name": "Latvian Higher League",
         "uncaptured_remaining_prematch_fixtures": 0
@@ -813,17 +811,30 @@
         "canonical_competition_id": "ESP-0003",
         "country": "Spain",
         "fixtures_captured_today": 0,
-        "last_market_request_at": null,
-        "next_kickoff": null,
-        "reason": "NO_MATCHES",
-        "remaining_prematch_fixture_ids": [],
-        "remaining_prematch_fixtures": 0,
-        "scheduled_fixture_ids": [],
-        "scheduled_fixtures": 0,
-        "scheduled_fixtures_without_snapshot": 0,
+        "last_market_request_at": "2026-11-12T08:00:44.665739+00:00",
+        "market_reason_counts": {
+          "MASTER_CLUB_UNMAPPED": 3
+        },
+        "next_kickoff": "2026-11-12T17:30:00+00:00",
+        "odds_fixture_rows": 3,
+        "reason": "UNMAPPED",
+        "remaining_prematch_fixture_ids": [
+          "id1000032976162994",
+          "id1000032976489490",
+          "id1000032976516976"
+        ],
+        "remaining_prematch_fixtures": 3,
+        "scheduled_fixture_ids": [
+          "id1000032976162994",
+          "id1000032976489490",
+          "id1000032976516976"
+        ],
+        "scheduled_fixtures": 3,
+        "scheduled_fixtures_without_snapshot": 3,
+        "strict_snapshots": 0,
         "tournament_id": 329,
         "tournament_name": "Copa del Rey",
-        "uncaptured_remaining_prematch_fixtures": 0
+        "uncaptured_remaining_prematch_fixtures": 3
       },
       {
         "canonical_competition_id": "NLD-0003",
@@ -845,17 +856,26 @@
         "canonical_competition_id": "FRA-0003",
         "country": "France",
         "fixtures_captured_today": 0,
-        "last_market_request_at": null,
-        "next_kickoff": null,
-        "reason": "NO_MATCHES",
-        "remaining_prematch_fixture_ids": [],
-        "remaining_prematch_fixtures": 0,
-        "scheduled_fixture_ids": [],
-        "scheduled_fixtures": 0,
-        "scheduled_fixtures_without_snapshot": 0,
+        "last_market_request_at": "2026-11-12T08:00:44.665739+00:00",
+        "market_reason_counts": {
+          "MASTER_CLUB_UNMAPPED": 1
+        },
+        "next_kickoff": "2026-11-12T18:00:00+00:00",
+        "odds_fixture_rows": 1,
+        "reason": "UNMAPPED",
+        "remaining_prematch_fixture_ids": [
+          "id1000033576171256"
+        ],
+        "remaining_prematch_fixtures": 1,
+        "scheduled_fixture_ids": [
+          "id1000033576171256"
+        ],
+        "scheduled_fixtures": 1,
+        "scheduled_fixtures_without_snapshot": 1,
+        "strict_snapshots": 0,
         "tournament_id": 335,
         "tournament_name": "Coupe de France",
-        "uncaptured_remaining_prematch_fixtures": 0
+        "uncaptured_remaining_prematch_fixtures": 1
       },
       {
         "canonical_competition_id": "PRT-0003",
@@ -1292,16 +1312,14 @@
       {
         "canonical_competition_id": "UKR-0002",
         "country": "Ukraine",
-        "fixtures_captured_today": 1,
+        "fixtures_captured_today": 0,
         "last_market_request_at": null,
         "next_kickoff": null,
-        "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+        "reason": "NO_MATCHES",
         "remaining_prematch_fixture_ids": [],
         "remaining_prematch_fixtures": 0,
-        "scheduled_fixture_ids": [
-          "id1000069176678764"
-        ],
-        "scheduled_fixtures": 1,
+        "scheduled_fixture_ids": [],
+        "scheduled_fixtures": 0,
         "scheduled_fixtures_without_snapshot": 0,
         "tournament_id": 691,
         "tournament_name": "Ukrainian First League",
@@ -1491,40 +1509,41 @@
     "daily_cohort_policy": null,
     "daily_cohort_query_complete": null,
     "data_source_health": null,
-    "fixtures_found": 2,
-    "fixtures_returned_in_market_response": 0,
+    "fixtures_found": 4,
+    "fixtures_returned_in_market_response": 4,
     "fixtures_unqueried": 0,
     "fixtures_with_valid_odds": 0,
-    "fixtures_without_valid_odds": 2,
-    "football_day": "2026-11-11",
+    "fixtures_without_valid_odds": 4,
+    "football_day": "2026-11-12",
     "future_utc_requests_reserved": 0,
-    "generated_at": "2026-11-11T17:00:44.649857+00:00",
+    "generated_at": "2026-11-12T08:00:44.669474+00:00",
     "issues": [
+      "COLLECTION_NOT_CONFIRMED",
       "FIXTURES_WITHOUT_VALID_CORE_ODDS"
     ],
     "provenance": "LIVE_REPORT",
     "provider": "oddspapi",
     "quota_skip_reason": null,
-    "quota_utc_day": "2026-11-11",
+    "quota_utc_day": "2026-11-12",
     "record_type": "SCAN_ATTEMPT",
-    "report_id": "fd5efc2704531e160064c7cf0d5b19c8b918df7f68263ad68a7f7ad59be8c6e4",
-    "requests_used": 1,
-    "scan_status": "ZERO_USABLE_FIXTURES",
-    "schedule_response_id": "41c7e14aa3a0b159ac4a274ab067dc21bd112e098dd6f0a272e92d2bca7eb05d",
-    "scheduled_target_at": "2026-11-12T00:00:44+07:00",
+    "report_id": "86b43d9651f6cc969aa9638e2390d9e2d7680d9b73b352339dfdb7bf486a76da",
+    "requests_used": 2,
+    "scan_status": "NO_VERIFIED_PREMATCH_QUOTES",
+    "schedule_response_id": "12528229c5132ab8630d956fc76f38e2b7bfde82236ac872445ba2884e45641d",
+    "scheduled_target_at": "2026-11-12T15:00:40+07:00",
     "schema_version": "1.0",
     "source_or_configuration_error_count": 0,
     "status": "WARNING",
     "workflow_run_attempt": "1",
-    "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/43063844916"
+    "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/43179430474"
   },
   "recent_reports": [
     {
       "account_requests_attempted": 1,
       "account_transient_failures": [],
-      "actual_observed_at": "2026-11-12T00:00:44.649857+07:00",
+      "actual_observed_at": "2026-11-12T15:00:44.665739+07:00",
       "api_error_count": 0,
-      "budget_reservation_id": "207a6a04881c43d7b5c4ce1c00637236",
+      "budget_reservation_id": "c37ae6beeb0f4eb686951c32a09e058f",
       "competition_coverage": [
         {
           "canonical_competition_id": "BGR-0002",
@@ -1884,14 +1903,12 @@
           "fixtures_captured_today": 0,
           "last_market_request_at": "2026-10-15T11:20:12.244180+00:00",
           "next_kickoff": null,
-          "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+          "reason": "NO_MATCHES",
           "remaining_prematch_fixture_ids": [],
           "remaining_prematch_fixtures": 0,
-          "scheduled_fixture_ids": [
-            "id1000019776653244"
-          ],
-          "scheduled_fixtures": 1,
-          "scheduled_fixtures_without_snapshot": 1,
+          "scheduled_fixture_ids": [],
+          "scheduled_fixtures": 0,
+          "scheduled_fixtures_without_snapshot": 0,
           "tournament_id": 197,
           "tournament_name": "Latvian Higher League",
           "uncaptured_remaining_prematch_fixtures": 0
@@ -2332,17 +2349,30 @@
           "canonical_competition_id": "ESP-0003",
           "country": "Spain",
           "fixtures_captured_today": 0,
-          "last_market_request_at": null,
-          "next_kickoff": null,
-          "reason": "NO_MATCHES",
-          "remaining_prematch_fixture_ids": [],
-          "remaining_prematch_fixtures": 0,
-          "scheduled_fixture_ids": [],
-          "scheduled_fixtures": 0,
-          "scheduled_fixtures_without_snapshot": 0,
+          "last_market_request_at": "2026-11-12T08:00:44.665739+00:00",
+          "market_reason_counts": {
+            "MASTER_CLUB_UNMAPPED": 3
+          },
+          "next_kickoff": "2026-11-12T17:30:00+00:00",
+          "odds_fixture_rows": 3,
+          "reason": "UNMAPPED",
+          "remaining_prematch_fixture_ids": [
+            "id1000032976162994",
+            "id1000032976489490",
+            "id1000032976516976"
+          ],
+          "remaining_prematch_fixtures": 3,
+          "scheduled_fixture_ids": [
+            "id1000032976162994",
+            "id1000032976489490",
+            "id1000032976516976"
+          ],
+          "scheduled_fixtures": 3,
+          "scheduled_fixtures_without_snapshot": 3,
+          "strict_snapshots": 0,
           "tournament_id": 329,
           "tournament_name": "Copa del Rey",
-          "uncaptured_remaining_prematch_fixtures": 0
+          "uncaptured_remaining_prematch_fixtures": 3
         },
         {
           "canonical_competition_id": "NLD-0003",
@@ -2364,17 +2394,26 @@
           "canonical_competition_id": "FRA-0003",
           "country": "France",
           "fixtures_captured_today": 0,
-          "last_market_request_at": null,
-          "next_kickoff": null,
-          "reason": "NO_MATCHES",
-          "remaining_prematch_fixture_ids": [],
-          "remaining_prematch_fixtures": 0,
-          "scheduled_fixture_ids": [],
-          "scheduled_fixtures": 0,
-          "scheduled_fixtures_without_snapshot": 0,
+          "last_market_request_at": "2026-11-12T08:00:44.665739+00:00",
+          "market_reason_counts": {
+            "MASTER_CLUB_UNMAPPED": 1
+          },
+          "next_kickoff": "2026-11-12T18:00:00+00:00",
+          "odds_fixture_rows": 1,
+          "reason": "UNMAPPED",
+          "remaining_prematch_fixture_ids": [
+            "id1000033576171256"
+          ],
+          "remaining_prematch_fixtures": 1,
+          "scheduled_fixture_ids": [
+            "id1000033576171256"
+          ],
+          "scheduled_fixtures": 1,
+          "scheduled_fixtures_without_snapshot": 1,
+          "strict_snapshots": 0,
           "tournament_id": 335,
           "tournament_name": "Coupe de France",
-          "uncaptured_remaining_prematch_fixtures": 0
+          "uncaptured_remaining_prematch_fixtures": 1
         },
         {
           "canonical_competition_id": "PRT-0003",
@@ -2811,16 +2850,14 @@
         {
           "canonical_competition_id": "UKR-0002",
           "country": "Ukraine",
-          "fixtures_captured_today": 1,
+          "fixtures_captured_today": 0,
           "last_market_request_at": null,
           "next_kickoff": null,
-          "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+          "reason": "NO_MATCHES",
           "remaining_prematch_fixture_ids": [],
           "remaining_prematch_fixtures": 0,
-          "scheduled_fixture_ids": [
-            "id1000069176678764"
-          ],
-          "scheduled_fixtures": 1,
+          "scheduled_fixture_ids": [],
+          "scheduled_fixtures": 0,
           "scheduled_fixtures_without_snapshot": 0,
           "tournament_id": 691,
           "tournament_name": "Ukrainian First League",
@@ -3010,32 +3047,33 @@
       "daily_cohort_policy": null,
       "daily_cohort_query_complete": null,
       "data_source_health": null,
-      "fixtures_found": 2,
-      "fixtures_returned_in_market_response": 0,
+      "fixtures_found": 4,
+      "fixtures_returned_in_market_response": 4,
       "fixtures_unqueried": 0,
       "fixtures_with_valid_odds": 0,
-      "fixtures_without_valid_odds": 2,
-      "football_day": "2026-11-11",
+      "fixtures_without_valid_odds": 4,
+      "football_day": "2026-11-12",
       "future_utc_requests_reserved": 0,
-      "generated_at": "2026-11-11T17:00:44.649857+00:00",
+      "generated_at": "2026-11-12T08:00:44.669474+00:00",
       "issues": [
+        "COLLECTION_NOT_CONFIRMED",
         "FIXTURES_WITHOUT_VALID_CORE_ODDS"
       ],
       "provenance": "LIVE_REPORT",
       "provider": "oddspapi",
       "quota_skip_reason": null,
-      "quota_utc_day": "2026-11-11",
+      "quota_utc_day": "2026-11-12",
       "record_type": "SCAN_ATTEMPT",
-      "report_id": "fd5efc2704531e160064c7cf0d5b19c8b918df7f68263ad68a7f7ad59be8c6e4",
-      "requests_used": 1,
-      "scan_status": "ZERO_USABLE_FIXTURES",
-      "schedule_response_id": "41c7e14aa3a0b159ac4a274ab067dc21bd112e098dd6f0a272e92d2bca7eb05d",
-      "scheduled_target_at": "2026-11-12T00:00:44+07:00",
+      "report_id": "86b43d9651f6cc969aa9638e2390d9e2d7680d9b73b352339dfdb7bf486a76da",
+      "requests_used": 2,
+      "scan_status": "NO_VERIFIED_PREMATCH_QUOTES",
+      "schedule_response_id": "12528229c5132ab8630d956fc76f38e2b7bfde82236ac872445ba2884e45641d",
+      "scheduled_target_at": "2026-11-12T15:00:40+07:00",
       "schema_version": "1.0",
       "source_or_configuration_error_count": 0,
       "status": "WARNING",
       "workflow_run_attempt": "1",
-      "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/43063844916"
+      "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/43179430474"
     },
     {
       "account_requests_attempted": 1,
