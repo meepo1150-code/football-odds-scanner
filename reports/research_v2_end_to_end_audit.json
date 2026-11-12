@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-11T15:52:09.972960+00:00",
+  "generated_at": "2026-11-12T16:35:36.027835+00:00",
   "research_only": true,
   "raw_deleted": 0,
   "settled_fixtures": 3762,
@@ -23880,19 +23880,11 @@
   },
   "ft_triage_counts": {
     "POSTPONED": 1,
-    "RETIRED_UNRESOLVED": 37,
-    "ACTIVE_OVERDUE": 2,
-    "IDENTITY_CONFLICT": 6
+    "RETIRED_UNRESOLVED": 38,
+    "IDENTITY_CONFLICT": 6,
+    "ACTIVE_OVERDUE": 1
   },
   "ft_triage_groups": [
-    {
-      "lifecycle": "ACTIVE_OVERDUE",
-      "provider": "oddspapi",
-      "country": "Belgium",
-      "canonical_competition_id": "BEL-0002",
-      "league": "Challenger Pro League",
-      "n": 1
-    },
     {
       "lifecycle": "ACTIVE_OVERDUE",
       "provider": "oddspapi",
@@ -23955,7 +23947,7 @@
       "country": "Belgium",
       "canonical_competition_id": "BEL-0002",
       "league": "Challenger Pro League",
-      "n": 2
+      "n": 3
     },
     {
       "lifecycle": "RETIRED_UNRESOLVED",
@@ -24174,12 +24166,12 @@
       "kickoff": "2026-11-08T18:15:00+00:00",
       "home": "KSC Lokeren-Temse",
       "away": "FCV Dender EH",
-      "status": "MISSING_FT",
+      "status": "RETIRED_UNRESOLVED",
       "country": "Belgium",
       "canonical_competition_id": "BEL-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
+      "retired_from_active_queue": true,
+      "lifecycle": "RETIRED_UNRESOLVED",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
