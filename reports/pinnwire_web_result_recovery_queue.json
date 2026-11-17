@@ -1,16 +1,16 @@
 {
   "schema_version": "1.0",
   "classification": "ALL_PROVIDER_WEB_RESULT_RECOVERY_QUEUE",
-  "generated_at": "2026-11-16T17:57:25.956252+00:00",
-  "unresolved_total": 118,
-  "active_unresolved_total": 6,
-  "retired_unresolved_total": 112,
+  "generated_at": "2026-11-17T17:23:28.225161+00:00",
+  "unresolved_total": 115,
+  "active_unresolved_total": 1,
+  "retired_unresolved_total": 114,
   "retired_included": true,
   "skipped_retired": 0,
-  "unique_match_identities": 88,
+  "unique_match_identities": 85,
   "duplicate_fixture_ids_collapsed": 29,
   "skipped_non_match_market": 1,
-  "queued": 88,
+  "queued": 85,
   "api_requests_used": 0,
   "validation_relaxed": false,
   "rows": [
@@ -2615,7 +2615,9 @@
       "provider": null,
       "league": "Super League Greece 2",
       "country": "Greece",
-      "retired_fixture_ids": [],
+      "retired_fixture_ids": [
+        "id1000018674172542"
+      ],
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
@@ -2643,35 +2645,9 @@
       "provider": null,
       "league": "Slovenian Second League",
       "country": "Slovenia",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000069172550336",
-      "fixture_ids": [
-        "id1000069172550336"
+      "retired_fixture_ids": [
+        "id1000053272281462"
       ],
-      "duplicate_fixture_ids": [],
-      "home": "FC Ucsa Tarasivka",
-      "away": "FC Polissya Zhytomyr 2",
-      "kickoff": "2026-11-16T10:00:00+00:00",
-      "football_day": "2026-11-16",
-      "search_query": "\"FC Ucsa Tarasivka\" \"FC Polissya Zhytomyr 2\" 2026-11-16 football result",
-      "search_url": "https://www.google.com/search?q=%22FC+Ucsa+Tarasivka%22+%22FC+Polissya+Zhytomyr+2%22+2026-11-16+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "Ukrainian First League",
-      "country": "Ukraine",
-      "retired_fixture_ids": [],
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
@@ -2699,62 +2675,6 @@
       "provider": null,
       "league": "Ukrainian First League",
       "country": "Ukraine",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000022472305330",
-      "fixture_ids": [
-        "id1000022472305330"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "1. FC Tatran Presov",
-      "away": "MFK Zvolen",
-      "kickoff": "2026-11-16T16:00:00+00:00",
-      "football_day": "2026-11-16",
-      "search_query": "\"1. FC Tatran Presov\" \"MFK Zvolen\" 2026-11-16 football result",
-      "search_url": "https://www.google.com/search?q=%221.+FC+Tatran+Presov%22+%22MFK+Zvolen%22+2026-11-16+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "2 Liga",
-      "country": "Slovakia",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000005472477582",
-      "fixture_ids": [
-        "id1000005472477582"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Albacete Balompie",
-      "away": "RC Celta Fortuna",
-      "kickoff": "2026-11-16T19:30:00+00:00",
-      "football_day": "2026-11-16",
-      "search_query": "\"Albacete Balompie\" \"RC Celta Fortuna\" 2026-11-16 football result",
-      "search_url": "https://www.google.com/search?q=%22Albacete+Balompie%22+%22RC+Celta+Fortuna%22+2026-11-16+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "LaLiga 2",
-      "country": "Spain",
       "retired_fixture_ids": [],
       "status": "WEB_EVIDENCE_REQUIRED"
     }
