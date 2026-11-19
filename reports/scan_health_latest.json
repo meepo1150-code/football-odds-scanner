@@ -3,31 +3,24 @@
   "latest_scan": {
     "account_requests_attempted": 1,
     "account_transient_failures": [],
-    "actual_observed_at": "2026-11-19T21:00:52.989849+07:00",
+    "actual_observed_at": "2026-11-20T00:01:07.242195+07:00",
     "api_error_count": 0,
-    "budget_reservation_id": "e949bcbd70014531a19d67d4252c80d9",
+    "budget_reservation_id": "a501e4415c5d4a79b42c8313d7cef504",
     "competition_coverage": [
       {
         "canonical_competition_id": "BGR-0002",
         "country": "Bulgaria",
         "fixtures_captured_today": 1,
-        "last_market_request_at": "2026-11-19T14:00:52.989849+00:00",
-        "market_reason_counts": {
-          "OK": 1
-        },
-        "next_kickoff": "2026-11-19T15:00:00+00:00",
-        "odds_fixture_rows": 1,
-        "reason": "OBSERVED",
-        "remaining_prematch_fixture_ids": [
-          "id1000113576805608"
-        ],
-        "remaining_prematch_fixtures": 1,
+        "last_market_request_at": "2026-10-13T14:29:54.724329+00:00",
+        "next_kickoff": null,
+        "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+        "remaining_prematch_fixture_ids": [],
+        "remaining_prematch_fixtures": 0,
         "scheduled_fixture_ids": [
           "id1000113576805608"
         ],
         "scheduled_fixtures": 1,
         "scheduled_fixtures_without_snapshot": 0,
-        "strict_snapshots": 1,
         "tournament_id": 1135,
         "tournament_name": "Bulgarian Second League",
         "uncaptured_remaining_prematch_fixtures": 0
@@ -1076,7 +1069,7 @@
         "canonical_competition_id": "DNK-0002",
         "country": "Denmark",
         "fixtures_captured_today": 1,
-        "last_market_request_at": "2026-11-19T14:00:52.989849+00:00",
+        "last_market_request_at": "2026-11-19T17:01:07.242195+00:00",
         "market_reason_counts": {
           "OK": 1
         },
@@ -1506,59 +1499,54 @@
     "daily_cohort_query_complete": null,
     "data_source_health": null,
     "fixtures_found": 2,
-    "fixtures_returned_in_market_response": 2,
+    "fixtures_returned_in_market_response": 1,
     "fixtures_unqueried": 0,
-    "fixtures_with_valid_odds": 2,
-    "fixtures_without_valid_odds": 0,
+    "fixtures_with_valid_odds": 1,
+    "fixtures_without_valid_odds": 1,
     "football_day": "2026-11-19",
     "future_utc_requests_reserved": 0,
-    "generated_at": "2026-11-19T14:00:52.997398+00:00",
-    "issues": [],
+    "generated_at": "2026-11-19T17:01:07.249319+00:00",
+    "issues": [
+      "FIXTURES_WITHOUT_VALID_CORE_ODDS"
+    ],
     "provenance": "LIVE_REPORT",
     "provider": "oddspapi",
     "quota_skip_reason": null,
     "quota_utc_day": "2026-11-19",
     "record_type": "SCAN_ATTEMPT",
-    "report_id": "3d549b5caf5399634705ed1967a0c6726a3a1184d84ef940567d5f9bd05d79b3",
+    "report_id": "c1fd2272f6a559413469c991c746198b7fa63e82a1fe80a033d15f6266b75b99",
     "requests_used": 2,
     "scan_status": "RESEARCH_V2_OBSERVED",
-    "schedule_response_id": "d8b404cfcfc6961b4e2afce22aedc5f290f10ca9844734be2228cf410a2a8784",
-    "scheduled_target_at": "2026-11-19T21:00:48+07:00",
+    "schedule_response_id": "8e3a1d846162ad4cb35b4a44e5c8209c621078d3ade42e5c2ce0e2df0392d9cb",
+    "scheduled_target_at": "2026-11-20T00:01:01+07:00",
     "schema_version": "1.0",
     "source_or_configuration_error_count": 0,
-    "status": "PASS",
+    "status": "WARNING",
     "workflow_run_attempt": "1",
-    "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/44539092779"
+    "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/44572382406"
   },
   "recent_reports": [
     {
       "account_requests_attempted": 1,
       "account_transient_failures": [],
-      "actual_observed_at": "2026-11-19T21:00:52.989849+07:00",
+      "actual_observed_at": "2026-11-20T00:01:07.242195+07:00",
       "api_error_count": 0,
-      "budget_reservation_id": "e949bcbd70014531a19d67d4252c80d9",
+      "budget_reservation_id": "a501e4415c5d4a79b42c8313d7cef504",
       "competition_coverage": [
         {
           "canonical_competition_id": "BGR-0002",
           "country": "Bulgaria",
           "fixtures_captured_today": 1,
-          "last_market_request_at": "2026-11-19T14:00:52.989849+00:00",
-          "market_reason_counts": {
-            "OK": 1
-          },
-          "next_kickoff": "2026-11-19T15:00:00+00:00",
-          "odds_fixture_rows": 1,
-          "reason": "OBSERVED",
-          "remaining_prematch_fixture_ids": [
-            "id1000113576805608"
-          ],
-          "remaining_prematch_fixtures": 1,
+          "last_market_request_at": "2026-10-13T14:29:54.724329+00:00",
+          "next_kickoff": null,
+          "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+          "remaining_prematch_fixture_ids": [],
+          "remaining_prematch_fixtures": 0,
           "scheduled_fixture_ids": [
             "id1000113576805608"
           ],
           "scheduled_fixtures": 1,
           "scheduled_fixtures_without_snapshot": 0,
-          "strict_snapshots": 1,
           "tournament_id": 1135,
           "tournament_name": "Bulgarian Second League",
           "uncaptured_remaining_prematch_fixtures": 0
@@ -2607,7 +2595,7 @@
           "canonical_competition_id": "DNK-0002",
           "country": "Denmark",
           "fixtures_captured_today": 1,
-          "last_market_request_at": "2026-11-19T14:00:52.989849+00:00",
+          "last_market_request_at": "2026-11-19T17:01:07.242195+00:00",
           "market_reason_counts": {
             "OK": 1
           },
@@ -3037,29 +3025,31 @@
       "daily_cohort_query_complete": null,
       "data_source_health": null,
       "fixtures_found": 2,
-      "fixtures_returned_in_market_response": 2,
+      "fixtures_returned_in_market_response": 1,
       "fixtures_unqueried": 0,
-      "fixtures_with_valid_odds": 2,
-      "fixtures_without_valid_odds": 0,
+      "fixtures_with_valid_odds": 1,
+      "fixtures_without_valid_odds": 1,
       "football_day": "2026-11-19",
       "future_utc_requests_reserved": 0,
-      "generated_at": "2026-11-19T14:00:52.997398+00:00",
-      "issues": [],
+      "generated_at": "2026-11-19T17:01:07.249319+00:00",
+      "issues": [
+        "FIXTURES_WITHOUT_VALID_CORE_ODDS"
+      ],
       "provenance": "LIVE_REPORT",
       "provider": "oddspapi",
       "quota_skip_reason": null,
       "quota_utc_day": "2026-11-19",
       "record_type": "SCAN_ATTEMPT",
-      "report_id": "3d549b5caf5399634705ed1967a0c6726a3a1184d84ef940567d5f9bd05d79b3",
+      "report_id": "c1fd2272f6a559413469c991c746198b7fa63e82a1fe80a033d15f6266b75b99",
       "requests_used": 2,
       "scan_status": "RESEARCH_V2_OBSERVED",
-      "schedule_response_id": "d8b404cfcfc6961b4e2afce22aedc5f290f10ca9844734be2228cf410a2a8784",
-      "scheduled_target_at": "2026-11-19T21:00:48+07:00",
+      "schedule_response_id": "8e3a1d846162ad4cb35b4a44e5c8209c621078d3ade42e5c2ce0e2df0392d9cb",
+      "scheduled_target_at": "2026-11-20T00:01:01+07:00",
       "schema_version": "1.0",
       "source_or_configuration_error_count": 0,
-      "status": "PASS",
+      "status": "WARNING",
       "workflow_run_attempt": "1",
-      "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/44539092779"
+      "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/44572382406"
     },
     {
       "account_requests_attempted": 1,
