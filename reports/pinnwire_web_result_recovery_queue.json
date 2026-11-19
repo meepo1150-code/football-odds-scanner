@@ -1,16 +1,16 @@
 {
   "schema_version": "1.0",
   "classification": "ALL_PROVIDER_WEB_RESULT_RECOVERY_QUEUE",
-  "generated_at": "2026-11-18T16:57:37.064170+00:00",
-  "unresolved_total": 115,
-  "active_unresolved_total": 1,
-  "retired_unresolved_total": 114,
+  "generated_at": "2026-11-19T17:03:57.418707+00:00",
+  "unresolved_total": 117,
+  "active_unresolved_total": 2,
+  "retired_unresolved_total": 115,
   "retired_included": true,
   "skipped_retired": 0,
-  "unique_match_identities": 85,
+  "unique_match_identities": 87,
   "duplicate_fixture_ids_collapsed": 29,
   "skipped_non_match_market": 1,
-  "queued": 85,
+  "queued": 87,
   "api_requests_used": 0,
   "validation_relaxed": false,
   "rows": [
@@ -2675,6 +2675,64 @@
       "provider": null,
       "league": "Ukrainian First League",
       "country": "Ukraine",
+      "retired_fixture_ids": [
+        "id1000069172550330"
+      ],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000113576805608",
+      "fixture_ids": [
+        "id1000113576805608"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "PFC Dobrudzha Dobrich",
+      "away": "FC Fratria Varna",
+      "kickoff": "2026-11-19T15:00:00+00:00",
+      "football_day": "2026-11-19",
+      "search_query": "\"PFC Dobrudzha Dobrich\" \"FC Fratria Varna\" 2026-11-19 football result",
+      "search_url": "https://www.google.com/search?q=%22PFC+Dobrudzha+Dobrich%22+%22FC+Fratria+Varna%22+2026-11-19+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "Bulgarian Second League",
+      "country": "Bulgaria",
+      "retired_fixture_ids": [],
+      "status": "WEB_EVIDENCE_REQUIRED"
+    },
+    {
+      "fixture_id": "id1000004772044406",
+      "fixture_ids": [
+        "id1000004772044406"
+      ],
+      "duplicate_fixture_ids": [],
+      "home": "FC Fredericia",
+      "away": "Hillerod Fodbold",
+      "kickoff": "2026-11-19T18:00:00+00:00",
+      "football_day": "2026-11-19",
+      "search_query": "\"FC Fredericia\" \"Hillerod Fodbold\" 2026-11-19 football result",
+      "search_url": "https://www.google.com/search?q=%22FC+Fredericia%22+%22Hillerod+Fodbold%22+2026-11-19+football+result",
+      "required_identity": [
+        "home_team",
+        "away_team",
+        "match_date"
+      ],
+      "required_result": [
+        "ft_home_goals",
+        "ft_away_goals"
+      ],
+      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
+      "provider": null,
+      "league": "Danish 1st Division",
+      "country": "Denmark",
       "retired_fixture_ids": [],
       "status": "WEB_EVIDENCE_REQUIRED"
     }

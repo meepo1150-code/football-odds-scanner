@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-18T16:57:46.664592+00:00",
+  "generated_at": "2026-11-19T17:04:07.640158+00:00",
   "research_only": true,
   "raw_deleted": 0,
   "settled_fixtures": 3858,
@@ -24730,17 +24730,25 @@
   },
   "ft_triage_counts": {
     "POSTPONED": 1,
-    "RETIRED_UNRESOLVED": 41,
-    "IDENTITY_CONFLICT": 6,
-    "ACTIVE_OVERDUE": 1
+    "RETIRED_UNRESOLVED": 42,
+    "FUTURE_OR_RECENT": 2,
+    "IDENTITY_CONFLICT": 6
   },
   "ft_triage_groups": [
     {
-      "lifecycle": "ACTIVE_OVERDUE",
+      "lifecycle": "FUTURE_OR_RECENT",
       "provider": "oddspapi",
-      "country": "Ukraine",
-      "canonical_competition_id": "UKR-0002",
-      "league": "Ukrainian First League",
+      "country": "Bulgaria",
+      "canonical_competition_id": "BGR-0002",
+      "league": "Bulgarian Second League",
+      "n": 1
+    },
+    {
+      "lifecycle": "FUTURE_OR_RECENT",
+      "provider": "oddspapi",
+      "country": "Denmark",
+      "canonical_competition_id": "DNK-0002",
+      "league": "Danish 1st Division",
       "n": 1
     },
     {
@@ -24957,7 +24965,7 @@
       "country": "Ukraine",
       "canonical_competition_id": "UKR-0002",
       "league": "Ukrainian First League",
-      "n": 3
+      "n": 4
     },
     {
       "lifecycle": "RETIRED_UNRESOLVED",
@@ -25182,6 +25190,24 @@
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": true,
       "lifecycle": "RETIRED_UNRESOLVED",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
+      "fixture_id": "id1000004772044406",
+      "provider": "oddspapi",
+      "football_day": "2026-11-19",
+      "league": "Danish 1st Division",
+      "kickoff": "2026-11-19T18:00:00+00:00",
+      "home": "FC Fredericia",
+      "away": "Hillerod Fodbold",
+      "status": "MISSING_FT",
+      "country": "Denmark",
+      "canonical_competition_id": "DNK-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -25770,12 +25796,12 @@
       "kickoff": "2026-11-16T10:30:00+00:00",
       "home": "FC Chernigiv",
       "away": "FC Lokomotiv Kyiv",
-      "status": "MISSING_FT",
+      "status": "RETIRED_UNRESOLVED",
       "country": "Ukraine",
       "canonical_competition_id": "UKR-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false,
-      "lifecycle": "ACTIVE_OVERDUE",
+      "retired_from_active_queue": true,
+      "lifecycle": "RETIRED_UNRESOLVED",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
@@ -25830,6 +25856,24 @@
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": true,
       "lifecycle": "RETIRED_UNRESOLVED",
+      "exclusion_reason": null,
+      "identity_status": "EXACT_MASTER_COMPETITION",
+      "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
+    },
+    {
+      "fixture_id": "id1000113576805608",
+      "provider": "oddspapi",
+      "football_day": "2026-11-19",
+      "league": "Bulgarian Second League",
+      "kickoff": "2026-11-19T15:00:00+00:00",
+      "home": "PFC Dobrudzha Dobrich",
+      "away": "FC Fratria Varna",
+      "status": "MISSING_FT",
+      "country": "Bulgaria",
+      "canonical_competition_id": "BGR-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false,
+      "lifecycle": "FUTURE_OR_RECENT",
       "exclusion_reason": null,
       "identity_status": "EXACT_MASTER_COMPETITION",
       "policy": "OUTSIDE_MASTER_IS_NOT_USER_CANCELLED; GERMANY_3_LIGA_RETAINED"
