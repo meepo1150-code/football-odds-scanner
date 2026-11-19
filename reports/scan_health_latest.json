@@ -3,22 +3,31 @@
   "latest_scan": {
     "account_requests_attempted": 1,
     "account_transient_failures": [],
-    "actual_observed_at": "2026-11-19T00:01:14.774668+07:00",
+    "actual_observed_at": "2026-11-19T15:00:52.488166+07:00",
     "api_error_count": 0,
-    "budget_reservation_id": "ef2aeb859ec348d6b6255a48e456e223",
+    "budget_reservation_id": "2bc4827e34dc42a693313a0b205a7651",
     "competition_coverage": [
       {
         "canonical_competition_id": "BGR-0002",
         "country": "Bulgaria",
-        "fixtures_captured_today": 0,
-        "last_market_request_at": "2026-10-13T14:29:54.724329+00:00",
-        "next_kickoff": null,
-        "reason": "NO_MATCHES",
-        "remaining_prematch_fixture_ids": [],
-        "remaining_prematch_fixtures": 0,
-        "scheduled_fixture_ids": [],
-        "scheduled_fixtures": 0,
+        "fixtures_captured_today": 1,
+        "last_market_request_at": "2026-11-19T08:00:52.488166+00:00",
+        "market_reason_counts": {
+          "OK": 1
+        },
+        "next_kickoff": "2026-11-19T15:00:00+00:00",
+        "odds_fixture_rows": 1,
+        "reason": "OBSERVED",
+        "remaining_prematch_fixture_ids": [
+          "id1000113576805608"
+        ],
+        "remaining_prematch_fixtures": 1,
+        "scheduled_fixture_ids": [
+          "id1000113576805608"
+        ],
+        "scheduled_fixtures": 1,
         "scheduled_fixtures_without_snapshot": 0,
+        "strict_snapshots": 1,
         "tournament_id": 1135,
         "tournament_name": "Bulgarian Second League",
         "uncaptured_remaining_prematch_fixtures": 0
@@ -811,36 +820,17 @@
         "canonical_competition_id": "ESP-0003",
         "country": "Spain",
         "fixtures_captured_today": 0,
-        "last_market_request_at": "2026-11-18T17:01:14.774668+00:00",
-        "market_reason_counts": {
-          "MASTER_CLUB_UNMAPPED": 6
-        },
-        "next_kickoff": "2026-11-18T18:00:00+00:00",
-        "odds_fixture_rows": 6,
-        "reason": "UNMAPPED",
-        "remaining_prematch_fixture_ids": [
-          "id1000032976482550",
-          "id1000032976489976",
-          "id1000032976516978",
-          "id1000032976516980",
-          "id1000032976546760",
-          "id1000032976661768"
-        ],
-        "remaining_prematch_fixtures": 6,
-        "scheduled_fixture_ids": [
-          "id1000032976482550",
-          "id1000032976489976",
-          "id1000032976516978",
-          "id1000032976516980",
-          "id1000032976546760",
-          "id1000032976661768"
-        ],
-        "scheduled_fixtures": 6,
-        "scheduled_fixtures_without_snapshot": 6,
-        "strict_snapshots": 0,
+        "last_market_request_at": null,
+        "next_kickoff": null,
+        "reason": "NO_MATCHES",
+        "remaining_prematch_fixture_ids": [],
+        "remaining_prematch_fixtures": 0,
+        "scheduled_fixture_ids": [],
+        "scheduled_fixtures": 0,
+        "scheduled_fixtures_without_snapshot": 0,
         "tournament_id": 329,
         "tournament_name": "Copa del Rey",
-        "uncaptured_remaining_prematch_fixtures": 6
+        "uncaptured_remaining_prematch_fixtures": 0
       },
       {
         "canonical_competition_id": "NLD-0003",
@@ -1085,15 +1075,24 @@
       {
         "canonical_competition_id": "DNK-0002",
         "country": "Denmark",
-        "fixtures_captured_today": 0,
-        "last_market_request_at": null,
-        "next_kickoff": null,
-        "reason": "NO_MATCHES",
-        "remaining_prematch_fixture_ids": [],
-        "remaining_prematch_fixtures": 0,
-        "scheduled_fixture_ids": [],
-        "scheduled_fixtures": 0,
+        "fixtures_captured_today": 1,
+        "last_market_request_at": "2026-11-19T08:00:52.488166+00:00",
+        "market_reason_counts": {
+          "OK": 1
+        },
+        "next_kickoff": "2026-11-19T18:00:00+00:00",
+        "odds_fixture_rows": 1,
+        "reason": "OBSERVED",
+        "remaining_prematch_fixture_ids": [
+          "id1000004772044406"
+        ],
+        "remaining_prematch_fixtures": 1,
+        "scheduled_fixture_ids": [
+          "id1000004772044406"
+        ],
+        "scheduled_fixtures": 1,
         "scheduled_fixtures_without_snapshot": 0,
+        "strict_snapshots": 1,
         "tournament_id": 47,
         "tournament_name": "Danish 1st Division",
         "uncaptured_remaining_prematch_fixtures": 0
@@ -1506,54 +1505,60 @@
     "daily_cohort_policy": null,
     "daily_cohort_query_complete": null,
     "data_source_health": null,
-    "fixtures_found": 6,
-    "fixtures_returned_in_market_response": 6,
+    "fixtures_found": 2,
+    "fixtures_returned_in_market_response": 2,
     "fixtures_unqueried": 0,
-    "fixtures_with_valid_odds": 0,
-    "fixtures_without_valid_odds": 6,
-    "football_day": "2026-11-18",
+    "fixtures_with_valid_odds": 2,
+    "fixtures_without_valid_odds": 0,
+    "football_day": "2026-11-19",
     "future_utc_requests_reserved": 0,
-    "generated_at": "2026-11-18T17:01:14.777428+00:00",
-    "issues": [
-      "COLLECTION_NOT_CONFIRMED",
-      "FIXTURES_WITHOUT_VALID_CORE_ODDS"
-    ],
+    "generated_at": "2026-11-19T08:00:52.492640+00:00",
+    "issues": [],
     "provenance": "LIVE_REPORT",
     "provider": "oddspapi",
     "quota_skip_reason": null,
-    "quota_utc_day": "2026-11-18",
+    "quota_utc_day": "2026-11-19",
     "record_type": "SCAN_ATTEMPT",
-    "report_id": "6b3fb8f3e404fd9802015bbb08504a924aaa1d5d069611ff693fa8a5d17fdf00",
+    "report_id": "1de510a541e674a971ac2547ac784af1d471da2b52c9a5c9af3f73f4d8072490",
     "requests_used": 2,
-    "scan_status": "NO_VERIFIED_PREMATCH_QUOTES",
-    "schedule_response_id": "dd855e5d76117b24460a2200afece45f4953130ae86ddc217dd270707ea872e6",
-    "scheduled_target_at": "2026-11-19T00:01:08+07:00",
+    "scan_status": "RESEARCH_V2_OBSERVED",
+    "schedule_response_id": "df2b3a3a1e317df393b07d7d96cd55a53a39effb863c891227b61275096068c7",
+    "scheduled_target_at": "2026-11-19T15:00:47+07:00",
     "schema_version": "1.0",
     "source_or_configuration_error_count": 0,
-    "status": "WARNING",
+    "status": "PASS",
     "workflow_run_attempt": "1",
-    "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/44353704508"
+    "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/44483965519"
   },
   "recent_reports": [
     {
       "account_requests_attempted": 1,
       "account_transient_failures": [],
-      "actual_observed_at": "2026-11-19T00:01:14.774668+07:00",
+      "actual_observed_at": "2026-11-19T15:00:52.488166+07:00",
       "api_error_count": 0,
-      "budget_reservation_id": "ef2aeb859ec348d6b6255a48e456e223",
+      "budget_reservation_id": "2bc4827e34dc42a693313a0b205a7651",
       "competition_coverage": [
         {
           "canonical_competition_id": "BGR-0002",
           "country": "Bulgaria",
-          "fixtures_captured_today": 0,
-          "last_market_request_at": "2026-10-13T14:29:54.724329+00:00",
-          "next_kickoff": null,
-          "reason": "NO_MATCHES",
-          "remaining_prematch_fixture_ids": [],
-          "remaining_prematch_fixtures": 0,
-          "scheduled_fixture_ids": [],
-          "scheduled_fixtures": 0,
+          "fixtures_captured_today": 1,
+          "last_market_request_at": "2026-11-19T08:00:52.488166+00:00",
+          "market_reason_counts": {
+            "OK": 1
+          },
+          "next_kickoff": "2026-11-19T15:00:00+00:00",
+          "odds_fixture_rows": 1,
+          "reason": "OBSERVED",
+          "remaining_prematch_fixture_ids": [
+            "id1000113576805608"
+          ],
+          "remaining_prematch_fixtures": 1,
+          "scheduled_fixture_ids": [
+            "id1000113576805608"
+          ],
+          "scheduled_fixtures": 1,
           "scheduled_fixtures_without_snapshot": 0,
+          "strict_snapshots": 1,
           "tournament_id": 1135,
           "tournament_name": "Bulgarian Second League",
           "uncaptured_remaining_prematch_fixtures": 0
@@ -2346,36 +2351,17 @@
           "canonical_competition_id": "ESP-0003",
           "country": "Spain",
           "fixtures_captured_today": 0,
-          "last_market_request_at": "2026-11-18T17:01:14.774668+00:00",
-          "market_reason_counts": {
-            "MASTER_CLUB_UNMAPPED": 6
-          },
-          "next_kickoff": "2026-11-18T18:00:00+00:00",
-          "odds_fixture_rows": 6,
-          "reason": "UNMAPPED",
-          "remaining_prematch_fixture_ids": [
-            "id1000032976482550",
-            "id1000032976489976",
-            "id1000032976516978",
-            "id1000032976516980",
-            "id1000032976546760",
-            "id1000032976661768"
-          ],
-          "remaining_prematch_fixtures": 6,
-          "scheduled_fixture_ids": [
-            "id1000032976482550",
-            "id1000032976489976",
-            "id1000032976516978",
-            "id1000032976516980",
-            "id1000032976546760",
-            "id1000032976661768"
-          ],
-          "scheduled_fixtures": 6,
-          "scheduled_fixtures_without_snapshot": 6,
-          "strict_snapshots": 0,
+          "last_market_request_at": null,
+          "next_kickoff": null,
+          "reason": "NO_MATCHES",
+          "remaining_prematch_fixture_ids": [],
+          "remaining_prematch_fixtures": 0,
+          "scheduled_fixture_ids": [],
+          "scheduled_fixtures": 0,
+          "scheduled_fixtures_without_snapshot": 0,
           "tournament_id": 329,
           "tournament_name": "Copa del Rey",
-          "uncaptured_remaining_prematch_fixtures": 6
+          "uncaptured_remaining_prematch_fixtures": 0
         },
         {
           "canonical_competition_id": "NLD-0003",
@@ -2620,15 +2606,24 @@
         {
           "canonical_competition_id": "DNK-0002",
           "country": "Denmark",
-          "fixtures_captured_today": 0,
-          "last_market_request_at": null,
-          "next_kickoff": null,
-          "reason": "NO_MATCHES",
-          "remaining_prematch_fixture_ids": [],
-          "remaining_prematch_fixtures": 0,
-          "scheduled_fixture_ids": [],
-          "scheduled_fixtures": 0,
+          "fixtures_captured_today": 1,
+          "last_market_request_at": "2026-11-19T08:00:52.488166+00:00",
+          "market_reason_counts": {
+            "OK": 1
+          },
+          "next_kickoff": "2026-11-19T18:00:00+00:00",
+          "odds_fixture_rows": 1,
+          "reason": "OBSERVED",
+          "remaining_prematch_fixture_ids": [
+            "id1000004772044406"
+          ],
+          "remaining_prematch_fixtures": 1,
+          "scheduled_fixture_ids": [
+            "id1000004772044406"
+          ],
+          "scheduled_fixtures": 1,
           "scheduled_fixtures_without_snapshot": 0,
+          "strict_snapshots": 1,
           "tournament_id": 47,
           "tournament_name": "Danish 1st Division",
           "uncaptured_remaining_prematch_fixtures": 0
@@ -3041,33 +3036,30 @@
       "daily_cohort_policy": null,
       "daily_cohort_query_complete": null,
       "data_source_health": null,
-      "fixtures_found": 6,
-      "fixtures_returned_in_market_response": 6,
+      "fixtures_found": 2,
+      "fixtures_returned_in_market_response": 2,
       "fixtures_unqueried": 0,
-      "fixtures_with_valid_odds": 0,
-      "fixtures_without_valid_odds": 6,
-      "football_day": "2026-11-18",
+      "fixtures_with_valid_odds": 2,
+      "fixtures_without_valid_odds": 0,
+      "football_day": "2026-11-19",
       "future_utc_requests_reserved": 0,
-      "generated_at": "2026-11-18T17:01:14.777428+00:00",
-      "issues": [
-        "COLLECTION_NOT_CONFIRMED",
-        "FIXTURES_WITHOUT_VALID_CORE_ODDS"
-      ],
+      "generated_at": "2026-11-19T08:00:52.492640+00:00",
+      "issues": [],
       "provenance": "LIVE_REPORT",
       "provider": "oddspapi",
       "quota_skip_reason": null,
-      "quota_utc_day": "2026-11-18",
+      "quota_utc_day": "2026-11-19",
       "record_type": "SCAN_ATTEMPT",
-      "report_id": "6b3fb8f3e404fd9802015bbb08504a924aaa1d5d069611ff693fa8a5d17fdf00",
+      "report_id": "1de510a541e674a971ac2547ac784af1d471da2b52c9a5c9af3f73f4d8072490",
       "requests_used": 2,
-      "scan_status": "NO_VERIFIED_PREMATCH_QUOTES",
-      "schedule_response_id": "dd855e5d76117b24460a2200afece45f4953130ae86ddc217dd270707ea872e6",
-      "scheduled_target_at": "2026-11-19T00:01:08+07:00",
+      "scan_status": "RESEARCH_V2_OBSERVED",
+      "schedule_response_id": "df2b3a3a1e317df393b07d7d96cd55a53a39effb863c891227b61275096068c7",
+      "scheduled_target_at": "2026-11-19T15:00:47+07:00",
       "schema_version": "1.0",
       "source_or_configuration_error_count": 0,
-      "status": "WARNING",
+      "status": "PASS",
       "workflow_run_attempt": "1",
-      "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/44353704508"
+      "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/44483965519"
     },
     {
       "account_requests_attempted": 1,
