@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-20T21:05:24.161024+00:00",
-  "matured_unresolved_total": 117,
+  "generated_at": "2026-11-21T02:13:06.707302+00:00",
+  "matured_unresolved_total": 119,
   "retired_from_active_queue": 117,
-  "active_matured_unresolved": 0,
+  "active_matured_unresolved": 2,
   "raw_deleted": 0,
   "settled_results_deleted": 0,
   "low_tier_scope_exclusions": 11,
@@ -11,5 +11,46 @@
   "minimum_sources": 2,
   "minimum_age_hours": 72,
   "minimum_attempt_span_hours": 24,
-  "pending": []
+  "pending": [
+    {
+      "fixture_id": "id1000000972302212",
+      "home": "Koninklijke Lierse Sportkring",
+      "away": "KSC Lokeren-Temse",
+      "league": "Challenger Pro League",
+      "kickoff": "2026-11-20T19:00:00+00:00",
+      "attempt_count": 0,
+      "round_ids": [],
+      "sources": [],
+      "reviewed_at": "2026-11-21T02:13:06.707302+00:00",
+      "unmet_gates": [
+        "MINIMUM_DISTINCT_ROUNDS",
+        "MINIMUM_SOURCES",
+        "MINIMUM_AGE_72H",
+        "MINIMUM_ATTEMPT_SPAN_24H"
+      ],
+      "age_eligible_at": "2026-11-23T19:00:00+00:00",
+      "status": "ACTIVE_UNRESOLVED",
+      "reason": "RETIREMENT_EVIDENCE_OR_AGE_GATE_NOT_MET"
+    },
+    {
+      "fixture_id": "id1000003572513310",
+      "home": "Bayern Munich",
+      "away": "1. FC Cologne",
+      "league": "Bundesliga",
+      "kickoff": "2026-11-20T19:30:00+00:00",
+      "attempt_count": 0,
+      "round_ids": [],
+      "sources": [],
+      "reviewed_at": "2026-11-21T02:13:06.707302+00:00",
+      "unmet_gates": [
+        "MINIMUM_DISTINCT_ROUNDS",
+        "MINIMUM_SOURCES",
+        "MINIMUM_AGE_72H",
+        "MINIMUM_ATTEMPT_SPAN_24H"
+      ],
+      "age_eligible_at": "2026-11-23T19:30:00+00:00",
+      "status": "ACTIVE_UNRESOLVED",
+      "reason": "RETIREMENT_EVIDENCE_OR_AGE_GATE_NOT_MET"
+    }
+  ]
 }
