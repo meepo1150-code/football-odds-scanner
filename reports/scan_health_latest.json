@@ -3,15 +3,15 @@
   "latest_scan": {
     "account_requests_attempted": 1,
     "account_transient_failures": [],
-    "actual_observed_at": "2026-11-24T18:01:09.389384+07:00",
+    "actual_observed_at": "2026-11-24T21:01:14.585735+07:00",
     "api_error_count": 0,
-    "budget_reservation_id": "d43d240924794ae49d12d6cdc1b8b7ba",
+    "budget_reservation_id": "5dc85eb0424843018db38bb9f9681472",
     "competition_coverage": [
       {
         "canonical_competition_id": "BGR-0002",
         "country": "Bulgaria",
         "fixtures_captured_today": 1,
-        "last_market_request_at": "2026-11-24T11:01:09.389384+00:00",
+        "last_market_request_at": "2026-11-24T14:01:14.585735+00:00",
         "market_reason_counts": {
           "OK": 1
         },
@@ -116,23 +116,16 @@
         "canonical_competition_id": "MNE-0001",
         "country": "Montenegro",
         "fixtures_captured_today": 1,
-        "last_market_request_at": "2026-11-24T11:01:06.301700+00:00",
-        "market_reason_counts": {
-          "OK": 1
-        },
-        "next_kickoff": "2026-11-24T13:00:00+00:00",
-        "odds_fixture_rows": 1,
-        "reason": "OBSERVED",
-        "remaining_prematch_fixture_ids": [
-          "id1000015476811384"
-        ],
-        "remaining_prematch_fixtures": 1,
+        "last_market_request_at": null,
+        "next_kickoff": null,
+        "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+        "remaining_prematch_fixture_ids": [],
+        "remaining_prematch_fixtures": 0,
         "scheduled_fixture_ids": [
           "id1000015476811384"
         ],
         "scheduled_fixtures": 1,
         "scheduled_fixtures_without_snapshot": 0,
-        "strict_snapshots": 1,
         "tournament_id": 154,
         "tournament_name": "Montenegrin First League",
         "uncaptured_remaining_prematch_fixtures": 0
@@ -237,7 +230,7 @@
         "canonical_competition_id": "ENG-0002",
         "country": "England",
         "fixtures_captured_today": 8,
-        "last_market_request_at": "2026-11-24T11:01:09.389384+00:00",
+        "last_market_request_at": "2026-11-24T14:01:14.585735+00:00",
         "market_reason_counts": {
           "OK": 8
         },
@@ -756,7 +749,7 @@
         "canonical_competition_id": "ENG-0003",
         "country": "England",
         "fixtures_captured_today": 4,
-        "last_market_request_at": "2026-11-24T11:01:09.389384+00:00",
+        "last_market_request_at": "2026-11-24T14:01:14.585735+00:00",
         "market_reason_counts": {
           "OK": 4
         },
@@ -803,7 +796,7 @@
         "canonical_competition_id": "ENG-0004",
         "country": "England",
         "fixtures_captured_today": 2,
-        "last_market_request_at": "2026-11-24T11:01:06.301700+00:00",
+        "last_market_request_at": "2026-11-24T14:01:11.525755+00:00",
         "market_reason_counts": {
           "OK": 2
         },
@@ -830,7 +823,7 @@
         "canonical_competition_id": "WAL-0001",
         "country": "Wales",
         "fixtures_captured_today": 1,
-        "last_market_request_at": "2026-11-24T11:01:09.389384+00:00",
+        "last_market_request_at": "2026-11-24T14:01:11.525755+00:00",
         "market_reason_counts": {
           "OK": 1
         },
@@ -999,7 +992,7 @@
         "canonical_competition_id": "SCO-0001",
         "country": "Scotland",
         "fixtures_captured_today": 2,
-        "last_market_request_at": "2026-11-24T11:01:06.301700+00:00",
+        "last_market_request_at": "2026-11-24T14:01:11.525755+00:00",
         "market_reason_counts": {
           "OK": 2
         },
@@ -1186,7 +1179,7 @@
         "canonical_competition_id": "ITA-0002",
         "country": "Italy",
         "fixtures_captured_today": 6,
-        "last_market_request_at": "2026-11-24T11:01:06.301700+00:00",
+        "last_market_request_at": "2026-11-24T14:01:11.525755+00:00",
         "market_reason_counts": {
           "OK": 6
         },
@@ -1399,12 +1392,14 @@
         "fixtures_captured_today": 0,
         "last_market_request_at": null,
         "next_kickoff": null,
-        "reason": "NO_MATCHES",
+        "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
         "remaining_prematch_fixture_ids": [],
         "remaining_prematch_fixtures": 0,
-        "scheduled_fixture_ids": [],
-        "scheduled_fixtures": 0,
-        "scheduled_fixtures_without_snapshot": 0,
+        "scheduled_fixture_ids": [
+          "id1000069172550528"
+        ],
+        "scheduled_fixtures": 1,
+        "scheduled_fixtures_without_snapshot": 1,
         "tournament_id": 691,
         "tournament_name": "Ukrainian First League",
         "uncaptured_remaining_prematch_fixtures": 0
@@ -1429,7 +1424,7 @@
         "canonical_competition_id": "INT-0001",
         "country": "International",
         "fixtures_captured_today": 9,
-        "last_market_request_at": "2026-11-24T11:01:09.389384+00:00",
+        "last_market_request_at": "2026-11-24T14:01:14.585735+00:00",
         "market_reason_counts": {
           "OK": 9
         },
@@ -1470,7 +1465,7 @@
         "canonical_competition_id": "GEO-0001",
         "country": "Georgia",
         "fixtures_captured_today": 1,
-        "last_market_request_at": "2026-11-24T11:01:06.301700+00:00",
+        "last_market_request_at": "2026-11-24T14:01:11.525755+00:00",
         "market_reason_counts": {
           "OK": 1
         },
@@ -1627,44 +1622,46 @@
     "daily_cohort_policy": null,
     "daily_cohort_query_complete": null,
     "data_source_health": null,
-    "fixtures_found": 35,
-    "fixtures_returned_in_market_response": 35,
+    "fixtures_found": 36,
+    "fixtures_returned_in_market_response": 34,
     "fixtures_unqueried": 0,
-    "fixtures_with_valid_odds": 35,
-    "fixtures_without_valid_odds": 0,
+    "fixtures_with_valid_odds": 34,
+    "fixtures_without_valid_odds": 2,
     "football_day": "2026-11-24",
     "future_utc_requests_reserved": 0,
-    "generated_at": "2026-11-24T11:01:09.452263+00:00",
-    "issues": [],
+    "generated_at": "2026-11-24T14:01:14.647675+00:00",
+    "issues": [
+      "FIXTURES_WITHOUT_VALID_CORE_ODDS"
+    ],
     "provenance": "LIVE_REPORT",
     "provider": "oddspapi",
     "quota_skip_reason": null,
     "quota_utc_day": "2026-11-24",
     "record_type": "SCAN_ATTEMPT",
-    "report_id": "bf69ad39b051b71ec8b02daa80078f9bb4184da22cf03fc08ff3fc02613f09cb",
+    "report_id": "8dc89601cab8c96438d463973a458b34a503794c26391954703e28e0141824bf",
     "requests_used": 3,
     "scan_status": "RESEARCH_V2_OBSERVED",
-    "schedule_response_id": "7de7fee386a61ea40501f1b0758e6923f56653aa366532834884741fe32e54ae",
-    "scheduled_target_at": "2026-11-24T18:01:00+07:00",
+    "schedule_response_id": "239d52460b497d2a96ac1bc40673981a2fe20f375e86477ce4f1a085d9d964bd",
+    "scheduled_target_at": "2026-11-24T21:01:05+07:00",
     "schema_version": "1.0",
     "source_or_configuration_error_count": 0,
-    "status": "PASS",
+    "status": "WARNING",
     "workflow_run_attempt": "1",
-    "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/45380089075"
+    "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/45409298611"
   },
   "recent_reports": [
     {
       "account_requests_attempted": 1,
       "account_transient_failures": [],
-      "actual_observed_at": "2026-11-24T18:01:09.389384+07:00",
+      "actual_observed_at": "2026-11-24T21:01:14.585735+07:00",
       "api_error_count": 0,
-      "budget_reservation_id": "d43d240924794ae49d12d6cdc1b8b7ba",
+      "budget_reservation_id": "5dc85eb0424843018db38bb9f9681472",
       "competition_coverage": [
         {
           "canonical_competition_id": "BGR-0002",
           "country": "Bulgaria",
           "fixtures_captured_today": 1,
-          "last_market_request_at": "2026-11-24T11:01:09.389384+00:00",
+          "last_market_request_at": "2026-11-24T14:01:14.585735+00:00",
           "market_reason_counts": {
             "OK": 1
           },
@@ -1769,23 +1766,16 @@
           "canonical_competition_id": "MNE-0001",
           "country": "Montenegro",
           "fixtures_captured_today": 1,
-          "last_market_request_at": "2026-11-24T11:01:06.301700+00:00",
-          "market_reason_counts": {
-            "OK": 1
-          },
-          "next_kickoff": "2026-11-24T13:00:00+00:00",
-          "odds_fixture_rows": 1,
-          "reason": "OBSERVED",
-          "remaining_prematch_fixture_ids": [
-            "id1000015476811384"
-          ],
-          "remaining_prematch_fixtures": 1,
+          "last_market_request_at": null,
+          "next_kickoff": null,
+          "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+          "remaining_prematch_fixture_ids": [],
+          "remaining_prematch_fixtures": 0,
           "scheduled_fixture_ids": [
             "id1000015476811384"
           ],
           "scheduled_fixtures": 1,
           "scheduled_fixtures_without_snapshot": 0,
-          "strict_snapshots": 1,
           "tournament_id": 154,
           "tournament_name": "Montenegrin First League",
           "uncaptured_remaining_prematch_fixtures": 0
@@ -1890,7 +1880,7 @@
           "canonical_competition_id": "ENG-0002",
           "country": "England",
           "fixtures_captured_today": 8,
-          "last_market_request_at": "2026-11-24T11:01:09.389384+00:00",
+          "last_market_request_at": "2026-11-24T14:01:14.585735+00:00",
           "market_reason_counts": {
             "OK": 8
           },
@@ -2409,7 +2399,7 @@
           "canonical_competition_id": "ENG-0003",
           "country": "England",
           "fixtures_captured_today": 4,
-          "last_market_request_at": "2026-11-24T11:01:09.389384+00:00",
+          "last_market_request_at": "2026-11-24T14:01:14.585735+00:00",
           "market_reason_counts": {
             "OK": 4
           },
@@ -2456,7 +2446,7 @@
           "canonical_competition_id": "ENG-0004",
           "country": "England",
           "fixtures_captured_today": 2,
-          "last_market_request_at": "2026-11-24T11:01:06.301700+00:00",
+          "last_market_request_at": "2026-11-24T14:01:11.525755+00:00",
           "market_reason_counts": {
             "OK": 2
           },
@@ -2483,7 +2473,7 @@
           "canonical_competition_id": "WAL-0001",
           "country": "Wales",
           "fixtures_captured_today": 1,
-          "last_market_request_at": "2026-11-24T11:01:09.389384+00:00",
+          "last_market_request_at": "2026-11-24T14:01:11.525755+00:00",
           "market_reason_counts": {
             "OK": 1
           },
@@ -2652,7 +2642,7 @@
           "canonical_competition_id": "SCO-0001",
           "country": "Scotland",
           "fixtures_captured_today": 2,
-          "last_market_request_at": "2026-11-24T11:01:06.301700+00:00",
+          "last_market_request_at": "2026-11-24T14:01:11.525755+00:00",
           "market_reason_counts": {
             "OK": 2
           },
@@ -2839,7 +2829,7 @@
           "canonical_competition_id": "ITA-0002",
           "country": "Italy",
           "fixtures_captured_today": 6,
-          "last_market_request_at": "2026-11-24T11:01:06.301700+00:00",
+          "last_market_request_at": "2026-11-24T14:01:11.525755+00:00",
           "market_reason_counts": {
             "OK": 6
           },
@@ -3052,12 +3042,14 @@
           "fixtures_captured_today": 0,
           "last_market_request_at": null,
           "next_kickoff": null,
-          "reason": "NO_MATCHES",
+          "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
           "remaining_prematch_fixture_ids": [],
           "remaining_prematch_fixtures": 0,
-          "scheduled_fixture_ids": [],
-          "scheduled_fixtures": 0,
-          "scheduled_fixtures_without_snapshot": 0,
+          "scheduled_fixture_ids": [
+            "id1000069172550528"
+          ],
+          "scheduled_fixtures": 1,
+          "scheduled_fixtures_without_snapshot": 1,
           "tournament_id": 691,
           "tournament_name": "Ukrainian First League",
           "uncaptured_remaining_prematch_fixtures": 0
@@ -3082,7 +3074,7 @@
           "canonical_competition_id": "INT-0001",
           "country": "International",
           "fixtures_captured_today": 9,
-          "last_market_request_at": "2026-11-24T11:01:09.389384+00:00",
+          "last_market_request_at": "2026-11-24T14:01:14.585735+00:00",
           "market_reason_counts": {
             "OK": 9
           },
@@ -3123,7 +3115,7 @@
           "canonical_competition_id": "GEO-0001",
           "country": "Georgia",
           "fixtures_captured_today": 1,
-          "last_market_request_at": "2026-11-24T11:01:06.301700+00:00",
+          "last_market_request_at": "2026-11-24T14:01:11.525755+00:00",
           "market_reason_counts": {
             "OK": 1
           },
@@ -3280,30 +3272,32 @@
       "daily_cohort_policy": null,
       "daily_cohort_query_complete": null,
       "data_source_health": null,
-      "fixtures_found": 35,
-      "fixtures_returned_in_market_response": 35,
+      "fixtures_found": 36,
+      "fixtures_returned_in_market_response": 34,
       "fixtures_unqueried": 0,
-      "fixtures_with_valid_odds": 35,
-      "fixtures_without_valid_odds": 0,
+      "fixtures_with_valid_odds": 34,
+      "fixtures_without_valid_odds": 2,
       "football_day": "2026-11-24",
       "future_utc_requests_reserved": 0,
-      "generated_at": "2026-11-24T11:01:09.452263+00:00",
-      "issues": [],
+      "generated_at": "2026-11-24T14:01:14.647675+00:00",
+      "issues": [
+        "FIXTURES_WITHOUT_VALID_CORE_ODDS"
+      ],
       "provenance": "LIVE_REPORT",
       "provider": "oddspapi",
       "quota_skip_reason": null,
       "quota_utc_day": "2026-11-24",
       "record_type": "SCAN_ATTEMPT",
-      "report_id": "bf69ad39b051b71ec8b02daa80078f9bb4184da22cf03fc08ff3fc02613f09cb",
+      "report_id": "8dc89601cab8c96438d463973a458b34a503794c26391954703e28e0141824bf",
       "requests_used": 3,
       "scan_status": "RESEARCH_V2_OBSERVED",
-      "schedule_response_id": "7de7fee386a61ea40501f1b0758e6923f56653aa366532834884741fe32e54ae",
-      "scheduled_target_at": "2026-11-24T18:01:00+07:00",
+      "schedule_response_id": "239d52460b497d2a96ac1bc40673981a2fe20f375e86477ce4f1a085d9d964bd",
+      "scheduled_target_at": "2026-11-24T21:01:05+07:00",
       "schema_version": "1.0",
       "source_or_configuration_error_count": 0,
-      "status": "PASS",
+      "status": "WARNING",
       "workflow_run_attempt": "1",
-      "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/45380089075"
+      "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/45409298611"
     },
     {
       "account_requests_attempted": 1,
