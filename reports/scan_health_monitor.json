@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-11-23T19:51:37.060007+00:00",
-  "football_day": "2026-11-23",
+  "generated_at": "2026-11-24T19:21:02.385602+00:00",
+  "football_day": "2026-11-24",
   "status": "FAIL",
   "issues": [
     "SCAN_MISSING",
@@ -13,29 +13,7 @@
   "scan_missing_count": 3,
   "scan_missing": [
     {
-      "target_time": "2026-11-23T18:00:00+07:00",
-      "state": "PARTIAL",
-      "provider": "oddspapi",
-      "observed_at": "2026-11-23T18:01:15.648279+07:00",
-      "lag_minutes": 1.26,
-      "valid_snapshot_count": 25,
-      "canonical_fixture_count": 25,
-      "observation_timing": "ON_TIME",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-11-23T21:00:00+07:00",
-      "state": "PARTIAL",
-      "provider": "oddspapi",
-      "observed_at": "2026-11-23T21:00:59.575282+07:00",
-      "lag_minutes": 0.99,
-      "valid_snapshot_count": 22,
-      "canonical_fixture_count": 22,
-      "observation_timing": "ON_TIME",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-11-24T00:00:00+07:00",
+      "target_time": "2026-11-24T18:00:00+07:00",
       "state": "MISSED",
       "provider": null,
       "observed_at": null,
@@ -43,6 +21,28 @@
       "valid_snapshot_count": 0,
       "canonical_fixture_count": 0,
       "observation_timing": "MISSED",
+      "recovered": false
+    },
+    {
+      "target_time": "2026-11-24T21:00:00+07:00",
+      "state": "MISSED",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "MISSED",
+      "recovered": false
+    },
+    {
+      "target_time": "2026-11-25T00:00:00+07:00",
+      "state": "PARTIAL",
+      "provider": "oddspapi",
+      "observed_at": "2026-11-25T00:01:03.992054+07:00",
+      "lag_minutes": 1.07,
+      "valid_snapshot_count": 30,
+      "canonical_fixture_count": 30,
+      "observation_timing": "ON_TIME",
       "recovered": false
     }
   ],
@@ -252,11 +252,11 @@
       "kickoff": "2026-11-21T14:00:00+00:00",
       "home": "Esbjerg FB",
       "away": "AB Gladsaxe",
-      "status": "MISSING_FT",
+      "status": "RETIRED_UNRESOLVED",
       "country": "Denmark",
       "canonical_competition_id": "DNK-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
+      "retired_from_active_queue": true
     },
     {
       "fixture_id": "id1000005472477468",
@@ -350,11 +350,11 @@
       "kickoff": "2026-11-21T13:00:00+00:00",
       "home": "Stade Lavallois MFC",
       "away": "Montpellier HSC",
-      "status": "MISSING_FT",
+      "status": "RETIRED_UNRESOLVED",
       "country": "France",
       "canonical_competition_id": "FRA-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
+      "retired_from_active_queue": true
     },
     {
       "fixture_id": "id1000018572936124",
@@ -448,11 +448,11 @@
       "kickoff": "2026-11-21T15:00:00+00:00",
       "home": "Dunfermline Athletic FC",
       "away": "Greenock Morton FC",
-      "status": "MISSING_FT",
+      "status": "RETIRED_UNRESOLVED",
       "country": "Scotland",
       "canonical_competition_id": "SCO-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
-      "retired_from_active_queue": false
+      "retired_from_active_queue": true
     },
     {
       "fixture_id": "id1000021072083118",
@@ -924,40 +924,18 @@
   "history_report_count": 30,
   "canonical_slots": [
     {
-      "target_time": "2026-11-23T15:00:00+07:00",
+      "target_time": "2026-11-24T15:00:00+07:00",
       "state": "OBSERVED",
       "provider": "oddspapi",
-      "observed_at": "2026-11-23T15:01:07.004534+07:00",
-      "lag_minutes": 1.12,
-      "valid_snapshot_count": 28,
-      "canonical_fixture_count": 28,
+      "observed_at": "2026-11-24T15:00:53.122081+07:00",
+      "lag_minutes": 0.89,
+      "valid_snapshot_count": 35,
+      "canonical_fixture_count": 35,
       "observation_timing": "ON_TIME",
       "recovered": false
     },
     {
-      "target_time": "2026-11-23T18:00:00+07:00",
-      "state": "PARTIAL",
-      "provider": "oddspapi",
-      "observed_at": "2026-11-23T18:01:15.648279+07:00",
-      "lag_minutes": 1.26,
-      "valid_snapshot_count": 25,
-      "canonical_fixture_count": 25,
-      "observation_timing": "ON_TIME",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-11-23T21:00:00+07:00",
-      "state": "PARTIAL",
-      "provider": "oddspapi",
-      "observed_at": "2026-11-23T21:00:59.575282+07:00",
-      "lag_minutes": 0.99,
-      "valid_snapshot_count": 22,
-      "canonical_fixture_count": 22,
-      "observation_timing": "ON_TIME",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-11-24T00:00:00+07:00",
+      "target_time": "2026-11-24T18:00:00+07:00",
       "state": "MISSED",
       "provider": null,
       "observed_at": null,
@@ -966,18 +944,40 @@
       "canonical_fixture_count": 0,
       "observation_timing": "MISSED",
       "recovered": false
+    },
+    {
+      "target_time": "2026-11-24T21:00:00+07:00",
+      "state": "MISSED",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "MISSED",
+      "recovered": false
+    },
+    {
+      "target_time": "2026-11-25T00:00:00+07:00",
+      "state": "PARTIAL",
+      "provider": "oddspapi",
+      "observed_at": "2026-11-25T00:01:03.992054+07:00",
+      "lag_minutes": 1.07,
+      "valid_snapshot_count": 30,
+      "canonical_fixture_count": 30,
+      "observation_timing": "ON_TIME",
+      "recovered": false
     }
   ],
   "api_requests_used": 0,
   "raw_deleted": 0,
   "approved_unresolved_fixtures_retained": true,
   "next_slot_readiness": {
-    "target_at": "2026-11-24T15:00:00+07:00",
-    "football_day": "2026-11-24",
+    "target_at": "2026-11-25T15:00:00+07:00",
+    "football_day": "2026-11-25",
     "status": "UNVERIFIED_OR_CAPACITY_BLOCKED",
     "fixture_set_size": null,
     "remaining_prematch_at_target": 0,
-    "prematch_forecast_at": "2026-11-24T15:03:00+07:00",
+    "prematch_forecast_at": "2026-11-25T15:03:00+07:00",
     "unconfirmed_grants": [],
     "blocked_reasons": [
       "FIXED_COHORT_UNAVAILABLE"
@@ -985,33 +985,33 @@
     "pending_fixture_ids": [],
     "required_market_requests": 0,
     "allocated_tournament_ids": [],
-    "quota_utc_day": "2026-11-24",
+    "quota_utc_day": "2026-11-25",
     "research_usage": {
-      "day": 80,
-      "month": 1900
+      "day": 120,
+      "month": 2020
     },
-    "account_remaining_estimate": 49,
-    "account_observed_before": "2026-11-23T17:01:02.021525+00:00",
+    "account_remaining_estimate": 30,
+    "account_observed_before": "2026-11-24T17:57:28.127850+00:00",
     "account_estimate_limitation": "OTHER_ACCOUNT_CONSUMERS_AFTER_OBSERVATION_NOT_MEASURED; RECHECK_UNMETERED_ACCOUNT_AT_COLLECTION",
     "fixture_set_policy": null,
     "schedule_response_id": null,
     "budget": {
       "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
       "research_requests_used_today": 0,
-      "research_requests_used_month": 1900,
+      "research_requests_used_month": 2020,
       "research_daily_limit": 6,
       "research_monthly_limit": 180,
       "research_run_limit": 1,
-      "quota_utc_day": "2026-11-24",
+      "quota_utc_day": "2026-11-25",
       "canonical_slots_in_football_day": 4,
       "future_utc_slots": [
-        "2026-11-24T11:00:00+00:00",
-        "2026-11-24T14:00:00+00:00",
-        "2026-11-24T17:00:00+00:00"
+        "2026-11-25T11:00:00+00:00",
+        "2026-11-25T14:00:00+00:00",
+        "2026-11-25T17:00:00+00:00"
       ],
       "future_utc_requests_reserved": 3,
       "current_canonical_requests_reserved": 0,
-      "future_month_requests_reserved": 30,
+      "future_month_requests_reserved": 25,
       "canonical_request_reservation": "UTC_FUTURE_SLOTS_PLUS_DISCOVERY; MANUAL_AND_RECOVERY_YIELD; FAILED_ATTEMPTS_COUNT",
       "budget_scope": "ODDSPAPI_RESEARCH_COLLECTOR_ONLY",
       "coverage_mode": "MASTER_SCHEDULE_PRIORITIZED",
