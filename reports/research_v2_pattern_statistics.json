@@ -415,8 +415,8 @@
     "REVIEWED_LEAGUE_OUT_OF_SCOPE": 3,
     "USER_REVIEWED_COMPETITION_OUT_OF_SCOPE": 4
   },
-  "provider_fixture_ids": 4462,
-  "raw_unresolved_provider_fixture_ids": 122,
+  "provider_fixture_ids": 4484,
+  "raw_unresolved_provider_fixture_ids": 144,
   "fixture_identity_bridges": [
     {
       "canonical_fixture_id": "pinnwire:1637098306",
@@ -1673,7 +1673,7 @@
   "snapshot_selection": "LATEST_VALID_STRICT_PREMATCH_OBSERVATION_UTC_THEN_PROVIDER_SOURCE_ID_TIEBREAK",
   "classification": "RESEARCH_V2_AH_MARKET_STATE_STATISTICS",
   "statistical_population_policy": "VERIFIED_FT_ONLY; RAW UNRESOLVED FIXTURES QUARANTINED AND EXCLUDED",
-  "generated_at": "2026-11-25T01:14:02.227042+00:00",
+  "generated_at": "2026-11-25T10:48:11.203101+00:00",
   "research_only": true,
   "recommendation_semantics": false,
   "signal_policy": "DESCRIPTIVE_ONLY; NO EDGE TEST FROM WIN RATE; FROZEN PROMOTION GATES UNCHANGED",
@@ -1697,16 +1697,16 @@
     "MISSING_QUOTE": 651,
     "VERIFIED_EXACT_2_5_PREMATCH": 994
   },
-  "snapshot_rows": 11880,
-  "raw_snapshot_rows": 12424,
+  "snapshot_rows": 11902,
+  "raw_snapshot_rows": 12446,
   "quarantined_snapshot_rows": 90,
   "quarantine_policy": "LEGACY_PROPLINE_EXCLUDED; VERIFIED_PINNACLE_TWO_SIDED_CORE_MAINLINE_ALLOWED",
-  "unique_snapshot_fixtures": 4412,
+  "unique_snapshot_fixtures": 4434,
   "settled_fixtures": 4355,
   "core_price_settled_fixtures": 4156,
   "missing_result_fixtures": 0,
-  "raw_unresolved_ft_fixtures": 56,
-  "active_unresolved_ft_fixtures": 7,
+  "raw_unresolved_ft_fixtures": 78,
+  "active_unresolved_ft_fixtures": 29,
   "retired_unresolved_ft_fixtures": 49,
   "retired_unresolved_fixture_ids": [
     "id1000000872478578",
@@ -1759,25 +1759,25 @@
     "id1000113572466592",
     "pinnwire:1637096650"
   ],
-  "excluded_missing_ft_from_statistical_population": 56,
+  "excluded_missing_ft_from_statistical_population": 78,
   "excluded_derivative_markets_from_ft_completeness": 1,
   "eligible_statistical_fixtures": 4355,
-  "ft_completeness_pct": 98.73,
+  "ft_completeness_pct": 98.24,
   "missing_result_fixtures_by_provider": {},
   "unique_snapshot_fixtures_by_provider": {
     "api_football": 4,
-    "oddspapi": 3907,
+    "oddspapi": 3929,
     "pinnwire": 370,
     "propline": 131
   },
   "pinnwire_missing_result_fixtures": 0,
   "non_pinnwire_missing_result_fixtures": 0,
   "raw_unresolved_ft_by_provider": {
-    "oddspapi": 55,
+    "oddspapi": 77,
     "pinnwire": 42
   },
   "raw_pinnwire_unresolved_ft": 42,
-  "raw_non_pinnwire_unresolved_ft": 14,
+  "raw_non_pinnwire_unresolved_ft": 36,
   "ambiguous_result_fixtures": 0,
   "baseline_by_market_side_line": [
     {
@@ -111503,7 +111503,7 @@
   "identity_group_semantics": "PROVIDER_LOCAL_FIXTURE_IDS_PLUS_VERIFIED_BRIDGES; UNLINKED_PROVIDER_IDS_MAY_REFER_TO_SAME_REAL_MATCH",
   "invalid_statistical_snapshot_rows": 0,
   "wr_definition": "(FULL_WIN + HALF_WIN) / ALL_SETTLED_INCLUDING_PUSH; HALF_WIN_IS_POSITIVE_RETURN_EVENT; SEE_SEPARATE_HALF_COUNTS_AND_ROI",
-  "ft_completeness_denominator": 4411,
+  "ft_completeness_denominator": 4433,
   "ft_completeness_population": "ALL_ELIGIBLE_IDENTITY_GROUPS_INCLUDING_RETIRED_AND_CONFLICTED; NOT_VERIFIED_SUBSET_ONLY",
   "statistical_subset_ft_completeness_pct": 100.0,
   "identity_conflict_ft_fixtures": 6,
@@ -111516,7 +111516,7 @@
   "postponed_cancelled_abandoned_fixtures": 1,
   "verified_cross_provider_canonical_fixtures": 8,
   "verified_same_provider_duplicate_fixtures": 42,
-  "unlinked_provider_fixture_groups": 4362,
+  "unlinked_provider_fixture_groups": 4384,
   "movement_classification_counts": {
     "SINGLE_OBSERVATION": 958,
     "AH_LINE_UNCHANGED__PRICE_DOWN": 1059,
@@ -111540,6 +111540,6 @@
     "[2.10,2.20]"
   ],
   "active_overdue_ft_fixtures": 7,
-  "active_future_or_recent_ft_fixtures": 0,
+  "active_future_or_recent_ft_fixtures": 22,
   "active_unknown_kickoff_ft_fixtures": 0
 }
