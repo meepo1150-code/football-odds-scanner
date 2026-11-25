@@ -1,16 +1,16 @@
 {
   "schema_version": "1.0",
   "classification": "ALL_PROVIDER_WEB_RESULT_RECOVERY_QUEUE",
-  "generated_at": "2026-11-24T19:20:49.285775+00:00",
-  "unresolved_total": 154,
-  "active_unresolved_total": 34,
-  "retired_unresolved_total": 120,
+  "generated_at": "2026-11-25T18:26:27.713875+00:00",
+  "unresolved_total": 138,
+  "active_unresolved_total": 16,
+  "retired_unresolved_total": 122,
   "retired_included": true,
   "skipped_retired": 0,
-  "unique_match_identities": 124,
+  "unique_match_identities": 108,
   "duplicate_fixture_ids_collapsed": 29,
   "skipped_non_match_market": 1,
-  "queued": 124,
+  "queued": 108,
   "api_requests_used": 0,
   "validation_relaxed": false,
   "rows": [
@@ -2855,7 +2855,9 @@
       "provider": null,
       "league": "Swiss Super League",
       "country": "Switzerland",
-      "retired_fixture_ids": [],
+      "retired_fixture_ids": [
+        "id1000021576635258"
+      ],
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
@@ -2883,21 +2885,23 @@
       "provider": null,
       "league": "Ligue 1",
       "country": "France",
-      "retired_fixture_ids": [],
+      "retired_fixture_ids": [
+        "id1000003472036296"
+      ],
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000000774166014",
+      "fixture_id": "id1000000774166034",
       "fixture_ids": [
-        "id1000000774166014"
+        "id1000000774166034"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Bodoe/Glimt",
-      "away": "LASK Linz",
-      "kickoff": "2026-11-24T17:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Bodoe/Glimt\" \"LASK Linz\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Bodoe%2FGlimt%22+%22LASK+Linz%22+2026-11-24+football+result",
+      "home": "Slavia Prague",
+      "away": "Villarreal CF",
+      "kickoff": "2026-11-25T17:45:00+00:00",
+      "football_day": "2026-11-25",
+      "search_query": "\"Slavia Prague\" \"Villarreal CF\" 2026-11-25 football result",
+      "search_url": "https://www.google.com/search?q=%22Slavia+Prague%22+%22Villarreal+CF%22+2026-11-25+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -2915,45 +2919,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000000774166016",
+      "fixture_id": "id1000005373093096",
       "fixture_ids": [
-        "id1000000774166016"
+        "id1000005373093096"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Galatasaray Istanbul",
-      "away": "Aston Villa",
-      "kickoff": "2026-11-24T17:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Galatasaray Istanbul\" \"Aston Villa\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Galatasaray+Istanbul%22+%22Aston+Villa%22+2026-11-24+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "UEFA Champions League",
-      "country": "International",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000005373093146",
-      "fixture_ids": [
-        "id1000005373093146"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Juve Stabia",
-      "away": "US Catanzaro",
-      "kickoff": "2026-11-24T18:00:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Juve Stabia\" \"US Catanzaro\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Juve+Stabia%22+%22US+Catanzaro%22+2026-11-24+football+result",
+      "home": "US Cremonese",
+      "away": "US Avellino",
+      "kickoff": "2026-11-25T18:00:00+00:00",
+      "football_day": "2026-11-25",
+      "search_query": "\"US Cremonese\" \"US Avellino\" 2026-11-25 football result",
+      "search_url": "https://www.google.com/search?q=%22US+Cremonese%22+%22US+Avellino%22+2026-11-25+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -2971,17 +2947,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000005373093092",
+      "fixture_id": "id1000005373093152",
       "fixture_ids": [
-        "id1000005373093092"
+        "id1000005373093152"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Benevento Calcio",
-      "away": "Empoli FC",
-      "kickoff": "2026-11-24T19:00:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Benevento Calcio\" \"Empoli FC\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Benevento+Calcio%22+%22Empoli+FC%22+2026-11-24+football+result",
+      "home": "Calcio Padova",
+      "away": "Sampdoria Genoa",
+      "kickoff": "2026-11-25T19:00:00+00:00",
+      "football_day": "2026-11-25",
+      "search_query": "\"Calcio Padova\" \"Sampdoria Genoa\" 2026-11-25 football result",
+      "search_url": "https://www.google.com/search?q=%22Calcio+Padova%22+%22Sampdoria+Genoa%22+2026-11-25+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -2999,17 +2975,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000005373093094",
+      "fixture_id": "id1000005373093150",
       "fixture_ids": [
-        "id1000005373093094"
+        "id1000005373093150"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Cesena FC",
-      "away": "Ascoli Calcio 1898",
-      "kickoff": "2026-11-24T19:00:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Cesena FC\" \"Ascoli Calcio 1898\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Cesena+FC%22+%22Ascoli+Calcio+1898%22+2026-11-24+football+result",
+      "home": "Mantova 1911",
+      "away": "SS Arezzo",
+      "kickoff": "2026-11-25T19:00:00+00:00",
+      "football_day": "2026-11-25",
+      "search_query": "\"Mantova 1911\" \"SS Arezzo\" 2026-11-25 football result",
+      "search_url": "https://www.google.com/search?q=%22Mantova+1911%22+%22SS+Arezzo%22+2026-11-25+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -3027,17 +3003,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000005373093148",
+      "fixture_id": "id1000005373093156",
       "fixture_ids": [
-        "id1000005373093148"
+        "id1000005373093156"
       ],
       "duplicate_fixture_ids": [],
-      "home": "L.R. Vicenza",
-      "away": "Carrarese Calcio",
-      "kickoff": "2026-11-24T19:00:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"L.R. Vicenza\" \"Carrarese Calcio\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22L.R.+Vicenza%22+%22Carrarese+Calcio%22+2026-11-24+football+result",
+      "home": "Pisa SC",
+      "away": "Modena FC",
+      "kickoff": "2026-11-25T19:00:00+00:00",
+      "football_day": "2026-11-25",
+      "search_query": "\"Pisa SC\" \"Modena FC\" 2026-11-25 football result",
+      "search_url": "https://www.google.com/search?q=%22Pisa+SC%22+%22Modena+FC%22+2026-11-25+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -3055,129 +3031,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000005373093154",
+      "fixture_id": "id1000001872340072",
       "fixture_ids": [
-        "id1000005373093154"
+        "id1000001872340072"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Palermo FC",
-      "away": "FC Sudtirol Bolzano",
-      "kickoff": "2026-11-24T19:00:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Palermo FC\" \"FC Sudtirol Bolzano\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Palermo+FC%22+%22FC+Sudtirol+Bolzano%22+2026-11-24+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "Serie B",
-      "country": "Italy",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000005373093158",
-      "fixture_ids": [
-        "id1000005373093158"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Virtus Entella",
-      "away": "Hellas Verona",
-      "kickoff": "2026-11-24T19:00:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Virtus Entella\" \"Hellas Verona\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Virtus+Entella%22+%22Hellas+Verona%22+2026-11-24+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "Serie B",
-      "country": "Italy",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000002475078274",
-      "fixture_ids": [
-        "id1000002475078274"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Blackpool FC",
-      "away": "Leicester City",
-      "kickoff": "2026-11-24T19:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Blackpool FC\" \"Leicester City\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Blackpool+FC%22+%22Leicester+City%22+2026-11-24+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "League One",
-      "country": "England",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000002475152324",
-      "fixture_ids": [
-        "id1000002475152324"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Bradford City FC",
-      "away": "Barnsley FC",
-      "kickoff": "2026-11-24T19:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Bradford City FC\" \"Barnsley FC\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Bradford+City+FC%22+%22Barnsley+FC%22+2026-11-24+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "League One",
-      "country": "England",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000001872340056",
-      "fixture_ids": [
-        "id1000001872340056"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Bristol City",
-      "away": "Wrexham AFC",
-      "kickoff": "2026-11-24T19:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Bristol City\" \"Wrexham AFC\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Bristol+City%22+%22Wrexham+AFC%22+2026-11-24+football+result",
+      "home": "Bolton Wanderers",
+      "away": "West Bromwich Albion",
+      "kickoff": "2026-11-25T19:45:00+00:00",
+      "football_day": "2026-11-25",
+      "search_query": "\"Bolton Wanderers\" \"West Bromwich Albion\" 2026-11-25 football result",
+      "search_url": "https://www.google.com/search?q=%22Bolton+Wanderers%22+%22West+Bromwich+Albion%22+2026-11-25+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -3195,45 +3059,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000002476396374",
+      "fixture_id": "id1000001872340074",
       "fixture_ids": [
-        "id1000002476396374"
+        "id1000001872340074"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Bromley FC",
-      "away": "Wycombe Wanderers",
-      "kickoff": "2026-11-24T19:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Bromley FC\" \"Wycombe Wanderers\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Bromley+FC%22+%22Wycombe+Wanderers%22+2026-11-24+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "League One",
-      "country": "England",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000001872340058",
-      "fixture_ids": [
-        "id1000001872340058"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Cardiff City",
-      "away": "Preston North End",
-      "kickoff": "2026-11-24T19:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Cardiff City\" \"Preston North End\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Cardiff+City%22+%22Preston+North+End%22+2026-11-24+football+result",
+      "home": "Burnley FC",
+      "away": "Birmingham City",
+      "kickoff": "2026-11-25T19:45:00+00:00",
+      "football_day": "2026-11-25",
+      "search_query": "\"Burnley FC\" \"Birmingham City\" 2026-11-25 football result",
+      "search_url": "https://www.google.com/search?q=%22Burnley+FC%22+%22Birmingham+City%22+2026-11-25+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -3251,17 +3087,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000001872340060",
+      "fixture_id": "id1000001872340078",
       "fixture_ids": [
-        "id1000001872340060"
+        "id1000001872340078"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Charlton Athletic",
-      "away": "Lincoln City",
-      "kickoff": "2026-11-24T19:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Charlton Athletic\" \"Lincoln City\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Charlton+Athletic%22+%22Lincoln+City%22+2026-11-24+football+result",
+      "home": "Watford FC",
+      "away": "Blackburn Rovers",
+      "kickoff": "2026-11-25T19:45:00+00:00",
+      "football_day": "2026-11-25",
+      "search_query": "\"Watford FC\" \"Blackburn Rovers\" 2026-11-25 football result",
+      "search_url": "https://www.google.com/search?q=%22Watford+FC%22+%22Blackburn+Rovers%22+2026-11-25+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -3279,269 +3115,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000002575152506",
+      "fixture_id": "id1000000774166036",
       "fixture_ids": [
-        "id1000002575152506"
+        "id1000000774166036"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Crawley Town",
-      "away": "Barnet FC",
-      "kickoff": "2026-11-24T19:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Crawley Town\" \"Barnet FC\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Crawley+Town%22+%22Barnet+FC%22+2026-11-24+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "League Two",
-      "country": "England",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000003674982104",
-      "fixture_ids": [
-        "id1000003674982104"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Hibernian FC",
-      "away": "Dundee FC",
-      "kickoff": "2026-11-24T19:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Hibernian FC\" \"Dundee FC\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Hibernian+FC%22+%22Dundee+FC%22+2026-11-24+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "Scottish Premiership",
-      "country": "Scotland",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000025476793576",
-      "fixture_ids": [
-        "id1000025476793576"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Holywell Town",
-      "away": "Pen-y-Bont FC",
-      "kickoff": "2026-11-24T19:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Holywell Town\" \"Pen-y-Bont FC\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Holywell+Town%22+%22Pen-y-Bont+FC%22+2026-11-24+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "Cymru Premier",
-      "country": "Wales",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000001872340062",
-      "fixture_ids": [
-        "id1000001872340062"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Middlesbrough FC",
-      "away": "Swansea City",
-      "kickoff": "2026-11-24T19:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Middlesbrough FC\" \"Swansea City\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Middlesbrough+FC%22+%22Swansea+City%22+2026-11-24+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "Championship",
-      "country": "England",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000001872340064",
-      "fixture_ids": [
-        "id1000001872340064"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Norwich City",
-      "away": "Queens Park Rangers",
-      "kickoff": "2026-11-24T19:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Norwich City\" \"Queens Park Rangers\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Norwich+City%22+%22Queens+Park+Rangers%22+2026-11-24+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "Championship",
-      "country": "England",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000002575464906",
-      "fixture_ids": [
-        "id1000002575464906"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Port Vale",
-      "away": "Northampton Town",
-      "kickoff": "2026-11-24T19:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Port Vale\" \"Northampton Town\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Port+Vale%22+%22Northampton+Town%22+2026-11-24+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "League Two",
-      "country": "England",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000001872340066",
-      "fixture_ids": [
-        "id1000001872340066"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Portsmouth FC",
-      "away": "West Ham United",
-      "kickoff": "2026-11-24T19:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Portsmouth FC\" \"West Ham United\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Portsmouth+FC%22+%22West+Ham+United%22+2026-11-24+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "Championship",
-      "country": "England",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000001872340068",
-      "fixture_ids": [
-        "id1000001872340068"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Sheffield United",
-      "away": "Southampton FC",
-      "kickoff": "2026-11-24T19:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Sheffield United\" \"Southampton FC\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Sheffield+United%22+%22Southampton+FC%22+2026-11-24+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "Championship",
-      "country": "England",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000002475094672",
-      "fixture_ids": [
-        "id1000002475094672"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Stevenage FC",
-      "away": "Sheffield Wednesday",
-      "kickoff": "2026-11-24T19:45:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Stevenage FC\" \"Sheffield Wednesday\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Stevenage+FC%22+%22Sheffield+Wednesday%22+2026-11-24+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "League One",
-      "country": "England",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000000774166018",
-      "fixture_ids": [
-        "id1000000774166018"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Arsenal FC",
-      "away": "Borussia Dortmund",
-      "kickoff": "2026-11-24T20:00:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Arsenal FC\" \"Borussia Dortmund\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Arsenal+FC%22+%22Borussia+Dortmund%22+2026-11-24+football+result",
+      "home": "Atletico Madrid",
+      "away": "Viking FK",
+      "kickoff": "2026-11-25T20:00:00+00:00",
+      "football_day": "2026-11-25",
+      "search_query": "\"Atletico Madrid\" \"Viking FK\" 2026-11-25 football result",
+      "search_url": "https://www.google.com/search?q=%22Atletico+Madrid%22+%22Viking+FK%22+2026-11-25+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -3559,17 +3143,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000000774166020",
+      "fixture_id": "id1000000774166038",
       "fixture_ids": [
-        "id1000000774166020"
+        "id1000000774166038"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Como 1907",
-      "away": "AEK Athens",
-      "kickoff": "2026-11-24T20:00:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Como 1907\" \"AEK Athens\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Como+1907%22+%22AEK+Athens%22+2026-11-24+football+result",
+      "home": "Club Brugge",
+      "away": "Liverpool FC",
+      "kickoff": "2026-11-25T20:00:00+00:00",
+      "football_day": "2026-11-25",
+      "search_query": "\"Club Brugge\" \"Liverpool FC\" 2026-11-25 football result",
+      "search_url": "https://www.google.com/search?q=%22Club+Brugge%22+%22Liverpool+FC%22+2026-11-25+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -3587,17 +3171,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000000774166022",
+      "fixture_id": "id1000000774166042",
       "fixture_ids": [
-        "id1000000774166022"
+        "id1000000774166042"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Feyenoord Rotterdam",
-      "away": "FC Porto",
-      "kickoff": "2026-11-24T20:00:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Feyenoord Rotterdam\" \"FC Porto\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Feyenoord+Rotterdam%22+%22FC+Porto%22+2026-11-24+football+result",
+      "home": "FC Shakhtar Donetsk",
+      "away": "Fenerbahce Istanbul",
+      "kickoff": "2026-11-25T20:00:00+00:00",
+      "football_day": "2026-11-25",
+      "search_query": "\"FC Shakhtar Donetsk\" \"Fenerbahce Istanbul\" 2026-11-25 football result",
+      "search_url": "https://www.google.com/search?q=%22FC+Shakhtar+Donetsk%22+%22Fenerbahce+Istanbul%22+2026-11-25+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -3615,45 +3199,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000003672201704",
+      "fixture_id": "id1000000774166040",
       "fixture_ids": [
-        "id1000003672201704"
+        "id1000000774166040"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Glasgow Rangers",
-      "away": "Aberdeen FC",
-      "kickoff": "2026-11-24T20:00:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Glasgow Rangers\" \"Aberdeen FC\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Glasgow+Rangers%22+%22Aberdeen+FC%22+2026-11-24+football+result",
-      "required_identity": [
-        "home_team",
-        "away_team",
-        "match_date"
-      ],
-      "required_result": [
-        "ft_home_goals",
-        "ft_away_goals"
-      ],
-      "acceptance_policy": "DETERMINISTIC_TEAMS_AND_DATE; SOURCE_URL_REQUIRED; CONFLICTS_REJECTED",
-      "provider": null,
-      "league": "Scottish Premiership",
-      "country": "Scotland",
-      "retired_fixture_ids": [],
-      "status": "WEB_EVIDENCE_REQUIRED"
-    },
-    {
-      "fixture_id": "id1000000774166024",
-      "fixture_ids": [
-        "id1000000774166024"
-      ],
-      "duplicate_fixture_ids": [],
-      "home": "Manchester City",
-      "away": "SSC Napoli",
-      "kickoff": "2026-11-24T20:00:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Manchester City\" \"SSC Napoli\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Manchester+City%22+%22SSC+Napoli%22+2026-11-24+football+result",
+      "home": "Inter Milano",
+      "away": "VfB Stuttgart",
+      "kickoff": "2026-11-25T20:00:00+00:00",
+      "football_day": "2026-11-25",
+      "search_query": "\"Inter Milano\" \"VfB Stuttgart\" 2026-11-25 football result",
+      "search_url": "https://www.google.com/search?q=%22Inter+Milano%22+%22VfB+Stuttgart%22+2026-11-25+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -3671,17 +3227,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000000774166026",
+      "fixture_id": "id1000000774166044",
       "fixture_ids": [
-        "id1000000774166026"
+        "id1000000774166044"
       ],
       "duplicate_fixture_ids": [],
-      "home": "RB Leipzig",
-      "away": "Racing Club De Lens",
-      "kickoff": "2026-11-24T20:00:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"RB Leipzig\" \"Racing Club De Lens\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22RB+Leipzig%22+%22Racing+Club+De+Lens%22+2026-11-24+football+result",
+      "home": "Lille OSC",
+      "away": "Bayern Munich",
+      "kickoff": "2026-11-25T20:00:00+00:00",
+      "football_day": "2026-11-25",
+      "search_query": "\"Lille OSC\" \"Bayern Munich\" 2026-11-25 football result",
+      "search_url": "https://www.google.com/search?q=%22Lille+OSC%22+%22Bayern+Munich%22+2026-11-25+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -3699,17 +3255,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000000774166028",
+      "fixture_id": "id1000000774166046",
       "fixture_ids": [
-        "id1000000774166028"
+        "id1000000774166046"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Real Madrid",
-      "away": "PSV Eindhoven",
-      "kickoff": "2026-11-24T20:00:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Real Madrid\" \"PSV Eindhoven\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Real+Madrid%22+%22PSV+Eindhoven%22+2026-11-24+football+result",
+      "home": "Paris Saint-Germain",
+      "away": "AS Roma",
+      "kickoff": "2026-11-25T20:00:00+00:00",
+      "football_day": "2026-11-25",
+      "search_query": "\"Paris Saint-Germain\" \"AS Roma\" 2026-11-25 football result",
+      "search_url": "https://www.google.com/search?q=%22Paris+Saint-Germain%22+%22AS+Roma%22+2026-11-25+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -3727,17 +3283,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000000774166030",
+      "fixture_id": "id1000000774166048",
       "fixture_ids": [
-        "id1000000774166030"
+        "id1000000774166048"
       ],
       "duplicate_fixture_ids": [],
-      "home": "SK Slovan Bratislava",
-      "away": "Real Betis Seville",
-      "kickoff": "2026-11-24T20:00:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"SK Slovan Bratislava\" \"Real Betis Seville\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22SK+Slovan+Bratislava%22+%22Real+Betis+Seville%22+2026-11-24+football+result",
+      "home": "Sporting CP",
+      "away": "Manchester United",
+      "kickoff": "2026-11-25T20:00:00+00:00",
+      "football_day": "2026-11-25",
+      "search_query": "\"Sporting CP\" \"Manchester United\" 2026-11-25 football result",
+      "search_url": "https://www.google.com/search?q=%22Sporting+CP%22+%22Manchester+United%22+2026-11-25+football+result",
       "required_identity": [
         "home_team",
         "away_team",
@@ -3755,17 +3311,17 @@
       "status": "WEB_EVIDENCE_REQUIRED"
     },
     {
-      "fixture_id": "id1000001872340070",
+      "fixture_id": "id1000001872340076",
       "fixture_ids": [
-        "id1000001872340070"
+        "id1000001872340076"
       ],
       "duplicate_fixture_ids": [],
-      "home": "Wolverhampton Wanderers",
-      "away": "Derby County",
-      "kickoff": "2026-11-24T20:00:00+00:00",
-      "football_day": "2026-11-24",
-      "search_query": "\"Wolverhampton Wanderers\" \"Derby County\" 2026-11-24 football result",
-      "search_url": "https://www.google.com/search?q=%22Wolverhampton+Wanderers%22+%22Derby+County%22+2026-11-24+football+result",
+      "home": "Stoke City",
+      "away": "Millwall FC",
+      "kickoff": "2026-11-25T20:00:00+00:00",
+      "football_day": "2026-11-25",
+      "search_query": "\"Stoke City\" \"Millwall FC\" 2026-11-25 football result",
+      "search_url": "https://www.google.com/search?q=%22Stoke+City%22+%22Millwall+FC%22+2026-11-25+football+result",
       "required_identity": [
         "home_team",
         "away_team",
