@@ -1,20 +1,23 @@
 {
   "schema_version": "1.0",
   "classification": "FOTMOB_EXACT_RESULT_BACKFILL",
-  "missing_before": 2,
-  "missing_after": 2,
+  "missing_before": 4,
+  "missing_after": 4,
   "verified_bridge_matches": 0,
   "days_requested": [
     "2026-11-21",
     "2026-11-22",
-    "2026-11-23"
+    "2026-11-23",
+    "2026-11-24",
+    "2026-11-25",
+    "2026-11-26"
   ],
-  "events_fetched": 1122,
+  "events_fetched": 1489,
   "exact_results_added": 0,
   "ambiguous_exact_matches_rejected": 0,
   "exact_identity_unfinished": 0,
-  "no_exact_identity": 2,
-  "kickoff_candidate_only": 2,
+  "no_exact_identity": 4,
+  "kickoff_candidate_only": 4,
   "kickoff_candidate_samples": [
     {
       "fixture_id": "id1000021576635258",
@@ -156,6 +159,136 @@
           "league": "Serie B"
         }
       ]
+    },
+    {
+      "fixture_id": "id1000070467912896",
+      "snapshot": {
+        "home": "FC Samgurali Tskaltubo",
+        "away": "FC Torpedo Kutaisi",
+        "kickoff": "2026-11-25T09:30:00+00:00"
+      },
+      "fotmob_candidates": [
+        {
+          "id": 5165414,
+          "home": "FC Samgurali Tskhaltubo",
+          "away": "Torpedo Kutaisi",
+          "finished": true,
+          "score": [
+            0,
+            1
+          ],
+          "league": "Erovnuli Liga"
+        },
+        {
+          "id": 5836388,
+          "home": "FC Imabari",
+          "away": "Tegevajaro Miyazaki",
+          "finished": true,
+          "score": [
+            2,
+            1
+          ],
+          "league": "J. League 2"
+        },
+        {
+          "id": 5836395,
+          "home": "Vanraure Hachinohe",
+          "away": "Albirex Niigata",
+          "finished": true,
+          "score": [
+            0,
+            1
+          ],
+          "league": "J. League 2"
+        },
+        {
+          "id": 5987270,
+          "home": "SC Sagamihara",
+          "away": "Ehime FC",
+          "finished": true,
+          "score": [
+            3,
+            0
+          ],
+          "league": "J. League 3"
+        }
+      ]
+    },
+    {
+      "fixture_id": "id1000021876616896",
+      "snapshot": {
+        "home": "FC Kryvbas Kriviy Rih",
+        "away": "FC Kharkiv",
+        "kickoff": "2026-11-25T11:00:00+00:00"
+      },
+      "fotmob_candidates": [
+        {
+          "id": 6537540,
+          "home": "Polonia Środa",
+          "away": "Sokół Kleczew",
+          "finished": true,
+          "score": [
+            2,
+            1
+          ],
+          "league": "FA Cup"
+        },
+        {
+          "id": 5909156,
+          "home": "Kryvbas",
+          "away": "FC Kharkiv",
+          "finished": false,
+          "score": [
+            0,
+            2
+          ],
+          "league": "Premier League"
+        },
+        {
+          "id": 1000018209,
+          "home": "Chiangmai United",
+          "away": "Mahasarakham Sam Bai Tao",
+          "finished": true,
+          "score": [
+            1,
+            2
+          ],
+          "league": "Thai League 2"
+        },
+        {
+          "id": 1000018210,
+          "home": "Kasetsart",
+          "away": "Phrae United",
+          "finished": true,
+          "score": [
+            1,
+            1
+          ],
+          "league": "Thai League 2"
+        },
+        {
+          "id": 1000021789,
+          "home": "Legia Warszawa U19",
+          "away": "SK Super Nova U19",
+          "finished": true,
+          "score": [
+            1,
+            0
+          ],
+          "league": "UEFA Youth League - 3rd Round"
+        },
+        {
+          "id": 1000021162,
+          "home": "Sabah FK U19",
+          "away": "Barcelona U19",
+          "finished": true,
+          "score": [
+            0,
+            7
+          ],
+          "league": "UEFA Youth League - League Stage"
+        }
+      ]
     }
   ],
   "request_failures": [],
@@ -164,8 +297,8 @@
   "promotion_eligible": false,
   "retired_included": false,
   "deferred_days": [],
-  "generated_at": "2026-11-25T09:51:21.351991+00:00",
-  "requests_used": 0,
+  "generated_at": "2026-11-25T14:21:18.582970+00:00",
+  "requests_used": 3,
   "cache_hits": 3,
   "stale_cache_fallbacks": 0,
   "fetch_evidence": [
@@ -186,9 +319,27 @@
       "source": "CACHE",
       "fetched_at": "2026-11-24T23:01:45.176296+00:00",
       "requests": 0
+    },
+    {
+      "day": "2026-11-24",
+      "source": "NETWORK",
+      "fetched_at": "2026-11-25T14:21:17.080589+00:00",
+      "requests": 1
+    },
+    {
+      "day": "2026-11-25",
+      "source": "NETWORK",
+      "fetched_at": "2026-11-25T14:21:17.351520+00:00",
+      "requests": 1
+    },
+    {
+      "day": "2026-11-26",
+      "source": "NETWORK",
+      "fetched_at": "2026-11-25T14:21:18.277555+00:00",
+      "requests": 1
     }
   ],
-  "existing_results_revalidated": 122,
+  "existing_results_revalidated": 146,
   "invalid_ft_results_quarantined": 0,
   "invalid_ft_fixture_ids": []
 }
