@@ -3,9 +3,9 @@
   "latest_scan": {
     "account_requests_attempted": 1,
     "account_transient_failures": [],
-    "actual_observed_at": "2026-11-26T21:01:10.008849+07:00",
+    "actual_observed_at": "2026-11-27T00:01:02.872596+07:00",
     "api_error_count": 0,
-    "budget_reservation_id": "8cf678fc78ec4d69bef1ac3a63ae7df8",
+    "budget_reservation_id": "72f79195a4c749e0af0ae7635c5be9cc",
     "competition_coverage": [
       {
         "canonical_competition_id": "BGR-0002",
@@ -715,13 +715,13 @@
         "canonical_competition_id": "ENG-0003",
         "country": "England",
         "fixtures_captured_today": 1,
-        "last_market_request_at": "2026-11-26T14:01:10.008849+00:00",
+        "last_market_request_at": "2026-11-26T17:01:02.872596+00:00",
         "market_reason_counts": {
-          "OK": 1
+          "AMBIGUOUS_OR_MISSING_MAIN_OU": 1
         },
         "next_kickoff": "2026-11-26T20:00:00+00:00",
         "odds_fixture_rows": 1,
-        "reason": "OBSERVED",
+        "reason": "NO_MARKET",
         "remaining_prematch_fixture_ids": [
           "id1000002472341410"
         ],
@@ -731,7 +731,7 @@
         ],
         "scheduled_fixtures": 1,
         "scheduled_fixtures_without_snapshot": 0,
-        "strict_snapshots": 1,
+        "strict_snapshots": 0,
         "tournament_id": 24,
         "tournament_name": "League One",
         "uncaptured_remaining_prematch_fixtures": 0
@@ -900,16 +900,15 @@
         "canonical_competition_id": "INT-0004",
         "country": "International",
         "fixtures_captured_today": 17,
-        "last_market_request_at": "2026-11-26T14:01:10.008849+00:00",
+        "last_market_request_at": "2026-11-26T17:01:02.872596+00:00",
         "market_reason_counts": {
-          "MASTER_CLUB_UNMAPPED": 1,
-          "OK": 17
+          "AMBIGUOUS_OR_MISSING_MAIN_OU": 2,
+          "OK": 15
         },
-        "next_kickoff": "2026-11-26T15:30:00+00:00",
-        "odds_fixture_rows": 18,
+        "next_kickoff": "2026-11-26T17:45:00+00:00",
+        "odds_fixture_rows": 17,
         "reason": "OBSERVED",
         "remaining_prematch_fixture_ids": [
-          "id1003448074173312",
           "id1003448074173314",
           "id1003448074173316",
           "id1003448074173318",
@@ -928,7 +927,7 @@
           "id1003448074173344",
           "id1003448074173346"
         ],
-        "remaining_prematch_fixtures": 18,
+        "remaining_prematch_fixtures": 17,
         "scheduled_fixture_ids": [
           "id1003448074173312",
           "id1003448074173314",
@@ -951,7 +950,7 @@
         ],
         "scheduled_fixtures": 18,
         "scheduled_fixtures_without_snapshot": 1,
-        "strict_snapshots": 17,
+        "strict_snapshots": 15,
         "tournament_id": 34480,
         "tournament_name": "UEFA Conference League",
         "uncaptured_remaining_prematch_fixtures": 1
@@ -1120,7 +1119,7 @@
         "canonical_competition_id": "DNK-0002",
         "country": "Denmark",
         "fixtures_captured_today": 1,
-        "last_market_request_at": "2026-11-26T14:01:10.008849+00:00",
+        "last_market_request_at": "2026-11-26T17:01:02.872596+00:00",
         "market_reason_counts": {
           "OK": 1
         },
@@ -1225,23 +1224,16 @@
         "canonical_competition_id": "ROU-0002",
         "country": "Romania",
         "fixtures_captured_today": 1,
-        "last_market_request_at": "2026-11-26T14:01:10.008849+00:00",
-        "market_reason_counts": {
-          "OK": 1
-        },
-        "next_kickoff": "2026-11-26T14:45:00+00:00",
-        "odds_fixture_rows": 1,
-        "reason": "OBSERVED",
-        "remaining_prematch_fixture_ids": [
-          "id1000056273086770"
-        ],
-        "remaining_prematch_fixtures": 1,
+        "last_market_request_at": null,
+        "next_kickoff": null,
+        "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+        "remaining_prematch_fixture_ids": [],
+        "remaining_prematch_fixtures": 0,
         "scheduled_fixture_ids": [
           "id1000056273086770"
         ],
         "scheduled_fixtures": 1,
         "scheduled_fixtures_without_snapshot": 0,
-        "strict_snapshots": 1,
         "tournament_id": 562,
         "tournament_name": "Liga II",
         "uncaptured_remaining_prematch_fixtures": 0
@@ -1298,9 +1290,10 @@
         "canonical_competition_id": "INT-0002",
         "country": "International",
         "fixtures_captured_today": 18,
-        "last_market_request_at": "2026-11-26T14:01:10.008849+00:00",
+        "last_market_request_at": "2026-11-26T17:01:02.872596+00:00",
         "market_reason_counts": {
-          "OK": 18
+          "AMBIGUOUS_OR_MISSING_MAIN_OU": 3,
+          "OK": 15
         },
         "next_kickoff": "2026-11-26T17:45:00+00:00",
         "odds_fixture_rows": 18,
@@ -1348,7 +1341,7 @@
         ],
         "scheduled_fixtures": 18,
         "scheduled_fixtures_without_snapshot": 0,
-        "strict_snapshots": 18,
+        "strict_snapshots": 15,
         "tournament_id": 679,
         "tournament_name": "UEFA Europa League",
         "uncaptured_remaining_prematch_fixtures": 0
@@ -1602,13 +1595,13 @@
     "daily_cohort_query_complete": null,
     "data_source_health": null,
     "fixtures_found": 39,
-    "fixtures_returned_in_market_response": 39,
+    "fixtures_returned_in_market_response": 37,
     "fixtures_unqueried": 0,
-    "fixtures_with_valid_odds": 38,
-    "fixtures_without_valid_odds": 1,
+    "fixtures_with_valid_odds": 31,
+    "fixtures_without_valid_odds": 8,
     "football_day": "2026-11-26",
     "future_utc_requests_reserved": 0,
-    "generated_at": "2026-11-26T14:01:10.086718+00:00",
+    "generated_at": "2026-11-26T17:01:02.953727+00:00",
     "issues": [
       "FIXTURES_WITHOUT_VALID_CORE_ODDS"
     ],
@@ -1617,24 +1610,24 @@
     "quota_skip_reason": null,
     "quota_utc_day": "2026-11-26",
     "record_type": "SCAN_ATTEMPT",
-    "report_id": "d35dd4c5fbd750d1313d62bc5ab190fa1b6a854b4977dca481e55e1df3e0681d",
+    "report_id": "0d8decdb07aa326e61e7e2f8c66bdfc3c07435b5769af535eecdda76cadcc5b3",
     "requests_used": 2,
     "scan_status": "RESEARCH_V2_OBSERVED",
-    "schedule_response_id": "667c24f961527af77dde4ee0851b3704493b7900e29ca9e6c7718447148e868d",
-    "scheduled_target_at": "2026-11-26T21:01:03+07:00",
+    "schedule_response_id": "8abcc7ca2c51d16ebfbc86035e7e5f4313a7a38abe8680566f41a26018746e74",
+    "scheduled_target_at": "2026-11-27T00:00:56+07:00",
     "schema_version": "1.0",
     "source_or_configuration_error_count": 0,
     "status": "WARNING",
     "workflow_run_attempt": "1",
-    "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/45834639407"
+    "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/45863888892"
   },
   "recent_reports": [
     {
       "account_requests_attempted": 1,
       "account_transient_failures": [],
-      "actual_observed_at": "2026-11-26T21:01:10.008849+07:00",
+      "actual_observed_at": "2026-11-27T00:01:02.872596+07:00",
       "api_error_count": 0,
-      "budget_reservation_id": "8cf678fc78ec4d69bef1ac3a63ae7df8",
+      "budget_reservation_id": "72f79195a4c749e0af0ae7635c5be9cc",
       "competition_coverage": [
         {
           "canonical_competition_id": "BGR-0002",
@@ -2344,13 +2337,13 @@
           "canonical_competition_id": "ENG-0003",
           "country": "England",
           "fixtures_captured_today": 1,
-          "last_market_request_at": "2026-11-26T14:01:10.008849+00:00",
+          "last_market_request_at": "2026-11-26T17:01:02.872596+00:00",
           "market_reason_counts": {
-            "OK": 1
+            "AMBIGUOUS_OR_MISSING_MAIN_OU": 1
           },
           "next_kickoff": "2026-11-26T20:00:00+00:00",
           "odds_fixture_rows": 1,
-          "reason": "OBSERVED",
+          "reason": "NO_MARKET",
           "remaining_prematch_fixture_ids": [
             "id1000002472341410"
           ],
@@ -2360,7 +2353,7 @@
           ],
           "scheduled_fixtures": 1,
           "scheduled_fixtures_without_snapshot": 0,
-          "strict_snapshots": 1,
+          "strict_snapshots": 0,
           "tournament_id": 24,
           "tournament_name": "League One",
           "uncaptured_remaining_prematch_fixtures": 0
@@ -2529,16 +2522,15 @@
           "canonical_competition_id": "INT-0004",
           "country": "International",
           "fixtures_captured_today": 17,
-          "last_market_request_at": "2026-11-26T14:01:10.008849+00:00",
+          "last_market_request_at": "2026-11-26T17:01:02.872596+00:00",
           "market_reason_counts": {
-            "MASTER_CLUB_UNMAPPED": 1,
-            "OK": 17
+            "AMBIGUOUS_OR_MISSING_MAIN_OU": 2,
+            "OK": 15
           },
-          "next_kickoff": "2026-11-26T15:30:00+00:00",
-          "odds_fixture_rows": 18,
+          "next_kickoff": "2026-11-26T17:45:00+00:00",
+          "odds_fixture_rows": 17,
           "reason": "OBSERVED",
           "remaining_prematch_fixture_ids": [
-            "id1003448074173312",
             "id1003448074173314",
             "id1003448074173316",
             "id1003448074173318",
@@ -2557,7 +2549,7 @@
             "id1003448074173344",
             "id1003448074173346"
           ],
-          "remaining_prematch_fixtures": 18,
+          "remaining_prematch_fixtures": 17,
           "scheduled_fixture_ids": [
             "id1003448074173312",
             "id1003448074173314",
@@ -2580,7 +2572,7 @@
           ],
           "scheduled_fixtures": 18,
           "scheduled_fixtures_without_snapshot": 1,
-          "strict_snapshots": 17,
+          "strict_snapshots": 15,
           "tournament_id": 34480,
           "tournament_name": "UEFA Conference League",
           "uncaptured_remaining_prematch_fixtures": 1
@@ -2749,7 +2741,7 @@
           "canonical_competition_id": "DNK-0002",
           "country": "Denmark",
           "fixtures_captured_today": 1,
-          "last_market_request_at": "2026-11-26T14:01:10.008849+00:00",
+          "last_market_request_at": "2026-11-26T17:01:02.872596+00:00",
           "market_reason_counts": {
             "OK": 1
           },
@@ -2854,23 +2846,16 @@
           "canonical_competition_id": "ROU-0002",
           "country": "Romania",
           "fixtures_captured_today": 1,
-          "last_market_request_at": "2026-11-26T14:01:10.008849+00:00",
-          "market_reason_counts": {
-            "OK": 1
-          },
-          "next_kickoff": "2026-11-26T14:45:00+00:00",
-          "odds_fixture_rows": 1,
-          "reason": "OBSERVED",
-          "remaining_prematch_fixture_ids": [
-            "id1000056273086770"
-          ],
-          "remaining_prematch_fixtures": 1,
+          "last_market_request_at": null,
+          "next_kickoff": null,
+          "reason": "KICKOFF_PASSED_OR_NOT_PREMATCH",
+          "remaining_prematch_fixture_ids": [],
+          "remaining_prematch_fixtures": 0,
           "scheduled_fixture_ids": [
             "id1000056273086770"
           ],
           "scheduled_fixtures": 1,
           "scheduled_fixtures_without_snapshot": 0,
-          "strict_snapshots": 1,
           "tournament_id": 562,
           "tournament_name": "Liga II",
           "uncaptured_remaining_prematch_fixtures": 0
@@ -2927,9 +2912,10 @@
           "canonical_competition_id": "INT-0002",
           "country": "International",
           "fixtures_captured_today": 18,
-          "last_market_request_at": "2026-11-26T14:01:10.008849+00:00",
+          "last_market_request_at": "2026-11-26T17:01:02.872596+00:00",
           "market_reason_counts": {
-            "OK": 18
+            "AMBIGUOUS_OR_MISSING_MAIN_OU": 3,
+            "OK": 15
           },
           "next_kickoff": "2026-11-26T17:45:00+00:00",
           "odds_fixture_rows": 18,
@@ -2977,7 +2963,7 @@
           ],
           "scheduled_fixtures": 18,
           "scheduled_fixtures_without_snapshot": 0,
-          "strict_snapshots": 18,
+          "strict_snapshots": 15,
           "tournament_id": 679,
           "tournament_name": "UEFA Europa League",
           "uncaptured_remaining_prematch_fixtures": 0
@@ -3231,13 +3217,13 @@
       "daily_cohort_query_complete": null,
       "data_source_health": null,
       "fixtures_found": 39,
-      "fixtures_returned_in_market_response": 39,
+      "fixtures_returned_in_market_response": 37,
       "fixtures_unqueried": 0,
-      "fixtures_with_valid_odds": 38,
-      "fixtures_without_valid_odds": 1,
+      "fixtures_with_valid_odds": 31,
+      "fixtures_without_valid_odds": 8,
       "football_day": "2026-11-26",
       "future_utc_requests_reserved": 0,
-      "generated_at": "2026-11-26T14:01:10.086718+00:00",
+      "generated_at": "2026-11-26T17:01:02.953727+00:00",
       "issues": [
         "FIXTURES_WITHOUT_VALID_CORE_ODDS"
       ],
@@ -3246,16 +3232,16 @@
       "quota_skip_reason": null,
       "quota_utc_day": "2026-11-26",
       "record_type": "SCAN_ATTEMPT",
-      "report_id": "d35dd4c5fbd750d1313d62bc5ab190fa1b6a854b4977dca481e55e1df3e0681d",
+      "report_id": "0d8decdb07aa326e61e7e2f8c66bdfc3c07435b5769af535eecdda76cadcc5b3",
       "requests_used": 2,
       "scan_status": "RESEARCH_V2_OBSERVED",
-      "schedule_response_id": "667c24f961527af77dde4ee0851b3704493b7900e29ca9e6c7718447148e868d",
-      "scheduled_target_at": "2026-11-26T21:01:03+07:00",
+      "schedule_response_id": "8abcc7ca2c51d16ebfbc86035e7e5f4313a7a38abe8680566f41a26018746e74",
+      "scheduled_target_at": "2026-11-27T00:00:56+07:00",
       "schema_version": "1.0",
       "source_or_configuration_error_count": 0,
       "status": "WARNING",
       "workflow_run_attempt": "1",
-      "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/45834639407"
+      "workflow_run_url": "https://github.com/meepo1150-code/football-odds-scanner/actions/runs/45863888892"
     },
     {
       "account_requests_attempted": 1,
