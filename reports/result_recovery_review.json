@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-11-26T18:28:48.284050+00:00",
-  "matured_unresolved_total": 124,
+  "generated_at": "2026-11-26T22:21:36.097999+00:00",
+  "matured_unresolved_total": 125,
   "retired_from_active_queue": 124,
-  "active_matured_unresolved": 0,
+  "active_matured_unresolved": 1,
   "raw_deleted": 0,
   "settled_results_deleted": 0,
   "low_tier_scope_exclusions": 11,
@@ -11,5 +11,30 @@
   "minimum_sources": 2,
   "minimum_age_hours": 72,
   "minimum_attempt_span_hours": 24,
-  "pending": []
+  "pending": [
+    {
+      "fixture_id": "id1000067974173072",
+      "home": "Union Saint-Gilloise",
+      "away": "KKS Lech Poznan",
+      "league": "UEFA Europa League",
+      "kickoff": "2026-11-26T17:45:00+00:00",
+      "attempt_count": 1,
+      "round_ids": [
+        "158000881da20fcf"
+      ],
+      "sources": [
+        "fotmob"
+      ],
+      "reviewed_at": "2026-11-26T22:21:36.097999+00:00",
+      "unmet_gates": [
+        "MINIMUM_DISTINCT_ROUNDS",
+        "MINIMUM_SOURCES",
+        "MINIMUM_AGE_72H",
+        "MINIMUM_ATTEMPT_SPAN_24H"
+      ],
+      "age_eligible_at": "2026-11-29T17:45:00+00:00",
+      "status": "ACTIVE_UNRESOLVED",
+      "reason": "RETIREMENT_EVIDENCE_OR_AGE_GATE_NOT_MET"
+    }
+  ]
 }
