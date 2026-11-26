@@ -58,7 +58,7 @@ jobs:
        github.event.workflow_run.head_repository.full_name == github.repository)
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment_retry_2.outputs.page_url || steps.deployment_retry_1.outputs.page_url || steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -100,13 +100,32 @@ jobs:
         with: {enablement: true}
       - uses: actions/upload-pages-artifact@v5
         with: {path: site}
-      - name: Deploy
+      # GitHub Actions can finalize an artifact before deploy-pages sees it.
+      # Retry ONLY publication, never rerun the scanner or upload another artifact.
+      # https://github.com/actions/deploy-pages/issues/451
+      - name: Deploy (first attempt)
         id: deployment
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+      - name: Allow Pages artifact visibility to settle (first retry)
+        if: ${{ steps.deployment.outcome == 'failure' }}
+        run: sleep 12
+      - name: Deploy (second attempt)
+        if: ${{ steps.deployment.outcome == 'failure' }}
+        id: deployment_retry_1
+        uses: actions/deploy-pages@v5
+        continue-on-error: true
+      - name: Allow longer Pages artifact visibility delay (final retry)
+        if: ${{ steps.deployment.outcome == 'failure' && steps.deployment_retry_1.outcome == 'failure' }}
+        run: sleep 60
+      - name: Deploy (final attempt)
+        if: ${{ steps.deployment.outcome == 'failure' && steps.deployment_retry_1.outcome == 'failure' }}
+        id: deployment_retry_2
         uses: actions/deploy-pages@v5
 
       - name: Verify live Pages matches this build and published research data
         env:
-          DEPLOY_URL: ${{ steps.deployment.outputs.page_url }}
+          DEPLOY_URL: ${{ steps.deployment_retry_2.outputs.page_url || steps.deployment_retry_1.outputs.page_url || steps.deployment.outputs.page_url }}
           DEPLOY_RUN_ID: ${{ github.run_id }}
         run: |
           set -euo pipefail
