@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-11-26T18:08:38.248960+00:00",
-  "football_day": "2026-11-26",
+  "generated_at": "2026-11-27T17:51:29.781497+00:00",
+  "football_day": "2026-11-27",
   "status": "FAIL",
   "issues": [
     "SCAN_MISSING",
@@ -13,18 +13,7 @@
   "scan_missing_count": 3,
   "scan_missing": [
     {
-      "target_time": "2026-11-26T18:00:00+07:00",
-      "state": "PARTIAL",
-      "provider": "oddspapi",
-      "observed_at": "2026-11-26T18:01:05.037798+07:00",
-      "lag_minutes": 1.08,
-      "valid_snapshot_count": 38,
-      "canonical_fixture_count": 38,
-      "observation_timing": "ON_TIME",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-11-26T21:00:00+07:00",
+      "target_time": "2026-11-27T18:00:00+07:00",
       "state": "MISSED",
       "provider": null,
       "observed_at": null,
@@ -35,18 +24,29 @@
       "recovered": false
     },
     {
-      "target_time": "2026-11-27T00:00:00+07:00",
+      "target_time": "2026-11-27T21:00:00+07:00",
+      "state": "MISSED",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "MISSED",
+      "recovered": false
+    },
+    {
+      "target_time": "2026-11-28T00:00:00+07:00",
       "state": "PARTIAL",
       "provider": "oddspapi",
-      "observed_at": "2026-11-27T00:01:02.872596+07:00",
-      "lag_minutes": 1.05,
-      "valid_snapshot_count": 31,
-      "canonical_fixture_count": 31,
+      "observed_at": "2026-11-28T00:01:04.012560+07:00",
+      "lag_minutes": 1.07,
+      "valid_snapshot_count": 38,
+      "canonical_fixture_count": 38,
       "observation_timing": "ON_TIME",
       "recovered": false
     }
   ],
-  "ft_delay_count": 55,
+  "ft_delay_count": 57,
   "ft_delay": [
     {
       "fixture_id": "id1000000972302180",
@@ -735,6 +735,20 @@
       "retired_from_active_queue": true
     },
     {
+      "fixture_id": "id1000067974173072",
+      "provider": "oddspapi",
+      "football_day": "2026-11-26",
+      "league": "UEFA Europa League",
+      "kickoff": "2026-11-26T17:45:00+00:00",
+      "home": "Union Saint-Gilloise",
+      "away": "KKS Lech Poznan",
+      "status": "MISSING_FT",
+      "country": "International",
+      "canonical_competition_id": "INT-0002",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
+    },
+    {
       "fixture_id": "id1000069172550318",
       "provider": "oddspapi",
       "football_day": "2026-11-07",
@@ -803,6 +817,20 @@
       "canonical_competition_id": "BGR-0002",
       "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
       "retired_from_active_queue": true
+    },
+    {
+      "fixture_id": "id1003448074173344",
+      "provider": "oddspapi",
+      "football_day": "2026-11-26",
+      "league": "UEFA Conference League",
+      "kickoff": "2026-11-26T20:00:00+00:00",
+      "home": "SC Braga",
+      "away": "Kuopion Palloseura",
+      "status": "MISSING_FT",
+      "country": "International",
+      "canonical_competition_id": "INT-0004",
+      "required_identity": "EXACT_FIXTURE_OR_VERIFIED_TEAM_LEAGUE_KICKOFF",
+      "retired_from_active_queue": false
     },
     {
       "fixture_id": "pinnwire:1637096650",
@@ -924,29 +952,18 @@
   "history_report_count": 30,
   "canonical_slots": [
     {
-      "target_time": "2026-11-26T15:00:00+07:00",
+      "target_time": "2026-11-27T15:00:00+07:00",
       "state": "OBSERVED",
       "provider": "oddspapi",
-      "observed_at": "2026-11-26T15:01:00.861957+07:00",
-      "lag_minutes": 1.01,
-      "valid_snapshot_count": 38,
-      "canonical_fixture_count": 38,
+      "observed_at": "2026-11-27T15:01:28.339232+07:00",
+      "lag_minutes": 1.47,
+      "valid_snapshot_count": 71,
+      "canonical_fixture_count": 71,
       "observation_timing": "ON_TIME",
       "recovered": false
     },
     {
-      "target_time": "2026-11-26T18:00:00+07:00",
-      "state": "PARTIAL",
-      "provider": "oddspapi",
-      "observed_at": "2026-11-26T18:01:05.037798+07:00",
-      "lag_minutes": 1.08,
-      "valid_snapshot_count": 38,
-      "canonical_fixture_count": 38,
-      "observation_timing": "ON_TIME",
-      "recovered": false
-    },
-    {
-      "target_time": "2026-11-26T21:00:00+07:00",
+      "target_time": "2026-11-27T18:00:00+07:00",
       "state": "MISSED",
       "provider": null,
       "observed_at": null,
@@ -957,13 +974,24 @@
       "recovered": false
     },
     {
-      "target_time": "2026-11-27T00:00:00+07:00",
+      "target_time": "2026-11-27T21:00:00+07:00",
+      "state": "MISSED",
+      "provider": null,
+      "observed_at": null,
+      "lag_minutes": null,
+      "valid_snapshot_count": 0,
+      "canonical_fixture_count": 0,
+      "observation_timing": "MISSED",
+      "recovered": false
+    },
+    {
+      "target_time": "2026-11-28T00:00:00+07:00",
       "state": "PARTIAL",
       "provider": "oddspapi",
-      "observed_at": "2026-11-27T00:01:02.872596+07:00",
-      "lag_minutes": 1.05,
-      "valid_snapshot_count": 31,
-      "canonical_fixture_count": 31,
+      "observed_at": "2026-11-28T00:01:04.012560+07:00",
+      "lag_minutes": 1.07,
+      "valid_snapshot_count": 38,
+      "canonical_fixture_count": 38,
       "observation_timing": "ON_TIME",
       "recovered": false
     }
@@ -972,47 +1000,46 @@
   "raw_deleted": 0,
   "approved_unresolved_fixtures_retained": true,
   "next_slot_readiness": {
-    "target_at": "2026-11-27T15:00:00+07:00",
-    "football_day": "2026-11-27",
+    "target_at": "2026-11-28T15:00:00+07:00",
+    "football_day": "2026-11-28",
     "status": "UNVERIFIED_OR_CAPACITY_BLOCKED",
     "fixture_set_size": null,
     "remaining_prematch_at_target": 0,
-    "prematch_forecast_at": "2026-11-27T15:03:00+07:00",
+    "prematch_forecast_at": "2026-11-28T15:03:00+07:00",
     "unconfirmed_grants": [],
     "blocked_reasons": [
-      "FIXED_COHORT_UNAVAILABLE",
-      "ACCOUNT_CAPACITY_UNCONFIRMED_OR_INSUFFICIENT"
+      "FIXED_COHORT_UNAVAILABLE"
     ],
     "pending_fixture_ids": [],
     "required_market_requests": 0,
     "allocated_tournament_ids": [],
-    "quota_utc_day": "2026-11-27",
+    "quota_utc_day": "2026-11-28",
     "research_usage": {
-      "day": 80,
-      "month": 2180
+      "day": 60,
+      "month": 2240
     },
-    "account_remaining_estimate": 11,
-    "account_observed_before": "2026-11-26T17:00:56.675863+00:00",
+    "account_remaining_estimate": 146,
+    "account_observed_before": "2026-11-27T17:00:45.673862+00:00",
     "account_estimate_limitation": "OTHER_ACCOUNT_CONSUMERS_AFTER_OBSERVATION_NOT_MEASURED; RECHECK_UNMETERED_ACCOUNT_AT_COLLECTION",
     "fixture_set_policy": null,
     "schedule_response_id": null,
     "budget": {
       "request_budget_policy": "RESEARCH_6_PER_UTC_DAY_180_PER_UTC_MONTH",
       "research_requests_used_today": 0,
-      "research_requests_used_month": 2180,
+      "research_requests_used_month": 2240,
       "research_daily_limit": 6,
       "research_monthly_limit": 180,
       "research_run_limit": 1,
-      "quota_utc_day": "2026-11-27",
+      "quota_utc_day": "2026-11-28",
       "canonical_slots_in_football_day": 4,
       "future_utc_slots": [
-        "2026-11-27T11:00:00+00:00",
-        "2026-11-27T14:00:00+00:00",
-        "2026-11-27T17:00:00+00:00"
+        "2026-11-28T11:00:00+00:00",
+        "2026-11-28T14:00:00+00:00",
+        "2026-11-28T17:00:00+00:00"
       ],
       "future_utc_requests_reserved": 3,
       "current_canonical_requests_reserved": 0,
-      "future_month_requests_reserved": 15,
+      "future_month_requests_reserved": 10,
       "canonical_request_reservation": "UTC_FUTURE_SLOTS_PLUS_DISCOVERY; MANUAL_AND_RECOVERY_YIELD; FAILED_ATTEMPTS_COUNT",
       "budget_scope": "ODDSPAPI_RESEARCH_COLLECTOR_ONLY",
       "coverage_mode": "MASTER_SCHEDULE_PRIORITIZED",
